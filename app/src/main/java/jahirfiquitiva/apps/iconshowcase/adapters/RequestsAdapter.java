@@ -40,8 +40,8 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
     @Override
     public void onBindViewHolder(RequestsHolder holder, int position) {
         RequestItem requestsItem = appsList.get(position);
-        holder.txtName.setText(requestsItem.getName());
-        holder.imgIcon.setImageDrawable(requestsItem.getImage());
+        holder.txtName.setText(requestsItem.getAppName());
+        holder.imgIcon.setImageDrawable(requestsItem.getIcon());
         holder.chkSelected.setChecked(requestsItem.isSelected());
         holder.view.setTag(position);
     }

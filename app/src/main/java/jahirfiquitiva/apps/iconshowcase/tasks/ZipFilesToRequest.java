@@ -83,10 +83,13 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
         zipLocation = context.getString(R.string.request_save_location,
                 Environment.getExternalStorageDirectory().getAbsolutePath());
         filesLocation = zipLocation + "Files/";
+
         SimpleDateFormat date = new SimpleDateFormat("yyyyMMdd_hhmmss", Locale.getDefault());
         String appNameCorrected = context.getResources().getString(R.string.app_name).replace(" ", "");
+
         zipFilePath = zipLocation + appNameCorrected
                 + "_" + date.format(new Date()) + ".zip";
+
         appsListFinal = RequestAppsList.getRequestAppsList();
         appsNames.clear();
         appsPackages.clear();
@@ -102,18 +105,18 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
 
         if (selected >= appsListFinal.size()) {
             for (int b = 0; b < appsListFinal.size(); b++) {
-                appsNames.add(appsListFinal.get(b).getName());
+                appsNames.add(appsListFinal.get(b).getAppName());
                 appsPackages.add(appsListFinal.get(b).getPackageName());
                 appsClasses.add(appsListFinal.get(b).getClassName());
-                appsIcons.add(appsListFinal.get(b).getImage());
+                appsIcons.add(appsListFinal.get(b).getIcon());
             }
         } else {
             for (int c = 0; c < appsListFinal.size(); c++) {
                 if (appsListFinal.get(c).isSelected()) {
-                    appsNames.add(appsListFinal.get(c).getName());
+                    appsNames.add(appsListFinal.get(c).getAppName());
                     appsPackages.add(appsListFinal.get(c).getPackageName());
                     appsClasses.add(appsListFinal.get(c).getClassName());
-                    appsIcons.add(appsListFinal.get(c).getImage());
+                    appsIcons.add(appsListFinal.get(c).getIcon());
                 }
             }
         }
@@ -124,85 +127,105 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
         try {
             final File zipFolder = new File(zipLocation);
             final File filesFolder = new File(filesLocation + "/");
+
             deleteDirectory(zipFolder);
             deleteDirectory(filesFolder);
+
             zipFolder.mkdirs();
             filesFolder.mkdirs();
+
             StringBuilder sb = new StringBuilder();
-            StringBuilder appfilterBuilder = new StringBuilder();
-            StringBuilder appmapBuilder = new StringBuilder();
-            StringBuilder themeresourcesBuilder = new StringBuilder();
-            int amount = 0;
+            StringBuilder appFilterBuilder = new StringBuilder();
+            StringBuilder appMapBuilder = new StringBuilder();
+            StringBuilder themeResourcesBuilder = new StringBuilder();
+
+            int appsCount = 0;
             sb.append("These apps have no icons, please add some for them:\n\n");
+
             for (int i = 0; i < appsNames.size(); i++) {
-                appfilterBuilder.append("<!-- " + appsNames.get(i) +
+
+                appFilterBuilder.append("<!-- " + appsNames.get(i) +
                         " -->\n<item component=\"ComponentInfo{" +
                         appsPackages.get(i) + "/" + appsClasses.get(i) + "}\"" +
                         "drawable=\"" + appsNames.get(i).replace(" ", "_").toLowerCase() + "\"/>" + "\n");
-                appmapBuilder.append("<!-- " + appsNames.get(i) +
+
+                appMapBuilder.append("<!-- " + appsNames.get(i) +
                         " -->\n<item name=\"" + appsNames.get(i).replace(" ", "_").toLowerCase() +
                         "\" class=\"" + appsClasses.get(i) + "\" />" + "\n");
-                themeresourcesBuilder.append("<!-- " + appsNames.get(i) +
+
+                themeResourcesBuilder.append("<!-- " + appsNames.get(i) +
                         " -->\n<AppIcon name=\"" +
                         appsPackages.get(i) + "/" + appsClasses.get(i) +
                         "\" image=\"" + appsNames.get(i).replace(" ", "_").toLowerCase() + "\"/>" + "\n");
+
                 sb.append("App Name: " + appsNames.get(i) + "\n");
                 sb.append("App Info: " + appsPackages.get(i) + "/" + appsClasses.get(i) + "\n");
                 sb.append("App Link: " + "https://play.google.com/store/apps/details?id=" + appsPackages.get(i) + "\n");
                 sb.append("\n");
                 sb.append("\n");
+
                 Bitmap bitmap = ((BitmapDrawable) (appsIcons.get(i))).getBitmap();
-                FileOutputStream fOut;
+
+                FileOutputStream fileOutputStream;
                 try {
-                    fOut = new FileOutputStream(filesLocation + "/" + appsNames.get(i).replace(" ", "_").toLowerCase() + ".png");
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
-                    fOut.flush();
-                    fOut.close();
+                    fileOutputStream = new FileOutputStream(filesLocation + "/" + appsNames.get(i).replace(" ", "_").toLowerCase() + ".png");
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
+                    fileOutputStream.flush();
+                    fileOutputStream.close();
                 } catch (FileNotFoundException e) {
                 } catch (IOException e) {
                 }
-                amount++;
+
+                appsCount++;
             }
+
             sb.append("\nOS Version: " + System.getProperty("os.version") + "(" + Build.VERSION.INCREMENTAL + ")");
             sb.append("\nOS API Level: " + Build.VERSION.SDK_INT);
             sb.append("\nDevice: " + Build.DEVICE);
             sb.append("\nManufacturer: " + Build.MANUFACTURER);
             sb.append("\nModel (and Product): " + Build.MODEL + " (" + Build.PRODUCT + ")");
+
             try {
                 PackageInfo appInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
                 sb.append("\nApp Version Name: " + appInfo.versionName);
                 sb.append("\nApp Version Code: " + appInfo.versionCode);
             } catch (Exception e) {
             }
-            if (amount != 0) {
+
+            if (appsCount != 0) {
+
                 try {
-                    FileWriter fstream = new FileWriter(filesLocation + "/appfilter.xml");
-                    BufferedWriter out = new BufferedWriter(fstream);
-                    out.write(appfilterBuilder.toString());
-                    out.close();
+                    FileWriter fileWriter1 = new FileWriter(filesLocation + "/appfilter.xml");
+                    BufferedWriter bufferedWriter1 = new BufferedWriter(fileWriter1);
+                    bufferedWriter1.write(appFilterBuilder.toString());
+                    bufferedWriter1.close();
                 } catch (Exception e) {
                     return null;
                 }
+
                 try {
-                    FileWriter fstream2 = new FileWriter(filesLocation + "/appmap.xml");
-                    BufferedWriter out2 = new BufferedWriter(fstream2);
-                    out2.write(appmapBuilder.toString());
-                    out2.close();
+                    FileWriter fileWriter2 = new FileWriter(filesLocation + "/appmap.xml");
+                    BufferedWriter bufferedWriter2 = new BufferedWriter(fileWriter2);
+                    bufferedWriter2.write(appMapBuilder.toString());
+                    bufferedWriter2.close();
                 } catch (Exception e) {
                     return null;
                 }
+
                 try {
-                    FileWriter fstream3 = new FileWriter(filesLocation + "/theme_resources.xml");
-                    BufferedWriter out3 = new BufferedWriter(fstream3);
-                    out3.write(themeresourcesBuilder.toString());
-                    out3.close();
+                    FileWriter fileWriter3 = new FileWriter(filesLocation + "/theme_resources.xml");
+                    BufferedWriter bufferedWriter3 = new BufferedWriter(fileWriter3);
+                    bufferedWriter3.write(themeResourcesBuilder.toString());
+                    bufferedWriter3.close();
                 } catch (Exception e) {
                     return null;
                 }
+
                 createZipFile(filesLocation, true, zipFilePath);
                 deleteDirectory(filesFolder);
 
             }
+
             worked = true;
             emailContent = sb;
 
@@ -217,21 +240,26 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
 
     @Override
     protected void onPostExecute(Boolean worked) {
+
         if (worked) {
+
             if (emailContent != null) {
                 dialog.dismiss();
-                Intent i = new Intent(Intent.ACTION_SEND);
                 final Uri uri = Uri.parse("file://" + zipFilePath);
+
                 String[] recipients = new String[]{context.getString(R.string.email_id)};
-                i.setType("application/zip");
-                i.putExtra(Intent.EXTRA_STREAM, uri);
-                i.putExtra("android.intent.extra.EMAIL", recipients);
-                i.putExtra("android.intent.extra.SUBJECT",
+
+                Intent sendIntent = new Intent(Intent.ACTION_SEND);
+                sendIntent.setType("application/zip");
+                sendIntent.putExtra(Intent.EXTRA_STREAM, uri);
+                sendIntent.putExtra("android.intent.extra.EMAIL", recipients);
+                sendIntent.putExtra("android.intent.extra.SUBJECT",
                         context.getString(R.string.app_name) + " Icon Request");
-                i.putExtra("android.intent.extra.TEXT", emailContent.toString());
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                sendIntent.putExtra("android.intent.extra.TEXT", emailContent.toString());
+                sendIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
                 try {
-                    activity.startActivity(Intent.createChooser(i, "Send mail..."));
+                    activity.startActivity(Intent.createChooser(sendIntent, "Send mail..."));
                 } catch (ActivityNotFoundException e) {
                 }
             }
@@ -263,9 +291,11 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
 
     public static boolean createZipFile(final String path, final boolean keepDirectoryStructure, final String outputFile) {
         final File filesFolder = new File(path);
+
         if (!filesFolder.canRead() || !filesFolder.canWrite()) {
             return false;
         }
+
         try {
             ZipOutputStream zipOutputStream = new ZipOutputStream(
                     new BufferedOutputStream(
@@ -286,34 +316,38 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
             Log.e("IOException", e.getMessage());
             return false;
         }
+
         return true;
     }
 
-    public static void zipFile(final String path, final ZipOutputStream out, final String zipPath) throws IOException {
-        final File file = new File(path);
+    public static void zipFile(final String zipFilesPath, final ZipOutputStream zipOutputStream, final String zipPath) throws IOException {
+        final File file = new File(zipFilesPath);
+
         if (!file.exists()) {
             return;
         }
+
         final byte[] buf = new byte[1024];
         final String[] files = file.list();
+
         if (file.isFile()) {
             FileInputStream in = new FileInputStream(file.getAbsolutePath());
             try {
-                out.putNextEntry(new ZipEntry(zipPath + file.getName()));
+                zipOutputStream.putNextEntry(new ZipEntry(zipPath + file.getName()));
                 int len;
                 while ((len = in.read(buf)) > 0) {
-                    out.write(buf, 0, len);
+                    zipOutputStream.write(buf, 0, len);
                 }
-                out.closeEntry();
+                zipOutputStream.closeEntry();
                 in.close();
             } catch (ZipException e) {
             } finally {
-                if (out != null) out.closeEntry();
+                if (zipOutputStream != null) zipOutputStream.closeEntry();
                 if (in != null) in.close();
             }
         } else if (files.length > 0) {
             for (int i = 0, length = files.length; i < length; ++i) {
-                zipFile(path + "/" + files[i], out, zipPath + file.getName() + "/");
+                zipFile(zipFilesPath + "/" + files[i], zipOutputStream, zipPath + file.getName() + "/");
             }
         }
     }
@@ -321,19 +355,20 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
     private static void zipFolder(File file, ZipOutputStream zipOutputStream) throws IOException {
         byte[] data = new byte[BUFFER];
         int read;
+
         if (file.isFile()) {
-            ZipEntry entry = new ZipEntry(file.getName());
-            zipOutputStream.putNextEntry(entry);
-            BufferedInputStream instream = new BufferedInputStream(
+            ZipEntry zipEntry = new ZipEntry(file.getName());
+            zipOutputStream.putNextEntry(zipEntry);
+            BufferedInputStream bufferedInputStream = new BufferedInputStream(
                     new FileInputStream(file));
-            while ((read = instream.read(data, 0, BUFFER)) != -1)
+            while ((read = bufferedInputStream.read(data, 0, BUFFER)) != -1)
                 zipOutputStream.write(data, 0, read);
             zipOutputStream.closeEntry();
-            instream.close();
+            bufferedInputStream.close();
         } else if (file.isDirectory()) {
             String[] list = file.list();
-            int len = list.length;
-            for (int i = 0; i < len; i++)
+            int listLength = list.length;
+            for (int i = 0; i < listLength; i++)
                 zipFolder(new File(file.getPath() + "/" + list[i]), zipOutputStream);
         }
     }

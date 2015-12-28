@@ -2,6 +2,7 @@ package jahirfiquitiva.apps.iconshowcase.models.requests;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
@@ -70,9 +71,10 @@ public class RequestAppsList {
         Collections.sort(packageList, new Comparator<ResolveInfo>() {
             @Override
             public int compare(ResolveInfo a, ResolveInfo b) {
-                String initialName = packageManager.getApplicationLabel(a.activityInfo.applicationInfo).toString();
-                String finalName = packageManager.getApplicationLabel(b.activityInfo.applicationInfo).toString();
-                return initialName.compareToIgnoreCase(finalName);
+                return packageManager.getApplicationLabel(a.activityInfo.applicationInfo).toString()
+                        .compareToIgnoreCase(
+                                packageManager.getApplicationLabel(b.activityInfo.applicationInfo)
+                                        .toString());
             }
         });
 
@@ -88,11 +90,11 @@ public class RequestAppsList {
                 for (final ResolveInfo info : packageList) {
                     if (!listOfActivities.contains(info.activityInfo.packageName + "/" + info.activityInfo.name)) {
                         final String name = info.loadLabel(packageManager).toString();
-                        final String pkgName = info.activityInfo.packageName;
+                        final String packageName = info.activityInfo.packageName;
                         final String className = info.activityInfo.name;
-                        Drawable icon = packageManager.getApplicationIcon(pkgName);
-                        RequestItem App_info = new RequestItem(name, pkgName, className, icon, false);
-                        appsList.add(App_info);
+                        Drawable icon = info.loadIcon(packageManager);
+                        RequestItem appInfo = new RequestItem(name, packageName, className, icon);
+                        appsList.add(appInfo);
                     }
                 }
                 worked = true;
