@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+
+    <!-- List Of Drawer Sections -->
+    <string name="section_one">Home</string>
+    <string name="section_two">Icons</string>
+    <string name="section_three">Apply</string>
+    <string name="section_four">Wallpapers</string>
+    <string name="section_five">Icon Request</string>
+    <string name="section_six">About the App</string>
+
+    <!-- Wallpapers Activity -->
+    <string name="title_activity_detailed_wallpaper">Wallpaper Viewer</string>
+
+    <!-- Muzei Stuff -->
+    <string name="muzeisets_title">Refresh Source every:</string>
+    <string name="minutes">Minutes</string>
+    <string name="hours">Hours</string>
+    <string name="muzei_info">Note: This Settings may affect the update time of wallpapers info.
+    </string>
+    <string name="share">Share</string>
+
+    <!-- Strings for Dropdown Menu & Requests -->
+    <string name="share_title">Share via</string>
+    <string name="send_title">Send via</string>
+    <string name="rate">Rate this Theme</string>
+    <string name="sendemail">Contact developer</string>
+    <string name="changelog">View the Changelog</string>
+
+    <!-- Sharing theme -->
+    <string name="share_one">Check out this awesome icon pack by</string>
+    <string name="share_two">.\nGet it now at</string>
+
+    <!-- LauncherNotInstalled Dialog -->
+    <string name="lni_content">%1$s is currently not installed on your device.\nWould you like to
+        install it from the Google Play Store?
+    </string>
+    <string name="cm_dialog_content">%1$s is part of CyanogenMod (based) roms.\nWould you like to
+        install it on your device?
+    </string>
+    <string name="gnl_title">Google Now Launcher isn\'t Compatible</string>
+    <string name="gnl_content">Google Now Launcher is NOT compatible with ANY Icon Packs. Please
+        don\'t rate the icon pack badly for this reason. There\'s a workaround that you can try by
+        yourself, but it requires the use of an external app. Would you like to download it?
+    </string>
+    <string name="extraapp">com.momocode.shortcuts</string>
+    <string name="lni_no">No</string>
+    <string name="updateninelauncher">Please update Nine Launcher to the latest version.</string>
+
+    <string name="installed">Installed</string>
+    <string name="noninstalled">Not Installed</string>
+
+    <!-- Changelog Dialog Content -->
+    <string name="changelog_dialog_title">Changelog</string>
+    <string name="great">Great</string>
+
+    <!-- Wallpapers Stuff -->
+    <string name="no_conn_title">No Connection Found</string>
+    <string name="no_conn_content">Wallpapers are stored on a cloud server. Please connect to the
+        internet and try again.
+    </string>
+    <string name="download">Download</string>
+    <string name="wallpaper_downloaded">Wallpaper was downloaded to: %1$s</string>
+    <string name="apply">Apply</string>
+    <string name="save">Save</string>
+    <string name="done">Done!</string>
+    <string name="downloading_wallpaper">Downloading this wallpaper…</string>
+    <string name="setting_wall_title">Setting this wallpaper to your homescreen…</string>
+    <string name="set_as_wall_done">Wallpaper set!</string>
+    <string name="error">Error</string>
+    <string name="json_error_toast">Error while downloading wallpaper info. Try again later.
+    </string>
+    <string name="confirm_apply">Are you sure you want to apply this wallpaper to your homescreen?
+    </string>
+    <string name="yes">Yes</string>
+    <string name="refreshing_walls">Refreshing wallpapers list…</string>
+    <string name="retry">Retry</string>
+
+    <string name="settings_saved">Settings saved</string>
+
+    <!-- License Check Dialog -->
+    <string name="license_failed_title">License Check Failed</string>
+    <string name="license_success_title">License Check Success</string>
+    <string name="exit">Exit App</string>
+
+    <!-- Some texts for Dialogs and Cards -->
+    <string name="close">Close</string>
+    <string name="crop">Crop</string>
+    <string name="advice">Advice</string>
+    <string name="dontshow">Don\'t show again</string>
+    <string name="play">PLAY STORE</string>
+    <string name="web">WEBSITE</string>
+    <string name="gplus">GOOGLE+</string>
+    <string name="ratebtn">RATE</string>
+    <string name="set_as">Crop wallpaper and set as…</string>
+
+    <!-- Requests -->
+    <string name="loading_unthemed_apps">Loading unthemed apps.\nThis may take a while…</string>
+    <string name="building_request">Building Request…</string>
+    <string name="request_advice">If you do not select any app for the icon request, but press the
+        button, it will be automatically generated with all of your apps.\n No need to select each
+        one.
+    </string>
+    <!-- Content in Request mails before the unthemed apps info -->
+    <string name="request_precontent">These apps are not themed. Thanks in advance.\n\n</string>
+
+    <!-- Icon search -->
+    <string name="search_icons">Search icons…</string>
+    <string name="search_x">Search %1$s…</string>
+
+    <string name="building_request_dialog">Building Request Files…</string>
+
+    <string name="choose">Choose</string>
+
+    <!--SETTINGS-->
+    <string name="title_settings">Settings</string>
+
+    <string name="pref_header_ui">UI</string>
+
+    <string name="pref_title_themes">Base theme</string>
+    <string name="pref_summary_themes">Choose between light, dark or auto.</string>
+
+    <string-array name="themes">
+        <item>Light</item>
+        <item>Dark</item>
+        <item>Auto</item>
+    </string-array>
+
+    <string name="pref_title_anims">Enable animations</string>
+
+    <string name="pref_title_advices">Show advices</string>
+    <string name="pref_summary_advices">Advices shown in \'Icon Request\' and \'Apply\' sections, on
+        top of lists.
+    </string>
+
+    <string name="pref_title_navbar">Colored Navigation Bar</string>
+    <string name="pref_summary_navbar">Enable primary colored navigation bar.</string>
+
+    <string name="pref_header_storage">Storage</string>
+
+    <string name="pref_title_cache">Clear app cache and data</string>
+    <string name="pref_summary_cache">This will delete app cache and preferences.\nCurrent cache
+        size: %1$s
+    </string>
+
+    <string name="pref_title_wsl">Wallpapers download location</string>
+    <string name="pref_summary_wsl">Change location to save or download wallpapers.\nCurrent
+        location: %1$s
+    </string>
+
+    <string name="pref_header_launcher_icon">Launcher Icon</string>
+    <string name="pref_title_launcher_icon">Hide launcher icon</string>
+
+    <string name="pref_summary_launcher_icon">When checked, launcher icon will be hidden.</string>
+
+    <string name="clearcache_dialog_title">@string/pref_title_cache</string>
+    <string name="clearcache_dialog_content">Are you sure you want to delete app data, cache and
+        settings? Applied icons won\'t be affected.
+    </string>
+
+    <string name="hideicon_dialog_title">@string/pref_title_launcher_icon</string>
+    <string name="hideicon_dialog_content">Are you sure you want to hide app icon in your launcher?
+        App may crash eventually. Read the FAQs to learn how to make it appear again, before hiding
+        it.
+    </string>
+
+    <string name="launcher_icon_restored">%1$s launcher icon was restored</string>
+    <string name="launcher_icon_no_restored">%1$s launcher icon is already visible</string>
+
+    <!-- Some activities titles -->
+
+    <string name="title_activity_splash">Splash</string>
+    <string name="title_activity_viewer">Viewer</string>
+    <string name="title_activity_faqs">FAQs</string>
+    <string name="title_activity_icons">Icons</string>
+    <string name="title_activity_search">Search</string>
+    <string name="title_activity_picker">@string/app_name</string>
+
+    <!-- Widgets Names -->
+    <string name="iconrestorer_widget_title">IconShowcase Restorer Widget</string>
+    <string name="clock_widget_title">IconShowcase Clock</string>
+
+    <string name="faqs_section">FAQs</string>
+
+</resources>

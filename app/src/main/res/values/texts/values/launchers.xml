@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+
+    <string-array name="launchers">
+        <item>Action Launcher|com.actionlauncher.playstore|#F44336</item>
+        <item>ADW Launcher|org.adw.launcher|#5B9CC8</item>
+        <item>ADW EX Launcher|org.adwfreak.launcher|#5B9CC8</item>
+        <item>Apex Launcher|com.anddoes.launcher|#63CDED</item>
+        <item>Atom Launcher|com.dlto.atom.launcher|#A657BD</item>
+        <item>Aviate Launcher|com.tul.aviate|#FC842D</item>
+        <item>CM Theme Engine|org.cyanogenmod.theme.chooser|#29B6F6</item>
+        <item>Epic Launcher|com.epic.launcher|#2196F4</item>
+        <item>Go Launcher|com.gau.go.launcherex|#95C955</item>
+        <item>Google Now Launcher|com.google.android.launcher|#0097F6</item>
+        <item>Holo Launcher|com.mobint.hololauncher|#65473C</item>
+        <item>Holo Launcher HD|com.mobint.hololauncher.hd|#8BC34A</item>
+        <item>Inspire Launcher|com.bam.android.inspirelauncher|#F96EDF</item>
+        <item>KK Launcher|com.kk.launcher|#FFC107</item>
+        <item>L Launcher|com.l.launcher|#F67C00</item>
+        <item>LG Home|com.lge.launcher2|#00BCD4</item>
+        <item>Lucid Launcher|com.powerpoint45.launcher|#2196F3</item>
+        <item>Mini Launcher|com.jiubang.go.mini.launcher|#4CAF50</item>
+        <item>Nemus Launcher|com.nemustech.launcher|#607DA4</item>
+        <item>Next Launcher|com.gtp.nextlauncher|#5787C5</item>
+        <item>Nine Launcher|com.gridappsinc.launcher.free|#005292</item>
+        <item>Nova Launcher|com.teslacoilsw.launcher|#F83729</item>
+        <item>S Launcher|com.s.launcher|#00BCD4</item>
+        <item>Smart Launcher|ginlemon.flowerfree|#2EB3D9</item>
+        <item>Smart Launcher Pro|ginlemon.flowerpro|#2EB3D9</item>
+        <item>Solo Launcher|home.solo.launcher.free|#BA68C8</item>
+        <item>TSF Launcher|com.tsf.shell|#2196F3</item>
+    </string-array>
+
+</resources>

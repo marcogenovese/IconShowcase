@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <integer name="wallpaper_grid_width">2</integer>
+    <integer name="icon_grid_width">4</integer>
+    <integer name="launchers_grid_width">2</integer>
+    <integer name="requests_grid_width">1</integer>
+    <integer name="request_text_length">18</integer>
+
+</resources>

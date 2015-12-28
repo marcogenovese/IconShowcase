@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="primary">#455a64</color>
+    <color name="primary_dark">#263238</color>
+    <color name="accent">#00b0ff</color>
+    <color name="accent_lighter">#40c4ff</color>
+    <color name="accent_darker">#0091ea</color>
+    <color name="ripple_accent">#8000b0ff</color>
+
+    <color name="semitransparent_white">#80ffffff</color>
+    <color name="semitransparent_black">#33000000</color>
+    <color name="transparent">#00000000</color>
+
+    <color name="card_dark_background">#424242</color>
+    <color name="card_light_background">#fafafa</color>
+
+    <color name="light_grey">#eeeeee</color>
+
+    <color name="website">#263238</color>
+    <color name="google_plus">@color/red</color>
+    <color name="google_plus_community">#0097a7</color>
+    <color name="twitter">#00aced</color>
+    <color name="instagram">#125688</color>
+    <color name="youtube">#bb0000</color>
+    <color name="playstore">#98ca5e</color>
+    <color name="github">#212121</color>
+
+    <color name="material_drawer_selected_text">@color/accent</color>
+    <color name="material_drawer_dark_selected_text">@color/accent</color>
+
+    <!--Light and Dark backgrounds for Splash screen -->
+    <color name="splash_dark_background">#424242</color>
+    <color name="splash_light_background">#fafafa</color>
+    <color name="splash_dark_statusbar">#212121</color>
+    <color name="splash_light_statusbar">#e0e0e0</color>
+
+    <!-- MD Colors -->
+
+    <color name="red">#f44336</color>
+    <color name="pink">#e91e63</color>
+    <color name="purple">#9c27b0</color>
+    <color name="deep_purple">#673ab7</color>
+
+    <color name="indigo">#3f51b5</color>
+    <color name="blue">#2196f3</color>
+    <color name="light_blue">#03a9f4</color>
+    <color name="cyan">#00bcd4</color>
+
+    <color name="teal">#009688</color>
+    <color name="green">#4caf50</color>
+    <color name="light_green">#8bc34a</color>
+    <color name="lime">#cddc39</color>
+
+    <color name="yellow">#ffeb3b</color>
+    <color name="amber">#ffc107</color>
+    <color name="orange">#ff9800</color>
+    <color name="deep_orange">#ff5722</color>
+
+    <color name="brown">#795548</color>
+    <color name="grey">#757575</color>
+    <color name="blue_grey">#607d8b</color>
+    <color name="light_bg">#f5f5f5</color>
+
+</resources>

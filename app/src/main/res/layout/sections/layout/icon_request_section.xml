@@ -1,0 +1,63 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ProgressBar
+            android:id="@+id/requestProgress"
+            style="?android:progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:visibility="visible"/>
+
+        <TextView
+            android:id="@+id/requestAdvice"
+            style="@style/AboutContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="@dimen/cards_elevation"
+            android:text="@string/request_advice"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/appsToRequestList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/requestAdvice"
+            android:layout_gravity="center"
+            android:clipToPadding="false"
+            android:fitsSystemWindows="true"
+            android:gravity="center"
+            android:paddingBottom="@dimen/fab_size_normal"/>
+
+        <com.pluscubed.recyclerfastscroll.RecyclerFastScroller
+            android:id="@+id/rvFastScroller"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="end"/>
+
+    </RelativeLayout>
+
+    <com.melnykov.fab.FloatingActionButton
+        android:id="@+id/requests_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="@dimen/cards_padding"
+        android:layout_marginEnd="@dimen/cards_padding"
+        android:layout_marginRight="@dimen/cards_padding"
+        android:src="@drawable/ic_send"/>
+
+</RelativeLayout>
