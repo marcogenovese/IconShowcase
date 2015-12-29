@@ -1,4 +1,4 @@
-package jahirfiquitiva.apps.iconshowcase.models.wallpapers;
+package jahirfiquitiva.apps.iconshowcase.models;
 
 public class WallpaperItem {
 

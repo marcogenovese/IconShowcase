@@ -2,7 +2,7 @@
  * Copyright (c) 2015. Jahir Fiquitiva. Android Developer. All rights reserved.
  */
 
-package jahirfiquitiva.apps.iconshowcase.models.icons;
+package jahirfiquitiva.apps.iconshowcase.models;
 
 import java.util.ArrayList;
 import java.util.List;

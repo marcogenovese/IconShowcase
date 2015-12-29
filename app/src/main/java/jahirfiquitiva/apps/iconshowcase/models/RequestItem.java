@@ -1,4 +1,4 @@
-package jahirfiquitiva.apps.iconshowcase.models.requests;
+package jahirfiquitiva.apps.iconshowcase.models;
 
 import android.graphics.drawable.Drawable;
 

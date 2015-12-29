@@ -1,4 +1,4 @@
-package jahirfiquitiva.apps.iconshowcase.models.faqs;
+package jahirfiquitiva.apps.iconshowcase.models;
 
 /**
  * Created by JAHIR on 03/07/2015.

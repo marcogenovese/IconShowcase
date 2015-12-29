@@ -2,7 +2,6 @@ package jahirfiquitiva.apps.iconshowcase.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import jahirfiquitiva.apps.iconshowcase.R;
-import jahirfiquitiva.apps.iconshowcase.models.requests.RequestItem;
+import jahirfiquitiva.apps.iconshowcase.models.RequestItem;
 
 public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.RequestsHolder> {
 
@@ -22,9 +21,11 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
         void onClick(int index);
     }
 
-    private final ArrayList<RequestItem> appsList;
+    public static ArrayList<RequestItem> appsList;
     Context context;
     private final ClickListener mCallback;
+
+    AppIconFetchingQueue mAppIconFetchingQueue;
 
     public RequestsAdapter(Context context, ArrayList<RequestItem> appsList, ClickListener callback) {
         this.context = context;
@@ -41,7 +42,6 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
     @Override
     public void onBindViewHolder(RequestsHolder holder, int position) {
         RequestItem requestsItem = appsList.get(position);
-        holder.txtName.setEllipsize(TextUtils.TruncateAt.END);
         holder.txtName.setText(requestsItem.getAppName());
         holder.imgIcon.setImageDrawable(requestsItem.getIcon());
         holder.chkSelected.setChecked(requestsItem.isSelected());
@@ -76,6 +76,32 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
                 if (mCallback != null)
                     mCallback.onClick(index);
             }
+        }
+
+    }
+
+    public void startIconFetching(RecyclerView view) {
+        mAppIconFetchingQueue = new AppIconFetchingQueue(view);
+    }
+
+    public void stopAppIconFetching() {
+        if (mAppIconFetchingQueue != null) {
+            mAppIconFetchingQueue.stop();
+        }
+    }
+
+    public class AppIconFetchingQueue {
+        int mIconsRemaining;
+        RecyclerView mRecyclerView;
+
+        AppIconFetchingQueue(RecyclerView recyclerView) {
+            mRecyclerView = recyclerView;
+            mIconsRemaining = appsList.size();
+        }
+
+        public void stop() {
+            // Avoids calling stop on thread, which will cause crash.
+            mIconsRemaining = 0;
         }
 
     }

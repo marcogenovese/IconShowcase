@@ -11,7 +11,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import jahirfiquitiva.apps.iconshowcase.R;
-import jahirfiquitiva.apps.iconshowcase.models.faqs.FAQsItem;
+import jahirfiquitiva.apps.iconshowcase.models.FAQsItem;
 
 /**
  * Created by JAHIR on 03/07/2015.

@@ -14,7 +14,7 @@ import java.util.Collections;
 import java.util.List;
 
 import jahirfiquitiva.apps.iconshowcase.R;
-import jahirfiquitiva.apps.iconshowcase.models.icons.IconsLists;
+import jahirfiquitiva.apps.iconshowcase.models.IconsLists;
 import jahirfiquitiva.apps.iconshowcase.utilities.Util;
 
 public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {

@@ -23,7 +23,7 @@ import java.util.List;
 
 import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.adapters.FAQsAdapter;
-import jahirfiquitiva.apps.iconshowcase.models.faqs.FAQsItem;
+import jahirfiquitiva.apps.iconshowcase.models.FAQsItem;
 import jahirfiquitiva.apps.iconshowcase.views.DividerItemDecoration;
 
 public class FAQsFragment extends Fragment {

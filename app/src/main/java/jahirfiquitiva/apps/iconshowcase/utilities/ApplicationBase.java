@@ -12,9 +12,9 @@ import com.crashlytics.android.Crashlytics;
 
 import io.fabric.sdk.android.Fabric;
 import jahirfiquitiva.apps.iconshowcase.activities.ShowcaseActivity;
+import jahirfiquitiva.apps.iconshowcase.adapters.RequestsAdapter;
 import jahirfiquitiva.apps.iconshowcase.fragments.WallpapersFragment;
-import jahirfiquitiva.apps.iconshowcase.models.requests.RequestAppsList;
-import jahirfiquitiva.apps.iconshowcase.models.wallpapers.WallpapersList;
+import jahirfiquitiva.apps.iconshowcase.models.WallpapersList;
 import jahirfiquitiva.apps.iconshowcase.tasks.LoadAppsToRequest;
 import jahirfiquitiva.apps.iconshowcase.tasks.LoadIconsLists;
 
@@ -53,7 +53,7 @@ public class ApplicationBase extends Application {
 
     private void loadAppsForRequest() {
         if (mPrefs.getAppsToRequestLoaded()) {
-            RequestAppsList.clearLists();
+            RequestsAdapter.appsList.clear();
             mPrefs.setAppsToRequestLoaded(!mPrefs.getAppsToRequestLoaded());
         }
         LoadAppsToRequest loadApps = new LoadAppsToRequest(this);

@@ -35,8 +35,8 @@ import java.util.zip.ZipException;
 import java.util.zip.ZipOutputStream;
 
 import jahirfiquitiva.apps.iconshowcase.R;
-import jahirfiquitiva.apps.iconshowcase.models.requests.RequestAppsList;
-import jahirfiquitiva.apps.iconshowcase.models.requests.RequestItem;
+import jahirfiquitiva.apps.iconshowcase.adapters.RequestsAdapter;
+import jahirfiquitiva.apps.iconshowcase.models.RequestItem;
 
 /**
  * Created by JAHIR on 1/08/2015.
@@ -90,7 +90,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
         zipFilePath = zipLocation + appNameCorrected
                 + "_" + date.format(new Date()) + ".zip";
 
-        appsListFinal = RequestAppsList.getRequestAppsList();
+        appsListFinal = RequestsAdapter.appsList;
         appsNames.clear();
         appsPackages.clear();
         appsClasses.clear();

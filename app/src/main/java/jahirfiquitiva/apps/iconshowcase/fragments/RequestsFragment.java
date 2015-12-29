@@ -18,10 +18,11 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.melnykov.fab.FloatingActionButton;
 import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 
+import java.util.ArrayList;
+
 import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.adapters.RequestsAdapter;
-import jahirfiquitiva.apps.iconshowcase.models.requests.RequestAppsList;
-import jahirfiquitiva.apps.iconshowcase.models.requests.RequestItem;
+import jahirfiquitiva.apps.iconshowcase.models.RequestItem;
 import jahirfiquitiva.apps.iconshowcase.tasks.ZipFilesToRequest;
 import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.apps.iconshowcase.views.GridSpacingItemDecoration;
@@ -101,6 +102,7 @@ public class RequestsFragment extends Fragment {
             }
         });
 
+        hideStuff();
         setupLayout();
 
         return layout;
@@ -112,41 +114,31 @@ public class RequestsFragment extends Fragment {
         context = getActivity();
     }
 
+    public static void setupRequestAdapter(ArrayList<RequestItem> list) {
+        mAdapter = new RequestsAdapter(context, list, new RequestsAdapter.ClickListener() {
+            @Override
+            public void onClick(int position) {
+                RequestItem requestsItem = RequestsAdapter.appsList.get(position);
+                requestsItem.setSelected(!requestsItem.isSelected());
+                RequestsAdapter.appsList.set(position, requestsItem);
+                mAdapter.notifyItemChanged(position);
+                mAdapter.notifyDataSetChanged();
+            }
+        });
+        setupLayout();
+    }
+
     public static void setupLayout() {
-        if (RequestAppsList.getRequestAppsList() != null && RequestAppsList.getRequestAppsList().size() > 0) {
-            context.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mAdapter = new RequestsAdapter(context, RequestAppsList.getRequestAppsList(), new RequestsAdapter.ClickListener() {
-
-                        @Override
-                        public void onClick(int position) {
-                            RequestItem requestsItem = RequestAppsList.getRequestAppsList().get(position);
-                            requestsItem.setSelected(!requestsItem.isSelected());
-                            RequestAppsList.getRequestAppsList().set(position, requestsItem);
-                            mAdapter.notifyItemChanged(position);
-                            mAdapter.notifyDataSetChanged();
-                        }
-
-                    });
-
-                    mRecyclerView.setAdapter(mAdapter);
-                    mRecyclerView.setLayoutManager(new GridLayoutManager(context, columnsNumber));
-                    mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(columnsNumber, gridSpacing, withBorders));
-                    mRecyclerView.setHasFixedSize(true);
-                    fab.attachToRecyclerView(mRecyclerView);
-                    showStuff();
-                }
-            });
-        } else {
-            context.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if (mAdapter != null) {
-                        hideStuff();
-                    }
-                }
-            });
+        if (layout != null) {
+            if (mAdapter != null) {
+                mRecyclerView.setAdapter(mAdapter);
+                mRecyclerView.setLayoutManager(new GridLayoutManager(context, columnsNumber));
+                mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(columnsNumber, gridSpacing, withBorders));
+                mRecyclerView.setHasFixedSize(true);
+                mAdapter.startIconFetching(mRecyclerView);
+                fab.attachToRecyclerView(mRecyclerView);
+                showStuff();
+            }
         }
     }
 
