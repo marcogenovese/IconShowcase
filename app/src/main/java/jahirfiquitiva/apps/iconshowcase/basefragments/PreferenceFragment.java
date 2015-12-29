@@ -236,11 +236,11 @@ public abstract class PreferenceFragment extends Fragment {
         if (mList != null) {
             return;
         }
-        View root = getView();
-        if (root == null) {
+        View layout = getView();
+        if (layout == null) {
             throw new IllegalStateException("Content view not yet created");
         }
-        View rawListView = root.findViewById(android.R.id.list);
+        View rawListView = layout.findViewById(android.R.id.list);
         if (rawListView == null) {
             throw new RuntimeException("Your content must have a ListView whose id attribute is 'android.R.id.list'");
         }

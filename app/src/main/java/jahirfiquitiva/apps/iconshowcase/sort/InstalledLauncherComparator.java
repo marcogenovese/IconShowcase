@@ -11,18 +11,18 @@ import jahirfiquitiva.apps.iconshowcase.fragments.ApplyFragment;
  */
 public class InstalledLauncherComparator implements Comparator<ApplyFragment.Launcher> {
 
-    private final Context mContext;
+    private final Context context;
 
     public InstalledLauncherComparator(Context context) {
-        mContext = context;
+        this.context = context;
     }
 
     @Override
     public int compare(ApplyFragment.Launcher lhs, ApplyFragment.Launcher rhs) {
-        if (!lhs.isInstalled(mContext) && rhs.isInstalled(mContext)) {
+        if (!lhs.isInstalled(context) && rhs.isInstalled(context)) {
             // Left is not installed, right is, push left down towards the bottom.
             return 1;
-        } else if (lhs.isInstalled(mContext) && !rhs.isInstalled(mContext)) {
+        } else if (lhs.isInstalled(context) && !rhs.isInstalled(context)) {
             // Left is installed, right isn't, pull left up towards the top.
             return -1;
         } else {

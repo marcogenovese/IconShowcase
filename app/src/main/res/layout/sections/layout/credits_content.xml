@@ -21,18 +21,6 @@
 
     <include
         android:id="@+id/supportDev"
-        layout="@layout/card_support_development"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"/>
-
-    <include
-        android:id="@+id/specialThanks"
-        layout="@layout/card_special_thanks"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"/>
-
-    <include layout="@layout/card_libraries"/>
+        layout="@layout/card_support_development"/>
 
 </LinearLayout>

@@ -16,7 +16,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
 
 import com.afollestad.assent.Assent;
 import com.afollestad.assent.AssentCallback;
@@ -41,7 +40,6 @@ import jahirfiquitiva.apps.iconshowcase.dialogs.FolderSelectorDialog;
 import jahirfiquitiva.apps.iconshowcase.fragments.SettingsFragment;
 import jahirfiquitiva.apps.iconshowcase.fragments.WallpapersFragment;
 import jahirfiquitiva.apps.iconshowcase.models.wallpapers.WallpapersList;
-import jahirfiquitiva.apps.iconshowcase.tasks.LoadAppsToRequest;
 import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.apps.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.apps.iconshowcase.utilities.Util;
@@ -52,8 +50,7 @@ public class ShowcaseActivity extends AppCompatActivity
     private static final boolean WITH_LICENSE_CHECKER = false;
     private static final String MARKET_URL = "https://play.google.com/store/apps/details?id=";
 
-    private String thaApp, thaPreviews, thaApply, thaWalls, thaRequest, thaFAQs, thaCredits, thaSettings;
-    private FrameLayout layout;
+    private String thaApp, thaHome, thaPreviews, thaApply, thaWalls, thaRequest, thaFAQs, thaCredits, thaSettings;
 
     private static AppCompatActivity context;
 
@@ -69,7 +66,6 @@ public class ShowcaseActivity extends AppCompatActivity
     public static Drawer drawer;
     public AccountHeader drawerHeader;
 
-    private LoadAppsToRequest loadApps;
     private WallpapersFragment.DownloadJSON downloadJSON;
 
     @Override
@@ -96,8 +92,6 @@ public class ShowcaseActivity extends AppCompatActivity
 
         setContentView(R.layout.showcase_activity);
 
-        layout = (FrameLayout) findViewById(R.id.main);
-
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //noinspection ConstantConditions
@@ -116,7 +110,7 @@ public class ShowcaseActivity extends AppCompatActivity
         }
 
         thaApp = getResources().getString(R.string.app_name);
-        String thaHome = getResources().getString(R.string.section_one);
+        thaHome = getResources().getString(R.string.section_one);
         thaPreviews = getResources().getString(R.string.section_two);
         thaApply = getResources().getString(R.string.section_three);
         thaWalls = getResources().getString(R.string.section_four);
@@ -128,82 +122,7 @@ public class ShowcaseActivity extends AppCompatActivity
         enable_features = mPrefs.isFeaturesEnabled();
         firstRun = mPrefs.isFirstRun();
 
-        drawerHeader = new AccountHeaderBuilder()
-                .withActivity(this)
-                .withHeaderBackground(R.drawable.header)
-                .withSelectionFirstLine(getResources().getString(R.string.app_long_name))
-                .withSelectionSecondLine("v " + Util.getAppVersion(this))
-                .withProfileImagesClickable(false)
-                .withResetDrawerOnProfileListClick(false)
-                .withSelectionListEnabled(false)
-                .withSelectionListEnabledForSingleProfile(false)
-                .withSavedInstance(savedInstanceState)
-                .build();
-
-        drawer = new DrawerBuilder()
-                .withActivity(this)
-                .withToolbar(toolbar)
-                .withAccountHeader(drawerHeader)
-                .withFireOnInitialOnClick(true)
-                .addDrawerItems(
-                        new PrimaryDrawerItem().withName(thaHome).withIcon(GoogleMaterial.Icon.gmd_home).withIdentifier(1),
-                        new PrimaryDrawerItem().withName(thaPreviews).withIcon(GoogleMaterial.Icon.gmd_palette).withIdentifier(2),
-                        new PrimaryDrawerItem().withName(thaApply).withIcon(GoogleMaterial.Icon.gmd_open_in_browser).withIdentifier(5),
-                        new PrimaryDrawerItem().withName(thaFAQs).withIcon(GoogleMaterial.Icon.gmd_help).withIdentifier(6),
-                        new DividerDrawerItem(),
-                        new SecondaryDrawerItem().withName(thaCredits).withIdentifier(7),
-                        new SecondaryDrawerItem().withName(thaSettings).withIdentifier(8)
-                )
-                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                    @Override
-                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        if (drawerItem != null) {
-                            switch (drawerItem.getIdentifier()) {
-                                case 1:
-                                    switchFragment(1, thaApp, "Main", context);
-                                    break;
-                                case 2:
-                                    switchFragment(2, thaPreviews, "Previews", context);
-                                    break;
-                                case 3:
-                                    switchFragment(3, thaWalls, "Wallpapers", context);
-                                    break;
-                                case 4:
-                                    if (!permissionGranted) {
-                                        drawer.closeDrawer();
-                                        Assent.requestPermissions(new AssentCallback() {
-                                            @Override
-                                            public void onPermissionResult(PermissionResultSet result) {
-                                                permissionGranted = result.isGranted
-                                                        (Assent.WRITE_EXTERNAL_STORAGE);
-                                            }
-                                        }, 69, Assent.WRITE_EXTERNAL_STORAGE);
-                                        if (permissionGranted) {
-                                            switchFragment(4, thaRequest, "Requests",
-                                                    context);
-                                        }
-                                    } else {
-                                        switchFragment(4, thaRequest, "Requests", context);
-                                    }
-                                    break;
-                                case 5:
-                                    switchFragment(5, thaApply, "Apply", context);
-                                    break;
-                                case 6:
-                                    switchFragment(6, thaFAQs, "FAQs", context);
-                                    break;
-                                case 7:
-                                    switchFragment(7, thaCredits, "Credits", context);
-                                    break;
-                                case 8:
-                                    switchFragment(8, thaSettings, "Settings", context);
-                            }
-                        }
-                        return false;
-                    }
-                })
-                .withSavedInstance(savedInstanceState)
-                .build();
+        setupDrawer(false, toolbar, savedInstanceState);
 
         runLicenseChecker();
 
@@ -519,6 +438,159 @@ public class ShowcaseActivity extends AppCompatActivity
     public void onFolderSelection(File folder) {
         mPrefs.setDownloadsFolder(folder.getAbsolutePath());
         SettingsFragment.changeValues(getApplicationContext());
+    }
+
+    public void setupDrawer(boolean withHeader, Toolbar toolbar, Bundle savedInstanceState) {
+        if (withHeader) {
+            drawerHeader = new AccountHeaderBuilder()
+                    .withActivity(this)
+                    .withHeaderBackground(R.drawable.header)
+                    .withSelectionFirstLine(getResources().getString(R.string.app_long_name))
+                    .withSelectionSecondLine("v " + Util.getAppVersion(this))
+                    .withProfileImagesClickable(false)
+                    .withResetDrawerOnProfileListClick(false)
+                    .withSelectionListEnabled(false)
+                    .withSelectionListEnabledForSingleProfile(false)
+                    .withSavedInstance(savedInstanceState)
+                    .build();
+
+            drawer = new DrawerBuilder()
+                    .withActivity(this)
+                    .withToolbar(toolbar)
+                    .withAccountHeader(drawerHeader)
+                    .withFireOnInitialOnClick(true)
+                    .addDrawerItems(
+                            new PrimaryDrawerItem().withName(thaHome).withIcon(GoogleMaterial.Icon.gmd_home).withIdentifier(1),
+                            new PrimaryDrawerItem().withName(thaPreviews).withIcon(GoogleMaterial.Icon.gmd_palette).withIdentifier(2),
+                            new PrimaryDrawerItem().withName(thaApply).withIcon(GoogleMaterial.Icon.gmd_open_in_browser).withIdentifier(5),
+                            new PrimaryDrawerItem().withName(thaFAQs).withIcon(GoogleMaterial.Icon.gmd_help).withIdentifier(6),
+                            new DividerDrawerItem(),
+                            new SecondaryDrawerItem().withName(thaCredits).withIdentifier(7),
+                            new SecondaryDrawerItem().withName(thaCredits).withIdentifier(8),
+                            new SecondaryDrawerItem().withName(thaSettings).withIdentifier(9)
+                    )
+                    .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                        @Override
+                        public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                            if (drawerItem != null) {
+                                switch (drawerItem.getIdentifier()) {
+                                    case 1:
+                                        switchFragment(1, thaApp, "Main", context);
+                                        break;
+                                    case 2:
+                                        switchFragment(2, thaPreviews, "Previews", context);
+                                        break;
+                                    case 3:
+                                        switchFragment(3, thaWalls, "Wallpapers", context);
+                                        break;
+                                    case 4:
+                                        if (!permissionGranted) {
+                                            drawer.closeDrawer();
+                                            Assent.requestPermissions(new AssentCallback() {
+                                                @Override
+                                                public void onPermissionResult(PermissionResultSet result) {
+                                                    permissionGranted = result.isGranted
+                                                            (Assent.WRITE_EXTERNAL_STORAGE);
+                                                }
+                                            }, 69, Assent.WRITE_EXTERNAL_STORAGE);
+                                            if (permissionGranted) {
+                                                switchFragment(4, thaRequest, "Requests",
+                                                        context);
+                                            }
+                                        } else {
+                                            switchFragment(4, thaRequest, "Requests", context);
+                                        }
+                                        break;
+                                    case 5:
+                                        switchFragment(5, thaApply, "Apply", context);
+                                        break;
+                                    case 6:
+                                        switchFragment(6, thaFAQs, "FAQs", context);
+                                        break;
+                                    case 7:
+                                        switchFragment(7, thaCredits, "Credits", context);
+                                        break;
+                                    case 8:
+                                        switchFragment(8, thaCredits, "AltCredits", context);
+                                        break;
+                                    case 9:
+                                        switchFragment(9, thaSettings, "Settings", context);
+                                }
+                            }
+                            return false;
+                        }
+                    })
+                    .withSavedInstance(savedInstanceState)
+                    .build();
+        } else {
+            drawer = new DrawerBuilder()
+                    .withActivity(this)
+                    .withToolbar(toolbar)
+                    .withFireOnInitialOnClick(true)
+                    .addDrawerItems(
+                            new PrimaryDrawerItem().withName(thaHome).withIcon(GoogleMaterial.Icon.gmd_home).withIdentifier(1),
+                            new PrimaryDrawerItem().withName(thaPreviews).withIcon(GoogleMaterial.Icon.gmd_palette).withIdentifier(2),
+                            new PrimaryDrawerItem().withName(thaApply).withIcon(GoogleMaterial.Icon.gmd_open_in_browser).withIdentifier(5),
+                            new PrimaryDrawerItem().withName(thaFAQs).withIcon(GoogleMaterial.Icon.gmd_help).withIdentifier(6),
+                            new DividerDrawerItem(),
+                            new SecondaryDrawerItem().withName(thaCredits).withIdentifier(7),
+                            new SecondaryDrawerItem().withName(thaCredits).withIdentifier(8),
+                            new SecondaryDrawerItem().withName(thaSettings).withIdentifier(9)
+                    )
+                    .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                        @Override
+                        public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                            if (drawerItem != null) {
+                                switch (drawerItem.getIdentifier()) {
+                                    case 1:
+                                        switchFragment(1, thaApp, "Main", context);
+                                        break;
+                                    case 2:
+                                        switchFragment(2, thaPreviews, "Previews", context);
+                                        break;
+                                    case 3:
+                                        switchFragment(3, thaWalls, "Wallpapers", context);
+                                        break;
+                                    case 4:
+                                        if (!permissionGranted) {
+                                            drawer.closeDrawer();
+                                            Assent.requestPermissions(new AssentCallback() {
+                                                @Override
+                                                public void onPermissionResult(PermissionResultSet result) {
+                                                    permissionGranted = result.isGranted
+                                                            (Assent.WRITE_EXTERNAL_STORAGE);
+                                                }
+                                            }, 69, Assent.WRITE_EXTERNAL_STORAGE);
+                                            if (permissionGranted) {
+                                                switchFragment(4, thaRequest, "Requests",
+                                                        context);
+                                            }
+                                        } else {
+                                            switchFragment(4, thaRequest, "Requests", context);
+                                        }
+                                        break;
+                                    case 5:
+                                        switchFragment(5, thaApply, "Apply", context);
+                                        break;
+                                    case 6:
+                                        switchFragment(6, thaFAQs, "FAQs", context);
+                                        break;
+                                    case 7:
+                                        switchFragment(7, thaCredits, "Credits", context);
+                                        break;
+                                    case 8:
+                                        switchFragment(8, thaCredits, "AltCredits", context);
+                                        break;
+                                    case 9:
+                                        switchFragment(9, thaSettings, "Settings", context);
+                                }
+                            }
+                            return false;
+                        }
+                    })
+                    .withSavedInstance(savedInstanceState)
+                    .build();
+        }
     }
 
 }

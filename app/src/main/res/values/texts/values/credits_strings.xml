@@ -3,6 +3,7 @@
 
     <string name="dashboard_author">Dashboard App Developer</string>
     <string name="dashboard_author_name">Jahir Fiquitiva</string>
+    <string name="dashboard_author_copyright">From Colombia to the world. Copyright© 2015~2016.</string>
     <string name="dashboard_author_link">http://www.jahirfiquitiva.net/</string>
     <string name="dashboard_author_gplus">https://www.google.com/+JahirFiquitivaJDev</string>
 
@@ -17,6 +18,7 @@
     <string name="youtube">YouTube</string>
     <string name="twitter">Twitter</string>
     <string name="play_store">Google Play Store</string>
+    <string name="facebook">Facebook</string>
 
     <string name="implemented_libraries">Implemented libraries</string>
 
@@ -57,6 +59,7 @@
     <string name="rob_beane">Rob Beane</string>
     <string name="dani_mahardika">Dani Mahardika</string>
     <string name="tim_bremer">Tim Bremer</string>
+    <string name="steve_albright">Steve Albright</string>
 
     <string name="support_development">Support development</string>
     <string name="donate">Donate</string>
@@ -67,5 +70,47 @@
     <string name="join_community_summary">If you need help or have questions, the IconShowcase
         community on Google Plus is a good place to go.
     </string>
+
+    <string-array name="thanks_names">
+        <item>@string/materialdialogs_author</item>
+        <item>@string/materialdrawer_author</item>
+        <item>@string/rob_beane</item>
+        <item>@string/dani_mahardika</item>
+        <item>@string/tim_bremer</item>
+        <item>@string/steve_albright</item>
+    </string-array>
+
+    <string-array name="thanks_links">
+        <item>http://www.aidanfollestad.com/</item>
+        <item>http://</item>
+        <item>http://</item>
+        <item>http://</item>
+        <item>http://</item>
+        <item>http://</item>
+    </string-array>
+
+    <string-array name="libs_names">
+        <item>@string/assent_name</item>
+        <item>@string/materialdialogs_name</item>
+        <item>@string/materialdrawer_name</item>
+        <item>@string/materialize_name</item>
+        <item>@string/iconics_name</item>
+        <item>@string/glide_name</item>
+        <item>@string/fab_name</item>
+        <item>@string/rv_animators_name</item>
+        <item>@string/rv_fast_scroller_name</item>
+    </string-array>
+
+    <string-array name="libs_links">
+        <item>@string/assent_web</item>
+        <item>@string/materialdialogs_web</item>
+        <item>@string/materialdrawer_web</item>
+        <item>@string/materialize_web</item>
+        <item>@string/iconics_web</item>
+        <item>@string/glide_web</item>
+        <item>@string/fab_web</item>
+        <item>@string/rv_animators_web</item>
+        <item>@string/rv_fast_scroller_web</item>
+    </string-array>
 
 </resources>

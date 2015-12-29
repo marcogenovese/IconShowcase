@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     android:id="@+id/requestCard"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?android:attr/selectableItemBackground"
     android:clickable="true"
-    android:descendantFocusability="blocksDescendants">
+    android:descendantFocusability="blocksDescendants"
+    android:focusable="true"
+    android:foreground="?selectableItemBackground"
+    android:gravity="center_vertical">
 
     <ImageView
         android:id="@+id/imgIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
         android:adjustViewBounds="true"
         android:maxHeight="64dp"
         android:maxWidth="64dp"
@@ -23,26 +24,21 @@
 
     <TextView
         android:id="@+id/txtName"
-        android:layout_width="wrap_content"
+        android:layout_width="0dip"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toEndOf="@+id/imgIcon"
-        android:layout_toRightOf="@+id/imgIcon"
+        android:layout_weight="1"
         android:ellipsize="end"
-        android:maxLength="@integer/request_text_length"
         android:maxLines="1"
         android:padding="@dimen/lists_padding"
+        android:singleLine="true"
         android:textSize="@dimen/abc_text_size_large_material"
-        tools:text="App Name"/>
+        tools:text="App Name And Some Other Texts Im testing right now"/>
 
     <CheckBox
         android:id="@+id/chkSelected"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
         android:clickable="false"
         android:padding="@dimen/lists_padding"/>
 
-</RelativeLayout>
+</LinearLayout>

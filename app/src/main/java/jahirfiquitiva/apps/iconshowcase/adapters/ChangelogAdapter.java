@@ -12,19 +12,19 @@ import jahirfiquitiva.apps.iconshowcase.R;
 
 public class ChangelogAdapter extends BaseAdapter {
 
-    private final Context mContext;
+    private final Context context;
     private final String[][] mChangelog;
 
-    public ChangelogAdapter(Context context, int rootArray) {
+    public ChangelogAdapter(Context context, int changelogArray) {
         // Save the context
-        mContext = context;
+        this.context = context;
         // Populate the two-dimensional array
-        TypedArray typedArray = mContext.getResources().obtainTypedArray(rootArray);
+        TypedArray typedArray = context.getResources().obtainTypedArray(changelogArray);
         mChangelog = new String[typedArray.length()][];
         for (int i = 0; i < typedArray.length(); i++) {
             int id = typedArray.getResourceId(i, 0);
             if (id > 0) {
-                mChangelog[i] = mContext.getResources().getStringArray(id);
+                mChangelog[i] = context.getResources().getStringArray(id);
             }
         }
         typedArray.recycle();
@@ -48,7 +48,7 @@ public class ChangelogAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            LayoutInflater inflater = LayoutInflater.from(mContext);
+            LayoutInflater inflater = LayoutInflater.from(context);
             convertView = inflater.inflate(R.layout.changelog_content, parent, false);
         }
         TextView versionName = (TextView) convertView.findViewById(R.id.changelog_versionname);

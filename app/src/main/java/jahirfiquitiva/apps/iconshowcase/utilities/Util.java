@@ -66,12 +66,12 @@ public class Util {
         }
     }
 
-    public static void launchActivity(Context context, Class className) {
+    public static void openActivity(Context context, Class className) {
         Intent intent = new Intent(context, className);
         context.startActivity(intent);
     }
 
-    public static void launchLink(Context context, String link) {
+    public static void openLink(Context context, String link) {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);

@@ -10,12 +10,12 @@ public class RequestItem {
     Drawable iconDrawable;
     boolean selected = false;
 
-    public RequestItem(String appName, String packageName, String className, Drawable iconInt) {
+    public RequestItem(String appName, String packageName, String className, Drawable iconDrawable) {
         super();
         this.appName = appName;
         this.packageName = packageName;
         this.className = className;
-        this.iconDrawable = iconInt;
+        this.iconDrawable = iconDrawable;
     }
 
     public String getAppName() {

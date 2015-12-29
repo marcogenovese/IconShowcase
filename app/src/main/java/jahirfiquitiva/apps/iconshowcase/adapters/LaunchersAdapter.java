@@ -24,13 +24,13 @@ public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.Laun
         void onClick(int index);
     }
 
-    private final Context mContext;
+    private final Context context;
     private final List<ApplyFragment.Launcher> launchers;
     private final ClickListener mCallback;
     private View view;
 
     public LaunchersAdapter(Context context, List<ApplyFragment.Launcher> launchers, ClickListener callback) {
-        this.mContext = context;
+        this.context = context;
         this.launchers = launchers;
         this.mCallback = callback;
     }
@@ -44,19 +44,19 @@ public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.Laun
     @Override
     public void onBindViewHolder(LauncherHolder holder, int position) {
         // Turns Launcher name "Something Pro" to "l_something_pro"
-        int iconResource = mContext.getResources().getIdentifier(
+        int iconResource = context.getResources().getIdentifier(
                 "ic_" + launchers.get(position).name.toLowerCase().replace(" ", "_"),
                 "drawable",
-                mContext.getPackageName()
+                context.getPackageName()
         );
 
-        final int light = mContext.getResources().getColor(android.R.color.white);
-        final int grey = mContext.getResources().getColor(R.color.grey);
+        final int light = context.getResources().getColor(android.R.color.white);
+        final int grey = context.getResources().getColor(R.color.grey);
 
         holder.icon.setImageResource(iconResource);
         holder.launcherName.setText(launchers.get(position).name.toUpperCase(Locale.getDefault()));
 
-        if (launchers.get(position).isInstalled(mContext)) {
+        if (launchers.get(position).isInstalled(context)) {
             holder.icon.setColorFilter(null);
             holder.launcherName.setBackgroundColor(launchers.get(position).launcherColor);
             holder.launcherName.setTextColor(light);
