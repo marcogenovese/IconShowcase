@@ -16,7 +16,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -73,9 +72,6 @@ public class ApplyFragment extends Fragment {
 
         mPrefs = new Preferences(getActivity());
 
-        TextView advice = (TextView) layout.findViewById(R.id.applyAdvice);
-        advice.setVisibility(mPrefs.getHiddenAdvices() ? View.GONE : View.VISIBLE);
-
         gridSpacing = getResources().getDimensionPixelSize(R.dimen.launchers_grid_padding);
         columnsNumber = getResources().getInteger(R.integer.launchers_grid_width);
         withBorders = true;
@@ -83,7 +79,6 @@ public class ApplyFragment extends Fragment {
         applyLayout = (RelativeLayout) layout.findViewById(R.id.applyLayout);
         recyclerView = (RecyclerView) layout.findViewById(R.id.launchersList);
         recyclerFastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
-
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), columnsNumber));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(columnsNumber, gridSpacing, withBorders));

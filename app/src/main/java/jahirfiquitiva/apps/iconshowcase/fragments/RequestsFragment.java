@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.melnykov.fab.FloatingActionButton;
@@ -29,13 +28,13 @@ import jahirfiquitiva.apps.iconshowcase.views.GridSpacingItemDecoration;
 public class RequestsFragment extends Fragment {
 
     public static RecyclerFastScroller fastScroller;
-    public ProgressBar progressBar;
-    public  RecyclerView mRecyclerView;
-    public FloatingActionButton fab;
+    public static ProgressBar progressBar;
+    public static RecyclerView mRecyclerView;
+    public static FloatingActionButton fab;
 
     static int columnsNumber, gridSpacing;
     static boolean withBorders;
-    public ViewGroup layout;
+    public static ViewGroup layout;
 
     private Preferences mPrefs;
 
@@ -43,6 +42,10 @@ public class RequestsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        gridSpacing = getResources().getDimensionPixelSize(R.dimen.lists_padding);
+        columnsNumber = getResources().getInteger(R.integer.requests_grid_width);
+        withBorders = true;
 
         layout = (ViewGroup) inflater.inflate(R.layout.icon_request_section, container, false);
 
@@ -63,28 +66,21 @@ public class RequestsFragment extends Fragment {
             e.printStackTrace();
         }
 
+        fab = (FloatingActionButton) layout.findViewById(R.id.requests_btn);
+        progressBar = (ProgressBar) layout.findViewById(R.id.requestProgress);
+        mRecyclerView = (RecyclerView) layout.findViewById(R.id.appsToRequestList);
+        mRecyclerView.setLayoutManager(new GridLayoutManager(context, columnsNumber));
+        mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(columnsNumber, gridSpacing, withBorders));
+        fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
+        hideStuff();
+
         mPrefs = new Preferences(getActivity());
 
-        TextView advice = (TextView) layout.findViewById(R.id.requestAdvice);
-        advice.setVisibility(mPrefs.getHiddenAdvices() ? View.GONE : View.VISIBLE);
-
-        gridSpacing = getResources().getDimensionPixelSize(R.dimen.lists_padding);
-        columnsNumber = getResources().getInteger(R.integer.requests_grid_width);
-        withBorders = true;
-
-        fab = (FloatingActionButton) layout.findViewById(R.id.requests_btn);
+        fastScroller.setHideDelay(1000);
         fab.setColorNormal(getResources().getColor(R.color.accent));
         fab.setColorPressed(getResources().getColor(R.color.accent));
         fab.setColorRipple(getResources().getColor(R.color.semitransparent_white));
         fab.hide(true);
-
-        progressBar = (ProgressBar) layout.findViewById(R.id.requestProgress);
-        mRecyclerView = (RecyclerView) layout.findViewById(R.id.appsToRequestList);
-        mRecyclerView.setVisibility(View.GONE);
-        fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
-        fastScroller.setHideDelay(1000);
-        fastScroller.setVisibility(View.GONE);
-
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,14 +90,11 @@ public class RequestsFragment extends Fragment {
                         .cancelable(false)
                         .show();
 
-
                 new ZipFilesToRequest(getActivity(), dialog,
-                        ((RequestsAdapter)mRecyclerView.getAdapter()).appsList).execute();
+                        ((RequestsAdapter) mRecyclerView.getAdapter()).appsList).execute();
 
             }
         });
-
-        hideStuff();
 
         return layout;
     }
@@ -109,14 +102,7 @@ public class RequestsFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        RequestsAdapter requestsAdapter = new RequestsAdapter(getActivity(), ApplicationBase.allAppsToRequest);
-        mRecyclerView.setAdapter(requestsAdapter);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(context, columnsNumber));
-        mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(columnsNumber, gridSpacing, withBorders));
-        mRecyclerView.setHasFixedSize(true);
-        requestsAdapter.startIconFetching(mRecyclerView);
-        fab.attachToRecyclerView(mRecyclerView);
-        showStuff();
+        setupContent();
     }
 
     @Override
@@ -126,14 +112,27 @@ public class RequestsFragment extends Fragment {
 
     }
 
-    private void showStuff() {
+    public static void setupContent() {
+        if (layout != null) {
+            if (ApplicationBase.allAppsToRequest != null && ApplicationBase.allAppsToRequest.size() > 0) {
+                RequestsAdapter requestsAdapter = new RequestsAdapter(context, ApplicationBase.allAppsToRequest);
+                mRecyclerView.setHasFixedSize(true);
+                mRecyclerView.setAdapter(requestsAdapter);
+                requestsAdapter.startIconFetching(mRecyclerView);
+                fab.attachToRecyclerView(mRecyclerView);
+                showStuff();
+            }
+        }
+    }
+
+    private static void showStuff() {
         fab.show(true);
         if (progressBar.getVisibility() != View.GONE) {
             progressBar.setVisibility(View.GONE);
         }
         mRecyclerView.setVisibility(View.VISIBLE);
-        //fastScroller.setVisibility(View.VISIBLE);
-        //fastScroller.setRecyclerView(mRecyclerView);
+        fastScroller.setVisibility(View.VISIBLE);
+        fastScroller.setRecyclerView(mRecyclerView);
     }
 
     private void hideStuff() {
@@ -142,7 +141,7 @@ public class RequestsFragment extends Fragment {
             progressBar.setVisibility(View.VISIBLE);
         }
         mRecyclerView.setVisibility(View.GONE);
-        //fastScroller.setVisibility(View.GONE);
+        fastScroller.setVisibility(View.GONE);
     }
 
     @Override

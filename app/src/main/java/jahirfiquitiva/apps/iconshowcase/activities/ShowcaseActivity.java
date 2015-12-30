@@ -1,7 +1,6 @@
 package jahirfiquitiva.apps.iconshowcase.activities;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -54,7 +53,6 @@ public class ShowcaseActivity extends AppCompatActivity
     private String thaApp, thaHome, thaPreviews, thaApply, thaWalls, thaRequest, thaFAQs, thaCredits, thaSettings;
 
     private static AppCompatActivity context;
-    private static Context actContext;
 
     public String version;
 
@@ -88,12 +86,25 @@ public class ShowcaseActivity extends AppCompatActivity
         }
 
         super.onCreate(savedInstanceState);
+
+        thaApp = getResources().getString(R.string.app_name);
+        thaHome = getResources().getString(R.string.section_one);
+        thaPreviews = getResources().getString(R.string.section_two);
+        thaApply = getResources().getString(R.string.section_three);
+        thaWalls = getResources().getString(R.string.section_four);
+        thaRequest = getResources().getString(R.string.section_five);
+        thaCredits = getResources().getString(R.string.section_six);
+        thaSettings = getResources().getString(R.string.title_settings);
+        thaFAQs = getResources().getString(R.string.faqs_section);
+
         mPrefs = new Preferences(ShowcaseActivity.this);
 
         context = this;
-        actContext = this;
 
         setContentView(R.layout.showcase_activity);
+
+        enable_features = mPrefs.isFeaturesEnabled();
+        firstRun = mPrefs.isFirstRun();
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -112,26 +123,13 @@ public class ShowcaseActivity extends AppCompatActivity
             }, 69, Assent.WRITE_EXTERNAL_STORAGE);
         }
 
-        thaApp = getResources().getString(R.string.app_name);
-        thaHome = getResources().getString(R.string.section_one);
-        thaPreviews = getResources().getString(R.string.section_two);
-        thaApply = getResources().getString(R.string.section_three);
-        thaWalls = getResources().getString(R.string.section_four);
-        thaRequest = getResources().getString(R.string.section_five);
-        thaCredits = getResources().getString(R.string.section_six);
-        thaSettings = getResources().getString(R.string.title_settings);
-        thaFAQs = getResources().getString(R.string.faqs_section);
-
-        enable_features = mPrefs.isFeaturesEnabled();
-        firstRun = mPrefs.isFirstRun();
-
         setupDrawer(false, toolbar, savedInstanceState);
 
         runLicenseChecker();
 
         if (savedInstanceState == null) {
             if (mPrefs.getSettingsModified()) {
-                switchFragment(8, thaSettings, "Settings", context);
+                switchFragment(9, thaSettings, "Settings", context);
             } else {
                 currentItem = -1;
                 drawer.setSelection(1);
@@ -208,7 +206,6 @@ public class ShowcaseActivity extends AppCompatActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
         if (settingsDialog != null) {
             settingsDialog.dismiss();
             settingsDialog = null;
@@ -519,6 +516,7 @@ public class ShowcaseActivity extends AppCompatActivity
                                         break;
                                     case 9:
                                         switchFragment(9, thaSettings, "Settings", context);
+                                        break;
                                 }
                             }
                             return false;
@@ -587,6 +585,7 @@ public class ShowcaseActivity extends AppCompatActivity
                                         break;
                                     case 9:
                                         switchFragment(9, thaSettings, "Settings", context);
+                                        break;
                                 }
                             }
                             return false;

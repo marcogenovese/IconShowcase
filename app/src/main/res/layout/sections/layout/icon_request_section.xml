@@ -17,21 +17,10 @@
             android:gravity="center"
             android:visibility="visible"/>
 
-        <TextView
-            android:id="@+id/requestAdvice"
-            style="@style/AboutContent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:elevation="@dimen/cards_elevation"
-            android:text="@string/request_advice"
-            android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/appsToRequestList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/requestAdvice"
             android:layout_gravity="center"
             android:clipToPadding="false"
             android:fitsSystemWindows="true"

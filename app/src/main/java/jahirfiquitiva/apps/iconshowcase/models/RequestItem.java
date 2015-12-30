@@ -60,6 +60,7 @@ public class RequestItem {
 
     /**
      * Used to compare object to object
+     *
      * @param other
      * @return
      */

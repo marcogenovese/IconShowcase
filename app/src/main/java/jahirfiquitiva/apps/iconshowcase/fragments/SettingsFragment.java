@@ -140,14 +140,6 @@ public class SettingsFragment extends PreferenceFragment {
             }
         });
 
-        CheckBoxPreference advices = (CheckBoxPreference) getPreferenceManager().findPreference("advices");
-        advices.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                mPrefs.setHiddenAdvices(!newValue.toString().equals("true"));
-                return true;
-            }
-        });
-
         data = findPreference("clearData");
         data.setSummary(getResources().getString(R.string.pref_summary_cache, cacheSize));
         data.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {

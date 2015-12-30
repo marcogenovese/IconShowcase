@@ -36,10 +36,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
                 RequestItem requestsItem = appsList.get(position);
                 requestsItem.setSelected(!requestsItem.isSelected());
                 appsList.set(position, requestsItem);
-
                 notifyItemChanged(position);
-
-                //notifyDataSetChanged(); // Causes the no ripple bug
             }
         };
     }
@@ -107,7 +104,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
 
         AppIconFetchingQueue(RecyclerView recyclerView) {
             mRecyclerView = recyclerView;
-            mIconsRemaining = appsList.size();
+            mIconsRemaining = appsList != null ? appsList.size() : 0;
         }
 
         public void stop() {

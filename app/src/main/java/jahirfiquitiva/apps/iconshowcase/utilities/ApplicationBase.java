@@ -12,7 +12,6 @@ import com.crashlytics.android.Crashlytics;
 
 import java.util.ArrayList;
 
-import io.fabric.sdk.android.BuildConfig;
 import io.fabric.sdk.android.Fabric;
 import jahirfiquitiva.apps.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.apps.iconshowcase.fragments.WallpapersFragment;
@@ -43,8 +42,7 @@ public class ApplicationBase extends Application {
     public void onCreate() {
         super.onCreate();
 
-        // Prevents debug builds from using Crashlytics
-        if (BuildConfig.DEBUG) Fabric.with(this, new Crashlytics());
+        Fabric.with(this, new Crashlytics());
 
         this.context = getApplicationContext();
 
@@ -53,9 +51,9 @@ public class ApplicationBase extends Application {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                loadAppsForRequest();
                 new LoadIconsLists(context).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 loadWallsList();
+                loadAppsForRequest();
             }
         }).start();
 
@@ -92,6 +90,5 @@ public class ApplicationBase extends Application {
         }, context);
         downloadJSON.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
-
 
 }

@@ -122,7 +122,7 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 ShowcaseActivity.switchFragment(5, getResources().getString(R.string.section_three), "Apply", (AppCompatActivity) getActivity());
-                //ShowcaseActivity.drawer.setSelection(5);
+                ShowcaseActivity.drawer.setSelection(5);
             }
         });
         return layout;

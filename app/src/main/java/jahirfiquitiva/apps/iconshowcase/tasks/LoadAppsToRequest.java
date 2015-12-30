@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import jahirfiquitiva.apps.iconshowcase.R;
+import jahirfiquitiva.apps.iconshowcase.fragments.RequestsFragment;
 import jahirfiquitiva.apps.iconshowcase.models.RequestItem;
 import jahirfiquitiva.apps.iconshowcase.utilities.ApplicationBase;
 import jahirfiquitiva.apps.iconshowcase.utilities.Util;
@@ -34,6 +35,7 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
     long startTime, endTime;
 
     public LoadAppsToRequest(Context context) {
+        startTime = System.currentTimeMillis();
         this.context = context;
         mPackageManager = context.getPackageManager();
 
@@ -65,7 +67,7 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
 
     @Override
     protected void onPreExecute() {
-        startTime = System.currentTimeMillis();
+
     }
 
     @Override
@@ -87,12 +89,11 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
 
     @Override
     protected void onPostExecute(ArrayList<RequestItem> list) {
-
+        ApplicationBase.allAppsToRequest = list;
+        RequestsFragment.setupContent();
         endTime = System.currentTimeMillis();
         Util.showLog("Apps to Request Task completed in: " + String.valueOf((endTime - startTime) / 1000) + " secs.");
-        ApplicationBase.allAppsToRequest = list;
     }
-
 
     private static ResolveInfo getResolveInfo(String componentString) {
         Intent intent = new Intent();
@@ -180,6 +181,5 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
 
         return activitiesToRemove;
     }
-
 
 }
