@@ -35,7 +35,6 @@ import java.util.zip.ZipException;
 import java.util.zip.ZipOutputStream;
 
 import jahirfiquitiva.apps.iconshowcase.R;
-import jahirfiquitiva.apps.iconshowcase.adapters.RequestsAdapter;
 import jahirfiquitiva.apps.iconshowcase.models.RequestItem;
 
 /**
@@ -44,7 +43,7 @@ import jahirfiquitiva.apps.iconshowcase.models.RequestItem;
 public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
 
     private MaterialDialog dialog;
-    public static ArrayList<RequestItem> appsListFinal = new ArrayList<>();
+    public ArrayList<RequestItem> appsListFinal = new ArrayList<>();
 
     private static final int BUFFER = 2048;
     private String zipLocation, zipFilePath;
@@ -66,9 +65,10 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
 
     private Activity activity;
 
-    public ZipFilesToRequest(Activity activity, MaterialDialog dialog) {
-        this.wrActivity = new WeakReference<Activity>(activity);
+    public ZipFilesToRequest(Activity activity, MaterialDialog dialog, ArrayList<RequestItem> appsListFinal) {
+        this.wrActivity = new WeakReference<>(activity);
         this.dialog = dialog;
+        this.appsListFinal = appsListFinal;
     }
 
     @Override
@@ -90,7 +90,6 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
         zipFilePath = zipLocation + appNameCorrected
                 + "_" + date.format(new Date()) + ".zip";
 
-        appsListFinal = RequestsAdapter.appsList;
         appsNames.clear();
         appsPackages.clear();
         appsClasses.clear();

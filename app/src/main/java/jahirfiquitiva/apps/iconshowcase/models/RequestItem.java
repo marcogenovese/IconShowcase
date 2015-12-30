@@ -57,4 +57,23 @@ public class RequestItem {
     public void setSelected(boolean selected) {
         this.selected = selected;
     }
+
+    /**
+     * Used to compare object to object
+     * @param other
+     * @return
+     */
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof RequestItem)) {
+            return false;
+        }
+
+        RequestItem that = (RequestItem) other;
+
+        // Custom equality check here.
+        return this.appName.equals(that.appName)
+                && this.packageName.equals(that.packageName)
+                && this.className.equals(that.className);
+    }
 }

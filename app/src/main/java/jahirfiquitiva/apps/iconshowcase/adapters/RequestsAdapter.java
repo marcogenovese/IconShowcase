@@ -21,16 +21,26 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
         void onClick(int index);
     }
 
-    public static ArrayList<RequestItem> appsList;
+    public ArrayList<RequestItem> appsList;
     Context context;
     private final ClickListener mCallback;
 
     AppIconFetchingQueue mAppIconFetchingQueue;
 
-    public RequestsAdapter(Context context, ArrayList<RequestItem> appsList, ClickListener callback) {
+    public RequestsAdapter(Context context, final ArrayList<RequestItem> appsList) {
         this.context = context;
         this.appsList = appsList;
-        this.mCallback = callback;
+        this.mCallback = new RequestsAdapter.ClickListener() {
+            @Override
+            public void onClick(int position) {
+                RequestItem requestsItem = appsList.get(position);
+                requestsItem.setSelected(!requestsItem.isSelected());
+                appsList.set(position, requestsItem);
+
+                notifyItemChanged(position);
+
+            }
+        };
     }
 
     @Override

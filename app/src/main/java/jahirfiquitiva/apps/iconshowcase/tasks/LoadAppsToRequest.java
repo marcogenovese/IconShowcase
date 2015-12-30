@@ -17,22 +17,17 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 import jahirfiquitiva.apps.iconshowcase.R;
-import jahirfiquitiva.apps.iconshowcase.adapters.RequestsAdapter;
-import jahirfiquitiva.apps.iconshowcase.fragments.RequestsFragment;
 import jahirfiquitiva.apps.iconshowcase.models.RequestItem;
+import jahirfiquitiva.apps.iconshowcase.utilities.ApplicationBase;
 import jahirfiquitiva.apps.iconshowcase.utilities.Util;
 
-public class LoadAppsToRequest extends AsyncTask<Void, String, Boolean> {
+public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<RequestItem>> {
 
     private static PackageManager mPackageManager;
-    public ArrayList<RequestItem> list;
 
     final static ArrayList<RequestItem> appsList = new ArrayList<>();
-
-    private AllAppsList mAllAppsList;
 
     private Context context;
 
@@ -64,7 +59,7 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, Boolean> {
             appsList.add(appInfo);
         }
 
-        mAllAppsList = new AllAppsList(appsList, context.getPackageManager());
+        ApplicationBase.allApps = appsList;
 
     }
 
@@ -74,9 +69,9 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, Boolean> {
     }
 
     @Override
-    protected Boolean doInBackground(Void... params) {
+    protected ArrayList<RequestItem> doInBackground(Void... params) {
 
-        list = getAllActivities();
+        final ArrayList<RequestItem> list = ApplicationBase.allApps;
 
         list.removeAll(createListFromXML());
 
@@ -87,18 +82,24 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, Boolean> {
             }
         });
 
-        return true;
+        return list;
     }
 
     @Override
-    protected void onPostExecute(Boolean worked) {
-        RequestsFragment.setupRequestAdapter(list);
+    protected void onPostExecute(ArrayList<RequestItem> list) {
+
         endTime = System.currentTimeMillis();
         Util.showLog("Apps to Request Task completed in: " + String.valueOf((endTime - startTime) / 1000) + " secs.");
+        ApplicationBase.allAppsToRequest = list;
     }
+
 
     private static ResolveInfo getResolveInfo(String componentString) {
         Intent intent = new Intent();
+
+        // Example format:
+        //intent.setComponent(new ComponentName("com.myapp", "com.myapp.launcher.settings"));
+
         String[] split = componentString.split("/");
         intent.setComponent(new ComponentName(split[0], split[1]));
         return mPackageManager.resolveActivity(intent, 0);
@@ -127,10 +128,6 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, Boolean> {
         Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
         mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
         return mainIntent;
-    }
-
-    public ArrayList<RequestItem> getAllActivities() {
-        return mAllAppsList.data;
     }
 
     private ArrayList<RequestItem> createListFromXML() {
@@ -184,53 +181,5 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, Boolean> {
         return activitiesToRemove;
     }
 
-    /**
-     * Stores the list of all applications for the all apps view.
-     */
 
-    public class AllAppsList {
-
-        // Main list off all apps.
-        public ArrayList<RequestItem> data;
-
-        public AllAppsList(ArrayList<RequestItem> initialList, PackageManager pm) {
-            if (initialList != null) {
-                data = new ArrayList<>(initialList.size());
-                for (RequestItem item : initialList) {
-                    add(item);
-                }
-            } else
-                data = new ArrayList<>();
-        }
-
-        /**
-         * Add the supplied ResolveInfo objects to the list, and enqueue it into the
-         * list to broadcast when notify() is called.
-         * <p/>
-         * If the app is already in the list, doesn't add it.
-         */
-        public void add(RequestItem item) {
-            if (findRequest(data, item)) {
-                return;
-            }
-            data.add(item);
-        }
-
-        public void clear() {
-            data.clear();
-        }
-
-        public int size() {
-            return data.size();
-        }
-
-        public RequestItem get(int index) {
-            return data.get(index);
-        }
-
-        private boolean findRequest(List<RequestItem> apps, RequestItem newItem) {
-            return apps.contains(newItem);
-        }
-
-    }
 }

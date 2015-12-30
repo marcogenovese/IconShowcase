@@ -2,6 +2,7 @@ package jahirfiquitiva.apps.iconshowcase.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -18,29 +19,23 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.melnykov.fab.FloatingActionButton;
 import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 
-import java.util.ArrayList;
-
 import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.adapters.RequestsAdapter;
-import jahirfiquitiva.apps.iconshowcase.models.RequestItem;
 import jahirfiquitiva.apps.iconshowcase.tasks.ZipFilesToRequest;
+import jahirfiquitiva.apps.iconshowcase.utilities.ApplicationBase;
 import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.apps.iconshowcase.views.GridSpacingItemDecoration;
 
 public class RequestsFragment extends Fragment {
 
-    // List & Adapter
-
-    public static RequestsAdapter mAdapter;
-
-    public static ProgressBar progressBar;
-    public static RecyclerView mRecyclerView;
-    public static FloatingActionButton fab;
     public static RecyclerFastScroller fastScroller;
+    public ProgressBar progressBar;
+    public  RecyclerView mRecyclerView;
+    public FloatingActionButton fab;
 
     static int columnsNumber, gridSpacing;
     static boolean withBorders;
-    public static ViewGroup layout;
+    public ViewGroup layout;
 
     private Preferences mPrefs;
 
@@ -48,6 +43,8 @@ public class RequestsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        layout = (ViewGroup) inflater.inflate(R.layout.icon_request_section, container, false);
 
         ActionBar toolbar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (toolbar != null)
@@ -62,9 +59,8 @@ public class RequestsFragment extends Fragment {
             }
         }
         try {
-            layout = (ViewGroup) inflater.inflate(R.layout.icon_request_section, container, false);
         } catch (InflateException e) {
-
+            e.printStackTrace();
         }
 
         mPrefs = new Preferences(getActivity());
@@ -97,68 +93,64 @@ public class RequestsFragment extends Fragment {
                         .progress(true, 0)
                         .cancelable(false)
                         .show();
-                new ZipFilesToRequest(getActivity(), dialog).execute();
+
+
+                new ZipFilesToRequest(getActivity(), dialog,
+                        ((RequestsAdapter)mRecyclerView.getAdapter()).appsList).execute();
 
             }
         });
 
         hideStuff();
-        setupLayout();
 
         return layout;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        RequestsAdapter requestsAdapter = new RequestsAdapter(getActivity(), ApplicationBase.allAppsToRequest);
+        mRecyclerView.setAdapter(requestsAdapter);
+        mRecyclerView.setLayoutManager(new GridLayoutManager(context, columnsNumber));
+        mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(columnsNumber, gridSpacing, withBorders));
+        mRecyclerView.setHasFixedSize(true);
+        requestsAdapter.startIconFetching(mRecyclerView);
+        fab.attachToRecyclerView(mRecyclerView);
+        showStuff();
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         context = getActivity();
+
     }
 
-    public static void setupRequestAdapter(ArrayList<RequestItem> list) {
-        mAdapter = new RequestsAdapter(context, list, new RequestsAdapter.ClickListener() {
-            @Override
-            public void onClick(int position) {
-                RequestItem requestsItem = RequestsAdapter.appsList.get(position);
-                requestsItem.setSelected(!requestsItem.isSelected());
-                RequestsAdapter.appsList.set(position, requestsItem);
-                mAdapter.notifyItemChanged(position);
-                mAdapter.notifyDataSetChanged();
-            }
-        });
-        setupLayout();
-    }
-
-    public static void setupLayout() {
-        if (layout != null) {
-            if (mAdapter != null) {
-                mRecyclerView.setAdapter(mAdapter);
-                mRecyclerView.setLayoutManager(new GridLayoutManager(context, columnsNumber));
-                mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(columnsNumber, gridSpacing, withBorders));
-                mRecyclerView.setHasFixedSize(true);
-                mAdapter.startIconFetching(mRecyclerView);
-                fab.attachToRecyclerView(mRecyclerView);
-                showStuff();
-            }
-        }
-    }
-
-    private static void showStuff() {
+    private void showStuff() {
         fab.show(true);
         if (progressBar.getVisibility() != View.GONE) {
             progressBar.setVisibility(View.GONE);
         }
         mRecyclerView.setVisibility(View.VISIBLE);
-        fastScroller.setVisibility(View.VISIBLE);
-        fastScroller.setRecyclerView(mRecyclerView);
+        //fastScroller.setVisibility(View.VISIBLE);
+        //fastScroller.setRecyclerView(mRecyclerView);
     }
 
-    private static void hideStuff() {
+    private void hideStuff() {
         fab.hide(true);
         if (progressBar.getVisibility() != View.VISIBLE) {
             progressBar.setVisibility(View.VISIBLE);
         }
         mRecyclerView.setVisibility(View.GONE);
-        fastScroller.setVisibility(View.GONE);
+        //fastScroller.setVisibility(View.GONE);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RequestsAdapter adapter = ((RequestsAdapter) mRecyclerView.getAdapter());
+        if (adapter != null) {
+            adapter.stopAppIconFetching();
+        }
+    }
 }

@@ -10,10 +10,13 @@ import android.os.AsyncTask;
 
 import com.crashlytics.android.Crashlytics;
 
+import java.util.ArrayList;
+
+import io.fabric.sdk.android.BuildConfig;
 import io.fabric.sdk.android.Fabric;
 import jahirfiquitiva.apps.iconshowcase.activities.ShowcaseActivity;
-import jahirfiquitiva.apps.iconshowcase.adapters.RequestsAdapter;
 import jahirfiquitiva.apps.iconshowcase.fragments.WallpapersFragment;
+import jahirfiquitiva.apps.iconshowcase.models.RequestItem;
 import jahirfiquitiva.apps.iconshowcase.models.WallpapersList;
 import jahirfiquitiva.apps.iconshowcase.tasks.LoadAppsToRequest;
 import jahirfiquitiva.apps.iconshowcase.tasks.LoadIconsLists;
@@ -25,6 +28,16 @@ public class ApplicationBase extends Application {
 
     private Context context;
     private Preferences mPrefs;
+
+    /**
+     * Stores the list of all applications for the all apps view.
+     */
+
+    // Main list off all apps.
+    public static ArrayList<RequestItem> allApps;
+
+    // Main list off all apps to request.
+    public static ArrayList<RequestItem> allAppsToRequest;
 
     @Override
     public void onCreate() {
@@ -53,11 +66,9 @@ public class ApplicationBase extends Application {
 
     private void loadAppsForRequest() {
         if (mPrefs.getAppsToRequestLoaded()) {
-            RequestsAdapter.appsList.clear();
             mPrefs.setAppsToRequestLoaded(!mPrefs.getAppsToRequestLoaded());
         }
-        LoadAppsToRequest loadApps = new LoadAppsToRequest(this);
-        loadApps.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        new LoadAppsToRequest(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     public void loadWallsList() {
@@ -80,5 +91,6 @@ public class ApplicationBase extends Application {
         }, context);
         downloadJSON.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
+
 
 }
