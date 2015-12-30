@@ -43,7 +43,8 @@ public class ApplicationBase extends Application {
     public void onCreate() {
         super.onCreate();
 
-        Fabric.with(this, new Crashlytics());
+        // Prevents debug builds from using Crashlytics
+        if (BuildConfig.DEBUG) Fabric.with(this, new Crashlytics());
 
         this.context = getApplicationContext();
 
