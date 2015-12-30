@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 
 import java.util.Calendar;
@@ -87,11 +88,11 @@ public class ThemeUtils extends AppCompatActivity {
         switch (mNavBar) {
             default:
             case NAVBAR_DEFAULT:
-                activity.getWindow().setNavigationBarColor(activity.getResources().getColor(R.color.primary_dark));
+                activity.getWindow().setNavigationBarColor(ContextCompat.getColor(activity,R.color.primary_dark));
                 coloredNavBar = false;
                 break;
             case NAVBAR_BLACK:
-                activity.getWindow().setNavigationBarColor(activity.getResources().getColor(android.R.color.black));
+                activity.getWindow().setNavigationBarColor(ContextCompat.getColor(activity,android.R.color.black));
                 coloredNavBar = true;
                 break;
         }
