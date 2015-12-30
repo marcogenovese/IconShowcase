@@ -39,6 +39,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
 
                 notifyItemChanged(position);
 
+                //notifyDataSetChanged(); // Causes the no ripple bug
             }
         };
     }
