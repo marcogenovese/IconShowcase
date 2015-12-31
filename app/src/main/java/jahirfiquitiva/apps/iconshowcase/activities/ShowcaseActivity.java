@@ -87,16 +87,6 @@ public class ShowcaseActivity extends AppCompatActivity
 
         super.onCreate(savedInstanceState);
 
-        thaApp = getResources().getString(R.string.app_name);
-        thaHome = getResources().getString(R.string.section_one);
-        thaPreviews = getResources().getString(R.string.section_two);
-        thaApply = getResources().getString(R.string.section_three);
-        thaWalls = getResources().getString(R.string.section_four);
-        thaRequest = getResources().getString(R.string.section_five);
-        thaCredits = getResources().getString(R.string.section_six);
-        thaSettings = getResources().getString(R.string.title_settings);
-        thaFAQs = getResources().getString(R.string.faqs_section);
-
         mPrefs = new Preferences(ShowcaseActivity.this);
 
         context = this;
@@ -110,6 +100,16 @@ public class ShowcaseActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        thaApp = getResources().getString(R.string.app_name);
+        thaHome = getResources().getString(R.string.section_one);
+        thaPreviews = getResources().getString(R.string.section_two);
+        thaApply = getResources().getString(R.string.section_three);
+        thaWalls = getResources().getString(R.string.section_four);
+        thaRequest = getResources().getString(R.string.section_five);
+        thaCredits = getResources().getString(R.string.section_six);
+        thaSettings = getResources().getString(R.string.title_settings);
+        thaFAQs = getResources().getString(R.string.faqs_section);
 
         Assent.setActivity(this, this);
         permissionGranted = Assent.isPermissionGranted(Assent.WRITE_EXTERNAL_STORAGE);
@@ -129,7 +129,7 @@ public class ShowcaseActivity extends AppCompatActivity
 
         if (savedInstanceState == null) {
             if (mPrefs.getSettingsModified()) {
-                switchFragment(9, thaSettings, "Settings", context);
+                switchFragment(8, thaSettings, "Settings", context);
             } else {
                 currentItem = -1;
                 drawer.setSelection(1);
@@ -173,8 +173,7 @@ public class ShowcaseActivity extends AppCompatActivity
         super.onResume();
         if (mLastTheme != ThemeUtils.darkTheme
                 || mLastNavBar != ThemeUtils.coloredNavBar) {
-            drawer.resetDrawerContent();
-            this.recreate();
+            ThemeUtils.restartActivity(this);
             /*
             this.startActivity(new Intent(this, this.getClass()));
             this.finish();
@@ -467,8 +466,7 @@ public class ShowcaseActivity extends AppCompatActivity
                             new PrimaryDrawerItem().withName(thaFAQs).withIcon(GoogleMaterial.Icon.gmd_help).withIdentifier(6),
                             new DividerDrawerItem(),
                             new SecondaryDrawerItem().withName(thaCredits).withIdentifier(7),
-                            new SecondaryDrawerItem().withName(thaCredits).withIdentifier(8),
-                            new SecondaryDrawerItem().withName(thaSettings).withIdentifier(9)
+                            new SecondaryDrawerItem().withName(thaSettings).withIdentifier(8)
                     )
                     .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                         @Override
@@ -512,10 +510,7 @@ public class ShowcaseActivity extends AppCompatActivity
                                         switchFragment(7, thaCredits, "Credits", context);
                                         break;
                                     case 8:
-                                        switchFragment(8, thaCredits, "AltCredits", context);
-                                        break;
-                                    case 9:
-                                        switchFragment(9, thaSettings, "Settings", context);
+                                        switchFragment(8, thaSettings, "Settings", context);
                                         break;
                                 }
                             }
@@ -536,8 +531,7 @@ public class ShowcaseActivity extends AppCompatActivity
                             new PrimaryDrawerItem().withName(thaFAQs).withIcon(GoogleMaterial.Icon.gmd_help).withIdentifier(6),
                             new DividerDrawerItem(),
                             new SecondaryDrawerItem().withName(thaCredits).withIdentifier(7),
-                            new SecondaryDrawerItem().withName(thaCredits).withIdentifier(8),
-                            new SecondaryDrawerItem().withName(thaSettings).withIdentifier(9)
+                            new SecondaryDrawerItem().withName(thaSettings).withIdentifier(8)
                     )
                     .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                         @Override
@@ -581,10 +575,7 @@ public class ShowcaseActivity extends AppCompatActivity
                                         switchFragment(7, thaCredits, "Credits", context);
                                         break;
                                     case 8:
-                                        switchFragment(8, thaCredits, "AltCredits", context);
-                                        break;
-                                    case 9:
-                                        switchFragment(9, thaSettings, "Settings", context);
+                                        switchFragment(8, thaSettings, "Settings", context);
                                         break;
                                 }
                             }

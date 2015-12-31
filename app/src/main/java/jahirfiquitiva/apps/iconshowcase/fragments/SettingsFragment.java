@@ -86,14 +86,16 @@ public class SettingsFragment extends PreferenceFragment {
         findPreference("themes").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                int selected = sp.getInt("theme", 0);
-                new MaterialDialog.Builder(getActivity())
+                final int[] selectedTheme = {sp.getInt("theme", 0)};
+                final int[] newSelectedTheme = new int[1];
+                ShowcaseActivity.settingsDialog = new MaterialDialog.Builder(getActivity())
                         .title(R.string.pref_title_themes)
                         .items(R.array.themes)
-                        .itemsCallbackSingleChoice(selected, new MaterialDialog.ListCallbackSingleChoice() {
+                        .itemsCallbackSingleChoice(selectedTheme[0], new MaterialDialog.ListCallbackSingleChoice() {
                             @Override
                             public boolean onSelection(MaterialDialog dialog, View view, int position, CharSequence text) {
                                 mPrefs.setSettingsModified(true);
+                                newSelectedTheme[0] = position;
                                 switch (position) {
                                     case 0:
                                         ThemeUtils.changeToTheme(getActivity(), ThemeUtils.LIGHT);
@@ -111,6 +113,14 @@ public class SettingsFragment extends PreferenceFragment {
                         })
                         .positiveText(android.R.string.ok)
                         .positiveColorRes(R.color.accent)
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(MaterialDialog dialog, DialogAction which) {
+                                if (newSelectedTheme != selectedTheme) {
+                                    ThemeUtils.restartActivity(getActivity());
+                                }
+                            }
+                        })
                         .show();
                 return true;
             }

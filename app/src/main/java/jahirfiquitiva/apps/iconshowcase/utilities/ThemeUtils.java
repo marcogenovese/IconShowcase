@@ -2,12 +2,15 @@ package jahirfiquitiva.apps.iconshowcase.utilities;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.util.Calendar;
 
@@ -28,11 +31,6 @@ public class ThemeUtils extends AppCompatActivity {
         final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
         final Editor editor = sp.edit();
         editor.putInt("theme", mTheme).apply();
-        activity.recreate();/*
-        activity.finish();
-        activity.startActivity(new Intent(activity, activity.getClass()));
-        activity.overridePendingTransition(0, 0);
-        */
     }
 
     public static void restartActivity(Activity activity) {
@@ -43,15 +41,24 @@ public class ThemeUtils extends AppCompatActivity {
         */
     }
 
+    public static void restartActivity(final Activity activity, MaterialDialog dialog) {
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                activity.recreate();/*
+                activity.finish();
+                activity.startActivity(new Intent(activity, activity.getClass()));
+                activity.overridePendingTransition(0, 0);
+                */
+            }
+        });
+    }
+
     public static void changeNavBar(Activity activity, int mNavBar) {
         final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
         final Editor editor = sp.edit();
         editor.putInt("navbar", mNavBar).apply();
-        activity.recreate();/*
-        activity.finish();
-        activity.startActivity(new Intent(activity, activity.getClass()));
-        activity.overridePendingTransition(0, 0);
-        */
+        restartActivity(activity);
     }
 
     public static void onActivityCreateSetTheme(Activity activity) {
