@@ -88,6 +88,21 @@
         <item name="android:paddingBottom">@dimen/card_little_margin</item>
     </style>
 
+    <style name="PreviewContent" parent="android:Widget">
+        <item name="android:paddingLeft">@dimen/icons_preview_row</item>
+        <item name="android:paddingRight">@dimen/icons_preview_row</item>
+        <item name="android:paddingTop">@dimen/cards_spacing</item>
+        <item name="android:paddingBottom">@dimen/cards_spacing</item>
+    </style>
+
+    <style name="HomeCardContent" parent="android:Widget">
+        <item name="android:paddingLeft">@dimen/welcome_card_content_padding</item>
+        <item name="android:paddingRight">@dimen/welcome_card_content_padding</item>
+        <item name="android:paddingTop">@dimen/cards_spacing</item>
+        <item name="android:paddingBottom">@dimen/cards_spacing</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
     <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.Dark">
         <item name="android:textColorPrimary">@android:color/white</item>
         <item name="android:textColorSecondary">@android:color/white</item>

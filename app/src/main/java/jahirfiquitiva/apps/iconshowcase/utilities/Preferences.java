@@ -30,36 +30,36 @@ public class Preferences {
         return context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
     }
 
+    public void setFirstRun(boolean firstRun) {
+        getSharedPreferences().edit().putBoolean(FIRSTRUN, firstRun).apply();
+    }
+
     public boolean isFirstRun() {
         return getSharedPreferences().getBoolean(FIRSTRUN, true);
-    }
-
-    public boolean isFeaturesEnabled() {
-        return getSharedPreferences().getBoolean(FEATURES_ENABLED, true);
-    }
-
-    public boolean isRotateMinute() {
-        return getSharedPreferences().getBoolean(ROTATE_MINUTE, false);
-    }
-
-    public int getRotateTime() {
-        return getSharedPreferences().getInt(ROTATE_TIME, 21600000);
     }
 
     public void setFeaturesEnabled(boolean enable) {
         getSharedPreferences().edit().putBoolean(FEATURES_ENABLED, enable).apply();
     }
 
-    public void setNotFirstRun() {
-        getSharedPreferences().edit().putBoolean(FIRSTRUN, false).apply();
+    public boolean areFeaturesEnabled() {
+        return getSharedPreferences().getBoolean(FEATURES_ENABLED, true);
     }
 
     public void setRotateTime(int time) {
         getSharedPreferences().edit().putInt(ROTATE_TIME, time).apply();
     }
 
+    public int getRotateTime() {
+        return getSharedPreferences().getInt(ROTATE_TIME, 21600000);
+    }
+
     public void setRotateMinute(boolean bool) {
         getSharedPreferences().edit().putBoolean(ROTATE_MINUTE, bool).apply();
+    }
+
+    public boolean isRotateMinute() {
+        return getSharedPreferences().getBoolean(ROTATE_MINUTE, false);
     }
 
     public void setEasterEggEnabled(boolean dbenabled) {

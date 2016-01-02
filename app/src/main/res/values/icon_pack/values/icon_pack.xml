@@ -1,6 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
+    <string-array name="preview" translatable="false">
+        <item>blek</item>
+        <item>box</item>
+        <item>browser</item>
+        <item>bt_sport</item>
+        <item>cabinet</item>
+        <item>cache_cleaner</item>
+        <item>calculator</item>
+        <item>calc_for_wear</item>
+        <item>candy_camera_for_selfie</item>
+        <item>candy_crush</item>
+        <item>caststore</item>
+        <item>catlog</item>
+        <item>chrome</item>
+        <item>chromecast</item>
+        <item>clean_master</item>
+        <item>clean_master_locker</item>
+        <item>clean_master_security</item>
+        <item>clock</item>
+        <item>cm_file_manager</item>
+        <item>cm_music</item>
+        <item>cm_theme_engine</item>
+        <item>color_picker</item>
+        <item>color_run</item>
+        <item>connect_4</item>
+        <item>couleur</item>
+        <item>crossy_road</item>
+        <item>cygnus</item>
+        <item>cygnus_dark</item>
+        <item>cymera</item>
+        <item>cyngn_screen_cast</item>
+        <item>decidr</item>
+        <item>device_assist</item>
+        <item>documents</item>
+        <item>dolphin_browser</item>
+        <item>downloads</item>
+        <item>draft_kings</item>
+        <item>dropbox</item>
+        <item>dumb_ways_to_die</item>
+        <item>dumb_ways_to_die_2</item>
+        <item>duolingo</item>
+        <item>elementary</item>
+        <item>email</item>
+        <item>email_boxer</item>
+        <item>emoji_switcher</item>
+        <item>ertz</item>
+        <item>es_file_explorer</item>
+        <item>evernote</item>
+        <item>ex_dialer</item>
+        <item>eye_em</item>
+        <item>facebook</item>
+        <item>facebook_alt</item>
+        <item>facebook_lite</item>
+        <item>facebook_messenger</item>
+    </string-array>
+
     <!-- These sections below are for your "Previews" section -->
     <!-- These names should match YOUR actual icon names
     	 the names used below are just for sampling purposes -->

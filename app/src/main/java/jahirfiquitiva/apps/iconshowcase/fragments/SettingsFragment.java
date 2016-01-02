@@ -47,20 +47,22 @@ public class SettingsFragment extends PreferenceFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+
+        String settingsTitle = getResources().getString(R.string.title_settings);
 
         withOptionToHideIcon = true;
 
         mPrefs = new Preferences(getActivity());
 
-        if (mPrefs.getSettingsModified()) {
-            ShowcaseActivity.drawer.setSelection(8);
-        }
-
         mPrefs.setSettingsModified(false);
 
         ActionBar toolbar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        if (toolbar != null)
-            toolbar.setTitle(R.string.title_settings);
+        if (toolbar != null) {
+            if (toolbar.getTitle() != null && !toolbar.getTitle().equals(settingsTitle)) {
+                toolbar.setTitle(settingsTitle);
+            }
+        }
 
         sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
         editor = sp.edit();

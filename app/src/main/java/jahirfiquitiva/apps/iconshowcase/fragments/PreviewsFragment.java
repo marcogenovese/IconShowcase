@@ -35,6 +35,7 @@ public class PreviewsFragment extends Fragment {
     private ViewPager mPager;
     private String[] tabs;
     private ViewGroup layout;
+    public TabLayout mTabs;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -60,7 +61,7 @@ public class PreviewsFragment extends Fragment {
         mPager.setAdapter(new IconsPagerAdapter(getChildFragmentManager()));
         mLastSelected = 0;
 
-        TabLayout mTabs = (TabLayout) layout.findViewById(R.id.tabs);
+        mTabs = (TabLayout) layout.findViewById(R.id.tabs);
         mTabs.setupWithViewPager(mPager);
         mTabs.setTabTextColors(getResources().getColor(R.color.semitransparent_white),
                 getResources().getColor(android.R.color.white));
@@ -99,6 +100,13 @@ public class PreviewsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        setRetainInstance(true);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroy();
+        mTabs.setVisibility(View.GONE);
     }
 
     @Override
@@ -147,8 +155,8 @@ public class PreviewsFragment extends Fragment {
     public void onResume() {
         super.onResume();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Toolbar appbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-            appbar.setElevation(0);
+            Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+            toolbar.setElevation(0);
         }
     }
 
@@ -156,8 +164,8 @@ public class PreviewsFragment extends Fragment {
     public void onPause() {
         super.onPause();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Toolbar appbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-            appbar.setElevation((int) getResources().getDimension(R.dimen.toolbar_elevation));
+            Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+            toolbar.setElevation((int) getResources().getDimension(R.dimen.toolbar_elevation));
         }
     }
 

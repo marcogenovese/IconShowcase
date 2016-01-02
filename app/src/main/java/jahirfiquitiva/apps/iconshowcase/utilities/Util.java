@@ -1,5 +1,7 @@
 package jahirfiquitiva.apps.iconshowcase.utilities;
 
+import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -7,12 +9,19 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.customtabs.CustomTabsClient;
+import android.support.customtabs.CustomTabsIntent;
+import android.support.customtabs.CustomTabsServiceConnection;
+import android.support.customtabs.CustomTabsSession;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 
 import java.util.Iterator;
 import java.util.Set;
+
+import jahirfiquitiva.apps.iconshowcase.R;
 
 /**
  * @author Aidan Follestad (afollestad)
@@ -77,8 +86,43 @@ public class Util {
         context.startActivity(intent);
     }
 
+    public static void openLinkInChromeCustomTab(Context context, String link) {
+        final CustomTabsClient[] mClient = new CustomTabsClient[1];
+        final CustomTabsSession[] mCustomTabsSession = new CustomTabsSession[1];
+        CustomTabsServiceConnection mCustomTabsServiceConnection;
+        CustomTabsIntent customTabsIntent;
+
+        mCustomTabsServiceConnection = new CustomTabsServiceConnection() {
+            @Override
+            public void onCustomTabsServiceConnected(ComponentName componentName, CustomTabsClient customTabsClient) {
+                mClient[0] = customTabsClient;
+                mClient[0].warmup(0L);
+                mCustomTabsSession[0] = mClient[0].newSession(null);
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                mClient[0] = null;
+            }
+
+        };
+
+        CustomTabsClient.bindCustomTabsService(context, "com.android.chrome", mCustomTabsServiceConnection);
+        customTabsIntent = new CustomTabsIntent.Builder(mCustomTabsSession[0])
+                .setToolbarColor(ContextCompat.getColor(context, R.color.colorPrimary))
+                .setShowTitle(true)
+                .build();
+
+        customTabsIntent.launchUrl((Activity) context, Uri.parse(link));
+
+    }
+
     public static void showLog(String s) {
         Log.d("IconShowcase", s);
+    }
+
+    public static String getStringFromResources(Context context, int id) {
+        return context.getResources().getString(id);
     }
 
     /**

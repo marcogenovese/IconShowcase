@@ -7,9 +7,11 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -50,7 +52,7 @@ public class ShowcaseActivity extends AppCompatActivity
     private static final boolean WITH_LICENSE_CHECKER = false;
     private static final String MARKET_URL = "https://play.google.com/store/apps/details?id=";
 
-    private String thaApp, thaHome, thaPreviews, thaApply, thaWalls, thaRequest, thaFAQs, thaCredits, thaSettings;
+    private String thaAppName, thaHome, thaPreviews, thaApply, thaWalls, thaRequest, thaFAQs, thaCredits, thaSettings;
 
     private static AppCompatActivity context;
 
@@ -58,15 +60,16 @@ public class ShowcaseActivity extends AppCompatActivity
 
     public static int currentItem = -1;
 
-    private boolean firstRun, enable_features, permissionGranted, mLastTheme, mLastNavBar;
+    private boolean mLastTheme, mLastNavBar;
+    private static boolean collapseToolbar;
     private static Preferences mPrefs;
 
     public static MaterialDialog settingsDialog;
+    public static Toolbar toolbar;
+    public static AppBarLayout appbar;
 
     public static Drawer drawer;
     public AccountHeader drawerHeader;
-
-    private WallpapersFragment.DownloadJSON downloadJSON;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,22 +89,18 @@ public class ShowcaseActivity extends AppCompatActivity
         }
 
         super.onCreate(savedInstanceState);
-
-        mPrefs = new Preferences(ShowcaseActivity.this);
-
         context = this;
+        mPrefs = new Preferences(ShowcaseActivity.this);
+        Assent.setActivity(this, this);
 
         setContentView(R.layout.showcase_activity);
 
-        enable_features = mPrefs.isFeaturesEnabled();
-        firstRun = mPrefs.isFirstRun();
-
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        thaApp = getResources().getString(R.string.app_name);
+        thaAppName = getResources().getString(R.string.app_name);
         thaHome = getResources().getString(R.string.section_one);
         thaPreviews = getResources().getString(R.string.section_two);
         thaApply = getResources().getString(R.string.section_three);
@@ -111,18 +110,6 @@ public class ShowcaseActivity extends AppCompatActivity
         thaSettings = getResources().getString(R.string.title_settings);
         thaFAQs = getResources().getString(R.string.faqs_section);
 
-        Assent.setActivity(this, this);
-        permissionGranted = Assent.isPermissionGranted(Assent.WRITE_EXTERNAL_STORAGE);
-
-        if (!Assent.isPermissionGranted(Assent.WRITE_EXTERNAL_STORAGE)) {
-            Assent.requestPermissions(new AssentCallback() {
-                @Override
-                public void onPermissionResult(PermissionResultSet result) {
-                    permissionGranted = result.isGranted(Assent.WRITE_EXTERNAL_STORAGE);
-                }
-            }, 69, Assent.WRITE_EXTERNAL_STORAGE);
-        }
-
         setupDrawer(false, toolbar, savedInstanceState);
 
         runLicenseChecker();
@@ -130,6 +117,7 @@ public class ShowcaseActivity extends AppCompatActivity
         if (savedInstanceState == null) {
             if (mPrefs.getSettingsModified()) {
                 switchFragment(8, thaSettings, "Settings", context);
+                drawer.setSelection(8);
             } else {
                 currentItem = -1;
                 drawer.setSelection(1);
@@ -138,14 +126,20 @@ public class ShowcaseActivity extends AppCompatActivity
 
     }
 
-    public static void switchFragment(int itemId, String title, String fragment, AppCompatActivity context) {
+    public static void switchFragment(int itemId, String title, String fragment,
+                                      AppCompatActivity context) {
+
         if (currentItem == itemId) {
             // Don't allow re-selection of the currently active item
             return;
         }
         currentItem = itemId;
-        if (context.getSupportActionBar() != null)
-            context.getSupportActionBar().setTitle(title);
+
+        if (toolbar != null) {
+            if (toolbar.getTitle() != null && !toolbar.getTitle().equals(title)) {
+                toolbar.setTitle(title);
+            }
+        }
 
         if (mPrefs.getAnimationsEnabled()) {
             context.getSupportFragmentManager().beginTransaction()
@@ -186,7 +180,14 @@ public class ShowcaseActivity extends AppCompatActivity
     protected void onSaveInstanceState(Bundle outState) {
         if (drawer != null)
             outState = drawer.saveInstanceState(outState);
+        outState.putString("toolbarTitle", String.valueOf(toolbar.getTitle()));
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        toolbar.setTitle(savedInstanceState.getString("toolbarTitle", thaAppName));
     }
 
     @Override
@@ -226,7 +227,7 @@ public class ShowcaseActivity extends AppCompatActivity
                 sharingIntent.setType("text/plain");
                 String shareBody =
                         getResources().getString(R.string.share_one) +
-                                getResources().getString(R.string.iconpack_designer) +
+                                getResources().getString(R.string.iconpack_author) +
                                 getResources().getString(R.string.share_two) +
                                 MARKET_URL + getPackageName();
                 sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
@@ -289,15 +290,16 @@ public class ShowcaseActivity extends AppCompatActivity
     private void addItemsToDrawer() {
         IDrawerItem walls = new PrimaryDrawerItem().withName(thaWalls).withIcon(GoogleMaterial.Icon.gmd_landscape).withIdentifier(3);
         IDrawerItem request = new PrimaryDrawerItem().withName(thaRequest).withIcon(GoogleMaterial.Icon.gmd_comment_list).withIdentifier(4);
-        if (enable_features) {
+        if (mPrefs.areFeaturesEnabled()) {
             drawer.addItemAtPosition(walls, 3);
             drawer.addItemAtPosition(request, 4);
         }
     }
 
     private void runLicenseChecker() {
-        if (firstRun) {
-            mPrefs.setSettingsModified(false);
+        mPrefs.setSettingsModified(false);
+        mPrefs.setFirstRun(getSharedPreferences("PrefsFile", MODE_PRIVATE).getBoolean("first_run", true));
+        if (mPrefs.isFirstRun()) {
             if (WITH_LICENSE_CHECKER) {
                 checkLicense();
             } else {
@@ -305,9 +307,12 @@ public class ShowcaseActivity extends AppCompatActivity
                 addItemsToDrawer();
                 showChangelogDialog();
             }
+            mPrefs.setFirstRun(false);
+            getSharedPreferences("PrefsFile", MODE_PRIVATE).edit()
+                    .putBoolean("first_run", false).commit();
         } else {
             if (WITH_LICENSE_CHECKER) {
-                if (!enable_features) {
+                if (!mPrefs.areFeaturesEnabled()) {
                     showNotLicensedDialog();
                 } else {
                     addItemsToDrawer();
@@ -325,10 +330,28 @@ public class ShowcaseActivity extends AppCompatActivity
                 .title(R.string.changelog_dialog_title)
                 .adapter(new ChangelogAdapter(this, R.array.fullchangelog), null)
                 .positiveText(R.string.great)
+                .dismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        if (!Assent.isPermissionGranted(Assent.WRITE_EXTERNAL_STORAGE)) {
+                            Assent.requestPermissions(new AssentCallback() {
+                                @Override
+                                public void onPermissionResult(PermissionResultSet result) {
+                                }
+                            }, 69, Assent.WRITE_EXTERNAL_STORAGE);
+                        }
+                    }
+                })
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
-                        mPrefs.setNotFirstRun();
+                        if (!Assent.isPermissionGranted(Assent.WRITE_EXTERNAL_STORAGE)) {
+                            Assent.requestPermissions(new AssentCallback() {
+                                @Override
+                                public void onPermissionResult(PermissionResultSet result) {
+                                }
+                            }, 69, Assent.WRITE_EXTERNAL_STORAGE);
+                        }
                     }
                 })
                 .show();
@@ -336,10 +359,10 @@ public class ShowcaseActivity extends AppCompatActivity
 
     private void showChangelogDialog() {
         String launchinfo = getSharedPreferences("PrefsFile", MODE_PRIVATE).getString("version", "0");
+        storeSharedPrefs();
         if (launchinfo != null && !launchinfo.equals(Util.getAppVersion(this))) {
             showChangelog();
         }
-        storeSharedPrefs();
     }
 
     @SuppressLint("CommitPrefEdits")
@@ -360,7 +383,6 @@ public class ShowcaseActivity extends AppCompatActivity
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
-                                enable_features = true;
                                 mPrefs.setFeaturesEnabled(true);
                                 addItemsToDrawer();
                                 showChangelogDialog();
@@ -376,7 +398,6 @@ public class ShowcaseActivity extends AppCompatActivity
     }
 
     private void showNotLicensedDialog() {
-        enable_features = false;
         mPrefs.setFeaturesEnabled(false);
         new MaterialDialog.Builder(this)
                 .title(R.string.license_failed_title)
@@ -415,7 +436,7 @@ public class ShowcaseActivity extends AppCompatActivity
             WallpapersList.clearList();
             mPrefs.setWallsListLoaded(!mPrefs.getWallsListLoaded());
         }
-        downloadJSON = new WallpapersFragment.DownloadJSON(new WallsListInterface() {
+        new WallpapersFragment.DownloadJSON(new WallsListInterface() {
             @Override
             public void checkWallsListCreation(boolean result) {
                 mPrefs.setWallsListLoaded(result);
@@ -427,8 +448,7 @@ public class ShowcaseActivity extends AppCompatActivity
                     WallpapersFragment.mAdapter.notifyDataSetChanged();
                 }
             }
-        }, this);
-        downloadJSON.execute();
+        }, this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     public interface WallsListInterface {
@@ -474,7 +494,7 @@ public class ShowcaseActivity extends AppCompatActivity
                             if (drawerItem != null) {
                                 switch (drawerItem.getIdentifier()) {
                                     case 1:
-                                        switchFragment(1, thaApp, "Main", context);
+                                        switchFragment(1, thaAppName, "Main", context);
                                         break;
                                     case 2:
                                         switchFragment(2, thaPreviews, "Previews", context);
@@ -483,16 +503,14 @@ public class ShowcaseActivity extends AppCompatActivity
                                         switchFragment(3, thaWalls, "Wallpapers", context);
                                         break;
                                     case 4:
-                                        if (!permissionGranted) {
+                                        if (!Assent.isPermissionGranted(Assent.WRITE_EXTERNAL_STORAGE)) {
                                             drawer.closeDrawer();
                                             Assent.requestPermissions(new AssentCallback() {
                                                 @Override
                                                 public void onPermissionResult(PermissionResultSet result) {
-                                                    permissionGranted = result.isGranted
-                                                            (Assent.WRITE_EXTERNAL_STORAGE);
                                                 }
                                             }, 69, Assent.WRITE_EXTERNAL_STORAGE);
-                                            if (permissionGranted) {
+                                            if (!Assent.isPermissionGranted(Assent.WRITE_EXTERNAL_STORAGE)) {
                                                 switchFragment(4, thaRequest, "Requests",
                                                         context);
                                             }
@@ -539,7 +557,7 @@ public class ShowcaseActivity extends AppCompatActivity
                             if (drawerItem != null) {
                                 switch (drawerItem.getIdentifier()) {
                                     case 1:
-                                        switchFragment(1, thaApp, "Main", context);
+                                        switchFragment(1, thaAppName, "Main", context);
                                         break;
                                     case 2:
                                         switchFragment(2, thaPreviews, "Previews", context);
@@ -548,16 +566,14 @@ public class ShowcaseActivity extends AppCompatActivity
                                         switchFragment(3, thaWalls, "Wallpapers", context);
                                         break;
                                     case 4:
-                                        if (!permissionGranted) {
+                                        if (!Assent.isPermissionGranted(Assent.WRITE_EXTERNAL_STORAGE)) {
                                             drawer.closeDrawer();
                                             Assent.requestPermissions(new AssentCallback() {
                                                 @Override
                                                 public void onPermissionResult(PermissionResultSet result) {
-                                                    permissionGranted = result.isGranted
-                                                            (Assent.WRITE_EXTERNAL_STORAGE);
                                                 }
                                             }, 69, Assent.WRITE_EXTERNAL_STORAGE);
-                                            if (permissionGranted) {
+                                            if (!Assent.isPermissionGranted(Assent.WRITE_EXTERNAL_STORAGE)) {
                                                 switchFragment(4, thaRequest, "Requests",
                                                         context);
                                             }

@@ -4,36 +4,44 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
+import android.support.v7.widget.GridLayout;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.melnykov.fab.FloatingActionButton;
 import com.melnykov.fab.ObservableScrollView;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.activities.ShowcaseActivity;
+import jahirfiquitiva.apps.iconshowcase.models.IconsLists;
+import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
 
 public class MainFragment extends Fragment {
 
     private static final String MARKET_URL = "https://play.google.com/store/apps/details?id=";
 
-    private String PlayStoreDevAccount, PlayStoreListing, AppOnePackage, AppTwoPackage, AppThreePackage;
-
+    private String PlayStoreListing;
+    private ArrayList<Integer> icons, finalIconsList = new ArrayList<>();
     private ViewGroup layout;
-
-    public MainFragment() {
-
-    }
+    private Preferences mPrefs;
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
+
+        mPrefs = new Preferences(getActivity());
 
         ActionBar toolbar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (toolbar != null)
@@ -51,58 +59,24 @@ public class MainFragment extends Fragment {
 
         }
 
-        PlayStoreDevAccount = getResources().getString(R.string.play_store_dev_link);
+        final ImageView icon1 = (ImageView) layout.findViewById(R.id.iconOne);
+        final ImageView icon2 = (ImageView) layout.findViewById(R.id.iconTwo);
+        final ImageView icon3 = (ImageView) layout.findViewById(R.id.iconThree);
+        final ImageView icon4 = (ImageView) layout.findViewById(R.id.iconFour);
+
+        setupIcons(icon1, icon2, icon3, icon4);
+
+        GridLayout iconsRow = (GridLayout) layout.findViewById(R.id.iconsRow);
+        iconsRow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setupIcons(icon1, icon2, icon3, icon4);
+            }
+        });
+
         PlayStoreListing = getActivity().getPackageName();
-        AppOnePackage = getResources().getString(R.string.app_one_package);
-        AppTwoPackage = getResources().getString(R.string.app_two_package);
-        AppThreePackage = getResources().getString(R.string.app_three_package);
 
         ObservableScrollView content = (ObservableScrollView) layout.findViewById(R.id.HomeContent);
-        //Cards
-        CardView cardone = (CardView) layout.findViewById(R.id.cardOne);
-        CardView cardtwo = (CardView) layout.findViewById(R.id.cardTwo);
-        CardView cardthree = (CardView) layout.findViewById(R.id.cardThree);
-        if (AppIsInstalled(AppOnePackage)) {
-            cardone.setVisibility((cardone.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE));
-        }
-        if (AppIsInstalled(AppTwoPackage)) {
-            cardtwo.setVisibility((cardtwo.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE));
-        }
-        if (AppIsInstalled(AppThreePackage)) {
-            cardthree.setVisibility((cardthree.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE));
-        }
-        TextView playbtn = (TextView) layout.findViewById(R.id.play_button);
-        playbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent devPlay = new Intent(Intent.ACTION_VIEW, Uri.parse(PlayStoreDevAccount));
-                startActivity(devPlay);
-            }
-        });
-        TextView apponebtn = (TextView) layout.findViewById(R.id.appone_button);
-        apponebtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent appone = new Intent(Intent.ACTION_VIEW, Uri.parse(MARKET_URL + AppOnePackage));
-                startActivity(appone);
-            }
-        });
-        TextView apptwobtn = (TextView) layout.findViewById(R.id.apptwo_button);
-        apptwobtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent apptwo = new Intent(Intent.ACTION_VIEW, Uri.parse(MARKET_URL + AppTwoPackage));
-                startActivity(apptwo);
-            }
-        });
-        TextView appthreebtn = (TextView) layout.findViewById(R.id.appthree_button);
-        appthreebtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent appthree = new Intent(Intent.ACTION_VIEW, Uri.parse(MARKET_URL + AppThreePackage));
-                startActivity(appthree);
-            }
-        });
         TextView ratebtn = (TextView) layout.findViewById(R.id.rate_button);
         ratebtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,6 +99,7 @@ public class MainFragment extends Fragment {
                 ShowcaseActivity.drawer.setSelection(5);
             }
         });
+
         return layout;
     }
 
@@ -138,6 +113,56 @@ public class MainFragment extends Fragment {
             installed = false;
         }
         return installed;
+    }
+
+    private void setupIcons(final ImageView icon1, final ImageView icon2,
+                            final ImageView icon3, final ImageView icon4) {
+        icons = IconsLists.getPreviewAL();
+        finalIconsList.clear();
+        Collections.shuffle(icons);
+
+        int numOfIcons = getResources().getInteger(R.integer.icon_grid_width);
+        int i = 0;
+
+        while (i < numOfIcons) {
+            finalIconsList.add(icons.get(i));
+            i++;
+        }
+
+        icon1.setImageResource(finalIconsList.get(0));
+        icon2.setImageResource(finalIconsList.get(1));
+        icon3.setImageResource(finalIconsList.get(2));
+        icon4.setImageResource(finalIconsList.get(3));
+
+        icon1.setVisibility(View.VISIBLE);
+        icon2.setVisibility(View.VISIBLE);
+        icon3.setVisibility(View.VISIBLE);
+        icon4.setVisibility(View.VISIBLE);
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (mPrefs.getAnimationsEnabled()) {
+                    YoYo.with(Techniques.Bounce)
+                            .duration(700)
+                            .playOn(icon1);
+
+                    YoYo.with(Techniques.Bounce)
+                            .duration(700)
+                            .playOn(icon2);
+
+                    YoYo.with(Techniques.Bounce)
+                            .duration(700)
+                            .playOn(icon3);
+
+                    YoYo.with(Techniques.Bounce)
+                            .duration(700)
+                            .playOn(icon4);
+                }
+            }
+        }, 500);
+
     }
 
 }

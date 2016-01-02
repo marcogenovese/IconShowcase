@@ -10,6 +10,5 @@
     android:minHeight="?actionBarSize"
     android:transitionName="actionBar"
     app:contentInsetStart="@dimen/toolbar_contentInset"
-    app:layout_scrollFlags="scroll|enterAlways"
     app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
     tools:ignore="UnusedAttribute"/>

@@ -2,6 +2,7 @@ package jahirfiquitiva.apps.iconshowcase.activities;
 
 import android.app.Activity;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -14,11 +15,13 @@ public class LauncherIconRestorerActivity extends Activity {
     private static Preferences mPrefs;
     private static PackageManager p;
     private static ComponentName componentName;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        context = this;
 
         mPrefs = new Preferences(LauncherIconRestorerActivity.this);
 
