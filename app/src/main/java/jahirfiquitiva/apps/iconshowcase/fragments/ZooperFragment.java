@@ -10,8 +10,6 @@ import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.view.InflateException;
 import android.view.LayoutInflater;
@@ -25,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 
 import jahirfiquitiva.apps.iconshowcase.R;
+import jahirfiquitiva.apps.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.apps.iconshowcase.tasks.CopyFilesToStorage;
 import jahirfiquitiva.apps.iconshowcase.utilities.Util;
 
@@ -40,10 +39,6 @@ public class ZooperFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
 
-        ActionBar toolbar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        if (toolbar != null)
-            toolbar.setTitle(R.string.zooper_section_title);
-
         if (layout != null) {
             ViewGroup parent = (ViewGroup) layout.getParent();
             if (parent != null) {
@@ -57,6 +52,14 @@ public class ZooperFragment extends Fragment {
         }
 
         context = getActivity();
+
+        if (ShowcaseActivity.toolbar != null) {
+            if (ShowcaseActivity.toolbar.getTitle() != null &&
+                    !ShowcaseActivity.toolbar.getTitle().equals(
+                            Util.getStringFromResources(getActivity(), R.string.zooper_section_title))) {
+                ShowcaseActivity.toolbar.setTitle(R.string.zooper_section_title);
+            }
+        }
 
         cardZooper = (CardView) layout.findViewById(R.id.zooper_card);
         if (Util.isAppInstalled(context, "org.zooper.zwpro")) {

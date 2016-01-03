@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.support.v4.content.ContextCompat;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -46,11 +48,15 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
         for (ResolveInfo info : rAllActivitiesList) {
 
             if (info.activityInfo.packageName.equals(context.getApplicationContext().getPackageName())) {
-                Util.showLog("Found " + context.getApplicationContext().getPackageName() + ", skipping record.");
                 continue;
             }
 
-            Drawable icon = info.loadIcon(mPackageManager);
+            Drawable icon;
+            try {
+                icon = info.loadIcon(mPackageManager);
+            } catch (Resources.NotFoundException e) {
+                icon = ContextCompat.getDrawable(context, R.drawable.ic_launcher);
+            }
 
             RequestItem appInfo = new RequestItem(
                     info.loadLabel(mPackageManager).toString(),
@@ -158,7 +164,12 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
                             ResolveInfo info = getResolveInfo(gComponentString(xmlParser));
 
                             if (info != null) {
-                                Drawable icon = info.loadIcon(mPackageManager);
+                                Drawable icon;
+                                try {
+                                    icon = info.loadIcon(mPackageManager);
+                                } catch (Resources.NotFoundException e) {
+                                    icon = ContextCompat.getDrawable(context, R.drawable.ic_launcher);
+                                }
                                 RequestItem appInfo = new RequestItem(
                                         info.loadLabel(mPackageManager).toString(),
                                         info.activityInfo.packageName,

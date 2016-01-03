@@ -13,7 +13,6 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -76,10 +75,6 @@ public class WallpapersFragment extends Fragment {
 
         setHasOptionsMenu(true);
 
-        ActionBar toolbar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        if (toolbar != null)
-            toolbar.setTitle(R.string.section_four);
-
         context = (Activity) getActivity();
 
         if (layout != null) {
@@ -92,6 +87,14 @@ public class WallpapersFragment extends Fragment {
             layout = (ViewGroup) inflater.inflate(R.layout.wallpapers_section, container, false);
         } catch (InflateException e) {
 
+        }
+
+        if (ShowcaseActivity.toolbar != null) {
+            if (ShowcaseActivity.toolbar.getTitle() != null &&
+                    !ShowcaseActivity.toolbar.getTitle().equals(
+                            Util.getStringFromResources(getActivity(), R.string.section_four))) {
+                ShowcaseActivity.toolbar.setTitle(R.string.section_four);
+            }
         }
 
         noConnection = (ImageView) layout.findViewById(R.id.no_connected_icon);

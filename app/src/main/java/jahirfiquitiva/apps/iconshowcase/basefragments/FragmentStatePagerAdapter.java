@@ -176,8 +176,10 @@ public abstract class FragmentStatePagerAdapter extends PagerAdapter {
                     int index = Integer.parseInt(key.substring(1));
                     Fragment f = mFragmentManager.getFragment(bundle, key);
                     if (f != null) {
-                        while (mFragments.size() <= index) {
-                            mFragments.add(null);
+                        if (mFragments != null) {
+                            while (mFragments.size() <= index) {
+                                mFragments.add(null);
+                            }
                         }
                         f.setMenuVisibility(false);
                         mFragments.set(index, f);

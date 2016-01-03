@@ -22,8 +22,6 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.afollestad.assent.Assent;
-import com.afollestad.assent.AssentCallback;
-import com.afollestad.assent.PermissionResultSet;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
@@ -54,7 +52,9 @@ import jahirfiquitiva.apps.iconshowcase.utilities.Util;
 public class ShowcaseActivity extends AppCompatActivity
         implements FolderSelectorDialog.FolderSelectCallback {
 
-    private static final boolean WITH_LICENSE_CHECKER = false, WITH_INSTALLED_FROM_AMAZON = false;
+    private static final boolean WITH_LICENSE_CHECKER = false,
+            WITH_INSTALLED_FROM_AMAZON = false,
+            WITH_ZOOPER_SECTION = false;
 
     private static final String MARKET_URL = "https://play.google.com/store/apps/details?id=";
 
@@ -133,13 +133,13 @@ public class ShowcaseActivity extends AppCompatActivity
             if (iconPicker || imagePicker) {
                 switchFragment(2, thaPreviews, "Previews", context);
                 drawer.setSelection(2);
-            } else if (wallsPicker) {
+            } else if (wallsPicker && mPrefs.areFeaturesEnabled()) {
                 switchFragment(3, thaWalls, "Wallpapers", context);
                 drawer.setSelection(3);
             } else {
                 if (mPrefs.getSettingsModified()) {
-                    switchFragment(8, thaSettings, "Settings", context);
-                    drawer.setSelection(8);
+                    switchFragment(9, thaSettings, "Settings", context);
+                    drawer.setSelection(9);
                 } else {
                     currentItem = -1;
                     drawer.setSelection(1);
@@ -314,24 +314,24 @@ public class ShowcaseActivity extends AppCompatActivity
         Assent.handleResult(permissions, grantResults);
     }
 
-    private void addItemsToDrawer() {
-        IDrawerItem walls = new PrimaryDrawerItem().withName(thaWalls).withIcon(GoogleMaterial.Icon.gmd_landscape).withIdentifier(3);
-        IDrawerItem request = new PrimaryDrawerItem().withName(thaRequest).withIcon(GoogleMaterial.Icon.gmd_comment_list).withIdentifier(4);
-        if (mPrefs.areFeaturesEnabled()) {
-            drawer.addItemAtPosition(walls, 3);
-            drawer.addItemAtPosition(request, 4);
+    private void removeItemsFromDrawer() {
+        if (!mPrefs.areFeaturesEnabled()) {
+            drawer.removeItem(3);
+            drawer.removeItem(4);
         }
     }
 
     private void runLicenseChecker() {
         mPrefs.setSettingsModified(false);
+        if (!WITH_ZOOPER_SECTION) {
+            drawer.removeItem(7);
+        }
         mPrefs.setFirstRun(getSharedPreferences("PrefsFile", MODE_PRIVATE).getBoolean("first_run", true));
         if (mPrefs.isFirstRun()) {
             if (WITH_LICENSE_CHECKER) {
                 checkLicense();
             } else {
                 mPrefs.setFeaturesEnabled(true);
-                addItemsToDrawer();
                 showChangelogDialog();
             }
             mPrefs.setFirstRun(false);
@@ -340,13 +340,12 @@ public class ShowcaseActivity extends AppCompatActivity
         } else {
             if (WITH_LICENSE_CHECKER) {
                 if (!mPrefs.areFeaturesEnabled()) {
+                    removeItemsFromDrawer();
                     showNotLicensedDialog();
                 } else {
-                    addItemsToDrawer();
                     showChangelogDialog();
                 }
             } else {
-                addItemsToDrawer();
                 showChangelogDialog();
             }
         }
@@ -357,30 +356,6 @@ public class ShowcaseActivity extends AppCompatActivity
                 .title(R.string.changelog_dialog_title)
                 .adapter(new ChangelogAdapter(this, R.array.fullchangelog), null)
                 .positiveText(R.string.great)
-                .dismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        if (!Assent.isPermissionGranted(Assent.WRITE_EXTERNAL_STORAGE)) {
-                            Assent.requestPermissions(new AssentCallback() {
-                                @Override
-                                public void onPermissionResult(PermissionResultSet result) {
-                                }
-                            }, 69, Assent.WRITE_EXTERNAL_STORAGE);
-                        }
-                    }
-                })
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
-                        if (!Assent.isPermissionGranted(Assent.WRITE_EXTERNAL_STORAGE)) {
-                            Assent.requestPermissions(new AssentCallback() {
-                                @Override
-                                public void onPermissionResult(PermissionResultSet result) {
-                                }
-                            }, 69, Assent.WRITE_EXTERNAL_STORAGE);
-                        }
-                    }
-                })
                 .show();
     }
 
@@ -411,7 +386,6 @@ public class ShowcaseActivity extends AppCompatActivity
                             @Override
                             public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
                                 mPrefs.setFeaturesEnabled(true);
-                                addItemsToDrawer();
                                 showChangelogDialog();
                             }
                         })
@@ -425,12 +399,12 @@ public class ShowcaseActivity extends AppCompatActivity
                             @Override
                             public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
                                 mPrefs.setFeaturesEnabled(true);
-                                addItemsToDrawer();
                                 showChangelogDialog();
                             }
                         })
                         .show();
             } else {
+                removeItemsFromDrawer();
                 showNotLicensedDialog();
             }
         } catch (Exception e) {
@@ -523,6 +497,8 @@ public class ShowcaseActivity extends AppCompatActivity
                     .addDrawerItems(
                             new PrimaryDrawerItem().withName(thaHome).withIcon(GoogleMaterial.Icon.gmd_home).withIdentifier(1),
                             new PrimaryDrawerItem().withName(thaPreviews).withIcon(GoogleMaterial.Icon.gmd_palette).withIdentifier(2),
+                            new PrimaryDrawerItem().withName(thaWalls).withIcon(GoogleMaterial.Icon.gmd_landscape).withIdentifier(3),
+                            new PrimaryDrawerItem().withName(thaRequest).withIcon(GoogleMaterial.Icon.gmd_comment_list).withIdentifier(4),
                             new PrimaryDrawerItem().withName(thaApply).withIcon(GoogleMaterial.Icon.gmd_open_in_browser).withIdentifier(5),
                             new PrimaryDrawerItem().withName(thaFAQs).withIcon(GoogleMaterial.Icon.gmd_help).withIdentifier(6),
                             new PrimaryDrawerItem().withName(thaZooper).withIcon(GoogleMaterial.Icon.gmd_widgets).withIdentifier(7),
@@ -577,6 +553,8 @@ public class ShowcaseActivity extends AppCompatActivity
                     .addDrawerItems(
                             new PrimaryDrawerItem().withName(thaHome).withIcon(GoogleMaterial.Icon.gmd_home).withIdentifier(1),
                             new PrimaryDrawerItem().withName(thaPreviews).withIcon(GoogleMaterial.Icon.gmd_palette).withIdentifier(2),
+                            new PrimaryDrawerItem().withName(thaWalls).withIcon(GoogleMaterial.Icon.gmd_landscape).withIdentifier(3),
+                            new PrimaryDrawerItem().withName(thaRequest).withIcon(GoogleMaterial.Icon.gmd_comment_list).withIdentifier(4),
                             new PrimaryDrawerItem().withName(thaApply).withIcon(GoogleMaterial.Icon.gmd_open_in_browser).withIdentifier(5),
                             new PrimaryDrawerItem().withName(thaFAQs).withIcon(GoogleMaterial.Icon.gmd_help).withIdentifier(6),
                             new PrimaryDrawerItem().withName(thaZooper).withIcon(GoogleMaterial.Icon.gmd_widgets).withIdentifier(7),
@@ -666,30 +644,6 @@ public class ShowcaseActivity extends AppCompatActivity
                 .title(R.string.changelog)
                 .customView(R.layout.icons_changelog, false)
                 .positiveText(getResources().getString(R.string.close))
-                .dismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        if (!Assent.isPermissionGranted(Assent.WRITE_EXTERNAL_STORAGE)) {
-                            Assent.requestPermissions(new AssentCallback() {
-                                @Override
-                                public void onPermissionResult(PermissionResultSet result) {
-                                }
-                            }, 69, Assent.WRITE_EXTERNAL_STORAGE);
-                        }
-                    }
-                })
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
-                        if (!Assent.isPermissionGranted(Assent.WRITE_EXTERNAL_STORAGE)) {
-                            Assent.requestPermissions(new AssentCallback() {
-                                @Override
-                                public void onPermissionResult(PermissionResultSet result) {
-                                }
-                            }, 69, Assent.WRITE_EXTERNAL_STORAGE);
-                        }
-                    }
-                })
                 .build();
 
         RecyclerView iconsGrid = (RecyclerView) dialog.getCustomView().findViewById(R.id.changelogRV);

@@ -14,13 +14,6 @@
 
     <include
         android:id="@+id/jahirCredits"
-        layout="@layout/card_developer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"/>
-
-    <include
-        android:id="@+id/supportDev"
-        layout="@layout/card_support_development"/>
+        layout="@layout/card_developer"/>
 
 </LinearLayout>

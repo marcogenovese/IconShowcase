@@ -16,7 +16,6 @@ import android.os.Environment;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -48,7 +47,6 @@ public class SettingsFragment extends PreferenceFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
 
         context = getActivity();
 
@@ -60,10 +58,9 @@ public class SettingsFragment extends PreferenceFragment {
 
         mPrefs.setSettingsModified(false);
 
-        ActionBar toolbar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        if (toolbar != null) {
-            if (toolbar.getTitle() != null && !toolbar.getTitle().equals(settingsTitle)) {
-                toolbar.setTitle(settingsTitle);
+        if (ShowcaseActivity.toolbar != null) {
+            if (ShowcaseActivity.toolbar.getTitle() != null && !ShowcaseActivity.toolbar.getTitle().equals(settingsTitle)) {
+                ShowcaseActivity.toolbar.setTitle(settingsTitle);
             }
         }
 
@@ -83,6 +80,12 @@ public class SettingsFragment extends PreferenceFragment {
         componentName = new ComponentName(getActivity(), ShowcaseActivity.class);
 
         addPreferencesFromResource(R.xml.preferences);
+
+        if (ShowcaseActivity.toolbar != null) {
+            if (ShowcaseActivity.toolbar.getTitle() != null && !ShowcaseActivity.toolbar.getTitle().equals(settingsTitle)) {
+                ShowcaseActivity.toolbar.setTitle(settingsTitle);
+            }
+        }
 
         WSL = findPreference("wallsSaveLocation");
         WSL.setSummary(getResources().getString(R.string.pref_summary_wsl, location));

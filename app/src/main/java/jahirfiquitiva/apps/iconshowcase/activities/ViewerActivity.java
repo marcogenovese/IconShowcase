@@ -44,7 +44,7 @@ import jahirfiquitiva.apps.iconshowcase.views.TouchImageView;
 
 public class ViewerActivity extends AppCompatActivity {
 
-    private boolean mLastTheme, mLastNavBar, permissionGranted;
+    private boolean mLastTheme, mLastNavBar;
 
     public static final String EXTRA_CURRENT_ITEM_POSITION = "extra_current_item_position";
     private int mIndex;
@@ -74,7 +74,6 @@ public class ViewerActivity extends AppCompatActivity {
         mPrefs = new Preferences(ViewerActivity.this);
 
         Assent.setActivity(this, this);
-        permissionGranted = Assent.isPermissionGranted(Assent.WRITE_EXTERNAL_STORAGE);
 
         Intent intent = getIntent();
         mIndex = intent.getIntExtra(EXTRA_CURRENT_ITEM_POSITION, 1);
@@ -104,18 +103,25 @@ public class ViewerActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setTitle(wallName);
-            getSupportActionBar().setSubtitle(wallAuthor);
+            getSupportActionBar().setSubtitle(getResources().getString(R.string.wallpaper_by,
+                    wallAuthor));
         }
 
         fab = (FloatingActionButton) findViewById(R.id.walls_btn);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!permissionGranted) {
+                if (!Assent.isPermissionGranted(Assent.WRITE_EXTERNAL_STORAGE)) {
                     Assent.requestPermissions(new AssentCallback() {
                         @Override
                         public void onPermissionResult(PermissionResultSet result) {
-                            permissionGranted = result.isGranted(Assent.WRITE_EXTERNAL_STORAGE);
+                            if (result.isGranted(Assent.WRITE_EXTERNAL_STORAGE)) {
+                                if (Util.hasNetwork(context)) {
+                                    showOptions();
+                                } else {
+                                    showNotConnectedSnackBar(fab, context);
+                                }
+                            }
                         }
                     }, 69, Assent.WRITE_EXTERNAL_STORAGE);
                 } else {

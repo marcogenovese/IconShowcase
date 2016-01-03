@@ -34,6 +34,8 @@
     <dimen name="icons_preview_row">0dp</dimen>
     <dimen name="welcome_card_content_padding">12dp</dimen>
 
+    <dimen name="icons_changelog_max_height">384dp</dimen>
+
     <!-- Dimensions for some dialogs -->
     <dimen name="dialog_margin">24dp</dimen>
     <dimen name="dialog_margin_bottom">16dp</dimen>

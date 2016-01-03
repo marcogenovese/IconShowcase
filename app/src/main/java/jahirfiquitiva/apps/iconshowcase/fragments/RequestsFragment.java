@@ -5,8 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.InflateException;
@@ -15,16 +13,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.afollestad.assent.Assent;
+import com.afollestad.assent.AssentCallback;
+import com.afollestad.assent.PermissionResultSet;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.melnykov.fab.FloatingActionButton;
 import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 
 import jahirfiquitiva.apps.iconshowcase.R;
+import jahirfiquitiva.apps.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.apps.iconshowcase.adapters.RequestsAdapter;
 import jahirfiquitiva.apps.iconshowcase.tasks.ZipFilesToRequest;
 import jahirfiquitiva.apps.iconshowcase.utilities.ApplicationBase;
 import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
+import jahirfiquitiva.apps.iconshowcase.utilities.Util;
 import jahirfiquitiva.apps.iconshowcase.views.GridSpacingItemDecoration;
 
 public class RequestsFragment extends Fragment {
@@ -51,10 +54,6 @@ public class RequestsFragment extends Fragment {
 
         layout = (ViewGroup) inflater.inflate(R.layout.icon_request_section, container, false);
 
-        ActionBar toolbar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        if (toolbar != null)
-            toolbar.setTitle(R.string.section_five);
-
         context = getActivity();
 
         if (layout != null) {
@@ -66,6 +65,14 @@ public class RequestsFragment extends Fragment {
         try {
         } catch (InflateException e) {
             e.printStackTrace();
+        }
+
+        if (ShowcaseActivity.toolbar != null) {
+            if (ShowcaseActivity.toolbar.getTitle() != null &&
+                    !ShowcaseActivity.toolbar.getTitle().equals(
+                            Util.getStringFromResources(getActivity(), R.string.section_five))) {
+                ShowcaseActivity.toolbar.setTitle(R.string.section_five);
+            }
         }
 
         mPrefs = new Preferences(getActivity());
@@ -88,15 +95,32 @@ public class RequestsFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
-                        .content(R.string.building_request_dialog)
-                        .progress(true, 0)
-                        .cancelable(false)
-                        .show();
+                if (!Assent.isPermissionGranted(Assent.WRITE_EXTERNAL_STORAGE)) {
+                    Assent.requestPermissions(new AssentCallback() {
+                        @Override
+                        public void onPermissionResult(PermissionResultSet result) {
+                            if (result.isGranted(Assent.WRITE_EXTERNAL_STORAGE)) {
+                                final MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
+                                        .content(R.string.building_request_dialog)
+                                        .progress(true, 0)
+                                        .cancelable(false)
+                                        .show();
 
-                new ZipFilesToRequest(getActivity(), dialog,
-                        ((RequestsAdapter) mRecyclerView.getAdapter()).appsList).execute();
+                                new ZipFilesToRequest(getActivity(), dialog,
+                                        ((RequestsAdapter) mRecyclerView.getAdapter()).appsList).execute();
+                            }
+                        }
+                    }, 69, Assent.WRITE_EXTERNAL_STORAGE);
+                } else {
+                    final MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
+                            .content(R.string.building_request_dialog)
+                            .progress(true, 0)
+                            .cancelable(false)
+                            .show();
 
+                    new ZipFilesToRequest(getActivity(), dialog,
+                            ((RequestsAdapter) mRecyclerView.getAdapter()).appsList).execute();
+                }
             }
         });
 

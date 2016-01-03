@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayout;
 import android.view.InflateException;
@@ -43,10 +42,6 @@ public class MainFragment extends Fragment {
 
         mPrefs = new Preferences(getActivity());
 
-        ActionBar toolbar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        if (toolbar != null)
-            toolbar.setTitle(R.string.app_name);
-
         if (layout != null) {
             ViewGroup parent = (ViewGroup) layout.getParent();
             if (parent != null) {
@@ -57,6 +52,14 @@ public class MainFragment extends Fragment {
             layout = (ViewGroup) inflater.inflate(R.layout.main_section, container, false);
         } catch (InflateException e) {
 
+        }
+
+        if (ShowcaseActivity.toolbar != null) {
+            if (ShowcaseActivity.toolbar.getTitle() != null &&
+                    !ShowcaseActivity.toolbar.getTitle().equals(
+                            Util.getStringFromResources(getActivity(), R.string.app_name))) {
+                ShowcaseActivity.toolbar.setTitle(R.string.app_name);
+            }
         }
 
         final ImageView icon1 = (ImageView) layout.findViewById(R.id.iconOne);
@@ -107,9 +110,13 @@ public class MainFragment extends Fragment {
 
     private void setupIcons(final ImageView icon1, final ImageView icon2,
                             final ImageView icon3, final ImageView icon4) {
+
         icons = IconsLists.getPreviewAL();
         finalIconsList.clear();
-        Collections.shuffle(icons);
+
+        if (icons != null) {
+            Collections.shuffle(icons);
+        }
 
         int numOfIcons = getResources().getInteger(R.integer.icon_grid_width);
         int i = 0;

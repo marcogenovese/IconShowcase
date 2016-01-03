@@ -3,9 +3,7 @@
 
     <string name="dashboard_author_name">Jahir Fiquitiva</string>
     <string name="dashboard_author_website">http://www.jahirfiquitiva.net/</string>
-    <string name="dashboard_author_gplus">https://www.google.com/+JahirFiquitivaJDev</string>
     <string name="dashboard_author_gplus_community">https://plus.google.com/communities/117748118619432374563</string>
-    <string name="dashboard_author_playstore">https://play.google.com/store/apps/dev?id=7438639276314720952</string>
     <string name="dashboard_author_github">https://github.com/jahirfiquitiva/IconShowcase</string>
     <string name="dashboard_bugs_report">https://github.com/jahirfiquitiva/IconShowcase/issues</string>
 
@@ -42,32 +40,43 @@
     <string name="rv_fast_scroller_web">https://github.com/</string>
     <string name="rv_fast_scroller_name">RecyclerView FastScroller</string>
 
-
     <string name="rob_beane">Rob Beane</string>
     <string name="dani_mahardika">Dani Mahardika</string>
     <string name="tim_bremer">Tim Bremer</string>
     <string name="steve_albright">Steve Albright</string>
     <string name="karim">Karim Abou Zeid</string>
     <string name="sherry_link">https://plus.google.com/+SherrySabatine</string>
+    <string name="patryk">Patryk Goworowsky</string>
+    <string name="josh_gray">Josh Gray</string>
 
-    <string-array name="thanks_names">
+    <string-array name="collaborators_names">
         <item>@string/materialdialogs_author</item>
         <item>@string/materialdrawer_author</item>
-        <item>@string/rob_beane</item>
-        <item>@string/karim</item>
         <item>@string/dani_mahardika</item>
-        <item>@string/tim_bremer</item>
         <item>@string/steve_albright</item>
     </string-array>
 
-    <string-array name="thanks_links">
+    <string-array name="collaborators_links">
         <item>http://www.aidanfollestad.com/</item>
         <item>http://portfolio.mikepenz.com/</item>
+        <item>https://plus.google.com/+DaniMahardhika/posts</item>
+        <item>https://plus.google.com/111777412946608276908/auto</item>
+    </string-array>
+
+    <string-array name="ui_collaborators_names">
+        <item>@string/rob_beane</item>
+        <item>@string/karim</item>
+        <item>@string/tim_bremer</item>
+        <item>@string/josh_gray</item>
+        <item>@string/patryk</item>
+    </string-array>
+
+    <string-array name="ui_collaborators_links">
         <item>https://plus.google.com/111678887963556771807/auto</item>
         <item>https://plus.google.com/103202379000002144026/auto</item>
-        <item>https://plus.google.com/+DaniMahardhika/posts</item>
         <item>https://plus.google.com/114641367439276138127/auto</item>
-        <item>https://plus.google.com/111777412946608276908/auto</item>
+        <item>https://plus.google.com/+JoshGray1789/posts</item>
+        <item>https://plus.google.com/109304801957014561872/posts</item>
     </string-array>
 
     <string-array name="libs_names">

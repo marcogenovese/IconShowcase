@@ -4,8 +4,6 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +17,7 @@ import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 
 import jahirfiquitiva.apps.iconshowcase.R;
+import jahirfiquitiva.apps.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.apps.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.apps.iconshowcase.utilities.Util;
 
@@ -27,29 +26,25 @@ public class CreditsFragment extends Fragment {
     private Context context;
     private ViewGroup layout;
     Drawable person, facebook, gplus, twitter, website, youtube, community, playstore, github,
-            bugs, donate, thanksIcon, libs, sherryIcon;
+            bugs, donate, collaboratorsIcon, libs, uiCollaboratorsIcon, sherryIcon;
     ImageView iconAuthor, iconDev, iconAuthorFacebook, iconAuthorGPlus, iconAuthorCommunity,
-            youtubeIcon, twitterIcon, playStoreIcon, iconAuthorWebsite, iconDevGPlus,
-            iconDevGitHub, iconDevWebsite, donateIcon, bugIcon, iconDevCommunity, thanksIV,
-            libsIcon, sherryIV, iconDevPlayStore;
-    View jahir;
-    LinearLayout authorFB, authorGPlus, authorTwitter, authorWebsite, authorYouTube,
-            authorCommunity, authorPlayStore, devGitHub, devGPlus, devWebsite, libraries,
-            thanksSherry, specialThanks, devPlayStore, donateL, bugsL, communityL;
-    boolean withCreditsToDeveloper = true,
-            withLinkToFacebook, withLinkToTwitter, withLinkToGPlus, withLinkToYouTube,
-            withLinkToCommunity, withLinkToPlayStore, withLinkToDonate, withLinkToWebsite;
-    String[] libsLinks, thanksLinks;
+            youtubeIcon, twitterIcon, playStoreIcon, iconAuthorWebsite, uiCollaboratorsIV,
+            iconDevGitHub, iconDevCommunity, donateIcon, bugIcon, collaboratorsIV, libsIcon, sherryIV;
+    LinearLayout jahirL, authorFB, authorGPlus, authorTwitter, authorWebsite, authorYouTube,
+            authorCommunity, authorPlayStore, devGitHub, libraries, uiCollaborators,
+            thanksSherry, collaboratorLayout, donateL, bugsL, communityL;
+    boolean withLinkToFacebook, withLinkToTwitter, withLinkToGPlus, withLinkToYouTube,
+            withLinkToCommunity, withLinkToPlayStore, withLinkToWebsite;
+    String[] libsLinks, collaboratorsLinks, uiCollaboratorsLinks;
 
     private void setupBooleans() {
-        withLinkToFacebook = true;
+        withLinkToFacebook = false;
         withLinkToTwitter = true;
         withLinkToGPlus = true;
-        withLinkToYouTube = true;
+        withLinkToYouTube = false;
         withLinkToCommunity = true;
         withLinkToPlayStore = true;
-        withLinkToDonate = true;
-        withLinkToWebsite = true;
+        withLinkToWebsite = false;
     }
 
     @Override
@@ -60,11 +55,8 @@ public class CreditsFragment extends Fragment {
         setupBooleans();
 
         libsLinks = context.getResources().getStringArray(R.array.libs_links);
-        thanksLinks = context.getResources().getStringArray(R.array.thanks_links);
-
-        ActionBar toolbar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        if (toolbar != null)
-            toolbar.setTitle(R.string.section_six);
+        collaboratorsLinks = context.getResources().getStringArray(R.array.collaborators_links);
+        uiCollaboratorsLinks = context.getResources().getStringArray(R.array.ui_collaborators_links);
 
         if (layout != null) {
             ViewGroup parent = (ViewGroup) layout.getParent();
@@ -78,15 +70,21 @@ public class CreditsFragment extends Fragment {
 
         }
 
+        if (ShowcaseActivity.toolbar != null) {
+            if (ShowcaseActivity.toolbar.getTitle() != null &&
+                    !ShowcaseActivity.toolbar.getTitle().equals(Util.getStringFromResources(context, R.string.section_six))) {
+                ShowcaseActivity.toolbar.setTitle(R.string.section_six);
+            }
+        }
+
         setupViewsIDs(layout);
-        setupJahirCredits();
         setupLayout(getActivity());
+        setupExtraAuthorOptions();
 
         return layout;
     }
 
     private void setupViewsIDs(final ViewGroup layout) {
-        jahir = layout.findViewById(R.id.jahirCredits);
         iconAuthor = (ImageView) layout.findViewById(R.id.icon_author);
         iconDev = (ImageView) layout.findViewById(R.id.icon_dev);
         iconAuthorFacebook = (ImageView) layout.findViewById(R.id.icon_facebook_author);
@@ -96,16 +94,23 @@ public class CreditsFragment extends Fragment {
         twitterIcon = (ImageView) layout.findViewById(R.id.icon_twitter);
         playStoreIcon = (ImageView) layout.findViewById(R.id.icon_play_store);
         iconAuthorWebsite = (ImageView) layout.findViewById(R.id.icon_website_author);
-        iconDevGPlus = (ImageView) layout.findViewById(R.id.icon_google_plus);
         iconDevGitHub = (ImageView) layout.findViewById(R.id.icon_github);
-        iconDevWebsite = (ImageView) layout.findViewById(R.id.icon_website);
         donateIcon = (ImageView) layout.findViewById(R.id.icon_donate);
         bugIcon = (ImageView) layout.findViewById(R.id.icon_bug_report);
-        iconDevCommunity = (ImageView) layout.findViewById(R.id.icon_google_plus_community);
         libsIcon = (ImageView) layout.findViewById(R.id.icon_libs);
-        thanksIV = (ImageView) layout.findViewById(R.id.icon_thanks);
+        collaboratorsIV = (ImageView) layout.findViewById(R.id.icon_collaborators);
         sherryIV = (ImageView) layout.findViewById(R.id.icon_sherry);
-        iconDevPlayStore = (ImageView) layout.findViewById(R.id.icon_dev_playstore);
+        uiCollaboratorsIV = (ImageView) layout.findViewById(R.id.icon_ui_design);
+        iconDevCommunity = (ImageView) layout.findViewById(R.id.icon_google_plus_community);
+
+        jahirL = (LinearLayout) layout.findViewById(R.id.devName);
+        jahirL.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Util.openLinkInChromeCustomTab(context,
+                        Util.getStringFromResources(context, R.string.dashboard_author_website));
+            }
+        });
 
         authorFB = (LinearLayout) layout.findViewById(R.id.author_facebook);
         authorFB.setOnClickListener(new View.OnClickListener() {
@@ -180,15 +185,6 @@ public class CreditsFragment extends Fragment {
             }
         });
 
-        devPlayStore = (LinearLayout) layout.findViewById(R.id.dev_playstore);
-        devPlayStore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Util.openLinkInChromeCustomTab(context,
-                        getResources().getString(R.string.dashboard_author_playstore));
-            }
-        });
-
         devGitHub = (LinearLayout) layout.findViewById(R.id.dev_github);
         devGitHub.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -198,25 +194,7 @@ public class CreditsFragment extends Fragment {
             }
         });
 
-        devGPlus = (LinearLayout) layout.findViewById(R.id.dev_google_plus);
-        devGPlus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Util.openLinkInChromeCustomTab(context,
-                        getResources().getString(R.string.dashboard_author_gplus));
-            }
-        });
-
-        devWebsite = (LinearLayout) layout.findViewById(R.id.dev_website);
-        devWebsite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Util.openLinkInChromeCustomTab(context,
-                        getResources().getString(R.string.dashboard_author_website));
-            }
-        });
-
-        thanksSherry = (LinearLayout) layout.findViewById(R.id.thanksSherry);
+        thanksSherry = (LinearLayout) layout.findViewById(R.id.collaboratorsSherry);
         thanksSherry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -233,6 +211,24 @@ public class CreditsFragment extends Fragment {
                             }
                         })
                         .show();
+            }
+        });
+
+        uiCollaborators = (LinearLayout) layout.findViewById(R.id.uiDesign);
+        uiCollaborators.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new MaterialDialog.Builder(context)
+                        .title(R.string.ui_design)
+                        .negativeText(R.string.close)
+                        .items(R.array.ui_collaborators_names)
+                        .itemsCallback(new MaterialDialog.ListCallback() {
+                            @Override
+                            public void onSelection(MaterialDialog materialDialog, View view,
+                                                    final int i, CharSequence charSequence) {
+                                Util.openLinkInChromeCustomTab(context, uiCollaboratorsLinks[i]);
+                            }
+                        }).show();
             }
         });
 
@@ -254,19 +250,19 @@ public class CreditsFragment extends Fragment {
             }
         });
 
-        specialThanks = (LinearLayout) layout.findViewById(R.id.thanks);
-        specialThanks.setOnClickListener(new View.OnClickListener() {
+        collaboratorLayout = (LinearLayout) layout.findViewById(R.id.collaborators);
+        collaboratorLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new MaterialDialog.Builder(context)
-                        .title(R.string.special_thanks_to)
+                        .title(R.string.collaborators)
                         .negativeText(R.string.close)
-                        .items(R.array.thanks_names)
+                        .items(R.array.collaborators_names)
                         .itemsCallback(new MaterialDialog.ListCallback() {
                             @Override
                             public void onSelection(MaterialDialog materialDialog, View view,
                                                     final int i, CharSequence charSequence) {
-                                Util.openLinkInChromeCustomTab(context, thanksLinks[i]);
+                                Util.openLinkInChromeCustomTab(context, collaboratorsLinks[i]);
                             }
                         }).show();
             }
@@ -359,8 +355,8 @@ public class CreditsFragment extends Fragment {
                 .color(ThemeUtils.darkTheme ? light : dark)
                 .sizeDp(24);
 
-        thanksIcon = new IconicsDrawable(context)
-                .icon(GoogleMaterial.Icon.gmd_thumb_up)
+        collaboratorsIcon = new IconicsDrawable(context)
+                .icon(GoogleMaterial.Icon.gmd_code)
                 .color(ThemeUtils.darkTheme ? light : dark)
                 .sizeDp(24);
 
@@ -374,6 +370,11 @@ public class CreditsFragment extends Fragment {
                 .color(ThemeUtils.darkTheme ? light : dark)
                 .sizeDp(24);
 
+        uiCollaboratorsIcon = new IconicsDrawable(context)
+                .icon(GoogleMaterial.Icon.gmd_palette)
+                .color(ThemeUtils.darkTheme ? light : dark)
+                .sizeDp(24);
+
         iconAuthor.setImageDrawable(person);
         iconDev.setImageDrawable(person);
         iconAuthorGPlus.setImageDrawable(gplus);
@@ -382,24 +383,27 @@ public class CreditsFragment extends Fragment {
         twitterIcon.setImageDrawable(twitter);
         playStoreIcon.setImageDrawable(playstore);
         iconAuthorWebsite.setImageDrawable(website);
-        iconDevGPlus.setImageDrawable(gplus);
         iconDevGitHub.setImageDrawable(github);
-        iconDevWebsite.setImageDrawable(website);
         donateIcon.setImageDrawable(donate);
         bugIcon.setImageDrawable(bugs);
-        iconDevCommunity.setImageDrawable(community);
         iconAuthorFacebook.setImageDrawable(facebook);
         libsIcon.setImageDrawable(libs);
-        thanksIV.setImageDrawable(thanksIcon);
+        collaboratorsIV.setImageDrawable(collaboratorsIcon);
         sherryIV.setImageDrawable(sherryIcon);
-        iconDevPlayStore.setImageDrawable(playstore);
+        uiCollaboratorsIV.setImageDrawable(uiCollaboratorsIcon);
+        iconDevCommunity.setImageDrawable(community);
 
     }
 
-    private void setupJahirCredits() {
-        if (!withCreditsToDeveloper) {
-            jahir.setVisibility(View.GONE);
-        }
+    private void setupExtraAuthorOptions() {
+        authorFB.setVisibility(withLinkToFacebook ? View.VISIBLE : View.GONE);
+        authorTwitter.setVisibility(withLinkToTwitter ? View.VISIBLE : View.GONE);
+        authorGPlus.setVisibility(withLinkToGPlus ? View.VISIBLE : View.GONE);
+        authorYouTube.setVisibility(withLinkToYouTube ? View.VISIBLE : View.GONE);
+        authorCommunity.setVisibility(withLinkToCommunity ? View.VISIBLE : View.GONE);
+        authorPlayStore.setVisibility(withLinkToPlayStore ? View.VISIBLE : View.GONE);
+        authorWebsite.setVisibility(withLinkToWebsite ? View.VISIBLE : View.GONE);
+
     }
 
 }

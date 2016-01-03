@@ -8,8 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.InflateException;
@@ -25,8 +23,10 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import jahirfiquitiva.apps.iconshowcase.R;
+import jahirfiquitiva.apps.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.apps.iconshowcase.basefragments.FragmentStatePagerAdapter;
 import jahirfiquitiva.apps.iconshowcase.models.IconsLists;
+import jahirfiquitiva.apps.iconshowcase.utilities.Util;
 
 public class PreviewsFragment extends Fragment {
 
@@ -40,10 +40,6 @@ public class PreviewsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        ActionBar toolbar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        if (toolbar != null)
-            toolbar.setTitle(R.string.section_two);
-
         if (layout != null) {
             ViewGroup parent = (ViewGroup) layout.getParent();
             if (parent != null) {
@@ -54,6 +50,14 @@ public class PreviewsFragment extends Fragment {
             layout = (ViewGroup) inflater.inflate(R.layout.icons_preview_section, container, false);
         } catch (InflateException e) {
 
+        }
+
+        if (ShowcaseActivity.toolbar != null) {
+            if (ShowcaseActivity.toolbar.getTitle() != null &&
+                    !ShowcaseActivity.toolbar.getTitle().equals(
+                            Util.getStringFromResources(getActivity(), R.string.section_two))) {
+                ShowcaseActivity.toolbar.setTitle(R.string.section_two);
+            }
         }
 
         mPager = (ViewPager) layout.findViewById(R.id.pager);
@@ -100,13 +104,6 @@ public class PreviewsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        setRetainInstance(true);
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroy();
-        mTabs.setVisibility(View.GONE);
     }
 
     @Override

@@ -27,8 +27,11 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
 
         <LinearLayout
+            android:id="@+id/devName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
+            android:clickable="true"
             android:gravity="center_vertical"
             android:minHeight="@dimen/md_listitem_height"
             android:orientation="horizontal"
@@ -67,66 +70,6 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/dev_google_plus"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?selectableItemBackground"
-            android:clickable="true"
-            android:gravity="center_vertical"
-            android:minHeight="@dimen/md_listitem_height"
-            android:orientation="horizontal"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp">
-
-            <ImageView
-                android:id="@+id/icon_google_plus"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                tools:ignore="ContentDescription"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="24dp"
-                android:layout_marginStart="24dp"
-                android:paddingBottom="8dp"
-                android:paddingTop="8dp"
-                android:text="@string/google_plus"
-                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/dev_playstore"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?selectableItemBackground"
-            android:clickable="true"
-            android:gravity="center_vertical"
-            android:minHeight="@dimen/md_listitem_height"
-            android:orientation="horizontal"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp">
-
-            <ImageView
-                android:id="@+id/icon_dev_playstore"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                tools:ignore="ContentDescription"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="24dp"
-                android:layout_marginStart="24dp"
-                android:paddingBottom="8dp"
-                android:paddingTop="8dp"
-                android:text="@string/play_store"
-                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
-
-        </LinearLayout>
-
-        <LinearLayout
             android:id="@+id/dev_github"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -157,37 +100,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/dev_website"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?selectableItemBackground"
-            android:clickable="true"
-            android:gravity="center_vertical"
-            android:minHeight="@dimen/md_listitem_height"
-            android:orientation="horizontal"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp">
-
-            <ImageView
-                android:id="@+id/icon_website"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                tools:ignore="ContentDescription"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="24dp"
-                android:layout_marginStart="24dp"
-                android:paddingBottom="8dp"
-                android:paddingTop="8dp"
-                android:text="@string/visit_website"
-                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/thanksSherry"
+            android:id="@+id/collaboratorsSherry"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?selectableItemBackground"
@@ -217,7 +130,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/thanks"
+            android:id="@+id/collaborators"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?selectableItemBackground"
@@ -229,7 +142,7 @@
             android:paddingRight="16dp">
 
             <ImageView
-                android:id="@+id/icon_thanks"
+                android:id="@+id/icon_collaborators"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 tools:ignore="ContentDescription"/>
@@ -241,7 +154,37 @@
                 android:layout_marginStart="24dp"
                 android:paddingBottom="8dp"
                 android:paddingTop="8dp"
-                android:text="@string/special_thanks_to"
+                android:text="@string/collaborators"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/uiDesign"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:minHeight="@dimen/md_listitem_height"
+            android:orientation="horizontal"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+            <ImageView
+                android:id="@+id/icon_ui_design"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                tools:ignore="ContentDescription"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="24dp"
+                android:layout_marginStart="24dp"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp"
+                android:text="@string/ui_design"
                 android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
 
         </LinearLayout>
@@ -273,6 +216,132 @@
                 android:paddingTop="8dp"
                 android:text="@string/implemented_libraries"
                 android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/donate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:minHeight="@dimen/md_listitem_height"
+            android:orientation="horizontal"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+            <ImageView
+                android:id="@+id/icon_donate"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                tools:ignore="ContentDescription"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="24dp"
+                android:layout_marginStart="24dp"
+                android:orientation="vertical"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/donate"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/donate_summary"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/report_bugs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:minHeight="@dimen/md_listitem_height"
+            android:orientation="horizontal"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+            <ImageView
+                android:id="@+id/icon_bug_report"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                tools:ignore="ContentDescription"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="24dp"
+                android:layout_marginStart="24dp"
+                android:orientation="vertical"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/report_bugs"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/report_bugs_summary"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/join_google_plus_community"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:minHeight="@dimen/md_listitem_height"
+            android:orientation="horizontal"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+            <ImageView
+                android:id="@+id/icon_google_plus_community"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                tools:ignore="ContentDescription"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="24dp"
+                android:layout_marginStart="24dp"
+                android:orientation="vertical"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/join_community"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/join_community_summary"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
+            </LinearLayout>
 
         </LinearLayout>
 

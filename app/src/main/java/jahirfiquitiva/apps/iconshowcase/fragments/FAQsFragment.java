@@ -6,8 +6,6 @@ package jahirfiquitiva.apps.iconshowcase.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,8 +20,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jahirfiquitiva.apps.iconshowcase.R;
+import jahirfiquitiva.apps.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.apps.iconshowcase.adapters.FAQsAdapter;
 import jahirfiquitiva.apps.iconshowcase.models.FAQsItem;
+import jahirfiquitiva.apps.iconshowcase.utilities.Util;
 import jahirfiquitiva.apps.iconshowcase.views.DividerItemDecoration;
 
 public class FAQsFragment extends Fragment {
@@ -40,10 +40,6 @@ public class FAQsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
 
-        ActionBar toolbar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        if (toolbar != null)
-            toolbar.setTitle(R.string.faqs_section);
-
         if (layout != null) {
             ViewGroup parent = (ViewGroup) layout.getParent();
             if (parent != null) {
@@ -54,6 +50,14 @@ public class FAQsFragment extends Fragment {
             layout = (ViewGroup) inflater.inflate(R.layout.faqs_section, container, false);
         } catch (InflateException e) {
 
+        }
+
+        if (ShowcaseActivity.toolbar != null) {
+            if (ShowcaseActivity.toolbar.getTitle() != null &&
+                    !ShowcaseActivity.toolbar.getTitle().equals(
+                            Util.getStringFromResources(getActivity(), R.string.faqs_section))) {
+                ShowcaseActivity.toolbar.setTitle(R.string.faqs_section);
+            }
         }
 
         questions = getResources().getStringArray(R.array.questions);
