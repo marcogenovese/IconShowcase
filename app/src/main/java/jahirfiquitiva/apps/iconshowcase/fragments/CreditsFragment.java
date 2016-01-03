@@ -113,10 +113,10 @@ public class CreditsFragment extends Fragment {
             public void onClick(View v) {
                 if (Util.isAppInstalled(context, "com.facebook.katana")) {
                     Util.openLink(context,
-                            Util.getStringFromResources(context, R.string.iconpack_author_fb));
+                            getResources().getString(R.string.iconpack_author_fb));
                 } else {
                     Util.openLinkInChromeCustomTab(context,
-                            Util.getStringFromResources(context, R.string.iconpack_author_fb_alt));
+                            getResources().getString(R.string.iconpack_author_fb_alt));
                 }
             }
         });
@@ -126,7 +126,7 @@ public class CreditsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Util.openLinkInChromeCustomTab(context,
-                        Util.getStringFromResources(context, R.string.iconpack_author_gplus));
+                        getResources().getString(R.string.iconpack_author_gplus));
             }
         });
 
@@ -136,10 +136,10 @@ public class CreditsFragment extends Fragment {
             public void onClick(View v) {
                 try {
                     Util.openLink(context,
-                            Util.getStringFromResources(context, R.string.iconpack_author_twitter));
+                            getResources().getString(R.string.iconpack_author_twitter));
                 } catch (Exception e) {
                     Util.openLink(context,
-                            Util.getStringFromResources(context, R.string.iconpack_author_twitter_alt));
+                            getResources().getString(R.string.iconpack_author_twitter_alt));
                 }
             }
         });
@@ -149,7 +149,7 @@ public class CreditsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Util.openLinkInChromeCustomTab(context,
-                        Util.getStringFromResources(context, R.string.iconpack_author_website));
+                        getResources().getString(R.string.iconpack_author_website));
             }
         });
 
@@ -158,7 +158,7 @@ public class CreditsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Util.openLinkInChromeCustomTab(context,
-                        Util.getStringFromResources(context, R.string.iconpack_author_youtube));
+                        getResources().getString(R.string.iconpack_author_youtube));
             }
         });
 
@@ -167,7 +167,7 @@ public class CreditsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Util.openLinkInChromeCustomTab(context,
-                        Util.getStringFromResources(context, R.string.iconpack_author_gplus_community));
+                        getResources().getString(R.string.iconpack_author_gplus_community));
             }
         });
 
@@ -176,7 +176,7 @@ public class CreditsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Util.openLinkInChromeCustomTab(context,
-                        Util.getStringFromResources(context, R.string.iconpack_author_playstore));
+                        getResources().getString(R.string.iconpack_author_playstore));
             }
         });
 
@@ -185,7 +185,7 @@ public class CreditsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Util.openLinkInChromeCustomTab(context,
-                        Util.getStringFromResources(context, R.string.dashboard_author_playstore));
+                        getResources().getString(R.string.dashboard_author_playstore));
             }
         });
 
@@ -194,7 +194,7 @@ public class CreditsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Util.openLinkInChromeCustomTab(context,
-                        Util.getStringFromResources(context, R.string.dashboard_author_github));
+                        getResources().getString(R.string.dashboard_author_github));
             }
         });
 
@@ -203,7 +203,7 @@ public class CreditsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Util.openLinkInChromeCustomTab(context,
-                        Util.getStringFromResources(context, R.string.dashboard_author_gplus));
+                        getResources().getString(R.string.dashboard_author_gplus));
             }
         });
 
@@ -212,7 +212,7 @@ public class CreditsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Util.openLinkInChromeCustomTab(context,
-                        Util.getStringFromResources(context, R.string.dashboard_author_website));
+                        getResources().getString(R.string.dashboard_author_website));
             }
         });
 
@@ -222,13 +222,14 @@ public class CreditsFragment extends Fragment {
             public void onClick(View v) {
                 new MaterialDialog.Builder(context)
                         .title(R.string.sherry_title)
+                        .content(R.string.sherry_dialog)
                         .neutralText(R.string.follow_her)
                         .positiveText(R.string.close)
                         .onNeutral(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(MaterialDialog dialog, DialogAction which) {
                                 Util.openLinkInChromeCustomTab(context,
-                                        Util.getStringFromResources(context, R.string.sherry_link));
+                                        getResources().getString(R.string.sherry_link));
                             }
                         })
                         .show();
@@ -284,7 +285,7 @@ public class CreditsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Util.openLinkInChromeCustomTab(context,
-                        Util.getStringFromResources(context, R.string.dashboard_bugs_report));
+                        getResources().getString(R.string.dashboard_bugs_report));
             }
         });
 
@@ -293,7 +294,7 @@ public class CreditsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Util.openLinkInChromeCustomTab(context,
-                        Util.getStringFromResources(context, R.string.dashboard_author_gplus_community));
+                        getResources().getString(R.string.dashboard_author_gplus_community));
             }
         });
 

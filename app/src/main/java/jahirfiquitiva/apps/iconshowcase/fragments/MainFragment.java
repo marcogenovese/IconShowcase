@@ -1,7 +1,6 @@
 package jahirfiquitiva.apps.iconshowcase.fragments;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -28,6 +27,7 @@ import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.apps.iconshowcase.models.IconsLists;
 import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
+import jahirfiquitiva.apps.iconshowcase.utilities.Util;
 
 public class MainFragment extends Fragment {
 
@@ -95,24 +95,14 @@ public class MainFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShowcaseActivity.switchFragment(5, getResources().getString(R.string.section_three), "Apply", (AppCompatActivity) getActivity());
+                ShowcaseActivity.switchFragment(5,
+                        Util.getStringFromResources(getActivity(), R.string.section_three),
+                        "Apply", (AppCompatActivity) getActivity());
                 ShowcaseActivity.drawer.setSelection(5);
             }
         });
 
         return layout;
-    }
-
-    private boolean AppIsInstalled(String packageName) {
-        final PackageManager pm = getActivity().getPackageManager();
-        boolean installed;
-        try {
-            pm.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES);
-            installed = true;
-        } catch (PackageManager.NameNotFoundException e) {
-            installed = false;
-        }
-        return installed;
     }
 
     private void setupIcons(final ImageView icon1, final ImageView icon2,

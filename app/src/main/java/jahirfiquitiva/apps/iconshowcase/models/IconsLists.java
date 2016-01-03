@@ -9,8 +9,8 @@ import java.util.List;
 
 public class IconsLists {
 
-    private static ArrayList<Integer> sectionA, sectionB, sectionC, sectionD, sectionE, sectionF, previewAL;
-    private static List<String> listA, listB, listC, listD, listE, listF, previewL;
+    private static ArrayList<Integer> newIconsAL, sectionA, sectionB, sectionC, sectionD, sectionE, sectionF, previewAL;
+    private static List<String> newIconsL, listA, listB, listC, listD, listE, listF, previewL;
 
     public static List<String> getListA() {
         return listA;
@@ -124,4 +124,19 @@ public class IconsLists {
         IconsLists.previewL = previewL;
     }
 
+    public static ArrayList<Integer> getNewIconsAL() {
+        return newIconsAL;
+    }
+
+    public static void setNewIconsAL(ArrayList<Integer> newIconsAL) {
+        IconsLists.newIconsAL = newIconsAL;
+    }
+
+    public static List<String> getNewIconsL() {
+        return newIconsL;
+    }
+
+    public static void setNewIconsL(List<String> newIconsL) {
+        IconsLists.newIconsL = newIconsL;
+    }
 }

@@ -14,11 +14,12 @@ public class Preferences {
             LAUNCHER_ICON = "laucher_icon_shown",
             WALLS_DOWNLOAD_FOLDER = "walls_download_folder",
             EASTEREGG_ENABLED = "easteregg_enabled",
-            HIDDEN_ADVICES = "hidden_advices",
             APPS_TO_REQUEST_LOADED = "apps_to_request_loaded",
             WALLS_LIST_LOADED = "walls_list_loaded",
             SETTINGS_MODIFIED = "settings_modified",
-            ANIMATIONS_ENABLED = "animations_enabled";
+            ANIMATIONS_ENABLED = "animations_enabled",
+            REQUESTS_DIALOG_DISMISSED = "requests_dialog_dismissed",
+            APPLY_DIALOG_DISMISSED = "apply_dialog_dismissed";
 
     private final Context context;
 
@@ -78,14 +79,6 @@ public class Preferences {
         return getSharedPreferences().getBoolean(LAUNCHER_ICON, true);
     }
 
-    public void setHiddenAdvices(boolean dismissed) {
-        getSharedPreferences().edit().putBoolean(HIDDEN_ADVICES, dismissed).apply();
-    }
-
-    public boolean getHiddenAdvices() {
-        return getSharedPreferences().getBoolean(HIDDEN_ADVICES, false);
-    }
-
     public void setDownloadsFolder(String folder) {
         getSharedPreferences().edit().putString(WALLS_DOWNLOAD_FOLDER, folder).apply();
     }
@@ -124,6 +117,22 @@ public class Preferences {
 
     public boolean getAnimationsEnabled() {
         return getSharedPreferences().getBoolean(ANIMATIONS_ENABLED, true);
+    }
+
+    public void setRequestsDialogDismissed(boolean requestsDialogDismissed) {
+        getSharedPreferences().edit().putBoolean(REQUESTS_DIALOG_DISMISSED, requestsDialogDismissed).apply();
+    }
+
+    public boolean getRequestsDialogDismissed() {
+        return getSharedPreferences().getBoolean(REQUESTS_DIALOG_DISMISSED, false);
+    }
+
+    public void setApplyDialogDismissed(boolean applyDialogDismissed) {
+        getSharedPreferences().edit().putBoolean(APPLY_DIALOG_DISMISSED, applyDialogDismissed).apply();
+    }
+
+    public boolean getApplyDialogDismissed() {
+        return getSharedPreferences().getBoolean(APPLY_DIALOG_DISMISSED, false);
     }
 
 }

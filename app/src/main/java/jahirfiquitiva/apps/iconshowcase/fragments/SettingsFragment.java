@@ -43,11 +43,14 @@ public class SettingsFragment extends PreferenceFragment {
     private static boolean withOptionToHideIcon;
     private static Preference WSL, data;
     private static String location, cacheSize;
+    private Context context;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+
+        context = getActivity();
 
         String settingsTitle = getResources().getString(R.string.title_settings);
 
@@ -145,6 +148,7 @@ public class SettingsFragment extends PreferenceFragment {
         }
 
         CheckBoxPreference animations = (CheckBoxPreference) getPreferenceManager().findPreference("animations");
+        animations.setChecked(mPrefs.getAnimationsEnabled());
         animations.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 mPrefs.setAnimationsEnabled(newValue.toString().equals("true"));
@@ -339,7 +343,8 @@ public class SettingsFragment extends PreferenceFragment {
         mPrefs.setEasterEggEnabled(false);
         mPrefs.setIconShown(true);
         mPrefs.setDownloadsFolder(null);
-        mPrefs.setHiddenAdvices(false);
+        mPrefs.setRequestsDialogDismissed(false);
+        mPrefs.setApplyDialogDismissed(false);
         ThemeUtils.restartActivity((Activity) context);
     }
 

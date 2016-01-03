@@ -73,16 +73,20 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
     protected void onPostExecute(Boolean worked) {
         if (worked) {
             dialog.dismiss();
-            Snackbar longSnackbar = Snackbar.make(layout,
-                    context.getString(R.string.set_as_wall_done), Snackbar.LENGTH_LONG);
-            longSnackbar.show();
-            longSnackbar.setCallback(new Snackbar.Callback() {
-                @Override
-                public void onDismissed(Snackbar snackbar, int event) {
-                    super.onDismissed(snackbar, event);
-                    fab.show(true);
-                }
-            });
+            if (!isPicker) {
+                Snackbar longSnackbar = Snackbar.make(layout,
+                        context.getString(R.string.set_as_wall_done), Snackbar.LENGTH_LONG);
+                longSnackbar.show();
+                longSnackbar.setCallback(new Snackbar.Callback() {
+                    @Override
+                    public void onDismissed(Snackbar snackbar, int event) {
+                        super.onDismissed(snackbar, event);
+                        if (fab != null) {
+                            fab.show(true);
+                        }
+                    }
+                });
+            }
         } else {
             showRetrySnackbar();
         }

@@ -17,4 +17,11 @@
         android:orderInCategory="300"
         android:title="@string/changelog"
         app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/iconsBasedChangelog"
+        android:orderInCategory="400"
+        android:title="@string/iconsBasedChangelog"
+        app:showAsAction="never"/>
+
 </menu>

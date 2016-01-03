@@ -1,7 +1,13 @@
 package jahirfiquitiva.apps.iconshowcase.adapters;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,18 +19,30 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import jahirfiquitiva.apps.iconshowcase.R;
+import jahirfiquitiva.apps.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.apps.iconshowcase.utilities.Util;
 
 public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder> implements View.OnClickListener {
 
     private final Context context;
+    private boolean inChangelog = false;
     private ArrayList<String> iconsList = new ArrayList<>();
     private ArrayList<Integer> iconsArray = new ArrayList<>();
+    private Bitmap bitmap;
 
     public IconsAdapter(Context context, ArrayList<String> iconsList, ArrayList<Integer> iconsArray) {
         this.context = context;
         this.iconsList = iconsList;
         this.iconsArray = iconsArray;
+        this.inChangelog = false;
+    }
+
+    public IconsAdapter(Context context, ArrayList<String> iconsList, ArrayList<Integer> iconsArray,
+                        boolean inChangelog) {
+        this.context = context;
+        this.iconsList = iconsList;
+        this.iconsArray = iconsArray;
+        this.inChangelog = inChangelog;
     }
 
     public void setIcons(ArrayList<String> iconsList, ArrayList<Integer> iconsArray) {
@@ -74,15 +92,41 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
         int resId = iconsArray.get(position);
         String name = iconsList.get(position).toLowerCase(Locale.getDefault());
 
-        MaterialDialog dialog = new MaterialDialog.Builder(context)
-                .customView(R.layout.dialog_icon, false)
-                .title(Util.makeTextReadable(name))
-                .positiveText(R.string.close)
-                .show();
+        if (ShowcaseActivity.iconPicker || ShowcaseActivity.imagePicker) {
+            Intent intent = new Intent();
+            bitmap = null;
 
-        if (dialog.getCustomView() != null) {
-            ImageView dialogIcon = (ImageView) dialog.getCustomView().findViewById(R.id.dialogicon);
-            dialogIcon.setImageResource(resId);
+            try {
+                bitmap = BitmapFactory.decodeResource(context.getResources(), resId);
+            } catch (Exception e) {
+                Util.showLog("Icons Picker error: " + Log.getStackTraceString(e));
+            }
+
+            if (bitmap != null) {
+                intent.putExtra("icon", bitmap);
+                intent.putExtra("android.intent.extra.shortcut.ICON_RESOURCE", resId);
+                String bmUri = "android.resource://" + context.getPackageName() + "/" + String.valueOf(resId);
+                intent.setData(Uri.parse(bmUri));
+                ((Activity) context).setResult(Activity.RESULT_OK, intent);
+            } else {
+                ((Activity) context).setResult(Activity.RESULT_CANCELED, intent);
+            }
+
+            ((Activity) context).finish();
+
+        } else {
+            if (!inChangelog) {
+                MaterialDialog dialog = new MaterialDialog.Builder(context)
+                        .customView(R.layout.dialog_icon, false)
+                        .title(Util.makeTextReadable(name))
+                        .positiveText(R.string.close)
+                        .show();
+
+                if (dialog.getCustomView() != null) {
+                    ImageView dialogIcon = (ImageView) dialog.getCustomView().findViewById(R.id.dialogicon);
+                    dialogIcon.setImageResource(resId);
+                }
+            }
         }
     }
 

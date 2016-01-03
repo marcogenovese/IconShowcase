@@ -1,6 +1,7 @@
 package jahirfiquitiva.apps.iconshowcase.fragments;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.melnykov.fab.FloatingActionButton;
 import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
@@ -66,6 +68,10 @@ public class RequestsFragment extends Fragment {
             e.printStackTrace();
         }
 
+        mPrefs = new Preferences(getActivity());
+
+        showRequestsAdviceDialog(getActivity());
+
         fab = (FloatingActionButton) layout.findViewById(R.id.requests_btn);
         progressBar = (ProgressBar) layout.findViewById(R.id.requestProgress);
         mRecyclerView = (RecyclerView) layout.findViewById(R.id.appsToRequestList);
@@ -73,8 +79,6 @@ public class RequestsFragment extends Fragment {
         mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(columnsNumber, gridSpacing, withBorders));
         fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
         hideStuff();
-
-        mPrefs = new Preferences(getActivity());
 
         fastScroller.setHideDelay(1000);
         fab.setColorNormal(getResources().getColor(R.color.accent));
@@ -152,4 +156,28 @@ public class RequestsFragment extends Fragment {
             adapter.stopAppIconFetching();
         }
     }
+
+    private void showRequestsAdviceDialog(Context dialogContext) {
+        if (!mPrefs.getRequestsDialogDismissed()) {
+            new MaterialDialog.Builder(dialogContext)
+                    .title(R.string.advice)
+                    .content(R.string.request_advice)
+                    .positiveText(R.string.close)
+                    .neutralText(R.string.dontshow)
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(MaterialDialog dialog, DialogAction which) {
+                            mPrefs.setRequestsDialogDismissed(false);
+                        }
+                    })
+                    .onNeutral(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(MaterialDialog dialog, DialogAction which) {
+                            mPrefs.setRequestsDialogDismissed(true);
+                        }
+                    })
+                    .show();
+        }
+    }
+
 }

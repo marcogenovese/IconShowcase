@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="fill_parent"
-              android:layout_height="wrap_content"
-              android:background="@color/transparent"
-              android:clickable="false"
-              android:orientation="vertical"
-              android:paddingBottom="@dimen/dialog_margin_bottom"
-              android:paddingLeft="@dimen/dialog_margin"
-              android:paddingRight="@dimen/dialog_margin">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:clickable="false"
+    android:focusable="false"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/dialog_margin_bottom"
+    android:paddingLeft="@dimen/dialog_margin"
+    android:paddingRight="@dimen/dialog_margin">
 
     <TextView
         android:id="@+id/changelog_versionname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="false"
+        android:focusable="false"
         android:lineSpacingMultiplier="1.6"
         android:paddingTop="@dimen/dialog_margin_bottom"
         android:textSize="@dimen/abc_text_size_medium_material"
@@ -24,6 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="false"
+        android:focusable="false"
         android:lineSpacingMultiplier="1.6"
         android:paddingTop="@dimen/dialog_margin_bottom"
         android:textSize="@dimen/abc_text_size_medium_material"/>

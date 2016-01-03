@@ -1,6 +1,7 @@
 package jahirfiquitiva.apps.iconshowcase.activities;
 
 import android.annotation.SuppressLint;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,9 +12,10 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,12 +37,15 @@ import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.adapters.ChangelogAdapter;
+import jahirfiquitiva.apps.iconshowcase.adapters.IconsAdapter;
 import jahirfiquitiva.apps.iconshowcase.dialogs.FolderSelectorDialog;
 import jahirfiquitiva.apps.iconshowcase.fragments.SettingsFragment;
 import jahirfiquitiva.apps.iconshowcase.fragments.WallpapersFragment;
+import jahirfiquitiva.apps.iconshowcase.models.IconsLists;
 import jahirfiquitiva.apps.iconshowcase.models.WallpapersList;
 import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.apps.iconshowcase.utilities.ThemeUtils;
@@ -49,10 +54,20 @@ import jahirfiquitiva.apps.iconshowcase.utilities.Util;
 public class ShowcaseActivity extends AppCompatActivity
         implements FolderSelectorDialog.FolderSelectCallback {
 
-    private static final boolean WITH_LICENSE_CHECKER = false;
+    private static final boolean WITH_LICENSE_CHECKER = false, WITH_INSTALLED_FROM_AMAZON = false;
+
     private static final String MARKET_URL = "https://play.google.com/store/apps/details?id=";
 
-    private String thaAppName, thaHome, thaPreviews, thaApply, thaWalls, thaRequest, thaFAQs, thaCredits, thaSettings;
+    private String action = "action";
+    private static final String
+            adw_action = "org.adw.launcher.icons.ACTION_PICK_ICON",
+            turbo_action = "com.phonemetra.turbo.launcher.icons.ACTION_PICK_ICON",
+            nova_action = "com.novalauncher.THEME";
+
+    public static boolean iconPicker, imagePicker, wallsPicker;
+
+    private String thaAppName, thaHome, thaPreviews, thaApply, thaWalls, thaRequest, thaFAQs,
+            thaZooper, thaCredits, thaSettings;
 
     private static AppCompatActivity context;
 
@@ -61,12 +76,10 @@ public class ShowcaseActivity extends AppCompatActivity
     public static int currentItem = -1;
 
     private boolean mLastTheme, mLastNavBar;
-    private static boolean collapseToolbar;
     private static Preferences mPrefs;
 
     public static MaterialDialog settingsDialog;
     public static Toolbar toolbar;
-    public static AppBarLayout appbar;
 
     public static Drawer drawer;
     public AccountHeader drawerHeader;
@@ -91,6 +104,7 @@ public class ShowcaseActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         context = this;
         mPrefs = new Preferences(ShowcaseActivity.this);
+        getAction();
         Assent.setActivity(this, this);
 
         setContentView(R.layout.showcase_activity);
@@ -109,18 +123,27 @@ public class ShowcaseActivity extends AppCompatActivity
         thaCredits = getResources().getString(R.string.section_six);
         thaSettings = getResources().getString(R.string.title_settings);
         thaFAQs = getResources().getString(R.string.faqs_section);
+        thaZooper = getResources().getString(R.string.zooper_section_title);
 
         setupDrawer(false, toolbar, savedInstanceState);
 
         runLicenseChecker();
 
         if (savedInstanceState == null) {
-            if (mPrefs.getSettingsModified()) {
-                switchFragment(8, thaSettings, "Settings", context);
-                drawer.setSelection(8);
+            if (iconPicker || imagePicker) {
+                switchFragment(2, thaPreviews, "Previews", context);
+                drawer.setSelection(2);
+            } else if (wallsPicker) {
+                switchFragment(3, thaWalls, "Wallpapers", context);
+                drawer.setSelection(3);
             } else {
-                currentItem = -1;
-                drawer.setSelection(1);
+                if (mPrefs.getSettingsModified()) {
+                    switchFragment(8, thaSettings, "Settings", context);
+                    drawer.setSelection(8);
+                } else {
+                    currentItem = -1;
+                    drawer.setSelection(1);
+                }
             }
         }
 
@@ -260,6 +283,10 @@ public class ShowcaseActivity extends AppCompatActivity
                 showChangelog();
                 break;
 
+            case R.id.iconsBasedChangelog:
+                showIconsChangelog();
+                break;
+
             case R.id.refresh:
                 WallpapersFragment.refreshWalls(context);
                 loadWallsList();
@@ -389,6 +416,20 @@ public class ShowcaseActivity extends AppCompatActivity
                             }
                         })
                         .show();
+            } else if (installer.equals("com.amazon.venezia") && WITH_INSTALLED_FROM_AMAZON) {
+                new MaterialDialog.Builder(this)
+                        .title(R.string.license_success_title)
+                        .content(R.string.license_success)
+                        .positiveText(R.string.close)
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+                                mPrefs.setFeaturesEnabled(true);
+                                addItemsToDrawer();
+                                showChangelogDialog();
+                            }
+                        })
+                        .show();
             } else {
                 showNotLicensedDialog();
             }
@@ -484,9 +525,10 @@ public class ShowcaseActivity extends AppCompatActivity
                             new PrimaryDrawerItem().withName(thaPreviews).withIcon(GoogleMaterial.Icon.gmd_palette).withIdentifier(2),
                             new PrimaryDrawerItem().withName(thaApply).withIcon(GoogleMaterial.Icon.gmd_open_in_browser).withIdentifier(5),
                             new PrimaryDrawerItem().withName(thaFAQs).withIcon(GoogleMaterial.Icon.gmd_help).withIdentifier(6),
+                            new PrimaryDrawerItem().withName(thaZooper).withIcon(GoogleMaterial.Icon.gmd_widgets).withIdentifier(7),
                             new DividerDrawerItem(),
-                            new SecondaryDrawerItem().withName(thaCredits).withIdentifier(7),
-                            new SecondaryDrawerItem().withName(thaSettings).withIdentifier(8)
+                            new SecondaryDrawerItem().withName(thaCredits).withIdentifier(8),
+                            new SecondaryDrawerItem().withName(thaSettings).withIdentifier(9)
                     )
                     .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                         @Override
@@ -503,20 +545,7 @@ public class ShowcaseActivity extends AppCompatActivity
                                         switchFragment(3, thaWalls, "Wallpapers", context);
                                         break;
                                     case 4:
-                                        if (!Assent.isPermissionGranted(Assent.WRITE_EXTERNAL_STORAGE)) {
-                                            drawer.closeDrawer();
-                                            Assent.requestPermissions(new AssentCallback() {
-                                                @Override
-                                                public void onPermissionResult(PermissionResultSet result) {
-                                                }
-                                            }, 69, Assent.WRITE_EXTERNAL_STORAGE);
-                                            if (!Assent.isPermissionGranted(Assent.WRITE_EXTERNAL_STORAGE)) {
-                                                switchFragment(4, thaRequest, "Requests",
-                                                        context);
-                                            }
-                                        } else {
-                                            switchFragment(4, thaRequest, "Requests", context);
-                                        }
+                                        switchFragment(4, thaRequest, "Requests", context);
                                         break;
                                     case 5:
                                         switchFragment(5, thaApply, "Apply", context);
@@ -525,10 +554,13 @@ public class ShowcaseActivity extends AppCompatActivity
                                         switchFragment(6, thaFAQs, "FAQs", context);
                                         break;
                                     case 7:
-                                        switchFragment(7, thaCredits, "Credits", context);
+                                        switchFragment(7, thaZooper, "Zooper", context);
                                         break;
                                     case 8:
-                                        switchFragment(8, thaSettings, "Settings", context);
+                                        switchFragment(8, thaCredits, "Credits", context);
+                                        break;
+                                    case 9:
+                                        switchFragment(9, thaSettings, "Settings", context);
                                         break;
                                 }
                             }
@@ -547,9 +579,10 @@ public class ShowcaseActivity extends AppCompatActivity
                             new PrimaryDrawerItem().withName(thaPreviews).withIcon(GoogleMaterial.Icon.gmd_palette).withIdentifier(2),
                             new PrimaryDrawerItem().withName(thaApply).withIcon(GoogleMaterial.Icon.gmd_open_in_browser).withIdentifier(5),
                             new PrimaryDrawerItem().withName(thaFAQs).withIcon(GoogleMaterial.Icon.gmd_help).withIdentifier(6),
+                            new PrimaryDrawerItem().withName(thaZooper).withIcon(GoogleMaterial.Icon.gmd_widgets).withIdentifier(7),
                             new DividerDrawerItem(),
-                            new SecondaryDrawerItem().withName(thaCredits).withIdentifier(7),
-                            new SecondaryDrawerItem().withName(thaSettings).withIdentifier(8)
+                            new SecondaryDrawerItem().withName(thaCredits).withIdentifier(8),
+                            new SecondaryDrawerItem().withName(thaSettings).withIdentifier(9)
                     )
                     .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                         @Override
@@ -566,20 +599,7 @@ public class ShowcaseActivity extends AppCompatActivity
                                         switchFragment(3, thaWalls, "Wallpapers", context);
                                         break;
                                     case 4:
-                                        if (!Assent.isPermissionGranted(Assent.WRITE_EXTERNAL_STORAGE)) {
-                                            drawer.closeDrawer();
-                                            Assent.requestPermissions(new AssentCallback() {
-                                                @Override
-                                                public void onPermissionResult(PermissionResultSet result) {
-                                                }
-                                            }, 69, Assent.WRITE_EXTERNAL_STORAGE);
-                                            if (!Assent.isPermissionGranted(Assent.WRITE_EXTERNAL_STORAGE)) {
-                                                switchFragment(4, thaRequest, "Requests",
-                                                        context);
-                                            }
-                                        } else {
-                                            switchFragment(4, thaRequest, "Requests", context);
-                                        }
+                                        switchFragment(4, thaRequest, "Requests", context);
                                         break;
                                     case 5:
                                         switchFragment(5, thaApply, "Apply", context);
@@ -588,10 +608,13 @@ public class ShowcaseActivity extends AppCompatActivity
                                         switchFragment(6, thaFAQs, "FAQs", context);
                                         break;
                                     case 7:
-                                        switchFragment(7, thaCredits, "Credits", context);
+                                        switchFragment(7, thaZooper, "Zooper", context);
                                         break;
                                     case 8:
-                                        switchFragment(8, thaSettings, "Settings", context);
+                                        switchFragment(8, thaCredits, "Credits", context);
+                                        break;
+                                    case 9:
+                                        switchFragment(9, thaSettings, "Settings", context);
                                         break;
                                 }
                             }
@@ -601,6 +624,85 @@ public class ShowcaseActivity extends AppCompatActivity
                     .withSavedInstance(savedInstanceState)
                     .build();
         }
+    }
+
+    public void getAction() {
+        try {
+            action = getIntent().getAction();
+        } catch (Exception e) {
+            action = "action";
+        }
+
+        try {
+            if (action.equals(adw_action)
+                    || action.equals(turbo_action)
+                    || action.equals(nova_action)) {
+                iconPicker = true;
+                wallsPicker = false;
+                imagePicker = false;
+            } else if (action.equals(Intent.ACTION_PICK) || action.equals(Intent.ACTION_GET_CONTENT)) {
+                iconPicker = false;
+                wallsPicker = false;
+                imagePicker = true;
+            } else if (action.equals(Intent.ACTION_SET_WALLPAPER)) {
+                iconPicker = false;
+                wallsPicker = true;
+                imagePicker = false;
+            } else {
+                iconPicker = false;
+                wallsPicker = false;
+                imagePicker = false;
+            }
+        } catch (ActivityNotFoundException | NullPointerException e) {
+            iconPicker = false;
+            wallsPicker = false;
+            imagePicker = false;
+        }
+
+    }
+
+    private void showIconsChangelog() {
+        MaterialDialog dialog = new MaterialDialog.Builder(this)
+                .title(R.string.changelog)
+                .customView(R.layout.icons_changelog, false)
+                .positiveText(getResources().getString(R.string.close))
+                .dismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        if (!Assent.isPermissionGranted(Assent.WRITE_EXTERNAL_STORAGE)) {
+                            Assent.requestPermissions(new AssentCallback() {
+                                @Override
+                                public void onPermissionResult(PermissionResultSet result) {
+                                }
+                            }, 69, Assent.WRITE_EXTERNAL_STORAGE);
+                        }
+                    }
+                })
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+                        if (!Assent.isPermissionGranted(Assent.WRITE_EXTERNAL_STORAGE)) {
+                            Assent.requestPermissions(new AssentCallback() {
+                                @Override
+                                public void onPermissionResult(PermissionResultSet result) {
+                                }
+                            }, 69, Assent.WRITE_EXTERNAL_STORAGE);
+                        }
+                    }
+                })
+                .build();
+
+        RecyclerView iconsGrid = (RecyclerView) dialog.getCustomView().findViewById(R.id.changelogRV);
+        iconsGrid.setHasFixedSize(true);
+        iconsGrid.setLayoutManager(new GridLayoutManager(context,
+                getResources().getInteger(R.integer.icon_grid_width)));
+
+        IconsAdapter adapter = new IconsAdapter(context,
+                (ArrayList<String>) IconsLists.getNewIconsL(), IconsLists.getNewIconsAL(), true);
+        iconsGrid.setAdapter(adapter);
+
+        dialog.show();
+
     }
 
 }

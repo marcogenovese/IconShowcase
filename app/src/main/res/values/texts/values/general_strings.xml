@@ -27,9 +27,10 @@
     <!-- Strings for Dropdown Menu & Requests -->
     <string name="share_title">Share via</string>
     <string name="send_title">Send via</string>
-    <string name="rate">Rate this Theme</string>
+    <string name="rate">Rate this icon pack</string>
     <string name="sendemail">Contact developer</string>
-    <string name="changelog">View the Changelog</string>
+    <string name="changelog">View the changelog</string>
+    <string name="iconsBasedChangelog">View the icons based changelog</string>
 
     <!-- Sharing theme -->
     <string name="share_one">Check out this awesome icon pack by</string>
@@ -230,5 +231,35 @@
     <string name="license_failed">You did not download IconShowcase from the Google Play Store. You have two options:</string>
     <string name="license_success">Thank you for downloading my dashboard sample. If you like it, don\'t forget to rate it and write a review in the Google Play Store.</string>
     <string name="applyAdvice">If the launcher you use, is not listed here, you must apply the icon pack directly from the launcher settings.\nSome launchers do not support direct apply.</string>
+
+    <string name="zooper_section_title">Zooper Setup</string>
+
+    <string name="zooper_download_title">Install Zooper Widget Pro</string>
+    <string name="zooper_download_content">You need Zooper Widget Pro to be able to use the included skins.</string>
+
+    <string name="zooper_download_dialog_title">Download from</string>
+    <string-array name="zooper_download_dialog_options">
+        <item>Google Play Store</item>
+        <item>Amazon App Store</item>
+    </string-array>
+
+    <string name="mu_download_title">Install Media Utilities</string>
+    <string name="mu_download_content">You need Media Utilities to be able to use the music widgets with Zooper.</string>
+
+    <string name="mu_info_title">MediaUtilities setup</string>
+    <string name="mu_info_content">Use this to make the music widgets work. Open the MU, go to settings and make sure the following options are checked:\n\n
+	    &#10003; Zooper\n
+	    &#10003; Make Coverart available\n
+	    &#10003; Send Song Progress</string>
+    <string name="open">Open</string>
+
+    <string name="zooper_install_fonts_title">Install Fonts</string>
+    <string name="zooper_install_fonts_content">This will fix issues with widgets fonts.</string>
+
+    <string name="zooper_install_iconsets_title">Install Iconsets</string>
+    <string name="zooper_install_iconsets_content">This will fix issues with widgets iconsets.</string>
+
+    <string name="fonts_installed">Fonts already installed</string>
+    <string name="iconsets_installed">IconSets already installed</string>
 
 </resources>

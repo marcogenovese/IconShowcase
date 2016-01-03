@@ -72,6 +72,8 @@ public class ApplyFragment extends Fragment {
 
         mPrefs = new Preferences(getActivity());
 
+        showApplyAdviceDialog(getActivity());
+
         gridSpacing = getResources().getDimensionPixelSize(R.dimen.launchers_grid_padding);
         columnsNumber = getResources().getInteger(R.integer.launchers_grid_width);
         withBorders = true;
@@ -200,4 +202,28 @@ public class ApplyFragment extends Fragment {
                 })
                 .show();
     }
+
+    private void showApplyAdviceDialog(Context dialogContext) {
+        if (!mPrefs.getApplyDialogDismissed()) {
+            new MaterialDialog.Builder(dialogContext)
+                    .title(R.string.advice)
+                    .content(R.string.applyAdvice)
+                    .positiveText(R.string.close)
+                    .neutralText(R.string.dontshow)
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(MaterialDialog dialog, DialogAction which) {
+                            mPrefs.setApplyDialogDismissed(false);
+                        }
+                    })
+                    .onNeutral(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(MaterialDialog dialog, DialogAction which) {
+                            mPrefs.setApplyDialogDismissed(true);
+                        }
+                    })
+                    .show();
+        }
+    }
+
 }

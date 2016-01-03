@@ -20,8 +20,8 @@ import jahirfiquitiva.apps.iconshowcase.utilities.Util;
 public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
 
     private Context context;
-    private ArrayList<Integer> sectionA, sectionB, sectionC, sectionD, sectionE, sectionF, previewAL;
-    private List<String> listA, listB, listC, listD, listE, listF, previewL;
+    private ArrayList<Integer> newIconsAL, sectionA, sectionB, sectionC, sectionD, sectionE, sectionF, previewAL;
+    private List<String> newIconsL, listA, listB, listC, listD, listE, listF, previewL;
     long startTime, endTime;
 
     public LoadIconsLists(Context context) {
@@ -38,6 +38,22 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
 
         Resources r = context.getResources();
         String p = context.getPackageName();
+
+        // PREVIEWS
+        newIconsAL = new ArrayList<>();
+        String[] newIcons = r.getStringArray(R.array.icons_changelog);
+        newIconsL = sortLists(newIcons);
+        for (String extra : newIconsL) {
+            int res = r.getIdentifier(extra, "drawable", p);
+            if (res != 0) {
+                final int thumbRes = r.getIdentifier(extra, "drawable", p);
+                if (thumbRes != 0) {
+                    newIconsAL.add(thumbRes);
+                }
+            }
+        }
+        IconsLists.setNewIconsAL(newIconsAL);
+        IconsLists.setNewIconsL(newIconsL);
 
         // PREVIEWS
         previewAL = new ArrayList<>();

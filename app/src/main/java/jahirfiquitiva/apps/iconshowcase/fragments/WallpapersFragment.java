@@ -26,6 +26,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 
 import org.json.JSONArray;
@@ -44,6 +48,7 @@ import jahirfiquitiva.apps.iconshowcase.activities.ViewerActivity;
 import jahirfiquitiva.apps.iconshowcase.adapters.WallpapersAdapter;
 import jahirfiquitiva.apps.iconshowcase.models.WallpaperItem;
 import jahirfiquitiva.apps.iconshowcase.models.WallpapersList;
+import jahirfiquitiva.apps.iconshowcase.tasks.ApplyWallpaper;
 import jahirfiquitiva.apps.iconshowcase.utilities.JSONParser;
 import jahirfiquitiva.apps.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.apps.iconshowcase.utilities.Util;
@@ -145,7 +150,11 @@ public class WallpapersFragment extends Fragment {
                             new WallpapersAdapter.ClickListener() {
                                 @Override
                                 public void onClick(WallpapersAdapter.WallsHolder view, int position) {
-                                    openViewer(context, view, position, WallpapersList.getWallpapersList());
+                                    if (ShowcaseActivity.wallsPicker) {
+                                        pickWallpaper(position, WallpapersList.getWallpapersList());
+                                    } else {
+                                        openViewer(context, view, position, WallpapersList.getWallpapersList());
+                                    }
                                 }
                             });
 
@@ -332,7 +341,8 @@ public class WallpapersFragment extends Fragment {
         protected Void doInBackground(Void... params) {
 
             JSONObject json = JSONParser
-                    .getJSONfromURL(taskContext.getResources().getString(R.string.json_file_url));
+                    .getJSONfromURL(Util.getStringFromResources(taskContext, R.string.json_file_url));
+
             if (json != null) {
                 try {
                     // Locate the array name in JSON
@@ -375,6 +385,28 @@ public class WallpapersFragment extends Fragment {
                 wi.checkWallsListCreation(worked);
 
         }
+    }
+
+    private static void pickWallpaper(int position, final ArrayList<WallpaperItem> list) {
+        final MaterialDialog dialog = new MaterialDialog.Builder(context)
+                .content(R.string.downloading_wallpaper)
+                .progress(true, 0)
+                .cancelable(false)
+                .show();
+
+        WallpaperItem wallItem = list.get(position);
+
+        Glide.with(context)
+                .load(wallItem.getWallURL())
+                .asBitmap()
+                .into(new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                        if (resource != null) {
+                            new ApplyWallpaper(context, dialog, resource, true, layout, null).execute();
+                        }
+                    }
+                });
     }
 
 }
