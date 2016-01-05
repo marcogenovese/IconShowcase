@@ -11,7 +11,7 @@ import android.support.design.widget.Snackbar;
 import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.melnykov.fab.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import java.io.ByteArrayOutputStream;
 import java.lang.ref.WeakReference;
@@ -27,13 +27,13 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
     private Uri wallUri;
     private Context context;
     private View layout;
-    private FloatingActionButton fab;
+    private FloatingActionsMenu fab;
     private String wallName;
 
     private WeakReference<Activity> wrActivity;
 
     public WallpaperToCrop(Activity activity, MaterialDialog dialog, Bitmap resource,
-                           View layout, FloatingActionButton fab, String wallName) {
+                           View layout, FloatingActionsMenu fab, String wallName) {
         this.wrActivity = new WeakReference<Activity>(activity);
         this.dialog = dialog;
         this.resource = resource;
@@ -77,7 +77,7 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
                     context.getResources().getString(R.string.set_as)), 1);
         } else {
             dialog.dismiss();
-            fab.hide(true);
+            fab.setVisibility(View.GONE);
             Snackbar snackbar = Snackbar.make(layout,
                     context.getResources().getString(R.string.error), Snackbar.LENGTH_SHORT);
             snackbar.show();
@@ -85,7 +85,7 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
                 @Override
                 public void onDismissed(Snackbar snackbar, int event) {
                     super.onDismissed(snackbar, event);
-                    fab.show(true);
+                    fab.setVisibility(View.VISIBLE);
                 }
             });
         }

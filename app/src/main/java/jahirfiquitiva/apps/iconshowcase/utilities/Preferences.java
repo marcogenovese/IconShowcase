@@ -19,7 +19,8 @@ public class Preferences {
             SETTINGS_MODIFIED = "settings_modified",
             ANIMATIONS_ENABLED = "animations_enabled",
             REQUESTS_DIALOG_DISMISSED = "requests_dialog_dismissed",
-            APPLY_DIALOG_DISMISSED = "apply_dialog_dismissed";
+            APPLY_DIALOG_DISMISSED = "apply_dialog_dismissed",
+            WALLS_DIALOG_DISMISSED = "walls_dialog_dismissed";
 
     private final Context context;
 
@@ -133,6 +134,14 @@ public class Preferences {
 
     public boolean getApplyDialogDismissed() {
         return getSharedPreferences().getBoolean(APPLY_DIALOG_DISMISSED, false);
+    }
+
+    public void setWallsDialogDismissed(boolean wallsDialogDismissed) {
+        getSharedPreferences().edit().putBoolean(WALLS_DIALOG_DISMISSED, wallsDialogDismissed).apply();
+    }
+
+    public boolean getWallsDialogDismissed() {
+        return getSharedPreferences().getBoolean(WALLS_DIALOG_DISMISSED, false);
     }
 
 }

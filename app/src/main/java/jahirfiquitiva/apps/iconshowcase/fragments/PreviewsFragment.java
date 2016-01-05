@@ -1,15 +1,14 @@
 package jahirfiquitiva.apps.iconshowcase.fragments;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -23,10 +22,8 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import jahirfiquitiva.apps.iconshowcase.R;
-import jahirfiquitiva.apps.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.apps.iconshowcase.basefragments.FragmentStatePagerAdapter;
 import jahirfiquitiva.apps.iconshowcase.models.IconsLists;
-import jahirfiquitiva.apps.iconshowcase.utilities.Util;
 
 public class PreviewsFragment extends Fragment {
 
@@ -40,6 +37,9 @@ public class PreviewsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
+        fab.setVisibility(View.GONE);
+
         if (layout != null) {
             ViewGroup parent = (ViewGroup) layout.getParent();
             if (parent != null) {
@@ -52,14 +52,6 @@ public class PreviewsFragment extends Fragment {
 
         }
 
-        if (ShowcaseActivity.toolbar != null) {
-            if (ShowcaseActivity.toolbar.getTitle() != null &&
-                    !ShowcaseActivity.toolbar.getTitle().equals(
-                            Util.getStringFromResources(getActivity(), R.string.section_two))) {
-                ShowcaseActivity.toolbar.setTitle(R.string.section_two);
-            }
-        }
-
         mPager = (ViewPager) layout.findViewById(R.id.pager);
         mPager.setOffscreenPageLimit(6);
         mPager.setAdapter(new IconsPagerAdapter(getChildFragmentManager()));
@@ -67,9 +59,6 @@ public class PreviewsFragment extends Fragment {
 
         mTabs = (TabLayout) layout.findViewById(R.id.tabs);
         mTabs.setupWithViewPager(mPager);
-        mTabs.setTabTextColors(getResources().getColor(R.color.semitransparent_white),
-                getResources().getColor(android.R.color.white));
-        mTabs.setSelectedTabIndicatorColor(getResources().getColor(android.R.color.white));
         mTabs.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -146,24 +135,6 @@ public class PreviewsFragment extends Fragment {
             }
         });
         mSearchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-            toolbar.setElevation(0);
-        }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-            toolbar.setElevation((int) getResources().getDimension(R.dimen.toolbar_elevation));
-        }
     }
 
     class IconsPagerAdapter extends FragmentStatePagerAdapter {

@@ -27,7 +27,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
-import com.melnykov.fab.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.mikepenz.materialize.MaterializeBuilder;
 
 import java.io.File;
@@ -51,9 +52,9 @@ public class ViewerActivity extends AppCompatActivity {
     private String mIndexText, transitionName, wallUrl, wallName, wallAuthor;
     private TouchImageView mPhoto;
 
-    private FloatingActionButton fab;
+    private FloatingActionButton setWall, saveWall;
+    private FloatingActionsMenu fab;
     private RelativeLayout layout;
-    private Snackbar snackbar;
     private static Preferences mPrefs;
     private static File downloadsFolder;
     public static MaterialDialog dialogApply;
@@ -85,6 +86,65 @@ public class ViewerActivity extends AppCompatActivity {
 
         setContentView(R.layout.wall_viewer_activity);
 
+        fab = (FloatingActionsMenu) findViewById(R.id.wallsFab);
+
+        setWall = (FloatingActionButton) findViewById(R.id.setWall);
+        saveWall = (FloatingActionButton) findViewById(R.id.saveWall);
+
+        setWall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!Assent.isPermissionGranted(Assent.WRITE_EXTERNAL_STORAGE)) {
+                    Assent.requestPermissions(new AssentCallback() {
+                        @Override
+                        public void onPermissionResult(PermissionResultSet result) {
+                            if (result.isGranted(Assent.WRITE_EXTERNAL_STORAGE)) {
+                                if (Util.hasNetwork(context)) {
+                                    showApplyWallpaperDialog(context, wallUrl);
+                                } else {
+                                    showNotConnectedSnackBar(fab, context);
+                                }
+                            }
+                        }
+                    }, 69, Assent.WRITE_EXTERNAL_STORAGE);
+                } else {
+                    if (Util.hasNetwork(context)) {
+                        showApplyWallpaperDialog(context, wallUrl);
+                    } else {
+                        showNotConnectedSnackBar(fab, context);
+                    }
+                }
+            }
+        });
+
+        saveWall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (!Assent.isPermissionGranted(Assent.WRITE_EXTERNAL_STORAGE)) {
+                    Assent.requestPermissions(new AssentCallback() {
+                        @Override
+                        public void onPermissionResult(PermissionResultSet result) {
+                            if (result.isGranted(Assent.WRITE_EXTERNAL_STORAGE)) {
+                                if (Util.hasNetwork(context)) {
+                                    saveWallpaperAction(wallName, wallUrl);
+                                } else {
+                                    showNotConnectedSnackBar(fab, context);
+                                }
+                            }
+                        }
+                    }, 69, Assent.WRITE_EXTERNAL_STORAGE);
+                } else {
+                    if (Util.hasNetwork(context)) {
+                        saveWallpaperAction(wallName, wallUrl);
+                    } else {
+                        showNotConnectedSnackBar(fab, context);
+                    }
+                }
+
+            }
+        });
+
         new MaterializeBuilder()
                 .withActivity(this)
                 .build();
@@ -106,33 +166,6 @@ public class ViewerActivity extends AppCompatActivity {
             getSupportActionBar().setSubtitle(getResources().getString(R.string.wallpaper_by,
                     wallAuthor));
         }
-
-        fab = (FloatingActionButton) findViewById(R.id.walls_btn);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!Assent.isPermissionGranted(Assent.WRITE_EXTERNAL_STORAGE)) {
-                    Assent.requestPermissions(new AssentCallback() {
-                        @Override
-                        public void onPermissionResult(PermissionResultSet result) {
-                            if (result.isGranted(Assent.WRITE_EXTERNAL_STORAGE)) {
-                                if (Util.hasNetwork(context)) {
-                                    showOptions();
-                                } else {
-                                    showNotConnectedSnackBar(fab, context);
-                                }
-                            }
-                        }
-                    }, 69, Assent.WRITE_EXTERNAL_STORAGE);
-                } else {
-                    if (Util.hasNetwork(context)) {
-                        showOptions();
-                    } else {
-                        showNotConnectedSnackBar(fab, context);
-                    }
-                }
-            }
-        });
 
         Bitmap bmp = null;
         String filename = getIntent().getStringExtra("image");
@@ -177,11 +210,7 @@ public class ViewerActivity extends AppCompatActivity {
         super.onResume();
         if (mLastTheme != ThemeUtils.darkTheme
                 || mLastNavBar != ThemeUtils.coloredNavBar) {
-            this.recreate();/*
-            this.startActivity(new Intent(this, this.getClass()));
-            this.finish();
-            this.overridePendingTransition(0, 0);
-            */
+            ThemeUtils.restartActivity(this);
         }
     }
 
@@ -206,39 +235,23 @@ public class ViewerActivity extends AppCompatActivity {
         }
     }
 
-    private void showOptions() {
-        new MaterialDialog.Builder(this)
-                .title(R.string.wallpaper)
-                .items(R.array.wallpaper_options)
-                .itemsCallback(new MaterialDialog.ListCallback() {
+    private void saveWallpaperAction(final String name, String url) {
+        final MaterialDialog downloadDialog = new MaterialDialog.Builder(context)
+                .content(R.string.downloading_wallpaper)
+                .progress(true, 0)
+                .cancelable(false)
+                .show();
+        Glide.with(context)
+                .load(url)
+                .asBitmap()
+                .into(new SimpleTarget<Bitmap>() {
                     @Override
-                    public void onSelection(MaterialDialog materialDialog, View view, final int i, CharSequence charSequence) {
-                        performOptionIon(context, i, wallUrl, wallName, mPhoto);
-                    }
-                }).show();
-    }
-
-    public void performOptionIon(final Activity context, int selection, final String url, final String name, final TouchImageView view) {
-        if (selection == 0) {
-            showApplyWallpaperDialog(context, url);
-        } else {
-            final MaterialDialog downloadDialog = new MaterialDialog.Builder(context)
-                    .content(R.string.downloading_wallpaper)
-                    .progress(true, 0)
-                    .cancelable(false)
-                    .show();
-            Glide.with(context)
-                    .load(url)
-                    .asBitmap()
-                    .into(new SimpleTarget<Bitmap>() {
-                        @Override
-                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                            if (resource != null) {
-                                saveWallpaper(context, name, downloadDialog, resource);
-                            }
+                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                        if (resource != null) {
+                            saveWallpaper(context, name, downloadDialog, resource);
                         }
-                    });
-        }
+                    }
+                });
     }
 
     private void saveWallpaper(final Activity context, final String wallName,
@@ -274,7 +287,10 @@ public class ViewerActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         downloadDialog.dismiss();
-                        fab.hide(true);
+                        if (fab.isExpanded()) {
+                            fab.collapseImmediately();
+                            fab.setVisibility(View.GONE);
+                        }
                         Snackbar longSnackbar = Snackbar.make(layout, finalSnackbarText,
                                 Snackbar.LENGTH_LONG);
                         longSnackbar.show();
@@ -282,11 +298,11 @@ public class ViewerActivity extends AppCompatActivity {
                             @Override
                             public void onDismissed(Snackbar snackbar, int event) {
                                 super.onDismissed(snackbar, event);
-                                fab.show(true);
+                                fab.setVisibility(View.VISIBLE);
                             }
                         });
                         if (!longSnackbar.isShown()) {
-                            fab.show(true);
+                            fab.setVisibility(View.VISIBLE);
                         }
                     }
                 });
@@ -316,7 +332,7 @@ public class ViewerActivity extends AppCompatActivity {
                                     @Override
                                     public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                                         if (resource != null) {
-                                            fab.hide(true);
+                                            fab.setVisibility(View.GONE);
                                             dialogApply.setContent(context.getString(R.string.setting_wall_title));
                                             new ApplyWallpaper(context, dialogApply, resource,
                                                     false, layout, fab).execute();
@@ -352,25 +368,10 @@ public class ViewerActivity extends AppCompatActivity {
                 }).show();
     }
 
-    private void showNotConnectedSnackBar(final FloatingActionButton fab, final Context context) {
-        fab.hide(true);
-        String retry = getResources().getString(R.string.retry);
-        snackbar = Snackbar
-                .make(layout, R.string.no_conn_title, Snackbar.LENGTH_INDEFINITE)
-                .setAction(retry.toUpperCase(), new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (Util.hasNetwork(context)) {
-                            snackbar.dismiss();
-                            showOptions();
-                            fab.show(true);
-                        } else {
-                            showNotConnectedSnackBar(fab, context);
-                        }
-                    }
-                });
-        snackbar.setActionTextColor(getResources().getColor(R.color.accent));
-        snackbar.show();
+    private void showNotConnectedSnackBar(final FloatingActionsMenu fab, final Context context) {
+        fab.setVisibility(View.GONE);
+        Util.showSimpleSnackbar(layout,
+                Util.getStringFromResources(context, R.string.no_conn_title), 2);
     }
 
 }

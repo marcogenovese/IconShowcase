@@ -25,10 +25,6 @@
     <string name="glide_name">Glide</string>
     <string name="glide_web">https://github.com/bumptech/glide</string>
 
-    <string name="fab_author">Oleksandr Melnykov</string>
-    <string name="fab_web">https://github.com/makovkastar/floatingactionbutton</string>
-    <string name="fab_name">Floating Action Button</string>
-
     <string name="assent_web">https://github.com/afollestad/assent</string>
     <string name="assent_name">Assent</string>
 
@@ -48,6 +44,9 @@
     <string name="sherry_link">https://plus.google.com/+SherrySabatine</string>
     <string name="patryk">Patryk Goworowsky</string>
     <string name="josh_gray">Josh Gray</string>
+    <string name="sherry">Sherry Sabatine</string>
+    <string name="kevin">Kevin Aguilar</string>
+    <string name="anthony">Anthony Nguyen</string>
 
     <string-array name="collaborators_names">
         <item>@string/materialdialogs_author</item>
@@ -69,14 +68,18 @@
         <item>@string/tim_bremer</item>
         <item>@string/josh_gray</item>
         <item>@string/patryk</item>
+        <item>@string/anthony</item>
+        <item>@string/kevin</item>
     </string-array>
 
     <string-array name="ui_collaborators_links">
-        <item>https://plus.google.com/111678887963556771807/auto</item>
-        <item>https://plus.google.com/103202379000002144026/auto</item>
-        <item>https://plus.google.com/114641367439276138127/auto</item>
+        <item>https://plus.google.com/111678887963556771807/posts</item>
+        <item>https://plus.google.com/103202379000002144026/posts</item>
+        <item>https://plus.google.com/114641367439276138127/posts</item>
         <item>https://plus.google.com/+JoshGray1789/posts</item>
         <item>https://plus.google.com/109304801957014561872/posts</item>
+        <item>https://plus.google.com/111080505870850761155/posts</item>
+        <item>https://plus.google.com/+KevinAguilarC/posts</item>
     </string-array>
 
     <string-array name="libs_names">
@@ -86,7 +89,6 @@
         <item>@string/materialize_name</item>
         <item>@string/iconics_name</item>
         <item>@string/glide_name</item>
-        <item>@string/fab_name</item>
         <item>@string/rv_animators_name</item>
         <item>@string/rv_fast_scroller_name</item>
     </string-array>
@@ -98,7 +100,6 @@
         <item>@string/materialize_web</item>
         <item>@string/iconics_web</item>
         <item>@string/glide_web</item>
-        <item>@string/fab_web</item>
         <item>@string/rv_animators_web</item>
         <item>@string/rv_fast_scroller_web</item>
     </string-array>

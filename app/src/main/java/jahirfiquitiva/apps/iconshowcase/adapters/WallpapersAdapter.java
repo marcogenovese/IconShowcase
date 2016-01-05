@@ -29,7 +29,7 @@ import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
 public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.WallsHolder> {
 
     public interface ClickListener {
-        void onClick(WallsHolder view, int index);
+        void onClick(WallsHolder view, int index, boolean longClick);
     }
 
     private final Context context;
@@ -130,7 +130,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
         return wallsList == null ? 0 : wallsList.size();
     }
 
-    public class WallsHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class WallsHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
         public final View view;
         public final ImageView wall;
@@ -149,13 +149,22 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
             titleBg = (LinearLayout) view.findViewById(R.id.titlebg);
             layout = (FrameLayout) view.findViewById(R.id.wall_frame_layout);
             view.setOnClickListener(this);
+            view.setOnLongClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             int index = getLayoutPosition();
             if (mCallback != null)
-                mCallback.onClick(this, index);
+                mCallback.onClick(this, index, false);
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            int index = getLayoutPosition();
+            if (mCallback != null)
+                mCallback.onClick(this, index, true);
+            return false;
         }
     }
 }

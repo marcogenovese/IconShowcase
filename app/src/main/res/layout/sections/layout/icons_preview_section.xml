@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".activities.ShowcaseActivity">
+    android:orientation="vertical">
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tabs"
@@ -13,16 +12,20 @@
         android:layout_height="wrap_content"
         android:background="@color/primary"
         android:clipToPadding="false"
-        android:elevation="@dimen/toolbar_elevation"
+        android:minHeight="?actionBarSize"
         android:paddingLeft="@dimen/tabs_contentInset"
         android:paddingStart="@dimen/tabs_contentInset"
+        app:layout_scrollFlags="enterAlways"
+        app:tabIndicatorColor="@android:color/white"
         app:tabMode="scrollable"
+        app:tabSelectedTextColor="@android:color/white"
+        app:tabTextColor="@color/semitransparent_white"
         tools:ignore="NewApi,RtlSymmetry,UnusedAttribute"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
 </LinearLayout>

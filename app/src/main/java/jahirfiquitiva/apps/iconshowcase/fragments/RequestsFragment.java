@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,16 +19,13 @@ import com.afollestad.assent.AssentCallback;
 import com.afollestad.assent.PermissionResultSet;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.melnykov.fab.FloatingActionButton;
 import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 
 import jahirfiquitiva.apps.iconshowcase.R;
-import jahirfiquitiva.apps.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.apps.iconshowcase.adapters.RequestsAdapter;
 import jahirfiquitiva.apps.iconshowcase.tasks.ZipFilesToRequest;
 import jahirfiquitiva.apps.iconshowcase.utilities.ApplicationBase;
 import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
-import jahirfiquitiva.apps.iconshowcase.utilities.Util;
 import jahirfiquitiva.apps.iconshowcase.views.GridSpacingItemDecoration;
 
 public class RequestsFragment extends Fragment {
@@ -67,19 +65,14 @@ public class RequestsFragment extends Fragment {
             e.printStackTrace();
         }
 
-        if (ShowcaseActivity.toolbar != null) {
-            if (ShowcaseActivity.toolbar.getTitle() != null &&
-                    !ShowcaseActivity.toolbar.getTitle().equals(
-                            Util.getStringFromResources(getActivity(), R.string.section_five))) {
-                ShowcaseActivity.toolbar.setTitle(R.string.section_five);
-            }
-        }
-
         mPrefs = new Preferences(getActivity());
 
         showRequestsAdviceDialog(getActivity());
 
-        fab = (FloatingActionButton) layout.findViewById(R.id.requests_btn);
+        fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
+        fab.setVisibility(View.VISIBLE);
+        fab.show();
+
         progressBar = (ProgressBar) layout.findViewById(R.id.requestProgress);
         mRecyclerView = (RecyclerView) layout.findViewById(R.id.appsToRequestList);
         mRecyclerView.setLayoutManager(new GridLayoutManager(context, columnsNumber));
@@ -88,10 +81,9 @@ public class RequestsFragment extends Fragment {
         hideStuff();
 
         fastScroller.setHideDelay(1000);
-        fab.setColorNormal(getResources().getColor(R.color.accent));
-        fab.setColorPressed(getResources().getColor(R.color.accent));
-        fab.setColorRipple(getResources().getColor(R.color.semitransparent_white));
-        fab.hide(true);
+        fab.setImageResource(R.drawable.ic_send);
+        fab.setBackgroundColor(getResources().getColor(R.color.accent));
+        fab.setRippleColor(getResources().getColor(R.color.semitransparent_white));
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -147,24 +139,23 @@ public class RequestsFragment extends Fragment {
                 mRecyclerView.setHasFixedSize(true);
                 mRecyclerView.setAdapter(requestsAdapter);
                 requestsAdapter.startIconFetching(mRecyclerView);
-                fab.attachToRecyclerView(mRecyclerView);
                 showStuff();
             }
         }
     }
 
     private static void showStuff() {
-        fab.show(true);
+        fab.show();
         if (progressBar.getVisibility() != View.GONE) {
             progressBar.setVisibility(View.GONE);
         }
         mRecyclerView.setVisibility(View.VISIBLE);
         fastScroller.setVisibility(View.VISIBLE);
-        fastScroller.setRecyclerView(mRecyclerView);
+        fastScroller.attachRecyclerView(mRecyclerView);
     }
 
     private void hideStuff() {
-        fab.hide(true);
+        fab.hide();
         if (progressBar.getVisibility() != View.VISIBLE) {
             progressBar.setVisibility(View.VISIBLE);
         }

@@ -5,25 +5,30 @@ import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.afollestad.assent.Assent;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -36,11 +41,12 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.adapters.ChangelogAdapter;
 import jahirfiquitiva.apps.iconshowcase.adapters.IconsAdapter;
-import jahirfiquitiva.apps.iconshowcase.dialogs.FolderSelectorDialog;
+import jahirfiquitiva.apps.iconshowcase.dialogs.FolderChooserDialog;
 import jahirfiquitiva.apps.iconshowcase.fragments.SettingsFragment;
 import jahirfiquitiva.apps.iconshowcase.fragments.WallpapersFragment;
 import jahirfiquitiva.apps.iconshowcase.models.IconsLists;
@@ -48,13 +54,14 @@ import jahirfiquitiva.apps.iconshowcase.models.WallpapersList;
 import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.apps.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.apps.iconshowcase.utilities.Util;
+import jahirfiquitiva.apps.iconshowcase.views.CustomCoordinatorLayout;
 
-public class ShowcaseActivity extends AppCompatActivity
-        implements FolderSelectorDialog.FolderSelectCallback {
+public class ShowcaseActivity extends AppCompatActivity implements FolderChooserDialog.FolderCallback {
 
     private static final boolean WITH_LICENSE_CHECKER = false,
             WITH_INSTALLED_FROM_AMAZON = false,
-            WITH_ZOOPER_SECTION = false;
+            WITH_ZOOPER_SECTION = false,
+            WITH_ICONS_BASED_CHANGELOG = false;
 
     private static final String MARKET_URL = "https://play.google.com/store/apps/details?id=";
 
@@ -66,7 +73,7 @@ public class ShowcaseActivity extends AppCompatActivity
 
     public static boolean iconPicker, imagePicker, wallsPicker;
 
-    private String thaAppName, thaHome, thaPreviews, thaApply, thaWalls, thaRequest, thaFAQs,
+    private static String thaHome, thaPreviews, thaApply, thaWalls, thaRequest, thaFAQs,
             thaZooper, thaCredits, thaSettings;
 
     private static AppCompatActivity context;
@@ -79,7 +86,11 @@ public class ShowcaseActivity extends AppCompatActivity
     private static Preferences mPrefs;
 
     public static MaterialDialog settingsDialog;
+    public static ActionBar actionbar;
     public static Toolbar toolbar;
+    public static AppBarLayout appbar;
+    public static CustomCoordinatorLayout coordinatorLayout;
+    public static ImageView icon1, icon2, icon3, icon4;
 
     public static Drawer drawer;
     public AccountHeader drawerHeader;
@@ -93,12 +104,6 @@ public class ShowcaseActivity extends AppCompatActivity
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             ThemeUtils.onActivityCreateSetNavBar(this);
-            /*
-            Window window = getWindow();
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(getResources().getColor(android.R.color.transparent));
-            */
         }
 
         super.onCreate(savedInstanceState);
@@ -109,12 +114,30 @@ public class ShowcaseActivity extends AppCompatActivity
 
         setContentView(R.layout.showcase_activity);
 
+        coordinatorLayout = (CustomCoordinatorLayout) findViewById(R.id.mainCoordinatorLayout);
+        appbar = (AppBarLayout) findViewById(R.id.appbar);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        actionbar = getSupportActionBar();
         //noinspection ConstantConditions
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        actionbar.setDisplayHomeAsUpEnabled(true);
 
-        thaAppName = getResources().getString(R.string.app_name);
+        icon1 = (ImageView) findViewById(R.id.iconOne);
+        icon2 = (ImageView) findViewById(R.id.iconTwo);
+        icon3 = (ImageView) findViewById(R.id.iconThree);
+        icon4 = (ImageView) findViewById(R.id.iconFour);
+
+        setupIcons(icon1, icon2, icon3, icon4);
+
+        GridLayout iconsRow = (GridLayout) findViewById(R.id.iconsRow);
+        iconsRow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setupIcons(icon1, icon2, icon3, icon4);
+                animateIcons(icon1, icon2, icon3, icon4);
+            }
+        });
+
         thaHome = getResources().getString(R.string.section_one);
         thaPreviews = getResources().getString(R.string.section_two);
         thaApply = getResources().getString(R.string.section_three);
@@ -131,14 +154,14 @@ public class ShowcaseActivity extends AppCompatActivity
 
         if (savedInstanceState == null) {
             if (iconPicker || imagePicker) {
-                switchFragment(2, thaPreviews, "Previews", context);
+                drawerItemClick(2);
                 drawer.setSelection(2);
             } else if (wallsPicker && mPrefs.areFeaturesEnabled()) {
-                switchFragment(3, thaWalls, "Wallpapers", context);
+                drawerItemClick(3);
                 drawer.setSelection(3);
             } else {
                 if (mPrefs.getSettingsModified()) {
-                    switchFragment(9, thaSettings, "Settings", context);
+                    drawerItemClick(9);
                     drawer.setSelection(9);
                 } else {
                     currentItem = -1;
@@ -158,10 +181,16 @@ public class ShowcaseActivity extends AppCompatActivity
         }
         currentItem = itemId;
 
-        if (toolbar != null) {
-            if (toolbar.getTitle() != null && !toolbar.getTitle().equals(title)) {
-                toolbar.setTitle(title);
-            }
+        if (actionbar != null) {
+            actionbar.setTitle(title);
+        }
+
+        if (fragment.equals("Main")) {
+            appbar.setExpanded(true, mPrefs.getAnimationsEnabled());
+            coordinatorLayout.setScrollAllowed(true);
+        } else {
+            appbar.setExpanded(false, mPrefs.getAnimationsEnabled());
+            coordinatorLayout.setScrollAllowed(false);
         }
 
         if (mPrefs.getAnimationsEnabled()) {
@@ -176,6 +205,7 @@ public class ShowcaseActivity extends AppCompatActivity
                             "jahirfiquitiva.apps.iconshowcase.fragments." + fragment + "Fragment"))
                     .commit();
         }
+
     }
 
     @Override
@@ -191,11 +221,6 @@ public class ShowcaseActivity extends AppCompatActivity
         if (mLastTheme != ThemeUtils.darkTheme
                 || mLastNavBar != ThemeUtils.coloredNavBar) {
             ThemeUtils.restartActivity(this);
-            /*
-            this.startActivity(new Intent(this, this.getClass()));
-            this.finish();
-            this.overridePendingTransition(0, 0);
-            */
         }
     }
 
@@ -203,14 +228,14 @@ public class ShowcaseActivity extends AppCompatActivity
     protected void onSaveInstanceState(Bundle outState) {
         if (drawer != null)
             outState = drawer.saveInstanceState(outState);
-        outState.putString("toolbarTitle", String.valueOf(toolbar.getTitle()));
+        outState.putString("toolbarTitle", String.valueOf(actionbar.getTitle()));
         super.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        toolbar.setTitle(savedInstanceState.getString("toolbarTitle", thaAppName));
+        actionbar.setTitle(savedInstanceState.getString("toolbarTitle", "   "));
     }
 
     @Override
@@ -245,6 +270,8 @@ public class ShowcaseActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
         switch (item.getItemId()) {
+
+            /*
             case R.id.share:
                 Intent sharingIntent = new Intent(Intent.ACTION_SEND);
                 sharingIntent.setType("text/plain");
@@ -278,13 +305,14 @@ public class ShowcaseActivity extends AppCompatActivity
                 intent.putExtra(Intent.EXTRA_TEXT, emailBuilder.toString());
                 startActivity(Intent.createChooser(intent, (getResources().getString(R.string.send_title))));
                 break;
+                */
 
             case R.id.changelog:
-                showChangelog();
-                break;
-
-            case R.id.iconsBasedChangelog:
-                showIconsChangelog();
+                if (WITH_ICONS_BASED_CHANGELOG) {
+                    showIconsChangelog();
+                } else {
+                    showChangelog();
+                }
                 break;
 
             case R.id.refresh:
@@ -363,7 +391,11 @@ public class ShowcaseActivity extends AppCompatActivity
         String launchinfo = getSharedPreferences("PrefsFile", MODE_PRIVATE).getString("version", "0");
         storeSharedPrefs();
         if (launchinfo != null && !launchinfo.equals(Util.getAppVersion(this))) {
-            showChangelog();
+            if (WITH_ICONS_BASED_CHANGELOG) {
+                showIconsChangelog();
+            } else {
+                showChangelog();
+            }
         }
     }
 
@@ -470,7 +502,7 @@ public class ShowcaseActivity extends AppCompatActivity
         void checkWallsListCreation(boolean result);
     }
 
-    public void onFolderSelection(File folder) {
+    public void onFolderSelection(@NonNull File folder) {
         mPrefs.setDownloadsFolder(folder.getAbsolutePath());
         SettingsFragment.changeValues(getApplicationContext());
     }
@@ -492,6 +524,7 @@ public class ShowcaseActivity extends AppCompatActivity
             drawer = new DrawerBuilder()
                     .withActivity(this)
                     .withToolbar(toolbar)
+                    .withTranslucentStatusBar(true)
                     .withAccountHeader(drawerHeader)
                     .withFireOnInitialOnClick(true)
                     .addDrawerItems(
@@ -510,45 +543,19 @@ public class ShowcaseActivity extends AppCompatActivity
                         @Override
                         public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                             if (drawerItem != null) {
-                                switch (drawerItem.getIdentifier()) {
-                                    case 1:
-                                        switchFragment(1, thaAppName, "Main", context);
-                                        break;
-                                    case 2:
-                                        switchFragment(2, thaPreviews, "Previews", context);
-                                        break;
-                                    case 3:
-                                        switchFragment(3, thaWalls, "Wallpapers", context);
-                                        break;
-                                    case 4:
-                                        switchFragment(4, thaRequest, "Requests", context);
-                                        break;
-                                    case 5:
-                                        switchFragment(5, thaApply, "Apply", context);
-                                        break;
-                                    case 6:
-                                        switchFragment(6, thaFAQs, "FAQs", context);
-                                        break;
-                                    case 7:
-                                        switchFragment(7, thaZooper, "Zooper", context);
-                                        break;
-                                    case 8:
-                                        switchFragment(8, thaCredits, "Credits", context);
-                                        break;
-                                    case 9:
-                                        switchFragment(9, thaSettings, "Settings", context);
-                                        break;
-                                }
+                                drawerItemClick(drawerItem.getIdentifier());
                             }
                             return false;
                         }
                     })
                     .withSavedInstance(savedInstanceState)
                     .build();
+
         } else {
             drawer = new DrawerBuilder()
                     .withActivity(this)
                     .withToolbar(toolbar)
+                    .withTranslucentStatusBar(true)
                     .withFireOnInitialOnClick(true)
                     .addDrawerItems(
                             new PrimaryDrawerItem().withName(thaHome).withIcon(GoogleMaterial.Icon.gmd_home).withIdentifier(1),
@@ -566,41 +573,45 @@ public class ShowcaseActivity extends AppCompatActivity
                         @Override
                         public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                             if (drawerItem != null) {
-                                switch (drawerItem.getIdentifier()) {
-                                    case 1:
-                                        switchFragment(1, thaAppName, "Main", context);
-                                        break;
-                                    case 2:
-                                        switchFragment(2, thaPreviews, "Previews", context);
-                                        break;
-                                    case 3:
-                                        switchFragment(3, thaWalls, "Wallpapers", context);
-                                        break;
-                                    case 4:
-                                        switchFragment(4, thaRequest, "Requests", context);
-                                        break;
-                                    case 5:
-                                        switchFragment(5, thaApply, "Apply", context);
-                                        break;
-                                    case 6:
-                                        switchFragment(6, thaFAQs, "FAQs", context);
-                                        break;
-                                    case 7:
-                                        switchFragment(7, thaZooper, "Zooper", context);
-                                        break;
-                                    case 8:
-                                        switchFragment(8, thaCredits, "Credits", context);
-                                        break;
-                                    case 9:
-                                        switchFragment(9, thaSettings, "Settings", context);
-                                        break;
-                                }
+                                drawerItemClick(drawerItem.getIdentifier());
                             }
                             return false;
                         }
                     })
                     .withSavedInstance(savedInstanceState)
                     .build();
+        }
+    }
+
+    public static void drawerItemClick(int id) {
+        switch (id) {
+            case 1:
+                switchFragment(1, "   ", "Main", context);
+                break;
+            case 2:
+                switchFragment(2, thaPreviews, "Previews", context);
+                break;
+            case 3:
+                switchFragment(3, thaWalls, "Wallpapers", context);
+                break;
+            case 4:
+                switchFragment(4, thaRequest, "Requests", context);
+                break;
+            case 5:
+                switchFragment(5, thaApply, "Apply", context);
+                break;
+            case 6:
+                switchFragment(6, thaFAQs, "FAQs", context);
+                break;
+            case 7:
+                switchFragment(7, thaZooper, "Zooper", context);
+                break;
+            case 8:
+                switchFragment(8, thaCredits, "Credits", context);
+                break;
+            case 9:
+                switchFragment(9, thaSettings, "Settings", context);
+                break;
         }
     }
 
@@ -659,4 +670,64 @@ public class ShowcaseActivity extends AppCompatActivity
 
     }
 
+    private void setupIcons(final ImageView icon1, final ImageView icon2,
+                            final ImageView icon3, final ImageView icon4) {
+
+        ArrayList<Integer> icons = IconsLists.getPreviewAL();
+        ArrayList<Integer> finalIconsList = new ArrayList<>();
+
+        if (icons != null) {
+            Collections.shuffle(icons);
+        }
+
+        int numOfIcons = getResources().getInteger(R.integer.icon_grid_width);
+        int i = 0;
+
+        if (icons != null) {
+            while (i < numOfIcons) {
+                finalIconsList.add(icons.get(i));
+                i++;
+            }
+
+            icon1.setImageResource(finalIconsList.get(0));
+            icon2.setImageResource(finalIconsList.get(1));
+            icon3.setImageResource(finalIconsList.get(2));
+            icon4.setImageResource(finalIconsList.get(3));
+
+        }
+    }
+
+    public static void animateIcons(final ImageView icon1, final ImageView icon2,
+                                    final ImageView icon3, final ImageView icon4) {
+
+        icon1.setVisibility(View.VISIBLE);
+        icon2.setVisibility(View.VISIBLE);
+        icon3.setVisibility(View.VISIBLE);
+        icon4.setVisibility(View.VISIBLE);
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (mPrefs.getAnimationsEnabled()) {
+                    YoYo.with(Techniques.Bounce)
+                            .duration(700)
+                            .playOn(icon1);
+
+                    YoYo.with(Techniques.Bounce)
+                            .duration(700)
+                            .playOn(icon2);
+
+                    YoYo.with(Techniques.Bounce)
+                            .duration(700)
+                            .playOn(icon3);
+
+                    YoYo.with(Techniques.Bounce)
+                            .duration(700)
+                            .playOn(icon4);
+                }
+            }
+        }, 500);
+
+    }
 }

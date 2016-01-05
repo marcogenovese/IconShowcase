@@ -9,7 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.melnykov.fab.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -28,12 +28,12 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
     private View layout;
     private boolean isPicker;
     private Snackbar snackbar;
-    private FloatingActionButton fab;
+    private FloatingActionsMenu fab;
 
     private WeakReference<Activity> wrActivity;
 
     public ApplyWallpaper(Activity activity, MaterialDialog dialog, Bitmap resource, Boolean isPicker,
-                          View layout, FloatingActionButton fab) {
+                          View layout, FloatingActionsMenu fab) {
         this.wrActivity = new WeakReference<Activity>(activity);
         this.dialog = dialog;
         this.resource = resource;
@@ -82,7 +82,7 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
                     public void onDismissed(Snackbar snackbar, int event) {
                         super.onDismissed(snackbar, event);
                         if (fab != null) {
-                            fab.show(true);
+                            fab.setVisibility(View.VISIBLE);
                         }
                     }
                 });

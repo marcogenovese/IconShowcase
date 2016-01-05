@@ -4,6 +4,7 @@
 
 package jahirfiquitiva.apps.iconshowcase.fragments;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
@@ -16,7 +17,8 @@ import android.os.Environment;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
 
@@ -28,7 +30,6 @@ import java.io.File;
 import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.apps.iconshowcase.basefragments.PreferenceFragment;
-import jahirfiquitiva.apps.iconshowcase.dialogs.FolderSelectorDialog;
 import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.apps.iconshowcase.utilities.ThemeUtils;
 
@@ -58,12 +59,6 @@ public class SettingsFragment extends PreferenceFragment {
 
         mPrefs.setSettingsModified(false);
 
-        if (ShowcaseActivity.toolbar != null) {
-            if (ShowcaseActivity.toolbar.getTitle() != null && !ShowcaseActivity.toolbar.getTitle().equals(settingsTitle)) {
-                ShowcaseActivity.toolbar.setTitle(settingsTitle);
-            }
-        }
-
         sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
         editor = sp.edit();
 
@@ -81,10 +76,9 @@ public class SettingsFragment extends PreferenceFragment {
 
         addPreferencesFromResource(R.xml.preferences);
 
-        if (ShowcaseActivity.toolbar != null) {
-            if (ShowcaseActivity.toolbar.getTitle() != null && !ShowcaseActivity.toolbar.getTitle().equals(settingsTitle)) {
-                ShowcaseActivity.toolbar.setTitle(settingsTitle);
-            }
+        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
+        if (fab != null) {
+            fab.setVisibility(View.GONE);
         }
 
         WSL = findPreference("wallsSaveLocation");
@@ -185,7 +179,17 @@ public class SettingsFragment extends PreferenceFragment {
         findPreference("wallsSaveLocation").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                new FolderSelectorDialog().show((AppCompatActivity) getActivity());
+                if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) !=
+                        PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                            69);
+                    return false;
+                }
+                /*
+                new FolderChooserDialog.Builder(ShowcaseActivity)
+                        .chooseButton(R.string.choose)
+                        .show();
+                        */
                 return true;
             }
         });
@@ -348,6 +352,7 @@ public class SettingsFragment extends PreferenceFragment {
         mPrefs.setDownloadsFolder(null);
         mPrefs.setRequestsDialogDismissed(false);
         mPrefs.setApplyDialogDismissed(false);
+        mPrefs.setWallsDialogDismissed(false);
         ThemeUtils.restartActivity((Activity) context);
     }
 

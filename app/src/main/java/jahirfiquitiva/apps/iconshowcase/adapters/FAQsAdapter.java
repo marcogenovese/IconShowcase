@@ -1,11 +1,11 @@
 package jahirfiquitiva.apps.iconshowcase.adapters;
 
 import android.content.Context;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -34,8 +34,6 @@ public class FAQsAdapter extends RecyclerView.Adapter<FAQsAdapter.FAQsHolder> {
     @Override
     public void onBindViewHolder(FAQsHolder holder, int position) {
 
-        holder.card.setCardElevation(0);
-
         FAQsItem faq = faqs.get(position);
 
         holder.txtAnswer.setText(faq.getanswer());
@@ -53,14 +51,14 @@ public class FAQsAdapter extends RecyclerView.Adapter<FAQsAdapter.FAQsHolder> {
     class FAQsHolder extends RecyclerView.ViewHolder {
 
         final View view;
-        CardView card;
+        LinearLayout card;
         TextView txtQuestion;
         TextView txtAnswer;
 
         FAQsHolder(View v) {
             super(v);
             view = v;
-            card = (CardView) v.findViewById(R.id.faq_card);
+            card = (LinearLayout) v.findViewById(R.id.faq_card);
             txtAnswer = (TextView) v.findViewById(R.id.faq_answer);
             txtQuestion = (TextView) v.findViewById(R.id.faq_question);
         }

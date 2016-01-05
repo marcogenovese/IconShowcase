@@ -9,6 +9,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
@@ -25,6 +26,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
@@ -49,6 +51,7 @@ import jahirfiquitiva.apps.iconshowcase.models.WallpaperItem;
 import jahirfiquitiva.apps.iconshowcase.models.WallpapersList;
 import jahirfiquitiva.apps.iconshowcase.tasks.ApplyWallpaper;
 import jahirfiquitiva.apps.iconshowcase.utilities.JSONParser;
+import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.apps.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.apps.iconshowcase.utilities.Util;
 import jahirfiquitiva.apps.iconshowcase.views.GridSpacingItemDecoration;
@@ -73,6 +76,9 @@ public class WallpapersFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
+        fab.setVisibility(View.GONE);
+
         setHasOptionsMenu(true);
 
         context = (Activity) getActivity();
@@ -89,13 +95,7 @@ public class WallpapersFragment extends Fragment {
 
         }
 
-        if (ShowcaseActivity.toolbar != null) {
-            if (ShowcaseActivity.toolbar.getTitle() != null &&
-                    !ShowcaseActivity.toolbar.getTitle().equals(
-                            Util.getStringFromResources(getActivity(), R.string.section_four))) {
-                ShowcaseActivity.toolbar.setTitle(R.string.section_four);
-            }
-        }
+        showWallsAdviceDialog(getActivity());
 
         noConnection = (ImageView) layout.findViewById(R.id.no_connected_icon);
 
@@ -120,7 +120,7 @@ public class WallpapersFragment extends Fragment {
         mRecyclerView.setVisibility(View.GONE);
 
         fastScroller.setHideDelay(1000);
-        fastScroller.setRecyclerView(mRecyclerView);
+        fastScroller.attachRecyclerView(mRecyclerView);
 
         final int light = getResources().getColor(android.R.color.white);
         final int dark = getResources().getColor(R.color.card_dark_background);
@@ -152,13 +152,15 @@ public class WallpapersFragment extends Fragment {
                     mAdapter = new WallpapersAdapter(context,
                             new WallpapersAdapter.ClickListener() {
                                 @Override
-                                public void onClick(WallpapersAdapter.WallsHolder view, int position) {
-                                    if (ShowcaseActivity.wallsPicker) {
-                                        pickWallpaper(position, WallpapersList.getWallpapersList());
+                                public void onClick(WallpapersAdapter.WallsHolder view,
+                                                    int position, boolean longClick) {
+                                    if ((longClick && !ShowcaseActivity.wallsPicker) || ShowcaseActivity.wallsPicker) {
+                                        pickWallpaper(position, WallpapersList.getWallpapersList(), ShowcaseActivity.wallsPicker);
                                     } else {
                                         openViewer(context, view, position, WallpapersList.getWallpapersList());
                                     }
                                 }
+
                             });
 
                     mAdapter.setData(WallpapersList.getWallpapersList());
@@ -390,7 +392,8 @@ public class WallpapersFragment extends Fragment {
         }
     }
 
-    private static void pickWallpaper(int position, final ArrayList<WallpaperItem> list) {
+    private static void pickWallpaper(int position, final ArrayList<WallpaperItem> list,
+                                      final boolean isWallsPicker) {
         final MaterialDialog dialog = new MaterialDialog.Builder(context)
                 .content(R.string.downloading_wallpaper)
                 .progress(true, 0)
@@ -406,10 +409,34 @@ public class WallpapersFragment extends Fragment {
                     @Override
                     public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                         if (resource != null) {
-                            new ApplyWallpaper(context, dialog, resource, true, layout, null).execute();
+                            new ApplyWallpaper(context, dialog, resource, isWallsPicker, layout, null).execute();
                         }
                     }
                 });
+    }
+
+    private void showWallsAdviceDialog(Context context) {
+        final Preferences mPrefs = new Preferences(context);
+        if (!mPrefs.getWallsDialogDismissed()) {
+            new MaterialDialog.Builder(context)
+                    .title(R.string.advice)
+                    .content(R.string.walls_advice)
+                    .positiveText(R.string.close)
+                    .neutralText(R.string.dontshow)
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(MaterialDialog dialog, DialogAction which) {
+                            mPrefs.setWallsDialogDismissed(false);
+                        }
+                    })
+                    .onNeutral(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(MaterialDialog dialog, DialogAction which) {
+                            mPrefs.setWallsDialogDismissed(true);
+                        }
+                    })
+                    .show();
+        }
     }
 
 }

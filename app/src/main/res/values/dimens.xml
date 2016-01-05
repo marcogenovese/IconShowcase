@@ -6,7 +6,7 @@
     <dimen name="cards_spacing">12dp</dimen>
     <dimen name="finalcard_margin">10dp</dimen>
     <dimen name="cards_text_margin">5dp</dimen>
-    <dimen name="cards_text_top_margin">12dp</dimen>
+    <dimen name="cards_text_top_margin">16dp</dimen>
     <dimen name="mini_margin">2dp</dimen>
     <dimen name="card_corner_radius">4dp</dimen>
     <dimen name="grid_padding_vertical">8dp</dimen>
@@ -17,7 +17,9 @@
     <dimen name="texts_top_padding">5dp</dimen>
     <dimen name="launchers_grid_padding">4dp</dimen>
 
-    <dimen name="toolbar_elevation">4dp</dimen>
+    <dimen name="fab_size_normal">56dp</dimen>
+    <dimen name="fab_size_mini">40dp</dimen>
+
     <dimen name="toolbar_contentInset">72dp</dimen>
     <dimen name="tabs_contentInset">57dp</dimen>
 
@@ -31,7 +33,7 @@
     <dimen name="fullwidth_card_corner_radius">0dp</dimen>
     <dimen name="fullwidth_card_margin_tb">4dp</dimen>
 
-    <dimen name="icons_preview_row">0dp</dimen>
+    <dimen name="icons_preview_row">12dp</dimen>
     <dimen name="welcome_card_content_padding">12dp</dimen>
 
     <dimen name="icons_changelog_max_height">384dp</dimen>

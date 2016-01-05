@@ -63,7 +63,7 @@ public class IconsFragment extends Fragment {
         }
 
         iconsGrid.setAdapter(mPrefs.getAnimationsEnabled() ? animAdapter(mAdapter) : mAdapter);
-        fastScroller.setRecyclerView(iconsGrid);
+        fastScroller.attachRecyclerView(iconsGrid);
         fastScroller.setHideDelay(500);
         fastScroller.setVisibility(View.VISIBLE);
 

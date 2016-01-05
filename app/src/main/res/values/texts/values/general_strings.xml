@@ -27,8 +27,6 @@
     <!-- Strings for Dropdown Menu & Requests -->
     <string name="share_title">Share via</string>
     <string name="send_title">Send via</string>
-    <string name="rate">Rate this icon pack</string>
-    <string name="sendemail">Contact developer</string>
     <string name="changelog">View the changelog</string>
     <string name="iconsBasedChangelog">View the icons based changelog</string>
 
@@ -94,10 +92,7 @@
     <string name="crop">Crop</string>
     <string name="advice">Advice</string>
     <string name="dontshow">Don\'t show again</string>
-    <string name="play">PLAY STORE</string>
-    <string name="web">WEBSITE</string>
-    <string name="gplus">GOOGLE+</string>
-    <string name="ratebtn">RATE</string>
+    <string name="rate">Rate</string>
     <string name="set_as">Crop wallpaper and set as…</string>
 
     <!-- Requests -->
@@ -195,10 +190,12 @@
     <string name="twitter">Twitter</string>
     <string name="play_store">Google Play Store</string>
     <string name="facebook">Facebook</string>
+    <string name="web">Website</string>
+    <string name="more_apps">More apps</string>
+    <string name="more_apps_long">Check the other apps I have published in Google Play Store.</string>
 
     <string name="implemented_libraries">Implemented libraries</string>
     <string name="collaborators">Development Collaborators</string>
-    <string name="sherry">Sherry Sabatine</string>
     <string name="sherry_title">Thanks to Sherry Sabatine</string>
     <string name="sherry_dialog">Thanks to her, IconShowcase is free and OpenSource.</string>
     <string name="follow_her">Follow her</string>
@@ -231,7 +228,8 @@
     <!-- Messages shown when using LicenseChecker -->
     <string name="license_failed">You did not download IconShowcase from the Google Play Store. You have two options:</string>
     <string name="license_success">Thank you for downloading my dashboard sample. If you like it, don\'t forget to rate it and write a review in the Google Play Store.</string>
-    <string name="applyAdvice">If the launcher you use, is not listed here, you must apply the icon pack directly from the launcher settings.\nSome launchers do not support direct apply.</string>
+    <string name="apply_advice">If the launcher you use, is not listed here, you must apply the icon pack directly from the launcher settings.\nSome launchers do not support direct apply.</string>
+    <string name="walls_advice">Simple press a wallpaper to view it in FullScreen.\nLong press to apply it directly to your homescreen.</string>
 
     <string name="zooper_section_title">Zooper Setup</string>
 
@@ -262,5 +260,14 @@
 
     <string name="fonts_installed">Fonts already installed</string>
     <string name="iconsets_installed">IconSets already installed</string>
+
+    <string name="icon_pack_in_numbers">Icon Pack in numbers</string>
+    <string name="themed_icons">Over %1$s themed icons.</string>
+    <string name="available_wallpapers">About %1$s available wallpapers.</string>
+    <string name="included_widgets">Over %1$s included widgets for Zooper.</string>
+    <string name="icons">Icons</string>
+
+    <string name="md_error_label">Error</string>
+    <string name="md_storage_perm_error">Your app has not granted the READ_EXTERNAL_STORAGE permission.</string>
 
 </resources>

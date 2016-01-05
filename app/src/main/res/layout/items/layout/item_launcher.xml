@@ -1,31 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<android.support.v7.widget.CardView
     android:id="@+id/launcher_item"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:foreground="?selectableItemBackground">
+    android:layout_height="wrap_content"
+    android:foreground="?selectableItemBackground"
+    app:cardBackgroundColor="?attr/colorCardBackground"
+    app:cardCornerRadius="@dimen/card_corner_radius"
+    app:cardElevation="@dimen/cards_elevation">
 
-    <jahirfiquitiva.apps.iconshowcase.views.SquaredImageView
-        android:id="@+id/launchericon"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="center"
-        android:src="@drawable/ic_launcher"
-        tools:ignore="ContentDescription, UnusedAttribute"/>
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/launcherName"
-        style="@style/AboutContent"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/launchericon"
-        android:layout_gravity="bottom"
-        android:ellipsize="end"
-        android:gravity="center"
-        android:maxLines="1"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        tools:text="Launcher Name"/>
+        <jahirfiquitiva.apps.iconshowcase.views.SquaredImageView
+            android:id="@+id/launchericon"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="center"
+            android:src="@drawable/ic_launcher"
+            tools:ignore="ContentDescription, UnusedAttribute"/>
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/launcherName"
+            style="@style/AboutContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/launchericon"
+            android:layout_gravity="bottom"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            tools:text="Launcher Name"/>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

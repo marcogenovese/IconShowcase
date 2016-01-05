@@ -3,6 +3,7 @@ package jahirfiquitiva.apps.iconshowcase.fragments;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.InflateException;
 import android.view.LayoutInflater;
@@ -17,7 +18,6 @@ import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 
 import jahirfiquitiva.apps.iconshowcase.R;
-import jahirfiquitiva.apps.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.apps.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.apps.iconshowcase.utilities.Util;
 
@@ -50,6 +50,9 @@ public class CreditsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
+        fab.setVisibility(View.GONE);
+
         context = getActivity();
 
         setupBooleans();
@@ -68,13 +71,6 @@ public class CreditsFragment extends Fragment {
             layout = (ViewGroup) inflater.inflate(R.layout.credits_section, container, false);
         } catch (InflateException e) {
 
-        }
-
-        if (ShowcaseActivity.toolbar != null) {
-            if (ShowcaseActivity.toolbar.getTitle() != null &&
-                    !ShowcaseActivity.toolbar.getTitle().equals(Util.getStringFromResources(context, R.string.section_six))) {
-                ShowcaseActivity.toolbar.setTitle(R.string.section_six);
-            }
         }
 
         setupViewsIDs(layout);

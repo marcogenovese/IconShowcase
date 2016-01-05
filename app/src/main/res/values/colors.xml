@@ -4,9 +4,6 @@
     <color name="primary">#455a64</color>
     <color name="primary_dark">#263238</color>
     <color name="accent">#00b0ff</color>
-    <color name="accent_lighter">#40c4ff</color>
-    <color name="accent_darker">#0091ea</color>
-    <color name="ripple_accent">#8000b0ff</color>
 
     <color name="semitransparent_white">#80ffffff</color>
     <color name="semitransparent_black">#33000000</color>
@@ -14,17 +11,7 @@
 
     <color name="card_dark_background">#424242</color>
     <color name="card_light_background">#fafafa</color>
-
     <color name="light_grey">#eeeeee</color>
-
-    <color name="website">#263238</color>
-    <color name="google_plus">@color/red</color>
-    <color name="google_plus_community">#0097a7</color>
-    <color name="twitter">#00aced</color>
-    <color name="instagram">#125688</color>
-    <color name="youtube">#bb0000</color>
-    <color name="playstore">#98ca5e</color>
-    <color name="github">#212121</color>
 
     <color name="material_drawer_selected_text">@color/accent</color>
     <color name="material_drawer_dark_selected_text">@color/accent</color>

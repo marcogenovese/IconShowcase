@@ -60,9 +60,4 @@
     <string name="theme_info">@string/theme_description</string>
     <string name="theme_ad_msg">@string/theme_description</string>
 
-    <string-array name="wallpaper_options" translatable="false">
-        <item>@string/apply</item>
-        <item>@string/save_to_device</item>
-    </string-array>
-
 </resources>
