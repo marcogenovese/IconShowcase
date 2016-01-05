@@ -3,6 +3,7 @@ package jahirfiquitiva.apps.iconshowcase.dialogs;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;

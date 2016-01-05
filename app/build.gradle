@@ -110,7 +110,7 @@ dependencies {
     }
 
     //Floating Action Menu
-    compile 'com.getbase:floatingactionbutton:1.10.1'
+    compile 'com.github.clans:fab:1.6.2'
 
     //RecyclerView Animations
     compile 'jp.wasabeef:recyclerview-animators:2.1.0'

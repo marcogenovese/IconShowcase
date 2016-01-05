@@ -27,8 +27,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
-import com.getbase.floatingactionbutton.FloatingActionButton;
-import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 import com.mikepenz.materialize.MaterializeBuilder;
 
 import java.io.File;
@@ -48,12 +48,15 @@ public class ViewerActivity extends AppCompatActivity {
     private boolean mLastTheme, mLastNavBar;
 
     public static final String EXTRA_CURRENT_ITEM_POSITION = "extra_current_item_position";
+
+    private boolean WITH_FAB_ICON_ANIMATION = true;
+
     private int mIndex;
     private String mIndexText, transitionName, wallUrl, wallName, wallAuthor;
     private TouchImageView mPhoto;
 
     private FloatingActionButton setWall, saveWall;
-    private FloatingActionsMenu fab;
+    private FloatingActionMenu fab;
     private RelativeLayout layout;
     private static Preferences mPrefs;
     private static File downloadsFolder;
@@ -86,7 +89,8 @@ public class ViewerActivity extends AppCompatActivity {
 
         setContentView(R.layout.wall_viewer_activity);
 
-        fab = (FloatingActionsMenu) findViewById(R.id.wallsFab);
+        fab = (FloatingActionMenu) findViewById(R.id.wallsFab);
+        fab.setIconAnimated(WITH_FAB_ICON_ANIMATION && mPrefs.getAnimationsEnabled());
 
         setWall = (FloatingActionButton) findViewById(R.id.setWall);
         saveWall = (FloatingActionButton) findViewById(R.id.saveWall);
@@ -287,10 +291,13 @@ public class ViewerActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         downloadDialog.dismiss();
-                        if (fab.isExpanded()) {
-                            fab.collapseImmediately();
-                            fab.setVisibility(View.GONE);
+
+                        if (fab.isOpened()) {
+                            fab.close(mPrefs.getAnimationsEnabled());
                         }
+                        fab.hideMenuButton(mPrefs.getAnimationsEnabled());
+                        fab.hideMenu(mPrefs.getAnimationsEnabled());
+
                         Snackbar longSnackbar = Snackbar.make(layout, finalSnackbarText,
                                 Snackbar.LENGTH_LONG);
                         longSnackbar.show();
@@ -298,11 +305,11 @@ public class ViewerActivity extends AppCompatActivity {
                             @Override
                             public void onDismissed(Snackbar snackbar, int event) {
                                 super.onDismissed(snackbar, event);
-                                fab.setVisibility(View.VISIBLE);
+                                fab.showMenuButton(mPrefs.getAnimationsEnabled());
                             }
                         });
                         if (!longSnackbar.isShown()) {
-                            fab.setVisibility(View.VISIBLE);
+                            fab.showMenuButton(mPrefs.getAnimationsEnabled());
                         }
                     }
                 });
@@ -320,6 +327,11 @@ public class ViewerActivity extends AppCompatActivity {
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
+                        if (fab.isOpened()) {
+                            fab.close(mPrefs.getAnimationsEnabled());
+                        }
+                        fab.hideMenuButton(mPrefs.getAnimationsEnabled());
+                        fab.hideMenu(mPrefs.getAnimationsEnabled());
                         dialogApply = new MaterialDialog.Builder(context)
                                 .content(R.string.downloading_wallpaper)
                                 .progress(true, 0)
@@ -332,7 +344,6 @@ public class ViewerActivity extends AppCompatActivity {
                                     @Override
                                     public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                                         if (resource != null) {
-                                            fab.setVisibility(View.GONE);
                                             dialogApply.setContent(context.getString(R.string.setting_wall_title));
                                             new ApplyWallpaper(context, dialogApply, resource,
                                                     false, layout, fab).execute();
@@ -347,6 +358,11 @@ public class ViewerActivity extends AppCompatActivity {
                         if (dialogApply != null) {
                             dialogApply.dismiss();
                         }
+                        if (fab.isOpened()) {
+                            fab.close(mPrefs.getAnimationsEnabled());
+                        }
+                        fab.hideMenuButton(mPrefs.getAnimationsEnabled());
+                        fab.hideMenu(mPrefs.getAnimationsEnabled());
                         dialogApply = new MaterialDialog.Builder(context)
                                 .content(R.string.downloading_wallpaper)
                                 .progress(true, 0)
@@ -368,10 +384,26 @@ public class ViewerActivity extends AppCompatActivity {
                 }).show();
     }
 
-    private void showNotConnectedSnackBar(final FloatingActionsMenu fab, final Context context) {
-        fab.setVisibility(View.GONE);
-        Util.showSimpleSnackbar(layout,
-                Util.getStringFromResources(context, R.string.no_conn_title), 2);
+    private void showNotConnectedSnackBar(final FloatingActionMenu fab, final Context context) {
+        if (fab.isOpened()) {
+            fab.close(mPrefs.getAnimationsEnabled());
+        }
+        fab.hideMenuButton(mPrefs.getAnimationsEnabled());
+        fab.hideMenu(mPrefs.getAnimationsEnabled());
+
+        Snackbar notConnectedSnackBar = Snackbar.make(layout, R.string.no_conn_title,
+                Snackbar.LENGTH_LONG);
+        notConnectedSnackBar.show();
+        notConnectedSnackBar.setCallback(new Snackbar.Callback() {
+            @Override
+            public void onDismissed(Snackbar snackbar, int event) {
+                super.onDismissed(snackbar, event);
+                fab.showMenuButton(mPrefs.getAnimationsEnabled());
+            }
+        });
+        if (!notConnectedSnackBar.isShown()) {
+            fab.showMenuButton(mPrefs.getAnimationsEnabled());
+        }
     }
 
 }

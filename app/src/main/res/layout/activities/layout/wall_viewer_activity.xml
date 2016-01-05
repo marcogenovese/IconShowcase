@@ -5,20 +5,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    tools:context="jahirfiquitiva.fabs.iconshowcase.activities.ViewerActivity">
+    tools:context="jahirfiquitiva.apps.iconshowcase.activities.ViewerActivity">
 
     <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar"/>
 
-    <jahirfiquitiva.fabs.iconshowcase.views.TouchImageView
+    <jahirfiquitiva.apps.iconshowcase.views.TouchImageView
         android:id="@+id/big_wallpaper"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/toolbar"
         android:scaleType="centerCrop"/>
 
-    <com.getbase.floatingactionbutton.FloatingActionsMenu
+    <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/wallsFab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -26,27 +26,40 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_margin="16dp"
-        fab:fab_addButtonColorNormal="@android:color/white"
-        fab:fab_addButtonColorPressed="@color/semitransparent_black"
-        fab:fab_addButtonPlusIconColor="@color/card_dark_background"
-        fab:fab_labelStyle="@style/FabLabels">
+        fab:menu_colorNormal="@android:color/white"
+        fab:menu_colorPressed="@android:color/white"
+        fab:menu_colorRipple="@color/semitransparent_black"
+        fab:menu_fab_size="normal"
+        fab:menu_icon="@drawable/ic_wallpapers_fab"
+        fab:menu_labels_textColor="@color/card_dark_background"
+        fab:menu_labels_colorNormal="@android:color/white"
+        fab:menu_labels_colorPressed="@android:color/white"
+        fab:menu_labels_colorRipple="@color/semitransparent_black"
+        fab:menu_labels_padding="8dp"
+        fab:menu_showShadow="true">
 
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/saveWall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            fab:fab_icon="@drawable/ic_save_dark"
-            fab:fab_size="mini"
-            fab:fab_title="@string/save"/>
-
-        <com.getbase.floatingactionbutton.FloatingActionButton
+        <com.github.clans.fab.FloatingActionButton
             android:id="@+id/setWall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            fab:fab_icon="@drawable/ic_check_dark"
-            fab:fab_size="mini"
-            fab:fab_title="@string/apply"/>
+            android:src="@drawable/ic_check_dark"
+            fab:fab_colorNormal="@android:color/white"
+            fab:fab_colorPressed="@android:color/white"
+            fab:fab_colorRipple="@color/semitransparent_black"
+            fab:fab_label="@string/apply"
+            fab:fab_size="mini"/>
 
-    </com.getbase.floatingactionbutton.FloatingActionsMenu>
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/saveWall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_save_dark"
+            fab:fab_colorNormal="@android:color/white"
+            fab:fab_colorPressed="@android:color/white"
+            fab:fab_colorRipple="@color/semitransparent_black"
+            fab:fab_label="@string/save"
+            fab:fab_size="mini"/>
+
+    </com.github.clans.fab.FloatingActionMenu>
 
 </RelativeLayout>

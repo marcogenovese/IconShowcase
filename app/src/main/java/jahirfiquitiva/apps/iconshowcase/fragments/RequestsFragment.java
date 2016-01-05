@@ -14,9 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import com.afollestad.assent.Assent;
-import com.afollestad.assent.AssentCallback;
-import com.afollestad.assent.PermissionResultSet;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
@@ -70,8 +67,12 @@ public class RequestsFragment extends Fragment {
         showRequestsAdviceDialog(getActivity());
 
         fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
-        fab.setVisibility(View.VISIBLE);
-        fab.show();
+
+        if (ApplicationBase.allAppsToRequest == null || ApplicationBase.allAppsToRequest.size() <= 0) {
+            fab.hide();
+        } else {
+            fab.show();
+        }
 
         progressBar = (ProgressBar) layout.findViewById(R.id.requestProgress);
         mRecyclerView = (RecyclerView) layout.findViewById(R.id.appsToRequestList);
@@ -81,40 +82,6 @@ public class RequestsFragment extends Fragment {
         hideStuff();
 
         fastScroller.setHideDelay(1000);
-        fab.setImageResource(R.drawable.ic_send);
-        fab.setBackgroundColor(getResources().getColor(R.color.accent));
-        fab.setRippleColor(getResources().getColor(R.color.semitransparent_white));
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!Assent.isPermissionGranted(Assent.WRITE_EXTERNAL_STORAGE)) {
-                    Assent.requestPermissions(new AssentCallback() {
-                        @Override
-                        public void onPermissionResult(PermissionResultSet result) {
-                            if (result.isGranted(Assent.WRITE_EXTERNAL_STORAGE)) {
-                                final MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
-                                        .content(R.string.building_request_dialog)
-                                        .progress(true, 0)
-                                        .cancelable(false)
-                                        .show();
-
-                                new ZipFilesToRequest(getActivity(), dialog,
-                                        ((RequestsAdapter) mRecyclerView.getAdapter()).appsList).execute();
-                            }
-                        }
-                    }, 69, Assent.WRITE_EXTERNAL_STORAGE);
-                } else {
-                    final MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
-                            .content(R.string.building_request_dialog)
-                            .progress(true, 0)
-                            .cancelable(false)
-                            .show();
-
-                    new ZipFilesToRequest(getActivity(), dialog,
-                            ((RequestsAdapter) mRecyclerView.getAdapter()).appsList).execute();
-                }
-            }
-        });
 
         return layout;
     }
@@ -145,17 +112,16 @@ public class RequestsFragment extends Fragment {
     }
 
     private static void showStuff() {
-        fab.show();
         if (progressBar.getVisibility() != View.GONE) {
             progressBar.setVisibility(View.GONE);
         }
         mRecyclerView.setVisibility(View.VISIBLE);
         fastScroller.setVisibility(View.VISIBLE);
         fastScroller.attachRecyclerView(mRecyclerView);
+        fab.show();
     }
 
     private void hideStuff() {
-        fab.hide();
         if (progressBar.getVisibility() != View.VISIBLE) {
             progressBar.setVisibility(View.VISIBLE);
         }
@@ -193,6 +159,11 @@ public class RequestsFragment extends Fragment {
                     })
                     .show();
         }
+    }
+
+    public static void fabPressed(MaterialDialog dialog) {
+        new ZipFilesToRequest(context, dialog,
+                ((RequestsAdapter) mRecyclerView.getAdapter()).appsList).execute();
     }
 
 }

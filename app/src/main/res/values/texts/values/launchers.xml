@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
+    <!-- Structure :
+    Launcher Name|launcher.package.name|HEXCOLOR
+    -->
+
     <string-array name="launchers">
         <item>Action Launcher|com.actionlauncher.playstore|#F44336</item>
         <item>ADW Launcher|org.adw.launcher|#5B9CC8</item>

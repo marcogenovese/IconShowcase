@@ -11,12 +11,13 @@ import android.support.design.widget.Snackbar;
 import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.github.clans.fab.FloatingActionMenu;
 
 import java.io.ByteArrayOutputStream;
 import java.lang.ref.WeakReference;
 
 import jahirfiquitiva.apps.iconshowcase.R;
+import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.apps.iconshowcase.utilities.Util;
 
 public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
@@ -27,13 +28,12 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
     private Uri wallUri;
     private Context context;
     private View layout;
-    private FloatingActionsMenu fab;
+    private FloatingActionMenu fab;
     private String wallName;
-
     private WeakReference<Activity> wrActivity;
 
     public WallpaperToCrop(Activity activity, MaterialDialog dialog, Bitmap resource,
-                           View layout, FloatingActionsMenu fab, String wallName) {
+                           View layout, FloatingActionMenu fab, String wallName) {
         this.wrActivity = new WeakReference<Activity>(activity);
         this.dialog = dialog;
         this.resource = resource;
@@ -49,6 +49,7 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
             this.context = a.getApplicationContext();
             this.activity = a;
         }
+
     }
 
     @Override
@@ -68,6 +69,7 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
 
     @Override
     protected void onPostExecute(Boolean worked) {
+        final Preferences mPrefs = new Preferences(context);
         if (worked) {
             dialog.dismiss();
             Intent setWall = new Intent(Intent.ACTION_ATTACH_DATA);
@@ -75,9 +77,9 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
             setWall.putExtra("png", "image/*");
             activity.startActivityForResult(Intent.createChooser(setWall,
                     context.getResources().getString(R.string.set_as)), 1);
+            fab.showMenuButton(mPrefs.getAnimationsEnabled());
         } else {
             dialog.dismiss();
-            fab.setVisibility(View.GONE);
             Snackbar snackbar = Snackbar.make(layout,
                     context.getResources().getString(R.string.error), Snackbar.LENGTH_SHORT);
             snackbar.show();
@@ -85,7 +87,7 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
                 @Override
                 public void onDismissed(Snackbar snackbar, int event) {
                     super.onDismissed(snackbar, event);
-                    fab.setVisibility(View.VISIBLE);
+                    fab.showMenuButton(mPrefs.getAnimationsEnabled());
                 }
             });
         }

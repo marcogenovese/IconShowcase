@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatButton;
 import android.view.InflateException;
@@ -103,20 +102,6 @@ public class MainFragment extends Fragment {
             public void onClick(View v) {
                 ShowcaseActivity.drawerItemClick(2);
                 ShowcaseActivity.drawer.setSelection(2);
-            }
-        });
-
-        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
-        fab.setImageResource(R.drawable.ic_apply_icons);
-        fab.setBackgroundColor(getResources().getColor(R.color.accent));
-        fab.setRippleColor(getResources().getColor(R.color.semitransparent_white));
-        fab.setVisibility(View.VISIBLE);
-        fab.show();
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ShowcaseActivity.drawerItemClick(5);
-                ShowcaseActivity.drawer.setSelection(5);
             }
         });
 

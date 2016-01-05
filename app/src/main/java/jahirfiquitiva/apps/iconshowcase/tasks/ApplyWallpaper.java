@@ -9,12 +9,13 @@ import android.support.design.widget.Snackbar;
 import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.github.clans.fab.FloatingActionMenu;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 
 import jahirfiquitiva.apps.iconshowcase.R;
+import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.apps.iconshowcase.utilities.Util;
 
 /**
@@ -28,12 +29,11 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
     private View layout;
     private boolean isPicker;
     private Snackbar snackbar;
-    private FloatingActionsMenu fab;
-
+    private FloatingActionMenu fab;
     private WeakReference<Activity> wrActivity;
 
     public ApplyWallpaper(Activity activity, MaterialDialog dialog, Bitmap resource, Boolean isPicker,
-                          View layout, FloatingActionsMenu fab) {
+                          View layout, FloatingActionMenu fab) {
         this.wrActivity = new WeakReference<Activity>(activity);
         this.dialog = dialog;
         this.resource = resource;
@@ -71,6 +71,7 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
 
     @Override
     protected void onPostExecute(Boolean worked) {
+        final Preferences mPrefs = new Preferences(context);
         if (worked) {
             dialog.dismiss();
             if (!isPicker) {
@@ -82,7 +83,7 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
                     public void onDismissed(Snackbar snackbar, int event) {
                         super.onDismissed(snackbar, event);
                         if (fab != null) {
-                            fab.setVisibility(View.VISIBLE);
+                            fab.showMenuButton(mPrefs.getAnimationsEnabled());
                         }
                     }
                 });

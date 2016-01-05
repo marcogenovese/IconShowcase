@@ -30,6 +30,7 @@ import java.io.File;
 import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.apps.iconshowcase.basefragments.PreferenceFragment;
+import jahirfiquitiva.apps.iconshowcase.dialogs.FolderChooserDialog;
 import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.apps.iconshowcase.utilities.ThemeUtils;
 
@@ -40,7 +41,6 @@ public class SettingsFragment extends PreferenceFragment {
     private static Preferences mPrefs;
     private static PackageManager p;
     private static ComponentName componentName;
-    private static boolean withOptionToHideIcon;
     private static Preference WSL, data;
     private static String location, cacheSize;
     private Context context;
@@ -52,8 +52,6 @@ public class SettingsFragment extends PreferenceFragment {
         context = getActivity();
 
         String settingsTitle = getResources().getString(R.string.title_settings);
-
-        withOptionToHideIcon = true;
 
         mPrefs = new Preferences(getActivity());
 
@@ -186,7 +184,7 @@ public class SettingsFragment extends PreferenceFragment {
                     return false;
                 }
                 /*
-                new FolderChooserDialog.Builder(ShowcaseActivity)
+                new FolderChooserDialog.Builder(getActivity())
                         .chooseButton(R.string.choose)
                         .show();
                         */
@@ -194,64 +192,61 @@ public class SettingsFragment extends PreferenceFragment {
             }
         });
 
-        if (withOptionToHideIcon) {
-
-            final CheckBoxPreference hideIcon = (CheckBoxPreference) getPreferenceManager().findPreference("launcherIcon");
-            if (mPrefs.getLauncherIconShown()) {
-                hideIcon.setChecked(false);
-            }
-            hideIcon.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    if (newValue.toString().equals("true")) {
-                        ShowcaseActivity.settingsDialog = new MaterialDialog.Builder(getActivity())
-                                .title(R.string.hideicon_dialog_title)
-                                .content(R.string.hideicon_dialog_content)
-                                .positiveText(R.string.yes)
-                                .negativeText(android.R.string.no)
-                                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                    @Override
-                                    public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
-                                        if (mPrefs.getLauncherIconShown()) {
-                                            mPrefs.setIconShown(false);
-                                            p.setComponentEnabledSetting(componentName,
-                                                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                                                    PackageManager.DONT_KILL_APP);
-                                        }
-
-                                        hideIcon.setChecked(true);
+        final CheckBoxPreference hideIcon = (CheckBoxPreference) getPreferenceManager().findPreference("launcherIcon");
+        if (mPrefs.getLauncherIconShown()) {
+            hideIcon.setChecked(false);
+        }
+        hideIcon.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                if (newValue.toString().equals("true")) {
+                    ShowcaseActivity.settingsDialog = new MaterialDialog.Builder(getActivity())
+                            .title(R.string.hideicon_dialog_title)
+                            .content(R.string.hideicon_dialog_content)
+                            .positiveText(R.string.yes)
+                            .negativeText(android.R.string.no)
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
+                                    if (mPrefs.getLauncherIconShown()) {
+                                        mPrefs.setIconShown(false);
+                                        p.setComponentEnabledSetting(componentName,
+                                                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                                                PackageManager.DONT_KILL_APP);
                                     }
-                                })
-                                .onNegative(new MaterialDialog.SingleButtonCallback() {
-                                    @Override
-                                    public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
-                                        hideIcon.setChecked(false);
-                                    }
-                                })
-                                .show();
 
-                        ShowcaseActivity.settingsDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                            @Override
-                            public void onDismiss(DialogInterface dialog) {
-                                if (mPrefs.getLauncherIconShown()) {
+                                    hideIcon.setChecked(true);
+                                }
+                            })
+                            .onNegative(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
                                     hideIcon.setChecked(false);
                                 }
+                            })
+                            .show();
+
+                    ShowcaseActivity.settingsDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                            if (mPrefs.getLauncherIconShown()) {
+                                hideIcon.setChecked(false);
                             }
-                        });
-
-                    } else {
-                        if (!mPrefs.getLauncherIconShown()) {
-
-                            mPrefs.setIconShown(true);
-                            p.setComponentEnabledSetting(componentName,
-                                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                                    PackageManager.DONT_KILL_APP);
-
                         }
+                    });
+
+                } else {
+                    if (!mPrefs.getLauncherIconShown()) {
+
+                        mPrefs.setIconShown(true);
+                        p.setComponentEnabledSetting(componentName,
+                                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                                PackageManager.DONT_KILL_APP);
+
                     }
-                    return true;
                 }
-            });
-        }
+                return true;
+            }
+        });
 
     }
 

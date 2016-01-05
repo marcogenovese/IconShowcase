@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.customtabs.CustomTabsClient;
 import android.support.customtabs.CustomTabsIntent;
@@ -160,5 +162,27 @@ public class Util {
 
     public static void forceCrash() {
         throw new RuntimeException("This is a crash");
+    }
+
+    public static void sendEmailWithDeviceInfo(Context context) {
+        StringBuilder emailBuilder = new StringBuilder();
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:" + context.getResources().getString(R.string.email_id)));
+        intent.putExtra(Intent.EXTRA_SUBJECT, context.getResources().getString(R.string.email_subject));
+        emailBuilder.append("\n \n \nOS Version: ").append(System.getProperty("os.version")).append("(").append(Build.VERSION.INCREMENTAL).append(")");
+        emailBuilder.append("\nOS API Level: ").append(Build.VERSION.SDK_INT);
+        emailBuilder.append("\nDevice: ").append(Build.DEVICE);
+        emailBuilder.append("\nManufacturer: ").append(Build.MANUFACTURER);
+        emailBuilder.append("\nModel (and Product): ").append(Build.MODEL).append(" (").append(Build.PRODUCT).append(")");
+        PackageInfo appInfo = null;
+        try {
+            appInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        assert appInfo != null;
+        emailBuilder.append("\nApp Version Name: ").append(appInfo.versionName);
+        emailBuilder.append("\nApp Version Code: ").append(appInfo.versionCode);
+        intent.putExtra(Intent.EXTRA_TEXT, emailBuilder.toString());
+        context.startActivity(Intent.createChooser(intent, (context.getResources().getString(R.string.send_title))));
     }
 }

@@ -2,6 +2,7 @@ package jahirfiquitiva.apps.iconshowcase.activities;
 
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +27,8 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.afollestad.assent.Assent;
+import com.afollestad.assent.AssentCallback;
+import com.afollestad.assent.PermissionResultSet;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.daimajia.androidanimations.library.Techniques;
@@ -47,6 +51,7 @@ import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.adapters.ChangelogAdapter;
 import jahirfiquitiva.apps.iconshowcase.adapters.IconsAdapter;
 import jahirfiquitiva.apps.iconshowcase.dialogs.FolderChooserDialog;
+import jahirfiquitiva.apps.iconshowcase.fragments.RequestsFragment;
 import jahirfiquitiva.apps.iconshowcase.fragments.SettingsFragment;
 import jahirfiquitiva.apps.iconshowcase.fragments.WallpapersFragment;
 import jahirfiquitiva.apps.iconshowcase.models.IconsLists;
@@ -55,6 +60,7 @@ import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.apps.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.apps.iconshowcase.utilities.Util;
 import jahirfiquitiva.apps.iconshowcase.views.CustomCoordinatorLayout;
+import jahirfiquitiva.apps.iconshowcase.views.ScrollAwareFABBehavior;
 
 public class ShowcaseActivity extends AppCompatActivity implements FolderChooserDialog.FolderCallback {
 
@@ -90,6 +96,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     public static Toolbar toolbar;
     public static AppBarLayout appbar;
     public static CustomCoordinatorLayout coordinatorLayout;
+    public static FloatingActionButton fab;
     public static ImageView icon1, icon2, icon3, icon4;
 
     public static Drawer drawer;
@@ -121,6 +128,8 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         actionbar = getSupportActionBar();
         //noinspection ConstantConditions
         actionbar.setDisplayHomeAsUpEnabled(true);
+
+        fab = (FloatingActionButton) findViewById(R.id.fab);
 
         icon1 = (ImageView) findViewById(R.id.iconOne);
         icon2 = (ImageView) findViewById(R.id.iconTwo);
@@ -188,9 +197,15 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         if (fragment.equals("Main")) {
             appbar.setExpanded(true, mPrefs.getAnimationsEnabled());
             coordinatorLayout.setScrollAllowed(true);
+            setupFAB(context, fragment);
+        } else if (fragment.equals("Requests")) {
+            appbar.setExpanded(false, mPrefs.getAnimationsEnabled());
+            coordinatorLayout.setScrollAllowed(true);
+            setupFAB(context, fragment);
         } else {
             appbar.setExpanded(false, mPrefs.getAnimationsEnabled());
             coordinatorLayout.setScrollAllowed(false);
+            setupFAB(context, fragment);
         }
 
         if (mPrefs.getAnimationsEnabled()) {
@@ -270,43 +285,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
         switch (item.getItemId()) {
-
-            /*
-            case R.id.share:
-                Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-                sharingIntent.setType("text/plain");
-                String shareBody =
-                        getResources().getString(R.string.share_one) +
-                                getResources().getString(R.string.iconpack_author) +
-                                getResources().getString(R.string.share_two) +
-                                MARKET_URL + getPackageName();
-                sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
-                startActivity(Intent.createChooser(sharingIntent, (getResources().getString(R.string.share_title))));
-                break;
-
-            case R.id.sendemail:
-                StringBuilder emailBuilder = new StringBuilder();
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:" + getResources().getString(R.string.email_id)));
-                intent.putExtra(Intent.EXTRA_SUBJECT, getResources().getString(R.string.email_subject));
-                emailBuilder.append("\n \n \nOS Version: ").append(System.getProperty("os.version")).append("(").append(Build.VERSION.INCREMENTAL).append(")");
-                emailBuilder.append("\nOS API Level: ").append(Build.VERSION.SDK_INT);
-                emailBuilder.append("\nDevice: ").append(Build.DEVICE);
-                emailBuilder.append("\nManufacturer: ").append(Build.MANUFACTURER);
-                emailBuilder.append("\nModel (and Product): ").append(Build.MODEL).append(" (").append(Build.PRODUCT).append(")");
-                PackageInfo appInfo = null;
-                try {
-                    appInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-                } catch (PackageManager.NameNotFoundException e) {
-                    e.printStackTrace();
-                }
-                assert appInfo != null;
-                emailBuilder.append("\nApp Version Name: ").append(appInfo.versionName);
-                emailBuilder.append("\nApp Version Code: ").append(appInfo.versionCode);
-                intent.putExtra(Intent.EXTRA_TEXT, emailBuilder.toString());
-                startActivity(Intent.createChooser(intent, (getResources().getString(R.string.send_title))));
-                break;
-                */
-
             case R.id.changelog:
                 if (WITH_ICONS_BASED_CHANGELOG) {
                     showIconsChangelog();
@@ -730,4 +708,59 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         }, 500);
 
     }
+
+    private static void setupFAB(final Context context, String fragment) {
+        switch (fragment) {
+            case "Main":
+                fab.setVisibility(View.VISIBLE);
+                fab.setImageResource(R.drawable.ic_apply_icons);
+                fab.setVisibility(View.VISIBLE);
+                fab.show();
+                fab.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        drawerItemClick(5);
+                        drawer.setSelection(5);
+                    }
+                });
+                break;
+            case "Requests":
+                fab.setVisibility(View.VISIBLE);
+                fab.setImageResource(R.drawable.ic_send);
+                fab.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (!Assent.isPermissionGranted(Assent.WRITE_EXTERNAL_STORAGE)) {
+                            Assent.requestPermissions(new AssentCallback() {
+                                @Override
+                                public void onPermissionResult(PermissionResultSet result) {
+                                    if (result.isGranted(Assent.WRITE_EXTERNAL_STORAGE)) {
+                                        final MaterialDialog dialog = new MaterialDialog.Builder(context)
+                                                .content(R.string.building_request_dialog)
+                                                .progress(true, 0)
+                                                .cancelable(false)
+                                                .show();
+
+                                        RequestsFragment.fabPressed(dialog);
+                                    }
+                                }
+                            }, 69, Assent.WRITE_EXTERNAL_STORAGE);
+                        } else {
+                            final MaterialDialog dialog = new MaterialDialog.Builder(context)
+                                    .content(R.string.building_request_dialog)
+                                    .progress(true, 0)
+                                    .cancelable(false)
+                                    .show();
+
+                            RequestsFragment.fabPressed(dialog);
+                        }
+                    }
+                });
+                break;
+            default:
+                fab.setVisibility(View.GONE);
+                break;
+        }
+    }
+
 }

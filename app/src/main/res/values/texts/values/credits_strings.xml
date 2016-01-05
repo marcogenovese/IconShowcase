@@ -21,6 +21,9 @@
     <string name="iconics_web">https://github.com/mikepenz/Android-Iconics</string>
     <string name="iconics_name">Android Iconics</string>
 
+    <string name="fab_name">FloatingActionMenu</string>
+    <string name="fab_web">https://github.com/Clans/FloatingActionButton/</string>
+
     <string name="glide_author">Bumptech</string>
     <string name="glide_name">Glide</string>
     <string name="glide_web">https://github.com/bumptech/glide</string>
@@ -87,6 +90,7 @@
         <item>@string/materialdialogs_name</item>
         <item>@string/materialdrawer_name</item>
         <item>@string/materialize_name</item>
+        <item>@string/fab_name</item>
         <item>@string/iconics_name</item>
         <item>@string/glide_name</item>
         <item>@string/rv_animators_name</item>
@@ -98,6 +102,7 @@
         <item>@string/materialdialogs_web</item>
         <item>@string/materialdrawer_web</item>
         <item>@string/materialize_web</item>
+        <item>@string/fab_web</item>
         <item>@string/iconics_web</item>
         <item>@string/glide_web</item>
         <item>@string/rv_animators_web</item>
