@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -45,6 +46,7 @@ import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialize.util.UIUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -94,9 +96,9 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     private static Preferences mPrefs;
 
     public static MaterialDialog settingsDialog;
-    public static ActionBar actionbar;
     public static Toolbar toolbar;
     public static AppBarLayout appbar;
+    public static CollapsingToolbarLayout collapsingToolbarLayout;
     public static CustomCoordinatorLayout coordinatorLayout;
     public static FloatingActionButton fab;
     public static ImageView icon1, icon2, icon3, icon4;
@@ -126,10 +128,9 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         coordinatorLayout = (CustomCoordinatorLayout) findViewById(R.id.mainCoordinatorLayout);
         appbar = (AppBarLayout) findViewById(R.id.appbar);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        actionbar = getSupportActionBar();
+        //actionbar = getSupportActionBar();
         //noinspection ConstantConditions
-        actionbar.setDisplayHomeAsUpEnabled(true);
+        //actionbar.setDisplayHomeAsUpEnabled(true);
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
 
@@ -157,7 +158,17 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         thaFAQs = getResources().getString(R.string.faqs_section);
         thaZooper = getResources().getString(R.string.zooper_section_title);
 
-        setupDrawer(false, toolbar, savedInstanceState);
+        CollapsingToolbarLayout.LayoutParams layoutParams = (CollapsingToolbarLayout.LayoutParams) toolbar.getLayoutParams();
+        layoutParams.height = layoutParams.height + UIUtils.getStatusBarHeight(this);
+        toolbar.setLayoutParams(layoutParams);
+        ((CollapsingToolbarLayout.LayoutParams) toolbar.getLayoutParams()).topMargin = ((CollapsingToolbarLayout.LayoutParams) toolbar.getLayoutParams()).topMargin + UIUtils.getStatusBarHeight(this);
+        setSupportActionBar(toolbar);
+
+        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbar);
+        collapsingToolbarLayout.setTitleEnabled(false);
+        if(getSupportActionBar() != null) getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        setupDrawer(true, toolbar, savedInstanceState);
 
         runLicenseChecker();
 
@@ -188,10 +199,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             return;
         }
         currentItem = itemId;
-
-        if (actionbar != null) {
-            actionbar.setTitle(title);
-        }
 
         if (fragment.equals("Main")) {
             appbar.setExpanded(true, mPrefs.getAnimationsEnabled());
@@ -242,7 +249,9 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     protected void onSaveInstanceState(Bundle outState) {
         if (drawer != null)
             outState = drawer.saveInstanceState(outState);
-        outState.putString("toolbarTitle", String.valueOf(actionbar.getTitle()));
+        if(getSupportActionBar() != null) {
+            outState.putString("toolbarTitle", String.valueOf(getSupportActionBar().getTitle()));
+        }
         outState.putInt("currentSection", currentItem);
         super.onSaveInstanceState(outState);
     }
@@ -250,7 +259,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        actionbar.setTitle(savedInstanceState.getString("toolbarTitle", "   "));
+        if(getSupportActionBar() != null) getSupportActionBar().setTitle(savedInstanceState.getString("toolbarTitle", "   "));
         drawerItemClick(savedInstanceState.getInt("currentSection"));
     }
 
@@ -487,79 +496,50 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     }
 
     public void setupDrawer(boolean withHeader, Toolbar toolbar, Bundle savedInstanceState) {
-        if (withHeader) {
-            drawerHeader = new AccountHeaderBuilder()
-                    .withActivity(this)
-                    .withHeaderBackground(R.drawable.header)
-                    .withSelectionFirstLine(getResources().getString(R.string.app_long_name))
-                    .withSelectionSecondLine("v " + Util.getAppVersion(this))
-                    .withProfileImagesClickable(false)
-                    .withResetDrawerOnProfileListClick(false)
-                    .withSelectionListEnabled(false)
-                    .withSelectionListEnabledForSingleProfile(false)
-                    .withSavedInstance(savedInstanceState)
-                    .build();
-
-            drawer = new DrawerBuilder()
-                    .withActivity(this)
-                    .withToolbar(toolbar)
-                    .withTranslucentStatusBar(true)
-                    .withAccountHeader(drawerHeader)
-                    .withFireOnInitialOnClick(true)
-                    .addDrawerItems(
-                            new PrimaryDrawerItem().withName(thaHome).withIcon(GoogleMaterial.Icon.gmd_home).withIdentifier(1),
-                            new PrimaryDrawerItem().withName(thaPreviews).withIcon(GoogleMaterial.Icon.gmd_palette).withIdentifier(2),
-                            new PrimaryDrawerItem().withName(thaWalls).withIcon(GoogleMaterial.Icon.gmd_landscape).withIdentifier(3),
-                            new PrimaryDrawerItem().withName(thaRequest).withIcon(GoogleMaterial.Icon.gmd_comment_list).withIdentifier(4),
-                            new PrimaryDrawerItem().withName(thaApply).withIcon(GoogleMaterial.Icon.gmd_open_in_browser).withIdentifier(5),
-                            new PrimaryDrawerItem().withName(thaFAQs).withIcon(GoogleMaterial.Icon.gmd_help).withIdentifier(6),
-                            new PrimaryDrawerItem().withName(thaZooper).withIcon(GoogleMaterial.Icon.gmd_widgets).withIdentifier(7),
-                            new DividerDrawerItem(),
-                            new SecondaryDrawerItem().withName(thaCredits).withIdentifier(8),
-                            new SecondaryDrawerItem().withName(thaSettings).withIdentifier(9)
-                    )
-                    .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                        @Override
-                        public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                            if (drawerItem != null) {
-                                drawerItemClick(drawerItem.getIdentifier());
-                            }
-                            return false;
+        drawer = new DrawerBuilder()
+                .withActivity(this)
+                .withToolbar(toolbar)
+                .withFullscreen(true)
+                .withFireOnInitialOnClick(true)
+                .addDrawerItems(
+                        new PrimaryDrawerItem().withName(thaHome).withIcon(GoogleMaterial.Icon.gmd_home).withIdentifier(1),
+                        new PrimaryDrawerItem().withName(thaPreviews).withIcon(GoogleMaterial.Icon.gmd_palette).withIdentifier(2),
+                        new PrimaryDrawerItem().withName(thaWalls).withIcon(GoogleMaterial.Icon.gmd_landscape).withIdentifier(3),
+                        new PrimaryDrawerItem().withName(thaRequest).withIcon(GoogleMaterial.Icon.gmd_comment_list).withIdentifier(4),
+                        new PrimaryDrawerItem().withName(thaApply).withIcon(GoogleMaterial.Icon.gmd_open_in_browser).withIdentifier(5),
+                        new PrimaryDrawerItem().withName(thaFAQs).withIcon(GoogleMaterial.Icon.gmd_help).withIdentifier(6),
+                        new PrimaryDrawerItem().withName(thaZooper).withIcon(GoogleMaterial.Icon.gmd_widgets).withIdentifier(7),
+                        new DividerDrawerItem(),
+                        new SecondaryDrawerItem().withName(thaCredits).withIdentifier(8),
+                        new SecondaryDrawerItem().withName(thaSettings).withIdentifier(9)
+                )
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        if (drawerItem != null) {
+                            drawerItemClick(drawerItem.getIdentifier());
                         }
-                    })
-                    .withSavedInstance(savedInstanceState)
-                    .build();
+                        return false;
+                    }
+                })
+                .withSavedInstance(savedInstanceState)
+                .build();
 
-        } else {
-            drawer = new DrawerBuilder()
-                    .withActivity(this)
-                    .withToolbar(toolbar)
-                    .withTranslucentStatusBar(true)
-                    .withFireOnInitialOnClick(true)
-                    .addDrawerItems(
-                            new PrimaryDrawerItem().withName(thaHome).withIcon(GoogleMaterial.Icon.gmd_home).withIdentifier(1),
-                            new PrimaryDrawerItem().withName(thaPreviews).withIcon(GoogleMaterial.Icon.gmd_palette).withIdentifier(2),
-                            new PrimaryDrawerItem().withName(thaWalls).withIcon(GoogleMaterial.Icon.gmd_landscape).withIdentifier(3),
-                            new PrimaryDrawerItem().withName(thaRequest).withIcon(GoogleMaterial.Icon.gmd_comment_list).withIdentifier(4),
-                            new PrimaryDrawerItem().withName(thaApply).withIcon(GoogleMaterial.Icon.gmd_open_in_browser).withIdentifier(5),
-                            new PrimaryDrawerItem().withName(thaFAQs).withIcon(GoogleMaterial.Icon.gmd_help).withIdentifier(6),
-                            new PrimaryDrawerItem().withName(thaZooper).withIcon(GoogleMaterial.Icon.gmd_widgets).withIdentifier(7),
-                            new DividerDrawerItem(),
-                            new SecondaryDrawerItem().withName(thaCredits).withIdentifier(8),
-                            new SecondaryDrawerItem().withName(thaSettings).withIdentifier(9)
-                    )
-                    .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                        @Override
-                        public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                            if (drawerItem != null) {
-                                drawerItemClick(drawerItem.getIdentifier());
-                            }
-                            return false;
-                        }
-                    })
-                    .withSavedInstance(savedInstanceState)
-                    .build();
-        }
+            if (withHeader) {
+                drawerHeader = new AccountHeaderBuilder()
+                        .withActivity(this)
+                        .withHeaderBackground(R.drawable.header)
+                        .withSelectionFirstLine(getResources().getString(R.string.app_long_name))
+                        .withSelectionSecondLine("v " + Util.getAppVersion(this))
+                        .withProfileImagesClickable(false)
+                        .withResetDrawerOnProfileListClick(false)
+                        .withSelectionListEnabled(false)
+                        .withSelectionListEnabledForSingleProfile(false)
+                        .withSavedInstance(savedInstanceState)
+                        .withDrawer(drawer)
+                        .build();
+            }
+
     }
 
     public static void drawerItemClick(int id) {
