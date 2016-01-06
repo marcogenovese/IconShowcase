@@ -1,8 +1,10 @@
 package jahirfiquitiva.apps.iconshowcase.activities;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
@@ -10,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -102,50 +105,26 @@ public class ViewerActivity extends AppCompatActivity {
                     Assent.requestPermissions(new AssentCallback() {
                         @Override
                         public void onPermissionResult(PermissionResultSet result) {
-                            if (result.isGranted(Assent.WRITE_EXTERNAL_STORAGE)) {
-                                if (Util.hasNetwork(context)) {
-                                    showApplyWallpaperDialog(context, wallUrl);
-                                } else {
-                                    showNotConnectedSnackBar(fab, context);
-                                }
-                            }
+                            showDialogs("apply");
                         }
                     }, 69, Assent.WRITE_EXTERNAL_STORAGE);
-                } else {
-                    if (Util.hasNetwork(context)) {
-                        showApplyWallpaperDialog(context, wallUrl);
-                    } else {
-                        showNotConnectedSnackBar(fab, context);
-                    }
                 }
+                showDialogs("apply");
             }
         });
 
         saveWall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (!Assent.isPermissionGranted(Assent.WRITE_EXTERNAL_STORAGE)) {
                     Assent.requestPermissions(new AssentCallback() {
                         @Override
                         public void onPermissionResult(PermissionResultSet result) {
-                            if (result.isGranted(Assent.WRITE_EXTERNAL_STORAGE)) {
-                                if (Util.hasNetwork(context)) {
-                                    saveWallpaperAction(wallName, wallUrl);
-                                } else {
-                                    showNotConnectedSnackBar(fab, context);
-                                }
-                            }
+                            showDialogs("save");
                         }
                     }, 69, Assent.WRITE_EXTERNAL_STORAGE);
-                } else {
-                    if (Util.hasNetwork(context)) {
-                        saveWallpaperAction(wallName, wallUrl);
-                    } else {
-                        showNotConnectedSnackBar(fab, context);
-                    }
                 }
-
+                showDialogs("save");
             }
         });
 
@@ -224,7 +203,11 @@ public class ViewerActivity extends AppCompatActivity {
 
         switch (id) {
             case android.R.id.home:
-                supportFinishAfterTransition();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    supportFinishAfterTransition();
+                } else {
+                    finish();
+                }
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -404,6 +387,34 @@ public class ViewerActivity extends AppCompatActivity {
         if (!notConnectedSnackBar.isShown()) {
             fab.showMenuButton(mPrefs.getAnimationsEnabled());
         }
+    }
+
+    private void showDialogs(String action) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+                ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) !=
+                        PackageManager.PERMISSION_GRANTED) {
+            new MaterialDialog.Builder(context)
+                    .title(R.string.md_error_label)
+                    .content(context.getResources().getString(R.string.md_storage_perm_error,
+                            context.getResources().getString(R.string.app_name)))
+                    .positiveText(android.R.string.ok)
+                    .show();
+        } else {
+            if (Util.hasNetwork(context)) {
+                switch (action) {
+                    case "save":
+                        saveWallpaperAction(wallName, wallUrl);
+                        break;
+
+                    case "apply":
+                        showApplyWallpaperDialog(context, wallUrl);
+                        break;
+                }
+            } else {
+                showNotConnectedSnackBar(fab, context);
+            }
+        }
+
     }
 
 }

@@ -10,17 +10,17 @@
     <string name="section_two">Icons</string>
     <string name="section_three">Apply</string>
     <string name="section_four">Wallpapers</string>
-    <string name="section_five">Icon Request</string>
-    <string name="section_six">About the App</string>
+    <string name="section_five">Icon request</string>
+    <string name="section_six">About the app</string>
 
     <!-- Wallpapers Activity -->
-    <string name="title_activity_detailed_wallpaper">Wallpaper Viewer</string>
+    <string name="title_activity_detailed_wallpaper">Wallpaper viewer</string>
 
     <!-- Muzei Stuff -->
-    <string name="muzeisets_title">Refresh Source every:</string>
+    <string name="muzeisets_title">Refresh source every:</string>
     <string name="minutes">Minutes</string>
     <string name="hours">Hours</string>
-    <string name="muzei_info">Note: This Settings may affect the update time of wallpapers info.
+    <string name="muzei_info">Note: These settings may affect the update behavior of wallpapers.
     </string>
     <string name="share">Share</string>
 
@@ -29,10 +29,6 @@
     <string name="send_title">Send via</string>
     <string name="changelog">View the changelog</string>
     <string name="iconsBasedChangelog">View the icons based changelog</string>
-
-    <!-- Sharing theme -->
-    <string name="share_one">Check out this awesome icon pack by</string>
-    <string name="share_two">.\nGet it now at</string>
 
     <!-- LauncherNotInstalled Dialog -->
     <string name="lni_content">%1$s is currently not installed on your device.\nWould you like to
@@ -43,22 +39,20 @@
     </string>
     <string name="gnl_title">Google Now Launcher is NOT Compatible</string>
     <string name="gnl_content">Google Now Launcher is NOT compatible with ANY Icon Packs. Please
-        don\'t rate the icon pack badly for this reason. There\'s a workaround that you can try by
+        do not rate the icon pack negatively for this reason. There is a workaround that you can try by
         yourself, but it requires the use of an external app. Would you like to download it?
     </string>
-    <string name="extraapp">com.momocode.shortcuts</string>
-    <string name="lni_no">No</string>
     <string name="updateninelauncher">Please update Nine Launcher to the latest version.</string>
 
     <string name="installed">Installed</string>
-    <string name="noninstalled">Not Installed</string>
+    <string name="noninstalled">Not installed</string>
 
     <!-- Changelog Dialog Content -->
     <string name="changelog_dialog_title">Changelog</string>
     <string name="great">Great</string>
 
     <!-- Wallpapers Stuff -->
-    <string name="no_conn_title">No Connection Found</string>
+    <string name="no_conn_title">No connection found</string>
     <string name="no_conn_content">Wallpapers are stored on a cloud server. Please connect to the
         internet and try again.
     </string>
@@ -72,11 +66,8 @@
     <string name="setting_wall_title">Setting this wallpaper to your homescreen…</string>
     <string name="set_as_wall_done">Wallpaper set!</string>
     <string name="error">Error</string>
-    <string name="json_error_toast">Error while downloading wallpaper info. Try again later.
-    </string>
     <string name="confirm_apply">Are you sure you want to apply this wallpaper to your homescreen?
     </string>
-    <string name="yes">Yes</string>
     <string name="refreshing_walls">Refreshing wallpapers list…</string>
     <string name="retry">Retry</string>
 
@@ -85,7 +76,7 @@
     <!-- License Check Dialog -->
     <string name="license_failed_title">License Check Failed</string>
     <string name="license_success_title">License Check Success</string>
-    <string name="exit">Exit App</string>
+    <string name="exit">Exit</string>
 
     <!-- Some texts for Dialogs and Cards -->
     <string name="close">Close</string>
@@ -96,8 +87,6 @@
     <string name="set_as">Crop wallpaper and set as…</string>
 
     <!-- Requests -->
-    <string name="loading_unthemed_apps">Loading unthemed apps.\nThis may take a while…</string>
-    <string name="building_request">Building Request…</string>
     <string name="request_advice">If you do not select any app for the icon request, but press the
         button, it will be automatically generated with all of your apps.\n No need to select each
         one.
@@ -109,7 +98,7 @@
     <string name="search_icons">Search icons…</string>
     <string name="search_x">Search %1$s…</string>
 
-    <string name="building_request_dialog">Building Request Files…</string>
+    <string name="building_request_dialog">Building request files…</string>
 
     <string name="choose">Choose</string>
 
@@ -130,7 +119,7 @@
     <string name="pref_title_anims">Enable animations</string>
     <string name="pref_summary_anims">This may cause lag in some devices.</string>
 
-    <string name="pref_title_navbar">Colored Navigation Bar</string>
+    <string name="pref_title_navbar">Colored navigation bar</string>
     <string name="pref_summary_navbar">Enable primary colored navigation bar.</string>
 
     <string name="pref_header_storage">Storage</string>
@@ -145,7 +134,7 @@
         location: %1$s
     </string>
 
-    <string name="pref_header_launcher_icon">Launcher Icon</string>
+    <string name="pref_header_launcher_icon">Launcher icon</string>
     <string name="pref_title_launcher_icon">Hide launcher icon</string>
 
     <string name="pref_summary_launcher_icon">When checked, launcher icon will be hidden.</string>
@@ -164,18 +153,9 @@
     <string name="launcher_icon_restored">%1$s launcher icon was restored</string>
     <string name="launcher_icon_no_restored">%1$s launcher icon is already visible</string>
 
-    <!-- Some activities titles -->
-
-    <string name="title_activity_splash">Splash</string>
-    <string name="title_activity_viewer">Viewer</string>
-    <string name="title_activity_faqs">FAQs</string>
-    <string name="title_activity_icons">Icons</string>
-    <string name="title_activity_search">Search</string>
-    <string name="title_activity_picker">@string/app_name</string>
-
     <!-- Widgets Names -->
-    <string name="iconrestorer_widget_title">IconShowcase Restorer Widget</string>
-    <string name="clock_widget_title">IconShowcase Clock</string>
+    <string name="iconrestorer_widget_title">Icon Restorer Widget</string>
+    <string name="clock_widget_title">Analog Clock</string>
 
     <string name="faqs_section">FAQs</string>
 
@@ -183,13 +163,9 @@
     <string name="dashboard_author_copyright">From Colombia to the world. Copyright© 2015~2016.</string>
     <string name="iconpack_author">Designer Info</string>
 
-    <string name="google_plus">Google Plus</string>
+
     <string name="fork_on_github">Fork on GitHub</string>
     <string name="visit_website">Visit website</string>
-    <string name="youtube">YouTube</string>
-    <string name="twitter">Twitter</string>
-    <string name="play_store">Google Play Store</string>
-    <string name="facebook">Facebook</string>
     <string name="web">Website</string>
     <string name="more_apps">More apps</string>
     <string name="more_apps_long">Check the other apps I have published in Google Play Store.</string>
@@ -215,19 +191,19 @@
         <item>Latest</item>
         <item>System</item>
         <item>Google Apps</item>
-        <item>Games </item>
+        <item>Games</item>
         <item>All</item>
         <item>Drawers</item>
     </string-array>
 
-    <string name="save_to_device">Save to Device</string>
+    <string name="save_to_device">Save to device</string>
     <string name="wallpaper">Wallpaper</string>
     <string name="saving_wallpaper">Saving wallpaper…</string>
     <string name="refresh">Refresh</string>
 
     <!-- Messages shown when using LicenseChecker -->
-    <string name="license_failed">You did not download IconShowcase from the Google Play Store. You have two options:</string>
-    <string name="license_success">Thank you for downloading my dashboard sample. If you like it, don\'t forget to rate it and write a review in the Google Play Store.</string>
+    <string name="license_failed">You did not download IconShowcase from Google Play Store. You have two options:</string>
+    <string name="license_success">Thank you for downloading my dashboard sample. If you like it, do not forget to rate it and write a review in the Google Play Store.</string>
     <string name="apply_advice">If the launcher you use, is not listed here, you must apply the icon pack directly from the launcher settings.\nSome launchers do not support direct apply.</string>
     <string name="walls_advice">Simple press a wallpaper to view it in FullScreen.\nLong press to apply it directly to your homescreen.</string>
 
@@ -237,10 +213,6 @@
     <string name="zooper_download_content">You need Zooper Widget Pro to be able to use the included skins.</string>
 
     <string name="zooper_download_dialog_title">Download from</string>
-    <string-array name="zooper_download_dialog_options">
-        <item>Google Play Store</item>
-        <item>Amazon App Store</item>
-    </string-array>
 
     <string name="mu_download_title">Install Media Utilities</string>
     <string name="mu_download_content">You need Media Utilities to be able to use the music widgets with Zooper.</string>
@@ -267,8 +239,13 @@
     <string name="included_widgets">Over %1$s included widgets for Zooper.</string>
     <string name="icons">Icons</string>
 
-    <string name="md_error_label">Error</string>
-    <string name="md_storage_perm_error">Your app has not granted the READ_EXTERNAL_STORAGE permission.</string>
+    <string name="md_error_label">@string/error</string>
+    <string name="md_storage_perm_error">You have not granted the \"Read External Storage\" permission to %1$s, which is needed to complete this action.</string>
+
+    <string name="new_folder">New Folder</string>
+    <string name="new_folder_hint">Folder name</string>
+    <string name="new_folder_title">Create a new folder</string>
+    <string name="new_folder_content">Type the new folder\'s name, please.</string>
 
     <string-array name="questions">
         <item>How to use the Icon Pack?</item>

@@ -19,9 +19,13 @@ import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
+import com.afollestad.assent.Assent;
+import com.afollestad.assent.AssentCallback;
+import com.afollestad.assent.PermissionResultSet;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -159,7 +163,7 @@ public class SettingsFragment extends PreferenceFragment {
                 new MaterialDialog.Builder(getActivity())
                         .title(R.string.clearcache_dialog_title)
                         .content(R.string.clearcache_dialog_content)
-                        .positiveText(R.string.yes)
+                        .positiveText(android.R.string.yes)
                         .negativeText(android.R.string.no)
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
@@ -177,17 +181,15 @@ public class SettingsFragment extends PreferenceFragment {
         findPreference("wallsSaveLocation").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) !=
-                        PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                            69);
-                    return false;
+                if (!Assent.isPermissionGranted(Assent.WRITE_EXTERNAL_STORAGE)) {
+                    Assent.requestPermissions(new AssentCallback() {
+                        @Override
+                        public void onPermissionResult(PermissionResultSet result) {
+                            showFolderChooserDialog();
+                        }
+                    }, 69, Assent.WRITE_EXTERNAL_STORAGE);
                 }
-                /*
-                new FolderChooserDialog.Builder(getActivity())
-                        .chooseButton(R.string.choose)
-                        .show();
-                        */
+                showFolderChooserDialog();
                 return true;
             }
         });
@@ -202,7 +204,7 @@ public class SettingsFragment extends PreferenceFragment {
                     ShowcaseActivity.settingsDialog = new MaterialDialog.Builder(getActivity())
                             .title(R.string.hideicon_dialog_title)
                             .content(R.string.hideicon_dialog_content)
-                            .positiveText(R.string.yes)
+                            .positiveText(android.R.string.yes)
                             .negativeText(android.R.string.no)
                             .onPositive(new MaterialDialog.SingleButtonCallback() {
                                 @Override
@@ -362,6 +364,22 @@ public class SettingsFragment extends PreferenceFragment {
             }
         }
         return dir.delete();
+    }
+
+    private void showFolderChooserDialog() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+                ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) !=
+                        PackageManager.PERMISSION_GRANTED) {
+            new MaterialDialog.Builder(context)
+                    .title(R.string.md_error_label)
+                    .content(context.getResources().getString(R.string.md_storage_perm_error,
+                            context.getResources().getString(R.string.app_name)))
+                    .positiveText(android.R.string.ok)
+                    .show();
+        } else {
+            new FolderChooserDialog().show((AppCompatActivity) getActivity());
+        }
+
     }
 
 }

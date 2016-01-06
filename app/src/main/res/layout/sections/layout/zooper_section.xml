@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:overScrollMode="ifContentScrolls">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:paddingBottom="@dimen/cards_margin">
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/zooper_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/cards_margin"
+                android:layout_marginRight="@dimen/cards_margin"
+                android:layout_marginTop="@dimen/cards_margin"
+                android:clickable="false"
+                app:cardBackgroundColor="?attr/colorCardBackground">
+
+                <RelativeLayout
+                    style="@style/CardContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/card_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/zooper_download_title"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+
+                    <TextView
+                        android:id="@+id/card_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/card_title"
+                        android:layout_marginTop="@dimen/lists_padding"
+                        android:text="@string/zooper_download_content"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_below="@id/card_content"
+                        android:layout_gravity="center"
+                        android:background="?selectableItemBackgroundBorderless"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/download_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/cards_spacing"
+                            android:background="?selectableItemBackgroundBorderless"
+                            android:text="@string/download"
+                            android:textAllCaps="true"
+                            android:textColor="@color/accent"
+                            android:textStyle="bold"/>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/mu_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/zooper_card"
+                android:layout_marginLeft="@dimen/cards_margin"
+                android:layout_marginRight="@dimen/cards_margin"
+                android:layout_marginTop="@dimen/cards_margin"
+                android:clickable="false"
+                app:cardBackgroundColor="?attr/colorCardBackground">
+
+                <RelativeLayout
+                    style="@style/CardContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/mu_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/mu_download_title"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+
+                    <TextView
+                        android:id="@+id/mu_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/mu_title"
+                        android:layout_marginTop="@dimen/lists_padding"
+                        android:text="@string/mu_download_content"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_below="@id/mu_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/mu_download_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/cards_spacing"
+                            android:background="?selectableItemBackgroundBorderless"
+                            android:text="@string/download"
+                            android:textAllCaps="true"
+                            android:textColor="@color/accent"
+                            android:textStyle="bold"/>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/fonts_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/mu_card"
+                android:layout_marginLeft="@dimen/cards_margin"
+                android:layout_marginRight="@dimen/cards_margin"
+                android:layout_marginTop="@dimen/cards_margin"
+                android:foreground="?selectableItemBackground"
+                app:cardBackgroundColor="?attr/colorCardBackground">
+
+                <RelativeLayout
+                    style="@style/CardContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/fonts_card_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/zooper_install_fonts_title"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+
+                    <TextView
+                        android:id="@+id/fonts_card_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/fonts_card_title"
+                        android:layout_marginTop="@dimen/lists_padding"
+                        android:text="@string/zooper_install_fonts_content"/>
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/iconsets_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/fonts_card"
+                android:layout_marginLeft="@dimen/cards_margin"
+                android:layout_marginRight="@dimen/cards_margin"
+                android:layout_marginTop="@dimen/cards_margin"
+                android:foreground="?selectableItemBackground"
+                app:cardBackgroundColor="?attr/colorCardBackground">
+
+                <RelativeLayout
+                    style="@style/CardContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/iconsets_card_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/zooper_install_iconsets_title"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+
+                    <TextView
+                        android:id="@+id/iconsets_card_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/iconsets_card_title"
+                        android:layout_marginTop="@dimen/lists_padding"
+                        android:text="@string/zooper_install_iconsets_content"/>
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/mediautilities_info_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/iconsets_card"
+                android:layout_margin="@dimen/cards_margin"
+                android:foreground="?selectableItemBackground"
+                app:cardBackgroundColor="?attr/colorCardBackground">
+
+                <RelativeLayout
+                    style="@style/CardContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/mediautilities_info_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/mu_info_title"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+
+                    <TextView
+                        android:id="@+id/mediautilities_info_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/mediautilities_info_title"
+                        android:layout_marginTop="@dimen/lists_padding"
+                        android:text="@string/mu_info_content"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_below="@id/mediautilities_info_content"
+                        android:layout_gravity="center"
+                        android:background="?selectableItemBackgroundBorderless"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/mu_open_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/cards_spacing"
+                            android:background="?selectableItemBackgroundBorderless"
+                            android:text="@string/open"
+                            android:textAllCaps="true"
+                            android:textColor="@color/accent"
+                            android:textStyle="bold"/>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

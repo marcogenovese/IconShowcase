@@ -139,8 +139,8 @@ public class ApplyFragment extends Fragment {
         new MaterialDialog.Builder(getActivity())
                 .title(launcher.name)
                 .content(dialogContent)
-                .positiveText(R.string.yes)
-                .negativeText(R.string.lni_no)
+                .positiveText(android.R.string.yes)
+                .negativeText(android.R.string.no)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
@@ -188,8 +188,8 @@ public class ApplyFragment extends Fragment {
         new MaterialDialog.Builder(getActivity())
                 .title(R.string.gnl_title)
                 .content(R.string.gnl_content)
-                .positiveText(R.string.yes)
-                .negativeText(R.string.lni_no)
+                .positiveText(android.R.string.yes)
+                .negativeText(android.R.string.no)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {

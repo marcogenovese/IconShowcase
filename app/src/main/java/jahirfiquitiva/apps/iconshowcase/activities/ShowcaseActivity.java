@@ -1,11 +1,13 @@
 package jahirfiquitiva.apps.iconshowcase.activities;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -14,6 +16,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -60,9 +63,8 @@ import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.apps.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.apps.iconshowcase.utilities.Util;
 import jahirfiquitiva.apps.iconshowcase.views.CustomCoordinatorLayout;
-import jahirfiquitiva.apps.iconshowcase.views.ScrollAwareFABBehavior;
 
-public class ShowcaseActivity extends AppCompatActivity implements FolderChooserDialog.FolderCallback {
+public class ShowcaseActivity extends AppCompatActivity implements FolderChooserDialog.FolderSelectionCallback {
 
     private static final boolean WITH_LICENSE_CHECKER = false,
             WITH_INSTALLED_FROM_AMAZON = false,
@@ -136,13 +138,11 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         icon3 = (ImageView) findViewById(R.id.iconThree);
         icon4 = (ImageView) findViewById(R.id.iconFour);
 
-        setupIcons(icon1, icon2, icon3, icon4);
-
         GridLayout iconsRow = (GridLayout) findViewById(R.id.iconsRow);
         iconsRow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setupIcons(icon1, icon2, icon3, icon4);
+                setupIcons(icon1, icon2, icon3, icon4, context);
                 animateIcons(icon1, icon2, icon3, icon4);
             }
         });
@@ -200,7 +200,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             setupFAB(context, fragment);
         } else if (fragment.equals("Requests")) {
             appbar.setExpanded(false, mPrefs.getAnimationsEnabled());
-            coordinatorLayout.setScrollAllowed(true);
+            coordinatorLayout.setScrollAllowed(false);
             setupFAB(context, fragment);
         } else {
             appbar.setExpanded(false, mPrefs.getAnimationsEnabled());
@@ -648,8 +648,8 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
     }
 
-    private void setupIcons(final ImageView icon1, final ImageView icon2,
-                            final ImageView icon3, final ImageView icon4) {
+    public static void setupIcons(final ImageView icon1, final ImageView icon2,
+                            final ImageView icon3, final ImageView icon4, Context context) {
 
         ArrayList<Integer> icons = IconsLists.getPreviewAL();
         ArrayList<Integer> finalIconsList = new ArrayList<>();
@@ -658,7 +658,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             Collections.shuffle(icons);
         }
 
-        int numOfIcons = getResources().getInteger(R.integer.icon_grid_width);
+        int numOfIcons = context.getResources().getInteger(R.integer.icon_grid_width);
         int i = 0;
 
         if (icons != null) {
@@ -734,25 +734,11 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                             Assent.requestPermissions(new AssentCallback() {
                                 @Override
                                 public void onPermissionResult(PermissionResultSet result) {
-                                    if (result.isGranted(Assent.WRITE_EXTERNAL_STORAGE)) {
-                                        final MaterialDialog dialog = new MaterialDialog.Builder(context)
-                                                .content(R.string.building_request_dialog)
-                                                .progress(true, 0)
-                                                .cancelable(false)
-                                                .show();
-
-                                        RequestsFragment.fabPressed(dialog);
-                                    }
+                                    showRequestsFilesCreationDialog(context);
                                 }
                             }, 69, Assent.WRITE_EXTERNAL_STORAGE);
                         } else {
-                            final MaterialDialog dialog = new MaterialDialog.Builder(context)
-                                    .content(R.string.building_request_dialog)
-                                    .progress(true, 0)
-                                    .cancelable(false)
-                                    .show();
-
-                            RequestsFragment.fabPressed(dialog);
+                            showRequestsFilesCreationDialog(context);
                         }
                     }
                 });
@@ -760,6 +746,27 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             default:
                 fab.setVisibility(View.GONE);
                 break;
+        }
+    }
+
+    private static void showRequestsFilesCreationDialog(Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+                ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) !=
+                        PackageManager.PERMISSION_GRANTED) {
+
+            new MaterialDialog.Builder(context)
+                    .title(R.string.md_error_label)
+                    .content(context.getResources().getString(R.string.md_storage_perm_error, R.string.app_name))
+                    .positiveText(android.R.string.ok)
+                    .show();
+        } else {
+            final MaterialDialog dialog = new MaterialDialog.Builder(context)
+                    .content(R.string.building_request_dialog)
+                    .progress(true, 0)
+                    .cancelable(false)
+                    .show();
+
+            RequestsFragment.fabPressed(dialog);
         }
     }
 

@@ -5,6 +5,8 @@
     Launcher Name|launcher.package.name|HEXCOLOR
     -->
 
+    <string name="extraapp">com.momocode.shortcuts</string>
+
     <string-array name="launchers">
         <item>Action Launcher|com.actionlauncher.playstore|#F44336</item>
         <item>ADW Launcher|org.adw.launcher|#5B9CC8</item>
