@@ -14,11 +14,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.afollestad.assent.Assent;
+import com.afollestad.assent.AssentCallback;
+import com.afollestad.assent.PermissionResultSet;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 
 import jahirfiquitiva.apps.iconshowcase.R;
+import jahirfiquitiva.apps.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.apps.iconshowcase.adapters.RequestsAdapter;
 import jahirfiquitiva.apps.iconshowcase.tasks.ZipFilesToRequest;
 import jahirfiquitiva.apps.iconshowcase.utilities.ApplicationBase;
@@ -30,7 +34,7 @@ public class RequestsFragment extends Fragment {
     public static RecyclerFastScroller fastScroller;
     public static ProgressBar progressBar;
     public static RecyclerView mRecyclerView;
-    public static FloatingActionButton fab;
+    private static FloatingActionButton fab;
 
     static int columnsNumber, gridSpacing;
     static boolean withBorders;
@@ -66,13 +70,29 @@ public class RequestsFragment extends Fragment {
 
         showRequestsAdviceDialog(getActivity());
 
-        fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
+        fab = (FloatingActionButton) layout.findViewById(R.id.fab);
 
         if (ApplicationBase.allAppsToRequest == null || ApplicationBase.allAppsToRequest.size() <= 0) {
             fab.hide();
         } else {
             fab.show();
         }
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!Assent.isPermissionGranted(Assent.WRITE_EXTERNAL_STORAGE)) {
+                    Assent.requestPermissions(new AssentCallback() {
+                        @Override
+                        public void onPermissionResult(PermissionResultSet result) {
+                            ShowcaseActivity.showRequestsFilesCreationDialog(context);
+                        }
+                    }, 69, Assent.WRITE_EXTERNAL_STORAGE);
+                } else {
+                    ShowcaseActivity.showRequestsFilesCreationDialog(context);
+                }
+            }
+        });
 
         progressBar = (ProgressBar) layout.findViewById(R.id.requestProgress);
         mRecyclerView = (RecyclerView) layout.findViewById(R.id.appsToRequestList);
@@ -82,6 +102,18 @@ public class RequestsFragment extends Fragment {
         hideStuff();
 
         fastScroller.setHideDelay(1000);
+
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0) {
+                    fab.hide();
+                } else {
+                    fab.show();
+                }
+            }
+        });
 
         return layout;
     }

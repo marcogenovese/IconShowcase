@@ -725,32 +725,13 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                     }
                 });
                 break;
-            case "Requests":
-                fab.setVisibility(View.VISIBLE);
-                fab.setImageResource(R.drawable.ic_send);
-                fab.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (!Assent.isPermissionGranted(Assent.WRITE_EXTERNAL_STORAGE)) {
-                            Assent.requestPermissions(new AssentCallback() {
-                                @Override
-                                public void onPermissionResult(PermissionResultSet result) {
-                                    showRequestsFilesCreationDialog(context);
-                                }
-                            }, 69, Assent.WRITE_EXTERNAL_STORAGE);
-                        } else {
-                            showRequestsFilesCreationDialog(context);
-                        }
-                    }
-                });
-                break;
             default:
                 fab.setVisibility(View.GONE);
                 break;
         }
     }
 
-    private static void showRequestsFilesCreationDialog(Context context) {
+    public static void showRequestsFilesCreationDialog(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
                 ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) !=
                         PackageManager.PERMISSION_GRANTED) {
