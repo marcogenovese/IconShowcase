@@ -178,7 +178,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                 }
             }
         }
-
     }
 
     public static void switchFragment(int itemId, String title, String fragment,
@@ -244,6 +243,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         if (drawer != null)
             outState = drawer.saveInstanceState(outState);
         outState.putString("toolbarTitle", String.valueOf(actionbar.getTitle()));
+        outState.putInt("currentSection", currentItem);
         super.onSaveInstanceState(outState);
     }
 
@@ -251,6 +251,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         actionbar.setTitle(savedInstanceState.getString("toolbarTitle", "   "));
+        drawerItemClick(savedInstanceState.getInt("currentSection"));
     }
 
     @Override
