@@ -37,6 +37,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
 import jahirfiquitiva.apps.iconshowcase.R;
+import jahirfiquitiva.apps.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.apps.iconshowcase.tasks.ApplyWallpaper;
 import jahirfiquitiva.apps.iconshowcase.tasks.WallpaperToCrop;
 import jahirfiquitiva.apps.iconshowcase.utilities.PermissionUtils;
@@ -226,11 +227,8 @@ public class ViewerActivity extends AppCompatActivity {
     }
 
     private void saveWallpaperAction(final String name, String url) {
-        final MaterialDialog downloadDialog = new MaterialDialog.Builder(context)
-                .content(R.string.downloading_wallpaper)
-                .progress(true, 0)
-                .cancelable(false)
-                .show();
+        final MaterialDialog downloadDialog = ISDialogs.showDownloadDialog(this);
+        downloadDialog.show();
         Glide.with(context)
                 .load(url)
                 .asBitmap()
@@ -304,13 +302,8 @@ public class ViewerActivity extends AppCompatActivity {
     }
 
     public void showApplyWallpaperDialog(final Activity context, final String wallurl) {
-        new MaterialDialog.Builder(this)
-                .title(R.string.apply)
-                .content(R.string.confirm_apply)
-                .positiveText(R.string.apply)
-                .neutralText(R.string.crop)
-                .negativeText(android.R.string.cancel)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
+        ISDialogs.showApplyWallpaperDialog(this,
+                new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
                         if (fab.isOpened()) {
@@ -337,8 +330,7 @@ public class ViewerActivity extends AppCompatActivity {
                                     }
                                 });
                     }
-                })
-                .onNeutral(new MaterialDialog.SingleButtonCallback() {
+                }, new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
                         if (dialogApply != null) {
@@ -367,7 +359,7 @@ public class ViewerActivity extends AppCompatActivity {
                                     }
                                 });
                     }
-                }).show();
+                });
     }
 
     private void showNotConnectedSnackBar(final FloatingActionMenu fab, final Context context) {

@@ -24,6 +24,7 @@ import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 
 import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.adapters.RequestsAdapter;
+import jahirfiquitiva.apps.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.apps.iconshowcase.tasks.ZipFilesToRequest;
 import jahirfiquitiva.apps.iconshowcase.utilities.ApplicationBase;
 import jahirfiquitiva.apps.iconshowcase.utilities.PermissionUtils;
@@ -168,24 +169,14 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
 
     private void showRequestsAdviceDialog(Context dialogContext) {
         if (!mPrefs.getRequestsDialogDismissed()) {
-            new MaterialDialog.Builder(dialogContext)
-                    .title(R.string.advice)
-                    .content(R.string.request_advice)
-                    .positiveText(R.string.close)
-                    .neutralText(R.string.dontshow)
-                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(MaterialDialog dialog, DialogAction which) {
-                            mPrefs.setRequestsDialogDismissed(false);
-                        }
-                    })
-                    .onNeutral(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(MaterialDialog dialog, DialogAction which) {
-                            mPrefs.setRequestsDialogDismissed(true);
-                        }
-                    })
-                    .show();
+            MaterialDialog.SingleButtonCallback singleButtonCallback = new MaterialDialog.SingleButtonCallback() {
+                @Override
+                public void onClick(MaterialDialog dialog, DialogAction which) {
+                    if(which.equals(DialogAction.POSITIVE)) mPrefs.setRequestsDialogDismissed(false);
+                    else if(which.equals(DialogAction.NEUTRAL)) mPrefs.setRequestsDialogDismissed(true);
+                }
+            };
+            ISDialogs.showRequestAdviceDialog(dialogContext, singleButtonCallback);
         }
     }
 
@@ -194,17 +185,11 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
                 ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) !=
                         PackageManager.PERMISSION_GRANTED) {
 
-            new MaterialDialog.Builder(context)
-                    .title(R.string.md_error_label)
-                    .content(context.getResources().getString(R.string.md_storage_perm_error, R.string.app_name))
-                    .positiveText(android.R.string.ok)
-                    .show();
+            ISDialogs.showPermissionNotGrantedDialog(context);
+
         } else {
-            final MaterialDialog dialog = new MaterialDialog.Builder(context)
-                    .content(R.string.building_request_dialog)
-                    .progress(true, 0)
-                    .cancelable(false)
-                    .show();
+            final MaterialDialog dialog = ISDialogs.showBuildingRequestDialog(context);
+            dialog.show();
 
             new ZipFilesToRequest((Activity) context, dialog,
                     ((RequestsAdapter) mRecyclerView.getAdapter()).appsList).execute();

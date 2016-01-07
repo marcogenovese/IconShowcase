@@ -26,6 +26,7 @@ import java.util.List;
 
 import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.adapters.LaunchersAdapter;
+import jahirfiquitiva.apps.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.apps.iconshowcase.sort.InstalledLauncherComparator;
 import jahirfiquitiva.apps.iconshowcase.utilities.LauncherIntents;
 import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
@@ -136,20 +137,14 @@ public class ApplyFragment extends Fragment {
             dialogContent = getResources().getString(R.string.lni_content, launcher.name);
             intentString = MARKET_URL + launcher.packageName;
         }
-        new MaterialDialog.Builder(getActivity())
-                .title(launcher.name)
-                .content(dialogContent)
-                .positiveText(android.R.string.yes)
-                .negativeText(android.R.string.no)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
-                        Intent intent = new Intent(Intent.ACTION_VIEW);
-                        intent.setData(Uri.parse(intentString));
-                        startActivity(intent);
-                    }
-                })
-                .show();
+        ISDialogs.showOpenInPlayStoreDialog(getContext(), launcher.name, dialogContent, new MaterialDialog.SingleButtonCallback() {
+            @Override
+            public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(intentString));
+                startActivity(intent);
+            }
+        });
     }
 
     public class Launcher {
@@ -185,42 +180,29 @@ public class ApplyFragment extends Fragment {
 
     private void gnlDialog() {
         final String appLink = MARKET_URL + getResources().getString(R.string.extraapp);
-        new MaterialDialog.Builder(getActivity())
-                .title(R.string.gnl_title)
-                .content(R.string.gnl_content)
-                .positiveText(android.R.string.yes)
-                .negativeText(android.R.string.no)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
-                        Intent intent = new Intent(Intent.ACTION_VIEW);
-                        intent.setData(Uri.parse(appLink));
-                        startActivity(intent);
-                    }
-                })
-                .show();
+        ISDialogs.showGoogleNowLauncherDialog(getContext(), new MaterialDialog.SingleButtonCallback() {
+            @Override
+            public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(appLink));
+                startActivity(intent);
+            }
+        });
     }
 
     private void showApplyAdviceDialog(Context dialogContext) {
         if (!mPrefs.getApplyDialogDismissed()) {
-            new MaterialDialog.Builder(dialogContext)
-                    .title(R.string.advice)
-                    .content(R.string.apply_advice)
-                    .positiveText(R.string.close)
-                    .neutralText(R.string.dontshow)
-                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(MaterialDialog dialog, DialogAction which) {
-                            mPrefs.setApplyDialogDismissed(false);
-                        }
-                    })
-                    .onNeutral(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(MaterialDialog dialog, DialogAction which) {
-                            mPrefs.setApplyDialogDismissed(true);
-                        }
-                    })
-                    .show();
+            MaterialDialog.SingleButtonCallback singleButtonCallback = new MaterialDialog.SingleButtonCallback() {
+                @Override
+                public void onClick(MaterialDialog dialog, DialogAction which) {
+                    if(which.equals(DialogAction.POSITIVE)) {
+                        mPrefs.setApplyDialogDismissed(false);
+                    } else if(which.equals(DialogAction.NEUTRAL)) {
+                        mPrefs.setApplyDialogDismissed(true);
+                    }
+                }
+            };
+            ISDialogs.showApplyAdviceDialog(dialogContext, singleButtonCallback);
         }
     }
 

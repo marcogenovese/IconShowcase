@@ -50,6 +50,7 @@ import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.adapters.ChangelogAdapter;
 import jahirfiquitiva.apps.iconshowcase.adapters.IconsAdapter;
 import jahirfiquitiva.apps.iconshowcase.dialogs.FolderChooserDialog;
+import jahirfiquitiva.apps.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.apps.iconshowcase.fragments.SettingsFragment;
 import jahirfiquitiva.apps.iconshowcase.fragments.WallpapersFragment;
 import jahirfiquitiva.apps.iconshowcase.models.IconsLists;
@@ -303,9 +304,9 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         switch (item.getItemId()) {
             case R.id.changelog:
                 if (WITH_ICONS_BASED_CHANGELOG) {
-                    showIconsChangelog();
+                    ISDialogs.showIconsChangelogDialog(this);
                 } else {
-                    showChangelog();
+                    ISDialogs.showChangelogDialog(this);
                 }
                 break;
 
@@ -355,22 +356,14 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         }
     }
 
-    private void showChangelog() {
-        new MaterialDialog.Builder(this)
-                .title(R.string.changelog_dialog_title)
-                .adapter(new ChangelogAdapter(this, R.array.fullchangelog), null)
-                .positiveText(R.string.great)
-                .show();
-    }
-
     private void showChangelogDialog() {
         String launchinfo = getSharedPreferences("PrefsFile", MODE_PRIVATE).getString("version", "0");
         storeSharedPrefs();
         if (launchinfo != null && !launchinfo.equals(Util.getAppVersion(this))) {
             if (WITH_ICONS_BASED_CHANGELOG) {
-                showIconsChangelog();
+                ISDialogs.showIconsChangelogDialog(this);
             } else {
-                showChangelog();
+                ISDialogs.showChangelogDialog(this);
             }
         }
     }
@@ -386,31 +379,21 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         try {
             if (installer.equals("com.google.android.feedback") ||
                     installer.equals("com.android.vending")) {
-                new MaterialDialog.Builder(this)
-                        .title(R.string.license_success_title)
-                        .content(R.string.license_success)
-                        .positiveText(R.string.close)
-                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
-                                mPrefs.setFeaturesEnabled(true);
-                                showChangelogDialog();
-                            }
-                        })
-                        .show();
+                ISDialogs.showLicenseSuccessDialog(this, new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+                        mPrefs.setFeaturesEnabled(true);
+                        showChangelogDialog();
+                    }
+                });
             } else if (installer.equals("com.amazon.venezia") && WITH_INSTALLED_FROM_AMAZON) {
-                new MaterialDialog.Builder(this)
-                        .title(R.string.license_success_title)
-                        .content(R.string.license_success)
-                        .positiveText(R.string.close)
-                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
-                                mPrefs.setFeaturesEnabled(true);
-                                showChangelogDialog();
-                            }
-                        })
-                        .show();
+                ISDialogs.showLicenseSuccessDialog(this, new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+                        mPrefs.setFeaturesEnabled(true);
+                        showChangelogDialog();
+                    }
+                });
             } else {
                 removeItemsFromDrawer();
                 showNotLicensedDialog();
@@ -422,36 +405,19 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
     private void showNotLicensedDialog() {
         mPrefs.setFeaturesEnabled(false);
-        new MaterialDialog.Builder(this)
-                .title(R.string.license_failed_title)
-                .content(R.string.license_failed)
-                .positiveText(R.string.download)
-                .negativeText(R.string.exit)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
+        ISDialogs.showLicenseFailedDialog(this,
+                new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
                         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(MARKET_URL + getPackageName()));
                         startActivity(browserIntent);
                     }
-                })
-                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                }, new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
                         finish();
                     }
-                })
-                .cancelListener(new DialogInterface.OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialog) {
-                        finish();
-                    }
-                })
-                .dismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        finish();
-                    }
-                }).show();
+                } );
     }
 
     public void loadWallsList() {
@@ -636,26 +602,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             iconPicker = false;
             wallsPicker = false;
         }
-
-    }
-
-    private void showIconsChangelog() {
-        MaterialDialog dialog = new MaterialDialog.Builder(this)
-                .title(R.string.changelog)
-                .customView(R.layout.icons_changelog, false)
-                .positiveText(getResources().getString(R.string.close))
-                .build();
-
-        RecyclerView iconsGrid = (RecyclerView) dialog.getCustomView().findViewById(R.id.changelogRV);
-        iconsGrid.setHasFixedSize(true);
-        iconsGrid.setLayoutManager(new GridLayoutManager(context,
-                getResources().getInteger(R.integer.icon_grid_width)));
-
-        IconsAdapter adapter = new IconsAdapter(context,
-                (ArrayList<String>) IconsLists.getNewIconsL(), IconsLists.getNewIconsAL(), true);
-        iconsGrid.setAdapter(adapter);
-
-        dialog.show();
 
     }
 
