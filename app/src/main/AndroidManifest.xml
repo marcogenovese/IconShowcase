@@ -242,7 +242,7 @@
                 android:value="@color/primary"/>
             <meta-data
                 android:name="settingsActivity"
-                android:value=".muzei.Settings"/>
+                android:value=".muzei.MuzeiSettings"/>
         </service>
 
         <activity

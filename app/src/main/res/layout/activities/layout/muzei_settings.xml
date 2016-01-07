@@ -2,6 +2,7 @@
 <RelativeLayout
     android:id="@+id/muzeiLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,31 +10,28 @@
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:background="@color/primary"
         android:minHeight="?actionBarSize"
-        android:theme="@style/ToolbarTheme"
         android:transitionName="actionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:elevation="0dp"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         tools:ignore="UnusedAttribute"/>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/toolbar"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        android:overScrollMode="ifContentScrolls">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:gravity="center_vertical"
-            android:orientation="vertical"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
+            android:gravity="center"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -41,14 +39,14 @@
                 android:layout_gravity="center"
                 android:paddingBottom="@dimen/dialog_margin"
                 android:text="@string/muzeisets_title"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 android:textColor="@color/accent"/>
 
             <LinearLayout
+                style="@style/HomeCardContent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="10dp"
                 android:gravity="center"
                 android:orientation="horizontal">
 
@@ -72,12 +70,13 @@
             </LinearLayout>
 
             <TextView
-                android:layout_width="wrap_content"
+                style="@style/AboutContent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:lineSpacingMultiplier="1.2"
-                android:padding="@dimen/dialog_margin"
-                android:text="@string/muzei_info"/>
+                android:text="@string/muzei_info"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
 
         </LinearLayout>
 

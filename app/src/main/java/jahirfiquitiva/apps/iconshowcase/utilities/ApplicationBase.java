@@ -1,15 +1,14 @@
-/*
- * Copyright (c) 2015. Jahir Fiquitiva. Android Developer. All rights reserved.
- */
-
 package jahirfiquitiva.apps.iconshowcase.utilities;
 
 import android.app.Application;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import com.crashlytics.android.Crashlytics;
+
 import java.util.ArrayList;
 
+import io.fabric.sdk.android.Fabric;
 import jahirfiquitiva.apps.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.apps.iconshowcase.fragments.WallpapersFragment;
 import jahirfiquitiva.apps.iconshowcase.models.RequestItem;
@@ -17,17 +16,10 @@ import jahirfiquitiva.apps.iconshowcase.models.WallpapersList;
 import jahirfiquitiva.apps.iconshowcase.tasks.LoadAppsToRequest;
 import jahirfiquitiva.apps.iconshowcase.tasks.LoadIconsLists;
 
-/**
- * Created by Jahir on 18/12/2015.
- */
 public class ApplicationBase extends Application {
 
     private Context context;
     private Preferences mPrefs;
-
-    /**
-     * Stores the list of all applications for the all apps view.
-     */
 
     // Main list off all apps.
     public static ArrayList<RequestItem> allApps;
@@ -39,7 +31,7 @@ public class ApplicationBase extends Application {
     public void onCreate() {
         super.onCreate();
 
-        //Fabric.with(this, new Crashlytics());
+        Fabric.with(this, new Crashlytics());
 
         this.context = getApplicationContext();
 

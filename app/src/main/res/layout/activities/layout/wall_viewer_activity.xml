@@ -1,15 +1,23 @@
 <RelativeLayout
     android:id="@+id/viewerLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     tools:context="jahirfiquitiva.apps.iconshowcase.activities.ViewerActivity">
 
-    <include
+    <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
-        layout="@layout/toolbar"/>
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="@color/primary"
+        android:minHeight="?actionBarSize"
+        android:transitionName="actionBar"
+        app:contentInsetStart="@dimen/toolbar_contentInset"
+        app:elevation="0dp"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        tools:ignore="UnusedAttribute"/>
 
     <jahirfiquitiva.apps.iconshowcase.views.TouchImageView
         android:id="@+id/big_wallpaper"
@@ -26,39 +34,39 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_margin="16dp"
-        fab:menu_colorNormal="@android:color/white"
-        fab:menu_colorPressed="@android:color/white"
-        fab:menu_colorRipple="@color/semitransparent_black"
-        fab:menu_fab_size="normal"
-        fab:menu_icon="@drawable/ic_wallpapers_fab"
-        fab:menu_labels_textColor="@color/card_dark_background"
-        fab:menu_labels_colorNormal="@android:color/white"
-        fab:menu_labels_colorPressed="@android:color/white"
-        fab:menu_labels_colorRipple="@color/semitransparent_black"
-        fab:menu_labels_padding="8dp"
-        fab:menu_showShadow="true">
+        app:menu_colorNormal="@android:color/white"
+        app:menu_colorPressed="@android:color/white"
+        app:menu_colorRipple="@color/semitransparent_black"
+        app:menu_fab_size="normal"
+        app:menu_icon="@drawable/ic_wallpapers_fab"
+        app:menu_labels_colorNormal="@android:color/white"
+        app:menu_labels_colorPressed="@android:color/white"
+        app:menu_labels_colorRipple="@color/semitransparent_black"
+        app:menu_labels_padding="8dp"
+        app:menu_labels_textColor="@color/card_dark_background"
+        app:menu_showShadow="true">
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/setWall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_check_dark"
-            fab:fab_colorNormal="@android:color/white"
-            fab:fab_colorPressed="@android:color/white"
-            fab:fab_colorRipple="@color/semitransparent_black"
-            fab:fab_label="@string/apply"
-            fab:fab_size="mini"/>
+            app:fab_colorNormal="@android:color/white"
+            app:fab_colorPressed="@android:color/white"
+            app:fab_colorRipple="@color/semitransparent_black"
+            app:fab_label="@string/apply"
+            app:fab_size="mini"/>
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/saveWall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_save_dark"
-            fab:fab_colorNormal="@android:color/white"
-            fab:fab_colorPressed="@android:color/white"
-            fab:fab_colorRipple="@color/semitransparent_black"
-            fab:fab_label="@string/save"
-            fab:fab_size="mini"/>
+            app:fab_colorNormal="@android:color/white"
+            app:fab_colorPressed="@android:color/white"
+            app:fab_colorRipple="@color/semitransparent_black"
+            app:fab_label="@string/save"
+            app:fab_size="mini"/>
 
     </com.github.clans.fab.FloatingActionMenu>
 

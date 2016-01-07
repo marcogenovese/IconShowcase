@@ -50,12 +50,18 @@
     <string name="sherry">Sherry Sabatine</string>
     <string name="kevin">Kevin Aguilar</string>
     <string name="anthony">Anthony Nguyen</string>
+    <string name="patrick">Patrick J</string>
+    <string name="james">James Fenn</string>
+    <string name="alexandre">Alexandre Piveteau</string>
 
     <string-array name="collaborators_names">
         <item>@string/materialdialogs_author</item>
         <item>@string/materialdrawer_author</item>
         <item>@string/dani_mahardika</item>
         <item>@string/steve_albright</item>
+        <item>@string/patrick</item>
+        <item>@string/james</item>
+        <item>@string/alexandre</item>
     </string-array>
 
     <string-array name="collaborators_links">
@@ -63,6 +69,9 @@
         <item>http://portfolio.mikepenz.com/</item>
         <item>https://plus.google.com/+DaniMahardhika/posts</item>
         <item>https://plus.google.com/111777412946608276908/auto</item>
+        <item>https://plus.google.com/+PatrickJung42/posts</item>
+        <item>https://plus.google.com/+JamesFennJAFFA2157/posts</item>
+        <item>https://plus.google.com/+AlexandrePiveteau/posts</item>
     </string-array>
 
     <string-array name="ui_collaborators_names">

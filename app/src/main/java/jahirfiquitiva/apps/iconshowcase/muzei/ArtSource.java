@@ -103,7 +103,7 @@ public class ArtSource extends RemoteMuzeiArtSource {
                 .viewIntent(new Intent(Intent.ACTION_VIEW, Uri.parse(url)))
                 .build());
         scheduleUpdate(System.currentTimeMillis() + mPrefs.getRotateTime());
-        Util.showLog("Muzei Update scheduled to: " + String.valueOf(System.currentTimeMillis() + mPrefs.getRotateTime()));
+        Util.showLog("Muzei Update scheduled to: " + String.valueOf((System.currentTimeMillis() + mPrefs.getRotateTime()) / 1000));
     }
 
     public class DownloadJSONAndSetWall extends AsyncTask<Void, String, Boolean> {
@@ -153,9 +153,15 @@ public class ArtSource extends RemoteMuzeiArtSource {
         @Override
         protected void onPostExecute(Boolean worked) {
             if (worked) {
-                int i = new Random().nextInt(names.size());
-                setImageForMuzei(names.get(i), authors.get(i), urls.get(i));
-                Util.showLog("Setting picture: " + names.get(i));
+                int i;
+                try {
+                    i = new Random().nextInt(names.size());
+                    setImageForMuzei(names.get(i), authors.get(i), urls.get(i));
+                    Util.showLog("Setting picture: " + names.get(i));
+                } catch (IllegalArgumentException e) {
+                    Util.showLog("Muzei error: " + e.getLocalizedMessage());
+                }
+
             }
 
         }

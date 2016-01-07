@@ -3,7 +3,7 @@
 
     <string name="muzei_settings">Muzei Settings</string>
     <!-- Sharing wallpaper from Muzei -->
-    <string name="share_text">My wallpaper for today is %1$s by %2$s, from %3$s.\nGet it now at %4$s.</string>
+    <string name="share_text">My wallpaper for today is %1$s by %2$s, from %3$s.\nGet it now at %4$s</string>
 
     <!-- List Of Drawer Sections -->
     <string name="section_one">Home</string>
@@ -17,7 +17,7 @@
     <string name="title_activity_detailed_wallpaper">Wallpaper viewer</string>
 
     <!-- Muzei Stuff -->
-    <string name="muzeisets_title">Refresh source every:</string>
+    <string name="muzeisets_title">Refresh wallpapers every:</string>
     <string name="minutes">Minutes</string>
     <string name="hours">Hours</string>
     <string name="muzei_info">Note: These settings may affect the update behavior of wallpapers.

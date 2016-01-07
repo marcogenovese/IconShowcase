@@ -91,6 +91,7 @@ public class ViewerActivity extends AppCompatActivity {
 
         fab = (FloatingActionMenu) findViewById(R.id.wallsFab);
         fab.setIconAnimated(WITH_FAB_ICON_ANIMATION && mPrefs.getAnimationsEnabled());
+        fab.setAnimated(mPrefs.getAnimationsEnabled());
 
         setWall = (FloatingActionButton) findViewById(R.id.setWall);
         saveWall = (FloatingActionButton) findViewById(R.id.saveWall);
