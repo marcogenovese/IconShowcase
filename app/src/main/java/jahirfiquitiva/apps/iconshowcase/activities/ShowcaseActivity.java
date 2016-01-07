@@ -513,7 +513,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                     .withSavedInstance(savedInstanceState)
                     .build();
 
-            TextView appVersion = (TextView) findViewById(R.id.text_app_version);
+            TextView appVersion = (TextView) drawer.getHeader().findViewById(R.id.text_app_version);
             appVersion.setText(getString(R.string.app_version, Util.getAppVersion(this)));
 
         }
