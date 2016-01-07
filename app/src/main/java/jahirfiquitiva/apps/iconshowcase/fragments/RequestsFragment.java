@@ -1,14 +1,10 @@
 package jahirfiquitiva.apps.iconshowcase.fragments;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,21 +14,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import com.afollestad.assent.Assent;
-import com.afollestad.assent.AssentCallback;
-import com.afollestad.assent.PermissionResultSet;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 
 import jahirfiquitiva.apps.iconshowcase.R;
+import jahirfiquitiva.apps.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.apps.iconshowcase.adapters.RequestsAdapter;
 import jahirfiquitiva.apps.iconshowcase.tasks.ZipFilesToRequest;
 import jahirfiquitiva.apps.iconshowcase.utilities.ApplicationBase;
+import jahirfiquitiva.apps.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.apps.iconshowcase.views.GridSpacingItemDecoration;
 
-public class RequestsFragment extends Fragment {
+public class RequestsFragment extends Fragment implements PermissionUtils.OnPermissionResultListener {
 
     public static RecyclerFastScroller fastScroller;
     public static ProgressBar progressBar;
@@ -84,15 +79,10 @@ public class RequestsFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!Assent.isPermissionGranted(Assent.WRITE_EXTERNAL_STORAGE)) {
-                    Assent.requestPermissions(new AssentCallback() {
-                        @Override
-                        public void onPermissionResult(PermissionResultSet result) {
-                            showRequestsFilesCreationDialog(context);
-                        }
-                    }, 69, Assent.WRITE_EXTERNAL_STORAGE);
+                if(!PermissionUtils.canAccessStorage(getContext())) {
+                    PermissionUtils.requestStoragePermission(getActivity(), RequestsFragment.this);
                 } else {
-                    showRequestsFilesCreationDialog(context);
+                    ShowcaseActivity.showRequestsFilesCreationDialog(context);
                 }
             }
         });
@@ -196,26 +186,13 @@ public class RequestsFragment extends Fragment {
         }
     }
 
-    public static void showRequestsFilesCreationDialog(Context context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-                ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) !=
-                        PackageManager.PERMISSION_GRANTED) {
-
-            new MaterialDialog.Builder(context)
-                    .title(R.string.md_error_label)
-                    .content(context.getResources().getString(R.string.md_storage_perm_error, R.string.app_name))
-                    .positiveText(android.R.string.ok)
-                    .show();
-        } else {
-            final MaterialDialog dialog = new MaterialDialog.Builder(context)
-                    .content(R.string.building_request_dialog)
-                    .progress(true, 0)
-                    .cancelable(false)
-                    .show();
-
-            new ZipFilesToRequest((Activity) context, dialog,
-                    ((RequestsAdapter) mRecyclerView.getAdapter()).appsList).execute();
-        }
+    public static void fabPressed(MaterialDialog dialog) {
+        new ZipFilesToRequest(context, dialog,
+                ((RequestsAdapter) mRecyclerView.getAdapter()).appsList).execute();
     }
 
+    @Override
+    public void onStoragePermissionGranted() {
+        ShowcaseActivity.showRequestsFilesCreationDialog(context);
+    }
 }

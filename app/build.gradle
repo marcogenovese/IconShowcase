@@ -104,11 +104,6 @@ dependencies {
     //Muzei API
     compile 'com.google.android.apps.muzei:muzei-api:2.0'
 
-    //Library for easy request for permissions on Marshmallow
-    compile('com.github.afollestad:assent:0.2.0') {
-        transitive = true
-    }
-
     //Floating Action Menu
     compile 'com.github.clans:fab:1.6.2'
 

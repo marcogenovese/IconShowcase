@@ -11,6 +11,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewCompat;
@@ -20,9 +21,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.afollestad.assent.Assent;
-import com.afollestad.assent.AssentCallback;
-import com.afollestad.assent.PermissionResultSet;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
@@ -41,6 +39,7 @@ import java.io.FileOutputStream;
 import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.tasks.ApplyWallpaper;
 import jahirfiquitiva.apps.iconshowcase.tasks.WallpaperToCrop;
+import jahirfiquitiva.apps.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.apps.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.apps.iconshowcase.utilities.Util;
@@ -80,8 +79,6 @@ public class ViewerActivity extends AppCompatActivity {
 
         mPrefs = new Preferences(ViewerActivity.this);
 
-        Assent.setActivity(this, this);
-
         Intent intent = getIntent();
         mIndex = intent.getIntExtra(EXTRA_CURRENT_ITEM_POSITION, 1);
         mIndexText = intent.getStringExtra("indexText");
@@ -101,30 +98,24 @@ public class ViewerActivity extends AppCompatActivity {
         setWall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!Assent.isPermissionGranted(Assent.WRITE_EXTERNAL_STORAGE)) {
-                    Assent.requestPermissions(new AssentCallback() {
-                        @Override
-                        public void onPermissionResult(PermissionResultSet result) {
-                            showDialogs("apply");
-                        }
-                    }, 69, Assent.WRITE_EXTERNAL_STORAGE);
+                if(!PermissionUtils.canAccessStorage(ViewerActivity.this)) {
+                    PermissionUtils.setViewerActivityAction("apply");
+                    PermissionUtils.requestStoragePermission(ViewerActivity.this);
+                } else {
+                    showDialogs("apply");
                 }
-                showDialogs("apply");
             }
         });
 
         saveWall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!Assent.isPermissionGranted(Assent.WRITE_EXTERNAL_STORAGE)) {
-                    Assent.requestPermissions(new AssentCallback() {
-                        @Override
-                        public void onPermissionResult(PermissionResultSet result) {
-                            showDialogs("save");
-                        }
-                    }, 69, Assent.WRITE_EXTERNAL_STORAGE);
+                if(!PermissionUtils.canAccessStorage(ViewerActivity.this)) {
+                    PermissionUtils.setViewerActivityAction("save");
+                    PermissionUtils.requestStoragePermission(ViewerActivity.this);
+                } else {
+                    showDialogs("save");
                 }
-                showDialogs("save");
             }
         });
 
@@ -142,7 +133,7 @@ public class ViewerActivity extends AppCompatActivity {
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        if (toolbar != null) {
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setTitle(wallName);
@@ -219,6 +210,17 @@ public class ViewerActivity extends AppCompatActivity {
         if (dialogApply != null) {
             dialogApply.dismiss();
             dialogApply = null;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResult) {
+        if(requestCode == PermissionUtils.PERMISSION_REQUEST_CODE) {
+            if(grantResult.length > 0 && grantResult[0] == PackageManager.PERMISSION_GRANTED) {
+                showDialogs(PermissionUtils.getViewerActivityAction());
+            } else {
+                showErrorDialog();
+            }
         }
     }
 
@@ -415,6 +417,10 @@ public class ViewerActivity extends AppCompatActivity {
             }
         }
 
+    }
+
+    private void showErrorDialog() {
+        //TODO: Add a error dialog
     }
 
 }

@@ -23,9 +23,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
-import com.afollestad.assent.Assent;
-import com.afollestad.assent.AssentCallback;
-import com.afollestad.assent.PermissionResultSet;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -35,10 +32,11 @@ import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.apps.iconshowcase.basefragments.PreferenceFragment;
 import jahirfiquitiva.apps.iconshowcase.dialogs.FolderChooserDialog;
+import jahirfiquitiva.apps.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.apps.iconshowcase.utilities.ThemeUtils;
 
-public class SettingsFragment extends PreferenceFragment {
+public class SettingsFragment extends PreferenceFragment implements PermissionUtils.OnPermissionResultListener {
 
     private static SharedPreferences sp;
     private static SharedPreferences.Editor editor;
@@ -181,15 +179,11 @@ public class SettingsFragment extends PreferenceFragment {
         findPreference("wallsSaveLocation").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                if (!Assent.isPermissionGranted(Assent.WRITE_EXTERNAL_STORAGE)) {
-                    Assent.requestPermissions(new AssentCallback() {
-                        @Override
-                        public void onPermissionResult(PermissionResultSet result) {
-                            showFolderChooserDialog();
-                        }
-                    }, 69, Assent.WRITE_EXTERNAL_STORAGE);
+                if(!PermissionUtils.canAccessStorage(getContext())) {
+                    PermissionUtils.requestStoragePermission(getActivity(), SettingsFragment.this);
+                } else {
+                    showFolderChooserDialog();
                 }
-                showFolderChooserDialog();
                 return true;
             }
         });
@@ -367,19 +361,11 @@ public class SettingsFragment extends PreferenceFragment {
     }
 
     private void showFolderChooserDialog() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-                ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) !=
-                        PackageManager.PERMISSION_GRANTED) {
-            new MaterialDialog.Builder(context)
-                    .title(R.string.md_error_label)
-                    .content(context.getResources().getString(R.string.md_storage_perm_error,
-                            context.getResources().getString(R.string.app_name)))
-                    .positiveText(android.R.string.ok)
-                    .show();
-        } else {
-            new FolderChooserDialog().show((AppCompatActivity) getActivity());
-        }
-
+        new FolderChooserDialog().show((AppCompatActivity) getActivity());
     }
 
+    @Override
+    public void onStoragePermissionGranted() {
+        ((ShowcaseActivity) getActivity()).openFileChooser();
+    }
 }
