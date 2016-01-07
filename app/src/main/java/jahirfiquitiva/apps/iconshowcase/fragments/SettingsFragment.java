@@ -4,7 +4,6 @@
 
 package jahirfiquitiva.apps.iconshowcase.fragments;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
@@ -18,7 +17,6 @@ import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -179,7 +177,7 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
         findPreference("wallsSaveLocation").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                if(!PermissionUtils.canAccessStorage(getContext())) {
+                if (!PermissionUtils.canAccessStorage(getContext())) {
                     PermissionUtils.requestStoragePermission(getActivity(), SettingsFragment.this);
                 } else {
                     showFolderChooserDialog();

@@ -98,7 +98,7 @@ public class ViewerActivity extends AppCompatActivity {
         setWall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!PermissionUtils.canAccessStorage(ViewerActivity.this)) {
+                if (!PermissionUtils.canAccessStorage(ViewerActivity.this)) {
                     PermissionUtils.setViewerActivityAction("apply");
                     PermissionUtils.requestStoragePermission(ViewerActivity.this);
                 } else {
@@ -110,7 +110,7 @@ public class ViewerActivity extends AppCompatActivity {
         saveWall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!PermissionUtils.canAccessStorage(ViewerActivity.this)) {
+                if (!PermissionUtils.canAccessStorage(ViewerActivity.this)) {
                     PermissionUtils.setViewerActivityAction("save");
                     PermissionUtils.requestStoragePermission(ViewerActivity.this);
                 } else {
@@ -215,8 +215,8 @@ public class ViewerActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResult) {
-        if(requestCode == PermissionUtils.PERMISSION_REQUEST_CODE) {
-            if(grantResult.length > 0 && grantResult[0] == PackageManager.PERMISSION_GRANTED) {
+        if (requestCode == PermissionUtils.PERMISSION_REQUEST_CODE) {
+            if (grantResult.length > 0 && grantResult[0] == PackageManager.PERMISSION_GRANTED) {
                 showDialogs(PermissionUtils.getViewerActivityAction());
             } else {
                 showErrorDialog();

@@ -1,10 +1,14 @@
 package jahirfiquitiva.apps.iconshowcase.fragments;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,7 +23,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 
 import jahirfiquitiva.apps.iconshowcase.R;
-import jahirfiquitiva.apps.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.apps.iconshowcase.adapters.RequestsAdapter;
 import jahirfiquitiva.apps.iconshowcase.tasks.ZipFilesToRequest;
 import jahirfiquitiva.apps.iconshowcase.utilities.ApplicationBase;
@@ -68,7 +71,7 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
 
         showRequestsAdviceDialog(getActivity());
 
-        fab = (FloatingActionButton) layout.findViewById(R.id.fab);
+        fab = (FloatingActionButton) layout.findViewById(R.id.requests_fab);
 
         if (ApplicationBase.allAppsToRequest == null || ApplicationBase.allAppsToRequest.size() <= 0) {
             fab.hide();
@@ -79,10 +82,10 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!PermissionUtils.canAccessStorage(getContext())) {
+                if (!PermissionUtils.canAccessStorage(getContext())) {
                     PermissionUtils.requestStoragePermission(getActivity(), RequestsFragment.this);
                 } else {
-                    ShowcaseActivity.showRequestsFilesCreationDialog(context);
+                    showRequestsFilesCreationDialog(context);
                 }
             }
         });
@@ -186,13 +189,31 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
         }
     }
 
-    public static void fabPressed(MaterialDialog dialog) {
-        new ZipFilesToRequest(context, dialog,
-                ((RequestsAdapter) mRecyclerView.getAdapter()).appsList).execute();
+    public static void showRequestsFilesCreationDialog(Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+                ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) !=
+                        PackageManager.PERMISSION_GRANTED) {
+
+            new MaterialDialog.Builder(context)
+                    .title(R.string.md_error_label)
+                    .content(context.getResources().getString(R.string.md_storage_perm_error, R.string.app_name))
+                    .positiveText(android.R.string.ok)
+                    .show();
+        } else {
+            final MaterialDialog dialog = new MaterialDialog.Builder(context)
+                    .content(R.string.building_request_dialog)
+                    .progress(true, 0)
+                    .cancelable(false)
+                    .show();
+
+            new ZipFilesToRequest((Activity) context, dialog,
+                    ((RequestsAdapter) mRecyclerView.getAdapter()).appsList).execute();
+        }
     }
 
     @Override
     public void onStoragePermissionGranted() {
-        ShowcaseActivity.showRequestsFilesCreationDialog(context);
+        showRequestsFilesCreationDialog(context);
     }
+
 }

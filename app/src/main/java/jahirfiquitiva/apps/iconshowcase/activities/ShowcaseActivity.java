@@ -1,6 +1,5 @@
 package jahirfiquitiva.apps.iconshowcase.activities;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -17,9 +16,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -53,7 +50,6 @@ import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.adapters.ChangelogAdapter;
 import jahirfiquitiva.apps.iconshowcase.adapters.IconsAdapter;
 import jahirfiquitiva.apps.iconshowcase.dialogs.FolderChooserDialog;
-import jahirfiquitiva.apps.iconshowcase.fragments.RequestsFragment;
 import jahirfiquitiva.apps.iconshowcase.fragments.SettingsFragment;
 import jahirfiquitiva.apps.iconshowcase.fragments.WallpapersFragment;
 import jahirfiquitiva.apps.iconshowcase.models.IconsLists;
@@ -69,7 +65,8 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     private static final boolean WITH_LICENSE_CHECKER = false,
             WITH_INSTALLED_FROM_AMAZON = false,
             WITH_ZOOPER_SECTION = false,
-            WITH_ICONS_BASED_CHANGELOG = false;
+            WITH_ICONS_BASED_CHANGELOG = false,
+            WITH_DRAWER_HEADER = false;
 
     private static final String MARKET_URL = "https://play.google.com/store/apps/details?id=";
 
@@ -79,7 +76,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             turbo_action = "com.phonemetra.turbo.launcher.icons.ACTION_PICK_ICON",
             nova_action = "com.novalauncher.THEME";
 
-    public static boolean iconPicker, imagePicker, wallsPicker;
+    public static boolean iconPicker, wallsPicker;
 
     private static String thaHome, thaPreviews, thaApply, thaWalls, thaRequest, thaFAQs,
             thaZooper, thaCredits, thaSettings;
@@ -163,14 +160,14 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbar);
         collapsingToolbarLayout.setTitleEnabled(false);
-        if(getSupportActionBar() != null) getSupportActionBar().setDisplayShowTitleEnabled(false);
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        setupDrawer(true, toolbar, savedInstanceState);
+        setupDrawer(toolbar, savedInstanceState);
 
         runLicenseChecker();
 
         if (savedInstanceState == null) {
-            if (iconPicker || imagePicker) {
+            if (iconPicker) {
                 drawerItemClick(2);
                 drawer.setSelection(2);
             } else if (wallsPicker && mPrefs.areFeaturesEnabled()) {
@@ -182,6 +179,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                     drawer.setSelection(9);
                 } else {
                     currentItem = -1;
+                    drawerItemClick(1);
                     drawer.setSelection(1);
                 }
             }
@@ -197,18 +195,17 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         }
         currentItem = itemId;
 
+        if (context.getSupportActionBar() != null)
+            context.getSupportActionBar().setTitle(title);
+
         if (fragment.equals("Main")) {
             appbar.setExpanded(true, mPrefs.getAnimationsEnabled());
             coordinatorLayout.setScrollAllowed(true);
-            setupFAB(context, fragment);
-        } else if (fragment.equals("Requests")) {
-            appbar.setExpanded(false, mPrefs.getAnimationsEnabled());
-            coordinatorLayout.setScrollAllowed(false);
-            setupFAB(context, fragment);
+            setupFAB(fragment);
         } else {
             appbar.setExpanded(false, mPrefs.getAnimationsEnabled());
             coordinatorLayout.setScrollAllowed(false);
-            setupFAB(context, fragment);
+            setupFAB(fragment);
         }
 
         if (mPrefs.getAnimationsEnabled()) {
@@ -246,7 +243,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     protected void onSaveInstanceState(Bundle outState) {
         if (drawer != null)
             outState = drawer.saveInstanceState(outState);
-        if(getSupportActionBar() != null) {
+        if (getSupportActionBar() != null) {
             outState.putString("toolbarTitle", String.valueOf(getSupportActionBar().getTitle()));
         }
         outState.putInt("currentSection", currentItem);
@@ -256,7 +253,8 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        if(getSupportActionBar() != null) getSupportActionBar().setTitle(savedInstanceState.getString("toolbarTitle", "   "));
+        if (getSupportActionBar() != null)
+            getSupportActionBar().setTitle(savedInstanceState.getString("toolbarTitle", "   "));
         drawerItemClick(savedInstanceState.getInt("currentSection"));
     }
 
@@ -290,9 +288,9 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResult) {
-        if(requestCode == PermissionUtils.PERMISSION_REQUEST_CODE) {
-            if(grantResult.length > 0 && grantResult[0] == PackageManager.PERMISSION_GRANTED) {
-                if(PermissionUtils.permissionReceived() != null)
+        if (requestCode == PermissionUtils.PERMISSION_REQUEST_CODE) {
+            if (grantResult.length > 0 && grantResult[0] == PackageManager.PERMISSION_GRANTED) {
+                if (PermissionUtils.permissionReceived() != null)
                     PermissionUtils.permissionReceived().onStoragePermissionGranted();
             }
         }
@@ -484,7 +482,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         SettingsFragment.changeValues(getApplicationContext());
     }
 
-    public void setupDrawer(boolean withHeader, Toolbar toolbar, Bundle savedInstanceState) {
+    public void setupDrawer(Toolbar toolbar, Bundle savedInstanceState) {
         drawer = new DrawerBuilder()
                 .withActivity(this)
                 .withToolbar(toolbar)
@@ -514,20 +512,20 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                 .withSavedInstance(savedInstanceState)
                 .build();
 
-            if (withHeader) {
-                drawerHeader = new AccountHeaderBuilder()
-                        .withActivity(this)
-                        .withHeaderBackground(R.drawable.header)
-                        .withSelectionFirstLine(getResources().getString(R.string.app_long_name))
-                        .withSelectionSecondLine("v " + Util.getAppVersion(this))
-                        .withProfileImagesClickable(false)
-                        .withResetDrawerOnProfileListClick(false)
-                        .withSelectionListEnabled(false)
-                        .withSelectionListEnabledForSingleProfile(false)
-                        .withSavedInstance(savedInstanceState)
-                        .withDrawer(drawer)
-                        .build();
-            }
+        if (WITH_DRAWER_HEADER) {
+            drawerHeader = new AccountHeaderBuilder()
+                    .withActivity(this)
+                    .withHeaderBackground(R.drawable.header)
+                    .withSelectionFirstLine(getResources().getString(R.string.app_long_name))
+                    .withSelectionSecondLine("v " + Util.getAppVersion(this))
+                    .withProfileImagesClickable(false)
+                    .withResetDrawerOnProfileListClick(false)
+                    .withSelectionListEnabled(false)
+                    .withSelectionListEnabledForSingleProfile(false)
+                    .withSavedInstance(savedInstanceState)
+                    .withDrawer(drawer)
+                    .build();
+        }
 
     }
 
@@ -571,29 +569,27 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         }
 
         try {
-            if (action.equals(adw_action)
-                    || action.equals(turbo_action)
-                    || action.equals(nova_action)) {
-                iconPicker = true;
-                wallsPicker = false;
-                imagePicker = false;
-            } else if (action.equals(Intent.ACTION_PICK) || action.equals(Intent.ACTION_GET_CONTENT)) {
-                iconPicker = false;
-                wallsPicker = false;
-                imagePicker = true;
-            } else if (action.equals(Intent.ACTION_SET_WALLPAPER)) {
-                iconPicker = false;
-                wallsPicker = true;
-                imagePicker = false;
-            } else {
-                iconPicker = false;
-                wallsPicker = false;
-                imagePicker = false;
+            switch (action) {
+                case adw_action:
+                case turbo_action:
+                case nova_action:
+                case Intent.ACTION_PICK:
+                case Intent.ACTION_GET_CONTENT:
+                    iconPicker = true;
+                    wallsPicker = false;
+                    break;
+                case Intent.ACTION_SET_WALLPAPER:
+                    iconPicker = false;
+                    wallsPicker = true;
+                    break;
+                default:
+                    iconPicker = false;
+                    wallsPicker = false;
+                    break;
             }
         } catch (ActivityNotFoundException | NullPointerException e) {
             iconPicker = false;
             wallsPicker = false;
-            imagePicker = false;
         }
 
     }
@@ -619,7 +615,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     }
 
     public static void setupIcons(final ImageView icon1, final ImageView icon2,
-                            final ImageView icon3, final ImageView icon4, Context context) {
+                                  final ImageView icon3, final ImageView icon4, Context context) {
 
         ArrayList<Integer> icons = IconsLists.getPreviewAL();
         ArrayList<Integer> finalIconsList = new ArrayList<>();
@@ -679,11 +675,9 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
     }
 
-    private static void setupFAB(final Context context, String fragment) {
+    private static void setupFAB(String fragment) {
         switch (fragment) {
             case "Main":
-                fab.setVisibility(View.VISIBLE);
-                fab.setImageResource(R.drawable.ic_apply_icons);
                 fab.setVisibility(View.VISIBLE);
                 fab.show();
                 fab.setOnClickListener(new View.OnClickListener() {
@@ -697,27 +691,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             default:
                 fab.setVisibility(View.GONE);
                 break;
-        }
-    }
-
-    public static void showRequestsFilesCreationDialog(Context context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-                ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) !=
-                        PackageManager.PERMISSION_GRANTED) {
-
-            new MaterialDialog.Builder(context)
-                    .title(R.string.md_error_label)
-                    .content(context.getResources().getString(R.string.md_storage_perm_error, R.string.app_name))
-                    .positiveText(android.R.string.ok)
-                    .show();
-        } else {
-            final MaterialDialog dialog = new MaterialDialog.Builder(context)
-                    .content(R.string.building_request_dialog)
-                    .progress(true, 0)
-                    .cancelable(false)
-                    .show();
-
-            RequestsFragment.fabPressed(dialog);
         }
     }
 
