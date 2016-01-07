@@ -92,7 +92,7 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
         int resId = iconsArray.get(position);
         String name = iconsList.get(position).toLowerCase(Locale.getDefault());
 
-        if (ShowcaseActivity.iconPicker || ShowcaseActivity.imagePicker) {
+        if (ShowcaseActivity.iconPicker) {
             Intent intent = new Intent();
             bitmap = null;
 
