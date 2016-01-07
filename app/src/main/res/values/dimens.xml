@@ -8,7 +8,7 @@
     <dimen name="cards_text_margin">5dp</dimen>
     <dimen name="cards_text_top_margin">16dp</dimen>
     <dimen name="mini_margin">2dp</dimen>
-    <dimen name="card_corner_radius">4dp</dimen>
+    <dimen name="card_corner_radius">2dp</dimen>
     <dimen name="grid_padding_vertical">8dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="card_little_margin">6dp</dimen>
