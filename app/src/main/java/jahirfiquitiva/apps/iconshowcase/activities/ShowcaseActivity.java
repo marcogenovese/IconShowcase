@@ -26,6 +26,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -512,13 +513,8 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                     .withSavedInstance(savedInstanceState)
                     .build();
 
-            /*
-            TODO Implement this properly
-
             TextView appVersion = (TextView) findViewById(R.id.text_app_version);
-            appVersion.setText("v " + Util.getAppVersion(this));
-
-            */
+            appVersion.setText(getString(R.string.app_version, Util.getAppVersion(this)));
 
         }
 
