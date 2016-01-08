@@ -94,7 +94,7 @@ public class ApplyFragment extends Fragment {
                 new LaunchersAdapter.ClickListener() {
                     @Override
                     public void onClick(int position) {
-                        if (launchers.get(position).name.equals("Google Now Launcher")) {
+                        if (launchers.get(position).name.equals("Google Now")) {
                             gnlDialog();
                         } else if (launchers.get(position).name.equals("CM Theme Engine")) {
                             if (Util.isAppInstalled(getActivity(), "com.cyngn.theme.chooser")) {
@@ -119,10 +119,8 @@ public class ApplyFragment extends Fragment {
 
     private void openLauncher(String name) {
         final String launcherName = Character.toUpperCase(name.charAt(0))
-                + name.substring(1).toLowerCase().replace(" ", "").replace("launcher", "")
-                + "Launcher";
+                + name.substring(1).toLowerCase().replace(" ", "").replace("launcher", "");
         LauncherIntents launcherIntent = new LauncherIntents(getActivity(), launcherName, applyLayout);
-
     }
 
     private void openInPlayStore(final Launcher launcher) {
@@ -195,9 +193,9 @@ public class ApplyFragment extends Fragment {
             MaterialDialog.SingleButtonCallback singleButtonCallback = new MaterialDialog.SingleButtonCallback() {
                 @Override
                 public void onClick(MaterialDialog dialog, DialogAction which) {
-                    if(which.equals(DialogAction.POSITIVE)) {
+                    if (which.equals(DialogAction.POSITIVE)) {
                         mPrefs.setApplyDialogDismissed(false);
-                    } else if(which.equals(DialogAction.NEUTRAL)) {
+                    } else if (which.equals(DialogAction.NEUTRAL)) {
                         mPrefs.setApplyDialogDismissed(true);
                     }
                 }

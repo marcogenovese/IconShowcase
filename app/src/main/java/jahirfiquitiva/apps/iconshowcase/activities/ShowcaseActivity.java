@@ -1,37 +1,37 @@
 package jahirfiquitiva.apps.iconshowcase.activities;
 
 import android.annotation.SuppressLint;
+import android.app.WallpaperManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayout;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.daimajia.androidanimations.library.Techniques;
-import com.daimajia.androidanimations.library.YoYo;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -48,8 +48,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import jahirfiquitiva.apps.iconshowcase.R;
-import jahirfiquitiva.apps.iconshowcase.adapters.ChangelogAdapter;
-import jahirfiquitiva.apps.iconshowcase.adapters.IconsAdapter;
 import jahirfiquitiva.apps.iconshowcase.dialogs.FolderChooserDialog;
 import jahirfiquitiva.apps.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.apps.iconshowcase.fragments.SettingsFragment;
@@ -70,6 +68,8 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             WITH_ICONS_BASED_CHANGELOG = false,
             WITH_NORMAL_DRAWER_HEADER = false,
             WITH_MINI_DRAWER_HEADER = true;
+
+    public static final boolean WITH_USER_WALLPAPER_AS_TOOLBAR_HEADER = true;
 
     private static final String MARKET_URL = "https://play.google.com/store/apps/details?id=";
 
@@ -421,7 +421,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                     public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
                         finish();
                     }
-                } );
+                });
     }
 
     public void loadWallsList() {
@@ -631,37 +631,28 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         }
     }
 
-    public static void animateIcons(final ImageView icon1, final ImageView icon2,
-                                    final ImageView icon3, final ImageView icon4) {
+    public static void animateIcons(ImageView icon1, ImageView icon2,
+                                    ImageView icon3, ImageView icon4) {
 
         icon1.setVisibility(View.VISIBLE);
         icon2.setVisibility(View.VISIBLE);
         icon3.setVisibility(View.VISIBLE);
         icon4.setVisibility(View.VISIBLE);
 
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (mPrefs.getAnimationsEnabled()) {
-                    YoYo.with(Techniques.Bounce)
-                            .duration(700)
-                            .playOn(icon1);
+        if (mPrefs.getAnimationsEnabled()) {
+            Animation anim = AnimationUtils.loadAnimation(context, R.anim.bounce);
+            playIconsAnimations(icon1, icon2, icon3, icon4, anim);
+        }
 
-                    YoYo.with(Techniques.Bounce)
-                            .duration(700)
-                            .playOn(icon2);
+    }
 
-                    YoYo.with(Techniques.Bounce)
-                            .duration(700)
-                            .playOn(icon3);
+    private static void playIconsAnimations(ImageView icon1, ImageView icon2,
+                                            ImageView icon3, ImageView icon4, Animation anim) {
 
-                    YoYo.with(Techniques.Bounce)
-                            .duration(700)
-                            .playOn(icon4);
-                }
-            }
-        }, 500);
+        icon1.startAnimation(anim);
+        icon2.startAnimation(anim);
+        icon3.startAnimation(anim);
+        icon4.startAnimation(anim);
 
     }
 
@@ -682,6 +673,29 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                 fab.setVisibility(View.GONE);
                 break;
         }
+    }
+
+    public static void setupToolbarHeader(Context context) {
+
+        ImageView toolbarHeader = (ImageView) ((AppCompatActivity) context).findViewById(R.id.toolbarHeader);
+        ProgressBar progress = (ProgressBar) ((AppCompatActivity) context).findViewById(R.id.headerProgressBar);
+
+        if (WITH_USER_WALLPAPER_AS_TOOLBAR_HEADER && mPrefs.getWallpaperAsToolbarHeaderEnabled()) {
+            WallpaperManager wm = WallpaperManager.getInstance(context);
+            if (wm != null) {
+                Drawable currentWallpaper = wm.getFastDrawable();
+                if (currentWallpaper != null) {
+                    float alpha = 0.8f;
+                    toolbarHeader.setAlpha(alpha);
+                    toolbarHeader.setImageDrawable(currentWallpaper);
+                }
+            }
+        } else {
+            toolbarHeader.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.header));
+        }
+
+        progress.setVisibility(View.INVISIBLE);
+        toolbarHeader.setVisibility(View.VISIBLE);
     }
 
     public void openFileChooser() {

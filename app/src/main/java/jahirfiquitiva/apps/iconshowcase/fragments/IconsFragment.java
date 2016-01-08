@@ -17,8 +17,6 @@ import java.util.Locale;
 import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.adapters.IconsAdapter;
 import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
-import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
-import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
 
 public class IconsFragment extends Fragment {
 
@@ -62,7 +60,7 @@ public class IconsFragment extends Fragment {
             mAdapter.setIcons(iconsNames, iconsInts);
         }
 
-        iconsGrid.setAdapter(mPrefs.getAnimationsEnabled() ? animAdapter(mAdapter) : mAdapter);
+        iconsGrid.setAdapter(mAdapter);
         fastScroller.attachRecyclerView(iconsGrid);
         fastScroller.setHideDelay(500);
         fastScroller.setVisibility(View.VISIBLE);
@@ -115,13 +113,6 @@ public class IconsFragment extends Fragment {
             adapter.setIcons(filteredIconsList, filteredIconsInts);
             adapter.notifyDataSetChanged();
         }
-    }
-
-    private ScaleInAnimationAdapter animAdapter(IconsAdapter iconsAdapter) {
-        AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(iconsAdapter);
-        ScaleInAnimationAdapter scaleAdapter = new ScaleInAnimationAdapter(alphaAdapter);
-        scaleAdapter.setFirstOnly(true);
-        return scaleAdapter;
     }
 
 }

@@ -6,6 +6,7 @@
     <string name="dashboard_author_gplus_community">https://plus.google.com/communities/117748118619432374563</string>
     <string name="dashboard_author_github">https://github.com/jahirfiquitiva/IconShowcase</string>
     <string name="dashboard_bugs_report">https://github.com/jahirfiquitiva/IconShowcase/issues</string>
+    <string name="app_version">v %1$s</string>
 
     <string name="materialdialogs_author">Aidan Follestad</string>
     <string name="materialdialogs_web">https://github.com/afollestad/material-dialogs</string>
@@ -28,13 +29,6 @@
     <string name="glide_name">Glide</string>
     <string name="glide_web">https://github.com/bumptech/glide</string>
 
-    <string name="assent_web">https://github.com/afollestad/assent</string>
-    <string name="assent_name">Assent</string>
-
-    <string name="rv_animators_author">Wasabeef</string>
-    <string name="rv_animators_web">https://github.com/wasabeef/recyclerview-animators</string>
-    <string name="rv_animators_name">RecyclerView Animators</string>
-
     <string name="rv_fast_scroller_author">Tim Malseed</string>
     <string name="rv_fast_scroller_web">https://github.com/</string>
     <string name="rv_fast_scroller_name">RecyclerView FastScroller</string>
@@ -53,8 +47,9 @@
     <string name="patrick">Patrick J</string>
     <string name="james">James Fenn</string>
     <string name="alexandre">Alexandre Piveteau</string>
+    <string name="heinrich">Heinrich Reimer</string>
 
-    <string-array name="collaborators_names">
+    <string-array name="contributors_names">
         <item>@string/materialdialogs_author</item>
         <item>@string/materialdrawer_author</item>
         <item>@string/dani_mahardika</item>
@@ -62,9 +57,10 @@
         <item>@string/patrick</item>
         <item>@string/james</item>
         <item>@string/alexandre</item>
+        <item>@string/heinrich</item>
     </string-array>
 
-    <string-array name="collaborators_links">
+    <string-array name="contributors_links">
         <item>http://www.aidanfollestad.com/</item>
         <item>http://portfolio.mikepenz.com/</item>
         <item>https://plus.google.com/+DaniMahardhika/posts</item>
@@ -95,26 +91,22 @@
     </string-array>
 
     <string-array name="libs_names">
-        <item>@string/assent_name</item>
         <item>@string/materialdialogs_name</item>
         <item>@string/materialdrawer_name</item>
         <item>@string/materialize_name</item>
         <item>@string/fab_name</item>
         <item>@string/iconics_name</item>
         <item>@string/glide_name</item>
-        <item>@string/rv_animators_name</item>
         <item>@string/rv_fast_scroller_name</item>
     </string-array>
 
     <string-array name="libs_links">
-        <item>@string/assent_web</item>
         <item>@string/materialdialogs_web</item>
         <item>@string/materialdrawer_web</item>
         <item>@string/materialize_web</item>
         <item>@string/fab_web</item>
         <item>@string/iconics_web</item>
         <item>@string/glide_web</item>
-        <item>@string/rv_animators_web</item>
         <item>@string/rv_fast_scroller_web</item>
     </string-array>
 

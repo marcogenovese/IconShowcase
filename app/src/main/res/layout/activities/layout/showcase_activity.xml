@@ -31,11 +31,21 @@
                 android:id="@+id/toolbarHeader"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@android:color/black"
                 android:fitsSystemWindows="true"
                 android:scaleType="centerCrop"
                 android:src="@drawable/header"
+                android:visibility="invisible"
                 app:layout_collapseMode="parallax"
-                />
+                tools:ignore="ContentDescription"/>
+
+            <ProgressBar
+                android:id="@+id/headerProgressBar"
+                style="?progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/tool_bar_top_padding"/>
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -126,17 +136,18 @@
                 app:layout_scrollFlags="scroll|enterAlways|snap"
                 app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                 tools:ignore="UnusedAttribute">
+
                 <TextView
+                    android:id="@+id/title"
                     android:layout_width="fill_parent"
                     android:layout_height="?attr/actionBarSize"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text=""
-                    android:id="@+id/title"
-                    android:gravity="left|center_vertical"
-                    android:textColor="#fff"
                     android:layout_gravity="left|center_vertical"
                     android:layout_weight="1"
-                    android:textSize="20sp" />
+                    android:gravity="left|center_vertical"
+                    android:text=""
+                    android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
+                    android:textColor="#fff"
+                    android:textSize="20sp"/>
             </android.support.v7.widget.Toolbar>
 
         </android.support.design.widget.CollapsingToolbarLayout>

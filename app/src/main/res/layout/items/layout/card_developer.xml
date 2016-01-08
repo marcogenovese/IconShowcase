@@ -154,7 +154,7 @@
                 android:layout_marginStart="24dp"
                 android:paddingBottom="8dp"
                 android:paddingTop="8dp"
-                android:text="@string/collaborators"
+                android:text="@string/contributors"
                 android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
 
         </LinearLayout>

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="@string/pref_header_ui">
+    <PreferenceCategory
+        android:key="uiPreferences"
+        android:title="@string/pref_header_ui">
 
         <Preference
             android:key="themes"
@@ -21,6 +23,13 @@
             android:persistent="true"
             android:summary="@string/pref_summary_anims"
             android:title="@string/pref_title_anims"/>
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="wallHeader"
+            android:persistent="true"
+            android:summary="@string/pref_summary_wall_header"
+            android:title="@string/pref_title_wall_header"/>
 
     </PreferenceCategory>
 

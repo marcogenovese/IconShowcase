@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -20,6 +22,7 @@ import java.util.Locale;
 
 import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.activities.ShowcaseActivity;
+import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.apps.iconshowcase.utilities.Util;
 
 public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder> implements View.OnClickListener {
@@ -29,12 +32,14 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
     private ArrayList<String> iconsList = new ArrayList<>();
     private ArrayList<Integer> iconsArray = new ArrayList<>();
     private Bitmap bitmap;
+    private Preferences mPrefs;
 
     public IconsAdapter(Context context, ArrayList<String> iconsList, ArrayList<Integer> iconsArray) {
         this.context = context;
         this.iconsList = iconsList;
         this.iconsArray = iconsArray;
         this.inChangelog = false;
+        this.mPrefs = new Preferences(context);
     }
 
     public IconsAdapter(Context context, ArrayList<String> iconsList, ArrayList<Integer> iconsArray,
@@ -43,6 +48,7 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
         this.iconsList = iconsList;
         this.iconsArray = iconsArray;
         this.inChangelog = inChangelog;
+        this.mPrefs = new Preferences(context);
     }
 
     public void setIcons(ArrayList<String> iconsList, ArrayList<Integer> iconsArray) {
@@ -75,8 +81,10 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
     private int lastPosition = -1;
 
     private void setAnimation(View viewToAnimate, int position) {
-        if (position > lastPosition) {
+        Animation anim = AnimationUtils.loadAnimation(context, R.anim.scale_slide);
+        if (position > lastPosition && mPrefs.getAnimationsEnabled()) {
             viewToAnimate.setHasTransientState(true);
+            viewToAnimate.startAnimation(anim);
             lastPosition = position;
         }
     }

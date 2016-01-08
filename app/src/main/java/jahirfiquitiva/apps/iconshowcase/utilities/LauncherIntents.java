@@ -17,82 +17,82 @@ public class LauncherIntents {
 
     public LauncherIntents(Context context, String launcherName, View layout) {
         switch (launcherName) {
-            case "ActionLauncher":
+            case "Action":
                 ActionLauncher(context);
                 break;
-            case "AdwLauncher":
+            case "Adw":
                 AdwLauncher(context);
                 break;
-            case "AdwexLauncher":
+            case "Adwex":
                 AdwEXLauncher(context);
                 break;
-            case "ApexLauncher":
+            case "Apex":
                 ApexLauncher(context);
                 break;
-            case "AtomLauncher":
+            case "Atom":
                 AtomLauncher(context);
                 break;
-            case "AviateLauncher":
+            case "Aviate":
                 AviateLauncher(context);
                 break;
-            case "CmthemeengineLauncher":
+            case "Cmthemeengine":
                 CMThemeEngine(context);
                 break;
-            case "EpicLauncher":
+            case "Epic":
                 EpicLauncher(context);
                 break;
-            case "GoLauncher":
+            case "Go":
                 GoLauncher(context);
                 break;
-            case "HoloLauncher":
+            case "Holo":
                 HoloLauncher(context);
                 break;
-            case "HolohdLauncher":
+            case "Holohd":
                 HoloLauncherHD(context);
                 break;
-            case "InspireLauncher":
+            case "Inspire":
                 InspireLauncher(context);
                 break;
-            case "KKLauncher":
+            case "KK":
                 KkLauncher(context);
                 break;
-            case "LghomeLauncher":
+            case "Lghome":
                 LgHomeLauncher(context);
                 break;
-            case "LLauncher":
+            case "L":
                 LLauncher(context);
                 break;
-            case "LucidLauncher":
+            case "Lucid":
                 LucidLauncher(context);
                 break;
-            case "MiniLauncher":
+            case "Mini":
                 MiniLauncher(context);
                 break;
-            case "NemusLauncher":
+            case "Nemus":
                 NemusLauncher(context);
                 break;
-            case "NextLauncher":
+            case "Next":
                 NextLauncher(context);
                 break;
-            case "NineLauncher":
+            case "Nine":
                 NineLauncher(context, layout);
                 break;
-            case "NovaLauncher":
+            case "Nova":
                 NovaLauncher(context);
                 break;
-            case "SLauncher":
+            case "S":
                 SLauncher(context);
                 break;
-            case "SmartLauncher":
+            case "Smart":
                 SmartLauncher(context);
                 break;
-            case "SmartproLauncher":
+            case "Smartpro":
                 SmartLauncherPro(context);
                 break;
-            case "SoloLauncher":
+            case "Solo":
                 SoloLauncher(context);
                 break;
-            case "TsfLauncher":
+            case "Tsf":
                 TsfLauncher(context);
                 break;
             default:
@@ -306,6 +306,13 @@ public class LauncherIntents {
         tsf.setComponent(new ComponentName("com.tsf.shell", "com.tsf.shell.ShellActivity"));
         context.sendBroadcast(tsf);
         context.startActivity(tsfApply);
+    }
+
+    public void Unicon(Context context) {
+        Intent unicon = new Intent("android.intent.action.MAIN");
+        unicon.addCategory("android.intent.category.LAUNCHER");
+        unicon.setPackage("sg.ruqqq.IconThemer");
+        context.startActivity(unicon);
     }
 
 }

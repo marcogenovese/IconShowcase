@@ -58,7 +58,7 @@ public class CreditsFragment extends Fragment {
         setupBooleans();
 
         libsLinks = context.getResources().getStringArray(R.array.libs_links);
-        collaboratorsLinks = context.getResources().getStringArray(R.array.collaborators_links);
+        collaboratorsLinks = context.getResources().getStringArray(R.array.contributors_links);
         uiCollaboratorsLinks = context.getResources().getStringArray(R.array.ui_collaborators_links);
 
         if (layout != null) {
@@ -251,9 +251,9 @@ public class CreditsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 new MaterialDialog.Builder(context)
-                        .title(R.string.collaborators)
+                        .title(R.string.contributors)
                         .negativeText(R.string.close)
-                        .items(R.array.collaborators_names)
+                        .items(R.array.contributors_names)
                         .itemsCallback(new MaterialDialog.ListCallback() {
                             @Override
                             public void onSelection(MaterialDialog materialDialog, View view,

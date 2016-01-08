@@ -15,8 +15,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
+import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -43,15 +43,10 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
     private static ComponentName componentName;
     private static Preference WSL, data;
     private static String location, cacheSize;
-    private Context context;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        context = getActivity();
-
-        String settingsTitle = getResources().getString(R.string.title_settings);
 
         mPrefs = new Preferences(getActivity());
 
@@ -74,10 +69,25 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
 
         addPreferencesFromResource(R.xml.preferences);
 
+        PreferenceCategory uiCategory = (PreferenceCategory) findPreference("uiPreferences");
+        CheckBoxPreference wallHeaderCheck = (CheckBoxPreference) findPreference("wallHeader");
+        if (!ShowcaseActivity.WITH_USER_WALLPAPER_AS_TOOLBAR_HEADER) {
+            uiCategory.removePreference(wallHeaderCheck);
+        } else {
+            wallHeaderCheck.setChecked(mPrefs.getWallpaperAsToolbarHeaderEnabled());
+            wallHeaderCheck.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    mPrefs.setWallpaperAsToolbarHeaderEnabled(newValue.toString().equals("true"));
+                    return true;
+                }
+            });
+        }
+
+        /*
         FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
         if (fab != null) {
             fab.setVisibility(View.GONE);
-        }
+        } */
 
         WSL = findPreference("wallsSaveLocation");
         WSL.setSummary(getResources().getString(R.string.pref_summary_wsl, location));

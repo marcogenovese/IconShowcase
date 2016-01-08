@@ -172,8 +172,10 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
             MaterialDialog.SingleButtonCallback singleButtonCallback = new MaterialDialog.SingleButtonCallback() {
                 @Override
                 public void onClick(MaterialDialog dialog, DialogAction which) {
-                    if(which.equals(DialogAction.POSITIVE)) mPrefs.setRequestsDialogDismissed(false);
-                    else if(which.equals(DialogAction.NEUTRAL)) mPrefs.setRequestsDialogDismissed(true);
+                    if (which.equals(DialogAction.POSITIVE))
+                        mPrefs.setRequestsDialogDismissed(false);
+                    else if (which.equals(DialogAction.NEUTRAL))
+                        mPrefs.setRequestsDialogDismissed(true);
                 }
             };
             ISDialogs.showRequestAdviceDialog(dialogContext, singleButtonCallback);
