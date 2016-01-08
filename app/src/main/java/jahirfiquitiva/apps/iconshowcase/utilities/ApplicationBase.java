@@ -31,7 +31,7 @@ public class ApplicationBase extends Application {
     public void onCreate() {
         super.onCreate();
 
-        Fabric.with(this, new Crashlytics());
+        //Fabric.with(this, new Crashlytics());
 
         this.context = getApplicationContext();
 

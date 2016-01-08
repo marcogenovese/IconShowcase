@@ -100,6 +100,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     public static CustomCoordinatorLayout coordinatorLayout;
     public static FloatingActionButton fab;
     public static ImageView icon1, icon2, icon3, icon4;
+    public static TextView titleView;
 
     public static Drawer drawer;
     public AccountHeader drawerHeader;
@@ -125,6 +126,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         coordinatorLayout = (CustomCoordinatorLayout) findViewById(R.id.mainCoordinatorLayout);
         appbar = (AppBarLayout) findViewById(R.id.appbar);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        titleView = (TextView) findViewById(R.id.title);
         //actionbar = getSupportActionBar();
         //noinspection ConstantConditions
         //actionbar.setDisplayHomeAsUpEnabled(true);
@@ -224,6 +226,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                     .commit();
         }
 
+        titleView.setText(title);
     }
 
     @Override
@@ -247,7 +250,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         if (drawer != null)
             outState = drawer.saveInstanceState(outState);
         if (getSupportActionBar() != null) {
-            outState.putString("toolbarTitle", String.valueOf(getSupportActionBar().getTitle()));
+            outState.putString("toolbarTitle", String.valueOf(titleView.getText()));
         }
         outState.putInt("currentSection", currentItem);
         super.onSaveInstanceState(outState);
@@ -257,7 +260,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         if (getSupportActionBar() != null)
-            getSupportActionBar().setTitle(savedInstanceState.getString("toolbarTitle", "   "));
+            titleView.setText(savedInstanceState.getString("toolbarTitle", "   "));
         drawerItemClick(savedInstanceState.getInt("currentSection"));
     }
 

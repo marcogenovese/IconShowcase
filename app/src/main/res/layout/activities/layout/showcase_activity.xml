@@ -125,7 +125,19 @@
                 app:layout_collapseMode="pin"
                 app:layout_scrollFlags="scroll|enterAlways|snap"
                 app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                tools:ignore="UnusedAttribute"/>
+                tools:ignore="UnusedAttribute">
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text=""
+                    android:id="@+id/title"
+                    android:gravity="left|center_vertical"
+                    android:textColor="#fff"
+                    android:layout_gravity="left|center_vertical"
+                    android:layout_weight="1"
+                    android:textSize="20sp" />
+            </android.support.v7.widget.Toolbar>
 
         </android.support.design.widget.CollapsingToolbarLayout>
 
