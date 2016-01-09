@@ -143,12 +143,13 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         GridLayout iconsRow = (GridLayout) findViewById(R.id.iconsRow);
 
         setupIcons(icon1, icon2, icon3, icon4, this);
+        animateIcons(icon1, icon2, icon3, icon4, false);
 
         iconsRow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setupIcons(icon1, icon2, icon3, icon4, context);
-                animateIcons(icon1, icon2, icon3, icon4);
+                animateIcons(icon1, icon2, icon3, icon4, false);
             }
         });
 
@@ -209,6 +210,10 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             context.getSupportActionBar().setTitle(title);
 
         if (fragment.equals("Main")) {
+            icon1.setVisibility(View.INVISIBLE);
+            icon2.setVisibility(View.INVISIBLE);
+            icon3.setVisibility(View.INVISIBLE);
+            icon4.setVisibility(View.INVISIBLE);
             appbar.setExpanded(true, mPrefs.getAnimationsEnabled());
             coordinatorLayout.setScrollAllowed(true);
             setupFAB(fragment);
@@ -633,16 +638,18 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             icon3.setImageResource(finalIconsList.get(2));
             icon4.setImageResource(finalIconsList.get(3));
 
-            icon1.setVisibility(View.VISIBLE);
-            icon2.setVisibility(View.VISIBLE);
-            icon3.setVisibility(View.VISIBLE);
-            icon4.setVisibility(View.VISIBLE);
-
         }
     }
 
     public static void animateIcons(ImageView icon1, ImageView icon2,
-                                    ImageView icon3, ImageView icon4) {
+                                    ImageView icon3, ImageView icon4, boolean firstTime) {
+
+        if (firstTime) {
+            icon1.setVisibility(View.VISIBLE);
+            icon2.setVisibility(View.VISIBLE);
+            icon3.setVisibility(View.VISIBLE);
+            icon4.setVisibility(View.VISIBLE);
+        }
 
         if (mPrefs.getAnimationsEnabled()) {
             Animation anim = AnimationUtils.loadAnimation(context, R.anim.bounce);

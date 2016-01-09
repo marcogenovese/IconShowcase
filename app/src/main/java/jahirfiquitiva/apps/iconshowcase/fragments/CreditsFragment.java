@@ -32,10 +32,10 @@ public class CreditsFragment extends Fragment {
             iconDevGitHub, iconDevCommunity, donateIcon, bugIcon, collaboratorsIV, libsIcon, sherryIV;
     LinearLayout jahirL, authorFB, authorGPlus, authorTwitter, authorWebsite, authorYouTube,
             authorCommunity, authorPlayStore, devGitHub, libraries, uiCollaborators,
-            thanksSherry, collaboratorLayout, donateL, bugsL, communityL;
+            thanksSherry, contributorsLayout, donateL, bugsL, communityL;
     boolean withLinkToFacebook, withLinkToTwitter, withLinkToGPlus, withLinkToYouTube,
             withLinkToCommunity, withLinkToPlayStore, withLinkToWebsite;
-    String[] libsLinks, collaboratorsLinks, uiCollaboratorsLinks;
+    String[] libsLinks, contributorsLinks, uiCollaboratorsLinks;
 
     private void setupBooleans() {
         withLinkToFacebook = false;
@@ -58,7 +58,7 @@ public class CreditsFragment extends Fragment {
         setupBooleans();
 
         libsLinks = context.getResources().getStringArray(R.array.libs_links);
-        collaboratorsLinks = context.getResources().getStringArray(R.array.contributors_links);
+        contributorsLinks = context.getResources().getStringArray(R.array.contributors_links);
         uiCollaboratorsLinks = context.getResources().getStringArray(R.array.ui_collaborators_links);
 
         if (layout != null) {
@@ -246,8 +246,8 @@ public class CreditsFragment extends Fragment {
             }
         });
 
-        collaboratorLayout = (LinearLayout) layout.findViewById(R.id.collaborators);
-        collaboratorLayout.setOnClickListener(new View.OnClickListener() {
+        contributorsLayout = (LinearLayout) layout.findViewById(R.id.collaborators);
+        contributorsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new MaterialDialog.Builder(context)
@@ -258,7 +258,7 @@ public class CreditsFragment extends Fragment {
                             @Override
                             public void onSelection(MaterialDialog materialDialog, View view,
                                                     final int i, CharSequence charSequence) {
-                                Util.openLinkInChromeCustomTab(context, collaboratorsLinks[i]);
+                                Util.openLinkInChromeCustomTab(context, contributorsLinks[i]);
                             }
                         }).show();
             }

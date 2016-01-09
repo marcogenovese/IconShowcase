@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatButton;
 import android.view.InflateException;
@@ -56,8 +57,16 @@ public class MainFragment extends Fragment {
 
         }
 
-        ShowcaseActivity.animateIcons(ShowcaseActivity.icon1, ShowcaseActivity.icon2,
-                ShowcaseActivity.icon3, ShowcaseActivity.icon4);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                ShowcaseActivity.animateIcons(ShowcaseActivity.icon1, ShowcaseActivity.icon2,
+                        ShowcaseActivity.icon3, ShowcaseActivity.icon4, true);
+            }
+
+        }, 600);
 
         PlayStoreListing = getActivity().getPackageName();
 
