@@ -131,6 +131,8 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         //noinspection ConstantConditions
         //actionbar.setDisplayHomeAsUpEnabled(true);
 
+        setupToolbarHeader(this);
+
         fab = (FloatingActionButton) findViewById(R.id.fab);
 
         icon1 = (ImageView) findViewById(R.id.iconOne);
@@ -139,6 +141,9 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         icon4 = (ImageView) findViewById(R.id.iconFour);
 
         GridLayout iconsRow = (GridLayout) findViewById(R.id.iconsRow);
+
+        setupIcons(icon1, icon2, icon3, icon4, this);
+
         iconsRow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -628,16 +633,16 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             icon3.setImageResource(finalIconsList.get(2));
             icon4.setImageResource(finalIconsList.get(3));
 
+            icon1.setVisibility(View.VISIBLE);
+            icon2.setVisibility(View.VISIBLE);
+            icon3.setVisibility(View.VISIBLE);
+            icon4.setVisibility(View.VISIBLE);
+
         }
     }
 
     public static void animateIcons(ImageView icon1, ImageView icon2,
                                     ImageView icon3, ImageView icon4) {
-
-        icon1.setVisibility(View.VISIBLE);
-        icon2.setVisibility(View.VISIBLE);
-        icon3.setVisibility(View.VISIBLE);
-        icon4.setVisibility(View.VISIBLE);
 
         if (mPrefs.getAnimationsEnabled()) {
             Animation anim = AnimationUtils.loadAnimation(context, R.anim.bounce);

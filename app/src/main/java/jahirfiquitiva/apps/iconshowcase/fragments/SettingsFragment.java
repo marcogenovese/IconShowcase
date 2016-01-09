@@ -33,6 +33,7 @@ import jahirfiquitiva.apps.iconshowcase.dialogs.FolderChooserDialog;
 import jahirfiquitiva.apps.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.apps.iconshowcase.utilities.ThemeUtils;
+import jahirfiquitiva.apps.iconshowcase.utilities.Util;
 
 public class SettingsFragment extends PreferenceFragment implements PermissionUtils.OnPermissionResultListener {
 
@@ -78,16 +79,11 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
             wallHeaderCheck.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     mPrefs.setWallpaperAsToolbarHeaderEnabled(newValue.toString().equals("true"));
+                    ShowcaseActivity.setupToolbarHeader(getActivity());
                     return true;
                 }
             });
         }
-
-        /*
-        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
-        if (fab != null) {
-            fab.setVisibility(View.GONE);
-        } */
 
         WSL = findPreference("wallsSaveLocation");
         WSL.setSummary(getResources().getString(R.string.pref_summary_wsl, location));
@@ -104,8 +100,6 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
                         .itemsCallbackSingleChoice(selectedTheme[0], new MaterialDialog.ListCallbackSingleChoice() {
                             @Override
                             public boolean onSelection(MaterialDialog dialog, View view, int position, CharSequence text) {
-                                mPrefs.setSettingsModified(true);
-                                newSelectedTheme[0] = position;
                                 switch (position) {
                                     case 0:
                                         ThemeUtils.changeToTheme(getActivity(), ThemeUtils.LIGHT);
@@ -118,20 +112,17 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
                                         break;
                                 }
                                 editor.putInt("theme", position).apply();
+                                newSelectedTheme[0] = position;
+                                if (newSelectedTheme[0] != selectedTheme[0]) {
+                                    mPrefs.setSettingsModified(true);
+                                    ThemeUtils.restartActivity(getActivity());
+                                }
                                 return true;
                             }
                         })
                         .positiveText(android.R.string.ok)
-                        .positiveColorRes(R.color.accent)
-                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(MaterialDialog dialog, DialogAction which) {
-                                if (newSelectedTheme != selectedTheme) {
-                                    ThemeUtils.restartActivity(getActivity());
-                                }
-                            }
-                        })
                         .show();
+
                 return true;
             }
         });

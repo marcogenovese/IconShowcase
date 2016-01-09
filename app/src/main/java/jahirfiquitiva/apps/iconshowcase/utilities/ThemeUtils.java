@@ -27,45 +27,10 @@ public class ThemeUtils extends AppCompatActivity {
     public static boolean darkTheme;
     public static boolean coloredNavBar;
 
-    public static void changeToTheme(Activity activity, int mTheme) {
-        final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
-        final Editor editor = sp.edit();
-        editor.putInt("theme", mTheme).apply();
-    }
-
-    public static void restartActivity(Activity activity) {
-        activity.recreate();/*
-        activity.finish();
-        activity.startActivity(new Intent(activity, activity.getClass()));
-        activity.overridePendingTransition(0, 0);
-        */
-    }
-
-    public static void restartActivity(final Activity activity, MaterialDialog dialog) {
-        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                activity.recreate();/*
-                activity.finish();
-                activity.startActivity(new Intent(activity, activity.getClass()));
-                activity.overridePendingTransition(0, 0);
-                */
-            }
-        });
-    }
-
-    public static void changeNavBar(Activity activity, int mNavBar) {
-        final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
-        final Editor editor = sp.edit();
-        editor.putInt("navbar", mNavBar).apply();
-        restartActivity(activity);
-    }
-
     public static void onActivityCreateSetTheme(Activity activity) {
         final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
         int mTheme = sp.getInt("theme", 0);
         switch (mTheme) {
-            default:
             case LIGHT:
                 activity.setTheme(R.style.AppTheme);
                 darkTheme = false;
@@ -104,4 +69,31 @@ public class ThemeUtils extends AppCompatActivity {
                 break;
         }
     }
+
+    public static void changeNavBar(Activity activity, int mNavBar) {
+        final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
+        final Editor editor = sp.edit();
+        editor.putInt("navbar", mNavBar).apply();
+        restartActivity(activity);
+    }
+
+    public static void changeToTheme(Activity activity, int mTheme) {
+        final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
+        final Editor editor = sp.edit();
+        editor.putInt("theme", mTheme).apply();
+    }
+
+    public static void restartActivity(Activity activity) {
+        activity.recreate();
+    }
+
+    public static void restartActivity(final Activity activity, MaterialDialog dialog) {
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                activity.recreate();
+            }
+        });
+    }
+
 }

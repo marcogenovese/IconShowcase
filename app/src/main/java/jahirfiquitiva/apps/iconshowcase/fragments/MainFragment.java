@@ -56,11 +56,6 @@ public class MainFragment extends Fragment {
 
         }
 
-        ShowcaseActivity.setupToolbarHeader(getActivity());
-
-        ShowcaseActivity.setupIcons(ShowcaseActivity.icon1, ShowcaseActivity.icon2,
-                ShowcaseActivity.icon3, ShowcaseActivity.icon4, getActivity());
-
         ShowcaseActivity.animateIcons(ShowcaseActivity.icon1, ShowcaseActivity.icon2,
                 ShowcaseActivity.icon3, ShowcaseActivity.icon4);
 
