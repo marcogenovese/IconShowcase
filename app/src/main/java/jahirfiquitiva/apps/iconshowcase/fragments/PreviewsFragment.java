@@ -52,12 +52,25 @@ public class PreviewsFragment extends Fragment {
 
         }
 
+        return layout;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+
         mPager = (ViewPager) layout.findViewById(R.id.pager);
         mPager.setOffscreenPageLimit(6);
         mPager.setAdapter(new IconsPagerAdapter(getChildFragmentManager()));
         mLastSelected = 0;
 
-        mTabs = (TabLayout) layout.findViewById(R.id.tabs);
+        mTabs = (TabLayout) getActivity().findViewById(R.id.tabs);
+        mTabs.setVisibility(View.VISIBLE);
         mTabs.setupWithViewPager(mPager);
         mTabs.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -85,14 +98,57 @@ public class PreviewsFragment extends Fragment {
 
             }
         });
-
-        return layout;
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
+    public void onResume() {
+        super.onResume();
+        if (mPager != null) {
+            if (mTabs != null) {
+                mTabs.setupWithViewPager(mPager);
+            } else {
+                mTabs = (TabLayout) getActivity().findViewById(R.id.tabs);
+                mTabs.setVisibility(View.VISIBLE);
+                mTabs.setupWithViewPager(mPager);
+                mTabs.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                    @Override
+                    public void onTabSelected(TabLayout.Tab tab) {
+                        mPager.setCurrentItem(tab.getPosition());
+                        if (mSearchItem != null && mSearchItem.isActionViewExpanded())
+                            mSearchItem.collapseActionView();
+                        if (mLastSelected > -1) {
+                            IconsFragment frag = (IconsFragment) getChildFragmentManager().findFragmentByTag("page:" + mLastSelected);
+                            if (frag != null)
+                                frag.performSearch(null);
+                        }
+                        mLastSelected = tab.getPosition();
+                        if (getActivity() != null)
+                            getActivity().invalidateOptionsMenu();
+                    }
+
+                    @Override
+                    public void onTabUnselected(TabLayout.Tab tab) {
+
+                    }
+
+                    @Override
+                    public void onTabReselected(TabLayout.Tab tab) {
+
+                    }
+                });
+            }
+        } else {
+            mPager = (ViewPager) layout.findViewById(R.id.pager);
+            mPager.setOffscreenPageLimit(6);
+            mPager.setAdapter(new IconsPagerAdapter(getChildFragmentManager()));
+            mTabs.setupWithViewPager(mPager);
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroy();
+        mTabs.setVisibility(View.GONE);
     }
 
     @Override
@@ -124,6 +180,7 @@ public class PreviewsFragment extends Fragment {
             }
 
         });
+
         mSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
@@ -134,6 +191,7 @@ public class PreviewsFragment extends Fragment {
                 return false;
             }
         });
+
         mSearchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
     }
 

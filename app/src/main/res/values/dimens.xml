@@ -21,6 +21,7 @@
     <dimen name="fab_size_mini">40dp</dimen>
 
     <dimen name="toolbar_contentInset">72dp</dimen>
+    <dimen name="toolbar_elevation">4dp</dimen>
     <dimen name="tabs_contentInset">57dp</dimen>
 
     <dimen name="social_icons_columns">64dp</dimen>
