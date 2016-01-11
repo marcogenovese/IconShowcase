@@ -1,17 +1,19 @@
 package jahirfiquitiva.apps.iconshowcase.dialogs;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import com.afollestad.materialdialogs.MaterialDialog;
-
-import java.util.ArrayList;
-
 import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.adapters.ChangelogAdapter;
 import jahirfiquitiva.apps.iconshowcase.adapters.IconsAdapter;
 import jahirfiquitiva.apps.iconshowcase.models.IconsLists;
+import jahirfiquitiva.apps.iconshowcase.utilities.Util;
+import java.util.ArrayList;
+import java.util.concurrent.Callable;
 
 /**
  * This Class was created by Patrick J
@@ -32,25 +34,49 @@ public final class ISDialogs {
                 .show();
     }
 
-    public static void showIconsChangelogDialog(Context context) {
-        MaterialDialog dialog = new MaterialDialog.Builder(context)
-                .title(R.string.changelog)
-                .customView(R.layout.icons_changelog, false)
-                .positiveText(context.getResources().getString(R.string.close))
-                .build();
+    public static void showIconsChangelogDialog(final Context context) {
+      MaterialDialog dialog = new MaterialDialog.Builder(context).title(R.string.changelog)
+          .customView(R.layout.icons_changelog, false)
+          .positiveText(context.getResources().getString(R.string.close))
+        .build();
 
-        RecyclerView iconsGrid = (RecyclerView) dialog.getCustomView().findViewById(R.id.changelogRV);
-        iconsGrid.setHasFixedSize(true);
-        iconsGrid.setLayoutManager(new GridLayoutManager(context,
-                context.getResources().getInteger(R.integer.icon_grid_width)));
+      final RecyclerView iconsGrid = (RecyclerView) dialog.getCustomView().findViewById(R.id.changelogRV);
+      iconsGrid.setHasFixedSize(true);
+      final int grids = context.getResources().getInteger(R.integer.icon_grid_width);
+      iconsGrid.setLayoutManager(new GridLayoutManager(context, grids));
 
-        IconsAdapter adapter = new IconsAdapter(context,
-                (ArrayList<String>) IconsLists.getNewIconsL(), IconsLists.getNewIconsAL(), true);
-        iconsGrid.setAdapter(adapter);
+      final ArrayList<Integer> newIconsAL = IconsLists.getNewIconsAL();
+      final IconsAdapter adapter = new IconsAdapter(context, (ArrayList<String>) IconsLists.getNewIconsL(), newIconsAL, true);
+      iconsGrid.setAdapter(adapter);
 
-        dialog.show();
-
+      dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+        @Override public void onShow(DialogInterface dialog) {
+          //get total number of images
+          int numberOfImages = newIconsAL.size();
+          //calculate the total number of rows
+          final int rows = numberOfImages / grids + (numberOfImages%grids==0?0:1);
+          Util.triggerMethodOnceViewIsDisplayed(iconsGrid, new Callable<Void>() {
+            @Override public Void call() throws Exception {
+              try {
+                //get single image height
+                if (iconsGrid.getChildCount() > 0) {
+                  int imageHeight = iconsGrid.getChildAt(0).getHeight();
+                  iconsGrid.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                      imageHeight * rows + 2 * context.getResources().getDimensionPixelSize(R.dimen.grid_padding_vertical)));
+                } else {
+                  //show some sort of message in this case and calculate it's height + reset layoutParams
+                }
+              } catch (NullPointerException e) {
+                //do nothing
+              }
+            return null;
+            }
+          });
+        }
+      });
+      dialog.show();
     }
+
 
     public static void showLicenseSuccessDialog(Context context, MaterialDialog.SingleButtonCallback singleButtonCallback) {
         new MaterialDialog.Builder(context)

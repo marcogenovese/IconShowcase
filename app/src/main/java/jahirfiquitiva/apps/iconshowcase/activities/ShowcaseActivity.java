@@ -29,7 +29,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
@@ -42,11 +41,6 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialize.util.UIUtils;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-
 import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.dialogs.FolderChooserDialog;
 import jahirfiquitiva.apps.iconshowcase.dialogs.ISDialogs;
@@ -59,13 +53,16 @@ import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.apps.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.apps.iconshowcase.utilities.Util;
 import jahirfiquitiva.apps.iconshowcase.views.CustomCoordinatorLayout;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class ShowcaseActivity extends AppCompatActivity implements FolderChooserDialog.FolderSelectionCallback {
 
     private static final boolean WITH_LICENSE_CHECKER = false,
             WITH_INSTALLED_FROM_AMAZON = false,
             WITH_ZOOPER_SECTION = false,
-            WITH_ICONS_BASED_CHANGELOG = false,
+            WITH_ICONS_BASED_CHANGELOG = true,
             WITH_NORMAL_DRAWER_HEADER = false,
             WITH_MINI_DRAWER_HEADER = true;
 
