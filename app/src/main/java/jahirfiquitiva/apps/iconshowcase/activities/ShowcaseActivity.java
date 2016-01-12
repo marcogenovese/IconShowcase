@@ -174,24 +174,23 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
         runLicenseChecker();
 
-        if (savedInstanceState == null) {
-            if (iconPicker) {
-                drawerItemClick(2);
-                drawer.setSelection(2);
-            } else if (wallsPicker && mPrefs.areFeaturesEnabled()) {
-                drawerItemClick(3);
-                drawer.setSelection(3);
+        if (iconPicker) {
+            drawerItemClick(2);
+            drawer.setSelection(2);
+        } else if (wallsPicker && mPrefs.areFeaturesEnabled()) {
+            drawerItemClick(3);
+            drawer.setSelection(3);
+        } else {
+            if (mPrefs.getSettingsModified()) {
+                drawerItemClick(9);
+                drawer.setSelection(9);
             } else {
-                if (mPrefs.getSettingsModified()) {
-                    drawerItemClick(9);
-                    drawer.setSelection(9);
-                } else {
-                    currentItem = -1;
-                    drawerItemClick(1);
-                    drawer.setSelection(1);
-                }
+                currentItem = -1;
+                drawerItemClick(1);
+                drawer.setSelection(1);
             }
         }
+
     }
 
     public static void switchFragment(int itemId, String title, String fragment,
