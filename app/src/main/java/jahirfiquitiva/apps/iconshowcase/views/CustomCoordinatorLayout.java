@@ -3,6 +3,7 @@ package jahirfiquitiva.apps.iconshowcase.views;
 import android.content.Context;
 import android.support.design.widget.CoordinatorLayout;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 
 public class CustomCoordinatorLayout extends CoordinatorLayout {
@@ -20,6 +21,11 @@ public class CustomCoordinatorLayout extends CoordinatorLayout {
     @Override
     public boolean onStartNestedScroll(View child, View target, int nestedScrollAxes) {
         return allowScroll && super.onStartNestedScroll(child, target, nestedScrollAxes);
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        return allowScroll && super.onInterceptTouchEvent(ev);
     }
 
     public boolean isScrollAllowed() {
