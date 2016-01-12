@@ -213,7 +213,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             appbar.setExpanded(true, mPrefs.getAnimationsEnabled());
             coordinatorLayout.setScrollAllowed(true);
             setupFAB(fragment);
-        } else {
+        } else if (!fragment.equals("Previews")) {
             appbar.setExpanded(false, mPrefs.getAnimationsEnabled());
             coordinatorLayout.setScrollAllowed(false);
             setupFAB(fragment);

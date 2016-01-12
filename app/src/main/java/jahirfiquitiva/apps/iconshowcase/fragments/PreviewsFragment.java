@@ -2,6 +2,7 @@ package jahirfiquitiva.apps.iconshowcase.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -24,6 +25,7 @@ import java.util.Locale;
 import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.basefragments.FragmentStatePagerAdapter;
 import jahirfiquitiva.apps.iconshowcase.models.IconsLists;
+import jahirfiquitiva.apps.iconshowcase.views.CustomCoordinatorLayout;
 
 public class PreviewsFragment extends Fragment {
 
@@ -143,6 +145,15 @@ public class PreviewsFragment extends Fragment {
             mPager.setAdapter(new IconsPagerAdapter(getChildFragmentManager()));
             mTabs.setupWithViewPager(mPager);
         }
+
+        // Set custom offset for AppBar. This makes both toolbar and tabs visible
+        AppBarLayout appbar = (AppBarLayout) getActivity().findViewById(R.id.appbar);
+        CustomCoordinatorLayout.LayoutParams params = (CustomCoordinatorLayout.LayoutParams) appbar.getLayoutParams();
+        AppBarLayout.Behavior behavior = (AppBarLayout.Behavior) params.getBehavior();
+        behavior.setTopAndBottomOffset(-260);
+        // Lock CoordinatorLayout so the toolbar can't be scrolled away
+        CustomCoordinatorLayout coordinatorLayout = (CustomCoordinatorLayout) getActivity().findViewById(R.id.mainCoordinatorLayout);
+        coordinatorLayout.setScrollAllowed(false);
     }
 
     @Override
