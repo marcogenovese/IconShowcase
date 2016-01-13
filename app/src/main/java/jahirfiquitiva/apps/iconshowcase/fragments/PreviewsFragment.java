@@ -10,7 +10,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.SearchView;
-import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,11 +29,12 @@ import jahirfiquitiva.apps.iconshowcase.views.CustomCoordinatorLayout;
 public class PreviewsFragment extends Fragment {
 
     private MenuItem mSearchItem;
-    private int mLastSelected = -1;
+    private int mLastSelected = 0;
     private ViewPager mPager;
     private String[] tabs;
     private ViewGroup layout;
     public TabLayout mTabs;
+    private SearchView mSearchView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -48,11 +48,7 @@ public class PreviewsFragment extends Fragment {
                 parent.removeView(layout);
             }
         }
-        try {
-            layout = (ViewGroup) inflater.inflate(R.layout.icons_preview_section, container, false);
-        } catch (InflateException e) {
-
-        }
+        layout = (ViewGroup) inflater.inflate(R.layout.icons_preview_section, container, false);
 
         return layout;
     }
@@ -64,29 +60,13 @@ public class PreviewsFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-
-        mPager = (ViewPager) layout.findViewById(R.id.pager);
-        mPager.setOffscreenPageLimit(6);
-        mPager.setAdapter(new IconsPagerAdapter(getChildFragmentManager()));
-        mLastSelected = 0;
-        createTabs();
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
-        if (mPager != null) {
-            if (mTabs != null) {
-                mTabs.setupWithViewPager(mPager);
-            } else {
-                createTabs();
-            }
-        } else {
+        if (mPager == null)  {
             mPager = (ViewPager) layout.findViewById(R.id.pager);
             mPager.setOffscreenPageLimit(6);
             mPager.setAdapter(new IconsPagerAdapter(getChildFragmentManager()));
-            mTabs.setupWithViewPager(mPager);
+            createTabs();
         }
 
         // Set custom offset for AppBar. This makes both toolbar and tabs visible
@@ -107,23 +87,25 @@ public class PreviewsFragment extends Fragment {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 mPager.setCurrentItem(tab.getPosition());
-                if (mSearchItem != null && mSearchItem.isActionViewExpanded())
-                    mSearchItem.collapseActionView();
                 if (mLastSelected > -1) {
                     IconsFragment frag = (IconsFragment) getChildFragmentManager().findFragmentByTag("page:" + mLastSelected);
                     if (frag != null)
                         frag.performSearch(null);
                 }
                 mLastSelected = tab.getPosition();
+                if (mSearchView != null)
+                    mSearchView.setQueryHint(getString(R.string.search_x, tabs[mLastSelected]));
                 if (getActivity() != null)
                     getActivity().invalidateOptionsMenu();
             }
 
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {}
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
 
             @Override
-            public void onTabReselected(TabLayout.Tab tab) {}
+            public void onTabReselected(TabLayout.Tab tab) {
+            }
         });
     }
 
@@ -138,9 +120,8 @@ public class PreviewsFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.icons_menu, menu);
         mSearchItem = menu.findItem(R.id.search);
-        SearchView mSearchView = (SearchView) MenuItemCompat.getActionView(mSearchItem);
-        mSearchView.setQueryHint(mLastSelected > -1 ?
-                getString(R.string.search_x, tabs[mLastSelected]) : getString(R.string.search_icons));
+        mSearchView = (SearchView) MenuItemCompat.getActionView(mSearchItem);
+        mSearchView.setQueryHint(getString(R.string.search_x, tabs[mLastSelected]));
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
             @Override
@@ -218,6 +199,22 @@ public class PreviewsFragment extends Fragment {
         @Override
         public int getCount() {
             return tabs.length;
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState){
+        // Save current position
+        savedInstanceState.putInt("lastSelected", mLastSelected);
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null) {
+            // Restore last selected position
+            mLastSelected = savedInstanceState.getInt("lastSelected", 0);
         }
     }
 }
