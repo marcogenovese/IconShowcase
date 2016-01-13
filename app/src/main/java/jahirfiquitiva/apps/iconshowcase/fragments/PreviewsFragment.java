@@ -70,7 +70,36 @@ public class PreviewsFragment extends Fragment {
         mPager.setOffscreenPageLimit(6);
         mPager.setAdapter(new IconsPagerAdapter(getChildFragmentManager()));
         mLastSelected = 0;
+        createTabs();
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mPager != null) {
+            if (mTabs != null) {
+                mTabs.setupWithViewPager(mPager);
+            } else {
+                createTabs();
+            }
+        } else {
+            mPager = (ViewPager) layout.findViewById(R.id.pager);
+            mPager.setOffscreenPageLimit(6);
+            mPager.setAdapter(new IconsPagerAdapter(getChildFragmentManager()));
+            mTabs.setupWithViewPager(mPager);
+        }
+
+        // Set custom offset for AppBar. This makes both toolbar and tabs visible
+        AppBarLayout appbar = (AppBarLayout) getActivity().findViewById(R.id.appbar);
+        CustomCoordinatorLayout.LayoutParams params = (CustomCoordinatorLayout.LayoutParams) appbar.getLayoutParams();
+        AppBarLayout.Behavior behavior = (AppBarLayout.Behavior) params.getBehavior();
+        behavior.setTopAndBottomOffset(-260);
+        // Lock CoordinatorLayout so the toolbar can't be scrolled away
+        CustomCoordinatorLayout coordinatorLayout = (CustomCoordinatorLayout) getActivity().findViewById(R.id.mainCoordinatorLayout);
+        coordinatorLayout.setScrollAllowed(false);
+    }
+
+    private void createTabs() {
         mTabs = (TabLayout) getActivity().findViewById(R.id.tabs);
         mTabs.setVisibility(View.VISIBLE);
         mTabs.setupWithViewPager(mPager);
@@ -91,69 +120,11 @@ public class PreviewsFragment extends Fragment {
             }
 
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
+            public void onTabUnselected(TabLayout.Tab tab) {}
 
             @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
+            public void onTabReselected(TabLayout.Tab tab) {}
         });
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (mPager != null) {
-            if (mTabs != null) {
-                mTabs.setupWithViewPager(mPager);
-            } else {
-                mTabs = (TabLayout) getActivity().findViewById(R.id.tabs);
-                mTabs.setVisibility(View.VISIBLE);
-                mTabs.setupWithViewPager(mPager);
-                mTabs.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-                    @Override
-                    public void onTabSelected(TabLayout.Tab tab) {
-                        mPager.setCurrentItem(tab.getPosition());
-                        if (mSearchItem != null && mSearchItem.isActionViewExpanded())
-                            mSearchItem.collapseActionView();
-                        if (mLastSelected > -1) {
-                            IconsFragment frag = (IconsFragment) getChildFragmentManager().findFragmentByTag("page:" + mLastSelected);
-                            if (frag != null)
-                                frag.performSearch(null);
-                        }
-                        mLastSelected = tab.getPosition();
-                        if (getActivity() != null)
-                            getActivity().invalidateOptionsMenu();
-                    }
-
-                    @Override
-                    public void onTabUnselected(TabLayout.Tab tab) {
-
-                    }
-
-                    @Override
-                    public void onTabReselected(TabLayout.Tab tab) {
-
-                    }
-                });
-            }
-        } else {
-            mPager = (ViewPager) layout.findViewById(R.id.pager);
-            mPager.setOffscreenPageLimit(6);
-            mPager.setAdapter(new IconsPagerAdapter(getChildFragmentManager()));
-            mTabs.setupWithViewPager(mPager);
-        }
-
-        // Set custom offset for AppBar. This makes both toolbar and tabs visible
-        AppBarLayout appbar = (AppBarLayout) getActivity().findViewById(R.id.appbar);
-        CustomCoordinatorLayout.LayoutParams params = (CustomCoordinatorLayout.LayoutParams) appbar.getLayoutParams();
-        AppBarLayout.Behavior behavior = (AppBarLayout.Behavior) params.getBehavior();
-        behavior.setTopAndBottomOffset(-260);
-        // Lock CoordinatorLayout so the toolbar can't be scrolled away
-        CustomCoordinatorLayout coordinatorLayout = (CustomCoordinatorLayout) getActivity().findViewById(R.id.mainCoordinatorLayout);
-        coordinatorLayout.setScrollAllowed(false);
     }
 
     @Override
