@@ -2,6 +2,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:clipToPadding="false"
     android:layout_height="match_parent">
 
     <android.support.v7.widget.RecyclerView
@@ -9,12 +10,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
+        android:overScrollMode="ifContentScrolls"
         android:paddingBottom="@dimen/grid_padding_vertical"
         android:paddingTop="@dimen/grid_padding_vertical"/>
 
-    <com.pluscubed.recyclerfastscroll.RecyclerFastScroller
+    <jahirfiquitiva.apps.iconshowcase.views.FastScroller
         android:id="@+id/rvFastScroller"
-        android:layout_width="wrap_content"
+        android:layout_width="96dp"
         android:layout_height="match_parent"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"

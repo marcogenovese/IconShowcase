@@ -94,9 +94,6 @@ dependencies {
     //Material and FontAwesome icons fonts
     compile 'com.mikepenz:google-material-typeface:2.2.0.1@aar'
 
-    //RecyclerView fast scroller
-    compile 'com.github.pluscubed:recycler-fast-scroll:0.3.0@aar'
-
     //Glide Library - Image Loading Lib
     compile 'com.github.bumptech.glide:glide:3.6.1'
 

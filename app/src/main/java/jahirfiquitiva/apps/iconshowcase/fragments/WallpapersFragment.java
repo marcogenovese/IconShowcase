@@ -31,7 +31,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
-import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -54,6 +53,7 @@ import jahirfiquitiva.apps.iconshowcase.utilities.JSONParser;
 import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.apps.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.apps.iconshowcase.utilities.Util;
+import jahirfiquitiva.apps.iconshowcase.views.FastScroller;
 import jahirfiquitiva.apps.iconshowcase.views.GridSpacingItemDecoration;
 
 public class WallpapersFragment extends Fragment {
@@ -64,7 +64,7 @@ public class WallpapersFragment extends Fragment {
     private static RecyclerView mRecyclerView;
     public static SwipeRefreshLayout mSwipeRefreshLayout;
     private static GridLayoutManager gridLM;
-    private static RecyclerFastScroller fastScroller;
+    private static FastScroller fastScroller;
     private static Activity context;
     private static ViewGroup layout;
 
@@ -104,7 +104,7 @@ public class WallpapersFragment extends Fragment {
 
         mRecyclerView = (RecyclerView) layout.findViewById(R.id.wallsGrid);
         fastScroller =
-                (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
+                (FastScroller) layout.findViewById(R.id.rvFastScroller);
         fastScroller.setVisibility(View.GONE);
         mSwipeRefreshLayout = (SwipeRefreshLayout) layout.findViewById(R.id.swipeRefreshLayout);
 
@@ -119,8 +119,8 @@ public class WallpapersFragment extends Fragment {
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setVisibility(View.GONE);
 
-        fastScroller.setHideDelay(1000);
-        fastScroller.attachRecyclerView(mRecyclerView);
+        //fastScroller.setHideDelay(1000);
+        fastScroller.setRecyclerView(mRecyclerView);
 
         final int light = getResources().getColor(android.R.color.white);
         final int dark = getResources().getColor(R.color.card_dark_background);

@@ -9,14 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
-
 import java.util.ArrayList;
 import java.util.Locale;
 
 import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.adapters.IconsAdapter;
 import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
+import jahirfiquitiva.apps.iconshowcase.views.FastScroller;
 
 public class IconsFragment extends Fragment {
 
@@ -43,8 +42,8 @@ public class IconsFragment extends Fragment {
 
         }
 
-        RecyclerFastScroller fastScroller =
-                (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
+        FastScroller fastScroller =
+                (FastScroller) layout.findViewById(R.id.rvFastScroller);
         fastScroller.setVisibility(View.GONE);
 
         RecyclerView iconsGrid = (RecyclerView) layout.findViewById(R.id.iconsGrid);
@@ -61,8 +60,8 @@ public class IconsFragment extends Fragment {
         }
 
         iconsGrid.setAdapter(mAdapter);
-        fastScroller.attachRecyclerView(iconsGrid);
-        fastScroller.setHideDelay(500);
+        fastScroller.setRecyclerView(iconsGrid);
+        //fastScroller.setHideDelay(500);
         fastScroller.setVisibility(View.VISIBLE);
 
         return layout;

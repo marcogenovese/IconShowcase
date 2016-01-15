@@ -29,6 +29,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
@@ -41,6 +42,11 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialize.util.UIUtils;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+
 import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.dialogs.FolderChooserDialog;
 import jahirfiquitiva.apps.iconshowcase.dialogs.ISDialogs;
@@ -53,9 +59,6 @@ import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.apps.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.apps.iconshowcase.utilities.Util;
 import jahirfiquitiva.apps.iconshowcase.views.CustomCoordinatorLayout;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
 
 public class ShowcaseActivity extends AppCompatActivity implements FolderChooserDialog.FolderSelectionCallback {
 
@@ -202,9 +205,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             return;
         }
         currentItem = itemId;
-
-        if (context.getSupportActionBar() != null)
-            context.getSupportActionBar().setTitle(title);
 
         if (fragment.equals("Main")) {
             icon1.setVisibility(View.INVISIBLE);
@@ -522,6 +522,9 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                     })
                     .withSavedInstance(savedInstanceState)
                     .build();
+
+            ImageView miniHeader = (ImageView) drawer.getHeader().findViewById(R.id.mini_drawer_header);
+            miniHeader.getLayoutParams().height = UIUtils.getActionBarHeight(this) + UIUtils.getStatusBarHeight(this);
 
             TextView appVersion = (TextView) drawer.getHeader().findViewById(R.id.text_app_version);
             appVersion.setText(getString(R.string.app_version, Util.getAppVersion(this)));

@@ -30,7 +30,7 @@
     <string name="glide_web">https://github.com/bumptech/glide</string>
 
     <string name="rv_fast_scroller_author">Tim Malseed</string>
-    <string name="rv_fast_scroller_web">https://github.com/</string>
+    <string name="rv_fast_scroller_web">https://github.com/timusus/RecyclerView-FastScroll</string>
     <string name="rv_fast_scroller_name">RecyclerView FastScroller</string>
 
     <string name="rob_beane">Rob Beane</string>
@@ -48,6 +48,8 @@
     <string name="james">James Fenn</string>
     <string name="alexandre">Alexandre Piveteau</string>
     <string name="heinrich">Heinrich Reimer</string>
+    <string name="ahmed">Ahmed Rizwan</string>
+    <string name="joaquin">Joaquin Cuitiño</string>
 
     <string-array name="contributors_names">
         <item>@string/materialdialogs_author</item>
@@ -58,6 +60,8 @@
         <item>@string/james</item>
         <item>@string/alexandre</item>
         <item>@string/heinrich</item>
+        <item>@string/ahmed</item>
+        <item>@string/joaquin</item>
     </string-array>
 
     <string-array name="contributors_links">
@@ -69,6 +73,8 @@
         <item>https://plus.google.com/+JamesFennJAFFA2157/posts</item>
         <item>https://plus.google.com/+AlexandrePiveteau/posts</item>
         <item>https://plus.google.com/+HeinrichReimer/posts</item>
+        <item>https://plus.google.com/+AhmedRizwan/posts</item>
+        <item>https://plus.google.com/+JoaquinCuitiñoF/posts</item>
     </string-array>
 
     <string-array name="ui_collaborators_names">

@@ -3,28 +3,48 @@ package jahirfiquitiva.apps.iconshowcase.widgets;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.widget.RemoteViews;
 
-import java.util.HashMap;
-
 import jahirfiquitiva.apps.iconshowcase.R;
+import jahirfiquitiva.apps.iconshowcase.activities.StartClockAppActivity;
 import jahirfiquitiva.apps.iconshowcase.utilities.Util;
 
 public class ClockWidget extends AppWidgetProvider {
 
-    public HashMap<String, String> activityMap;
-    PackageManager packageManager;
-
     @Override
-    public void onReceive(Context context, Intent intent) {
-        packageManager = context.getPackageManager();
-        boolean foundApp = false;
+    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+        for (int i = 0; i < appWidgetIds.length; i++) {
+            int appWidgetId = appWidgetIds[i];
 
-        setupHashMap();
+            try {
+                Intent clockApp = new Intent("android.intent.action.MAIN");
+                clockApp.addCategory("android.intent.category.LAUNCHER");
+
+                clockApp.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                clockApp.setComponent(new ComponentName(context.getPackageName(),
+                        "StartClockAppActivity.class"));
+
+                RemoteViews views = new RemoteViews(context.getPackageName(),
+                        R.layout.clock_widget);
+
+                views.setOnClickPendingIntent(R.id.clockWidget,
+                        PendingIntent.getActivity(context, 0, clockApp, 0));
+
+                appWidgetManager.updateAppWidget(appWidgetId, views);
+
+            } catch (ActivityNotFoundException e) {
+                Util.showLog("App not found!");
+            }
+
+        }
+    }
+
+    public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
 
         if (AppWidgetManager.ACTION_APPWIDGET_UPDATE.equals(action)) {
@@ -32,45 +52,18 @@ public class ClockWidget extends AppWidgetProvider {
             RemoteViews views = new RemoteViews(context.getPackageName(),
                     R.layout.clock_widget);
 
-            Intent clockAppIntent = new Intent();
-            clockAppIntent.setAction(Intent.ACTION_MAIN);
-            clockAppIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+            Intent clockApp = new Intent(context, StartClockAppActivity.class);
 
-            for (String packageName : activityMap.keySet()) {
-                if (Util.isAppInstalled(context, packageName)) {
-                    ComponentName cn = new ComponentName(packageName, activityMap.get(packageName));
-                    clockAppIntent.setComponent(cn);
-                    clockAppIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    foundApp = true;
-                    break;
-                }
-            }
+            views.setOnClickPendingIntent(R.id.clockWidget,
+                    PendingIntent.getActivity(context, 0, clockApp, 0));
 
-            if (foundApp) {
-                views.setOnClickPendingIntent(R.id.clockWidget,
-                        PendingIntent.getActivity(context, 0, clockAppIntent, 0));
-            }
-
-            AppWidgetManager.getInstance(context)
-                    .updateAppWidget(intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS), views);
+            AppWidgetManager
+                    .getInstance(context)
+                    .updateAppWidget(
+                            clockApp.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS),
+                            views);
 
         }
-    }
 
-    private void setupHashMap() {
-        activityMap = new HashMap<>();
-        activityMap.put("com.android.alarmclock", "com.android.alarmclock.AlarmClock");
-        activityMap.put("com.android.deskclock", "com.android.deskclock.DeskClock");
-        activityMap.put("com.google.android.deskclock", "com.google.android.deskclock.DeskClock");
-        activityMap.put("com.google.android.deskclock", "com.android.deskclock.AlarmClock");
-        activityMap.put("com.sec.android.app.clockpackage", "com.sec.android.app.clockpackage.ClockPackage");
-        activityMap.put("com.sonyericsson.alarm", "com.sonyericsson.alarm.Alarm");
-        activityMap.put("com.sonyericsson.organizer", "com.sonyericsson.organizer.Organizer_WorldClock");
-        activityMap.put("com.asus.alarmclock", "com.asus.alarmclock.AlarmClock");
-        activityMap.put("com.asus.deskclock", "com.asus.deskclock.DeskClock");
-        activityMap.put("com.htc.android.worldclock", "com.htc.android.worldclock.WorldClockTabControl");
-        activityMap.put("com.motorola.blur.alarmclock", "com.motorola.blur.alarmclock.AlarmClock");
-        activityMap.put("com.lge.clock", "com.lge.clock.AlarmClockActivity");
     }
-
 }

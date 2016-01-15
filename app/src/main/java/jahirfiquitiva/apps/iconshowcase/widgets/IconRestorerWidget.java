@@ -8,19 +8,12 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
-import android.widget.Toast;
 
 import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.activities.LauncherIconRestorerActivity;
-import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
+import jahirfiquitiva.apps.iconshowcase.utilities.Util;
 
-/**
- * Created by JAHIR on 25/07/2015.
- */
 public class IconRestorerWidget extends AppWidgetProvider {
-
-    private static final String ACTION_CLICK = "ACTION_CLICK";
-    private static Preferences mPrefs;
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -35,33 +28,34 @@ public class IconRestorerWidget extends AppWidgetProvider {
 
                 intent.setComponent(new ComponentName(context.getPackageName(),
                         "LauncherIconRestorerActivity.class"));
-                PendingIntent pendingIntent = PendingIntent.getActivity(
-                        context, 0, intent, 0);
+
                 RemoteViews views = new RemoteViews(context.getPackageName(),
                         R.layout.icon_restorer_widget);
-                views.setOnClickPendingIntent(R.id.appWidget, pendingIntent);
+
+                views.setOnClickPendingIntent(R.id.appWidget, PendingIntent.getActivity(
+                        context, 0, intent, 0));
+
                 appWidgetManager.updateAppWidget(appWidgetId, views);
+
             } catch (ActivityNotFoundException e) {
-                Toast.makeText(context.getApplicationContext(),
-                        "There was a problem loading the application: ",
-                        Toast.LENGTH_SHORT).show();
+                Util.showLog("App not found!");
             }
 
         }
     }
 
     public void onReceive(Context context, Intent intent) {
-
         String action = intent.getAction();
 
         if (AppWidgetManager.ACTION_APPWIDGET_UPDATE.equals(action)) {
 
             RemoteViews views = new RemoteViews(context.getPackageName(),
                     R.layout.icon_restorer_widget);
+
             Intent restore = new Intent(context, LauncherIconRestorerActivity.class);
 
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, restore, 0);
-            views.setOnClickPendingIntent(R.id.appWidget, pendingIntent);
+            views.setOnClickPendingIntent(R.id.appWidget,
+                    PendingIntent.getActivity(context, 0, restore, 0));
 
             AppWidgetManager
                     .getInstance(context)

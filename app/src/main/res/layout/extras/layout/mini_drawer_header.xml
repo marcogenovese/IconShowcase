@@ -5,13 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
-    android:maxHeight="?actionBarSize"
-    android:minHeight="?actionBarSize"
     tools:ignore="UnusedAttribute">
 
     <ImageView
+        android:id="@+id/mini_drawer_header"
         android:layout_width="match_parent"
-        android:layout_height="81dp"
+        android:layout_height="?actionBarSize"
         android:scaleType="centerCrop"
         android:src="@drawable/drawer_header"
         tools:ignore="ContentDescription"/>

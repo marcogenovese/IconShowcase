@@ -6,14 +6,15 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.provider.MediaStore;
+import android.os.Environment;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.clans.fab.FloatingActionMenu;
 
-import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.lang.ref.WeakReference;
 
 import jahirfiquitiva.apps.iconshowcase.R;
@@ -95,20 +96,34 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
 
     public Uri getImageUri(Context inContext, Bitmap inImage) {
 
+        Preferences mPrefs = new Preferences(inContext);
+        File downloadsFolder;
+
         if (inImage.isRecycled()) {
             inImage = inImage.copy(Bitmap.Config.ARGB_8888, false);
         }
 
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-
-        try {
-            inImage.compress(Bitmap.CompressFormat.PNG, 100, bytes);
-        } catch (Exception e) {
-            Util.showLog(e.getLocalizedMessage());
+        if (mPrefs.getDownloadsFolder() != null) {
+            downloadsFolder = new File(mPrefs.getDownloadsFolder());
+        } else {
+            downloadsFolder = new File(context.getString(R.string.walls_save_location,
+                    Environment.getExternalStorageDirectory().getAbsolutePath()));
         }
 
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
-        return Uri.parse(path);
+        downloadsFolder.mkdirs();
+
+        File destFile = new File(downloadsFolder, wallName + ".png");
+
+        if (!destFile.exists()) {
+            try {
+                inImage.compress(Bitmap.CompressFormat.PNG, 100,
+                        new FileOutputStream(destFile));
+            } catch (final Exception e) {
+                Util.showLog(e.getLocalizedMessage());
+            }
+        }
+
+        return Uri.fromFile(destFile);
     }
 
 }

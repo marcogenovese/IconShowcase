@@ -20,7 +20,6 @@ import android.widget.ProgressBar;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 
 import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.adapters.RequestsAdapter;
@@ -29,11 +28,12 @@ import jahirfiquitiva.apps.iconshowcase.tasks.ZipFilesToRequest;
 import jahirfiquitiva.apps.iconshowcase.utilities.ApplicationBase;
 import jahirfiquitiva.apps.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
+import jahirfiquitiva.apps.iconshowcase.views.FastScroller;
 import jahirfiquitiva.apps.iconshowcase.views.GridSpacingItemDecoration;
 
 public class RequestsFragment extends Fragment implements PermissionUtils.OnPermissionResultListener {
 
-    public static RecyclerFastScroller fastScroller;
+    public static FastScroller fastScroller;
     public static ProgressBar progressBar;
     public static RecyclerView mRecyclerView;
     private static FloatingActionButton fab;
@@ -95,10 +95,10 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
         mRecyclerView = (RecyclerView) layout.findViewById(R.id.appsToRequestList);
         mRecyclerView.setLayoutManager(new GridLayoutManager(context, columnsNumber));
         mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(columnsNumber, gridSpacing, withBorders));
-        fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
+        fastScroller = (FastScroller) layout.findViewById(R.id.rvFastScroller);
         hideStuff();
 
-        fastScroller.setHideDelay(1000);
+        //fastScroller.setHideDelay(1000);
 
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -146,7 +146,7 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
         }
         mRecyclerView.setVisibility(View.VISIBLE);
         fastScroller.setVisibility(View.VISIBLE);
-        fastScroller.attachRecyclerView(mRecyclerView);
+        fastScroller.setRecyclerView(mRecyclerView);
         fab.show();
     }
 

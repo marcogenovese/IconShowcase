@@ -18,7 +18,6 @@ import android.widget.RelativeLayout;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,6 +30,7 @@ import jahirfiquitiva.apps.iconshowcase.sort.InstalledLauncherComparator;
 import jahirfiquitiva.apps.iconshowcase.utilities.LauncherIntents;
 import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.apps.iconshowcase.utilities.Util;
+import jahirfiquitiva.apps.iconshowcase.views.FastScroller;
 import jahirfiquitiva.apps.iconshowcase.views.GridSpacingItemDecoration;
 
 public class ApplyFragment extends Fragment {
@@ -42,7 +42,7 @@ public class ApplyFragment extends Fragment {
 
     private RelativeLayout applyLayout;
     private RecyclerView recyclerView;
-    private RecyclerFastScroller recyclerFastScroller;
+    private FastScroller FastScroller;
 
     private Preferences mPrefs;
 
@@ -79,7 +79,7 @@ public class ApplyFragment extends Fragment {
 
         applyLayout = (RelativeLayout) layout.findViewById(R.id.applyLayout);
         recyclerView = (RecyclerView) layout.findViewById(R.id.launchersList);
-        recyclerFastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
+        FastScroller = (FastScroller) layout.findViewById(R.id.rvFastScroller);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), columnsNumber));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(columnsNumber, gridSpacing, withBorders));
@@ -111,8 +111,8 @@ public class ApplyFragment extends Fragment {
                 });
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
-        recyclerFastScroller.setHideDelay(1000);
-        recyclerFastScroller.attachRecyclerView(recyclerView);
+        //FastScroller.setHideDelay(1000);
+        FastScroller.setRecyclerView(recyclerView);
 
         return layout;
     }

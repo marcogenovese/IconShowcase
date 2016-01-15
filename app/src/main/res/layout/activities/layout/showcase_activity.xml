@@ -131,7 +131,6 @@
                 android:transitionName="actionBar"
                 app:contentInsetStart="@dimen/toolbar_contentInset"
                 app:layout_collapseMode="pin"
-                app:layout_scrollFlags="enterAlways"
                 app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                 tools:ignore="UnusedAttribute">
 

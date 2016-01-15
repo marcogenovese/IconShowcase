@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2015. Jahir Fiquitiva. Android Developer. All rights reserved.
- */
-
 package jahirfiquitiva.apps.iconshowcase.fragments;
 
 import android.os.Bundle;
@@ -15,8 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +18,7 @@ import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.adapters.FAQsAdapter;
 import jahirfiquitiva.apps.iconshowcase.models.FAQsItem;
 import jahirfiquitiva.apps.iconshowcase.views.DividerItemDecoration;
+import jahirfiquitiva.apps.iconshowcase.views.FastScroller;
 
 public class FAQsFragment extends Fragment {
 
@@ -66,8 +61,8 @@ public class FAQsFragment extends Fragment {
         cardsSpacing = getResources().getDimensionPixelSize(R.dimen.dividers_height);
 
         RecyclerView faqsList = (RecyclerView) layout.findViewById(R.id.faqs_list);
-        RecyclerFastScroller fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
-        fastScroller.setHideDelay(1000);
+        FastScroller fastScroller = (FastScroller) layout.findViewById(R.id.rvFastScroller);
+        //fastScroller.setHideDelay(1000);
 
         FAQsAdapter faqsAdapter = new FAQsAdapter(faqs);
         faqsList.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -75,7 +70,7 @@ public class FAQsFragment extends Fragment {
         faqsList.addItemDecoration(new DividerItemDecoration(getActivity(), null, false, false));
         faqsList.setHasFixedSize(true);
         faqsList.setAdapter(faqsAdapter);
-        fastScroller.attachRecyclerView(faqsList);
+        fastScroller.setRecyclerView(faqsList);
 
         return layout;
     }

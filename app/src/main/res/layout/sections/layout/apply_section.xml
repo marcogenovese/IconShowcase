@@ -7,6 +7,7 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/launchersList"
+        android:overScrollMode="ifContentScrolls"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
@@ -14,9 +15,9 @@
         android:fitsSystemWindows="true"
         android:gravity="center"/>
 
-    <com.pluscubed.recyclerfastscroll.RecyclerFastScroller
+    <jahirfiquitiva.apps.iconshowcase.views.FastScroller
         android:id="@+id/rvFastScroller"
-        android:layout_width="wrap_content"
+        android:layout_width="96dp"
         android:layout_height="match_parent"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"

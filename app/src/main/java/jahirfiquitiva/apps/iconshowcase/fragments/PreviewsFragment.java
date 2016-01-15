@@ -62,7 +62,7 @@ public class PreviewsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (mPager == null)  {
+        if (mPager == null) {
             mPager = (ViewPager) layout.findViewById(R.id.pager);
             mPager.setOffscreenPageLimit(6);
             mPager.setAdapter(new IconsPagerAdapter(getChildFragmentManager()));
@@ -73,10 +73,11 @@ public class PreviewsFragment extends Fragment {
         AppBarLayout appbar = (AppBarLayout) getActivity().findViewById(R.id.appbar);
         CustomCoordinatorLayout.LayoutParams params = (CustomCoordinatorLayout.LayoutParams) appbar.getLayoutParams();
         AppBarLayout.Behavior behavior = (AppBarLayout.Behavior) params.getBehavior();
-        behavior.setTopAndBottomOffset(-260);
+        behavior.setTopAndBottomOffset(-256);
         // Lock CoordinatorLayout so the toolbar can't be scrolled away
         CustomCoordinatorLayout coordinatorLayout = (CustomCoordinatorLayout) getActivity().findViewById(R.id.mainCoordinatorLayout);
         coordinatorLayout.setScrollAllowed(false);
+
     }
 
     private void createTabs() {
@@ -203,7 +204,7 @@ public class PreviewsFragment extends Fragment {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle savedInstanceState){
+    public void onSaveInstanceState(Bundle savedInstanceState) {
         // Save current position
         savedInstanceState.putInt("lastSelected", mLastSelected);
         super.onSaveInstanceState(savedInstanceState);

@@ -140,7 +140,7 @@
     <string name="pref_header_launcher_icon">Launcher icon</string>
     <string name="pref_title_launcher_icon">Hide launcher icon</string>
 
-    <string name="pref_summary_launcher_icon">When checked, launcher icon will be hidden.</string>
+    <string name="pref_summary_launcher_icon">When checked, launcher icon will be hidden.\nWarning: app may close unexpectedly.</string>
 
     <string name="clearcache_dialog_title">@string/pref_title_cache</string>
     <string name="clearcache_dialog_content">Are you sure you want to delete app data, cache and

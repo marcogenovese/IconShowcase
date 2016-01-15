@@ -20,10 +20,12 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import jahirfiquitiva.apps.iconshowcase.R;
+
 import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.Callable;
+
+import jahirfiquitiva.apps.iconshowcase.R;
 
 /**
  * @author Aidan Follestad (afollestad)
@@ -189,13 +191,14 @@ public class Util {
     /***
      * Method gets executed once the view is displayed
      *
-     * @param view A view Object
+     * @param view   A view Object
      * @param method A callable method implementation
      */
     public static void triggerMethodOnceViewIsDisplayed(final View view, final Callable<Void> method) {
         final ViewTreeObserver observer = view.getViewTreeObserver();
         observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override public void onGlobalLayout() {
+            @Override
+            public void onGlobalLayout() {
                 if (Build.VERSION.SDK_INT < 16) {
                     view.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                 } else {

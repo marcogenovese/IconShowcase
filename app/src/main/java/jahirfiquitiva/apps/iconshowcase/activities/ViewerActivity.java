@@ -301,7 +301,7 @@ public class ViewerActivity extends AppCompatActivity {
         }).start();
     }
 
-    public void showApplyWallpaperDialog(final Activity context, final String wallurl) {
+    public void showApplyWallpaperDialog(final Activity context, final String wallUrl) {
         ISDialogs.showApplyWallpaperDialog(this,
                 new MaterialDialog.SingleButtonCallback() {
                     @Override
@@ -317,7 +317,7 @@ public class ViewerActivity extends AppCompatActivity {
                                 .cancelable(false)
                                 .show();
                         Glide.with(context)
-                                .load(wallurl)
+                                .load(wallUrl)
                                 .asBitmap()
                                 .into(new SimpleTarget<Bitmap>() {
                                     @Override
@@ -347,7 +347,7 @@ public class ViewerActivity extends AppCompatActivity {
                                 .cancelable(false)
                                 .show();
                         Glide.with(context)
-                                .load(wallurl)
+                                .load(wallUrl)
                                 .asBitmap()
                                 .into(new SimpleTarget<Bitmap>() {
                                     @Override
