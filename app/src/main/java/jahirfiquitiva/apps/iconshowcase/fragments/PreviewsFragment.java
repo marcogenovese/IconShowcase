@@ -10,6 +10,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -69,11 +71,22 @@ public class PreviewsFragment extends Fragment {
             createTabs();
         }
 
+        // Are you ready for the ugliest fix in the history of the universe?
         // Set custom offset for AppBar. This makes both toolbar and tabs visible
+
         AppBarLayout appbar = (AppBarLayout) getActivity().findViewById(R.id.appbar);
         CustomCoordinatorLayout.LayoutParams params = (CustomCoordinatorLayout.LayoutParams) appbar.getLayoutParams();
         AppBarLayout.Behavior behavior = (AppBarLayout.Behavior) params.getBehavior();
-        behavior.setTopAndBottomOffset(-256);
+        // Calculate ActionBar height
+        TypedValue tv = new TypedValue();
+        Integer toolbarCollapsedHeight = 0;
+        if (getActivity().getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
+            toolbarCollapsedHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
+        }
+        Integer toolbarExpandedHeight = getActivity().getResources().getDimensionPixelOffset(R.dimen.toolbar_expanded);
+        Integer statusbarHeight = (int) (24 * getActivity().getResources().getDisplayMetrics().density);
+        // Set toolbarCollapsedHeight as offset so tabs are shown
+        behavior.setTopAndBottomOffset( - toolbarExpandedHeight + statusbarHeight + (toolbarCollapsedHeight * 2));
         // Lock CoordinatorLayout so the toolbar can't be scrolled away
         CustomCoordinatorLayout coordinatorLayout = (CustomCoordinatorLayout) getActivity().findViewById(R.id.mainCoordinatorLayout);
         coordinatorLayout.setScrollAllowed(false);
@@ -94,19 +107,17 @@ public class PreviewsFragment extends Fragment {
                         frag.performSearch(null);
                 }
                 mLastSelected = tab.getPosition();
-                if (mSearchView != null)
+                if (mSearchView != null && getActivity() != null)
                     mSearchView.setQueryHint(getString(R.string.search_x, tabs[mLastSelected]));
                 if (getActivity() != null)
                     getActivity().invalidateOptionsMenu();
             }
 
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-            }
+            public void onTabUnselected(TabLayout.Tab tab) {}
 
             @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-            }
+            public void onTabReselected(TabLayout.Tab tab) {}
         });
     }
 

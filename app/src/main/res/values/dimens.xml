@@ -20,6 +20,7 @@
     <dimen name="fab_size_normal">56dp</dimen>
     <dimen name="fab_size_mini">40dp</dimen>
 
+    <dimen name="toolbar_expanded">256dp</dimen>
     <dimen name="toolbar_contentInset">72dp</dimen>
     <dimen name="toolbar_elevation">4dp</dimen>
     <dimen name="tabs_contentInset">57dp</dimen>
