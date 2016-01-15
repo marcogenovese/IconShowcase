@@ -301,16 +301,6 @@
                 android:resource="@xml/clock_widget_provider"/>
         </receiver>
 
-        <activity
-            android:name=".activities.StartClockAppActivity"
-            android:label="@string/app_name"
-            android:noHistory="true"
-            android:theme="@style/EmptyActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-            </intent-filter>
-        </activity>
-
     </application>
 
 </manifest>
