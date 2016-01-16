@@ -125,8 +125,7 @@ public class ArtSource extends RemoteMuzeiArtSource {
         protected Boolean doInBackground(Void... params) {
             Boolean worked;
             try {
-                mainObject = JSONParser
-                        .getJSONfromURL(getResources().getString(R.string.json_file_url));
+                mainObject = JSONParser.getJSONFromURL(getResources().getString(R.string.json_file_url));
                 if (mainObject != null) {
                     try {
                         wallInfo = mainObject.getJSONArray("wallpapers");

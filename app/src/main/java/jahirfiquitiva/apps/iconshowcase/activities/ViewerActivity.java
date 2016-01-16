@@ -14,6 +14,7 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -30,6 +31,8 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.materialize.MaterializeBuilder;
 
 import java.io.File;
@@ -155,10 +158,18 @@ public class ViewerActivity extends AppCompatActivity {
 
         Drawable d = new GlideBitmapDrawable(getResources(), bmp);
 
+        int light = ContextCompat.getColor(context, android.R.color.white);
+        int grey = ContextCompat.getColor(context, R.color.grey);
+        Drawable errorIcon = new IconicsDrawable(context)
+                .icon(GoogleMaterial.Icon.gmd_alert_triangle)
+                .color(ThemeUtils.darkTheme ? light : grey)
+                .sizeDp(48);
+
         if (mPrefs.getAnimationsEnabled()) {
             Glide.with(this)
                     .load(wallUrl)
                     .placeholder(d)
+                    .error(errorIcon)
                     .crossFade()
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .fitCenter()
@@ -167,6 +178,7 @@ public class ViewerActivity extends AppCompatActivity {
             Glide.with(this)
                     .load(wallUrl)
                     .placeholder(d)
+                    .error(errorIcon)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .fitCenter()
                     .into(mPhoto);

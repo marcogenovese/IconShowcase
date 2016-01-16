@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -293,8 +294,8 @@ public class CreditsFragment extends Fragment {
     }
 
     private void setupLayout(Context context) {
-        final int light = context.getResources().getColor(android.R.color.white);
-        final int dark = context.getResources().getColor(R.color.grey);
+        final int light = ContextCompat.getColor(context, android.R.color.white);
+        final int dark = ContextCompat.getColor(context, R.color.grey);
 
         person = new IconicsDrawable(context)
                 .icon(GoogleMaterial.Icon.gmd_account)

@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2015. Jahir Fiquitiva. Android Developer. All rights reserved.
- */
-
 package jahirfiquitiva.apps.iconshowcase.utilities;
 
 import android.content.ActivityNotFoundException;
@@ -94,6 +90,9 @@ public class LauncherIntents {
                 break;
             case "Tsf":
                 TsfLauncher(context);
+                break;
+            case "Uniconpro":
+                Unicon(context);
                 break;
             default:
                 Utils.showLog("No method for: " + launcherName);

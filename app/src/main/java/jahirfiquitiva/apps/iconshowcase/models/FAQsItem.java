@@ -1,8 +1,5 @@
 package jahirfiquitiva.apps.iconshowcase.models;
 
-/**
- * Created by JAHIR on 03/07/2015.
- */
 public class FAQsItem {
 
     private String question;

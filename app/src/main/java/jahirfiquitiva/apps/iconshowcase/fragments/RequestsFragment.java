@@ -93,7 +93,6 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
         progressBar = (ProgressBar) layout.findViewById(R.id.requestProgress);
         mRecyclerView = (FastScrollRecyclerView) layout.findViewById(R.id.appsToRequestList);
         mRecyclerView.setLayoutManager(new GridLayoutManager(context, columnsNumber));
-        //mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(columnsNumber, gridSpacing, withBorders));
         hideStuff();
 
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {

@@ -13,9 +13,6 @@ import java.util.List;
 import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.models.FAQsItem;
 
-/**
- * Created by JAHIR on 03/07/2015.
- */
 public class FAQsAdapter extends RecyclerView.Adapter<FAQsAdapter.FAQsHolder> {
 
     Context context;

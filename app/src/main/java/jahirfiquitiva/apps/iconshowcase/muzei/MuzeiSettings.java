@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -170,7 +171,7 @@ public class MuzeiSettings extends AppCompatActivity implements View.OnClickList
             if (pf.getName().equals("mSelectionDivider")) {
                 pf.setAccessible(true);
                 try {
-                    pf.set(picker, getResources().getDrawable(R.drawable.numberpicker));
+                    pf.set(picker, ContextCompat.getDrawable(this, R.drawable.numberpicker));
                 } catch (IllegalArgumentException | IllegalAccessException | Resources.NotFoundException e) {
                     Log.d("MuzeiSettings", Log.getStackTraceString(e));
                 }

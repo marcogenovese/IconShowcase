@@ -7,7 +7,6 @@
     <string name="theme_description">IconShowcase is a Material Design based Icon Pack dashboard template. Free and open source.</string>
 
     <string name="iconpack_author_name">Jahir Fiquitiva</string>
-    <string name="iconpack_author_link">http://www.jahirfiquitiva.net/</string>
     <string name="iconpack_author_gplus">https://www.google.com/+JahirFiquitivaJDev</string>
     <string name="iconpack_author_gplus_community">https://plus.google.com/communities/117748118619432374563</string>
     <string name="iconpack_author_fb">fb://profile/1123913326</string>
@@ -29,13 +28,9 @@
 
     <!-- Mail subjects for simple e-mail and requests e-mail -->
     <string name="email_subject">IconShowcase</string>
-    <string name="email_request_subject">IconShowcase - Icon Requests</string>
 
     <!-- This are the strings for the cards in the main screen -->
     <string name="welcome_title">Welcome to IconShowcase</string>
-
-    <string name="play_card_title">Jahir Fiquitiva on Google Play</string>
-    <string name="play_card_content">Check my other apps and download them.</string>
 
     <!-- Feature picture that appears above the description -->
     <string name="theme_feature">icons_banner</string>
@@ -47,7 +42,6 @@
     <!-- Strings for Wallpapers and Requests -->
     <string name="request_save_location">%1$s/IconShowcase/Requests/</string>
     <string name="walls_save_location">%1$s/IconShowcase/Wallpapers/</string>
-    <string name="walls_prefix_name">IconShowcase_</string>
 
     <!-- These things are needed for some launchers (Feel free to edit, though is not needed) -->
     <string name="theme_title">@string/app_name</string>

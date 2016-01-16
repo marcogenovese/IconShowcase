@@ -46,7 +46,12 @@ public class IconsFragment extends Fragment {
 
         FastScrollRecyclerView iconsGrid = (FastScrollRecyclerView) layout.findViewById(R.id.iconsGrid);
         RelativeLayout gridParent = (RelativeLayout) layout.findViewById(R.id.gridParent);
-        gridParent.setPadding(0, 0, 0, UIUtils.getNavigationBarHeight(getActivity()) - 4);
+
+        gridParent.setPadding(0, 0, 0,
+                getResources().getConfiguration().orientation == 1 ||
+                        getResources().getConfiguration().orientation == 2 ?
+                        UIUtils.getNavigationBarHeight(getActivity()) - 4 : 0);
+
         iconsGrid.setHasFixedSize(true);
         iconsGrid.setLayoutManager(new GridLayoutManager(getActivity(),
                 getResources().getInteger(R.integer.icon_grid_width)));

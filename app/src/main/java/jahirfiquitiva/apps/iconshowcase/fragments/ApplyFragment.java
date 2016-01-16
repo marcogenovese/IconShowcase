@@ -30,7 +30,6 @@ import jahirfiquitiva.apps.iconshowcase.utilities.LauncherIntents;
 import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.apps.iconshowcase.utilities.Utils;
 import jahirfiquitiva.apps.iconshowcase.views.FastScrollRecyclerView;
-import jahirfiquitiva.apps.iconshowcase.views.GridSpacingItemDecoration;
 
 public class ApplyFragment extends Fragment {
 
@@ -45,9 +44,6 @@ public class ApplyFragment extends Fragment {
     private Preferences mPrefs;
 
     private ViewGroup layout;
-
-    int columnsNumber, gridSpacing;
-    boolean withBorders;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -71,15 +67,11 @@ public class ApplyFragment extends Fragment {
 
         showApplyAdviceDialog(getActivity());
 
-        gridSpacing = getResources().getDimensionPixelSize(R.dimen.launchers_grid_padding);
-        columnsNumber = getResources().getInteger(R.integer.launchers_grid_width);
-        withBorders = true;
-
         applyLayout = (RelativeLayout) layout.findViewById(R.id.applyLayout);
         recyclerView = (FastScrollRecyclerView) layout.findViewById(R.id.launchersList);
-        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), columnsNumber));
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),
+                getResources().getInteger(R.integer.launchers_grid_width)));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(columnsNumber, gridSpacing, withBorders));
 
         // Splits all launcher  arrays by the | delimiter {name}|{package}
         final String[] launcherArray = getResources().getStringArray(R.array.launchers);
@@ -115,7 +107,7 @@ public class ApplyFragment extends Fragment {
     private void openLauncher(String name) {
         final String launcherName = Character.toUpperCase(name.charAt(0))
                 + name.substring(1).toLowerCase().replace(" ", "").replace("launcher", "");
-        LauncherIntents launcherIntent = new LauncherIntents(getActivity(), launcherName, applyLayout);
+        new LauncherIntents(getActivity(), launcherName, applyLayout);
     }
 
     private void openInPlayStore(final Launcher launcher) {

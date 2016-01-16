@@ -25,11 +25,9 @@
     <string name="fab_name">FloatingActionMenu</string>
     <string name="fab_web">https://github.com/Clans/FloatingActionButton/</string>
 
-    <string name="glide_author">Bumptech</string>
     <string name="glide_name">Glide</string>
     <string name="glide_web">https://github.com/bumptech/glide</string>
 
-    <string name="rv_fast_scroller_author">Tim Malseed</string>
     <string name="rv_fast_scroller_web">https://github.com/timusus/RecyclerView-FastScroll</string>
     <string name="rv_fast_scroller_name">RecyclerView FastScroller</string>
 
@@ -41,7 +39,6 @@
     <string name="sherry_link">https://plus.google.com/+SherrySabatine</string>
     <string name="patryk">Patryk Goworowski</string>
     <string name="josh_gray">Josh Gray</string>
-    <string name="sherry">Sherry Sabatine</string>
     <string name="kevin">Kevin Aguilar</string>
     <string name="anthony">Anthony Nguyen</string>
     <string name="patrick">Patrick J</string>

@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatButton;
 import android.view.InflateException;
 import android.view.LayoutInflater;
@@ -56,6 +57,8 @@ public class MainFragment extends Fragment {
         } catch (InflateException e) {
 
         }
+
+        ShowcaseActivity.setupToolbarHeader(getActivity());
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -118,8 +121,8 @@ public class MainFragment extends Fragment {
     }
 
     private void setupIcons(Context context) {
-        final int light = context.getResources().getColor(android.R.color.white);
-        final int dark = context.getResources().getColor(R.color.grey);
+        final int light = ContextCompat.getColor(context, android.R.color.white);
+        final int dark = ContextCompat.getColor(context, R.color.grey);
 
         iconsDrawable = new IconicsDrawable(context)
                 .icon(GoogleMaterial.Icon.gmd_android_alt)

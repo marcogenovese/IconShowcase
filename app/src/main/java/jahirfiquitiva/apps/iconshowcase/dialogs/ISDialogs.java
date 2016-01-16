@@ -79,6 +79,7 @@ public final class ISDialogs {
                 });
             }
         });
+
         dialog.show();
     }
 

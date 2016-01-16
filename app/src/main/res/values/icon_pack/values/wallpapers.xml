@@ -8,4 +8,5 @@
 
     <!-- This wallpaper will be used when a user applies the theme -->
     <string name="default_wallpaper">wallpaper_01</string>
+
 </resources>

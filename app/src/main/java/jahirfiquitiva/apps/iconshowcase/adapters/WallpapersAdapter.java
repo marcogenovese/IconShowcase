@@ -1,6 +1,8 @@
 package jahirfiquitiva.apps.iconshowcase.adapters;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.RecyclerView;
@@ -19,12 +21,15 @@ import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
 
 import java.util.ArrayList;
 
 import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.models.WallpaperItem;
 import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
+import jahirfiquitiva.apps.iconshowcase.utilities.ThemeUtils;
 
 public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.WallsHolder> {
 
@@ -42,10 +47,19 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
 
     private final ClickListener mCallback;
 
+    private Drawable errorIcon;
+
     public WallpapersAdapter(Context context, ClickListener callback) {
         this.context = context;
         this.mCallback = callback;
         this.mPrefs = new Preferences(context);
+
+        int light = ContextCompat.getColor(context, android.R.color.white);
+        int grey = ContextCompat.getColor(context, R.color.grey);
+        errorIcon = new IconicsDrawable(context)
+                .icon(GoogleMaterial.Icon.gmd_alert_triangle)
+                .color(ThemeUtils.darkTheme ? light : grey)
+                .sizeDp(48);
     }
 
     public void setData(ArrayList<WallpaperItem> wallsList) {
@@ -74,6 +88,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
             Glide.with(context)
                     .load(wallUrl)
                     .placeholder(R.drawable.placeholder)
+                    .error(errorIcon)
                     .crossFade()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(new GlideDrawableImageViewTarget(holder.wall) {

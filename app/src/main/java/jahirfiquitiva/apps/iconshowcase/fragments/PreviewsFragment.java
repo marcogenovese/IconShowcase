@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.SearchView;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -88,9 +89,12 @@ public class PreviewsFragment extends Fragment {
         Integer toolbarExpandedHeight = getActivity().getResources().getDimensionPixelOffset(R.dimen.toolbar_expanded);
         Integer statusbarHeight = UIUtils.getStatusBarHeight(getActivity());
 
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        float extra = (metrics.densityDpi * 0.05f);
+
         // Set toolbarCollapsedHeight as offset so tabs are shown
         //TODO: Calculate the right offset to make toolbar and tabs follow Material Design guidelines
-        behavior.setTopAndBottomOffset(-toolbarExpandedHeight + statusbarHeight + (toolbarCollapsedHeight * 2) - 16);
+        behavior.setTopAndBottomOffset(-toolbarExpandedHeight + statusbarHeight + (toolbarCollapsedHeight * 2) - Math.round(extra));
 
         // Lock CoordinatorLayout so the toolbar can't be scrolled away
         CustomCoordinatorLayout coordinatorLayout = (CustomCoordinatorLayout) getActivity().findViewById(R.id.mainCoordinatorLayout);

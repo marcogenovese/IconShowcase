@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -30,6 +31,8 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -61,14 +64,10 @@ public class WallpapersFragment extends Fragment {
     private static ImageView noConnection;
     private static FastScrollRecyclerView mRecyclerView;
     public static SwipeRefreshLayout mSwipeRefreshLayout;
-    private static GridLayoutManager gridLM;
     private static Activity context;
     private static ViewGroup layout;
 
     private static boolean worked;
-
-    int columnsNumber, gridSpacing;
-    boolean withBorders;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -78,7 +77,7 @@ public class WallpapersFragment extends Fragment {
 
         setHasOptionsMenu(true);
 
-        context = (Activity) getActivity();
+        context = getActivity();
 
         if (layout != null) {
             ViewGroup parent = (ViewGroup) layout.getParent();
@@ -94,7 +93,14 @@ public class WallpapersFragment extends Fragment {
 
         showWallsAdviceDialog(getActivity());
 
+        int light = ContextCompat.getColor(context, android.R.color.white);
+        int dark = ContextCompat.getColor(context, R.color.card_dark_background);
+
         noConnection = (ImageView) layout.findViewById(R.id.no_connected_icon);
+        noConnection.setImageDrawable(new IconicsDrawable(context)
+                .icon(GoogleMaterial.Icon.gmd_cloud_off)
+                .color(ThemeUtils.darkTheme ? light : dark)
+                .sizeDp(144));
 
         noConnection.setVisibility(View.GONE);
         mProgress = (ProgressBar) layout.findViewById(R.id.progress);
@@ -102,19 +108,11 @@ public class WallpapersFragment extends Fragment {
         mRecyclerView = (FastScrollRecyclerView) layout.findViewById(R.id.wallsGrid);
         mSwipeRefreshLayout = (SwipeRefreshLayout) layout.findViewById(R.id.swipeRefreshLayout);
 
-        gridSpacing = getResources().getDimensionPixelSize(R.dimen.lists_padding);
-        columnsNumber = getResources().getInteger(R.integer.wallpaper_grid_width);
-        withBorders = true;
-
-        gridLM = new GridLayoutManager(getActivity(), columnsNumber);
-
-        mRecyclerView.setLayoutManager(gridLM);
-        //mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(columnsNumber, gridSpacing, withBorders));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(),
+                getResources().getInteger(R.integer.wallpaper_grid_width)));
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setVisibility(View.GONE);
 
-        final int light = getResources().getColor(android.R.color.white);
-        final int dark = getResources().getColor(R.color.card_dark_background);
         mSwipeRefreshLayout.setProgressBackgroundColorSchemeColor(ThemeUtils.darkTheme ? dark : light);
 
         mSwipeRefreshLayout.setColorSchemeResources(
@@ -335,8 +333,7 @@ public class WallpapersFragment extends Fragment {
         @Override
         protected Void doInBackground(Void... params) {
 
-            JSONObject json = JSONParser
-                    .getJSONfromURL(Utils.getStringFromResources(taskContext, R.string.json_file_url));
+            JSONObject json = JSONParser.getJSONFromURL(Utils.getStringFromResources(taskContext, R.string.json_file_url));
 
             if (json != null) {
                 try {

@@ -6,6 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="@dimen/launchers_grid_padding"
     android:foreground="?selectableItemBackground"
     app:cardBackgroundColor="?attr/colorCardBackground"
     app:cardCornerRadius="@dimen/card_corner_radius"
@@ -21,9 +22,9 @@
             android:id="@+id/launcherIcon"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="?attr/colorCardBackground"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_launcher"
-            android:background="?attr/colorCardBackground"
             tools:ignore="ContentDescription, UnusedAttribute"/>
 
         <TextView

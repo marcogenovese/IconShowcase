@@ -6,8 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorCardBackground"
-    android:fillViewport="true"
     android:clipToPadding="false"
+    android:fillViewport="true"
     android:overScrollMode="ifContentScrolls"
     android:scrollbars="none"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -27,8 +27,9 @@
 
             <RelativeLayout
                 style="@style/HomeCardContent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:ignore="UselessParent">
 
                 <LinearLayout
                     android:id="@+id/content"

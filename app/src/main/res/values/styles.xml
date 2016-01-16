@@ -49,8 +49,8 @@
 
     <style name="AppTheme.Base.DarkLaunchScreen">
         <item name="android:windowBackground">@drawable/splash_screen_dark</item>
-        <item name="colorPrimaryDark">@color/splash_light_statusbar</item>
-        <item name="colorAccent">@color/splash_light_statusbar</item>
+        <item name="colorPrimaryDark">@color/splash_dark_statusbar</item>
+        <item name="colorAccent">@color/splash_dark_statusbar</item>
     </style>
 
     <style name="EmptyActivity" parent="@style/Theme.AppCompat.NoActionBar">

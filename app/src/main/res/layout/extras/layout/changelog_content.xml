@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:clickable="false"
@@ -18,7 +19,8 @@
         android:focusable="false"
         android:lineSpacingMultiplier="1.6"
         android:paddingTop="@dimen/dialog_margin_bottom"
-        android:textSize="@dimen/abc_text_size_medium_material"
+        tools:text="Title"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textStyle="bold"/>
 
     <TextView
@@ -29,6 +31,7 @@
         android:focusable="false"
         android:lineSpacingMultiplier="1.6"
         android:paddingTop="@dimen/dialog_margin_bottom"
-        android:textSize="@dimen/abc_text_size_medium_material"/>
+        tools:text="Content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
 
 </LinearLayout>

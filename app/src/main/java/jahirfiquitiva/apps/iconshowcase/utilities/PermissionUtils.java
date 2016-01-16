@@ -25,8 +25,7 @@ public final class PermissionUtils {
     public static boolean canAccessStorage(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             int res = context.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            if (res == PackageManager.PERMISSION_GRANTED) return true;
-            else return false;
+            return res == PackageManager.PERMISSION_GRANTED;
         }
         return true;
     }

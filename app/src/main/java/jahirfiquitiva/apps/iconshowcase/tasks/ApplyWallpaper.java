@@ -6,6 +6,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
+import android.util.DisplayMetrics;
 import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -18,9 +20,6 @@ import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.apps.iconshowcase.utilities.Utils;
 
-/**
- * Created by JAHIR on 09/07/2015.
- */
 public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
     private Context context;
     private Activity activity;
@@ -100,10 +99,13 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
     public Bitmap scaleToActualAspectRatio(Bitmap bitmap) {
         if (bitmap != null) {
             boolean flag = true;
-            int deviceWidth = activity.getWindowManager().getDefaultDisplay()
-                    .getWidth();
-            int deviceHeight = activity.getWindowManager().getDefaultDisplay()
-                    .getHeight();
+
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+            int deviceWidth = displayMetrics.widthPixels;
+            int deviceHeight = displayMetrics.heightPixels;
+
             int bitmapHeight = bitmap.getHeight();
             int bitmapWidth = bitmap.getWidth();
             if (bitmapWidth > deviceWidth) {
@@ -121,14 +123,13 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
             }
             if (flag) {
                 if (bitmapHeight > deviceHeight) {
-                    int scaledHeight = deviceHeight;
-                    int scaledWidth = (scaledHeight * bitmapWidth)
+                    int scaledWidth = (deviceHeight * bitmapWidth)
                             / bitmapHeight;
                     try {
                         if (scaledWidth > deviceWidth)
                             scaledWidth = deviceWidth;
                         bitmap = Bitmap.createScaledBitmap(bitmap, scaledWidth,
-                                scaledHeight, true);
+                                deviceHeight, true);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -148,7 +149,7 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
                         new ApplyWallpaper((Activity) context, dialog, resource, isPicker, layout, fab);
                     }
                 });
-        snackbar.setActionTextColor(context.getResources().getColor(R.color.accent));
+        snackbar.setActionTextColor(ContextCompat.getColor(context, R.color.accent));
         snackbar.show();
     }
 

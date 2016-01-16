@@ -199,6 +199,7 @@ public class Utils {
     public static void triggerMethodOnceViewIsDisplayed(final View view, final Callable<Void> method) {
         final ViewTreeObserver observer = view.getViewTreeObserver();
         observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @SuppressWarnings("deprecation")
             @Override
             public void onGlobalLayout() {
                 if (Build.VERSION.SDK_INT < 16) {

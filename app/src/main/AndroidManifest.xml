@@ -67,6 +67,14 @@
                 <category android:name="android.intent.category.MULTIWINDOW_LAUNCHER"/>
             </intent-filter>
 
+            <intent-filter tools:ignore="GoogleAppIndexingDeepLinkError">
+
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+            </intent-filter>
+
             <intent-filter>
                 <action android:name="android.intent.action.SET_WALLPAPER"/>
                 <category android:name="android.intent.category.DEFAULT"/>

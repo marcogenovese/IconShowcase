@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <dimen name="fullwidth_card_margin">0dp</dimen>
-    <dimen name="fullwidth_card_corner_radius">0dp</dimen>
-
-</resources>

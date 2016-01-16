@@ -37,9 +37,6 @@ import java.util.zip.ZipOutputStream;
 import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.models.RequestItem;
 
-/**
- * Created by JAHIR on 1/08/2015.
- */
 public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
 
     private MaterialDialog dialog;

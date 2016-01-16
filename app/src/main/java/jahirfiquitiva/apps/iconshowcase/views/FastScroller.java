@@ -33,7 +33,7 @@ import jahirfiquitiva.apps.iconshowcase.utilities.Utils;
 public class FastScroller {
 
     private FastScrollRecyclerView mRecyclerView;
-    private FastScrollPopUp mPopup;
+    //private FastScrollPopUp mPopup;
 
     private int mThumbHeight;
     private int mThumbWidth;
@@ -60,7 +60,7 @@ public class FastScroller {
         Resources resources = context.getResources();
 
         mRecyclerView = recyclerView;
-        mPopup = new FastScrollPopUp(resources, recyclerView);
+        //mPopup = new FastScrollPopUp(resources, recyclerView);
 
         mThumbHeight = Utils.toPixels(resources, 48);
         mThumbWidth = Utils.toPixels(resources, 8);
@@ -80,8 +80,8 @@ public class FastScroller {
 
             mTrack.setColor(trackColor);
             mThumb.setColor(thumbColor);
-            mPopup.setBgColor(popupBgColor);
-            mPopup.setTextColor(popupTextColor);
+            //mPopup.setBgColor(popupBgColor);
+            //mPopup.setTextColor(popupTextColor);
         } finally {
             typedArray.recycle();
         }
@@ -121,7 +121,7 @@ public class FastScroller {
                     mRecyclerView.getParent().requestDisallowInterceptTouchEvent(true);
                     mIsDragging = true;
                     mTouchOffset += (lastY - downY);
-                    mPopup.animateVisibility(true);
+                    //mPopup.animateVisibility(true);
                 }
                 if (mIsDragging) {
                     // Update the fastscroller section name at this touch position
@@ -129,9 +129,10 @@ public class FastScroller {
                     int bottom = mRecyclerView.getHeight() - mThumbHeight;
                     float boundedY = (float) Math.max(top, Math.min(bottom, y - mTouchOffset));
                     String sectionName = mRecyclerView.scrollToPositionAtProgress((boundedY - top) / (bottom - top));
-                    mPopup.setSectionName(sectionName);
-                    mPopup.animateVisibility(!sectionName.isEmpty());
-                    mRecyclerView.invalidate(mPopup.updateFastScrollerBounds(mRecyclerView, mThumbOffset.y));
+                    //mPopup.setSectionName(sectionName);
+                    //mPopup.animateVisibility(!sectionName.isEmpty());
+                    //mRecyclerView.invalidate(mPopup.updateFastScrollerBounds(mRecyclerView, mThumbOffset.y));
+                    mRecyclerView.invalidate();
                 }
                 break;
             case MotionEvent.ACTION_UP:
@@ -139,7 +140,7 @@ public class FastScroller {
                 mTouchOffset = 0;
                 if (mIsDragging) {
                     mIsDragging = false;
-                    mPopup.animateVisibility(false);
+                    //mPopup.animateVisibility(false);
                 }
                 break;
         }
@@ -158,7 +159,7 @@ public class FastScroller {
         canvas.drawRect(mThumbOffset.x, mThumbOffset.y, mThumbOffset.x + mRecyclerView.getWidth(), mThumbOffset.y + mThumbHeight, mThumb);
 
         //Popup
-        mPopup.draw(canvas);
+        //mPopup.draw(canvas);
     }
 
     /**

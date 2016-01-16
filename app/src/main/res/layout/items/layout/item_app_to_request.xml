@@ -40,7 +40,7 @@
             android:maxLines="1"
             android:padding="@dimen/lists_padding"
             android:singleLine="true"
-            android:textSize="@dimen/abc_text_size_large_material"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             tools:text="App Name And Some Other Texts Im testing right now"/>
 
         <CheckBox

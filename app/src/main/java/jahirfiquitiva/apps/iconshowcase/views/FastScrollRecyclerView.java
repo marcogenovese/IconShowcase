@@ -130,7 +130,7 @@ public class FastScrollRecyclerView extends RecyclerView implements RecyclerView
     /**
      * Returns the available scroll height:
      * AvailableScrollHeight = Total height of the all items - last page height
-     * <p>
+     * <p/>
      * This assumes that all rows are the same height.
      *
      * @param yOffset the offset from the top of the recycler view to start tracking.
@@ -138,8 +138,7 @@ public class FastScrollRecyclerView extends RecyclerView implements RecyclerView
     protected int getAvailableScrollHeight(int rowCount, int rowHeight, int yOffset) {
         int visibleHeight = getHeight();
         int scrollHeight = getPaddingTop() + yOffset + rowCount * rowHeight + getPaddingBottom();
-        int availableScrollHeight = scrollHeight - visibleHeight;
-        return availableScrollHeight;
+        return scrollHeight - visibleHeight;
     }
 
     /**
@@ -148,8 +147,7 @@ public class FastScrollRecyclerView extends RecyclerView implements RecyclerView
      */
     protected int getAvailableScrollBarHeight() {
         int visibleHeight = getHeight();
-        int availableScrollBarHeight = visibleHeight - mScrollbar.getHeight();
-        return availableScrollBarHeight;
+        return visibleHeight - mScrollbar.getHeight();
     }
 
     @Override

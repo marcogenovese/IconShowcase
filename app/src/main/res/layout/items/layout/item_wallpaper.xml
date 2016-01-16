@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="@dimen/lists_padding"
     android:foreground="?selectableItemBackground">
 
     <ProgressBar
@@ -38,7 +39,7 @@
             android:layout_gravity="bottom"
             android:gravity="center"
             android:textColor="#ffffffff"
-            android:textSize="@dimen/abc_text_size_medium_material"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             tools:text="Title"/>
 
         <TextView
@@ -48,7 +49,7 @@
             android:layout_gravity="bottom"
             android:gravity="center"
             android:textColor="#ffffffff"
-            android:textSize="@dimen/abc_text_size_small_material"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
             tools:text="Author"/>
 
     </LinearLayout>

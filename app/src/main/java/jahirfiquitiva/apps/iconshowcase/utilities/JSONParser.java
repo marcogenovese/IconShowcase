@@ -9,7 +9,7 @@ import org.json.JSONObject;
 
 public class JSONParser {
 
-    public static JSONObject getJSONfromURL(String url) {
+    public static JSONObject getJSONFromURL(String url) {
         try {
             HttpClient cl = new DefaultHttpClient();
             HttpResponse response = cl.execute(new HttpGet(url));

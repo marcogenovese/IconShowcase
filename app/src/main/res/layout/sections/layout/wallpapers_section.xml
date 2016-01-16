@@ -28,11 +28,12 @@
 
             <ImageView
                 android:id="@+id/no_connected_icon"
-                android:layout_width="match_parent"
+                android:scaleType="centerInside"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:src="@drawable/cloud_off"
-                android:tint="?attr/drawablesTintColor"/>
+                android:padding="@dimen/fab_size_normal"
+                tools:ignore="ContentDescription"/>
 
             <jahirfiquitiva.apps.iconshowcase.views.FastScrollRecyclerView
                 android:id="@+id/wallsGrid"

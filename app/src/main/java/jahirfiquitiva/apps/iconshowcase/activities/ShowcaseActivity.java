@@ -131,8 +131,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         //noinspection ConstantConditions
         //actionbar.setDisplayHomeAsUpEnabled(true);
 
-        setupToolbarHeader(this);
-
         fab = (FloatingActionButton) findViewById(R.id.fab);
 
         icon1 = (ImageView) findViewById(R.id.iconOne);

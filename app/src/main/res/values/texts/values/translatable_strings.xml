@@ -27,8 +27,7 @@
     <!-- Strings for Dropdown Menu & Requests -->
     <string name="share_title">Share via</string>
     <string name="send_title">Send via</string>
-    <string name="changelog">View the changelog</string>
-    <string name="iconsBasedChangelog">View the icons based changelog</string>
+    <string name="changelog">What\'s new?</string>
 
     <!-- LauncherNotInstalled Dialog -->
     <string name="lni_content">%1$s is currently not installed on your device.\nWould you like to
@@ -42,10 +41,8 @@
         do not rate the icon pack negatively for this reason. There is a workaround that you can try by
         yourself, but it requires the use of an external app. Would you like to download it?
     </string>
-    <string name="updateninelauncher">Please update Nine Launcher to the latest version.</string>
 
-    <string name="installed">Installed</string>
-    <string name="noninstalled">Not installed</string>
+    <string name="updateninelauncher">Please update Nine Launcher to the latest version.</string>
 
     <!-- Changelog Dialog Content -->
     <string name="changelog_dialog_title">Changelog</string>
@@ -53,9 +50,6 @@
 
     <!-- Wallpapers Stuff -->
     <string name="no_conn_title">No connection found</string>
-    <string name="no_conn_content">Wallpapers are stored on a cloud server. Please connect to the
-        internet and try again.
-    </string>
     <string name="download">Download</string>
     <string name="wallpaper_downloaded">Wallpaper was downloaded to: %1$s</string>
     <string name="wallpaper_by">By: %1$s</string>
