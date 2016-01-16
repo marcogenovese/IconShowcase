@@ -1,11 +1,13 @@
 package jahirfiquitiva.apps.iconshowcase.utilities;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -211,5 +213,11 @@ public class Util {
                 }
             }
         });
+    }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    public static boolean isRtl(Resources res) {
+        return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) &&
+                (res.getConfiguration().getLayoutDirection() == View.LAYOUT_DIRECTION_RTL);
     }
 }

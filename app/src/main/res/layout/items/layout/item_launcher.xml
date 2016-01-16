@@ -29,8 +29,6 @@
             style="@style/AboutContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/launchericon"
-            android:layout_gravity="bottom"
             android:ellipsize="end"
             android:gravity="center"
             android:maxLines="1"

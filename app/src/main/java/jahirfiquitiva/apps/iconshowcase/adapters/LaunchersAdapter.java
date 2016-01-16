@@ -1,6 +1,7 @@
 package jahirfiquitiva.apps.iconshowcase.adapters;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,8 +51,8 @@ public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.Laun
                 context.getPackageName()
         );
 
-        final int light = context.getResources().getColor(android.R.color.white);
-        final int grey = context.getResources().getColor(R.color.grey);
+        final int light = ContextCompat.getColor(context, android.R.color.white);
+        final int grey = ContextCompat.getColor(context, R.color.grey);
 
         holder.icon.setImageResource(iconResource);
         holder.launcherName.setText(launchers.get(position).name.toUpperCase(Locale.getDefault()));

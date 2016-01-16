@@ -9,7 +9,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,8 +29,8 @@ import jahirfiquitiva.apps.iconshowcase.sort.InstalledLauncherComparator;
 import jahirfiquitiva.apps.iconshowcase.utilities.LauncherIntents;
 import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.apps.iconshowcase.utilities.Util;
-import jahirfiquitiva.apps.iconshowcase.views.FastScroller;
 import jahirfiquitiva.apps.iconshowcase.views.GridSpacingItemDecoration;
+import jahirfiquitiva.apps.iconshowcase.views.SimpleFastScrollRecyclerView;
 
 public class ApplyFragment extends Fragment {
 
@@ -41,8 +40,7 @@ public class ApplyFragment extends Fragment {
     private final List<Launcher> launchers = new ArrayList<>();
 
     private RelativeLayout applyLayout;
-    private RecyclerView recyclerView;
-    private FastScroller FastScroller;
+    private SimpleFastScrollRecyclerView recyclerView;
 
     private Preferences mPrefs;
 
@@ -78,8 +76,7 @@ public class ApplyFragment extends Fragment {
         withBorders = true;
 
         applyLayout = (RelativeLayout) layout.findViewById(R.id.applyLayout);
-        recyclerView = (RecyclerView) layout.findViewById(R.id.launchersList);
-        FastScroller = (FastScroller) layout.findViewById(R.id.rvFastScroller);
+        recyclerView = (SimpleFastScrollRecyclerView) layout.findViewById(R.id.launchersList);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), columnsNumber));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(columnsNumber, gridSpacing, withBorders));
@@ -112,7 +109,6 @@ public class ApplyFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
         //FastScroller.setHideDelay(1000);
-        FastScroller.setRecyclerView(recyclerView);
 
         return layout;
     }
