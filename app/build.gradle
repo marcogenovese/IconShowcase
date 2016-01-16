@@ -103,6 +103,12 @@ dependencies {
     //Floating Action Menu
     compile 'com.github.clans:fab:1.6.2'
 
+    //Circular Image View
+    compile 'de.hdodenhof:circleimageview:2.0.0'
+
+    //RecyclerView Fast Scroller
+    compile 'com.github.pluscubed:recycler-fast-scroll:0.3.0@aar'
+
     //Crashlytics
     compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
         transitive = true;

@@ -1,0 +1,70 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:id="@+id/libraries_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:isScrollContainer="true"
+        android:overScrollMode="ifContentScrolls"
+        android:scrollbars="none"
+        tools:ignore="UselessParent">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/cards_margin"
+            app:cardBackgroundColor="?attr/colorCardBackground"
+            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardElevation="@dimen/cards_elevation">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/designerHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/credits_headers"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/header"
+                    tools:ignore="ContentDescription"/>
+
+                <android.support.v4.widget.CircleImageView
+                    android:id="@+id/designerPhoto"
+                    android:layout_width="@dimen/dialog_icon_size"
+                    android:layout_height="@dimen/dialog_icon_size"
+                    android:layout_marginBottom="@dimen/cards_margin"
+                    android:layout_marginLeft="@dimen/cards_margin"
+                    android:layout_marginRight="@dimen/cards_margin"
+                    android:layout_marginTop="@dimen/credits_photo"
+                    android:src="@drawable/jahir"
+                    app:civ_border_color="@android:color/transparent"
+                    app:civ_border_width="2dp"
+                    tools:ignore="ContentDescription"/>
+
+                <TextView
+                    style="@style/AboutContent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/designerPhoto"
+                    android:layout_marginTop="@dimen/cards_margin"
+                    android:layout_toEndOf="@id/designerPhoto"
+                    android:layout_toRightOf="@id/designerPhoto"
+                    android:text="@string/iconpack_author_name"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
+
+            </RelativeLayout>
+
+
+        </android.support.v7.widget.CardView>
+
+    </ScrollView>
+
+</RelativeLayout>

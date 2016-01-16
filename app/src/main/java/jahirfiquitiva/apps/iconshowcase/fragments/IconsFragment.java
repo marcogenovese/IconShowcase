@@ -3,6 +3,7 @@ package jahirfiquitiva.apps.iconshowcase.fragments;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.mikepenz.materialize.util.UIUtils;
+import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -17,7 +19,6 @@ import java.util.Locale;
 import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.adapters.IconsAdapter;
 import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
-import jahirfiquitiva.apps.iconshowcase.views.FastScrollRecyclerView;
 
 public class IconsFragment extends Fragment {
 
@@ -44,7 +45,7 @@ public class IconsFragment extends Fragment {
 
         }
 
-        FastScrollRecyclerView iconsGrid = (FastScrollRecyclerView) layout.findViewById(R.id.iconsGrid);
+        RecyclerView iconsGrid = (RecyclerView) layout.findViewById(R.id.iconsGrid);
         RelativeLayout gridParent = (RelativeLayout) layout.findViewById(R.id.gridParent);
 
         gridParent.setPadding(0, 0, 0,
@@ -65,6 +66,9 @@ public class IconsFragment extends Fragment {
         }
 
         iconsGrid.setAdapter(mAdapter);
+
+        RecyclerFastScroller fastScoller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
+        fastScoller.attachRecyclerView(iconsGrid);
 
         return layout;
     }

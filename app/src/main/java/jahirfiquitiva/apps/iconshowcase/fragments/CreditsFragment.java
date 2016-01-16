@@ -24,16 +24,19 @@ import jahirfiquitiva.apps.iconshowcase.utilities.Utils;
 
 public class CreditsFragment extends Fragment {
 
+    private boolean WITH_DEVELOPMENT_CREDITS = true;
+
     private Context context;
     private ViewGroup layout;
     Drawable person, facebook, gplus, twitter, website, youtube, community, playstore, github,
-            bugs, donate, collaboratorsIcon, libs, uiCollaboratorsIcon, sherryIcon;
+            bugs, donate, collaboratorsIcon, libs, uiCollaboratorsIcon, sherryIcon, email;
     ImageView iconAuthor, iconDev, iconAuthorFacebook, iconAuthorGPlus, iconAuthorCommunity,
             youtubeIcon, twitterIcon, playStoreIcon, iconAuthorWebsite, uiCollaboratorsIV,
-            iconDevGitHub, iconDevCommunity, donateIcon, bugIcon, collaboratorsIV, libsIcon, sherryIV;
+            iconDevGitHub, iconDevCommunity, donateIcon, bugIcon, collaboratorsIV, libsIcon,
+            sherryIV, emailIV;
     LinearLayout jahirL, authorFB, authorGPlus, authorTwitter, authorWebsite, authorYouTube,
             authorCommunity, authorPlayStore, devGitHub, libraries, uiCollaborators,
-            thanksSherry, contributorsLayout, donateL, bugsL, communityL;
+            thanksSherry, contributorsLayout, donateL, bugsL, communityL, emailL;
     boolean withLinkToFacebook, withLinkToTwitter, withLinkToGPlus, withLinkToYouTube,
             withLinkToCommunity, withLinkToPlayStore, withLinkToWebsite;
     String[] libsLinks, contributorsLinks, uiCollaboratorsLinks;
@@ -78,6 +81,11 @@ public class CreditsFragment extends Fragment {
         setupLayout(getActivity());
         setupExtraAuthorOptions();
 
+        if(!WITH_DEVELOPMENT_CREDITS){
+            View credits = layout.findViewById(R.id.dev_credits);
+            credits.setVisibility(View.GONE);
+        }
+
         return layout;
     }
 
@@ -99,6 +107,15 @@ public class CreditsFragment extends Fragment {
         sherryIV = (ImageView) layout.findViewById(R.id.icon_sherry);
         uiCollaboratorsIV = (ImageView) layout.findViewById(R.id.icon_ui_design);
         iconDevCommunity = (ImageView) layout.findViewById(R.id.icon_google_plus_community);
+        emailIV = (ImageView) layout.findViewById(R.id.icon_email);
+
+        emailL = (LinearLayout) layout.findViewById(R.id.send_email);
+        emailL.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Utils.sendEmailWithDeviceInfo(context);
+            }
+        });
 
         jahirL = (LinearLayout) layout.findViewById(R.id.devName);
         jahirL.setOnClickListener(new View.OnClickListener() {
@@ -372,6 +389,11 @@ public class CreditsFragment extends Fragment {
                 .color(ThemeUtils.darkTheme ? light : dark)
                 .sizeDp(24);
 
+        email = new IconicsDrawable(context)
+                .icon(GoogleMaterial.Icon.gmd_email)
+                .color(ThemeUtils.darkTheme ? light : dark)
+                .sizeDp(24);
+
         iconAuthor.setImageDrawable(person);
         iconDev.setImageDrawable(person);
         iconAuthorGPlus.setImageDrawable(gplus);
@@ -389,6 +411,7 @@ public class CreditsFragment extends Fragment {
         sherryIV.setImageDrawable(sherryIcon);
         uiCollaboratorsIV.setImageDrawable(uiCollaboratorsIcon);
         iconDevCommunity.setImageDrawable(community);
+        emailIV.setImageDrawable(email);
 
     }
 

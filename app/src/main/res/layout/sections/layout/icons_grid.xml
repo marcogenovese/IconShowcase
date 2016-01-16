@@ -2,19 +2,25 @@
 <RelativeLayout
     android:id="@+id/gridParent"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipToPadding="false">
 
-    <jahirfiquitiva.apps.iconshowcase.views.FastScrollRecyclerView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/iconsGrid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
         android:overScrollMode="ifContentScrolls"
         android:paddingBottom="@dimen/grid_padding_vertical"
-        android:paddingTop="@dimen/grid_padding_vertical"
-        app:fastScrollThumbColor="@color/accent"/>
+        android:paddingTop="@dimen/grid_padding_vertical"/>
+
+    <com.pluscubed.recyclerfastscroll.RecyclerFastScroller
+        android:id="@+id/rvFastScroller"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="end"/>
 
 </RelativeLayout>
