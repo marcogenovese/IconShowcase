@@ -19,7 +19,7 @@ import java.lang.ref.WeakReference;
 
 import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
-import jahirfiquitiva.apps.iconshowcase.utilities.Util;
+import jahirfiquitiva.apps.iconshowcase.utilities.Utils;
 
 public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
 
@@ -119,7 +119,7 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
                 inImage.compress(Bitmap.CompressFormat.PNG, 100,
                         new FileOutputStream(destFile));
             } catch (final Exception e) {
-                Util.showLog(e.getLocalizedMessage());
+                Utils.showLog(e.getLocalizedMessage());
             }
         }
 

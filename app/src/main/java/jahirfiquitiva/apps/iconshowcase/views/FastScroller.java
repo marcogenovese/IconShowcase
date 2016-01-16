@@ -16,373 +16,168 @@
 
 package jahirfiquitiva.apps.iconshowcase.views;
 
-import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Path;
-import android.graphics.RectF;
-import android.os.Build;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
+import android.graphics.Point;
+import android.graphics.Rect;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.MotionEvent;
-import android.view.View;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Interpolator;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.Transformation;
-import android.widget.LinearLayout;
-import android.widget.SectionIndexer;
+import android.view.ViewConfiguration;
 
 import jahirfiquitiva.apps.iconshowcase.R;
+import jahirfiquitiva.apps.iconshowcase.utilities.Utils;
 
-/**
- * A simple FastScroller for RecyclerViews.
- * <p/>
- * In xml, place this view as a sibling to your RecyclerView, and set the layout_gravity to 'end'.
- * Also, set the width to 96dp. Setting the width won't be necessary once this View is complete.
- * <p/>
- * Lookup your FastScroller and call {@link #setRecyclerView(RecyclerView)}
- * <p/>
- * Todo: Allow attributes for setting colors
- * Todo: Make the fast scroll movement smoother
- * Todo: Set the width from within the view, rather than via xml
- * Todo: Set the gravity to end from within the view.
- */
+public class FastScroller {
 
-public class FastScroller extends LinearLayout {
+    private FastScrollRecyclerView mRecyclerView;
+    private FastScrollPopUp mPopup;
 
-    private static final String TAG = "FastScroller";
+    private int mThumbHeight;
+    private int mThumbWidth;
 
-    private RecyclerView mRecyclerView;
-
-    private int mHeight;
-    private int mHandleHeight = toPixels(getContext(), 48);
-    private int mHandleWidth = toPixels(getContext(), 8);
-    private int mOverlayHeight = toPixels(getContext(), 88);
-    private int mOverlayWidth = mOverlayHeight;
-    private int cornerRadius = mOverlayHeight / 2;
-
-    private Paint mHandle;
+    private Paint mThumb;
     private Paint mTrack;
-    private Paint mOverlay;
-    private Paint mTextPaint;
 
-    private RectF mOverlayRect;
-    private Path mOverlayPath;
+    private Rect mTmpRect = new Rect();
+    private Rect mInvalidateRect = new Rect();
 
-    private float mHandleY;
-    private float mOverlayY;
+    // The inset is the buffer around which a point will still register as a click on the scrollbar
+    private int mTouchInset;
 
-    private boolean mShowOverlay;
+    // This is the offset from the top of the scrollbar when the user first starts touching.  To
+    // prevent jumping, this offset is applied as the user scrolls.
+    private int mTouchOffset;
+
+    public Point mThumbOffset = new Point(-1, -1);
+
     private boolean mIsDragging;
 
-    private String mText;
+    public FastScroller(Context context, FastScrollRecyclerView recyclerView, AttributeSet attrs) {
 
-    private AlphaAnimation mAlphaAnimation;
-    private Transformation mTransformation;
+        Resources resources = context.getResources();
 
-    private LinearInterpolator mInterpolator;
-    private ReverseInterpolator mReverseInterpolator;
+        mRecyclerView = recyclerView;
+        mPopup = new FastScrollPopUp(resources, recyclerView);
 
-    public FastScroller(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init(context);
-    }
+        mThumbHeight = Utils.toPixels(resources, 48);
+        mThumbWidth = Utils.toPixels(resources, 8);
 
-    public FastScroller(Context context) {
-        super(context);
-        init(context);
-    }
+        mTouchInset = Utils.toPixels(resources, -24);
 
-    public FastScroller(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init(context);
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public FastScroller(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        init(context);
-    }
-
-    private void init(Context context) {
-
-        setWillNotDraw(false);
-
-        //Set the handle color to the accent color
-        TypedValue typedValue = new TypedValue();
-        TypedArray a = context.obtainStyledAttributes(typedValue.data, new int[]{R.attr.colorAccent, android.R.attr.textColorPrimaryInverse});
-        int handleColor = a.getColor(0, 0);
-        int textColor = a.getColor(1, 0);
-        a.recycle();
-
-        mHandle = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mHandle.setColor(handleColor);
-
-        //Set the track to grey
-        int trackColor = 0xffdcdcdc;
-
+        mThumb = new Paint(Paint.ANTI_ALIAS_FLAG);
         mTrack = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mTrack.setColor(trackColor);
 
-        mOverlay = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mOverlay.setColor(handleColor);
-        mOverlay.setAlpha(0);
-        mOverlayPath = new Path();
-        mOverlayRect = new RectF();
+        TypedArray typedArray = context.getTheme().obtainStyledAttributes(
+                attrs, R.styleable.FastScrollRecyclerView, 0, 0);
+        try {
+            int trackColor = typedArray.getColor(R.styleable.FastScrollRecyclerView_fastScrollTrackColor, 0xffdcdcdc);
+            int thumbColor = typedArray.getColor(R.styleable.FastScrollRecyclerView_fastScrollThumbColor, 0xff00b0ff);
+            int popupBgColor = typedArray.getColor(R.styleable.FastScrollRecyclerView_fastScrollPopupBgColor, 0xff000000);
+            int popupTextColor = typedArray.getColor(R.styleable.FastScrollRecyclerView_fastScrollPopupTextColor, resources.getColor(android.R.color.primary_text_dark));
 
-        mTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mTextPaint.setColor(textColor);
-        mTextPaint.setAlpha(0);
-        //Todo: Set typeface from attributes or create method setTypeface()
-        //mTextPaint.setTypeface(TypefaceManager.getInstance().getTypeface(TypefaceManager.SANS_SERIF));
-        mTextPaint.setTextSize(toPixels(getContext(), 48));
-        mTextPaint.setTextAlign(Paint.Align.CENTER);
-
-        mAlphaAnimation = new AlphaAnimation(0f, 1f);
-        mTransformation = new Transformation();
-        mAlphaAnimation.setDuration(200);
-
-        mInterpolator = new LinearInterpolator();
-        mReverseInterpolator = new ReverseInterpolator();
-
-        setOnTouchListener(new OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-
-                //If the touch occured outside of 3 handle widths from the edge, ignore it
-                if (!mIsDragging) {
-                    if (event.getX() < getWidth() - mHandleWidth * 3) {
-                        return false;
-                    }
-                }
-                //The user has initiated a touch/drag event. Start moving the list accordingly, and
-                //show the overlay
-                if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE) {
-                    mIsDragging = true;
-                    setPosition(event.getY());
-                    toggleOverlay(true);
-                    setRecyclerViewPosition(event.getY());
-                    return true;
-                } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    //The user has finished dragging, hide the overlay
-                    mIsDragging = false;
-                    toggleOverlay(false);
-                    return true;
-                }
-                return false;
-            }
-        });
-    }
-
-    /**
-     * Pass in a recyclerView to interact with the FastScroller
-     *
-     * @param recyclerView the {@link RecyclerView}
-     */
-    public void setRecyclerView(RecyclerView recyclerView) {
-        this.mRecyclerView = recyclerView;
-        mRecyclerView.addOnScrollListener(mOnScrollListener);
-    }
-
-    /**
-     * Shows/hides the overlay, with a fade animation
-     *
-     * @param show true to show the overlay, false otherwise.
-     */
-    private void toggleOverlay(boolean show) {
-        if (mShowOverlay != show) {
-            mShowOverlay = show;
-            //If the overlay is already showing/hiding when we want to show/hide it, don't do anything
-            if ((mShowOverlay && mOverlay.getAlpha() == 255) || (!mShowOverlay && mOverlay.getAlpha() == 0)) {
-                return;
-            }
-            //If an animation is in place, cancel it
-            if (mAlphaAnimation.hasStarted() && !mAlphaAnimation.hasEnded()) {
-                mAlphaAnimation.cancel();
-            }
-            //Start the animation
-            mAlphaAnimation.setInterpolator(show ? mInterpolator : mReverseInterpolator);
-            mAlphaAnimation.start();
-            mAlphaAnimation.getTransformation(System.currentTimeMillis(), mTransformation);
-            invalidate();
+            mTrack.setColor(trackColor);
+            mThumb.setColor(thumbColor);
+            mPopup.setBgColor(popupBgColor);
+            mPopup.setTextColor(popupTextColor);
+        } finally {
+            typedArray.recycle();
         }
     }
 
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-        mHeight = h;
+    public int getHeight() {
+        return mThumbHeight;
     }
 
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
+    public int getWidth() {
+        return mThumbWidth;
+    }
+
+    public boolean isDragging() {
+        return mIsDragging;
+    }
+
+    /**
+     * Handles the touch event and determines whether to show the fast scroller (or updates it if
+     * it is already showing).
+     */
+    public void handleTouchEvent(MotionEvent ev, int downX, int downY, int lastY) {
+        ViewConfiguration config = ViewConfiguration.get(mRecyclerView.getContext());
+
+        int action = ev.getAction();
+        int y = (int) ev.getY();
+        switch (action) {
+            case MotionEvent.ACTION_DOWN:
+                if (isNearPoint(downX, downY)) {
+                    mTouchOffset = downY - mThumbOffset.y;
+                }
+                break;
+            case MotionEvent.ACTION_MOVE:
+                // Check if we should start scrolling
+                if (!mIsDragging && isNearPoint(downX, downY) &&
+                        Math.abs(y - downY) > config.getScaledTouchSlop()) {
+                    mRecyclerView.getParent().requestDisallowInterceptTouchEvent(true);
+                    mIsDragging = true;
+                    mTouchOffset += (lastY - downY);
+                    mPopup.animateVisibility(true);
+                }
+                if (mIsDragging) {
+                    // Update the fastscroller section name at this touch position
+                    int top = 0;
+                    int bottom = mRecyclerView.getHeight() - mThumbHeight;
+                    float boundedY = (float) Math.max(top, Math.min(bottom, y - mTouchOffset));
+                    String sectionName = mRecyclerView.scrollToPositionAtProgress((boundedY - top) / (bottom - top));
+                    mPopup.setSectionName(sectionName);
+                    mPopup.animateVisibility(!sectionName.isEmpty());
+                    mRecyclerView.invalidate(mPopup.updateFastScrollerBounds(mRecyclerView, mThumbOffset.y));
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                mTouchOffset = 0;
+                if (mIsDragging) {
+                    mIsDragging = false;
+                    mPopup.animateVisibility(false);
+                }
+                break;
+        }
+    }
+
+    public void draw(Canvas canvas) {
+
+        if (mThumbOffset.x < 0 || mThumbOffset.y < 0) {
+            return;
+        }
 
         //Background
-        canvas.drawRect(canvas.getWidth() - mHandleWidth, mHandleHeight / 2, canvas.getWidth(), canvas.getHeight() - mHandleHeight / 2, mTrack);
+        canvas.drawRect(mThumbOffset.x, mThumbHeight / 2, mThumbOffset.x + mThumbWidth, mRecyclerView.getHeight() - mThumbHeight / 2, mTrack);
 
         //Handle
-        canvas.drawRect(canvas.getWidth() - mHandleWidth, mHandleY, canvas.getWidth(), mHandleY + mHandleHeight, mHandle);
+        canvas.drawRect(mThumbOffset.x, mThumbOffset.y, mThumbOffset.x + mRecyclerView.getWidth(), mThumbOffset.y + mThumbHeight, mThumb);
 
-        //Overlay
-        if (!TextUtils.isEmpty(mText)) {
-            mOverlayRect.set(canvas.getWidth() - mOverlayWidth - mHandleWidth, (int) mOverlayY, canvas.getWidth() - mHandleWidth, mOverlayY + mOverlayHeight);
-            mOverlayPath.reset();
-            mOverlayPath.addRoundRect(mOverlayRect, new float[]{
-                    cornerRadius, cornerRadius,
-                    cornerRadius, cornerRadius,
-                    0, 0,
-                    cornerRadius, cornerRadius
-            }, Path.Direction.CW);
-            canvas.drawPath(mOverlayPath, mOverlay);
-
-            //Text
-            canvas.drawText(mText, mOverlayWidth / 2, mOverlayY + mOverlayHeight / 2 - ((mTextPaint.descent() + mTextPaint.ascent()) / 2), mTextPaint);
-        }
-
-        if (mAlphaAnimation.hasStarted() && !mAlphaAnimation.hasEnded()) {
-            mAlphaAnimation.getTransformation(System.currentTimeMillis(), mTransformation);
-            //Keep drawing until we are done
-            mOverlay.setAlpha((int) (255 * mTransformation.getAlpha()));
-            mTextPaint.setAlpha((int) (255 * mTransformation.getAlpha()));
-            invalidate();
-        }
+        //Popup
+        mPopup.draw(canvas);
     }
 
     /**
-     * Scrolls the RecyclerView to the nearest position according to the ratio y
-     *
-     * @param y the ratio (current position / item count)
+     * Returns whether the specified points are near the scroll bar bounds.
      */
-    private void setRecyclerViewPosition(float y) {
-        if (mRecyclerView != null) {
-            int itemCount = mRecyclerView.getAdapter().getItemCount();
-            float ratio;
-            if (mHandleY == 0) {
-                ratio = 0f;
-            } else if (mHandleY + mHandleHeight >= mHeight) {
-                ratio = 1f;
-            } else {
-                ratio = y / (float) (mHeight - mHandleHeight);
-            }
-            int pos = clamp((int) (ratio * (float) itemCount), 0, itemCount - 1);
+    private boolean isNearPoint(int x, int y) {
+        mTmpRect.set(mThumbOffset.x, mThumbOffset.y, mThumbOffset.x + mThumbWidth,
+                mThumbOffset.y + mThumbHeight);
+        mTmpRect.inset(mTouchInset, mTouchInset);
+        return mTmpRect.contains(x, y);
+    }
 
-            mRecyclerView.scrollToPosition(pos);
-
-            setText(pos);
+    public void setScrollbarThumbOffset(int x, int y) {
+        if (mThumbOffset.x == x && mThumbOffset.y == y) {
+            return;
         }
+        mInvalidateRect.set(mThumbOffset.x, 0, mThumbOffset.x + mThumbWidth, mRecyclerView.getHeight());
+        mThumbOffset.set(x, y);
+        mInvalidateRect.union(new Rect(mThumbOffset.x, 0, mThumbOffset.x + mThumbWidth, mRecyclerView.getHeight()));
+        mRecyclerView.invalidate(mInvalidateRect);
     }
-
-    /**
-     * Set the position of the handle/overlay according to the ratio y
-     *
-     * @param y the ratio (current position / item count)
-     */
-    private void setPosition(float y) {
-        //Todo: Check y: Is it a ratio, or just a position?
-        float position = y / mHeight;
-
-        //Set the handle position
-        mHandleY = clamp((int) ((mHeight - mHandleHeight) * position), 0, mHeight - mHandleHeight);
-
-        //Now set the overlay position
-        if (y < (mOverlayHeight - (mHandleHeight / 2))) {
-            mOverlayY = 0;
-        } else {
-            mOverlayY = clamp((int) ((mHeight - mHandleHeight) * position) - (mOverlayHeight - (mHandleHeight / 2)), 0, mHeight - mHandleHeight);
-        }
-        invalidate();
-    }
-
-    private RecyclerView.OnScrollListener mOnScrollListener = new RecyclerView.OnScrollListener() {
-        @Override
-        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-            if (!mIsDragging) {
-
-                //The total number of items in the RecyclerView
-                int itemCount = mRecyclerView.getAdapter().getItemCount();
-
-                //The position of the first visible item
-                int firstVisiblePosition = ((LinearLayoutManager) mRecyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
-
-                //The position of the last visible item
-                int lastVisiblePosition = ((LinearLayoutManager) mRecyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
-
-                //The number of visible children
-                int visibleRange = lastVisiblePosition - firstVisiblePosition + 1;
-
-                //The ratio of 'scrolledness' of the RecyclerView
-                float ratio = (float) firstVisiblePosition / (itemCount - visibleRange);
-
-                setPosition(mHeight * ratio);
-            }
-        }
-    };
-
-    /**
-     * Retrieves the text from the SectionIndexer, according to the position passed in
-     *
-     * @param position the current item position
-     */
-    private void setText(int position) {
-        if (mRecyclerView.getAdapter() instanceof SectionIndexer) {
-            SectionIndexer sectionIndexer = (SectionIndexer) mRecyclerView.getAdapter();
-            if (sectionIndexer.getSections().length != 0 && position >= 0) {
-                int section = sectionIndexer.getSectionForPosition(position);
-                if (section >= 0) {
-                    Object object = sectionIndexer.getSections()[section];
-                    if (object != null) {
-                        String text = object.toString();
-                        if (text != null) {
-                            if (mText == null || !mText.equals(text)) {
-                                mText = text;
-                                invalidate();
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * Return a value limited to the given range
-     *
-     * @param value the value
-     * @param min   the lower boundary
-     * @param max   the upper boundary
-     * @return int
-     */
-    private int clamp(int value, int min, int max) {
-        int minimum = Math.max(min, value);
-        return Math.min(minimum, max);
-    }
-
-    /**
-     * Converts dp to px
-     *
-     * @param context context
-     * @param dp      the value in dp
-     * @return int
-     */
-    public int toPixels(Context context, float dp) {
-        return (int) (dp * context.getResources().getDisplayMetrics().density);
-    }
-
-    /**
-     * A simple interpolator used for reversing an animation
-     */
-    public class ReverseInterpolator implements Interpolator {
-        @Override
-        public float getInterpolation(float paramFloat) {
-            return Math.abs(paramFloat - 1f);
-        }
-    }
-
 }

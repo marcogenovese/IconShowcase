@@ -16,7 +16,7 @@ import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.adapters.ChangelogAdapter;
 import jahirfiquitiva.apps.iconshowcase.adapters.IconsAdapter;
 import jahirfiquitiva.apps.iconshowcase.models.IconsLists;
-import jahirfiquitiva.apps.iconshowcase.utilities.Util;
+import jahirfiquitiva.apps.iconshowcase.utilities.Utils;
 
 /**
  * This Class was created by Patrick J
@@ -59,7 +59,7 @@ public final class ISDialogs {
                 int numberOfImages = newIconsAL.size();
                 //calculate the total number of rows
                 final int rows = numberOfImages / grids + (numberOfImages % grids == 0 ? 0 : 1);
-                Util.triggerMethodOnceViewIsDisplayed(iconsGrid, new Callable<Void>() {
+                Utils.triggerMethodOnceViewIsDisplayed(iconsGrid, new Callable<Void>() {
                     @Override
                     public Void call() throws Exception {
                         try {

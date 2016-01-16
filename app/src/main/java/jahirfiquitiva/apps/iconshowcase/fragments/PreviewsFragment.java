@@ -10,7 +10,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,6 +18,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+
+import com.mikepenz.materialize.util.UIUtils;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -77,16 +78,20 @@ public class PreviewsFragment extends Fragment {
         AppBarLayout appbar = (AppBarLayout) getActivity().findViewById(R.id.appbar);
         CustomCoordinatorLayout.LayoutParams params = (CustomCoordinatorLayout.LayoutParams) appbar.getLayoutParams();
         AppBarLayout.Behavior behavior = (AppBarLayout.Behavior) params.getBehavior();
+
         // Calculate ActionBar height
         TypedValue tv = new TypedValue();
         Integer toolbarCollapsedHeight = 0;
         if (getActivity().getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
-            toolbarCollapsedHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
+            toolbarCollapsedHeight = TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics());
         }
         Integer toolbarExpandedHeight = getActivity().getResources().getDimensionPixelOffset(R.dimen.toolbar_expanded);
-        Integer statusbarHeight = (int) (24 * getActivity().getResources().getDisplayMetrics().density);
+        Integer statusbarHeight = UIUtils.getStatusBarHeight(getActivity());
+
         // Set toolbarCollapsedHeight as offset so tabs are shown
-        behavior.setTopAndBottomOffset( - toolbarExpandedHeight + statusbarHeight + (toolbarCollapsedHeight * 2));
+        //TODO: Calculate the right offset to make toolbar and tabs follow Material Design guidelines
+        behavior.setTopAndBottomOffset(-toolbarExpandedHeight + statusbarHeight + (toolbarCollapsedHeight * 2) - 16);
+
         // Lock CoordinatorLayout so the toolbar can't be scrolled away
         CustomCoordinatorLayout coordinatorLayout = (CustomCoordinatorLayout) getActivity().findViewById(R.id.mainCoordinatorLayout);
         coordinatorLayout.setScrollAllowed(false);
@@ -114,10 +119,12 @@ public class PreviewsFragment extends Fragment {
             }
 
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {}
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
 
             @Override
-            public void onTabReselected(TabLayout.Tab tab) {}
+            public void onTabReselected(TabLayout.Tab tab) {
+            }
         });
     }
 

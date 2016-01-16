@@ -19,7 +19,7 @@ import com.mikepenz.materialize.MaterializeBuilder;
 import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.apps.iconshowcase.utilities.ThemeUtils;
-import jahirfiquitiva.apps.iconshowcase.utilities.Util;
+import jahirfiquitiva.apps.iconshowcase.utilities.Utils;
 
 public class MuzeiSettings extends AppCompatActivity implements View.OnClickListener {
 
@@ -57,7 +57,7 @@ public class MuzeiSettings extends AppCompatActivity implements View.OnClickList
         mPrefs = new Preferences(MuzeiSettings.this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle(Util.getStringFromResources(this, R.string.muzei_settings));
+        toolbar.setTitle(Utils.getStringFromResources(this, R.string.muzei_settings));
         setSupportActionBar(toolbar);
 
         numberpicker = (NumberPicker) findViewById(R.id.number_picker);
@@ -107,8 +107,8 @@ public class MuzeiSettings extends AppCompatActivity implements View.OnClickList
                 Intent intent = new Intent(MuzeiSettings.this, ArtSource.class);
                 intent.putExtra("service", "restarted");
                 startService(intent);
-                Util.showSimpleSnackbar(muzeiLayout,
-                        Util.getStringFromResources(this, R.string.settings_saved), 1);
+                Utils.showSimpleSnackbar(muzeiLayout,
+                        Utils.getStringFromResources(this, R.string.settings_saved), 1);
                 finish();
                 return true;
         }

@@ -11,7 +11,7 @@ import android.widget.RemoteViews;
 
 import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.activities.LauncherIconRestorerActivity;
-import jahirfiquitiva.apps.iconshowcase.utilities.Util;
+import jahirfiquitiva.apps.iconshowcase.utilities.Utils;
 
 public class IconRestorerWidget extends AppWidgetProvider {
 
@@ -38,7 +38,7 @@ public class IconRestorerWidget extends AppWidgetProvider {
                 appWidgetManager.updateAppWidget(appWidgetId, views);
 
             } catch (ActivityNotFoundException e) {
-                Util.showLog("App not found!");
+                Utils.showLog("App not found!");
             }
 
         }

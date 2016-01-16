@@ -12,7 +12,7 @@ import android.widget.RemoteViews;
 import java.util.HashMap;
 
 import jahirfiquitiva.apps.iconshowcase.R;
-import jahirfiquitiva.apps.iconshowcase.utilities.Util;
+import jahirfiquitiva.apps.iconshowcase.utilities.Utils;
 
 public class ClockWidget extends AppWidgetProvider {
 
@@ -37,7 +37,7 @@ public class ClockWidget extends AppWidgetProvider {
             clockAppIntent.addCategory(Intent.CATEGORY_LAUNCHER);
 
             for (String packageName : activityMap.keySet()) {
-                if (Util.isAppInstalled(context, packageName)) {
+                if (Utils.isAppInstalled(context, packageName)) {
                     ComponentName cn = new ComponentName(packageName, activityMap.get(packageName));
                     clockAppIntent.setComponent(cn);
                     clockAppIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

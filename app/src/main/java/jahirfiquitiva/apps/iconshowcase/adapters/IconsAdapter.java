@@ -23,7 +23,7 @@ import java.util.Locale;
 import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
-import jahirfiquitiva.apps.iconshowcase.utilities.Util;
+import jahirfiquitiva.apps.iconshowcase.utilities.Utils;
 
 public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder> implements View.OnClickListener {
 
@@ -107,7 +107,7 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
             try {
                 bitmap = BitmapFactory.decodeResource(context.getResources(), resId);
             } catch (Exception e) {
-                Util.showLog("Icons Picker error: " + Log.getStackTraceString(e));
+                Utils.showLog("Icons Picker error: " + Log.getStackTraceString(e));
             }
 
             if (bitmap != null) {
@@ -126,7 +126,7 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
             if (!inChangelog) {
                 MaterialDialog dialog = new MaterialDialog.Builder(context)
                         .customView(R.layout.dialog_icon, false)
-                        .title(Util.makeTextReadable(name))
+                        .title(Utils.makeTextReadable(name))
                         .positiveText(R.string.close)
                         .show();
 

@@ -14,7 +14,6 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -25,7 +24,7 @@ import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.fragments.RequestsFragment;
 import jahirfiquitiva.apps.iconshowcase.models.RequestItem;
 import jahirfiquitiva.apps.iconshowcase.utilities.ApplicationBase;
-import jahirfiquitiva.apps.iconshowcase.utilities.Util;
+import jahirfiquitiva.apps.iconshowcase.utilities.Utils;
 
 public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<RequestItem>> {
 
@@ -99,7 +98,7 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
         ApplicationBase.allAppsToRequest = list;
         RequestsFragment.setupContent();
         endTime = System.currentTimeMillis();
-        Util.showLog("Apps to Request Task completed in: " + String.valueOf((endTime - startTime) / 1000) + " secs.");
+        Utils.showLog("Apps to Request Task completed in: " + String.valueOf((endTime - startTime) / 1000) + " secs.");
     }
 
     private static ResolveInfo getResolveInfo(String componentString) {

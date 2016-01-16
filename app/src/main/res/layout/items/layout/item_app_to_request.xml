@@ -7,9 +7,12 @@
     android:layout_height="wrap_content"
     android:background="?selectableItemBackground"
     android:clickable="true"
+    android:clipToPadding="false"
     android:descendantFocusability="blocksDescendants"
     android:focusable="true"
-    android:gravity="center_vertical">
+    android:gravity="center_vertical"
+    android:paddingLeft="@dimen/lists_padding"
+    android:paddingRight="@dimen/lists_padding">
 
     <ImageView
         android:id="@+id/imgIcon"

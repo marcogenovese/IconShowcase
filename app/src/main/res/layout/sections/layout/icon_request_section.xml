@@ -15,37 +15,31 @@
         android:gravity="center"
         android:visibility="visible"/>
 
-    <android.support.v7.widget.RecyclerView
+    <jahirfiquitiva.apps.iconshowcase.views.FastScrollRecyclerView
         android:id="@+id/appsToRequestList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:clipToPadding="false"
-        android:overScrollMode="ifContentScrolls"
         android:fitsSystemWindows="true"
         android:gravity="center"
+        android:overScrollMode="ifContentScrolls"
         android:paddingBottom="@dimen/fab_size_normal"
+        android:paddingTop="@dimen/lists_padding"
+        app:fastScrollThumbColor="@color/accent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-
-    <jahirfiquitiva.apps.iconshowcase.views.FastScroller
-        android:id="@+id/rvFastScroller"
-        android:layout_width="96dp"
-        android:layout_height="match_parent"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_gravity="end"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/requests_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_send"
         app:backgroundTint="@color/accent"
         app:fabSize="normal"
-        app:rippleColor="@color/semitransparent_white"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_send"/>
+        app:rippleColor="@color/semitransparent_white"/>
 
 </RelativeLayout>

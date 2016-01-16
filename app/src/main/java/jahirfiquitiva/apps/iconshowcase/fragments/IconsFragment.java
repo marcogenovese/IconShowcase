@@ -3,11 +3,13 @@ package jahirfiquitiva.apps.iconshowcase.fragments;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+
+import com.mikepenz.materialize.util.UIUtils;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -15,7 +17,7 @@ import java.util.Locale;
 import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.adapters.IconsAdapter;
 import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
-import jahirfiquitiva.apps.iconshowcase.views.FastScroller;
+import jahirfiquitiva.apps.iconshowcase.views.FastScrollRecyclerView;
 
 public class IconsFragment extends Fragment {
 
@@ -42,11 +44,9 @@ public class IconsFragment extends Fragment {
 
         }
 
-        FastScroller fastScroller =
-                (FastScroller) layout.findViewById(R.id.rvFastScroller);
-        fastScroller.setVisibility(View.GONE);
-
-        RecyclerView iconsGrid = (RecyclerView) layout.findViewById(R.id.iconsGrid);
+        FastScrollRecyclerView iconsGrid = (FastScrollRecyclerView) layout.findViewById(R.id.iconsGrid);
+        RelativeLayout gridParent = (RelativeLayout) layout.findViewById(R.id.gridParent);
+        gridParent.setPadding(0, 0, 0, UIUtils.getNavigationBarHeight(getActivity()) - 4);
         iconsGrid.setHasFixedSize(true);
         iconsGrid.setLayoutManager(new GridLayoutManager(getActivity(),
                 getResources().getInteger(R.integer.icon_grid_width)));
@@ -60,9 +60,6 @@ public class IconsFragment extends Fragment {
         }
 
         iconsGrid.setAdapter(mAdapter);
-        fastScroller.setRecyclerView(iconsGrid);
-        //fastScroller.setHideDelay(500);
-        fastScroller.setVisibility(View.VISIBLE);
 
         return layout;
     }

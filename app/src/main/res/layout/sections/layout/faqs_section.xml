@@ -1,22 +1,16 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v7.widget.RecyclerView
+    <jahirfiquitiva.apps.iconshowcase.views.FastScrollRecyclerView
         android:id="@+id/faqs_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:overScrollMode="ifContentScrolls"
         android:clipToPadding="false"
-        android:fitsSystemWindows="true"/>
-
-    <jahirfiquitiva.apps.iconshowcase.views.FastScroller
-        android:id="@+id/rvFastScroller"
-        android:layout_width="96dp"
-        android:layout_height="match_parent"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_gravity="end"/>
+        android:fitsSystemWindows="true"
+        android:overScrollMode="ifContentScrolls"
+        app:fastScrollThumbColor="@color/accent"/>
 
 </RelativeLayout>

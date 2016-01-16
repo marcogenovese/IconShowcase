@@ -43,7 +43,7 @@ import jahirfiquitiva.apps.iconshowcase.tasks.WallpaperToCrop;
 import jahirfiquitiva.apps.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.apps.iconshowcase.utilities.ThemeUtils;
-import jahirfiquitiva.apps.iconshowcase.utilities.Util;
+import jahirfiquitiva.apps.iconshowcase.utilities.Utils;
 import jahirfiquitiva.apps.iconshowcase.views.TouchImageView;
 
 public class ViewerActivity extends AppCompatActivity {
@@ -395,7 +395,7 @@ public class ViewerActivity extends AppCompatActivity {
                     .positiveText(android.R.string.ok)
                     .show();
         } else {
-            if (Util.hasNetwork(context)) {
+            if (Utils.hasNetwork(context)) {
                 switch (action) {
                     case "save":
                         saveWallpaperAction(wallName, wallUrl);

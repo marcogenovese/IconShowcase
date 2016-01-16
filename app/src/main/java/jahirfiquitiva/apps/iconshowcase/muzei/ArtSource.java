@@ -20,7 +20,7 @@ import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.models.WallpaperItem;
 import jahirfiquitiva.apps.iconshowcase.utilities.JSONParser;
 import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
-import jahirfiquitiva.apps.iconshowcase.utilities.Util;
+import jahirfiquitiva.apps.iconshowcase.utilities.Utils;
 
 public class ArtSource extends RemoteMuzeiArtSource {
 
@@ -103,7 +103,7 @@ public class ArtSource extends RemoteMuzeiArtSource {
                 .viewIntent(new Intent(Intent.ACTION_VIEW, Uri.parse(url)))
                 .build());
         scheduleUpdate(System.currentTimeMillis() + mPrefs.getRotateTime());
-        Util.showLog("Muzei Update scheduled to: " + String.valueOf((System.currentTimeMillis() + mPrefs.getRotateTime()) / 1000));
+        Utils.showLog("Muzei Update scheduled to: " + String.valueOf((System.currentTimeMillis() + mPrefs.getRotateTime()) / 1000));
     }
 
     public class DownloadJSONAndSetWall extends AsyncTask<Void, String, Boolean> {
@@ -157,9 +157,9 @@ public class ArtSource extends RemoteMuzeiArtSource {
                 try {
                     i = new Random().nextInt(names.size());
                     setImageForMuzei(names.get(i), authors.get(i), urls.get(i));
-                    Util.showLog("Setting picture: " + names.get(i));
+                    Utils.showLog("Setting picture: " + names.get(i));
                 } catch (IllegalArgumentException e) {
-                    Util.showLog("Muzei error: " + e.getLocalizedMessage());
+                    Utils.showLog("Muzei error: " + e.getLocalizedMessage());
                 }
 
             }

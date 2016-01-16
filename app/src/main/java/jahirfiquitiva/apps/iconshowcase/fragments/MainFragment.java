@@ -23,7 +23,7 @@ import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.apps.iconshowcase.utilities.ThemeUtils;
-import jahirfiquitiva.apps.iconshowcase.utilities.Util;
+import jahirfiquitiva.apps.iconshowcase.utilities.Utils;
 
 public class MainFragment extends Fragment {
 
@@ -90,8 +90,8 @@ public class MainFragment extends Fragment {
         moreApps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Util.openLinkInChromeCustomTab(getActivity(),
-                        Util.getStringFromResources(getActivity(), R.string.iconpack_author_playstore));
+                Utils.openLinkInChromeCustomTab(getActivity(),
+                        Utils.getStringFromResources(getActivity(), R.string.iconpack_author_playstore));
             }
         });
 

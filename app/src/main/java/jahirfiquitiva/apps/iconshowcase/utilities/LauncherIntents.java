@@ -96,7 +96,7 @@ public class LauncherIntents {
                 TsfLauncher(context);
                 break;
             default:
-                Util.showLog("No method for: " + launcherName);
+                Utils.showLog("No method for: " + launcherName);
                 break;
         }
     }
@@ -160,7 +160,7 @@ public class LauncherIntents {
     }
 
     public void EpicLauncher(Context context) {
-        Util.forceCrash();
+        Utils.forceCrash();
         Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.setComponent(new ComponentName("com.epic.launcher", "com.epic.launcher.s"));
         context.startActivity(intent);
@@ -254,7 +254,7 @@ public class LauncherIntents {
                 nine.putExtra("launch", true);
                 context.sendBroadcast(nine);
             } else {
-                Util.showSimpleSnackbar(layout,
+                Utils.showSimpleSnackbar(layout,
                         context.getResources().getString(R.string.updateninelauncher), 1);
             }
             context.startActivity(nineApply);

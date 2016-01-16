@@ -57,7 +57,7 @@ import jahirfiquitiva.apps.iconshowcase.models.WallpapersList;
 import jahirfiquitiva.apps.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.apps.iconshowcase.utilities.ThemeUtils;
-import jahirfiquitiva.apps.iconshowcase.utilities.Util;
+import jahirfiquitiva.apps.iconshowcase.utilities.Utils;
 import jahirfiquitiva.apps.iconshowcase.views.CustomCoordinatorLayout;
 
 public class ShowcaseActivity extends AppCompatActivity implements FolderChooserDialog.FolderSelectionCallback {
@@ -370,7 +370,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     private void showChangelogDialog() {
         String launchinfo = getSharedPreferences("PrefsFile", MODE_PRIVATE).getString("version", "0");
         storeSharedPrefs();
-        if (launchinfo != null && !launchinfo.equals(Util.getAppVersion(this))) {
+        if (launchinfo != null && !launchinfo.equals(Utils.getAppVersion(this))) {
             if (WITH_ICONS_BASED_CHANGELOG) {
                 ISDialogs.showIconsChangelogDialog(this);
             } else {
@@ -382,7 +382,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     @SuppressLint("CommitPrefEdits")
     private void storeSharedPrefs() {
         SharedPreferences sharedPreferences = getSharedPreferences("PrefsFile", MODE_PRIVATE);
-        sharedPreferences.edit().putString("version", Util.getAppVersion(this)).commit();
+        sharedPreferences.edit().putString("version", Utils.getAppVersion(this)).commit();
     }
 
     private void checkLicense() {
@@ -527,7 +527,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             miniHeader.getLayoutParams().height = UIUtils.getActionBarHeight(this) + UIUtils.getStatusBarHeight(this);
 
             TextView appVersion = (TextView) drawer.getHeader().findViewById(R.id.text_app_version);
-            appVersion.setText(getString(R.string.app_version, Util.getAppVersion(this)));
+            appVersion.setText(getString(R.string.app_version, Utils.getAppVersion(this)));
 
         }
 
@@ -536,7 +536,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                     .withActivity(this)
                     .withHeaderBackground(R.drawable.header)
                     .withSelectionFirstLine(getResources().getString(R.string.app_long_name))
-                    .withSelectionSecondLine("v " + Util.getAppVersion(this))
+                    .withSelectionSecondLine("v " + Utils.getAppVersion(this))
                     .withProfileImagesClickable(false)
                     .withResetDrawerOnProfileListClick(false)
                     .withSelectionListEnabled(false)

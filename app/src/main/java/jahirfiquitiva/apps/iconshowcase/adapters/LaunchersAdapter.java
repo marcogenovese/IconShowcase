@@ -1,11 +1,13 @@
 package jahirfiquitiva.apps.iconshowcase.adapters;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -50,19 +52,19 @@ public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.Laun
                 context.getPackageName()
         );
 
-        final int light = context.getResources().getColor(android.R.color.white);
-        final int grey = context.getResources().getColor(R.color.grey);
+        final int light = ContextCompat.getColor(context, android.R.color.white);
+        final int grey = ContextCompat.getColor(context, R.color.grey);
 
         holder.icon.setImageResource(iconResource);
         holder.launcherName.setText(launchers.get(position).name.toUpperCase(Locale.getDefault()));
 
         if (launchers.get(position).isInstalled(context)) {
             holder.icon.setColorFilter(null);
-            holder.launcherName.setBackgroundColor(launchers.get(position).launcherColor);
+            holder.itemBG.setBackgroundColor(launchers.get(position).launcherColor);
             holder.launcherName.setTextColor(light);
         } else {
             holder.icon.setColorFilter(ThemeUtils.darkTheme ? light : grey);
-            holder.launcherName.setBackgroundColor(ThemeUtils.darkTheme ? light : grey);
+            holder.itemBG.setBackgroundColor(ThemeUtils.darkTheme ? light : grey);
             holder.launcherName.setTextColor(ThemeUtils.darkTheme ? grey : light);
         }
 
@@ -88,12 +90,14 @@ public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.Laun
 
         final View view;
         ImageView icon;
-        final TextView launcherName;
+        TextView launcherName;
+        LinearLayout itemBG;
 
         LauncherHolder(View v) {
             super(v);
             view = v;
-            icon = (ImageView) view.findViewById(R.id.launchericon);
+            itemBG = (LinearLayout) view.findViewById(R.id.itemBG);
+            icon = (ImageView) view.findViewById(R.id.launcherIcon);
             launcherName = (TextView) view.findViewById(R.id.launcherName);
         }
     }

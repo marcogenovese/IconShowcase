@@ -19,7 +19,7 @@ import com.mikepenz.iconics.IconicsDrawable;
 
 import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.utilities.ThemeUtils;
-import jahirfiquitiva.apps.iconshowcase.utilities.Util;
+import jahirfiquitiva.apps.iconshowcase.utilities.Utils;
 
 public class CreditsFragment extends Fragment {
 
@@ -103,8 +103,8 @@ public class CreditsFragment extends Fragment {
         jahirL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Util.openLinkInChromeCustomTab(context,
-                        Util.getStringFromResources(context, R.string.dashboard_author_website));
+                Utils.openLinkInChromeCustomTab(context,
+                        Utils.getStringFromResources(context, R.string.dashboard_author_website));
             }
         });
 
@@ -112,11 +112,11 @@ public class CreditsFragment extends Fragment {
         authorFB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Util.isAppInstalled(context, "com.facebook.katana")) {
-                    Util.openLink(context,
+                if (Utils.isAppInstalled(context, "com.facebook.katana")) {
+                    Utils.openLink(context,
                             getResources().getString(R.string.iconpack_author_fb));
                 } else {
-                    Util.openLinkInChromeCustomTab(context,
+                    Utils.openLinkInChromeCustomTab(context,
                             getResources().getString(R.string.iconpack_author_fb_alt));
                 }
             }
@@ -126,7 +126,7 @@ public class CreditsFragment extends Fragment {
         authorGPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Util.openLinkInChromeCustomTab(context,
+                Utils.openLinkInChromeCustomTab(context,
                         getResources().getString(R.string.iconpack_author_gplus));
             }
         });
@@ -136,10 +136,10 @@ public class CreditsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 try {
-                    Util.openLink(context,
+                    Utils.openLink(context,
                             getResources().getString(R.string.iconpack_author_twitter));
                 } catch (Exception e) {
-                    Util.openLink(context,
+                    Utils.openLink(context,
                             getResources().getString(R.string.iconpack_author_twitter_alt));
                 }
             }
@@ -149,7 +149,7 @@ public class CreditsFragment extends Fragment {
         authorWebsite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Util.openLinkInChromeCustomTab(context,
+                Utils.openLinkInChromeCustomTab(context,
                         getResources().getString(R.string.iconpack_author_website));
             }
         });
@@ -158,7 +158,7 @@ public class CreditsFragment extends Fragment {
         authorYouTube.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Util.openLinkInChromeCustomTab(context,
+                Utils.openLinkInChromeCustomTab(context,
                         getResources().getString(R.string.iconpack_author_youtube));
             }
         });
@@ -167,7 +167,7 @@ public class CreditsFragment extends Fragment {
         authorCommunity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Util.openLinkInChromeCustomTab(context,
+                Utils.openLinkInChromeCustomTab(context,
                         getResources().getString(R.string.iconpack_author_gplus_community));
             }
         });
@@ -176,7 +176,7 @@ public class CreditsFragment extends Fragment {
         authorPlayStore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Util.openLinkInChromeCustomTab(context,
+                Utils.openLinkInChromeCustomTab(context,
                         getResources().getString(R.string.iconpack_author_playstore));
             }
         });
@@ -185,7 +185,7 @@ public class CreditsFragment extends Fragment {
         devGitHub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Util.openLinkInChromeCustomTab(context,
+                Utils.openLinkInChromeCustomTab(context,
                         getResources().getString(R.string.dashboard_author_github));
             }
         });
@@ -202,7 +202,7 @@ public class CreditsFragment extends Fragment {
                         .onNeutral(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(MaterialDialog dialog, DialogAction which) {
-                                Util.openLinkInChromeCustomTab(context,
+                                Utils.openLinkInChromeCustomTab(context,
                                         getResources().getString(R.string.sherry_link));
                             }
                         })
@@ -222,7 +222,7 @@ public class CreditsFragment extends Fragment {
                             @Override
                             public void onSelection(MaterialDialog materialDialog, View view,
                                                     final int i, CharSequence charSequence) {
-                                Util.openLinkInChromeCustomTab(context, uiCollaboratorsLinks[i]);
+                                Utils.openLinkInChromeCustomTab(context, uiCollaboratorsLinks[i]);
                             }
                         }).show();
             }
@@ -240,7 +240,7 @@ public class CreditsFragment extends Fragment {
                             @Override
                             public void onSelection(MaterialDialog materialDialog, View view,
                                                     final int i, CharSequence charSequence) {
-                                Util.openLinkInChromeCustomTab(context, libsLinks[i]);
+                                Utils.openLinkInChromeCustomTab(context, libsLinks[i]);
                             }
                         }).show();
             }
@@ -258,7 +258,7 @@ public class CreditsFragment extends Fragment {
                             @Override
                             public void onSelection(MaterialDialog materialDialog, View view,
                                                     final int i, CharSequence charSequence) {
-                                Util.openLinkInChromeCustomTab(context, contributorsLinks[i]);
+                                Utils.openLinkInChromeCustomTab(context, contributorsLinks[i]);
                             }
                         }).show();
             }
@@ -268,7 +268,7 @@ public class CreditsFragment extends Fragment {
         donateL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Util.showSimpleSnackbar(layout, "Coming soon", 1);
+                Utils.showSimpleSnackbar(layout, "Coming soon", 1);
             }
         });
 
@@ -276,7 +276,7 @@ public class CreditsFragment extends Fragment {
         bugsL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Util.openLinkInChromeCustomTab(context,
+                Utils.openLinkInChromeCustomTab(context,
                         getResources().getString(R.string.dashboard_bugs_report));
             }
         });
@@ -285,7 +285,7 @@ public class CreditsFragment extends Fragment {
         communityL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Util.openLinkInChromeCustomTab(context,
+                Utils.openLinkInChromeCustomTab(context,
                         getResources().getString(R.string.dashboard_author_gplus_community));
             }
         });

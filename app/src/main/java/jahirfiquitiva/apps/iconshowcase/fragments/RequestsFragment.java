@@ -28,14 +28,13 @@ import jahirfiquitiva.apps.iconshowcase.tasks.ZipFilesToRequest;
 import jahirfiquitiva.apps.iconshowcase.utilities.ApplicationBase;
 import jahirfiquitiva.apps.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
-import jahirfiquitiva.apps.iconshowcase.views.FastScroller;
-import jahirfiquitiva.apps.iconshowcase.views.GridSpacingItemDecoration;
+import jahirfiquitiva.apps.iconshowcase.views.FastScrollRecyclerView;
 
 public class RequestsFragment extends Fragment implements PermissionUtils.OnPermissionResultListener {
 
-    public static FastScroller fastScroller;
+    //public static FastScroller fastScroller;
     public static ProgressBar progressBar;
-    public static RecyclerView mRecyclerView;
+    public static FastScrollRecyclerView mRecyclerView;
     private static FloatingActionButton fab;
 
     static int columnsNumber, gridSpacing;
@@ -92,13 +91,10 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
         });
 
         progressBar = (ProgressBar) layout.findViewById(R.id.requestProgress);
-        mRecyclerView = (RecyclerView) layout.findViewById(R.id.appsToRequestList);
+        mRecyclerView = (FastScrollRecyclerView) layout.findViewById(R.id.appsToRequestList);
         mRecyclerView.setLayoutManager(new GridLayoutManager(context, columnsNumber));
-        mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(columnsNumber, gridSpacing, withBorders));
-        fastScroller = (FastScroller) layout.findViewById(R.id.rvFastScroller);
+        //mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(columnsNumber, gridSpacing, withBorders));
         hideStuff();
-
-        //fastScroller.setHideDelay(1000);
 
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -145,8 +141,6 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
             progressBar.setVisibility(View.GONE);
         }
         mRecyclerView.setVisibility(View.VISIBLE);
-        fastScroller.setVisibility(View.VISIBLE);
-        fastScroller.setRecyclerView(mRecyclerView);
         fab.show();
     }
 
@@ -155,7 +149,6 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
             progressBar.setVisibility(View.VISIBLE);
         }
         mRecyclerView.setVisibility(View.GONE);
-        fastScroller.setVisibility(View.GONE);
     }
 
     @Override

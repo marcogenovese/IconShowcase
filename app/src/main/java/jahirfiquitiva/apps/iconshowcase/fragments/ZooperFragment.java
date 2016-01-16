@@ -25,7 +25,7 @@ import java.io.IOException;
 
 import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.tasks.CopyFilesToStorage;
-import jahirfiquitiva.apps.iconshowcase.utilities.Util;
+import jahirfiquitiva.apps.iconshowcase.utilities.Utils;
 
 public class ZooperFragment extends Fragment {
 
@@ -57,7 +57,7 @@ public class ZooperFragment extends Fragment {
         context = getActivity();
 
         cardZooper = (CardView) layout.findViewById(R.id.zooper_card);
-        if (Util.isAppInstalled(context, "org.zooper.zwpro")) {
+        if (Utils.isAppInstalled(context, "org.zooper.zwpro")) {
             cardZooper.setVisibility(View.GONE);
         } else {
             cardZooper.setVisibility(View.VISIBLE);
@@ -75,15 +75,15 @@ public class ZooperFragment extends Fragment {
                             public void onSelection(MaterialDialog dialog, View view, int selection, CharSequence text) {
                                 switch (selection) {
                                     case 0:
-                                        Util.openLinkInChromeCustomTab(context,
+                                        Utils.openLinkInChromeCustomTab(context,
                                                 "https://play.google.com/store/apps/details?id=org.zooper.zwpro");
                                         break;
                                     case 1:
-                                        if (Util.isAppInstalled(context, "com.amazon.venezia")) {
-                                            Util.openLinkInChromeCustomTab(context,
+                                        if (Utils.isAppInstalled(context, "com.amazon.venezia")) {
+                                            Utils.openLinkInChromeCustomTab(context,
                                                     "amzn://apps/android?p=org.zooper.zwpro");
                                         } else {
-                                            Util.openLinkInChromeCustomTab(context,
+                                            Utils.openLinkInChromeCustomTab(context,
                                                     "http://www.amazon.com/gp/mas/dl/android?p=org.zooper.zwpro");
                                         }
                                         break;
@@ -97,7 +97,7 @@ public class ZooperFragment extends Fragment {
         cardMU = (CardView) layout.findViewById(R.id.mu_card);
         cardMUInfo = (CardView) layout.findViewById(R.id.mediautilities_info_card);
 
-        if (!Util.isAppInstalled(context, "com.batescorp.notificationmediacontrols.alpha")) {
+        if (!Utils.isAppInstalled(context, "com.batescorp.notificationmediacontrols.alpha")) {
             cardMU.setVisibility(View.VISIBLE);
             cardMUInfo.setVisibility(View.GONE);
         } else {
@@ -109,7 +109,7 @@ public class ZooperFragment extends Fragment {
         downloadMU.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Util.openLinkInChromeCustomTab(context,
+                Utils.openLinkInChromeCustomTab(context,
                         "https://play.google.com/store/apps/details?id=com.batescorp.notificationmediacontrols.alpha");
             }
         });
@@ -136,7 +136,7 @@ public class ZooperFragment extends Fragment {
                             .show();
                     new CopyFilesToStorage(context, dialog, "Fonts").execute();
                 } else {
-                    Util.showSimpleSnackbar(layout,
+                    Utils.showSimpleSnackbar(layout,
                             getResources().getString(R.string.fonts_installed), 1);
                 }
             }
@@ -154,7 +154,7 @@ public class ZooperFragment extends Fragment {
                             .show();
                     new CopyFilesToStorage(context, dialog, "IconSets").execute();
                 } else {
-                    Util.showSimpleSnackbar(layout,
+                    Utils.showSimpleSnackbar(layout,
                             getResources().getString(R.string.iconsets_installed), 1);
                 }
             }

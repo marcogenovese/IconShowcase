@@ -15,7 +15,7 @@ import java.util.List;
 
 import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.models.IconsLists;
-import jahirfiquitiva.apps.iconshowcase.utilities.Util;
+import jahirfiquitiva.apps.iconshowcase.utilities.Utils;
 
 public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
 
@@ -173,7 +173,7 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
     @Override
     protected void onPostExecute(Boolean worked) {
         endTime = System.currentTimeMillis();
-        Util.showLog("Load of icons task completed succesfully in: " + String.valueOf((endTime - startTime)) + " millisecs.");
+        Utils.showLog("Load of icons task completed succesfully in: " + String.valueOf((endTime - startTime)) + " millisecs.");
     }
 
     private List<String> sortLists(String[] array) {

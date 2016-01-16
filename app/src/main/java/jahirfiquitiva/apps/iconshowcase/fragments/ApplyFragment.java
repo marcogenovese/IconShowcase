@@ -9,7 +9,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,8 +28,8 @@ import jahirfiquitiva.apps.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.apps.iconshowcase.sort.InstalledLauncherComparator;
 import jahirfiquitiva.apps.iconshowcase.utilities.LauncherIntents;
 import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
-import jahirfiquitiva.apps.iconshowcase.utilities.Util;
-import jahirfiquitiva.apps.iconshowcase.views.FastScroller;
+import jahirfiquitiva.apps.iconshowcase.utilities.Utils;
+import jahirfiquitiva.apps.iconshowcase.views.FastScrollRecyclerView;
 import jahirfiquitiva.apps.iconshowcase.views.GridSpacingItemDecoration;
 
 public class ApplyFragment extends Fragment {
@@ -41,8 +40,7 @@ public class ApplyFragment extends Fragment {
     private final List<Launcher> launchers = new ArrayList<>();
 
     private RelativeLayout applyLayout;
-    private RecyclerView recyclerView;
-    private FastScroller FastScroller;
+    private FastScrollRecyclerView recyclerView;
 
     private Preferences mPrefs;
 
@@ -78,8 +76,7 @@ public class ApplyFragment extends Fragment {
         withBorders = true;
 
         applyLayout = (RelativeLayout) layout.findViewById(R.id.applyLayout);
-        recyclerView = (RecyclerView) layout.findViewById(R.id.launchersList);
-        FastScroller = (FastScroller) layout.findViewById(R.id.rvFastScroller);
+        recyclerView = (FastScrollRecyclerView) layout.findViewById(R.id.launchersList);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), columnsNumber));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(columnsNumber, gridSpacing, withBorders));
@@ -97,12 +94,12 @@ public class ApplyFragment extends Fragment {
                         if (launchers.get(position).name.equals("Google Now")) {
                             gnlDialog();
                         } else if (launchers.get(position).name.equals("CM Theme Engine")) {
-                            if (Util.isAppInstalled(getActivity(), "com.cyngn.theme.chooser")) {
+                            if (Utils.isAppInstalled(getActivity(), "com.cyngn.theme.chooser")) {
                                 openLauncher("CM Theme Engine");
-                            } else if (Util.isAppInstalled(getActivity(), launchers.get(position).packageName)) {
+                            } else if (Utils.isAppInstalled(getActivity(), launchers.get(position).packageName)) {
                                 openLauncher(launchers.get(position).name);
                             }
-                        } else if (Util.isAppInstalled(getActivity(), launchers.get(position).packageName)) {
+                        } else if (Utils.isAppInstalled(getActivity(), launchers.get(position).packageName)) {
                             openLauncher(launchers.get(position).name);
                         } else {
                             openInPlayStore(launchers.get(position));
@@ -111,8 +108,6 @@ public class ApplyFragment extends Fragment {
                 });
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
-        //FastScroller.setHideDelay(1000);
-        FastScroller.setRecyclerView(recyclerView);
 
         return layout;
     }
@@ -161,12 +156,12 @@ public class ApplyFragment extends Fragment {
         public boolean isInstalled(Context context) {
             if (isInstalled == -1) {
                 if (packageName.equals("org.cyanogenmod.theme.chooser")) {
-                    if (Util.isAppInstalled(context, "org.cyanogenmod.theme.chooser")
-                            || Util.isAppInstalled(context, "com.cyngn.theme.chooser")) {
+                    if (Utils.isAppInstalled(context, "org.cyanogenmod.theme.chooser")
+                            || Utils.isAppInstalled(context, "com.cyngn.theme.chooser")) {
                         isInstalled = 1;
                     }
                 } else {
-                    isInstalled = Util.isAppInstalled(context, packageName) ? 1 : 0;
+                    isInstalled = Utils.isAppInstalled(context, packageName) ? 1 : 0;
                 }
             }
 

@@ -12,16 +12,18 @@
     app:cardElevation="@dimen/cards_elevation">
 
     <LinearLayout
+        android:id="@+id/itemBG"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
         <jahirfiquitiva.apps.iconshowcase.views.SquaredImageView
-            android:id="@+id/launchericon"
+            android:id="@+id/launcherIcon"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_launcher"
+            android:background="?attr/colorCardBackground"
             tools:ignore="ContentDescription, UnusedAttribute"/>
 
         <TextView
@@ -29,7 +31,6 @@
             style="@style/AboutContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/launchericon"
             android:layout_gravity="bottom"
             android:ellipsize="end"
             android:gravity="center"
