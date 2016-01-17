@@ -1,12 +1,17 @@
 <resources>
-    <dimen name="margin_medium_sm">8dp</dimen>
 
     <dimen name="cards_padding">16dp</dimen>
     <dimen name="cards_elevation">2dp</dimen>
     <dimen name="cards_margin">8dp</dimen>
     <dimen name="cards_spacing">12dp</dimen>
+
     <dimen name="cards_text_margin">5dp</dimen>
-    <dimen name="cards_text_top_margin">16dp</dimen>
+
+    <dimen name="cards_content_margin">24dp</dimen>
+    <dimen name="cards_content_margin_small">16dp</dimen>
+    <dimen name="cards_content_margin_mini">12dp</dimen>
+    <dimen name="cards_content_margin_s">10dp</dimen>
+
     <dimen name="mini_margin">2dp</dimen>
     <dimen name="card_corner_radius">2dp</dimen>
     <dimen name="grid_padding_vertical">8dp</dimen>
@@ -35,8 +40,8 @@
     <dimen name="icons_preview_row">12dp</dimen>
     <dimen name="welcome_card_content_padding">12dp</dimen>
 
-    <dimen name="credits_headers">144dp</dimen>
-    <dimen name="credits_photo">96dp</dimen>
+    <dimen name="credits_headers">96dp</dimen>
+    <dimen name="credits_photo_margin">48dp</dimen>
 
     <!-- Dimensions for some dialogs -->
     <dimen name="dialog_margin">24dp</dimen>

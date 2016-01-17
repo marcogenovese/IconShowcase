@@ -8,10 +8,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.view.InflateException;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -42,13 +44,13 @@ public class CreditsFragment extends Fragment {
     String[] libsLinks, contributorsLinks, uiCollaboratorsLinks;
 
     private void setupBooleans() {
-        withLinkToFacebook = false;
+        withLinkToFacebook = true;
         withLinkToTwitter = true;
         withLinkToGPlus = true;
-        withLinkToYouTube = false;
+        withLinkToYouTube = true;
         withLinkToCommunity = true;
         withLinkToPlayStore = true;
-        withLinkToWebsite = false;
+        withLinkToWebsite = true;
     }
 
     @Override
@@ -81,10 +83,62 @@ public class CreditsFragment extends Fragment {
         setupLayout(getActivity());
         setupExtraAuthorOptions();
 
-        if(!WITH_DEVELOPMENT_CREDITS){
+        if (!WITH_DEVELOPMENT_CREDITS) {
             View credits = layout.findViewById(R.id.dev_credits);
             credits.setVisibility(View.GONE);
         }
+
+        /*
+
+        final ImageView popUp = (ImageView) layout.findViewById(R.id.designerPopUp);
+        popUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popUpMenu = new PopupMenu(context, popUp);
+                popUpMenu.getMenuInflater().inflate(R.menu.designer_popup, popUpMenu.getMenu());
+                popUpMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.designerFacebook:
+                                if (Utils.isAppInstalled(context, "com.facebook.katana")) {
+                                    Utils.openLink(context,
+                                            getResources().getString(R.string.iconpack_author_fb));
+                                } else {
+                                    Utils.openLinkInChromeCustomTab(context,
+                                            getResources().getString(R.string.iconpack_author_fb_alt));
+                                }
+                                break;
+                            case R.id.designerCommunity:
+                                Utils.openLinkInChromeCustomTab(context,
+                                        getResources().getString(R.string.iconpack_author_gplus_community));
+                                break;
+                            case R.id.designerYouTube:
+                                Utils.openLinkInChromeCustomTab(context,
+                                        getResources().getString(R.string.iconpack_author_youtube));
+                                break;
+                            case R.id.designerTwitter:
+                                try {
+                                    Utils.openLink(context,
+                                            getResources().getString(R.string.iconpack_author_twitter));
+                                } catch (Exception e) {
+                                    Utils.openLink(context,
+                                            getResources().getString(R.string.iconpack_author_twitter_alt));
+                                }
+                                break;
+                            case R.id.designerPlayStore:
+                                Utils.openLinkInChromeCustomTab(context,
+                                        getResources().getString(R.string.iconpack_author_playstore));
+                                break;
+                        }
+                        return false;
+                    }
+                });
+                popUpMenu.show();
+            }
+        });
+
+        */
 
         return layout;
     }

@@ -91,7 +91,9 @@ public class WallpapersFragment extends Fragment {
 
         }
 
-        showWallsAdviceDialog(getActivity());
+        if (!ShowcaseActivity.wallsPicker) {
+            showWallsAdviceDialog(getActivity());
+        }
 
         int light = ContextCompat.getColor(context, android.R.color.white);
         int dark = ContextCompat.getColor(context, R.color.card_dark_background);

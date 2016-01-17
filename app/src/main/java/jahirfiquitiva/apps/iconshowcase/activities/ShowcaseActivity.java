@@ -17,7 +17,6 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayout;
 import android.support.v7.widget.Toolbar;
@@ -46,6 +45,7 @@ import com.mikepenz.materialize.util.UIUtils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
 import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.dialogs.FolderChooserDialog;
@@ -88,7 +88,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
     public String version;
 
-    public static int currentItem = -1;
+    public static int currentItem = -1, wallpaper = -1;
 
     private boolean mLastTheme, mLastNavBar;
     private static Preferences mPrefs;
@@ -127,9 +127,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         appbar = (AppBarLayout) findViewById(R.id.appbar);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         titleView = (TextView) findViewById(R.id.title);
-        //actionbar = getSupportActionBar();
-        //noinspection ConstantConditions
-        //actionbar.setDisplayHomeAsUpEnabled(true);
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
 
@@ -701,7 +698,27 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                 }
             }
         } else {
-            toolbarHeader.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.header));
+
+            ArrayList<Integer> wallpapersArray = new ArrayList<>();
+            String[] newIcons = context.getResources().getStringArray(R.array.wallpapers);
+
+            for (String extra : newIcons) {
+                int res = context.getResources().getIdentifier(extra, "drawable", context.getPackageName());
+                if (res != 0) {
+                    final int thumbRes = context.getResources().getIdentifier(extra, "drawable", context.getPackageName());
+                    if (thumbRes != 0) {
+                        wallpapersArray.add(thumbRes);
+                    }
+                }
+            }
+
+            Random random = new Random();
+
+            if (wallpaper == -1) {
+                wallpaper = random.nextInt(wallpapersArray.size());
+            }
+
+            toolbarHeader.setImageResource(wallpapersArray.get(wallpaper));
         }
 
         progress.setVisibility(View.INVISIBLE);

@@ -66,19 +66,13 @@ public class PreviewsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (mPager == null) {
-            mPager = (ViewPager) layout.findViewById(R.id.pager);
-            mPager.setOffscreenPageLimit(6);
-            mPager.setAdapter(new IconsPagerAdapter(getChildFragmentManager()));
-            createTabs();
-        }
-
         // Are you ready for the ugliest fix in the history of the universe?
         // Set custom offset for AppBar. This makes both toolbar and tabs visible
 
         AppBarLayout appbar = (AppBarLayout) getActivity().findViewById(R.id.appbar);
         CustomCoordinatorLayout.LayoutParams params = (CustomCoordinatorLayout.LayoutParams) appbar.getLayoutParams();
         AppBarLayout.Behavior behavior = (AppBarLayout.Behavior) params.getBehavior();
+        CustomCoordinatorLayout coordinatorLayout = (CustomCoordinatorLayout) getActivity().findViewById(R.id.mainCoordinatorLayout);
 
         // Calculate ActionBar height
         TypedValue tv = new TypedValue();
@@ -93,12 +87,19 @@ public class PreviewsFragment extends Fragment {
         float extra = (metrics.densityDpi * 0.05f);
 
         // Set toolbarCollapsedHeight as offset so tabs are shown
-        //TODO: Calculate the right offset to make toolbar and tabs follow Material Design guidelines
-        behavior.setTopAndBottomOffset(-toolbarExpandedHeight + statusbarHeight + (toolbarCollapsedHeight * 2) - Math.round(extra));
+        if (behavior != null) {
+            behavior.setTopAndBottomOffset(-toolbarExpandedHeight + statusbarHeight + (toolbarCollapsedHeight * 2) - Math.round(extra));
+        }
 
         // Lock CoordinatorLayout so the toolbar can't be scrolled away
-        CustomCoordinatorLayout coordinatorLayout = (CustomCoordinatorLayout) getActivity().findViewById(R.id.mainCoordinatorLayout);
         coordinatorLayout.setScrollAllowed(false);
+
+        if (mPager == null) {
+            mPager = (ViewPager) layout.findViewById(R.id.pager);
+            mPager.setOffscreenPageLimit(6);
+            mPager.setAdapter(new IconsPagerAdapter(getChildFragmentManager()));
+            createTabs();
+        }
 
     }
 

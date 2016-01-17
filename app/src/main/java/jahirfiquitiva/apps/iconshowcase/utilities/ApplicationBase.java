@@ -7,8 +7,10 @@ import android.os.AsyncTask;
 import com.crashlytics.android.Crashlytics;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import io.fabric.sdk.android.Fabric;
+import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.apps.iconshowcase.fragments.WallpapersFragment;
 import jahirfiquitiva.apps.iconshowcase.models.RequestItem;
@@ -27,6 +29,9 @@ public class ApplicationBase extends Application {
     // Main list off all apps to request.
     public static ArrayList<RequestItem> allAppsToRequest;
 
+    public static ArrayList<Integer> wallpapersArray;
+    public static int wallpaper;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -43,6 +48,7 @@ public class ApplicationBase extends Application {
                 new LoadIconsLists(context).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 loadWallsList();
                 loadAppsForRequest();
+
             }
         }).start();
 
