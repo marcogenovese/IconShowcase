@@ -5,10 +5,13 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +20,6 @@ import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.adapters.FAQsAdapter;
 import jahirfiquitiva.apps.iconshowcase.models.FAQsItem;
 import jahirfiquitiva.apps.iconshowcase.views.DividerItemDecoration;
-import jahirfiquitiva.apps.iconshowcase.views.FastScrollRecyclerView;
 
 public class FAQsFragment extends Fragment {
 
@@ -59,7 +61,7 @@ public class FAQsFragment extends Fragment {
 
         cardsSpacing = getResources().getDimensionPixelSize(R.dimen.dividers_height);
 
-        FastScrollRecyclerView faqsList = (FastScrollRecyclerView) layout.findViewById(R.id.faqs_list);
+        RecyclerView faqsList = (RecyclerView) layout.findViewById(R.id.faqs_list);
 
         FAQsAdapter faqsAdapter = new FAQsAdapter(faqs);
         faqsList.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -67,6 +69,9 @@ public class FAQsFragment extends Fragment {
         faqsList.addItemDecoration(new DividerItemDecoration(getActivity(), null, false, false));
         faqsList.setHasFixedSize(true);
         faqsList.setAdapter(faqsAdapter);
+
+        RecyclerFastScroller fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
+        fastScroller.attachRecyclerView(faqsList);
 
         return layout;
     }

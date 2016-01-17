@@ -5,7 +5,7 @@
     <dimen name="cards_margin">8dp</dimen>
     <dimen name="cards_spacing">12dp</dimen>
 
-    <dimen name="cards_text_margin">5dp</dimen>
+    <dimen name="cards_super_small_margin">4dp</dimen>
 
     <dimen name="cards_content_margin">24dp</dimen>
     <dimen name="cards_content_margin_small">16dp</dimen>
@@ -55,13 +55,5 @@
     <!-- Splash screen dimens -->
     <dimen name="splash_logo">16dp</dimen>
     <dimen name="splash_brand">48dp</dimen>
-
-    <!-- FastScroll dimens -->
-    <dimen name="container_fastscroll_popup_size">72dp</dimen>
-    <dimen name="container_fastscroll_popup_text_size">48dp</dimen>
-    <dimen name="container_fastscroll_thumb_max_width">8dp</dimen>
-    <dimen name="container_fastscroll_thumb_height">64dp</dimen>
-    <dimen name="container_fastscroll_thumb_touch_inset">-24dp</dimen>
-    <dimen name="container_fastscroll_thumb_min_width">4dp</dimen>
 
 </resources>

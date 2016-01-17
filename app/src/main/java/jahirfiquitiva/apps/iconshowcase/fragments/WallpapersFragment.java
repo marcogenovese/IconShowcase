@@ -17,6 +17,7 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -33,6 +34,7 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
+import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -55,14 +57,15 @@ import jahirfiquitiva.apps.iconshowcase.utilities.JSONParser;
 import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.apps.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.apps.iconshowcase.utilities.Utils;
-import jahirfiquitiva.apps.iconshowcase.views.FastScrollRecyclerView;
+import jahirfiquitiva.apps.iconshowcase.views.GridSpacingItemDecoration;
 
 public class WallpapersFragment extends Fragment {
 
     private static ProgressBar mProgress;
     public static WallpapersAdapter mAdapter;
     private static ImageView noConnection;
-    private static FastScrollRecyclerView mRecyclerView;
+    private static RecyclerView mRecyclerView;
+    private static RecyclerFastScroller fastScroller;
     public static SwipeRefreshLayout mSwipeRefreshLayout;
     private static Activity context;
     private static ViewGroup layout;
@@ -107,11 +110,19 @@ public class WallpapersFragment extends Fragment {
         noConnection.setVisibility(View.GONE);
         mProgress = (ProgressBar) layout.findViewById(R.id.progress);
 
-        mRecyclerView = (FastScrollRecyclerView) layout.findViewById(R.id.wallsGrid);
+        mRecyclerView = (RecyclerView) layout.findViewById(R.id.wallsGrid);
+
+        fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
+        fastScroller.attachRecyclerView(mRecyclerView);
+
         mSwipeRefreshLayout = (SwipeRefreshLayout) layout.findViewById(R.id.swipeRefreshLayout);
 
         mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(),
-                getResources().getInteger(R.integer.wallpaper_grid_width)));
+                getResources().getInteger(R.integer.wallpapers_grid_width)));
+        mRecyclerView.addItemDecoration(
+                new GridSpacingItemDecoration(getResources().getInteger(R.integer.wallpapers_grid_width),
+                        getResources().getDimensionPixelSize(R.dimen.lists_padding),
+                        true));
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setVisibility(View.GONE);
 
@@ -197,7 +208,7 @@ public class WallpapersFragment extends Fragment {
         hideProgressBar();
         noConnection.setVisibility(View.GONE);
         mRecyclerView.setVisibility(View.VISIBLE);
-        //fastScroller.setVisibility(View.VISIBLE);
+        fastScroller.setVisibility(View.VISIBLE);
         mSwipeRefreshLayout.setEnabled(false);
         mSwipeRefreshLayout.setRefreshing(false);
     }
@@ -222,6 +233,7 @@ public class WallpapersFragment extends Fragment {
         hideProgressBar();
         noConnection.setVisibility(View.VISIBLE);
         mRecyclerView.setVisibility(View.GONE);
+        fastScroller.setVisibility(View.GONE);
         mSwipeRefreshLayout.setEnabled(false);
         mSwipeRefreshLayout.setRefreshing(false);
     }

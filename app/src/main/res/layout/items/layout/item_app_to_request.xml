@@ -10,9 +10,7 @@
     android:clipToPadding="false"
     android:descendantFocusability="blocksDescendants"
     android:focusable="true"
-    android:gravity="center_vertical"
-    android:paddingLeft="@dimen/lists_padding"
-    android:paddingRight="@dimen/lists_padding">
+    android:gravity="center_vertical">
 
     <ImageView
         android:id="@+id/imgIcon"

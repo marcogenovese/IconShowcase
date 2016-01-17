@@ -619,7 +619,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             Collections.shuffle(icons);
         }
 
-        int numOfIcons = context.getResources().getInteger(R.integer.icon_grid_width);
+        int numOfIcons = context.getResources().getInteger(R.integer.icons_grid_width);
         int i = 0;
 
         if (icons != null) {

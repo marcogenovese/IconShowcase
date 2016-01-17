@@ -9,6 +9,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.widget.RelativeLayout;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,7 +31,7 @@ import jahirfiquitiva.apps.iconshowcase.sort.InstalledLauncherComparator;
 import jahirfiquitiva.apps.iconshowcase.utilities.LauncherIntents;
 import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.apps.iconshowcase.utilities.Utils;
-import jahirfiquitiva.apps.iconshowcase.views.FastScrollRecyclerView;
+import jahirfiquitiva.apps.iconshowcase.views.GridSpacingItemDecoration;
 
 public class ApplyFragment extends Fragment {
 
@@ -39,7 +41,7 @@ public class ApplyFragment extends Fragment {
     private final List<Launcher> launchers = new ArrayList<>();
 
     private RelativeLayout applyLayout;
-    private FastScrollRecyclerView recyclerView;
+    private RecyclerView recyclerView;
 
     private Preferences mPrefs;
 
@@ -68,10 +70,17 @@ public class ApplyFragment extends Fragment {
         showApplyAdviceDialog(getActivity());
 
         applyLayout = (RelativeLayout) layout.findViewById(R.id.applyLayout);
-        recyclerView = (FastScrollRecyclerView) layout.findViewById(R.id.launchersList);
+        recyclerView = (RecyclerView) layout.findViewById(R.id.launchersList);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),
                 getResources().getInteger(R.integer.launchers_grid_width)));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(
+                new GridSpacingItemDecoration(getResources().getInteger(R.integer.launchers_grid_width),
+                        getResources().getDimensionPixelSize(R.dimen.lists_padding),
+                        true));
+
+        RecyclerFastScroller fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
+        fastScroller.attachRecyclerView(recyclerView);
 
         // Splits all launcher  arrays by the | delimiter {name}|{package}
         final String[] launcherArray = getResources().getStringArray(R.array.launchers);

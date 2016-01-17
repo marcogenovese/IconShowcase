@@ -7,10 +7,8 @@ import android.os.AsyncTask;
 import com.crashlytics.android.Crashlytics;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import io.fabric.sdk.android.Fabric;
-import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.apps.iconshowcase.fragments.WallpapersFragment;
 import jahirfiquitiva.apps.iconshowcase.models.RequestItem;

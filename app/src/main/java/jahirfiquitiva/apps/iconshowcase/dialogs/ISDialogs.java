@@ -45,7 +45,7 @@ public final class ISDialogs {
 
         final RecyclerView iconsGrid = (RecyclerView) dialog.getCustomView().findViewById(R.id.changelogRV);
         iconsGrid.setHasFixedSize(true);
-        final int grids = context.getResources().getInteger(R.integer.icon_grid_width);
+        final int grids = context.getResources().getInteger(R.integer.icons_grid_width);
         iconsGrid.setLayoutManager(new GridLayoutManager(context, grids));
 
         final ArrayList<Integer> newIconsAL = IconsLists.getNewIconsAL();

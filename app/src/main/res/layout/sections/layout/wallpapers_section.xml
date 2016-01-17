@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -28,21 +27,28 @@
 
             <ImageView
                 android:id="@+id/no_connected_icon"
-                android:scaleType="centerInside"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:padding="@dimen/fab_size_normal"
+                android:scaleType="centerInside"
                 tools:ignore="ContentDescription"/>
 
-            <jahirfiquitiva.apps.iconshowcase.views.FastScrollRecyclerView
+            <android.support.v7.widget.RecyclerView
                 android:id="@+id/wallsGrid"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clipToPadding="false"
                 android:fitsSystemWindows="true"
-                android:overScrollMode="ifContentScrolls"
-                app:fastScrollThumbColor="@color/accent"/>
+                android:overScrollMode="ifContentScrolls"/>
+
+            <com.pluscubed.recyclerfastscroll.RecyclerFastScroller
+                android:id="@+id/rvFastScroller"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="end"/>
 
         </RelativeLayout>
 

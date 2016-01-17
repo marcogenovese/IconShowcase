@@ -55,7 +55,7 @@
                         android:id="@+id/welcomeContent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/cards_text_margin"
+                        android:layout_marginBottom="@dimen/cards_super_small_margin"
                         android:layout_marginTop="@dimen/cards_content_margin_mini"
                         android:lineSpacingMultiplier="1.2"
                         android:text="@string/theme_description"/>

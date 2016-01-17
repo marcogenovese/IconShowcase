@@ -55,7 +55,7 @@ public class IconsFragment extends Fragment {
 
         iconsGrid.setHasFixedSize(true);
         iconsGrid.setLayoutManager(new GridLayoutManager(getActivity(),
-                getResources().getInteger(R.integer.icon_grid_width)));
+                getResources().getInteger(R.integer.icons_grid_width)));
 
         mAdapter = new IconsAdapter(getActivity(), new ArrayList<String>(), new ArrayList<Integer>());
 
@@ -67,8 +67,8 @@ public class IconsFragment extends Fragment {
 
         iconsGrid.setAdapter(mAdapter);
 
-        RecyclerFastScroller fastScoller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
-        fastScoller.attachRecyclerView(iconsGrid);
+        RecyclerFastScroller fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
+        fastScroller.attachRecyclerView(iconsGrid);
 
         return layout;
     }
