@@ -62,14 +62,13 @@ import jahirfiquitiva.apps.iconshowcase.views.CustomCoordinatorLayout;
 
 public class ShowcaseActivity extends AppCompatActivity implements FolderChooserDialog.FolderSelectionCallback {
 
-    private static final boolean WITH_LICENSE_CHECKER = false,
+    public static final boolean WITH_LICENSE_CHECKER = false,
             WITH_INSTALLED_FROM_AMAZON = false,
             WITH_ZOOPER_SECTION = false,
             WITH_ICONS_BASED_CHANGELOG = true,
             WITH_NORMAL_DRAWER_HEADER = false,
-            WITH_MINI_DRAWER_HEADER = true;
-
-    public static final boolean WITH_USER_WALLPAPER_AS_TOOLBAR_HEADER = true;
+            WITH_MINI_DRAWER_HEADER = true,
+            WITH_USER_WALLPAPER_AS_TOOLBAR_HEADER = true;
 
     private static final String MARKET_URL = "https://play.google.com/store/apps/details?id=";
 

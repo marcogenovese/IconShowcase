@@ -73,6 +73,11 @@ public class MainFragment extends Fragment {
 
         PlayStoreListing = getActivity().getPackageName();
 
+        if (!ShowcaseActivity.WITH_ZOOPER_SECTION) {
+            LinearLayout widgets = (LinearLayout) layout.findViewById(R.id.widgets);
+            widgets.setVisibility(View.GONE);
+        }
+
         TextView iconsT = (TextView) layout.findViewById(R.id.text_themed_icons);
         iconsT.setText(getActivity().getResources().getString(R.string.themed_icons, themedIcons));
 
