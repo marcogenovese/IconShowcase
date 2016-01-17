@@ -7,21 +7,15 @@
 
     <dimen name="cards_super_small_margin">4dp</dimen>
 
-    <dimen name="cards_content_margin">24dp</dimen>
     <dimen name="cards_content_margin_small">16dp</dimen>
     <dimen name="cards_content_margin_mini">12dp</dimen>
     <dimen name="cards_content_margin_s">10dp</dimen>
 
-    <dimen name="mini_margin">2dp</dimen>
     <dimen name="card_corner_radius">2dp</dimen>
     <dimen name="grid_padding_vertical">8dp</dimen>
     <dimen name="card_little_margin">6dp</dimen>
-    <dimen name="card_mini_margin">2dp</dimen>
 
-    <dimen name="fab_margin">16dp</dimen>
     <dimen name="lists_padding">8dp</dimen>
-    <dimen name="texts_top_padding">5dp</dimen>
-    <dimen name="launchers_grid_padding">4dp</dimen>
 
     <dimen name="fab_size_normal">56dp</dimen>
     <dimen name="fab_size_mini">40dp</dimen>
@@ -31,11 +25,7 @@
     <dimen name="toolbar_elevation">4dp</dimen>
     <dimen name="tabs_contentInset">57dp</dimen>
 
-    <dimen name="social_icons_columns">64dp</dimen>
     <dimen name="dividers_height">2dp</dimen>
-
-    <dimen name="list_item_height">56dp</dimen>
-    <dimen name="list_margin">20dp</dimen>
 
     <dimen name="icons_preview_row">12dp</dimen>
     <dimen name="welcome_card_content_padding">12dp</dimen>
@@ -54,6 +44,5 @@
 
     <!-- Splash screen dimens -->
     <dimen name="splash_logo">16dp</dimen>
-    <dimen name="splash_brand">48dp</dimen>
 
 </resources>

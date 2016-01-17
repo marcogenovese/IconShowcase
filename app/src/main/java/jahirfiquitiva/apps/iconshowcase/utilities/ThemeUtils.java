@@ -8,7 +8,6 @@ import android.content.SharedPreferences.Editor;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -16,7 +15,8 @@ import java.util.Calendar;
 
 import jahirfiquitiva.apps.iconshowcase.R;
 
-public class ThemeUtils extends AppCompatActivity {
+//public class ThemeUtils extends AppCompatActivity {
+public class ThemeUtils {
 
     public final static int NAVBAR_DEFAULT = 0;
     public final static int NAVBAR_BLACK = 1;

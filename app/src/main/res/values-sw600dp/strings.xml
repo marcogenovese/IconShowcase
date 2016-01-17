@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string-array name="columns_options" tools:ignore="InconsistentArrays">
-        <item>1. Landscape: 3</item>
-        <item>2. Landscape: 4</item>
-        <item>3. Landscape: 5</item>
-        <item>4. Landscape: 6</item>
-        <item>5. Landscape: 7</item>
-        <item>6. Landscape: 8</item>
+        <item>Portrait: 1 / Landscape: 3</item>
+        <item>Portrait: 2 / Landscape: 4</item>
+        <item>Portrait: 3 / Landscape: 5</item>
+        <item>Portrait: 4 / Landscape: 6</item>
+        <item>Portrait: 5 / Landscape: 7</item>
+        <item>Portrait: 6 / Landscape: 8</item>
     </string-array>
 </resources>

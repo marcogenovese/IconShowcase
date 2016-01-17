@@ -121,7 +121,7 @@
         <item>@string/glide_web</item>
         <item>@string/rv_fast_scroller_web</item>
         <item>@string/circleiv_web</item>
-        <item>@string/muzei_api_name</item>
+        <item>@string/muzei_api_web</item>
     </string-array>
 
     <string name="google_plus">Google Plus</string>

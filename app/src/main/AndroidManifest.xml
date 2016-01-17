@@ -67,7 +67,7 @@
                 <category android:name="android.intent.category.MULTIWINDOW_LAUNCHER"/>
             </intent-filter>
 
-            <intent-filter tools:ignore="GoogleAppIndexingDeepLinkError">
+            <intent-filter tools:ignore="GoogleAppIndexingDeepLinkError,GoogleAppIndexingWarning">
 
                 <action android:name="android.intent.action.VIEW"/>
 
@@ -240,7 +240,8 @@
             android:name=".muzei.ArtSource"
             android:description="@string/artsource_desc"
             android:icon="@drawable/ic_muzei_logo"
-            android:label="@string/artsource_name">
+            android:label="@string/artsource_name"
+            tools:ignore="ExportedService">
             <intent-filter>
                 <action android:name="com.google.android.apps.muzei.api.MuzeiArtSource"/>
             </intent-filter>

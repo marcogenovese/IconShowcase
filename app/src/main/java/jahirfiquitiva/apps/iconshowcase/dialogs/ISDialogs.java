@@ -1,7 +1,9 @@
 package jahirfiquitiva.apps.iconshowcase.dialogs;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -20,6 +22,7 @@ import jahirfiquitiva.apps.iconshowcase.adapters.IconsAdapter;
 import jahirfiquitiva.apps.iconshowcase.fragments.WallpapersFragment;
 import jahirfiquitiva.apps.iconshowcase.models.IconsLists;
 import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
+import jahirfiquitiva.apps.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.apps.iconshowcase.utilities.Utils;
 
 /**
@@ -198,6 +201,40 @@ public final class ISDialogs {
                 .build();
     }
 
+    public static MaterialDialog showThemeChooserDialog(final Activity context) {
+        final int[] selectedTheme = {PreferenceManager.getDefaultSharedPreferences(context).getInt("theme", 0)};
+        final int[] newSelectedTheme = new int[1];
+        final Preferences mPrefs = new Preferences(context);
+        return new MaterialDialog.Builder(context)
+                .title(R.string.pref_title_themes)
+                .items(R.array.themes)
+                .itemsCallbackSingleChoice(selectedTheme[0], new MaterialDialog.ListCallbackSingleChoice() {
+                    @Override
+                    public boolean onSelection(MaterialDialog dialog, View view, int position, CharSequence text) {
+                        switch (position) {
+                            case 0:
+                                ThemeUtils.changeToTheme(context, ThemeUtils.LIGHT);
+                                break;
+                            case 1:
+                                ThemeUtils.changeToTheme(context, ThemeUtils.DARK);
+                                break;
+                            case 2:
+                                ThemeUtils.changeToTheme(context, ThemeUtils.AUTO);
+                                break;
+                        }
+                        PreferenceManager.getDefaultSharedPreferences(context).edit().putInt("theme", position).apply();
+                        newSelectedTheme[0] = position;
+                        if (newSelectedTheme[0] != selectedTheme[0]) {
+                            mPrefs.setSettingsModified(true);
+                            ThemeUtils.restartActivity(context);
+                        }
+                        return true;
+                    }
+                })
+                .positiveText(android.R.string.ok)
+                .build();
+    }
+
     public static void showColumnsSelectorDialog(final Context context) {
         Preferences mPrefs = new Preferences(context);
         final int current = mPrefs.getWallsColumnsNumber();
@@ -276,6 +313,75 @@ public final class ISDialogs {
                         Utils.openLinkInChromeCustomTab(context, contributorsLinks[i]);
                     }
                 }).show();
+    }
+
+    /*
+    TODO: Delete for official release
+     */
+
+    public static void showDrawerHeaderOptionsDialog(final Context context) {
+        final Preferences mPrefs = new Preferences(context);
+        final int current = mPrefs.getDrawerHeaderStyle();
+        new MaterialDialog.Builder(context)
+                .title(R.string.drawer_header_title)
+                .items(R.array.drawer_header_options)
+                .itemsCallbackSingleChoice(current - 1, new MaterialDialog.ListCallbackSingleChoice() {
+                    @Override
+                    public boolean onSelection(MaterialDialog dialog, View view, int position, CharSequence text) {
+                        int newSelected = position + 1;
+                        if (newSelected != current) {
+                            mPrefs.setDrawerHeaderStyle(newSelected);
+                            mPrefs.setSettingsModified(true);
+                            ThemeUtils.restartActivity((Activity) context);
+                        }
+                        return true;
+                    }
+                })
+                .positiveText(android.R.string.ok)
+                .negativeText(android.R.string.cancel)
+                .show();
+    }
+
+    public static void showChangelogStyleDialog(final Context context) {
+        final Preferences mPrefs = new Preferences(context);
+        final int current = mPrefs.getChangelogStyle();
+        new MaterialDialog.Builder(context)
+                .title(R.string.changelog_style_title)
+                .items(R.array.changelog_style_options)
+                .itemsCallbackSingleChoice(current - 1, new MaterialDialog.ListCallbackSingleChoice() {
+                    @Override
+                    public boolean onSelection(MaterialDialog dialog, View view, int position, CharSequence text) {
+                        int newSelected = position + 1;
+                        if (newSelected != current) {
+                            mPrefs.setChangelogStyle(newSelected);
+                        }
+                        return true;
+                    }
+                })
+                .positiveText(android.R.string.ok)
+                .negativeText(android.R.string.cancel)
+                .show();
+    }
+
+    public static void showCreditsOptionsDialog(final Context context) {
+        final Preferences mPrefs = new Preferences(context);
+        final int current = mPrefs.getCreditsStyle();
+        new MaterialDialog.Builder(context)
+                .title(R.string.credits_section_style)
+                .items(R.array.credits_section_options)
+                .itemsCallbackSingleChoice(current - 1, new MaterialDialog.ListCallbackSingleChoice() {
+                    @Override
+                    public boolean onSelection(MaterialDialog dialog, View view, int position, CharSequence text) {
+                        int newSelected = position + 1;
+                        if (newSelected != current) {
+                            mPrefs.setCreditsStyle(newSelected);
+                        }
+                        return true;
+                    }
+                })
+                .positiveText(android.R.string.ok)
+                .negativeText(android.R.string.cancel)
+                .show();
     }
 
 }

@@ -153,7 +153,7 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
 
         // SECTION F
         sectionF = new ArrayList<>();
-        String[] arrayF = r.getStringArray(R.array.latest);
+        String[] arrayF = r.getStringArray(R.array.drawers);
         listF = sortLists(arrayF);
         for (String extra : listF) {
             int res = r.getIdentifier(extra, "drawable", p);

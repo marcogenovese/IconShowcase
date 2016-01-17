@@ -62,12 +62,12 @@ import jahirfiquitiva.apps.iconshowcase.views.CustomCoordinatorLayout;
 
 public class ShowcaseActivity extends AppCompatActivity implements FolderChooserDialog.FolderSelectionCallback {
 
-    public static final boolean WITH_LICENSE_CHECKER = false,
+    public static boolean WITH_LICENSE_CHECKER = false,
             WITH_INSTALLED_FROM_AMAZON = false,
             WITH_ZOOPER_SECTION = true,
-            WITH_ICONS_BASED_CHANGELOG = true,
-            WITH_NORMAL_DRAWER_HEADER = false,
-            WITH_MINI_DRAWER_HEADER = true,
+            WITH_ICONS_BASED_CHANGELOG = false,
+            WITH_NORMAL_DRAWER_HEADER = true,
+            WITH_MINI_DRAWER_HEADER = false,
             WITH_USER_WALLPAPER_AS_TOOLBAR_HEADER = true,
             WITH_ALTERNATIVE_ABOUT_SECTION = true;
 
@@ -119,6 +119,24 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         super.onCreate(savedInstanceState);
         context = this;
         mPrefs = new Preferences(ShowcaseActivity.this);
+
+        WITH_ZOOPER_SECTION = mPrefs.getZooperSectionEnabled();
+
+        switch (mPrefs.getDrawerHeaderStyle()) {
+            case 1:
+                WITH_MINI_DRAWER_HEADER = false;
+                WITH_NORMAL_DRAWER_HEADER = true;
+                break;
+            case 2:
+                WITH_MINI_DRAWER_HEADER = true;
+                WITH_NORMAL_DRAWER_HEADER = false;
+                break;
+            case 3:
+                WITH_MINI_DRAWER_HEADER = false;
+                WITH_NORMAL_DRAWER_HEADER = false;
+                break;
+        }
+
         getAction();
 
         setContentView(R.layout.showcase_activity);
@@ -161,7 +179,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         CollapsingToolbarLayout.LayoutParams layoutParams = (CollapsingToolbarLayout.LayoutParams) toolbar.getLayoutParams();
         layoutParams.height = layoutParams.height + UIUtils.getStatusBarHeight(this);
         toolbar.setLayoutParams(layoutParams);
-        //((CollapsingToolbarLayout.LayoutParams) toolbar.getLayoutParams()).topMargin = ((CollapsingToolbarLayout.LayoutParams) toolbar.getLayoutParams()).topMargin + UIUtils.getStatusBarHeight(this);
         setSupportActionBar(toolbar);
 
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbar);
@@ -309,10 +326,21 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         super.onOptionsItemSelected(item);
         switch (item.getItemId()) {
             case R.id.changelog:
+                /*
                 if (WITH_ICONS_BASED_CHANGELOG) {
                     ISDialogs.showIconsChangelogDialog(this);
                 } else {
                     ISDialogs.showChangelogDialog(this);
+                }
+                */
+                switch (mPrefs.getChangelogStyle()) {
+                    case 1:
+                        ISDialogs.showChangelogDialog(this);
+                        break;
+
+                    case 2:
+                        ISDialogs.showIconsChangelogDialog(this);
+                        break;
                 }
                 break;
 
@@ -572,10 +600,20 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                 switchFragment(7, thaZooper, "Zooper", context);
                 break;
             case 8:
+                /*
                 if (WITH_ALTERNATIVE_ABOUT_SECTION) {
                     switchFragment(8, thaCredits, "CreditsAlt", context);
                 } else {
                     switchFragment(8, thaCredits, "Credits", context);
+                }
+                */
+                switch (mPrefs.getCreditsStyle()) {
+                    case 1:
+                        switchFragment(8, thaCredits, "CreditsAlt", context);
+                        break;
+                    case 2:
+                        switchFragment(8, thaCredits, "Credits", context);
+                        break;
                 }
                 break;
             case 9:
@@ -663,7 +701,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
     private static void playIconsAnimations(ImageView icon1, ImageView icon2,
                                             ImageView icon3, ImageView icon4, Animation anim) {
-
         icon1.startAnimation(anim);
         icon2.startAnimation(anim);
         icon3.startAnimation(anim);

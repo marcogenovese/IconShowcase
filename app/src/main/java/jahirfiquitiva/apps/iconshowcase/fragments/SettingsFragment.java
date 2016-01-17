@@ -8,7 +8,6 @@ import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,7 +18,6 @@ import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -30,14 +28,13 @@ import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.apps.iconshowcase.basefragments.PreferenceFragment;
 import jahirfiquitiva.apps.iconshowcase.dialogs.FolderChooserDialog;
+import jahirfiquitiva.apps.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.apps.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.apps.iconshowcase.utilities.ThemeUtils;
 
 public class SettingsFragment extends PreferenceFragment implements PermissionUtils.OnPermissionResultListener {
 
-    private static SharedPreferences sp;
-    private static SharedPreferences.Editor editor;
     private static Preferences mPrefs;
     private static PackageManager p;
     private static ComponentName componentName;
@@ -51,9 +48,6 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
         mPrefs = new Preferences(getActivity());
 
         mPrefs.setSettingsModified(false);
-
-        sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        editor = sp.edit();
 
         if (mPrefs.getDownloadsFolder() != null) {
             location = mPrefs.getDownloadsFolder();
@@ -91,44 +85,15 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
         findPreference("themes").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                final int[] selectedTheme = {sp.getInt("theme", 0)};
-                final int[] newSelectedTheme = new int[1];
-                ShowcaseActivity.settingsDialog = new MaterialDialog.Builder(getActivity())
-                        .title(R.string.pref_title_themes)
-                        .items(R.array.themes)
-                        .itemsCallbackSingleChoice(selectedTheme[0], new MaterialDialog.ListCallbackSingleChoice() {
-                            @Override
-                            public boolean onSelection(MaterialDialog dialog, View view, int position, CharSequence text) {
-                                switch (position) {
-                                    case 0:
-                                        ThemeUtils.changeToTheme(getActivity(), ThemeUtils.LIGHT);
-                                        break;
-                                    case 1:
-                                        ThemeUtils.changeToTheme(getActivity(), ThemeUtils.DARK);
-                                        break;
-                                    case 2:
-                                        ThemeUtils.changeToTheme(getActivity(), ThemeUtils.AUTO);
-                                        break;
-                                }
-                                editor.putInt("theme", position).apply();
-                                newSelectedTheme[0] = position;
-                                if (newSelectedTheme[0] != selectedTheme[0]) {
-                                    mPrefs.setSettingsModified(true);
-                                    ThemeUtils.restartActivity(getActivity());
-                                }
-                                return true;
-                            }
-                        })
-                        .positiveText(android.R.string.ok)
-                        .show();
-
+                ShowcaseActivity.settingsDialog = ISDialogs.showThemeChooserDialog(getActivity());
+                ShowcaseActivity.settingsDialog.show();
                 return true;
             }
         });
 
         // Set the preference for colored nav bar on Lollipop
+        final CheckBoxPreference coloredNavBar = (CheckBoxPreference) findPreference("coloredNavBar");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            final CheckBoxPreference coloredNavBar = (CheckBoxPreference) getPreferenceManager().findPreference("coloredNavBar");
             coloredNavBar.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     mPrefs.setSettingsModified(true);
@@ -140,9 +105,11 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
                     return true;
                 }
             });
+        } else {
+            uiCategory.removePreference(coloredNavBar);
         }
 
-        CheckBoxPreference animations = (CheckBoxPreference) getPreferenceManager().findPreference("animations");
+        CheckBoxPreference animations = (CheckBoxPreference) findPreference("animations");
         animations.setChecked(mPrefs.getAnimationsEnabled());
         animations.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -186,7 +153,7 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
             }
         });
 
-        final CheckBoxPreference hideIcon = (CheckBoxPreference) getPreferenceManager().findPreference("launcherIcon");
+        final CheckBoxPreference hideIcon = (CheckBoxPreference) findPreference("launcherIcon");
         if (mPrefs.getLauncherIconShown()) {
             hideIcon.setChecked(false);
         }
@@ -238,6 +205,47 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
 
                     }
                 }
+                return true;
+            }
+        });
+
+
+        /*
+        TODO: Delete for official release.
+         */
+
+        findPreference("drawerHeader").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                ISDialogs.showDrawerHeaderOptionsDialog(getActivity());
+                return true;
+            }
+        });
+
+        findPreference("changelogStyle").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                ISDialogs.showChangelogStyleDialog(getActivity());
+                return true;
+            }
+        });
+
+        findPreference("creditsStyle").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                ISDialogs.showCreditsOptionsDialog(getActivity());
+                return true;
+            }
+        });
+
+        CheckBoxPreference zooper = (CheckBoxPreference) findPreference("zooper");
+        zooper.setChecked(mPrefs.getZooperSectionEnabled());
+        zooper.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                mPrefs.setZooperSectionEnabled(newValue.toString().equals("true"));
+                mPrefs.setSettingsModified(true);
+                ThemeUtils.restartActivity(getActivity());
                 return true;
             }
         });
@@ -335,7 +343,7 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
             }
         }
         clearCache(context);
-        editor.clear().commit();
+        PreferenceManager.getDefaultSharedPreferences(context).edit().clear().commit();
         mPrefs.setEasterEggEnabled(false);
         mPrefs.setIconShown(true);
         mPrefs.setDownloadsFolder(null);

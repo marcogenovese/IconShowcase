@@ -136,7 +136,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
             StringBuilder themeResourcesBuilder = new StringBuilder();
 
             int appsCount = 0;
-            sb.append("These apps have no icons, please add some for them:\n\n");
+            sb.append("These apps have no icons, please add some for them. Thanks in advance.\n\n");
 
             for (int i = 0; i < appsNames.size(); i++) {
 
