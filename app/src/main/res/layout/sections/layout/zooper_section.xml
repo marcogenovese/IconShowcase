@@ -15,6 +15,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
+            android:paddingBottom="@dimen/cards_margin"
             android:layout_height="wrap_content"
             android:clipToPadding="false"
             >
@@ -30,46 +31,70 @@
                 app:cardBackgroundColor="?attr/colorCardBackground">
 
                 <RelativeLayout
-                    style="@style/CardContent"
+                    style="@style/ZooperCardContent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <TextView
-                        android:id="@+id/card_title"
+                    <LinearLayout
+                        android:id="@+id/texts"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/zooper_download_title"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+                        android:gravity="center_vertical"
+                        android:minHeight="@dimen/md_listitem_height"
+                        android:orientation="horizontal"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp">
 
-                    <TextView
-                        android:id="@+id/card_content"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/card_title"
-                        android:layout_marginTop="@dimen/lists_padding"
-                        android:text="@string/zooper_download_content"/>
+                        <ImageView
+                            android:id="@+id/icon_zooper"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            tools:ignore="ContentDescription"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="24dp"
+                            android:layout_marginStart="24dp"
+                            android:orientation="vertical"
+                            android:paddingBottom="8dp"
+                            android:paddingTop="8dp">
+
+                            <TextView
+                                android:id="@+id/card_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/zooper_download_title"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+
+                            <TextView
+                                android:id="@+id/card_content"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/cards_margin"
+                                android:text="@string/zooper_download_content"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:layout_below="@id/card_content"
-                        android:layout_gravity="center"
-                        android:background="?selectableItemBackgroundBorderless"
-                        android:gravity="center"
-                        android:orientation="horizontal">
+                        android:layout_below="@id/texts"
+                        android:orientation="horizontal"
+                        android:paddingBottom="8dp">
 
-                        <TextView
+                        <android.support.v7.widget.AppCompatButton
                             android:id="@+id/download_button"
+                            style="@style/Widget.AppCompat.Button.Borderless"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_margin="@dimen/cards_spacing"
-                            android:background="?selectableItemBackgroundBorderless"
                             android:text="@string/download"
-                            android:textAllCaps="true"
-                            android:textColor="@color/accent"
-                            android:textStyle="bold"/>
+                            android:textColor="@color/accent"/>
 
                     </LinearLayout>
 
@@ -89,45 +114,70 @@
                 app:cardBackgroundColor="?attr/colorCardBackground">
 
                 <RelativeLayout
-                    style="@style/CardContent"
+                    style="@style/ZooperCardContent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <TextView
-                        android:id="@+id/mu_title"
+                    <LinearLayout
+                        android:id="@+id/mu_texts"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/mu_download_title"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+                        android:gravity="center_vertical"
+                        android:minHeight="@dimen/md_listitem_height"
+                        android:orientation="horizontal"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp">
 
-                    <TextView
-                        android:id="@+id/mu_content"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/mu_title"
-                        android:layout_marginTop="@dimen/lists_padding"
-                        android:text="@string/mu_download_content"/>
+                        <ImageView
+                            android:id="@+id/icon_mu"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            tools:ignore="ContentDescription"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="24dp"
+                            android:layout_marginStart="24dp"
+                            android:orientation="vertical"
+                            android:paddingBottom="8dp"
+                            android:paddingTop="8dp">
+
+                            <TextView
+                                android:id="@+id/mu_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/mu_download_title"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+
+                            <TextView
+                                android:id="@+id/mu_content"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/cards_margin"
+                                android:text="@string/mu_download_content"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:layout_below="@id/mu_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:orientation="horizontal">
+                        android:layout_below="@id/mu_texts"
+                        android:orientation="horizontal"
+                        android:paddingBottom="8dp">
 
-                        <TextView
+                        <android.support.v7.widget.AppCompatButton
                             android:id="@+id/mu_download_button"
+                            style="@style/Widget.AppCompat.Button.Borderless"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_margin="@dimen/cards_spacing"
-                            android:background="?selectableItemBackgroundBorderless"
                             android:text="@string/download"
-                            android:textAllCaps="true"
-                            android:textColor="@color/accent"
-                            android:textStyle="bold"/>
+                            android:textColor="@color/accent"/>
 
                     </LinearLayout>
 
@@ -151,20 +201,49 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <TextView
-                        android:id="@+id/fonts_card_title"
+                    <LinearLayout
+                        android:id="@+id/fonts_card_texts"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/zooper_install_fonts_title"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+                        android:gravity="center_vertical"
+                        android:minHeight="@dimen/md_listitem_height"
+                        android:orientation="horizontal"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp">
 
-                    <TextView
-                        android:id="@+id/fonts_card_content"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/fonts_card_title"
-                        android:layout_marginTop="@dimen/lists_padding"
-                        android:text="@string/zooper_install_fonts_content"/>
+                        <ImageView
+                            android:id="@+id/icon_fonts"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            tools:ignore="ContentDescription"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="24dp"
+                            android:layout_marginStart="24dp"
+                            android:orientation="vertical"
+                            android:paddingBottom="8dp"
+                            android:paddingTop="8dp">
+
+                            <TextView
+                                android:id="@+id/fonts_card_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/zooper_install_fonts_title"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+
+                            <TextView
+                                android:id="@+id/fonts_card_content"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/cards_margin"
+                                android:text="@string/zooper_install_fonts_content"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
 
                 </RelativeLayout>
 
@@ -186,20 +265,49 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <TextView
-                        android:id="@+id/iconsets_card_title"
+                    <LinearLayout
+                        android:id="@+id/iconsets_card_texts"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/zooper_install_iconsets_title"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+                        android:gravity="center_vertical"
+                        android:minHeight="@dimen/md_listitem_height"
+                        android:orientation="horizontal"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp">
 
-                    <TextView
-                        android:id="@+id/iconsets_card_content"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/iconsets_card_title"
-                        android:layout_marginTop="@dimen/lists_padding"
-                        android:text="@string/zooper_install_iconsets_content"/>
+                        <ImageView
+                            android:id="@+id/icon_iconsets"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            tools:ignore="ContentDescription"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="24dp"
+                            android:layout_marginStart="24dp"
+                            android:orientation="vertical"
+                            android:paddingBottom="8dp"
+                            android:paddingTop="8dp">
+
+                            <TextView
+                                android:id="@+id/iconsets_card_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/zooper_install_iconsets_title"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+
+                            <TextView
+                                android:id="@+id/iconsets_card_content"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/cards_margin"
+                                android:text="@string/zooper_install_iconsets_content"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
 
                 </RelativeLayout>
 
@@ -210,12 +318,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/iconsets_card"
-                android:layout_margin="@dimen/cards_margin"
+                android:layout_marginLeft="@dimen/cards_margin"
+                android:layout_marginRight="@dimen/cards_margin"
+                android:layout_marginTop="@dimen/cards_margin"
                 android:foreground="?selectableItemBackground"
                 app:cardBackgroundColor="?attr/colorCardBackground">
 
                 <RelativeLayout
-                    style="@style/CardContent"
+                    style="@style/ZooperCardContent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -223,6 +333,9 @@
                         android:id="@+id/mediautilities_info_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/lists_padding"
+                        android:layout_marginRight="@dimen/lists_padding"
+                        android:layout_marginTop="@dimen/lists_padding"
                         android:text="@string/mu_info_title"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
 
@@ -231,6 +344,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/mediautilities_info_title"
+                        android:layout_marginLeft="@dimen/lists_padding"
+                        android:layout_marginRight="@dimen/lists_padding"
                         android:layout_marginTop="@dimen/lists_padding"
                         android:text="@string/mu_info_content"/>
 
@@ -240,21 +355,16 @@
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:layout_below="@id/mediautilities_info_content"
-                        android:layout_gravity="center"
-                        android:background="?selectableItemBackgroundBorderless"
-                        android:gravity="center"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:paddingBottom="8dp">
 
-                        <TextView
+                        <android.support.v7.widget.AppCompatButton
                             android:id="@+id/mu_open_button"
+                            style="@style/Widget.AppCompat.Button.Borderless"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_margin="@dimen/cards_spacing"
-                            android:background="?selectableItemBackgroundBorderless"
                             android:text="@string/open"
-                            android:textAllCaps="true"
-                            android:textColor="@color/accent"
-                            android:textStyle="bold"/>
+                            android:textColor="@color/accent"/>
 
                     </LinearLayout>
 

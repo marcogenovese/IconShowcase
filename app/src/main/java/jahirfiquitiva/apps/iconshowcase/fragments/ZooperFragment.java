@@ -7,40 +7,44 @@ package jahirfiquitiva.apps.iconshowcase.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.CardView;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ImageView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
 
 import java.io.File;
 import java.io.IOException;
 
 import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.tasks.CopyFilesToStorage;
+import jahirfiquitiva.apps.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.apps.iconshowcase.utilities.Utils;
 
 public class ZooperFragment extends Fragment {
 
+    private boolean WITH_MEDIAUTILITIES_WIDGETS = true;
+
     private MaterialDialog dialog;
     private ViewGroup layout;
 
-    private TextView downloadZooper, downloadMU, openMU;
+    private AppCompatButton downloadZooper, downloadMU, openMU;
     private CardView cardZooper, cardMU, cardMUInfo, installFonts, installIconsets;
     private Context context;
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
-
-        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
-        fab.setVisibility(View.GONE);
 
         if (layout != null) {
             ViewGroup parent = (ViewGroup) layout.getParent();
@@ -56,14 +60,45 @@ public class ZooperFragment extends Fragment {
 
         context = getActivity();
 
+        final int light = ContextCompat.getColor(context, android.R.color.white);
+        final int dark = ContextCompat.getColor(context, R.color.grey);
+
+        Drawable alert = new IconicsDrawable(context)
+                .icon(GoogleMaterial.Icon.gmd_alert_triangle)
+                .color(ThemeUtils.darkTheme ? light : dark)
+                .sizeDp(24);
+
+        Drawable fonts = new IconicsDrawable(context)
+                .icon(GoogleMaterial.Icon.gmd_text_format)
+                .color(ThemeUtils.darkTheme ? light : dark)
+                .sizeDp(24);
+
+        Drawable iconsets = new IconicsDrawable(context)
+                .icon(GoogleMaterial.Icon.gmd_toys)
+                .color(ThemeUtils.darkTheme ? light : dark)
+                .sizeDp(24);
+
+        ImageView zooperIV = (ImageView) layout.findViewById(R.id.icon_zooper);
+        zooperIV.setImageDrawable(alert);
+
+        ImageView muIV = (ImageView) layout.findViewById(R.id.icon_mu);
+        muIV.setImageDrawable(alert);
+
+        ImageView fontsIV = (ImageView) layout.findViewById(R.id.icon_fonts);
+        fontsIV.setImageDrawable(fonts);
+
+        ImageView iconsetsIV = (ImageView) layout.findViewById(R.id.icon_iconsets);
+        iconsetsIV.setImageDrawable(iconsets);
+
         cardZooper = (CardView) layout.findViewById(R.id.zooper_card);
+
         if (Utils.isAppInstalled(context, "org.zooper.zwpro")) {
             cardZooper.setVisibility(View.GONE);
         } else {
             cardZooper.setVisibility(View.VISIBLE);
         }
 
-        downloadZooper = (TextView) layout.findViewById(R.id.download_button);
+        downloadZooper = (AppCompatButton) layout.findViewById(R.id.download_button);
         downloadZooper.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,15 +132,20 @@ public class ZooperFragment extends Fragment {
         cardMU = (CardView) layout.findViewById(R.id.mu_card);
         cardMUInfo = (CardView) layout.findViewById(R.id.mediautilities_info_card);
 
-        if (!Utils.isAppInstalled(context, "com.batescorp.notificationmediacontrols.alpha")) {
-            cardMU.setVisibility(View.VISIBLE);
-            cardMUInfo.setVisibility(View.GONE);
+        if (WITH_MEDIAUTILITIES_WIDGETS) {
+            if (!Utils.isAppInstalled(context, "com.batescorp.notificationmediacontrols.alpha")) {
+                cardMU.setVisibility(View.VISIBLE);
+                cardMUInfo.setVisibility(View.GONE);
+            } else {
+                cardMU.setVisibility(View.GONE);
+                cardMUInfo.setVisibility(View.VISIBLE);
+            }
         } else {
             cardMU.setVisibility(View.GONE);
-            cardMUInfo.setVisibility(View.VISIBLE);
+            cardMUInfo.setVisibility(View.GONE);
         }
 
-        downloadMU = (TextView) layout.findViewById(R.id.mu_download_button);
+        downloadMU = (AppCompatButton) layout.findViewById(R.id.mu_download_button);
         downloadMU.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,7 +154,7 @@ public class ZooperFragment extends Fragment {
             }
         });
 
-        openMU = (TextView) layout.findViewById(R.id.mu_open_button);
+        openMU = (AppCompatButton) layout.findViewById(R.id.mu_open_button);
         openMU.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -192,7 +192,7 @@ public class WallpapersFragment extends Fragment {
                                     }
                                 });
                             }
-                        }, 4000);
+                        }, 8000);
                     }
                 }
             });
@@ -255,7 +255,7 @@ public class WallpapersFragment extends Fragment {
         if (mRecyclerView.getVisibility() != View.VISIBLE) {
             mRecyclerView.setVisibility(View.VISIBLE);
         }
-        //mRecyclerView.updateViewLayout(mRecyclerView, mRecyclerView.getLayoutParams());
+
         if (fastScroller.getVisibility() != View.VISIBLE) {
             fastScroller.setVisibility(View.VISIBLE);
         }

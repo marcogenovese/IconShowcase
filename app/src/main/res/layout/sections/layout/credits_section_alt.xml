@@ -23,7 +23,9 @@
                 android:id="@+id/designerCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/cards_margin"
+                android:layout_marginLeft="@dimen/cards_margin"
+                android:layout_marginRight="@dimen/cards_margin"
+                android:layout_marginTop="@dimen/cards_margin"
                 app:cardBackgroundColor="?attr/colorCardBackground"
                 app:cardCornerRadius="@dimen/card_corner_radius"
                 app:cardElevation="@dimen/cards_elevation">

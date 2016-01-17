@@ -71,6 +71,12 @@
         <item name="android:orientation">vertical</item>
     </style>
 
+    <style name="ZooperCardContent" parent="android:Widget">
+        <item name="android:paddingLeft">@dimen/cards_spacing</item>
+        <item name="android:paddingRight">@dimen/cards_spacing</item>
+        <item name="android:paddingTop">@dimen/cards_spacing</item>
+    </style>
+
     <style name="AboutContent" parent="android:Widget">
         <item name="android:paddingLeft">@dimen/card_little_margin</item>
         <item name="android:paddingRight">@dimen/card_little_margin</item>
