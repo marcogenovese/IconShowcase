@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <integer name="wallpapers_grid_width">2</integer>
     <integer name="icons_grid_width">4</integer>
     <integer name="launchers_grid_width">3</integer>
     <integer name="requests_grid_width">1</integer>

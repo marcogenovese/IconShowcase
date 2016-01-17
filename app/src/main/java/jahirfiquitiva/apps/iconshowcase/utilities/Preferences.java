@@ -3,6 +3,8 @@ package jahirfiquitiva.apps.iconshowcase.utilities;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import jahirfiquitiva.apps.iconshowcase.R;
+
 public class Preferences {
 
     private static final String
@@ -159,7 +161,8 @@ public class Preferences {
     }
 
     public int getWallsColumnsNumber() {
-        return getSharedPreferences().getInt(WALLS_COLUMNS_NUMBER, 2);
+        return getSharedPreferences().getInt(WALLS_COLUMNS_NUMBER,
+                context.getResources().getInteger(R.integer.wallpapers_grid_width));
     }
 
 }
