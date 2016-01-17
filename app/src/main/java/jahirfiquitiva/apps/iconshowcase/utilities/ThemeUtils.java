@@ -15,7 +15,6 @@ import java.util.Calendar;
 
 import jahirfiquitiva.apps.iconshowcase.R;
 
-//public class ThemeUtils extends AppCompatActivity {
 public class ThemeUtils {
 
     public final static int NAVBAR_DEFAULT = 0;
