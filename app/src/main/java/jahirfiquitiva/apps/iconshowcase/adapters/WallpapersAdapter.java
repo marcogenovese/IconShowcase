@@ -87,6 +87,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
         if (mPrefs.getAnimationsEnabled()) {
             Glide.with(context)
                     .load(wallUrl)
+                    .centerCrop()
                     .placeholder(R.drawable.placeholder)
                     .error(errorIcon)
                     .crossFade()
@@ -114,6 +115,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
         } else {
             Glide.with(context)
                     .load(wallUrl)
+                    .centerCrop()
                     .placeholder(R.drawable.placeholder)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(new GlideDrawableImageViewTarget(holder.wall) {
@@ -161,7 +163,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
             name = (TextView) view.findViewById(R.id.name);
             authorName = (TextView) view.findViewById(R.id.author);
             progressBar = (ProgressBar) view.findViewById(R.id.progress);
-            titleBg = (LinearLayout) view.findViewById(R.id.titlebg);
+            titleBg = (LinearLayout) view.findViewById(R.id.titleBg);
             layout = (FrameLayout) view.findViewById(R.id.wall_frame_layout);
             view.setOnClickListener(this);
             view.setOnLongClickListener(this);

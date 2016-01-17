@@ -23,12 +23,13 @@
         tools:ignore="ContentDescription, UnusedAttribute"/>
 
     <LinearLayout
-        android:id="@+id/titlebg"
-        style="@style/AboutContent"
+        android:id="@+id/titleBg"
+        style="@style/ListsContent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:background="@color/semitransparent_black"
+        android:orientation="vertical"
         tools:ignore="UnusedAttribute">
 
         <TextView
@@ -37,8 +38,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:gravity="center"
-            android:textColor="#ffffffff"
+            android:singleLine="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@android:color/white"
             tools:text="Title"/>
 
         <TextView
@@ -47,8 +49,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:gravity="center"
-            android:textColor="#ffffffff"
+            android:singleLine="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@android:color/white"
             tools:text="Author"/>
 
     </LinearLayout>

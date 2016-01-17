@@ -67,8 +67,9 @@ public class WallpapersFragment extends Fragment {
     private static RecyclerView mRecyclerView;
     private static RecyclerFastScroller fastScroller;
     public static SwipeRefreshLayout mSwipeRefreshLayout;
-    private static Activity context;
+    public static Activity context;
     private static ViewGroup layout;
+    private static GridSpacingItemDecoration gridSpacing;
 
     private static boolean worked;
 
@@ -117,13 +118,7 @@ public class WallpapersFragment extends Fragment {
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) layout.findViewById(R.id.swipeRefreshLayout);
 
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(),
-                getResources().getInteger(R.integer.wallpapers_grid_width)));
-        mRecyclerView.addItemDecoration(
-                new GridSpacingItemDecoration(getResources().getInteger(R.integer.wallpapers_grid_width),
-                        getResources().getDimensionPixelSize(R.dimen.lists_padding),
-                        true));
-        mRecyclerView.setHasFixedSize(true);
+        setupRecyclerView(false, 0);
         mRecyclerView.setVisibility(View.GONE);
 
         mSwipeRefreshLayout.setProgressBackgroundColorSchemeColor(ThemeUtils.darkTheme ? dark : light);
@@ -213,6 +208,15 @@ public class WallpapersFragment extends Fragment {
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
+    private static void hideStuff() {
+        hideProgressBar();
+        noConnection.setVisibility(View.VISIBLE);
+        mRecyclerView.setVisibility(View.GONE);
+        fastScroller.setVisibility(View.GONE);
+        mSwipeRefreshLayout.setEnabled(false);
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
+
     private static void showProgressBar() {
         if (mProgress != null) {
             if (mProgress.getVisibility() != View.VISIBLE) {
@@ -229,13 +233,40 @@ public class WallpapersFragment extends Fragment {
         }
     }
 
-    private static void hideStuff() {
-        hideProgressBar();
-        noConnection.setVisibility(View.VISIBLE);
+    private static void setupRecyclerView(boolean updating, int newColumns) {
+        Preferences mPrefs = new Preferences(context);
+        if (updating && gridSpacing != null) {
+            mPrefs.setWallsColumnsNumber(newColumns);
+            mRecyclerView.removeItemDecoration(gridSpacing);
+        }
+
+        int columnsNumber = mPrefs.getWallsColumnsNumber();
+        if (context.getResources().getConfiguration().orientation == 2) {
+            columnsNumber += 2;
+        }
+
+        mRecyclerView.setLayoutManager(new GridLayoutManager(context,
+                columnsNumber));
+        gridSpacing = new GridSpacingItemDecoration(columnsNumber,
+                context.getResources().getDimensionPixelSize(R.dimen.lists_padding),
+                true);
+        mRecyclerView.addItemDecoration(gridSpacing);
+        mRecyclerView.setHasFixedSize(true);
+        if (mRecyclerView.getVisibility() != View.VISIBLE) {
+            mRecyclerView.setVisibility(View.VISIBLE);
+        }
+        //mRecyclerView.updateViewLayout(mRecyclerView, mRecyclerView.getLayoutParams());
+        if (fastScroller.getVisibility() != View.VISIBLE) {
+            fastScroller.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public static void updateRecyclerView(int newColumns) {
         mRecyclerView.setVisibility(View.GONE);
         fastScroller.setVisibility(View.GONE);
-        mSwipeRefreshLayout.setEnabled(false);
-        mSwipeRefreshLayout.setRefreshing(false);
+        showProgressBar();
+        setupRecyclerView(true, newColumns);
+        hideProgressBar();
     }
 
     @Override

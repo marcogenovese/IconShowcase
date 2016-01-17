@@ -8,12 +8,12 @@ public class Preferences {
     private static final String
             PREFERENCES_NAME = "DASHBOARD_PREFERENCES",
             FEATURES_ENABLED = "features_nabled",
-            FIRSTRUN = "firstrun",
+            FIRST_RUN = "first_run",
             ROTATE_MINUTE = "rotate_time_minute",
             ROTATE_TIME = "muzei_rotate_time",
-            LAUNCHER_ICON = "laucher_icon_shown",
+            LAUNCHER_ICON = "launcher_icon_shown",
             WALLS_DOWNLOAD_FOLDER = "walls_download_folder",
-            EASTEREGG_ENABLED = "easteregg_enabled",
+            EASTER_EGG_ENABLED = "easter_egg_enabled",
             APPS_TO_REQUEST_LOADED = "apps_to_request_loaded",
             WALLS_LIST_LOADED = "walls_list_loaded",
             SETTINGS_MODIFIED = "settings_modified",
@@ -21,7 +21,8 @@ public class Preferences {
             WALLPAPER_AS_TOOLBAR_HEADER = "wallpaper_as_toolbar_header",
             REQUESTS_DIALOG_DISMISSED = "requests_dialog_dismissed",
             APPLY_DIALOG_DISMISSED = "apply_dialog_dismissed",
-            WALLS_DIALOG_DISMISSED = "walls_dialog_dismissed";
+            WALLS_DIALOG_DISMISSED = "walls_dialog_dismissed",
+            WALLS_COLUMNS_NUMBER = "walls_columns_number";
 
     private final Context context;
 
@@ -34,11 +35,11 @@ public class Preferences {
     }
 
     public void setFirstRun(boolean firstRun) {
-        getSharedPreferences().edit().putBoolean(FIRSTRUN, firstRun).apply();
+        getSharedPreferences().edit().putBoolean(FIRST_RUN, firstRun).apply();
     }
 
     public boolean isFirstRun() {
-        return getSharedPreferences().getBoolean(FIRSTRUN, true);
+        return getSharedPreferences().getBoolean(FIRST_RUN, true);
     }
 
     public void setFeaturesEnabled(boolean enable) {
@@ -66,11 +67,11 @@ public class Preferences {
     }
 
     public void setEasterEggEnabled(boolean dbenabled) {
-        getSharedPreferences().edit().putBoolean(EASTEREGG_ENABLED, dbenabled).apply();
+        getSharedPreferences().edit().putBoolean(EASTER_EGG_ENABLED, dbenabled).apply();
     }
 
     public boolean getEasterEggEnabled() {
-        return getSharedPreferences().getBoolean(EASTEREGG_ENABLED, false);
+        return getSharedPreferences().getBoolean(EASTER_EGG_ENABLED, false);
     }
 
     public void setIconShown(boolean show) {
@@ -151,6 +152,14 @@ public class Preferences {
 
     public boolean getWallsDialogDismissed() {
         return getSharedPreferences().getBoolean(WALLS_DIALOG_DISMISSED, false);
+    }
+
+    public void setWallsColumnsNumber(int columnsNumber) {
+        getSharedPreferences().edit().putInt(WALLS_COLUMNS_NUMBER, columnsNumber).apply();
+    }
+
+    public int getWallsColumnsNumber() {
+        return getSharedPreferences().getInt(WALLS_COLUMNS_NUMBER, 2);
     }
 
 }

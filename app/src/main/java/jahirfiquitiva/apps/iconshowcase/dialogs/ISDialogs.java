@@ -4,9 +4,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.util.ArrayList;
@@ -15,7 +17,9 @@ import java.util.concurrent.Callable;
 import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.adapters.ChangelogAdapter;
 import jahirfiquitiva.apps.iconshowcase.adapters.IconsAdapter;
+import jahirfiquitiva.apps.iconshowcase.fragments.WallpapersFragment;
 import jahirfiquitiva.apps.iconshowcase.models.IconsLists;
+import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.apps.iconshowcase.utilities.Utils;
 
 /**
@@ -192,6 +196,86 @@ public final class ISDialogs {
                 .progress(true, 0)
                 .cancelable(false)
                 .build();
+    }
+
+    public static void showColumnsSelectorDialog(final Context context) {
+        Preferences mPrefs = new Preferences(context);
+        final int current = mPrefs.getWallsColumnsNumber();
+        new MaterialDialog.Builder(context)
+                .title(R.string.columns)
+                .content(R.string.columns_desc)
+                .items(R.array.columns_options)
+                .itemsCallbackSingleChoice(current - 1, new MaterialDialog.ListCallbackSingleChoice() {
+                    @Override
+                    public boolean onSelection(MaterialDialog dialog, View view, int position, CharSequence text) {
+                        int newSelected = position + 1;
+                        if (newSelected != current) {
+                            WallpapersFragment.updateRecyclerView(newSelected);
+                        }
+                        return true;
+                    }
+                })
+                .positiveText(android.R.string.ok)
+                .negativeText(android.R.string.cancel)
+                .show();
+    }
+
+    public static void showSherryDialog(final Context context) {
+        new MaterialDialog.Builder(context)
+                .title(R.string.sherry_title)
+                .content(R.string.sherry_dialog)
+                .neutralText(R.string.follow_her)
+                .positiveText(R.string.close)
+                .onNeutral(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(MaterialDialog dialog, DialogAction which) {
+                        Utils.openLinkInChromeCustomTab(context,
+                                context.getResources().getString(R.string.sherry_link));
+                    }
+                })
+                .show();
+    }
+
+    public static void showUICollaboratorsDialog(final Context context, final String[] uiCollaboratorsLinks) {
+        new MaterialDialog.Builder(context)
+                .title(R.string.ui_design)
+                .negativeText(R.string.close)
+                .items(R.array.ui_collaborators_names)
+                .itemsCallback(new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog materialDialog, View view,
+                                            final int i, CharSequence charSequence) {
+                        Utils.openLinkInChromeCustomTab(context, uiCollaboratorsLinks[i]);
+                    }
+                }).show();
+    }
+
+    public static void showLibrariesDialog(final Context context, final String[] libsLinks) {
+        new MaterialDialog.Builder(context)
+                .title(R.string.implemented_libraries)
+                .negativeText(R.string.close)
+                .items(R.array.libs_names)
+                .itemsCallback(new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog materialDialog, View view,
+                                            final int i, CharSequence charSequence) {
+                        Utils.openLinkInChromeCustomTab(context, libsLinks[i]);
+                    }
+                }).show();
+    }
+
+    public static void showContributorsDialog(final Context context, final String[] contributorsLinks) {
+        new MaterialDialog.Builder(context)
+                .title(R.string.contributors)
+                .negativeText(R.string.close)
+                .items(R.array.contributors_names)
+                .itemsCallback(new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog materialDialog, View view,
+                                            final int i, CharSequence charSequence) {
+                        Utils.openLinkInChromeCustomTab(context, contributorsLinks[i]);
+                    }
+                }).show();
     }
 
 }

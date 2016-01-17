@@ -68,7 +68,8 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             WITH_ICONS_BASED_CHANGELOG = true,
             WITH_NORMAL_DRAWER_HEADER = false,
             WITH_MINI_DRAWER_HEADER = true,
-            WITH_USER_WALLPAPER_AS_TOOLBAR_HEADER = true;
+            WITH_USER_WALLPAPER_AS_TOOLBAR_HEADER = true,
+            WITH_ALTERNATIVE_ABOUT_SECTION = true;
 
     private static final String MARKET_URL = "https://play.google.com/store/apps/details?id=";
 
@@ -320,6 +321,10 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                 loadWallsList();
                 break;
 
+            case R.id.columns:
+                ISDialogs.showColumnsSelectorDialog(context);
+                break;
+
         }
         return true;
     }
@@ -567,7 +572,11 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                 switchFragment(7, thaZooper, "Zooper", context);
                 break;
             case 8:
-                switchFragment(8, thaCredits, "Credits", context);
+                if (WITH_ALTERNATIVE_ABOUT_SECTION) {
+                    switchFragment(8, thaCredits, "CreditsAlt", context);
+                } else {
+                    switchFragment(8, thaCredits, "Credits", context);
+                }
                 break;
             case 9:
                 switchFragment(9, thaSettings, "Settings", context);

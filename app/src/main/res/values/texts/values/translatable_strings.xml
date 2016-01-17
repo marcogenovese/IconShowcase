@@ -162,7 +162,6 @@
     <string name="dashboard_author_copyright">From Colombia to the world.\nDashboard shared under CreativeCommons Attribution-ShareAlike License. Copyright© 2015~2016.</string>
     <string name="iconpack_author">Designer Info</string>
 
-
     <string name="fork_on_github">Fork on GitHub</string>
     <string name="visit_website">Website</string>
     <string name="web">Website</string>
@@ -245,6 +244,15 @@
     <string name="new_folder_hint">Folder name</string>
     <string name="new_folder_title">Create a new folder</string>
     <string name="new_folder_content">Type the new folder\'s name, please.</string>
+
+    <string name="columns">Columns number</string>
+    <string name="columns_desc">Select the amount of columns you want to see in this section:</string>
+    <string-array name="columns_options">
+        <item>1. Landscape: 3</item>
+        <item>2. Landscape: 4</item>
+        <item>3. Landscape: 5</item>
+        <item>4. Landscape: 6</item>
+    </string-array>
 
     <string-array name="questions">
         <item>How to use the Icon Pack?</item>
