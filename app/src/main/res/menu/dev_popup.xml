@@ -3,40 +3,39 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/designerFacebook"
+        android:id="@+id/developmentSherry"
         android:orderInCategory="100"
-        android:title="@string/facebook"
+        android:title="@string/sherry_title"
         app:showAsAction="never"/>
 
     <item
-        android:id="@+id/designerGooglePlus"
+        android:id="@+id/developmentContributors"
         android:orderInCategory="200"
-        android:title="@string/google_plus"
+        android:title="@string/contributors"
         app:showAsAction="never"/>
 
-
     <item
-        android:id="@+id/designerCommunity"
+        android:id="@+id/developmentUIDesign"
         android:orderInCategory="300"
-        android:title="@string/join_community"
+        android:title="@string/ui_design"
         app:showAsAction="never"/>
 
     <item
-        android:id="@+id/designerYouTube"
+        android:id="@+id/developmentLibraries"
         android:orderInCategory="400"
-        android:title="@string/youtube"
+        android:title="@string/implemented_libraries"
         app:showAsAction="never"/>
 
     <item
-        android:id="@+id/designerTwitter"
+        android:id="@+id/developmentBugs"
         android:orderInCategory="500"
-        android:title="@string/twitter"
+        android:title="@string/report_bugs"
         app:showAsAction="never"/>
 
     <item
-        android:id="@+id/designerPlayStore"
+        android:id="@+id/developmentCommunity"
         android:orderInCategory="600"
-        android:title="@string/play_store"
+        android:title="@string/join_community"
         app:showAsAction="never"/>
 
 </menu>

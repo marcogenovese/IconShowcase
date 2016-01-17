@@ -64,7 +64,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
     public static final boolean WITH_LICENSE_CHECKER = false,
             WITH_INSTALLED_FROM_AMAZON = false,
-            WITH_ZOOPER_SECTION = false,
+            WITH_ZOOPER_SECTION = true,
             WITH_ICONS_BASED_CHANGELOG = true,
             WITH_NORMAL_DRAWER_HEADER = false,
             WITH_MINI_DRAWER_HEADER = true,

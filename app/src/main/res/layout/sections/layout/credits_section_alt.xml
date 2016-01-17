@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginTop="64dp">
+    android:layout_height="match_parent">
 
     <ScrollView
         android:id="@+id/libraries_scroll"
@@ -16,114 +15,232 @@
         android:scrollbars="none"
         tools:ignore="UselessParent">
 
-        <android.support.v7.widget.CardView
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/cards_margin"
-            app:cardBackgroundColor="?attr/colorCardBackground"
-            app:cardCornerRadius="@dimen/card_corner_radius"
-            app:cardElevation="@dimen/cards_elevation">
+            android:layout_height="wrap_content">
 
-            <RelativeLayout
+            <android.support.v7.widget.CardView
+                android:id="@+id/designerCard"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/cards_margin"
+                app:cardBackgroundColor="?attr/colorCardBackground"
+                app:cardCornerRadius="@dimen/card_corner_radius"
+                app:cardElevation="@dimen/cards_elevation">
 
-                <ImageView
-                    android:id="@+id/designerHeader"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/credits_headers"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/header"
-                    tools:ignore="ContentDescription"/>
+                    android:layout_height="wrap_content">
 
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/designerPhoto"
-                    android:layout_width="@dimen/dialog_icon_size"
-                    android:layout_height="@dimen/dialog_icon_size"
-                    android:layout_marginLeft="@dimen/cards_content_margin_small"
-                    android:layout_marginRight="@dimen/cards_content_margin_small"
-                    android:layout_marginTop="@dimen/credits_photo_margin"
-                    android:src="@drawable/jahir"
-                    app:civ_border_color="@android:color/transparent"
-                    app:civ_border_width="2dp"
-                    tools:ignore="ContentDescription"/>
+                    <ImageView
+                        android:id="@+id/designerHeader"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/credits_headers"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/designer_header"
+                        tools:ignore="ContentDescription"/>
 
-                <TextView
-                    android:id="@+id/designerName"
-                    style="@style/AboutContent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@id/designerPhoto"
-                    android:layout_marginTop="@dimen/cards_content_margin_small"
-                    android:layout_marginLeft="@dimen/cards_margin"
-                    android:layout_marginStart="@dimen/cards_margin"
-                    android:layout_toEndOf="@id/designerPhoto"
-                    android:layout_toRightOf="@id/designerPhoto"
-                    android:text="@string/iconpack_author_name"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/designerPhoto"
+                        android:layout_width="@dimen/dialog_icon_size"
+                        android:layout_height="@dimen/dialog_icon_size"
+                        android:layout_marginLeft="@dimen/cards_content_margin_small"
+                        android:layout_marginRight="@dimen/cards_content_margin_small"
+                        android:layout_marginTop="@dimen/credits_photo_margin"
+                        android:src="@drawable/designer_photo"
+                        app:civ_border_color="@android:color/transparent"
+                        app:civ_border_width="2dp"
+                        tools:ignore="ContentDescription"/>
 
-                <TextView
-                    android:id="@+id/designerDesc"
-                    style="@style/AboutContent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/designerName"
-                    android:layout_marginLeft="@dimen/cards_content_margin_small"
-                    android:layout_marginRight="@dimen/cards_content_margin_small"
-                    android:layout_marginTop="@dimen/cards_content_margin_mini"
-                    android:text="@string/iconpack_author_description"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
-
-                <LinearLayout
-                    android:id="@+id/designerButtons"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_below="@id/designerDesc"
-                    android:layout_marginBottom="@dimen/cards_margin"
-                    android:layout_marginLeft="@dimen/cards_content_margin_s"
-                    android:layout_marginStart="@dimen/cards_content_margin_s"
-                    android:orientation="horizontal">
-
-                    <android.support.v7.widget.AppCompatButton
-                        android:id="@+id/send_email_btn"
-                        style="@style/Widget.AppCompat.Button.Borderless"
+                    <TextView
+                        android:id="@+id/designerName"
+                        style="@style/AboutContent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/send_email"
-                        android:textColor="@color/accent"/>
+                        android:layout_alignBottom="@id/designerPhoto"
+                        android:layout_marginLeft="@dimen/cards_margin"
+                        android:layout_marginStart="@dimen/cards_margin"
+                        android:layout_marginTop="@dimen/cards_content_margin_small"
+                        android:layout_toEndOf="@id/designerPhoto"
+                        android:layout_toRightOf="@id/designerPhoto"
+                        android:text="@string/iconpack_author_name"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
 
-                    <android.support.v7.widget.AppCompatButton
-                        android:id="@+id/website_btn"
-                        style="@style/Widget.AppCompat.Button.Borderless"
+                    <TextView
+                        android:id="@+id/designerDesc"
+                        style="@style/AboutContent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/visit_website"
-                        android:textColor="@color/accent"/>
+                        android:layout_below="@id/designerName"
+                        android:layout_marginLeft="@dimen/cards_content_margin_small"
+                        android:layout_marginRight="@dimen/cards_content_margin_small"
+                        android:layout_marginTop="@dimen/cards_content_margin_mini"
+                        android:text="@string/iconpack_author_description"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
 
-                </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/designerButtons"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@id/designerDesc"
+                        android:layout_marginBottom="@dimen/cards_margin"
+                        android:layout_marginLeft="@dimen/cards_content_margin_s"
+                        android:layout_marginStart="@dimen/cards_content_margin_s"
+                        android:orientation="horizontal">
 
-                <ImageView
-                    android:id="@+id/designerPopUp"
-                    style="@style/AboutContent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@id/designerButtons"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginEnd="@dimen/cards_margin"
-                    android:layout_marginRight="@dimen/cards_margin"
-                    android:background="?selectableItemBackgroundBorderless"
-                    android:clickable="true"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/abc_ic_menu_moreoverflow_mtrl_alpha"
-                    android:tint="?attr/drawablesTintColor"
-                    tools:ignore="ContentDescription,PrivateResource"/>
+                        <android.support.v7.widget.AppCompatButton
+                            android:id="@+id/send_email_btn"
+                            style="@style/Widget.AppCompat.Button.Borderless"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/send_email"
+                            android:textColor="@color/accent"/>
 
-            </RelativeLayout>
+                        <android.support.v7.widget.AppCompatButton
+                            android:id="@+id/website_btn"
+                            style="@style/Widget.AppCompat.Button.Borderless"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/visit_website"
+                            android:textColor="@color/accent"/>
 
-        </android.support.v7.widget.CardView>
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/designerPopUp"
+                        style="@style/AboutContent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@id/designerButtons"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginEnd="@dimen/cards_margin"
+                        android:layout_marginRight="@dimen/cards_margin"
+                        android:background="?selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/abc_ic_menu_moreoverflow_mtrl_alpha"
+                        android:tint="?attr/drawablesTintColor"
+                        tools:ignore="ContentDescription,PrivateResource"/>
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/devCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/designerCard"
+                android:layout_margin="@dimen/cards_margin"
+                app:cardBackgroundColor="?attr/colorCardBackground"
+                app:cardCornerRadius="@dimen/card_corner_radius"
+                app:cardElevation="@dimen/cards_elevation">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/developerHeader"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/credits_headers"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/header"
+                        tools:ignore="ContentDescription"/>
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/developerPhoto"
+                        android:layout_width="@dimen/dialog_icon_size"
+                        android:layout_height="@dimen/dialog_icon_size"
+                        android:layout_marginLeft="@dimen/cards_content_margin_small"
+                        android:layout_marginRight="@dimen/cards_content_margin_small"
+                        android:layout_marginTop="@dimen/credits_photo_margin"
+                        android:src="@drawable/jahir"
+                        app:civ_border_color="@android:color/transparent"
+                        app:civ_border_width="2dp"
+                        tools:ignore="ContentDescription"/>
+
+                    <TextView
+                        android:id="@+id/developerName"
+                        style="@style/AboutContent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@id/developerPhoto"
+                        android:layout_marginLeft="@dimen/cards_margin"
+                        android:layout_marginStart="@dimen/cards_margin"
+                        android:layout_marginTop="@dimen/cards_content_margin_small"
+                        android:layout_toEndOf="@id/developerPhoto"
+                        android:layout_toRightOf="@id/developerPhoto"
+                        android:text="@string/iconpack_author_name"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
+                    <TextView
+                        android:id="@+id/developerDesc"
+                        style="@style/AboutContent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/developerName"
+                        android:layout_marginLeft="@dimen/cards_content_margin_small"
+                        android:layout_marginRight="@dimen/cards_content_margin_small"
+                        android:layout_marginTop="@dimen/cards_content_margin_mini"
+                        android:text="@string/dashboard_author_copyright"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
+
+                    <LinearLayout
+                        android:id="@+id/developerButtons"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@id/developerDesc"
+                        android:layout_marginBottom="@dimen/cards_margin"
+                        android:layout_marginLeft="@dimen/cards_content_margin_s"
+                        android:layout_marginStart="@dimen/cards_content_margin_s"
+                        android:orientation="horizontal">
+
+                        <android.support.v7.widget.AppCompatButton
+                            android:id="@+id/fork_btn"
+                            style="@style/Widget.AppCompat.Button.Borderless"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/fork_on_github"
+                            android:textColor="@color/accent"/>
+
+                        <android.support.v7.widget.AppCompatButton
+                            android:id="@+id/dev_website_btn"
+                            style="@style/Widget.AppCompat.Button.Borderless"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/visit_website"
+                            android:textColor="@color/accent"/>
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/developerPopUp"
+                        style="@style/AboutContent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@id/developerButtons"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginEnd="@dimen/cards_margin"
+                        android:layout_marginRight="@dimen/cards_margin"
+                        android:background="?selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/abc_ic_menu_moreoverflow_mtrl_alpha"
+                        android:tint="?attr/drawablesTintColor"
+                        tools:ignore="ContentDescription,PrivateResource"/>
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+        </RelativeLayout>
 
     </ScrollView>
 

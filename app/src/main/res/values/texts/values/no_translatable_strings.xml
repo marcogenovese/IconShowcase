@@ -28,8 +28,14 @@
     <string name="glide_name">Glide</string>
     <string name="glide_web">https://github.com/bumptech/glide</string>
 
-    <string name="rv_fast_scroller_web">https://github.com/timusus/RecyclerView-FastScroll</string>
+    <string name="rv_fast_scroller_web">https://github.com/plusCubed/recycler-fast-scroll</string>
     <string name="rv_fast_scroller_name">RecyclerView FastScroller</string>
+
+    <string name="muzei_api_name">Muzei API</string>
+    <string name="muzei_api_web">https://github.com/romannurik/muzei/wiki/API</string>
+
+    <string name="circleiv_name">CircleImageView</string>
+    <string name="circleiv_web">https://github.com/hdodenhof/CircleImageView</string>
 
     <string name="rob_beane">Rob Beane</string>
     <string name="dani_mahardika">Dani Mahardika</string>
@@ -102,6 +108,8 @@
         <item>@string/iconics_name</item>
         <item>@string/glide_name</item>
         <item>@string/rv_fast_scroller_name</item>
+        <item>@string/circleiv_name</item>
+        <item>@string/muzei_api_name</item>
     </string-array>
 
     <string-array name="libs_links">
@@ -112,6 +120,8 @@
         <item>@string/iconics_web</item>
         <item>@string/glide_web</item>
         <item>@string/rv_fast_scroller_web</item>
+        <item>@string/circleiv_web</item>
+        <item>@string/muzei_api_name</item>
     </string-array>
 
     <string name="google_plus">Google Plus</string>
