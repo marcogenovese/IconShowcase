@@ -123,20 +123,14 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
         data.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                new MaterialDialog.Builder(getActivity())
-                        .title(R.string.clearcache_dialog_title)
-                        .content(R.string.clearcache_dialog_content)
-                        .positiveText(android.R.string.yes)
-                        .negativeText(android.R.string.no)
-                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
-                                clearApplicationDataAndCache(getActivity());
-                                changeValues(getActivity());
-                            }
-                        })
-                        .show();
-
+                MaterialDialog.SingleButtonCallback positiveCallback = new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
+                        clearApplicationDataAndCache(getActivity());
+                        changeValues(getActivity());
+                    }
+                };
+                ISDialogs.showClearCacheDialog(getActivity(), positiveCallback);
                 return true;
             }
         });
@@ -160,40 +154,38 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
         hideIcon.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 if (newValue.toString().equals("true")) {
-                    ShowcaseActivity.settingsDialog = new MaterialDialog.Builder(getActivity())
-                            .title(R.string.hideicon_dialog_title)
-                            .content(R.string.hideicon_dialog_content)
-                            .positiveText(android.R.string.yes)
-                            .negativeText(android.R.string.no)
-                            .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                @Override
-                                public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
-                                    if (mPrefs.getLauncherIconShown()) {
-                                        mPrefs.setIconShown(false);
-                                        p.setComponentEnabledSetting(componentName,
-                                                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                                                PackageManager.DONT_KILL_APP);
-                                    }
+                    MaterialDialog.SingleButtonCallback positive = new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
+                            if (mPrefs.getLauncherIconShown()) {
+                                mPrefs.setIconShown(false);
+                                p.setComponentEnabledSetting(componentName,
+                                        PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                                        PackageManager.DONT_KILL_APP);
+                            }
 
-                                    hideIcon.setChecked(true);
-                                }
-                            })
-                            .onNegative(new MaterialDialog.SingleButtonCallback() {
-                                @Override
-                                public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
-                                    hideIcon.setChecked(false);
-                                }
-                            })
-                            .show();
+                            hideIcon.setChecked(true);
+                        }
+                    };
 
-                    ShowcaseActivity.settingsDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    MaterialDialog.SingleButtonCallback negative = new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
+                            hideIcon.setChecked(false);
+                        }
+                    };
+
+                    DialogInterface.OnDismissListener dismissListener = new DialogInterface.OnDismissListener() {
                         @Override
                         public void onDismiss(DialogInterface dialog) {
                             if (mPrefs.getLauncherIconShown()) {
                                 hideIcon.setChecked(false);
                             }
                         }
-                    });
+                    };
+
+                    ShowcaseActivity.settingsDialog = ISDialogs.showHideIconDialog(getActivity(), positive, negative, dismissListener);
+
 
                 } else {
                     if (!mPrefs.getLauncherIconShown()) {

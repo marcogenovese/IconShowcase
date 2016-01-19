@@ -3,6 +3,7 @@ package jahirfiquitiva.apps.iconshowcase.dialogs;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -381,6 +382,32 @@ public final class ISDialogs {
                 })
                 .positiveText(android.R.string.ok)
                 .negativeText(android.R.string.cancel)
+                .show();
+    }
+
+    /*
+    Settings Fragment Dialogs
+     */
+
+    public static void showClearCacheDialog(Context context, MaterialDialog.SingleButtonCallback singleButtonCallback) {
+        new MaterialDialog.Builder(context)
+                .title(R.string.clearcache_dialog_title)
+                .content(R.string.clearcache_dialog_content)
+                .positiveText(android.R.string.yes)
+                .negativeText(android.R.string.no)
+                .onPositive(singleButtonCallback)
+                .show();
+    }
+
+    public static MaterialDialog showHideIconDialog(Context context, MaterialDialog.SingleButtonCallback positive, MaterialDialog.SingleButtonCallback negative, DialogInterface.OnDismissListener dismissListener) {
+        return new MaterialDialog.Builder(context)
+                .title(R.string.hideicon_dialog_title)
+                .content(R.string.hideicon_dialog_content)
+                .positiveText(android.R.string.yes)
+                .negativeText(android.R.string.no)
+                .onPositive(positive)
+                .onNegative(negative)
+                .dismissListener(dismissListener)
                 .show();
     }
 
