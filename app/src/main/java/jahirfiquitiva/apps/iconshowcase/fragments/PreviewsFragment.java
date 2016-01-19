@@ -136,7 +136,7 @@ public class PreviewsFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroy();
-        mTabs.setVisibility(View.GONE);
+        if(mTabs != null) mTabs.setVisibility(View.GONE);
     }
 
     @Override
