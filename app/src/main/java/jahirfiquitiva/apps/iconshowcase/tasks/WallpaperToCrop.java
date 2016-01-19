@@ -78,7 +78,6 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
             setWall.putExtra("png", "image/*");
             activity.startActivityForResult(Intent.createChooser(setWall,
                     context.getResources().getString(R.string.set_as)), 1);
-            fab.showMenuButton(mPrefs.getAnimationsEnabled());
         } else {
             dialog.dismiss();
             Snackbar snackbar = Snackbar.make(layout,

@@ -238,6 +238,15 @@ public class ViewerActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 1){
+            //Crop request
+            fab.showMenuButton(mPrefs.getAnimationsEnabled());
+        }
+    }
+
     private void saveWallpaperAction(final String name, String url) {
         final MaterialDialog downloadDialog = ISDialogs.showDownloadDialog(this);
         downloadDialog.show();
