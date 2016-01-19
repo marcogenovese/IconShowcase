@@ -66,7 +66,7 @@ public class MainFragment extends Fragment {
             @Override
             public void run() {
                 ShowcaseActivity.animateIcons(ShowcaseActivity.icon1, ShowcaseActivity.icon2,
-                        ShowcaseActivity.icon3, ShowcaseActivity.icon4, true);
+                        ShowcaseActivity.icon3, ShowcaseActivity.icon4);
             }
 
         }, 600);

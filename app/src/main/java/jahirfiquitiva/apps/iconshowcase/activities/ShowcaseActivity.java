@@ -20,7 +20,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayout;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -159,8 +158,10 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         iconsRow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setupIcons(icon1, icon2, icon3, icon4, context);
-                animateIcons(icon1, icon2, icon3, icon4, false);
+                if (currentItem == 1) {
+                    setupIcons(icon1, icon2, icon3, icon4, context);
+                    animateIcons(icon1, icon2, icon3, icon4);
+                }
             }
         });
 
@@ -516,7 +517,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                 .withSavedInstance(savedInstanceState)
                 .withDisplayBelowStatusBar(false);
 
-        switch(drawerHeaderStyle) {
+        switch (drawerHeaderStyle) {
             case NORMAL_HEADER:
                 drawerHeader = new AccountHeaderBuilder()
                         .withActivity(this)
@@ -540,7 +541,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
         drawer = drawerBuilder.build();
 
-        if(drawerHeaderStyle.equals(DrawerHeaderStyle.MINI_HEADER)) {
+        if (drawerHeaderStyle.equals(DrawerHeaderStyle.MINI_HEADER)) {
             ImageView miniHeader = (ImageView) drawer.getHeader().findViewById(R.id.mini_drawer_header);
             miniHeader.getLayoutParams().height = UIUtils.getActionBarHeight(this) + UIUtils.getStatusBarHeight(this);
             TextView appVersion = (TextView) drawer.getHeader().findViewById(R.id.text_app_version);
@@ -656,14 +657,12 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     }
 
     public static void animateIcons(ImageView icon1, ImageView icon2,
-                                    ImageView icon3, ImageView icon4, boolean firstTime) {
+                                    ImageView icon3, ImageView icon4) {
 
-        if (firstTime) {
-            icon1.setVisibility(View.VISIBLE);
-            icon2.setVisibility(View.VISIBLE);
-            icon3.setVisibility(View.VISIBLE);
-            icon4.setVisibility(View.VISIBLE);
-        }
+        icon1.setVisibility(View.VISIBLE);
+        icon2.setVisibility(View.VISIBLE);
+        icon3.setVisibility(View.VISIBLE);
+        icon4.setVisibility(View.VISIBLE);
 
         if (mPrefs.getAnimationsEnabled()) {
             Animation anim = AnimationUtils.loadAnimation(context, R.anim.bounce);
