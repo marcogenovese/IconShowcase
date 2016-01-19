@@ -3,7 +3,6 @@ package jahirfiquitiva.apps.iconshowcase.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -26,8 +25,10 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import jahirfiquitiva.apps.iconshowcase.R;
+import jahirfiquitiva.apps.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.apps.iconshowcase.basefragments.FragmentStatePagerAdapter;
 import jahirfiquitiva.apps.iconshowcase.models.IconsLists;
+import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.apps.iconshowcase.views.CustomCoordinatorLayout;
 
 public class PreviewsFragment extends Fragment {
@@ -43,15 +44,13 @@ public class PreviewsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
-        fab.setVisibility(View.GONE);
-
         if (layout != null) {
             ViewGroup parent = (ViewGroup) layout.getParent();
             if (parent != null) {
                 parent.removeView(layout);
             }
         }
+
         layout = (ViewGroup) inflater.inflate(R.layout.icons_preview_section, container, false);
 
         return layout;
@@ -66,6 +65,19 @@ public class PreviewsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        setupToolbar();
+
+        if (mPager == null) {
+            mPager = (ViewPager) layout.findViewById(R.id.pager);
+            mPager.setOffscreenPageLimit(6);
+            mPager.setAdapter(new IconsPagerAdapter(getChildFragmentManager()));
+            createTabs();
+        }
+
+    }
+
+    private void setupToolbar() {
         // Are you ready for the ugliest fix in the history of the universe?
         // Set custom offset for AppBar. This makes both toolbar and tabs visible
 
@@ -93,14 +105,6 @@ public class PreviewsFragment extends Fragment {
 
         // Lock CoordinatorLayout so the toolbar can't be scrolled away
         coordinatorLayout.setScrollAllowed(false);
-
-        if (mPager == null) {
-            mPager = (ViewPager) layout.findViewById(R.id.pager);
-            mPager.setOffscreenPageLimit(6);
-            mPager.setAdapter(new IconsPagerAdapter(getChildFragmentManager()));
-            createTabs();
-        }
-
     }
 
     private void createTabs() {
@@ -136,7 +140,7 @@ public class PreviewsFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroy();
-        if(mTabs != null) mTabs.setVisibility(View.GONE);
+        if (mTabs != null) mTabs.setVisibility(View.GONE);
     }
 
     @Override

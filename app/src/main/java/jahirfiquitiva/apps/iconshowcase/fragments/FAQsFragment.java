@@ -35,9 +35,6 @@ public class FAQsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
 
-        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
-        fab.setVisibility(View.GONE);
-
         if (layout != null) {
             ViewGroup parent = (ViewGroup) layout.getParent();
             if (parent != null) {

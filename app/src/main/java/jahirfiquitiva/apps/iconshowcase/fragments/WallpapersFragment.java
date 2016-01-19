@@ -76,9 +76,6 @@ public class WallpapersFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
-        fab.setVisibility(View.GONE);
-
         setHasOptionsMenu(true);
 
         context = getActivity();

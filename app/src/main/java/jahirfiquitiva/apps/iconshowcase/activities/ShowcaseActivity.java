@@ -155,7 +155,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         GridLayout iconsRow = (GridLayout) findViewById(R.id.iconsRow);
 
         setupIcons(icon1, icon2, icon3, icon4, this);
-        animateIcons(icon1, icon2, icon3, icon4, false);
 
         iconsRow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -224,12 +223,12 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             icon4.setVisibility(View.INVISIBLE);
             appbar.setExpanded(true, mPrefs.getAnimationsEnabled());
             coordinatorLayout.setScrollAllowed(true);
-            setupFAB(fragment);
         } else if (!fragment.equals("Previews")) {
             appbar.setExpanded(false, mPrefs.getAnimationsEnabled());
             coordinatorLayout.setScrollAllowed(false);
-            setupFAB(fragment);
         }
+
+        setupFAB(fragment);
 
         if (mPrefs.getAnimationsEnabled()) {
             context.getSupportFragmentManager().beginTransaction()
