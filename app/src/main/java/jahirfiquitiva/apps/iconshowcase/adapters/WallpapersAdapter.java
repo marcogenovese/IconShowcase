@@ -42,7 +42,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
 
     private ArrayList<WallpaperItem> wallsList;
 
-    private boolean usePalette = true;
+    private boolean USE_OF_PALETTE = false;
     private boolean modifyTextsColor = false;
 
     private final ClickListener mCallback;
@@ -88,7 +88,6 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
             Glide.with(context)
                     .load(wallUrl)
                     .centerCrop()
-                    .placeholder(R.drawable.placeholder)
                     .error(errorIcon)
                     .crossFade()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -96,7 +95,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
                         @Override
                         public void onResourceReady(GlideDrawable drawable, GlideAnimation anim) {
                             holder.progressBar.setVisibility(View.GONE);
-                            if (usePalette) {
+                            if (USE_OF_PALETTE) {
                                 Palette p = new Palette.Builder(((GlideBitmapDrawable) drawable).getBitmap()).generate();
                                 if (p != null) {
                                     Palette.Swatch wallSwatch = p.getVibrantSwatch();
@@ -116,13 +115,12 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
             Glide.with(context)
                     .load(wallUrl)
                     .centerCrop()
-                    .placeholder(R.drawable.placeholder)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(new GlideDrawableImageViewTarget(holder.wall) {
                         @Override
                         public void onResourceReady(GlideDrawable drawable, GlideAnimation anim) {
                             holder.progressBar.setVisibility(View.GONE);
-                            if (usePalette) {
+                            if (USE_OF_PALETTE) {
                                 Palette p = new Palette.Builder(((GlideBitmapDrawable) drawable).getBitmap()).generate();
                                 if (p != null) {
                                     Palette.Swatch wallSwatch = p.getVibrantSwatch();
