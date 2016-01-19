@@ -245,6 +245,9 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         }
 
         titleView.setText(title);
+
+        if (drawer != null)
+            drawer.setSelection(itemId);
     }
 
     @Override
@@ -396,7 +399,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     private void showChangelogDialog() {
         String launchinfo = getSharedPreferences("PrefsFile", MODE_PRIVATE).getString("version", "0");
         storeSharedPrefs();
-        if (launchinfo != null && !launchinfo.equals(Utils.getAppVersion(this))) {
+        if (!launchinfo.equals(Utils.getAppVersion(this))) {
             if (WITH_ICONS_BASED_CHANGELOG) {
                 ISDialogs.showIconsChangelogDialog(this);
             } else {
