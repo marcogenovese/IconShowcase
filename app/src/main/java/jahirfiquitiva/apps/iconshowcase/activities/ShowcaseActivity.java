@@ -65,12 +65,20 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
     public static boolean WITH_LICENSE_CHECKER = false,
             WITH_INSTALLED_FROM_AMAZON = false,
-            WITH_ZOOPER_SECTION = true,
+            WITH_ZOOPER_SECTION = false,
             WITH_ICONS_BASED_CHANGELOG = false,
             WITH_USER_WALLPAPER_AS_TOOLBAR_HEADER = true,
             WITH_ALTERNATIVE_ABOUT_SECTION = true;
 
-    public static DrawerHeaderStyle drawerHeaderStyle = DrawerHeaderStyle.NORMAL_HEADER;
+    /*
+    Change between drawer header options:
+    NORMAL_HEADER
+    MINI_HEADER
+    NO_HEADER
+     */
+    public static DrawerHeaderStyle drawerHeaderStyle = DrawerHeaderStyle.MINI_HEADER;
+
+
 
     private static final String MARKET_URL = "https://play.google.com/store/apps/details?id=";
 
@@ -120,20 +128,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         super.onCreate(savedInstanceState);
         context = this;
         mPrefs = new Preferences(ShowcaseActivity.this);
-
-        WITH_ZOOPER_SECTION = mPrefs.getZooperSectionEnabled();
-
-        switch (mPrefs.getDrawerHeaderStyle()) {
-            case 1:
-                drawerHeaderStyle = DrawerHeaderStyle.NORMAL_HEADER;
-                break;
-            case 2:
-                drawerHeaderStyle = DrawerHeaderStyle.MINI_HEADER;
-                break;
-            case 3:
-                drawerHeaderStyle = DrawerHeaderStyle.NO_HEADER;
-                break;
-        }
 
         getAction();
 
@@ -246,8 +240,10 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
         titleView.setText(title);
 
-        if (drawer != null)
+        if (drawer!=null){
             drawer.setSelection(itemId);
+        }
+
     }
 
     @Override
@@ -328,21 +324,10 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         super.onOptionsItemSelected(item);
         switch (item.getItemId()) {
             case R.id.changelog:
-                /*
                 if (WITH_ICONS_BASED_CHANGELOG) {
                     ISDialogs.showIconsChangelogDialog(this);
                 } else {
                     ISDialogs.showChangelogDialog(this);
-                }
-                */
-                switch (mPrefs.getChangelogStyle()) {
-                    case 1:
-                        ISDialogs.showChangelogDialog(this);
-                        break;
-
-                    case 2:
-                        ISDialogs.showIconsChangelogDialog(this);
-                        break;
                 }
                 break;
 
@@ -399,7 +384,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     private void showChangelogDialog() {
         String launchinfo = getSharedPreferences("PrefsFile", MODE_PRIVATE).getString("version", "0");
         storeSharedPrefs();
-        if (!launchinfo.equals(Utils.getAppVersion(this))) {
+        if (launchinfo != null && !launchinfo.equals(Utils.getAppVersion(this))) {
             if (WITH_ICONS_BASED_CHANGELOG) {
                 ISDialogs.showIconsChangelogDialog(this);
             } else {
@@ -577,20 +562,10 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                 switchFragment(7, thaZooper, "Zooper", context);
                 break;
             case 8:
-                /*
                 if (WITH_ALTERNATIVE_ABOUT_SECTION) {
                     switchFragment(8, thaCredits, "CreditsAlt", context);
                 } else {
                     switchFragment(8, thaCredits, "Credits", context);
-                }
-                */
-                switch (mPrefs.getCreditsStyle()) {
-                    case 1:
-                        switchFragment(8, thaCredits, "CreditsAlt", context);
-                        break;
-                    case 2:
-                        switchFragment(8, thaCredits, "Credits", context);
-                        break;
                 }
                 break;
             case 9:

@@ -2,33 +2,6 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
-        android:key="debug"
-        android:title="@string/debug">
-
-        <Preference
-            android:key="drawerHeader"
-            android:persistent="true"
-            android:title="@string/drawer_header_title"/>
-
-        <Preference
-            android:key="changelogStyle"
-            android:persistent="true"
-            android:title="@string/changelog_style_title"/>
-
-        <Preference
-            android:key="creditsStyle"
-            android:persistent="true"
-            android:title="@string/credits_section_style"/>
-
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="zooper"
-            android:persistent="true"
-            android:title="@string/zooper_section_opt_title"/>
-
-    </PreferenceCategory>
-
-    <PreferenceCategory
         android:key="uiPreferences"
         android:title="@string/pref_header_ui">
 

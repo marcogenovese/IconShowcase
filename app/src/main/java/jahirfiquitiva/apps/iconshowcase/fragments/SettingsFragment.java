@@ -201,47 +201,6 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
             }
         });
 
-
-        /*
-        TODO: Delete for official release.
-         */
-
-        findPreference("drawerHeader").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                ISDialogs.showDrawerHeaderOptionsDialog(getActivity());
-                return true;
-            }
-        });
-
-        findPreference("changelogStyle").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                ISDialogs.showChangelogStyleDialog(getActivity());
-                return true;
-            }
-        });
-
-        findPreference("creditsStyle").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                ISDialogs.showCreditsOptionsDialog(getActivity());
-                return true;
-            }
-        });
-
-        CheckBoxPreference zooper = (CheckBoxPreference) findPreference("zooper");
-        zooper.setChecked(mPrefs.getZooperSectionEnabled());
-        zooper.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                mPrefs.setZooperSectionEnabled(newValue.toString().equals("true"));
-                mPrefs.setSettingsModified(true);
-                ThemeUtils.restartActivity(getActivity());
-                return true;
-            }
-        });
-
     }
 
     public static void changeValues(Context context) {
