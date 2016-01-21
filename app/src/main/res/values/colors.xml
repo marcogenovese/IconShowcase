@@ -6,7 +6,7 @@
     <color name="accent">#00b0ff</color>
 
     <color name="semitransparent_white">#80ffffff</color>
-    <color name="semitransparent_black">#33000000</color>
+    <color name="semitransparent_black">#66000000</color>
 
     <color name="card_dark_background">#424242</color>
     <color name="card_light_background">#fafafa</color>

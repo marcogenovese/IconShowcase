@@ -245,7 +245,6 @@
         <item>Portrait: 1 / Landscape: 3</item>
         <item>Portrait: 2 / Landscape: 4</item>
         <item>Portrait: 3 / Landscape: 5</item>
-        <item>Portrait: 4 / Landscape: 6</item>
     </string-array>
 
     <string-array name="questions">

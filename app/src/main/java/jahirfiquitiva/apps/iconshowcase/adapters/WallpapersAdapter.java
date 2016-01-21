@@ -16,7 +16,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
@@ -30,6 +29,7 @@ import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.models.WallpaperItem;
 import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.apps.iconshowcase.utilities.ThemeUtils;
+import jahirfiquitiva.apps.iconshowcase.utilities.Utils;
 
 public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.WallsHolder> {
 
@@ -42,8 +42,9 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
 
     private ArrayList<WallpaperItem> wallsList;
 
-    private boolean USE_OF_PALETTE = false;
-    private boolean modifyTextsColor = false;
+    private boolean USE_OF_PALETTE = true, MODIFY_TEXT_COLORS_WITH_PALETTE = true;
+    // SET VIBRANT OR MUTED
+    private String PALETTE_STYLE = "VIBRANT";
 
     private final ClickListener mCallback;
 
@@ -59,7 +60,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
         errorIcon = new IconicsDrawable(context)
                 .icon(GoogleMaterial.Icon.gmd_alert_triangle)
                 .color(ThemeUtils.darkTheme ? light : grey)
-                .sizeDp(48);
+                .sizeDp(144);
     }
 
     public void setData(ArrayList<WallpaperItem> wallsList) {
@@ -89,8 +90,6 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
                     .load(wallUrl)
                     .centerCrop()
                     .error(errorIcon)
-                    .crossFade()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(new GlideDrawableImageViewTarget(holder.wall) {
                         @Override
                         public void onResourceReady(GlideDrawable drawable, GlideAnimation anim) {
@@ -98,12 +97,12 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
                             if (USE_OF_PALETTE) {
                                 Palette p = new Palette.Builder(((GlideBitmapDrawable) drawable).getBitmap()).generate();
                                 if (p != null) {
-                                    Palette.Swatch wallSwatch = p.getVibrantSwatch();
+                                    Palette.Swatch wallSwatch = Utils.generateSwatch(PALETTE_STYLE, p);
                                     if (wallSwatch != null) {
                                         holder.titleBg.setBackgroundColor(wallSwatch.getRgb());
-                                        if (modifyTextsColor) {
-                                            holder.name.setTextColor(wallSwatch.getTitleTextColor());
-                                            holder.authorName.setTextColor(wallSwatch.getTitleTextColor());
+                                        if (MODIFY_TEXT_COLORS_WITH_PALETTE) {
+                                            holder.name.setTextColor(wallSwatch.getBodyTextColor());
+                                            holder.authorName.setTextColor(wallSwatch.getBodyTextColor());
                                         }
                                     }
                                 }
@@ -115,7 +114,8 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
             Glide.with(context)
                     .load(wallUrl)
                     .centerCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .error(errorIcon)
+                    .dontAnimate()
                     .into(new GlideDrawableImageViewTarget(holder.wall) {
                         @Override
                         public void onResourceReady(GlideDrawable drawable, GlideAnimation anim) {
@@ -123,12 +123,12 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
                             if (USE_OF_PALETTE) {
                                 Palette p = new Palette.Builder(((GlideBitmapDrawable) drawable).getBitmap()).generate();
                                 if (p != null) {
-                                    Palette.Swatch wallSwatch = p.getVibrantSwatch();
+                                    Palette.Swatch wallSwatch = Utils.generateSwatch(PALETTE_STYLE, p);
                                     if (wallSwatch != null) {
                                         holder.titleBg.setBackgroundColor(wallSwatch.getRgb());
-                                        if (modifyTextsColor) {
-                                            holder.name.setTextColor(wallSwatch.getTitleTextColor());
-                                            holder.authorName.setTextColor(wallSwatch.getTitleTextColor());
+                                        if (MODIFY_TEXT_COLORS_WITH_PALETTE) {
+                                            holder.name.setTextColor(wallSwatch.getBodyTextColor());
+                                            holder.authorName.setTextColor(wallSwatch.getBodyTextColor());
                                         }
                                     }
                                 }

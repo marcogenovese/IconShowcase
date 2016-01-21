@@ -19,12 +19,28 @@
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         tools:ignore="UnusedAttribute"/>
 
-    <jahirfiquitiva.apps.iconshowcase.views.TouchImageView
-        android:id="@+id/big_wallpaper"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbar"
-        android:scaleType="centerCrop"/>
+        android:layout_below="@id/toolbar">
+
+        <jahirfiquitiva.apps.iconshowcase.views.TouchImageView
+            android:id="@+id/big_wallpaper"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"/>
+
+        <ProgressBar
+            android:id="@+id/progress"
+            style="?progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:clickable="false"
+            android:focusable="false"
+            android:gravity="center"/>
+
+    </FrameLayout>
 
     <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/wallsFab"

@@ -19,6 +19,7 @@ import android.support.customtabs.CustomTabsServiceConnection;
 import android.support.customtabs.CustomTabsSession;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.graphics.Palette;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -188,6 +189,19 @@ public class Utils {
         emailBuilder.append("\nApp Version Code: ").append(appInfo.versionCode);
         intent.putExtra(Intent.EXTRA_TEXT, emailBuilder.toString());
         context.startActivity(Intent.createChooser(intent, (context.getResources().getString(R.string.send_title))));
+    }
+
+    public static Palette.Swatch generateSwatch(String tag, Palette palette) {
+        Palette.Swatch generatedSwatch = null;
+        switch (tag) {
+            case "VIBRANT":
+                generatedSwatch = palette.getVibrantSwatch();
+                break;
+            case "MUTED":
+                generatedSwatch = palette.getMutedSwatch();
+                break;
+        }
+        return generatedSwatch;
     }
 
     /***

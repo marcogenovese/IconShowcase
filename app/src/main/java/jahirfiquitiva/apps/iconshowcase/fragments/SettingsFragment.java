@@ -186,7 +186,6 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
 
                     ShowcaseActivity.settingsDialog = ISDialogs.showHideIconDialog(getActivity(), positive, negative, dismissListener);
 
-
                 } else {
                     if (!mPrefs.getLauncherIconShown()) {
 

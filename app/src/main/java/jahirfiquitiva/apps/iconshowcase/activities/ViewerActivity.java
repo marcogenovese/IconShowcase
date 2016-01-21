@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,6 +22,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -27,8 +30,11 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.Target;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
@@ -53,15 +59,11 @@ public class ViewerActivity extends AppCompatActivity {
 
     private boolean mLastTheme, mLastNavBar;
 
-    public static final String EXTRA_CURRENT_ITEM_POSITION = "extra_current_item_position";
-
     private boolean WITH_FAB_ICON_ANIMATION = true;
 
-    private int mIndex;
-    private String mIndexText, transitionName, wallUrl, wallName, wallAuthor;
-    private TouchImageView mPhoto;
+    private String wallUrl;
+    private String wallName;
 
-    private FloatingActionButton setWall, saveWall;
     private FloatingActionMenu fab;
     private RelativeLayout layout;
     private static Preferences mPrefs;
@@ -84,12 +86,10 @@ public class ViewerActivity extends AppCompatActivity {
         mPrefs = new Preferences(ViewerActivity.this);
 
         Intent intent = getIntent();
-        mIndex = intent.getIntExtra(EXTRA_CURRENT_ITEM_POSITION, 1);
-        mIndexText = intent.getStringExtra("indexText");
-        transitionName = intent.getStringExtra("transitionName");
+        String transitionName = intent.getStringExtra("transitionName");
         wallUrl = intent.getStringExtra("wallUrl");
         wallName = intent.getStringExtra("wallName");
-        wallAuthor = intent.getStringExtra("authorName");
+        String wallAuthor = intent.getStringExtra("authorName");
 
         setContentView(R.layout.wall_viewer_activity);
 
@@ -97,8 +97,8 @@ public class ViewerActivity extends AppCompatActivity {
         fab.setIconAnimated(WITH_FAB_ICON_ANIMATION && mPrefs.getAnimationsEnabled());
         fab.setAnimated(mPrefs.getAnimationsEnabled());
 
-        setWall = (FloatingActionButton) findViewById(R.id.setWall);
-        saveWall = (FloatingActionButton) findViewById(R.id.saveWall);
+        FloatingActionButton setWall = (FloatingActionButton) findViewById(R.id.setWall);
+        FloatingActionButton saveWall = (FloatingActionButton) findViewById(R.id.saveWall);
 
         setWall.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,7 +128,7 @@ public class ViewerActivity extends AppCompatActivity {
                 .withActivity(this)
                 .build();
 
-        mPhoto = (TouchImageView) findViewById(R.id.big_wallpaper);
+        TouchImageView mPhoto = (TouchImageView) findViewById(R.id.big_wallpaper);
         ViewCompat.setTransitionName(mPhoto, transitionName);
 
         layout = (RelativeLayout) findViewById(R.id.viewerLayout);
@@ -158,6 +158,9 @@ public class ViewerActivity extends AppCompatActivity {
 
         Drawable d = new GlideBitmapDrawable(getResources(), bmp);
 
+        final ProgressBar spinner = (ProgressBar) findViewById(R.id.progress);
+        spinner.getIndeterminateDrawable().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
+
         int light = ContextCompat.getColor(context, android.R.color.white);
         int grey = ContextCompat.getColor(context, R.color.grey);
         Drawable errorIcon = new IconicsDrawable(context)
@@ -170,17 +173,41 @@ public class ViewerActivity extends AppCompatActivity {
                     .load(wallUrl)
                     .placeholder(d)
                     .error(errorIcon)
-                    .crossFade()
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .fitCenter()
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .listener(new RequestListener<String, GlideDrawable>() {
+                        @Override
+                        public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                            spinner.setVisibility(View.GONE);
+                            return false;
+                        }
+                    })
                     .into(mPhoto);
         } else {
             Glide.with(this)
                     .load(wallUrl)
                     .placeholder(d)
                     .error(errorIcon)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .dontAnimate()
                     .fitCenter()
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .listener(new RequestListener<String, GlideDrawable>() {
+                        @Override
+                        public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                            spinner.setVisibility(View.GONE);
+                            return false;
+                        }
+                    })
                     .into(mPhoto);
         }
 
@@ -241,7 +268,7 @@ public class ViewerActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 1){
+        if (requestCode == 1) {
             //Crop request
             fab.showMenuButton(mPrefs.getAnimationsEnabled());
         }

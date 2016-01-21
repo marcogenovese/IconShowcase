@@ -68,7 +68,8 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             WITH_ZOOPER_SECTION = false,
             WITH_ICONS_BASED_CHANGELOG = false,
             WITH_USER_WALLPAPER_AS_TOOLBAR_HEADER = true,
-            WITH_ALTERNATIVE_ABOUT_SECTION = true;
+            WITH_ALTERNATIVE_ABOUT_SECTION = true,
+            WITH_SECONDARY_DRAWER_ITEMS_ICONS = true;
 
     /*
     Change between drawer header options:
@@ -77,8 +78,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     NO_HEADER
      */
     public static DrawerHeaderStyle drawerHeaderStyle = DrawerHeaderStyle.MINI_HEADER;
-
-
 
     private static final String MARKET_URL = "https://play.google.com/store/apps/details?id=";
 
@@ -97,7 +96,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
     public String version;
 
-    public static int currentItem = -1, wallpaper = -1;
+    public static int currentItem = -1, wallpaper = -1, seven = 7;
 
     private boolean mLastTheme, mLastNavBar;
     private static Preferences mPrefs;
@@ -126,6 +125,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         }
 
         super.onCreate(savedInstanceState);
+
         context = this;
         mPrefs = new Preferences(ShowcaseActivity.this);
 
@@ -191,8 +191,13 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                 drawer.setSelection(3);
             } else {
                 if (mPrefs.getSettingsModified()) {
-                    drawerItemClick(9);
-                    drawer.setSelection(9);
+                    if (WITH_ZOOPER_SECTION) {
+                        drawerItemClick(seven + 2);
+                        drawer.setSelection(seven + 2);
+                    } else {
+                        drawerItemClick(seven + 1);
+                        drawer.setSelection(seven + 1);
+                    }
                 } else {
                     currentItem = -1;
                     drawerItemClick(1);
@@ -240,7 +245,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
         titleView.setText(title);
 
-        if (drawer!=null){
+        if (drawer != null) {
             drawer.setSelection(itemId);
         }
 
@@ -344,18 +349,8 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         return true;
     }
 
-    private void removeItemsFromDrawer() {
-        if (!mPrefs.areFeaturesEnabled()) {
-            drawer.removeItem(3);
-            drawer.removeItem(4);
-        }
-    }
-
     private void runLicenseChecker() {
         mPrefs.setSettingsModified(false);
-        if (!WITH_ZOOPER_SECTION) {
-            drawer.removeItem(7);
-        }
         mPrefs.setFirstRun(getSharedPreferences("PrefsFile", MODE_PRIVATE).getBoolean("first_run", true));
         if (mPrefs.isFirstRun()) {
             if (WITH_LICENSE_CHECKER) {
@@ -370,7 +365,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         } else {
             if (WITH_LICENSE_CHECKER) {
                 if (!mPrefs.areFeaturesEnabled()) {
-                    removeItemsFromDrawer();
                     showNotLicensedDialog();
                 } else {
                     showChangelogDialog();
@@ -420,7 +414,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                     }
                 });
             } else {
-                removeItemsFromDrawer();
                 showNotLicensedDialog();
             }
         } catch (Exception e) {
@@ -476,23 +469,20 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
     public void setupDrawer(Toolbar toolbar, Bundle savedInstanceState) {
 
+        PrimaryDrawerItem home = new PrimaryDrawerItem().withName(thaHome).withIcon(GoogleMaterial.Icon.gmd_home).withIdentifier(1);
+        PrimaryDrawerItem previews = new PrimaryDrawerItem().withName(thaPreviews).withIcon(GoogleMaterial.Icon.gmd_palette).withIdentifier(2);
+        PrimaryDrawerItem walls = new PrimaryDrawerItem().withName(thaWalls).withIcon(GoogleMaterial.Icon.gmd_landscape).withIdentifier(3);
+        PrimaryDrawerItem requests = new PrimaryDrawerItem().withName(thaRequest).withIcon(GoogleMaterial.Icon.gmd_comment_list).withIdentifier(4);
+        PrimaryDrawerItem apply = new PrimaryDrawerItem().withName(thaApply).withIcon(GoogleMaterial.Icon.gmd_open_in_browser).withIdentifier(5);
+        PrimaryDrawerItem faqs = new PrimaryDrawerItem().withName(thaFAQs).withIcon(GoogleMaterial.Icon.gmd_help).withIdentifier(6);
+
+        SecondaryDrawerItem creditsItem, settingsItem;
+
         DrawerBuilder drawerBuilder = new DrawerBuilder()
                 .withActivity(this)
                 .withToolbar(toolbar)
                 .withFullscreen(true)
                 .withFireOnInitialOnClick(true)
-                .addDrawerItems(
-                        new PrimaryDrawerItem().withName(thaHome).withIcon(GoogleMaterial.Icon.gmd_home).withIdentifier(1),
-                        new PrimaryDrawerItem().withName(thaPreviews).withIcon(GoogleMaterial.Icon.gmd_palette).withIdentifier(2),
-                        new PrimaryDrawerItem().withName(thaWalls).withIcon(GoogleMaterial.Icon.gmd_landscape).withIdentifier(3),
-                        new PrimaryDrawerItem().withName(thaRequest).withIcon(GoogleMaterial.Icon.gmd_comment_list).withIdentifier(4),
-                        new PrimaryDrawerItem().withName(thaApply).withIcon(GoogleMaterial.Icon.gmd_open_in_browser).withIdentifier(5),
-                        new PrimaryDrawerItem().withName(thaFAQs).withIcon(GoogleMaterial.Icon.gmd_help).withIdentifier(6),
-                        new PrimaryDrawerItem().withName(thaZooper).withIcon(GoogleMaterial.Icon.gmd_widgets).withIdentifier(7),
-                        new DividerDrawerItem(),
-                        new SecondaryDrawerItem().withName(thaCredits).withIdentifier(8),
-                        new SecondaryDrawerItem().withName(thaSettings).withIdentifier(9)
-                )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
@@ -502,8 +492,30 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                         return false;
                     }
                 })
-                .withSavedInstance(savedInstanceState)
                 .withDisplayBelowStatusBar(false);
+
+        if (WITH_ZOOPER_SECTION) {
+            PrimaryDrawerItem zooper = new PrimaryDrawerItem().withName(thaZooper).withIcon(GoogleMaterial.Icon.gmd_widgets).withIdentifier(seven);
+            if (WITH_SECONDARY_DRAWER_ITEMS_ICONS) {
+                creditsItem = new SecondaryDrawerItem().withName(thaCredits).withIcon(GoogleMaterial.Icon.gmd_info).withIdentifier(seven + 1);
+                settingsItem = new SecondaryDrawerItem().withName(thaSettings).withIcon(GoogleMaterial.Icon.gmd_settings).withIdentifier(seven + 2);
+            } else {
+                creditsItem = new SecondaryDrawerItem().withName(thaCredits).withIdentifier(seven + 1);
+                settingsItem = new SecondaryDrawerItem().withName(thaSettings).withIdentifier(seven + 2);
+            }
+            drawerBuilder.addDrawerItems(home, previews, walls, requests, apply, faqs, zooper, new DividerDrawerItem(), creditsItem, settingsItem);
+        } else {
+            if (WITH_SECONDARY_DRAWER_ITEMS_ICONS) {
+                creditsItem = new SecondaryDrawerItem().withName(thaCredits).withIcon(GoogleMaterial.Icon.gmd_info).withIdentifier(seven);
+                settingsItem = new SecondaryDrawerItem().withName(thaSettings).withIcon(GoogleMaterial.Icon.gmd_settings).withIdentifier(seven + 1);
+            } else {
+                creditsItem = new SecondaryDrawerItem().withName(thaCredits).withIdentifier(seven);
+                settingsItem = new SecondaryDrawerItem().withName(thaSettings).withIdentifier(seven + 1);
+            }
+            drawerBuilder.addDrawerItems(home, previews, walls, requests, apply, faqs, new DividerDrawerItem(), creditsItem, settingsItem);
+        }
+
+        drawerBuilder.withSavedInstance(savedInstanceState);
 
         switch (drawerHeaderStyle) {
             case NORMAL_HEADER:
@@ -518,6 +530,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                         .withSelectionListEnabledForSingleProfile(false)
                         .withSavedInstance(savedInstanceState)
                         .build();
+
                 drawerBuilder.withAccountHeader(drawerHeader);
                 break;
             case MINI_HEADER:
@@ -559,17 +572,31 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                 switchFragment(6, thaFAQs, "FAQs", context);
                 break;
             case 7:
-                switchFragment(7, thaZooper, "Zooper", context);
+                if (WITH_ZOOPER_SECTION) {
+                    switchFragment(7, thaZooper, "Zooper", context);
+                } else {
+                    if (WITH_ALTERNATIVE_ABOUT_SECTION) {
+                        switchFragment(7, thaCredits, "CreditsAlt", context);
+                    } else {
+                        switchFragment(7, thaCredits, "Credits", context);
+                    }
+                }
                 break;
             case 8:
-                if (WITH_ALTERNATIVE_ABOUT_SECTION) {
-                    switchFragment(8, thaCredits, "CreditsAlt", context);
+                if (WITH_ZOOPER_SECTION) {
+                    if (WITH_ALTERNATIVE_ABOUT_SECTION) {
+                        switchFragment(8, thaCredits, "CreditsAlt", context);
+                    } else {
+                        switchFragment(8, thaCredits, "Credits", context);
+                    }
                 } else {
-                    switchFragment(8, thaCredits, "Credits", context);
+                    switchFragment(8, thaSettings, "Settings", context);
                 }
                 break;
             case 9:
-                switchFragment(9, thaSettings, "Settings", context);
+                if (WITH_ZOOPER_SECTION) {
+                    switchFragment(9, thaSettings, "Settings", context);
+                }
                 break;
         }
     }

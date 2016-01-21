@@ -25,10 +25,8 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import jahirfiquitiva.apps.iconshowcase.R;
-import jahirfiquitiva.apps.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.apps.iconshowcase.basefragments.FragmentStatePagerAdapter;
 import jahirfiquitiva.apps.iconshowcase.models.IconsLists;
-import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.apps.iconshowcase.views.CustomCoordinatorLayout;
 
 public class PreviewsFragment extends Fragment {
