@@ -1,10 +1,7 @@
 package jahirfiquitiva.apps.iconshowcase.adapters;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
-import android.support.v7.graphics.Palette;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,19 +13,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
-import com.mikepenz.google_material_typeface_library.GoogleMaterial;
-import com.mikepenz.iconics.IconicsDrawable;
 
 import java.util.ArrayList;
 
 import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.models.WallpaperItem;
 import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
-import jahirfiquitiva.apps.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.apps.iconshowcase.utilities.Utils;
 
 public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.WallsHolder> {
@@ -42,25 +32,25 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
 
     private ArrayList<WallpaperItem> wallsList;
 
-    private boolean USE_OF_PALETTE = true, MODIFY_TEXT_COLORS_WITH_PALETTE = true;
-    // SET VIBRANT OR MUTED
+    private boolean USE_OF_PALETTE = true, MODIFY_TEXT_COLORS_WITH_PALETTE = false;
+
+    /*
+    * Palette styles: (use this format only)
+    * VIBRANT
+    * VIBRANT_LIGHT
+    * VIBRANT_DARK
+    * MUTED
+    * MUTED_LIGHT
+    * MUTED_DARK
+     */
     private String PALETTE_STYLE = "VIBRANT";
 
     private final ClickListener mCallback;
-
-    private Drawable errorIcon;
 
     public WallpapersAdapter(Context context, ClickListener callback) {
         this.context = context;
         this.mCallback = callback;
         this.mPrefs = new Preferences(context);
-
-        int light = ContextCompat.getColor(context, android.R.color.white);
-        int grey = ContextCompat.getColor(context, R.color.grey);
-        errorIcon = new IconicsDrawable(context)
-                .icon(GoogleMaterial.Icon.gmd_alert_triangle)
-                .color(ThemeUtils.darkTheme ? light : grey)
-                .sizeDp(144);
     }
 
     public void setData(ArrayList<WallpaperItem> wallsList) {
@@ -83,59 +73,43 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
 
         holder.name.setText(wallItem.getWallName());
         holder.authorName.setText(wallItem.getWallAuthor());
+
         final String wallUrl = wallItem.getWallURL();
 
         if (mPrefs.getAnimationsEnabled()) {
-            Glide.with(context)
-                    .load(wallUrl)
-                    .centerCrop()
-                    .error(errorIcon)
-                    .into(new GlideDrawableImageViewTarget(holder.wall) {
-                        @Override
-                        public void onResourceReady(GlideDrawable drawable, GlideAnimation anim) {
-                            holder.progressBar.setVisibility(View.GONE);
-                            if (USE_OF_PALETTE) {
-                                Palette p = new Palette.Builder(((GlideBitmapDrawable) drawable).getBitmap()).generate();
-                                if (p != null) {
-                                    Palette.Swatch wallSwatch = Utils.generateSwatch(PALETTE_STYLE, p);
-                                    if (wallSwatch != null) {
-                                        holder.titleBg.setBackgroundColor(wallSwatch.getRgb());
-                                        if (MODIFY_TEXT_COLORS_WITH_PALETTE) {
-                                            holder.name.setTextColor(wallSwatch.getBodyTextColor());
-                                            holder.authorName.setTextColor(wallSwatch.getBodyTextColor());
-                                        }
-                                    }
-                                }
-                            }
-                            super.onResourceReady(drawable, anim);
-                        }
-                    });
+
+            if (USE_OF_PALETTE) {
+                Glide.with(context)
+                        .load(wallUrl)
+                        .centerCrop()
+                        .listener(Utils.getGlidePalette(PALETTE_STYLE, MODIFY_TEXT_COLORS_WITH_PALETTE,
+                                mPrefs, wallUrl, holder))
+                        .into(holder.wall);
+            } else {
+                Glide.with(context)
+                        .load(wallUrl)
+                        .centerCrop()
+                        .into(holder.wall);
+            }
+
         } else {
-            Glide.with(context)
-                    .load(wallUrl)
-                    .centerCrop()
-                    .error(errorIcon)
-                    .dontAnimate()
-                    .into(new GlideDrawableImageViewTarget(holder.wall) {
-                        @Override
-                        public void onResourceReady(GlideDrawable drawable, GlideAnimation anim) {
-                            holder.progressBar.setVisibility(View.GONE);
-                            if (USE_OF_PALETTE) {
-                                Palette p = new Palette.Builder(((GlideBitmapDrawable) drawable).getBitmap()).generate();
-                                if (p != null) {
-                                    Palette.Swatch wallSwatch = Utils.generateSwatch(PALETTE_STYLE, p);
-                                    if (wallSwatch != null) {
-                                        holder.titleBg.setBackgroundColor(wallSwatch.getRgb());
-                                        if (MODIFY_TEXT_COLORS_WITH_PALETTE) {
-                                            holder.name.setTextColor(wallSwatch.getBodyTextColor());
-                                            holder.authorName.setTextColor(wallSwatch.getBodyTextColor());
-                                        }
-                                    }
-                                }
-                            }
-                            super.onResourceReady(drawable, anim);
-                        }
-                    });
+
+            if (USE_OF_PALETTE) {
+                Glide.with(context)
+                        .load(wallUrl)
+                        .centerCrop()
+                        .dontAnimate()
+                        .listener(Utils.getGlidePalette(PALETTE_STYLE, MODIFY_TEXT_COLORS_WITH_PALETTE,
+                                mPrefs, wallUrl, holder))
+                        .into(holder.wall);
+            } else {
+                Glide.with(context)
+                        .load(wallUrl)
+                        .centerCrop()
+                        .dontAnimate()
+                        .into(holder.wall);
+            }
+
         }
 
     }
@@ -182,4 +156,5 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
             return false;
         }
     }
+
 }

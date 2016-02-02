@@ -2,7 +2,7 @@
  * Copyright (c) 2015. Jahir Fiquitiva. Android Developer. All rights reserved.
  */
 
-package jahirfiquitiva.apps.iconshowcase.basefragments;
+package jahirfiquitiva.apps.iconshowcase.fragments.base;
 
 //package android.support.v4.preference;
 

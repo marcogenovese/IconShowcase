@@ -19,11 +19,12 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -35,11 +36,9 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
-import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
-import com.mikepenz.materialize.MaterializeBuilder;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -59,122 +58,140 @@ public class ViewerActivity extends AppCompatActivity {
 
     private boolean mLastTheme, mLastNavBar;
 
-    private boolean WITH_FAB_ICON_ANIMATION = true;
+    public static final String EXTRA_CURRENT_ITEM_POSITION = "extra_current_item_position";
 
-    private String wallUrl;
-    private String wallName;
+    private int mIndex;
+    private String mIndexText, transitionName, wallUrl, wallName, wallAuthor;
+    private TouchImageView mPhoto;
 
-    private FloatingActionMenu fab;
     private RelativeLayout layout;
     private static Preferences mPrefs;
     private static File downloadsFolder;
     public static MaterialDialog dialogApply;
+
+    public static LinearLayout toHide1, toHide2;
 
     private Activity context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        ThemeUtils.onActivityCreateSetTheme(this);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             ThemeUtils.onActivityCreateSetNavBar(this);
         }
 
-        ThemeUtils.onActivityCreateSetTheme(this);
-
         super.onCreate(savedInstanceState);
 
-        mPrefs = new Preferences(ViewerActivity.this);
+        context = this;
+
+        mPrefs = new Preferences(context);
 
         Intent intent = getIntent();
-        String transitionName = intent.getStringExtra("transitionName");
+        mIndex = intent.getIntExtra(EXTRA_CURRENT_ITEM_POSITION, 1);
+        mIndexText = intent.getStringExtra("indexText");
+        transitionName = intent.getStringExtra("transitionName");
         wallUrl = intent.getStringExtra("wallUrl");
         wallName = intent.getStringExtra("wallName");
-        String wallAuthor = intent.getStringExtra("authorName");
+        wallAuthor = intent.getStringExtra("authorName");
 
         setContentView(R.layout.wall_viewer_activity);
 
-        fab = (FloatingActionMenu) findViewById(R.id.wallsFab);
-        fab.setIconAnimated(WITH_FAB_ICON_ANIMATION && mPrefs.getAnimationsEnabled());
-        fab.setAnimated(mPrefs.getAnimationsEnabled());
+        toHide1 = (LinearLayout) findViewById(R.id.iconsA);
+        toHide1 = (LinearLayout) findViewById(R.id.iconsB);
 
-        FloatingActionButton setWall = (FloatingActionButton) findViewById(R.id.setWall);
-        FloatingActionButton saveWall = (FloatingActionButton) findViewById(R.id.saveWall);
+        final int darkgrey = ContextCompat.getColor(context, R.color.card_dark_background);
 
-        setWall.setOnClickListener(new View.OnClickListener() {
+        Drawable save = new IconicsDrawable(context)
+                .icon(GoogleMaterial.Icon.gmd_save)
+                .color(darkgrey)
+                .sizeDp(24);
+
+        Drawable apply = new IconicsDrawable(context)
+                .icon(GoogleMaterial.Icon.gmd_format_paint)
+                .color(darkgrey)
+                .sizeDp(24);
+
+        Drawable info = new IconicsDrawable(context)
+                .icon(GoogleMaterial.Icon.gmd_info_outline)
+                .color(darkgrey)
+                .sizeDp(24);
+
+        ImageView saveIV = (ImageView) findViewById(R.id.download);
+        saveIV.setImageDrawable(save);
+        saveIV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!PermissionUtils.canAccessStorage(ViewerActivity.this)) {
-                    PermissionUtils.setViewerActivityAction("apply");
-                    PermissionUtils.requestStoragePermission(ViewerActivity.this);
-                } else {
-                    showDialogs("apply");
-                }
-            }
-        });
-
-        saveWall.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!PermissionUtils.canAccessStorage(ViewerActivity.this)) {
+                if (!PermissionUtils.canAccessStorage(context)) {
                     PermissionUtils.setViewerActivityAction("save");
-                    PermissionUtils.requestStoragePermission(ViewerActivity.this);
+                    PermissionUtils.requestStoragePermission(context);
                 } else {
                     showDialogs("save");
                 }
             }
         });
 
-        new MaterializeBuilder()
-                .withActivity(this)
-                .build();
+        ImageView applyIV = (ImageView) findViewById(R.id.apply);
+        applyIV.setImageDrawable(apply);
+        applyIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!PermissionUtils.canAccessStorage(context)) {
+                    PermissionUtils.setViewerActivityAction("apply");
+                    PermissionUtils.requestStoragePermission(context);
+                } else {
+                    showDialogs("apply");
+                }
+            }
+        });
 
-        TouchImageView mPhoto = (TouchImageView) findViewById(R.id.big_wallpaper);
+        ImageView infoIV = (ImageView) findViewById(R.id.info);
+        infoIV.setImageDrawable(info);
+        infoIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Show info dialog
+            }
+        });
+
+        mPhoto = (TouchImageView) findViewById(R.id.big_wallpaper);
         ViewCompat.setTransitionName(mPhoto, transitionName);
 
         layout = (RelativeLayout) findViewById(R.id.viewerLayout);
 
-        context = this;
-
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setTitle(wallName);
-            getSupportActionBar().setSubtitle(getResources().getString(R.string.wallpaper_by,
-                    wallAuthor));
-        }
+        TextView wallNameText = (TextView) findViewById(R.id.wallName);
+        wallNameText.setText(wallName);
 
         Bitmap bmp = null;
         String filename = getIntent().getStringExtra("image");
         try {
-            FileInputStream is = this.openFileInput(filename);
+            FileInputStream is = context.openFileInput(filename);
             bmp = BitmapFactory.decodeStream(is);
             is.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        Drawable d = new GlideBitmapDrawable(getResources(), bmp);
-
         final ProgressBar spinner = (ProgressBar) findViewById(R.id.progress);
         spinner.getIndeterminateDrawable().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
+
+        Drawable d = new GlideBitmapDrawable(getResources(), bmp);
 
         int light = ContextCompat.getColor(context, android.R.color.white);
         int grey = ContextCompat.getColor(context, R.color.grey);
         Drawable errorIcon = new IconicsDrawable(context)
                 .icon(GoogleMaterial.Icon.gmd_alert_triangle)
                 .color(ThemeUtils.darkTheme ? light : grey)
-                .sizeDp(48);
+                .sizeDp(192);
 
         if (mPrefs.getAnimationsEnabled()) {
-            Glide.with(this)
+            Glide.with(context)
                     .load(wallUrl)
                     .placeholder(d)
                     .error(errorIcon)
-                    .fitCenter()
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .fitCenter()
                     .listener(new RequestListener<String, GlideDrawable>() {
                         @Override
                         public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
@@ -189,13 +206,13 @@ public class ViewerActivity extends AppCompatActivity {
                     })
                     .into(mPhoto);
         } else {
-            Glide.with(this)
+            Glide.with(context)
                     .load(wallUrl)
                     .placeholder(d)
                     .error(errorIcon)
                     .dontAnimate()
-                    .fitCenter()
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .fitCenter()
                     .listener(new RequestListener<String, GlideDrawable>() {
                         @Override
                         public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
@@ -225,24 +242,17 @@ public class ViewerActivity extends AppCompatActivity {
         super.onResume();
         if (mLastTheme != ThemeUtils.darkTheme
                 || mLastNavBar != ThemeUtils.coloredNavBar) {
-            ThemeUtils.restartActivity(this);
+            ThemeUtils.restartActivity(context);
         }
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        switch (id) {
-            case android.R.id.home:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    supportFinishAfterTransition();
-                } else {
-                    finish();
-                }
-                break;
+    public void onBackPressed() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            supportFinishAfterTransition();
+        } else {
+            finish();
         }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -270,12 +280,15 @@ public class ViewerActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
             //Crop request
-            fab.showMenuButton(mPrefs.getAnimationsEnabled());
+            if (toHide1 != null & toHide2 != null) {
+                toHide1.setVisibility(View.VISIBLE);
+                toHide2.setVisibility(View.VISIBLE);
+            }
         }
     }
 
     private void saveWallpaperAction(final String name, String url) {
-        final MaterialDialog downloadDialog = ISDialogs.showDownloadDialog(this);
+        final MaterialDialog downloadDialog = ISDialogs.showDownloadDialog(context);
         downloadDialog.show();
         Glide.with(context)
                 .load(url)
@@ -324,11 +337,10 @@ public class ViewerActivity extends AppCompatActivity {
                     public void run() {
                         downloadDialog.dismiss();
 
-                        if (fab.isOpened()) {
-                            fab.close(mPrefs.getAnimationsEnabled());
+                        if (toHide1 != null & toHide2 != null) {
+                            toHide1.setVisibility(View.GONE);
+                            toHide2.setVisibility(View.GONE);
                         }
-                        fab.hideMenuButton(mPrefs.getAnimationsEnabled());
-                        fab.hideMenu(mPrefs.getAnimationsEnabled());
 
                         Snackbar longSnackbar = Snackbar.make(layout, finalSnackbarText,
                                 Snackbar.LENGTH_LONG);
@@ -337,12 +349,12 @@ public class ViewerActivity extends AppCompatActivity {
                             @Override
                             public void onDismissed(Snackbar snackbar, int event) {
                                 super.onDismissed(snackbar, event);
-                                fab.showMenuButton(mPrefs.getAnimationsEnabled());
+                                if (toHide1 != null & toHide2 != null) {
+                                    toHide1.setVisibility(View.VISIBLE);
+                                    toHide2.setVisibility(View.VISIBLE);
+                                }
                             }
                         });
-                        if (!longSnackbar.isShown()) {
-                            fab.showMenuButton(mPrefs.getAnimationsEnabled());
-                        }
                     }
                 });
             }
@@ -350,15 +362,10 @@ public class ViewerActivity extends AppCompatActivity {
     }
 
     public void showApplyWallpaperDialog(final Activity context, final String wallUrl) {
-        ISDialogs.showApplyWallpaperDialog(this,
+        ISDialogs.showApplyWallpaperDialog(context,
                 new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
-                        if (fab.isOpened()) {
-                            fab.close(mPrefs.getAnimationsEnabled());
-                        }
-                        fab.hideMenuButton(mPrefs.getAnimationsEnabled());
-                        fab.hideMenu(mPrefs.getAnimationsEnabled());
                         dialogApply = new MaterialDialog.Builder(context)
                                 .content(R.string.downloading_wallpaper)
                                 .progress(true, 0)
@@ -373,7 +380,7 @@ public class ViewerActivity extends AppCompatActivity {
                                         if (resource != null) {
                                             dialogApply.setContent(context.getString(R.string.setting_wall_title));
                                             new ApplyWallpaper(context, dialogApply, resource,
-                                                    false, layout, fab).execute();
+                                                    false, layout, null, toHide1, toHide2).execute();
                                         }
                                     }
                                 });
@@ -384,11 +391,6 @@ public class ViewerActivity extends AppCompatActivity {
                         if (dialogApply != null) {
                             dialogApply.dismiss();
                         }
-                        if (fab.isOpened()) {
-                            fab.close(mPrefs.getAnimationsEnabled());
-                        }
-                        fab.hideMenuButton(mPrefs.getAnimationsEnabled());
-                        fab.hideMenu(mPrefs.getAnimationsEnabled());
                         dialogApply = new MaterialDialog.Builder(context)
                                 .content(R.string.downloading_wallpaper)
                                 .progress(true, 0)
@@ -402,7 +404,7 @@ public class ViewerActivity extends AppCompatActivity {
                                     public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                                         if (resource != null) {
                                             new WallpaperToCrop(context, dialogApply, resource,
-                                                    layout, fab, wallName).execute();
+                                                    layout, null, wallName, toHide1, toHide2).execute();
                                         }
                                     }
                                 });
@@ -411,11 +413,13 @@ public class ViewerActivity extends AppCompatActivity {
     }
 
     private void showNotConnectedSnackBar(final FloatingActionMenu fab, final Context context) {
-        if (fab.isOpened()) {
-            fab.close(mPrefs.getAnimationsEnabled());
+        if (fab != null) {
+            if (fab.isOpened()) {
+                fab.close(mPrefs.getAnimationsEnabled());
+            }
+            fab.hideMenuButton(mPrefs.getAnimationsEnabled());
+            fab.hideMenu(mPrefs.getAnimationsEnabled());
         }
-        fab.hideMenuButton(mPrefs.getAnimationsEnabled());
-        fab.hideMenu(mPrefs.getAnimationsEnabled());
 
         Snackbar notConnectedSnackBar = Snackbar.make(layout, R.string.no_conn_title,
                 Snackbar.LENGTH_LONG);
@@ -424,11 +428,15 @@ public class ViewerActivity extends AppCompatActivity {
             @Override
             public void onDismissed(Snackbar snackbar, int event) {
                 super.onDismissed(snackbar, event);
-                fab.showMenuButton(mPrefs.getAnimationsEnabled());
+                if (fab != null) {
+                    fab.showMenuButton(mPrefs.getAnimationsEnabled());
+                }
             }
         });
         if (!notConnectedSnackBar.isShown()) {
-            fab.showMenuButton(mPrefs.getAnimationsEnabled());
+            if (fab != null) {
+                fab.showMenuButton(mPrefs.getAnimationsEnabled());
+            }
         }
     }
 
@@ -454,7 +462,7 @@ public class ViewerActivity extends AppCompatActivity {
                         break;
                 }
             } else {
-                showNotConnectedSnackBar(fab, context);
+                showNotConnectedSnackBar(null, context);
             }
         }
 

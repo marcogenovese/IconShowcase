@@ -220,10 +220,6 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
 
-            <meta-data
-                android:name="jahirfiquitiva.apps.iconshowcase.utilities.GlideConfiguration"
-                android:value="GlideModule"/>
-
         </activity>
 
         <!-- Wallpapers Activity -->
@@ -231,10 +227,6 @@
             android:name=".activities.ViewerActivity"
             android:label="@string/title_activity_detailed_wallpaper"
             android:theme="@style/ViewerTheme"/>
-
-        <meta-data
-            android:name="jahirfiquitiva.apps.iconshowcase.utilities.GlideConfiguration"
-            android:value="GlideModule"/>
 
         <service
             android:name=".muzei.ArtSource"
@@ -309,6 +301,10 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/clock_widget_provider"/>
         </receiver>
+
+        <meta-data
+            android:name="jahirfiquitiva.apps.iconshowcase.utilities.GlideConfiguration"
+            android:value="GlideModule"/>
 
     </application>
 

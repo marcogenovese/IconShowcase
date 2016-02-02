@@ -6,15 +6,17 @@
     android:layout_height="wrap_content"
     android:clickable="false"
     android:focusable="false"
+    android:background="@android:color/transparent"
     android:orientation="vertical"
     android:paddingBottom="@dimen/dialog_margin_bottom"
     android:paddingLeft="@dimen/dialog_margin"
     android:paddingRight="@dimen/dialog_margin">
 
     <TextView
-        android:id="@+id/changelog_versionname"
+        android:id="@+id/changelog_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
         android:clickable="false"
         android:focusable="false"
         android:lineSpacingMultiplier="1.6"
@@ -24,7 +26,8 @@
         android:textStyle="bold"/>
 
     <TextView
-        android:id="@+id/changelog_versioncontent"
+        android:id="@+id/changelog_content"
+        android:background="@android:color/transparent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="false"

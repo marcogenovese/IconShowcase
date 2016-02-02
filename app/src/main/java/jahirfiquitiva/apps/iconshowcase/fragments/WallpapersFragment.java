@@ -60,24 +60,26 @@ import jahirfiquitiva.apps.iconshowcase.views.GridSpacingItemDecoration;
 
 public class WallpapersFragment extends Fragment {
 
+    public static ViewGroup layout;
     private static ProgressBar mProgress;
     public static WallpapersAdapter mAdapter;
     private static ImageView noConnection;
     private static RecyclerView mRecyclerView;
     private static RecyclerFastScroller fastScroller;
     public static SwipeRefreshLayout mSwipeRefreshLayout;
-    public static Activity context;
-    private static ViewGroup layout;
+    private static Activity context;
     private static GridSpacingItemDecoration gridSpacing;
+    private static Preferences mPrefs;
 
     private static boolean worked;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
 
         setHasOptionsMenu(true);
-
         context = getActivity();
+
+        Preferences mPrefs = new Preferences(context);
 
         if (layout != null) {
             ViewGroup parent = (ViewGroup) layout.getParent();
@@ -88,7 +90,7 @@ public class WallpapersFragment extends Fragment {
         try {
             layout = (ViewGroup) inflater.inflate(R.layout.wallpapers_section, container, false);
         } catch (InflateException e) {
-
+            // Do nothing
         }
 
         if (!ShowcaseActivity.wallsPicker) {
@@ -103,18 +105,19 @@ public class WallpapersFragment extends Fragment {
                 .icon(GoogleMaterial.Icon.gmd_cloud_off)
                 .color(ThemeUtils.darkTheme ? light : dark)
                 .sizeDp(144));
-
         noConnection.setVisibility(View.GONE);
+
         mProgress = (ProgressBar) layout.findViewById(R.id.progress);
+        showProgressBar();
 
         mRecyclerView = (RecyclerView) layout.findViewById(R.id.wallsGrid);
 
         fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
-        fastScroller.attachRecyclerView(mRecyclerView);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) layout.findViewById(R.id.swipeRefreshLayout);
 
         setupRecyclerView(false, 0);
+
         mRecyclerView.setVisibility(View.GONE);
 
         mSwipeRefreshLayout.setProgressBackgroundColorSchemeColor(ThemeUtils.darkTheme ? dark : light);
@@ -125,18 +128,18 @@ public class WallpapersFragment extends Fragment {
                 R.color.accent);
         mSwipeRefreshLayout.setEnabled(false);
 
-        setupLayout();
+        setupLayout(false);
 
         return layout;
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        context = getActivity();
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.walls_menu, menu);
     }
 
-    private static void setupLayout() {
+    public static void setupLayout(final boolean fromTask) {
 
         if (WallpapersList.getWallpapersList() != null && WallpapersList.getWallpapersList().size() > 0) {
             context.runOnUiThread(new Runnable() {
@@ -160,6 +163,12 @@ public class WallpapersFragment extends Fragment {
 
                     mRecyclerView.setAdapter(mAdapter);
 
+                    fastScroller.attachRecyclerView(mRecyclerView);
+
+                    if (fastScroller.getVisibility() != View.VISIBLE) {
+                        fastScroller.setVisibility(View.VISIBLE);
+                    }
+
                     if (Utils.hasNetwork(context)) {
                         showStuff();
                     } else {
@@ -175,20 +184,22 @@ public class WallpapersFragment extends Fragment {
                         hideStuff();
                     }
                     if (layout != null) {
-                        Timer timer = new Timer();
                         noConnection.setVisibility(View.GONE);
                         showProgressBar();
-                        timer.schedule(new TimerTask() {
-                            @Override
-                            public void run() {
-                                context.runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        hideStuff();
-                                    }
-                                });
-                            }
-                        }, 8000);
+                        if (fromTask) {
+                            Timer timer = new Timer();
+                            timer.schedule(new TimerTask() {
+                                @Override
+                                public void run() {
+                                    context.runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            hideStuff();
+                                        }
+                                    });
+                                }
+                            }, 10000);
+                        }
                     }
                 }
             });
@@ -230,6 +241,7 @@ public class WallpapersFragment extends Fragment {
     }
 
     private static void setupRecyclerView(boolean updating, int newColumns) {
+
         Preferences mPrefs = new Preferences(context);
         if (updating && gridSpacing != null) {
             mPrefs.setWallsColumnsNumber(newColumns);
@@ -251,10 +263,6 @@ public class WallpapersFragment extends Fragment {
         if (mRecyclerView.getVisibility() != View.VISIBLE) {
             mRecyclerView.setVisibility(View.VISIBLE);
         }
-
-        if (fastScroller.getVisibility() != View.VISIBLE) {
-            fastScroller.setVisibility(View.VISIBLE);
-        }
     }
 
     public static void updateRecyclerView(int newColumns) {
@@ -265,13 +273,10 @@ public class WallpapersFragment extends Fragment {
         hideProgressBar();
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.walls_menu, menu);
-    }
-
     public static void refreshWalls(Activity context) {
+        hideProgressBar();
+        mRecyclerView.setVisibility(View.GONE);
+        fastScroller.setVisibility(View.GONE);
         if (Utils.hasNetwork(context)) {
             Utils.showSimpleSnackbar(layout,
                     context.getResources().getString(R.string.refreshing_walls), 1);
@@ -290,25 +295,35 @@ public class WallpapersFragment extends Fragment {
 
     public static void openViewer(Context context, WallpapersAdapter.WallsHolder wallsHolder,
                                   int index, final ArrayList<WallpaperItem> list) {
+
         final Intent intent = new Intent(context, ViewerActivity.class);
+
         WallpaperItem wallItem = list.get(index);
         intent.putExtra("wallName", wallItem.getWallName());
         intent.putExtra("authorName", wallItem.getWallAuthor());
         intent.putExtra("wallUrl", wallItem.getWallURL());
         intent.putExtra("transitionName", ViewCompat.getTransitionName(wallsHolder.wall));
-        Bitmap bitmap = drawableToBitmap(wallsHolder.wall.getDrawable());
-        try {
-            String filename = "temp.png";
-            FileOutputStream stream = context.openFileOutput(filename, Context.MODE_PRIVATE);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-            stream.close();
-            intent.putExtra("image", filename);
-        } catch (Exception e) {
-            e.printStackTrace();
+
+        Bitmap bitmap;
+
+        if (wallsHolder.wall.getDrawable() != null) {
+            bitmap = drawableToBitmap(wallsHolder.wall.getDrawable());
+            try {
+                String filename = "temp.png";
+                FileOutputStream stream = context.openFileOutput(filename, Context.MODE_PRIVATE);
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                stream.close();
+                intent.putExtra("image", filename);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    (Activity) context, wallsHolder.wall, ViewCompat.getTransitionName(wallsHolder.wall));
+            context.startActivity(intent, options.toBundle());
+        } else {
+            showLoadPictureSnackbar(layout);
         }
-        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                (Activity) context, wallsHolder.wall, ViewCompat.getTransitionName(wallsHolder.wall));
-        context.startActivity(intent, options.toBundle());
 
     }
 
@@ -411,7 +426,7 @@ public class WallpapersFragment extends Fragment {
             Utils.showLog("Walls Task completed in: " + String.valueOf((endTime - startTime) / 1000) + " secs.");
 
             if (layout != null) {
-                setupLayout();
+                setupLayout(true);
             }
 
             if (wi != null)
@@ -465,6 +480,11 @@ public class WallpapersFragment extends Fragment {
                     })
                     .show();
         }
+    }
+
+    public static void showLoadPictureSnackbar(View layout) {
+        Utils.showSimpleSnackbar(layout,
+                Utils.getStringFromResources(context, R.string.wait_for_walls), 1);
     }
 
 }

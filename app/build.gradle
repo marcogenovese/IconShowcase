@@ -95,7 +95,10 @@ dependencies {
     compile 'com.mikepenz:google-material-typeface:2.2.0.1@aar'
 
     //Glide Library - Image Loading Lib
-    compile 'com.github.bumptech.glide:glide:3.6.1'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+
+    //Glide Palette Library
+    compile 'com.github.florent37:glidepalette:1.0.6'
 
     //Muzei API
     compile 'com.google.android.apps.muzei:muzei-api:2.0'

@@ -83,7 +83,7 @@
 
     <!-- Requests -->
     <string name="request_advice">If you do not select any app for the icon request, but press the
-        button, it will be automatically generated with all of your apps.\n No need to select each
+        button, it will be automatically generated with all of your apps.\nNo need to select each
         one.
     </string>
 
@@ -238,6 +238,10 @@
     <string name="new_folder_hint">Folder name</string>
     <string name="new_folder_title">Create a new folder</string>
     <string name="new_folder_content">Type the new folder\'s name, please.</string>
+
+    <string name="wait_for_walls">Please wait until wallpaper preview appears…</string>
+    <string name="translators">Translators</string>
+    <string name="more">More</string>
 
     <string name="columns">Columns number</string>
     <string name="columns_desc">Select the amount of columns you want to see in this section:</string>

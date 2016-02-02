@@ -2,6 +2,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
     <string name="dashboard_author_name">Jahir Fiquitiva</string>
+    <string name="dashboard_author_photo" formatted="false" tools:ignore="TypographyDashes">http://www.jahirfiquitiva.net/asdqwer/pictures/Photo.png</string>
+    <string name="dashboard_author_banner" formatted="false" tools:ignore="TypographyDashes">http://www.jahirfiquitiva.net/asdqwer/pictures/Banner.png</string>
     <string name="dashboard_author_website">http://www.jahirfiquitiva.net/</string>
     <string name="dashboard_author_gplus_community">https://plus.google.com/communities/117748118619432374563</string>
     <string name="dashboard_author_github">https://github.com/jahirfiquitiva/IconShowcase</string>
@@ -27,6 +29,9 @@
 
     <string name="glide_name">Glide</string>
     <string name="glide_web">https://github.com/bumptech/glide</string>
+
+    <string name="glide_palette_name">Glide Palette</string>
+    <string name="glide_palette_web">https://github.com/florent37/GlidePalette</string>
 
     <string name="rv_fast_scroller_web">https://github.com/plusCubed/recycler-fast-scroll</string>
     <string name="rv_fast_scroller_name">RecyclerView FastScroller</string>
@@ -100,6 +105,30 @@
         <item>https://plus.google.com/+KevinAguilarC/posts</item>
     </string-array>
 
+    <string-array name="translators_names">
+        <item>Tijmen Ennik</item>
+        <item>Julian Ostarek</item>
+        <item>@string/patryk</item>
+        <item>Randle P</item>
+        <item>Chebeto Sanchez</item>
+        <item>Danet Mickael</item>
+        <item>Otto Werse</item>
+        <item>Redi Tafani</item>
+        <item>Stefano Trevisani</item>
+    </string-array>
+
+    <string-array name="translators_links">
+        <item></item>
+        <item></item>
+        <item>https://plus.google.com/109304801957014561872/posts</item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+    </string-array>
+
     <string-array name="libs_names">
         <item>@string/materialdialogs_name</item>
         <item>@string/materialdrawer_name</item>
@@ -107,6 +136,7 @@
         <item>@string/fab_name</item>
         <item>@string/iconics_name</item>
         <item>@string/glide_name</item>
+        <item>@string/glide_palette_name</item>
         <item>@string/rv_fast_scroller_name</item>
         <item>@string/circleiv_name</item>
         <item>@string/muzei_api_name</item>
@@ -119,12 +149,13 @@
         <item>@string/fab_web</item>
         <item>@string/iconics_web</item>
         <item>@string/glide_web</item>
+        <item>@string/glide_palette_web</item>
         <item>@string/rv_fast_scroller_web</item>
         <item>@string/circleiv_web</item>
         <item>@string/muzei_api_web</item>
     </string-array>
 
-    <string name="google_plus">Google Plus</string>
+    <string name="google_plus">Google+</string>
     <string name="youtube">YouTube</string>
     <string name="twitter">Twitter</string>
     <string name="play_store">Google Play Store</string>

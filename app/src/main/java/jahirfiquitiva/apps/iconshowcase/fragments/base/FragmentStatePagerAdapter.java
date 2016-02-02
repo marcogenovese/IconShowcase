@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package jahirfiquitiva.apps.iconshowcase.basefragments;
+package jahirfiquitiva.apps.iconshowcase.fragments.base;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;

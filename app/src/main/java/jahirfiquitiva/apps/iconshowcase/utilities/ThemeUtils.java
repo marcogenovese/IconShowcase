@@ -61,11 +61,11 @@ public class ThemeUtils {
             default:
             case NAVBAR_DEFAULT:
                 activity.getWindow().setNavigationBarColor(ContextCompat.getColor(activity, R.color.primary_dark));
-                coloredNavBar = false;
+                coloredNavBar = true;
                 break;
             case NAVBAR_BLACK:
                 activity.getWindow().setNavigationBarColor(ContextCompat.getColor(activity, android.R.color.black));
-                coloredNavBar = true;
+                coloredNavBar = false;
                 break;
         }
     }

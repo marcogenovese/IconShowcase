@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.support.design.widget.Snackbar;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.clans.fab.FloatingActionMenu;
@@ -32,6 +33,7 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
     private FloatingActionMenu fab;
     private String wallName;
     private WeakReference<Activity> wrActivity;
+    private LinearLayout toHide1, toHide2;
 
     public WallpaperToCrop(Activity activity, MaterialDialog dialog, Bitmap resource,
                            View layout, FloatingActionMenu fab, String wallName) {
@@ -41,6 +43,18 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
         this.layout = layout;
         this.fab = fab;
         this.wallName = wallName;
+    }
+
+    public WallpaperToCrop(Activity activity, MaterialDialog dialog, Bitmap resource,
+                           View layout, FloatingActionMenu fab, String wallName, LinearLayout toHide1, LinearLayout toHide2) {
+        this.wrActivity = new WeakReference<Activity>(activity);
+        this.dialog = dialog;
+        this.resource = resource;
+        this.layout = layout;
+        this.fab = fab;
+        this.wallName = wallName;
+        this.toHide1 = toHide1;
+        this.toHide2 = toHide2;
     }
 
     @Override
@@ -71,6 +85,10 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
     @Override
     protected void onPostExecute(Boolean worked) {
         final Preferences mPrefs = new Preferences(context);
+        if (toHide1 != null & toHide2 != null) {
+            toHide1.setVisibility(View.GONE);
+            toHide2.setVisibility(View.GONE);
+        }
         if (worked) {
             dialog.dismiss();
             Intent setWall = new Intent(Intent.ACTION_ATTACH_DATA);
@@ -87,7 +105,13 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
                 @Override
                 public void onDismissed(Snackbar snackbar, int event) {
                     super.onDismissed(snackbar, event);
-                    fab.showMenuButton(mPrefs.getAnimationsEnabled());
+                    if (toHide1 != null & toHide2 != null) {
+                        toHide1.setVisibility(View.VISIBLE);
+                        toHide2.setVisibility(View.VISIBLE);
+                    }
+                    if (fab != null) {
+                        fab.showMenuButton(mPrefs.getAnimationsEnabled());
+                    }
                 }
             });
         }

@@ -39,7 +39,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/credits_headers"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/designer_header"
                         tools:ignore="ContentDescription"/>
 
                     <de.hdodenhof.circleimageview.CircleImageView
@@ -49,7 +48,6 @@
                         android:layout_marginLeft="@dimen/cards_content_margin_small"
                         android:layout_marginRight="@dimen/cards_content_margin_small"
                         android:layout_marginTop="@dimen/credits_photo_margin"
-                        android:src="@drawable/designer_photo"
                         app:civ_border_color="?attr/colorCardBackground"
                         app:civ_border_width="2dp"
                         tools:ignore="ContentDescription"/>
@@ -101,6 +99,14 @@
                             android:textColor="@color/accent"/>
 
                         <android.support.v7.widget.AppCompatButton
+                            android:id="@+id/googleplus_btn"
+                            style="@style/Widget.AppCompat.Button.Borderless"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/google_plus"
+                            android:textColor="@color/accent"/>
+
+                        <android.support.v7.widget.AppCompatButton
                             android:id="@+id/website_btn"
                             style="@style/Widget.AppCompat.Button.Borderless"
                             android:layout_width="wrap_content"
@@ -109,23 +115,6 @@
                             android:textColor="@color/accent"/>
 
                     </LinearLayout>
-
-                    <ImageView
-                        android:id="@+id/designerPopUp"
-                        style="@style/AboutContent"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBottom="@id/designerButtons"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginEnd="@dimen/cards_margin"
-                        android:layout_marginRight="@dimen/cards_margin"
-                        android:background="?selectableItemBackgroundBorderless"
-                        android:clickable="true"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/abc_ic_menu_moreoverflow_mtrl_alpha"
-                        android:tint="?attr/drawablesTintColor"
-                        tools:ignore="ContentDescription,PrivateResource"/>
 
                 </RelativeLayout>
 
@@ -136,7 +125,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/designerCard"
-                android:layout_margin="@dimen/cards_margin"
+                android:layout_marginLeft="@dimen/cards_margin"
+                android:layout_marginRight="@dimen/cards_margin"
+                android:layout_marginTop="@dimen/cards_margin"
                 app:cardBackgroundColor="?attr/colorCardBackground"
                 app:cardCornerRadius="@dimen/card_corner_radius"
                 app:cardElevation="@dimen/cards_elevation">
@@ -150,7 +141,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/credits_headers"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/header"
                         tools:ignore="ContentDescription"/>
 
                     <de.hdodenhof.circleimageview.CircleImageView
@@ -160,7 +150,6 @@
                         android:layout_marginLeft="@dimen/cards_content_margin_small"
                         android:layout_marginRight="@dimen/cards_content_margin_small"
                         android:layout_marginTop="@dimen/credits_photo_margin"
-                        android:src="@drawable/jahir"
                         app:civ_border_color="?attr/colorCardBackground"
                         app:civ_border_width="2dp"
                         tools:ignore="ContentDescription"/>
@@ -219,26 +208,220 @@
                             android:text="@string/visit_website"
                             android:textColor="@color/accent"/>
 
+                        <android.support.v7.widget.AppCompatButton
+                            android:id="@+id/dev_googleplus_btn"
+                            style="@style/Widget.AppCompat.Button.Borderless"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/google_plus"
+                            android:textColor="@color/accent"/>
+
                     </LinearLayout>
 
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/sherryCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/devCard"
+                android:layout_marginLeft="@dimen/cards_margin"
+                android:layout_marginRight="@dimen/cards_margin"
+                android:layout_marginTop="@dimen/cards_margin"
+                app:cardBackgroundColor="?attr/colorCardBackground"
+                app:cardCornerRadius="@dimen/card_corner_radius"
+                app:cardElevation="@dimen/cards_elevation">
+
+                <LinearLayout
+                    android:id="@+id/collaboratorsSherry"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:minHeight="@dimen/md_listitem_height"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+
                     <ImageView
-                        android:id="@+id/developerPopUp"
-                        style="@style/AboutContent"
+                        android:id="@+id/icon_sherry"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        tools:ignore="ContentDescription"/>
+
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignBottom="@id/developerButtons"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginEnd="@dimen/cards_margin"
-                        android:layout_marginRight="@dimen/cards_margin"
-                        android:background="?selectableItemBackgroundBorderless"
-                        android:clickable="true"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/abc_ic_menu_moreoverflow_mtrl_alpha"
-                        android:tint="?attr/drawablesTintColor"
-                        tools:ignore="ContentDescription,PrivateResource"/>
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginStart="24dp"
+                        android:paddingBottom="8dp"
+                        android:paddingTop="8dp"
+                        android:text="@string/sherry_title"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
 
-                </RelativeLayout>
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/contributorsCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sherryCard"
+                android:layout_marginLeft="@dimen/cards_margin"
+                android:layout_marginRight="@dimen/cards_margin"
+                android:layout_marginTop="@dimen/cards_margin"
+                app:cardBackgroundColor="?attr/colorCardBackground"
+                app:cardCornerRadius="@dimen/card_corner_radius"
+                app:cardElevation="@dimen/cards_elevation">
+
+                <LinearLayout
+                    android:id="@+id/collaborators"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:minHeight="@dimen/md_listitem_height"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:id="@+id/icon_collaborators"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        tools:ignore="ContentDescription"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginStart="24dp"
+                        android:paddingBottom="8dp"
+                        android:paddingTop="8dp"
+                        android:text="@string/contributors"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/uiDesignCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/contributorsCard"
+                android:layout_marginLeft="@dimen/cards_margin"
+                android:layout_marginRight="@dimen/cards_margin"
+                android:layout_marginTop="@dimen/cards_margin"
+                app:cardBackgroundColor="?attr/colorCardBackground"
+                app:cardCornerRadius="@dimen/card_corner_radius"
+                app:cardElevation="@dimen/cards_elevation">
+
+                <LinearLayout
+                    android:id="@+id/uiDesign"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:minHeight="@dimen/md_listitem_height"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:id="@+id/icon_ui_design"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        tools:ignore="ContentDescription"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginStart="24dp"
+                        android:paddingBottom="8dp"
+                        android:paddingTop="8dp"
+                        android:text="@string/ui_design"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/translatorsCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/uiDesignCard"
+                android:layout_marginLeft="@dimen/cards_margin"
+                android:layout_marginRight="@dimen/cards_margin"
+                android:layout_marginTop="@dimen/cards_margin"
+                app:cardBackgroundColor="?attr/colorCardBackground"
+                app:cardCornerRadius="@dimen/card_corner_radius"
+                app:cardElevation="@dimen/cards_elevation">
+
+                <LinearLayout
+                    android:id="@+id/translators"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:minHeight="@dimen/md_listitem_height"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:id="@+id/icon_translators"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        tools:ignore="ContentDescription"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginStart="24dp"
+                        android:paddingBottom="8dp"
+                        android:paddingTop="8dp"
+                        android:text="@string/translators"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/libsCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/translatorsCard"
+                android:layout_margin="@dimen/cards_margin"
+                app:cardBackgroundColor="?attr/colorCardBackground"
+                app:cardCornerRadius="@dimen/card_corner_radius"
+                app:cardElevation="@dimen/cards_elevation">
+
+                <LinearLayout
+                    android:id="@+id/libraries"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:minHeight="@dimen/md_listitem_height"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:id="@+id/icon_libs"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        tools:ignore="ContentDescription"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginStart="24dp"
+                        android:paddingBottom="8dp"
+                        android:paddingTop="8dp"
+                        android:text="@string/implemented_libraries"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
+
+                </LinearLayout>
 
             </android.support.v7.widget.CardView>
 

@@ -1,28 +1,13 @@
 <RelativeLayout
     android:id="@+id/viewerLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    tools:context="jahirfiquitiva.apps.iconshowcase.activities.ViewerActivity">
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        android:background="@color/primary"
-        android:minHeight="?actionBarSize"
-        android:transitionName="actionBar"
-        app:contentInsetStart="@dimen/toolbar_contentInset"
-        app:elevation="0dp"
-        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        tools:ignore="UnusedAttribute"/>
+    android:layout_height="fill_parent">
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/toolbar">
+        android:layout_height="match_parent">
 
         <jahirfiquitiva.apps.iconshowcase.views.TouchImageView
             android:id="@+id/big_wallpaper"
@@ -32,7 +17,7 @@
 
         <ProgressBar
             android:id="@+id/progress"
-            style="?progressBarStyle"
+            style="?android:progressBarStyleLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -42,48 +27,85 @@
 
     </FrameLayout>
 
-    <com.github.clans.fab.FloatingActionMenu
-        android:id="@+id/wallsFab"
+    <LinearLayout
+        android:id="@+id/iconsA"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_height="?actionBarSize"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_margin="16dp"
-        app:menu_colorNormal="@android:color/white"
-        app:menu_colorPressed="@android:color/white"
-        app:menu_colorRipple="@color/semitransparent_black"
-        app:menu_fab_size="normal"
-        app:menu_icon="@drawable/ic_wallpapers_fab"
-        app:menu_labels_colorNormal="@android:color/white"
-        app:menu_labels_colorPressed="@android:color/white"
-        app:menu_labels_colorRipple="@color/semitransparent_black"
-        app:menu_labels_padding="8dp"
-        app:menu_labels_textColor="@color/card_dark_background"
-        app:menu_showShadow="true">
+        android:layout_alignTop="@+id/iconsB"
+        android:layout_gravity="center_vertical"
+        android:background="@android:color/white"
+        android:minHeight="?actionBarSize"
+        android:orientation="horizontal"
+        tools:ignore="UnusedAttribute">
 
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/setWall"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            tools:ignore="UselessParent">
+
+            <ImageView
+                android:id="@+id/download"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginLeft="@dimen/dialog_margin"
+                android:layout_marginStart="@dimen/dialog_margin"
+                android:background="?selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_wallpapers_fab"
+                tools:ignore="ContentDescription"/>
+
+            <ImageView
+                android:id="@+id/apply"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginLeft="@dimen/dialog_margin"
+                android:layout_marginRight="@dimen/dialog_margin"
+                android:background="?selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_wallpapers_fab"
+                tools:ignore="ContentDescription"/>
+
+            <ImageView
+                android:id="@+id/info"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="?selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_wallpapers_fab"
+                tools:ignore="ContentDescription"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/iconsB"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="center_vertical"
+        android:layout_toLeftOf="@id/iconsA"
+        android:layout_toStartOf="@id/iconsA"
+        android:background="@android:color/white"
+        android:gravity="center_vertical"
+        android:minHeight="?actionBarSize"
+        android:orientation="horizontal"
+        tools:ignore="UnusedAttribute">
+
+        <TextView
+            android:id="@+id/wallName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_check_dark"
-            app:fab_colorNormal="@android:color/white"
-            app:fab_colorPressed="@android:color/white"
-            app:fab_colorRipple="@color/semitransparent_black"
-            app:fab_label="@string/apply"
-            app:fab_size="mini"/>
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            tools:text="Geometric 4 sdqa feaf egeg ergreg wfed aed aecfaefa efae asa aaerf eg efae feag "/>
 
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/saveWall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_save_dark"
-            app:fab_colorNormal="@android:color/white"
-            app:fab_colorPressed="@android:color/white"
-            app:fab_colorRipple="@color/semitransparent_black"
-            app:fab_label="@string/save"
-            app:fab_size="mini"/>
-
-    </com.github.clans.fab.FloatingActionMenu>
+    </LinearLayout>
 
 </RelativeLayout>

@@ -7,6 +7,8 @@
     <string name="theme_description">IconShowcase is a Material Design based Icon Pack dashboard template. Free and open source.</string>
 
     <string name="iconpack_author_name">Jahir Fiquitiva</string>
+    <string name="iconpack_author_photo" formatted="false" tools:ignore="TypographyDashes">https://lh4.googleusercontent.com/-IyRx4Aav1XU/VluTg9HOAuI/AAAAAAAANok/_C84Zl9yrr4/s548-no/af3938fc-0a44-43c9-98b7-b72d56937fdf</string>
+    <string name="iconpack_author_banner" formatted="false" tools:ignore="TypographyDashes">https://lh6.googleusercontent.com/-Aa7_LT90P78/VTP6DEeh1rI/AAAAAAAACkY/bkw2twwqtFI/w975-h548-no/Cover%2BJahir%2BFiquitiva.png</string>
     <string name="iconpack_author_description">I am a designer and I love this dashboard.</string>
     <string name="iconpack_author_gplus">https://www.google.com/+JahirFiquitivaJDev</string>
     <string name="iconpack_author_gplus_community">https://plus.google.com/communities/117748118619432374563</string>
@@ -17,6 +19,22 @@
     <string name="iconpack_author_playstore">https://play.google.com/store/apps/dev?id=7438639276314720952</string>
     <string name="iconpack_author_website">http://www.jahirfiquitiva.net/</string>
     <string name="iconpack_author_youtube">https://www.youtube.com/channel/UCBTheBoZEA1p95HyjEHqouA</string>
+
+    <string-array name="iconpack_author_sites">
+        <item>@string/facebook</item>
+        <item>@string/join_community</item>
+        <item>@string/youtube</item>
+        <item>@string/twitter</item>
+        <item>@string/play_store</item>
+    </string-array>
+
+    <string-array name="iconpack_author_links">
+        <item>@string/iconpack_author_fb_alt</item>
+        <item>@string/iconpack_author_gplus_community</item>
+        <item>@string/iconpack_author_youtube</item>
+        <item>@string/iconpack_author_twitter</item>
+        <item>@string/iconpack_author_playstore</item>
+    </string-array>
 
     <!-- Muzei Stuff -->
     <string name="artsource_name">@string/app_name</string>

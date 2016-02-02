@@ -19,16 +19,18 @@ import android.support.customtabs.CustomTabsServiceConnection;
 import android.support.customtabs.CustomTabsSession;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.graphics.Palette;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
+
+import com.github.florent37.glidepalette.GlidePalette;
 
 import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
 import jahirfiquitiva.apps.iconshowcase.R;
+import jahirfiquitiva.apps.iconshowcase.adapters.WallpapersAdapter;
 
 /**
  * @author Aidan Follestad (afollestad)
@@ -191,17 +193,50 @@ public class Utils {
         context.startActivity(Intent.createChooser(intent, (context.getResources().getString(R.string.send_title))));
     }
 
-    public static Palette.Swatch generateSwatch(String tag, Palette palette) {
-        Palette.Swatch generatedSwatch = null;
-        switch (tag) {
+    public static GlidePalette getGlidePalette(String profile, boolean withTintedTexts, Preferences mPrefs,
+                                               String wallUrl, WallpapersAdapter.WallsHolder holder) {
+
+        GlidePalette palette;
+
+        int colorSwatch = GlidePalette.Profile.VIBRANT;
+
+        switch (profile) {
             case "VIBRANT":
-                generatedSwatch = palette.getVibrantSwatch();
+                colorSwatch = GlidePalette.Profile.VIBRANT;
+                break;
+            case "VIBRANT_LIGHT":
+                colorSwatch = GlidePalette.Profile.VIBRANT_LIGHT;
+                break;
+            case "VIBRANT_DARK":
+                colorSwatch = GlidePalette.Profile.VIBRANT_LIGHT;
                 break;
             case "MUTED":
-                generatedSwatch = palette.getMutedSwatch();
+                colorSwatch = GlidePalette.Profile.MUTED;
+                break;
+            case "MUTED_LIGHT":
+                colorSwatch = GlidePalette.Profile.MUTED_LIGHT;
+                break;
+            case "MUTED_DARK":
+                colorSwatch = GlidePalette.Profile.MUTED_LIGHT;
                 break;
         }
-        return generatedSwatch;
+
+        if (withTintedTexts) {
+            palette = GlidePalette.with(wallUrl)
+                    .use(colorSwatch)
+                    .intoBackground(holder.titleBg, GlidePalette.Swatch.RGB)
+                    .intoTextColor(holder.name, GlidePalette.Swatch.TITLE_TEXT_COLOR)
+                    .intoTextColor(holder.authorName, GlidePalette.Swatch.BODY_TEXT_COLOR)
+                    .crossfade(mPrefs.getAnimationsEnabled());
+        } else {
+            palette = GlidePalette.with(wallUrl)
+                    .use(colorSwatch)
+                    .intoBackground(holder.titleBg, GlidePalette.Swatch.RGB)
+                    .crossfade(mPrefs.getAnimationsEnabled());
+        }
+
+        return palette;
+
     }
 
     /***

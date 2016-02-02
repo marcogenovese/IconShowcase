@@ -26,9 +26,9 @@ import java.io.File;
 
 import jahirfiquitiva.apps.iconshowcase.R;
 import jahirfiquitiva.apps.iconshowcase.activities.ShowcaseActivity;
-import jahirfiquitiva.apps.iconshowcase.basefragments.PreferenceFragment;
 import jahirfiquitiva.apps.iconshowcase.dialogs.FolderChooserDialog;
 import jahirfiquitiva.apps.iconshowcase.dialogs.ISDialogs;
+import jahirfiquitiva.apps.iconshowcase.fragments.base.PreferenceFragment;
 import jahirfiquitiva.apps.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.apps.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.apps.iconshowcase.utilities.ThemeUtils;

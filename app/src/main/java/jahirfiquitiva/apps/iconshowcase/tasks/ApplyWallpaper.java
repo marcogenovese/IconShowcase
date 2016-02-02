@@ -9,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.clans.fab.FloatingActionMenu;
@@ -30,6 +31,7 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
     private Snackbar snackbar;
     private FloatingActionMenu fab;
     private WeakReference<Activity> wrActivity;
+    private LinearLayout toHide1, toHide2;
 
     public ApplyWallpaper(Activity activity, MaterialDialog dialog, Bitmap resource, Boolean isPicker,
                           View layout, FloatingActionMenu fab) {
@@ -39,6 +41,18 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
         this.isPicker = isPicker;
         this.layout = layout;
         this.fab = fab;
+    }
+
+    public ApplyWallpaper(Activity activity, MaterialDialog dialog, Bitmap resource, Boolean isPicker,
+                          View layout, FloatingActionMenu fab, LinearLayout toHide1, LinearLayout toHide2) {
+        this.wrActivity = new WeakReference<Activity>(activity);
+        this.dialog = dialog;
+        this.resource = resource;
+        this.isPicker = isPicker;
+        this.layout = layout;
+        this.fab = fab;
+        this.toHide1 = toHide1;
+        this.toHide2 = toHide2;
     }
 
     @Override
@@ -74,6 +88,12 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
         if (worked) {
             dialog.dismiss();
             if (!isPicker) {
+
+                if (toHide1 != null & toHide2 != null) {
+                    toHide1.setVisibility(View.GONE);
+                    toHide2.setVisibility(View.GONE);
+                }
+
                 Snackbar longSnackbar = Snackbar.make(layout,
                         context.getString(R.string.set_as_wall_done), Snackbar.LENGTH_LONG);
                 longSnackbar.show();
@@ -83,6 +103,10 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
                         super.onDismissed(snackbar, event);
                         if (fab != null) {
                             fab.showMenuButton(mPrefs.getAnimationsEnabled());
+                        }
+                        if (toHide1 != null & toHide2 != null) {
+                            toHide1.setVisibility(View.VISIBLE);
+                            toHide2.setVisibility(View.VISIBLE);
                         }
                     }
                 });

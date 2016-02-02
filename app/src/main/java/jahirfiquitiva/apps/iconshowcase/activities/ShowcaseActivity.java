@@ -222,9 +222,11 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             icon3.setVisibility(View.INVISIBLE);
             icon4.setVisibility(View.INVISIBLE);
             appbar.setExpanded(true, mPrefs.getAnimationsEnabled());
+            appbar.setActivated(true);
             coordinatorLayout.setScrollAllowed(true);
         } else if (!fragment.equals("Previews")) {
             appbar.setExpanded(false, mPrefs.getAnimationsEnabled());
+            appbar.setActivated(false);
             coordinatorLayout.setScrollAllowed(false);
         }
 
@@ -521,7 +523,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             case NORMAL_HEADER:
                 drawerHeader = new AccountHeaderBuilder()
                         .withActivity(this)
-                        .withHeaderBackground(R.drawable.header)
+                        .withHeaderBackground(R.drawable.drawer_header)
                         .withSelectionFirstLine(getResources().getString(R.string.app_long_name))
                         .withSelectionSecondLine("v " + Utils.getAppVersion(this))
                         .withProfileImagesClickable(false)

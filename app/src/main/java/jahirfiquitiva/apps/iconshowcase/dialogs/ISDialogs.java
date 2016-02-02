@@ -315,6 +315,34 @@ public final class ISDialogs {
                 }).show();
     }
 
+    public static void showDesignerLinksDialog(final Context context, final String[] designerLinks) {
+        new MaterialDialog.Builder(context)
+                .title(R.string.more)
+                .negativeText(R.string.close)
+                .items(R.array.iconpack_author_sites)
+                .itemsCallback(new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog materialDialog, View view,
+                                            final int i, CharSequence charSequence) {
+                        Utils.openLinkInChromeCustomTab(context, designerLinks[i]);
+                    }
+                }).show();
+    }
+
+    public static void showTranslatorsDialogs(final Context context, final String[] links) {
+        new MaterialDialog.Builder(context)
+                .title(R.string.translators)
+                .negativeText(R.string.close)
+                .items(R.array.translators_names)
+                .itemsCallback(new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog materialDialog, View view,
+                                            final int i, CharSequence charSequence) {
+                        Utils.openLinkInChromeCustomTab(context, links[i]);
+                    }
+                }).show();
+    }
+
     /*
     Settings Fragment Dialogs
      */

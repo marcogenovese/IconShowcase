@@ -21,22 +21,20 @@ import jahirfiquitiva.apps.iconshowcase.utilities.Utils;
 
 public class CreditsFragment extends Fragment {
 
-    private boolean WITH_DEVELOPMENT_CREDITS = true;
-
     private Context context;
     private ViewGroup layout;
     Drawable person, facebook, gplus, twitter, website, youtube, community, playstore, github,
-            bugs, donate, collaboratorsIcon, libs, uiCollaboratorsIcon, sherryIcon, email;
+            bugs, donate, collaboratorsIcon, libs, uiCollaboratorsIcon, sherryIcon, email, translators;
     ImageView iconAuthor, iconDev, iconAuthorFacebook, iconAuthorGPlus, iconAuthorCommunity,
             youtubeIcon, twitterIcon, playStoreIcon, iconAuthorWebsite, uiCollaboratorsIV,
             iconDevGitHub, iconDevCommunity, donateIcon, bugIcon, collaboratorsIV, libsIcon,
-            sherryIV, emailIV;
+            sherryIV, emailIV, translatorsIV;
     LinearLayout jahirL, authorFB, authorGPlus, authorTwitter, authorWebsite, authorYouTube,
             authorCommunity, authorPlayStore, devGitHub, libraries, uiCollaborators,
-            thanksSherry, contributorsLayout, donateL, bugsL, communityL, emailL;
+            thanksSherry, contributorsLayout, donateL, bugsL, communityL, emailL, translatorsL;
     boolean withLinkToFacebook, withLinkToTwitter, withLinkToGPlus, withLinkToYouTube,
             withLinkToCommunity, withLinkToPlayStore, withLinkToWebsite;
-    String[] libsLinks, contributorsLinks, uiCollaboratorsLinks;
+    String[] libsLinks, contributorsLinks, uiCollaboratorsLinks, translatorsLinks;
 
     private void setupBooleans() {
         withLinkToFacebook = true;
@@ -58,6 +56,7 @@ public class CreditsFragment extends Fragment {
         libsLinks = context.getResources().getStringArray(R.array.libs_links);
         contributorsLinks = context.getResources().getStringArray(R.array.contributors_links);
         uiCollaboratorsLinks = context.getResources().getStringArray(R.array.ui_collaborators_links);
+        translatorsLinks = context.getResources().getStringArray(R.array.translators_links);
 
         if (layout != null) {
             ViewGroup parent = (ViewGroup) layout.getParent();
@@ -92,13 +91,9 @@ public class CreditsFragment extends Fragment {
         collaboratorsIV = (ImageView) layout.findViewById(R.id.icon_collaborators);
         sherryIV = (ImageView) layout.findViewById(R.id.icon_sherry);
         uiCollaboratorsIV = (ImageView) layout.findViewById(R.id.icon_ui_design);
+        translatorsIV = (ImageView) layout.findViewById(R.id.icon_translators);
         iconDevCommunity = (ImageView) layout.findViewById(R.id.icon_google_plus_community);
         emailIV = (ImageView) layout.findViewById(R.id.icon_email);
-
-        if (!WITH_DEVELOPMENT_CREDITS) {
-            View credits = layout.findViewById(R.id.dev_credits);
-            credits.setVisibility(View.GONE);
-        }
 
         emailL = (LinearLayout) layout.findViewById(R.id.send_email);
         emailL.setOnClickListener(new View.OnClickListener() {
@@ -231,12 +226,21 @@ public class CreditsFragment extends Fragment {
             }
         });
 
+        translatorsL = (LinearLayout) layout.findViewById(R.id.translators);
+        translatorsL.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ISDialogs.showTranslatorsDialogs(context, translatorsLinks);
+            }
+        });
+
         //TODO: Add actual donation link
         donateL = (LinearLayout) layout.findViewById(R.id.donate);
         donateL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Utils.showSimpleSnackbar(layout, "Coming soon", 1);
+                Utils.openLinkInChromeCustomTab(context,
+                        "https://goo.gl/k7q8EB");
             }
         });
 
@@ -339,6 +343,11 @@ public class CreditsFragment extends Fragment {
                 .color(ThemeUtils.darkTheme ? light : dark)
                 .sizeDp(24);
 
+        translators = new IconicsDrawable(context)
+                .icon(GoogleMaterial.Icon.gmd_translate)
+                .color(ThemeUtils.darkTheme ? light : dark)
+                .sizeDp(24);
+
         email = new IconicsDrawable(context)
                 .icon(GoogleMaterial.Icon.gmd_email)
                 .color(ThemeUtils.darkTheme ? light : dark)
@@ -360,6 +369,7 @@ public class CreditsFragment extends Fragment {
         collaboratorsIV.setImageDrawable(collaboratorsIcon);
         sherryIV.setImageDrawable(sherryIcon);
         uiCollaboratorsIV.setImageDrawable(uiCollaboratorsIcon);
+        translatorsIV.setImageDrawable(translators);
         iconDevCommunity.setImageDrawable(community);
         emailIV.setImageDrawable(email);
 
