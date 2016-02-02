@@ -69,7 +69,6 @@ public class WallpapersFragment extends Fragment {
     public static SwipeRefreshLayout mSwipeRefreshLayout;
     private static Activity context;
     private static GridSpacingItemDecoration gridSpacing;
-    private static Preferences mPrefs;
 
     private static boolean worked;
 
@@ -78,9 +77,7 @@ public class WallpapersFragment extends Fragment {
 
         setHasOptionsMenu(true);
         context = getActivity();
-
-        Preferences mPrefs = new Preferences(context);
-
+        
         if (layout != null) {
             ViewGroup parent = (ViewGroup) layout.getParent();
             if (parent != null) {

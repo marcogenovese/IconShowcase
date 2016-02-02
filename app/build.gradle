@@ -125,5 +125,5 @@ dexcount {
     includeTotalMethodCount = true
     printAsTree = false
     orderByMethodCount = true
-    verbose = true
+    verbose = false
 }
