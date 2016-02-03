@@ -1,4 +1,4 @@
-<iconshowcase.lib.views.CustomCoordinatorLayout
+<jahirfiquitiva.iconshowcase.views.CustomCoordinatorLayout
     android:id="@+id/mainCoordinatorLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -183,7 +183,7 @@
         android:visibility="gone"
         app:backgroundTint="@color/accent"
         app:fabSize="normal"
-        app:layout_behavior="iconshowcase.lib.views.ScrollAwareFABBehavior"
+        app:layout_behavior="jahirfiquitiva.iconshowcase.views.ScrollAwareFABBehavior"
         app:rippleColor="@color/semitransparent_white"/>
 
-</iconshowcase.lib.views.CustomCoordinatorLayout>
+</jahirfiquitiva.iconshowcase.views.CustomCoordinatorLayout>

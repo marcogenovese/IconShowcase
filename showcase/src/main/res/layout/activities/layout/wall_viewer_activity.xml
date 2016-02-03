@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <iconshowcase.lib.views.TouchImageView
+        <jahirfiquitiva.iconshowcase.views.TouchImageView
             android:id="@+id/big_wallpaper"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

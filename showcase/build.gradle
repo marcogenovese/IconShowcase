@@ -21,7 +21,6 @@ android {
     useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
-//        applicationId "iconshowcase.lib"
         minSdkVersion 16
         targetSdkVersion 23
         versionCode 10

@@ -17,7 +17,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <iconshowcase.lib.views.SquaredImageView
+        <jahirfiquitiva.iconshowcase.views.SquaredImageView
             android:id="@+id/launcherIcon"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
