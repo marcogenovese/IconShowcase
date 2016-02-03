@@ -77,7 +77,7 @@ public class WallpapersFragment extends Fragment {
 
         setHasOptionsMenu(true);
         context = getActivity();
-        
+
         if (layout != null) {
             ViewGroup parent = (ViewGroup) layout.getParent();
             if (parent != null) {
