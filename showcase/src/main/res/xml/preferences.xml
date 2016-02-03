@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:key="uiPreferences"
+        android:title="@string/pref_header_ui">
+
+        <Preference
+            android:key="themes"
+            android:persistent="true"
+            android:summary="@string/pref_summary_themes"
+            android:title="@string/pref_title_themes"/>
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="coloredNavBar"
+            android:summary="@string/pref_summary_navbar"
+            android:title="@string/pref_title_navbar"/>
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="animations"
+            android:persistent="true"
+            android:summary="@string/pref_summary_anims"
+            android:title="@string/pref_title_anims"/>
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="wallHeader"
+            android:persistent="true"
+            android:summary="@string/pref_summary_wall_header"
+            android:title="@string/pref_title_wall_header"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_header_storage">
+
+        <Preference
+            android:key="clearData"
+            android:persistent="true"
+            android:summary="@string/pref_summary_cache"
+            android:title="@string/pref_title_cache"/>
+
+        <Preference
+            android:key="wallsSaveLocation"
+            android:persistent="true"
+            android:summary="@string/pref_summary_wsl"
+            android:title="@string/pref_title_wsl"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_header_launcher_icon">
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="launcherIcon"
+            android:summary="@string/pref_summary_launcher_icon"
+            android:title="@string/pref_title_launcher_icon"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

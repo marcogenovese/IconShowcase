@@ -1,0 +1,111 @@
+<RelativeLayout
+    android:id="@+id/viewerLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <iconshowcase.lib.views.TouchImageView
+            android:id="@+id/big_wallpaper"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"/>
+
+        <ProgressBar
+            android:id="@+id/progress"
+            style="?android:progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:clickable="false"
+            android:focusable="false"
+            android:gravity="center"/>
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/iconsA"
+        android:layout_width="wrap_content"
+        android:layout_height="?actionBarSize"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/iconsB"
+        android:layout_gravity="center_vertical"
+        android:background="@android:color/white"
+        android:minHeight="?actionBarSize"
+        android:orientation="horizontal"
+        tools:ignore="UnusedAttribute">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            tools:ignore="UselessParent">
+
+            <ImageView
+                android:id="@+id/download"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginLeft="@dimen/dialog_margin"
+                android:layout_marginStart="@dimen/dialog_margin"
+                android:background="?selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_wallpapers_fab"
+                tools:ignore="ContentDescription"/>
+
+            <ImageView
+                android:id="@+id/apply"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginLeft="@dimen/dialog_margin"
+                android:layout_marginRight="@dimen/dialog_margin"
+                android:background="?selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_wallpapers_fab"
+                tools:ignore="ContentDescription"/>
+
+            <ImageView
+                android:id="@+id/info"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="?selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_wallpapers_fab"
+                tools:ignore="ContentDescription"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/iconsB"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="center_vertical"
+        android:layout_toLeftOf="@id/iconsA"
+        android:layout_toStartOf="@id/iconsA"
+        android:background="@android:color/white"
+        android:gravity="center_vertical"
+        android:minHeight="?actionBarSize"
+        android:orientation="horizontal"
+        tools:ignore="UnusedAttribute">
+
+        <TextView
+            android:id="@+id/wallName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            tools:text="Geometric 4 sdqa feaf egeg ergreg wfed aed aecfaefa efae asa aaerf eg efae feag "/>
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<iconshowcase.lib.views.SquaredImageView
+    android:id="@+id/icon_img"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:padding="@dimen/cards_margin"
+    tools:ignore="ContentDescription"/>
