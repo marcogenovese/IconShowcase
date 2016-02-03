@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="icons_preview_row">36dp</dimen>
+    <dimen name="welcome_card_content_padding">48dp</dimen>
+
+</resources>

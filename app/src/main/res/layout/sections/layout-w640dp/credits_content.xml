@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.GridLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:grid="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="6dp"
+    grid:alignmentMode="alignBounds">
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:layout_marginRight="4dp"
+        android:orientation="vertical"
+        grid:layout_column="0"
+        grid:layout_columnWeight="1"
+        grid:layout_row="0">
+
+        <include
+            layout="@layout/card_designer"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
+        android:orientation="vertical"
+        grid:layout_column="1"
+        grid:layout_columnWeight="1"
+        grid:layout_row="0">
+
+        <include
+            android:id="@+id/dev_credits"
+            layout="@layout/card_developer"/>
+
+    </LinearLayout>
+
+</android.support.v7.widget.GridLayout>

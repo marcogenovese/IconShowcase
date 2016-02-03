@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/developmentSherry"
+        android:orderInCategory="100"
+        android:title="@string/sherry_title"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/developmentContributors"
+        android:orderInCategory="200"
+        android:title="@string/contributors"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/developmentUIDesign"
+        android:orderInCategory="300"
+        android:title="@string/ui_design"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/developmentLibraries"
+        android:orderInCategory="400"
+        android:title="@string/implemented_libraries"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/developmentBugs"
+        android:orderInCategory="500"
+        android:title="@string/report_bugs"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/developmentCommunity"
+        android:orderInCategory="600"
+        android:title="@string/join_community"
+        app:showAsAction="never"/>
+
+</menu>

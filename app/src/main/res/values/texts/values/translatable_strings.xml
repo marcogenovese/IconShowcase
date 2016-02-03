@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <string name="muzei_settings">Muzei Settings</string>
+    <!-- Sharing wallpaper from Muzei -->
+    <string name="share_text">My wallpaper for today is %1$s by %2$s, from %3$s.\nGet it now at %4$s</string>
+
+    <!-- List Of Drawer Sections -->
+    <string name="section_one">Home</string>
+    <string name="section_two">Icons</string>
+    <string name="section_three">Apply</string>
+    <string name="section_four">Wallpapers</string>
+    <string name="section_five">Icon request</string>
+    <string name="section_six">About the app</string>
+
+    <!-- Wallpapers Activity -->
+    <string name="title_activity_detailed_wallpaper">Wallpaper viewer</string>
+
+    <!-- Muzei Stuff -->
+    <string name="muzeisets_title">Refresh wallpapers every:</string>
+    <string name="minutes">Minutes</string>
+    <string name="hours">Hours</string>
+    <string name="muzei_info">Note: These settings may affect the update behavior of wallpapers.
+    </string>
+    <string name="share">Share</string>
+
+    <string name="send_email">Send email</string>
+
+    <!-- Strings for Dropdown Menu & Requests -->
+    <string name="share_title">Share via</string>
+    <string name="send_title">Send via</string>
+    <string name="changelog">What\'s new?</string>
+
+    <!-- LauncherNotInstalled Dialog -->
+    <string name="lni_content">%1$s is currently not installed on your device.\nWould you like to
+        install it from the Google Play Store?
+    </string>
+    <string name="cm_dialog_content">%1$s is part of CyanogenMod (based) roms.\nWould you like to
+        install it on your device?
+    </string>
+    <string name="gnl_title">Google Now Launcher is NOT Compatible</string>
+    <string name="gnl_content">Google Now Launcher is NOT compatible with ANY Icon Packs. Please
+        do not rate the icon pack negatively for this reason. There is a workaround that you can try by
+        yourself, but it requires the use of an external app. Would you like to download it?
+    </string>
+
+    <string name="updateninelauncher">Please update Nine Launcher to the latest version.</string>
+
+    <!-- Changelog Dialog Content -->
+    <string name="changelog_dialog_title">Changelog</string>
+    <string name="great">Great</string>
+
+    <!-- Wallpapers Stuff -->
+    <string name="no_conn_title">No connection found</string>
+    <string name="download">Download</string>
+    <string name="wallpaper_downloaded">Wallpaper was downloaded to: %1$s</string>
+    <string name="wallpaper_by">By: %1$s</string>
+    <string name="apply">Apply</string>
+    <string name="save">Save</string>
+    <string name="downloading_wallpaper">Downloading this wallpaper…</string>
+    <string name="setting_wall_title">Setting this wallpaper to your homescreen…</string>
+    <string name="set_as_wall_done">Wallpaper set!</string>
+    <string name="error">Error</string>
+    <string name="confirm_apply">Are you sure you want to apply this wallpaper to your homescreen?
+    </string>
+    <string name="refreshing_walls">Refreshing wallpapers list…</string>
+    <string name="retry">Retry</string>
+    <string name="wallpaper_author_title">Author</string>
+    <string name="wallpaper_dimensions_title">Dimensions</string>
+    <string name="wallpaper_copyright_title">Copyright</string>
+
+    <string name="settings_saved">Settings saved</string>
+
+    <!-- License Check Dialog -->
+    <string name="license_failed_title">License Check Failed</string>
+    <string name="license_success_title">License Check Success</string>
+    <string name="exit">Exit</string>
+
+    <!-- Some texts for Dialogs and Cards -->
+    <string name="close">Close</string>
+    <string name="crop">Crop</string>
+    <string name="advice">Advice</string>
+    <string name="dontshow">Don\'t show again</string>
+    <string name="rate">Rate</string>
+    <string name="set_as">Crop wallpaper and set as…</string>
+
+    <!-- Requests -->
+    <string name="request_advice">If you do not select any app for the icon request, but press the
+        button, it will be automatically generated with all of your apps.\nNo need to select each
+        one.
+    </string>
+
+    <!-- Icon search -->
+    <string name="search_icons">Search icons…</string>
+    <string name="search_x">Search %1$s…</string>
+
+    <string name="building_request_dialog">Building request files…</string>
+
+    <string name="choose">Choose</string>
+
+    <!--SETTINGS-->
+    <string name="title_settings">Settings</string>
+
+    <string name="pref_header_ui">UI</string>
+
+    <string name="pref_title_themes">Base theme</string>
+    <string name="pref_summary_themes">Choose between light, dark or auto.</string>
+
+    <string-array name="themes">
+        <item>Light</item>
+        <item>Dark</item>
+        <item>Auto</item>
+    </string-array>
+
+    <string name="pref_title_anims">Enable animations</string>
+    <string name="pref_summary_anims">This may cause lag in some devices.</string>
+
+    <string name="pref_title_navbar">Colored navigation bar</string>
+    <string name="pref_summary_navbar">Enable primary colored navigation bar.</string>
+
+    <string name="pref_title_wall_header">Enable use of wallpaper as Toolbar header</string>
+    <string name="pref_summary_wall_header">Your current device wallpaper will be shown in app\'s Toolbar.</string>
+
+    <string name="pref_header_storage">Storage</string>
+
+    <string name="pref_title_cache">Clear app cache and data</string>
+    <string name="pref_summary_cache">This will delete app cache and preferences.\nCurrent cache
+        size: %1$s
+    </string>
+
+    <string name="pref_title_wsl">Wallpapers download location</string>
+    <string name="pref_summary_wsl">Change location to save or download wallpapers.\nCurrent
+        location: %1$s
+    </string>
+
+    <string name="pref_header_launcher_icon">Launcher icon</string>
+    <string name="pref_title_launcher_icon">Hide launcher icon</string>
+
+    <string name="pref_summary_launcher_icon">When checked, launcher icon will be hidden.</string>
+
+    <string name="clearcache_dialog_title">@string/pref_title_cache</string>
+    <string name="clearcache_dialog_content">Are you sure you want to delete app data, cache and
+        settings? Applied icons won\'t be affected.
+    </string>
+
+    <string name="hideicon_dialog_title">@string/pref_title_launcher_icon</string>
+    <string name="hideicon_dialog_content">Are you sure you want to hide app icon in your launcher?
+        App may close unexpectedly. Read the FAQs to learn how to make it appear again, before hiding
+        it.
+    </string>
+
+    <string name="launcher_icon_restored">%1$s launcher icon was restored</string>
+    <string name="launcher_icon_no_restored">%1$s launcher icon is already visible</string>
+
+    <!-- Widgets Names -->
+    <string name="iconrestorer_widget_title">Icon Restorer Widget</string>
+    <string name="clock_widget_title">Analog Clock</string>
+
+    <string name="faqs_section">FAQs</string>
+
+    <string name="dashboard_author">Dashboard App Development</string>
+    <string name="dashboard_author_copyright">From Colombia to the world.\nDashboard shared under CreativeCommons Attribution-ShareAlike License. Copyright © 2016.</string>
+    <string name="iconpack_author">Designer Info</string>
+
+    <string name="fork_on_github">Fork on GitHub</string>
+    <string name="visit_website">Website</string>
+    <string name="more_apps">More apps</string>
+    <string name="more_apps_long">Check the other apps I have published in Google Play Store.</string>
+
+    <string name="implemented_libraries">Implemented libraries</string>
+    <string name="contributors">Development Contributors</string>
+    <string name="sherry_title">Thanks to Sherry Sabatine</string>
+    <string name="sherry_dialog">Thanks to her, IconShowcase is free and OpenSource.</string>
+    <string name="follow_her">Follow her</string>
+
+    <string name="ui_design">UI Design Collaborators</string>
+    <string name="donate">Support development</string>
+    <string name="donate_summary">If you think Jahir Fiquitiva deserves to earn some money for developing this awesome dashboard.</string>
+    <string name="report_bugs">Report bugs</string>
+    <string name="report_bugs_summary">Report bugs or request new features.</string>
+    <string name="join_community">Join the Google Plus community</string>
+    <string name="join_community_summary">If you need help or have questions, the IconShowcase
+        community on Google Plus is a good place to go.
+    </string>
+
+    <!-- Tabs Names list -->
+    <string-array name="tabs">
+        <item>Latest</item>
+        <item>System</item>
+        <item>Google Apps</item>
+        <item>Games</item>
+        <item>All</item>
+        <item>Drawers</item>
+    </string-array>
+
+    <string name="saving_wallpaper">Saving wallpaper…</string>
+    <string name="refresh">Refresh</string>
+
+    <!-- Messages shown when using LicenseChecker -->
+    <string name="license_failed">You did not download IconShowcase from Google Play Store. You have two options:</string>
+    <string name="license_success">Thank you for downloading my dashboard sample. If you like it, do not forget to rate it and write a review in the Google Play Store.</string>
+    <string name="apply_advice">If the launcher you use, is not listed here, you must apply the icon pack directly from the launcher settings.\nSome launchers do not support direct apply.</string>
+    <string name="walls_advice">Simple press a wallpaper to view it in FullScreen.\nLong press to apply it directly to your homescreen.</string>
+
+    <string name="zooper_section_title">Zooper Setup</string>
+
+    <string name="zooper_download_title">Install Zooper Widget Pro</string>
+    <string name="zooper_download_content">You need Zooper Widget Pro to be able to use the included skins.</string>
+
+    <string name="zooper_download_dialog_title">Download from</string>
+
+    <string name="mu_download_title">Install Media Utilities</string>
+    <string name="mu_download_content">You need Media Utilities to be able to use the music widgets with Zooper.</string>
+
+    <string name="mu_info_title">MediaUtilities setup</string>
+    <string name="mu_info_content">Use this to make the music widgets work. Open the MU, go to settings and make sure the following options are checked:\n\n
+	    &#10003; Zooper\n
+	    &#10003; Make Coverart available\n
+	    &#10003; Send Song Progress</string>
+    <string name="open">Open</string>
+
+    <string name="zooper_install_fonts_title">Install Fonts</string>
+    <string name="zooper_install_fonts_content">This will fix issues with widgets fonts.</string>
+
+    <string name="zooper_install_iconsets_title">Install Iconsets</string>
+    <string name="zooper_install_iconsets_content">This will fix issues with widgets iconsets.</string>
+
+    <string name="fonts_installed">Fonts already installed</string>
+    <string name="iconsets_installed">IconSets already installed</string>
+
+    <string name="icon_pack_in_numbers">Icon Pack in numbers</string>
+    <string name="themed_icons">Over %1$s themed icons.</string>
+    <string name="available_wallpapers">About %1$s available wallpapers.</string>
+    <string name="included_widgets">Over %1$s included widgets for Zooper.</string>
+    <string name="icons">Icons</string>
+
+    <string name="md_error_label">@string/error</string>
+    <string name="md_storage_perm_error">You have not granted the \"Read External Storage\" permission to %1$s, which is needed to complete this action.</string>
+
+    <string name="new_folder">New Folder</string>
+    <string name="new_folder_hint">Folder name</string>
+    <string name="new_folder_title">Create a new folder</string>
+    <string name="new_folder_content">Type the new folder\'s name, please.</string>
+
+    <string name="wait_for_walls">Please wait until wallpaper preview appears…</string>
+    <string name="translators">Translators</string>
+    <string name="more">More</string>
+
+    <string name="columns">Columns number</string>
+    <string name="columns_desc">Select the amount of columns you want to see in this section:</string>
+    <string-array name="columns_options" tools:ignore="InconsistentArrays">
+        <item>Portrait: 1 / Landscape: 3</item>
+        <item>Portrait: 2 / Landscape: 4</item>
+        <item>Portrait: 3 / Landscape: 5</item>
+    </string-array>
+
+    <string-array name="questions">
+        <item>How to use the Icon Pack?</item>
+        <item>How to apply the Icon Pack?</item>
+        <item>How to see all the included icons?</item>
+        <item>How to replace certain icons with alternatives?</item>
+        <item>How to request unthemed icons?</item>
+        <item>After restarting my device, icon pack is not applied anymore. Icons were restored to
+            default.
+        </item>
+        <item>Why do icons look pixelated on my device?</item>
+        <item>I can see an icon for X app in the included icons, but the icon does not apply.
+        </item>
+        <item>How to hide app icon from launcher?</item>
+        <item>How to open the app after app icon is hidden from launcher?</item>
+        <item>How to show app icon in launcher again?</item>
+        <item>Why does the app need permission to modify or delete content of my storage?</item>
+        <item>Why does the app need permission to full network access?</item>
+        <item>Why does the app need permission to view connections?</item>
+        <item>Why does the app need permission to set wallpaper?</item>
+        <item>Why does the app need permission to adjust the wallpaper size?</item>
+        <item>Why does the app need permission to prevent phone from sleeping?</item>
+    </string-array>
+
+    <string-array name="answers">
+        <item>You need a launcher with Icon Pack support.
+            Check the Google Play Store description for supported launchers.
+            If you are not sure which launcher should you use, just go to \"Apply\" section, then
+            choose one from the list.
+        </item>
+        <item>Slide the NavigationDrawer from the left, and go to \"Apply\" section, or go back to main section of the app, then tap the Floating Action Button.
+            Choose the launcher you want to apply the icons to.
+            If your launcher is not listed there, but this icon pack is compatible with it
+            (see on Google Play Store description for the list of supported launchers),
+            you can apply it manually from launcher settings.
+        </item>
+        <item>Slide the NavigationDrawer from the left, and go to \"Icons\" section, or go back to main section of the app, then tap the button that says \"Icons\".</item>
+        <item>It depends on the launcher you are using. Not every launcher support icon editing.
+            But, in most of them, you can edit the icon by long-pressing it or doing a double tap.
+        </item>
+        <item>Slide the NavigationDrawer from the left, and go to \"Requests\" section.
+        </item>
+        <item>It happened because the icon pack was moved to SD Card, you should install it in
+            internal storage.
+        </item>
+        <item>The problem might come with the launcher you are using, when handling big resolution.
+            You can fix it by increasing icon size to 115 - 120%.
+            Or try using another launcher.
+        </item>
+        <item>Send an icon request.</item>
+        <item>Slide the NavigationDrawer from the left, and go to \"Settings\" section.
+            Then check the \"Hide icon from launcher\" option.
+        </item>
+        <item>Go to your homescreen, then create a widget for the app which name is \"IconRestorer\".</item>
+        <item>Slide the NavigationDrawer from the left, and go to \"Settings\" section.
+            Then uncheck the \"Hide icon from launcher\" option.
+        </item>
+        <item>It\'s needed to be able write icon requests data and files, as well as saving wallpapers, and being able to change Wallpapers download location.</item>
+        <item>It\'s needed to be able to load the cloud based wallpapers and download them.</item>
+        <item>It\'s needed to be able to check if your device has internet connection.</item>
+        <item>It\'s needed to be able to apply wallpaper directly from the app.</item>
+        <item>It\'s needed to be able to adjust wallpapers dimensions based on your screen resolution.
+        </item>
+        <item>It\'s needed by Muzei Live Wallpaper.</item>
+    </string-array>
+
+</resources>

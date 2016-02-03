@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Formatting note: terminate all comments with a period, to avoid breaking
+     the documentation output. To suppress comment lines from the documentation
+     output, insert an eat-comment element after the comment lines.
+-->
+
+<resources>
+    <!-- These are the standard attributes that make up a complete theme. -->
+    <declare-styleable name="Theme">
+        <!-- ============== -->
+        <!-- Generic styles -->
+        <!-- ============== -->
+        <eat-comment/>
+
+        <!-- Default color of cardview background. -->
+        <attr name="colorCardBackground" format="color"/>
+        <!-- Color to tint drawables. -->
+        <attr name="drawablesTintColor" format="color"/>
+        <!-- Custom toolbar theme. -->
+        <attr name="toolbarTheme" format="reference"/>
+
+    </declare-styleable>
+
+</resources>
