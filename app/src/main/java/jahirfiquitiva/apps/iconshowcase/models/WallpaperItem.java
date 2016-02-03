@@ -2,26 +2,35 @@ package jahirfiquitiva.apps.iconshowcase.models;
 
 public class WallpaperItem {
 
-    private final String wall_name;
-    private final String wall_author;
-    private final String wall_url;
+    private final String wallName, wallAuthor, wallUrl, wallDimensions, wallCopyright;
 
-    public WallpaperItem(String wall_name, String wall_author, String wall_url) {
-        this.wall_name = wall_name;
-        this.wall_author = wall_author;
-        this.wall_url = wall_url;
+    public WallpaperItem(String wallName, String wallAuthor, String wallUrl,
+                         String wallDimensions, String wallCopyright) {
+        this.wallName = wallName;
+        this.wallAuthor = wallAuthor;
+        this.wallUrl = wallUrl;
+        this.wallDimensions = wallDimensions;
+        this.wallCopyright = wallCopyright;
     }
 
     public String getWallName() {
-        return wall_name;
+        return wallName;
     }
 
     public String getWallAuthor() {
-        return wall_author;
+        return wallAuthor;
     }
 
     public String getWallURL() {
-        return wall_url;
+        return wallUrl;
+    }
+
+    public String getWallDimensions() {
+        return wallDimensions;
+    }
+
+    public String getWallCopyright() {
+        return wallCopyright;
     }
 
 }

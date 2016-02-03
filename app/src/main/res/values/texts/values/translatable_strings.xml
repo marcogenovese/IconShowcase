@@ -65,6 +65,9 @@
     </string>
     <string name="refreshing_walls">Refreshing wallpapers list…</string>
     <string name="retry">Retry</string>
+    <string name="wallpaper_author_title">Author</string>
+    <string name="wallpaper_dimensions_title">Dimensions</string>
+    <string name="wallpaper_copyright_title">Copyright</string>
 
     <string name="settings_saved">Settings saved</string>
 
@@ -156,7 +159,7 @@
     <string name="faqs_section">FAQs</string>
 
     <string name="dashboard_author">Dashboard App Development</string>
-    <string name="dashboard_author_copyright">From Colombia to the world.\nDashboard shared under CreativeCommons Attribution-ShareAlike License. Copyright© 2015~2016.</string>
+    <string name="dashboard_author_copyright">From Colombia to the world.\nDashboard shared under CreativeCommons Attribution-ShareAlike License. Copyright © 2016.</string>
     <string name="iconpack_author">Designer Info</string>
 
     <string name="fork_on_github">Fork on GitHub</string>

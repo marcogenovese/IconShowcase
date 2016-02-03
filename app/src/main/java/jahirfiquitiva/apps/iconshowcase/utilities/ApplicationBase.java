@@ -4,11 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.crashlytics.android.Crashlytics;
-
 import java.util.ArrayList;
 
-import io.fabric.sdk.android.Fabric;
 import jahirfiquitiva.apps.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.apps.iconshowcase.fragments.WallpapersFragment;
 import jahirfiquitiva.apps.iconshowcase.models.RequestItem;
@@ -33,8 +30,6 @@ public class ApplicationBase extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
-        Fabric.with(this, new Crashlytics());
 
         this.context = getApplicationContext();
 

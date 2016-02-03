@@ -60,8 +60,7 @@ public class ViewerActivity extends AppCompatActivity {
 
     public static final String EXTRA_CURRENT_ITEM_POSITION = "extra_current_item_position";
 
-    private int mIndex;
-    private String mIndexText, transitionName, wallUrl, wallName, wallAuthor;
+    private String transitionName, wallUrl, wallName, wallAuthor, wallDimensions, wallCopyright;
     private TouchImageView mPhoto;
 
     private RelativeLayout layout;
@@ -89,12 +88,12 @@ public class ViewerActivity extends AppCompatActivity {
         mPrefs = new Preferences(context);
 
         Intent intent = getIntent();
-        mIndex = intent.getIntExtra(EXTRA_CURRENT_ITEM_POSITION, 1);
-        mIndexText = intent.getStringExtra("indexText");
         transitionName = intent.getStringExtra("transitionName");
         wallUrl = intent.getStringExtra("wallUrl");
         wallName = intent.getStringExtra("wallName");
         wallAuthor = intent.getStringExtra("authorName");
+        wallDimensions = intent.getStringExtra("wallDimensions");
+        wallCopyright = intent.getStringExtra("wallCopyright");
 
         setContentView(R.layout.wall_viewer_activity);
 
@@ -151,7 +150,8 @@ public class ViewerActivity extends AppCompatActivity {
         infoIV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO Show info dialog
+                ISDialogs.showWallpaperDetailsDialog(context, wallName, wallAuthor,
+                        wallDimensions, wallCopyright);
             }
         });
 
@@ -412,7 +412,7 @@ public class ViewerActivity extends AppCompatActivity {
                 });
     }
 
-    private void showNotConnectedSnackBar(final FloatingActionMenu fab, final Context context) {
+    private void showNotConnectedSnackBar(final FloatingActionMenu fab) {
         if (fab != null) {
             if (fab.isOpened()) {
                 fab.close(mPrefs.getAnimationsEnabled());
@@ -462,7 +462,7 @@ public class ViewerActivity extends AppCompatActivity {
                         break;
                 }
             } else {
-                showNotConnectedSnackBar(null, context);
+                showNotConnectedSnackBar(null);
             }
         }
 

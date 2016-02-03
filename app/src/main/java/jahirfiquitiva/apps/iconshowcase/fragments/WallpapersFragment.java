@@ -299,6 +299,8 @@ public class WallpapersFragment extends Fragment {
         intent.putExtra("wallName", wallItem.getWallName());
         intent.putExtra("authorName", wallItem.getWallAuthor());
         intent.putExtra("wallUrl", wallItem.getWallURL());
+        intent.putExtra("wallDimensions", wallItem.getWallDimensions());
+        intent.putExtra("wallCopyright", wallItem.getWallCopyright());
         intent.putExtra("transitionName", ViewCompat.getTransitionName(wallsHolder.wall));
 
         Bitmap bitmap;
@@ -350,6 +352,8 @@ public class WallpapersFragment extends Fragment {
         private static ArrayList<String> names = new ArrayList<>();
         private static ArrayList<String> authors = new ArrayList<>();
         private static ArrayList<String> urls = new ArrayList<>();
+        private static ArrayList<String> dimensions = new ArrayList<>();
+        private static ArrayList<String> copyrights = new ArrayList<>();
 
         private Context taskContext;
 
@@ -381,6 +385,8 @@ public class WallpapersFragment extends Fragment {
             names.clear();
             authors.clear();
             urls.clear();
+            dimensions.clear();
+            copyrights.clear();
         }
 
         @Override
@@ -399,9 +405,25 @@ public class WallpapersFragment extends Fragment {
                         names.add(json.getString("name"));
                         authors.add(json.getString("author"));
                         urls.add(json.getString("url"));
+                        try{
+                            if (json.getString("dimensions") != null) {
+                                dimensions.add(json.getString("dimensions"));
+                            }
+                        }catch(JSONException e){
+                            dimensions.add("null");
+                        }
+
+                        try{
+                            if (json.getString("copyright") != null) {
+                                copyrights.add(json.getString("copyright"));
+                            }
+                        }catch(JSONException e){
+                            copyrights.add("null");
+                        }
+
                     }
 
-                    WallpapersList.createWallpapersList(names, authors, urls);
+                    WallpapersList.createWallpapersList(names, authors, urls, dimensions, copyrights);
 
                     worked = true;
 

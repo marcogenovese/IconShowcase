@@ -253,10 +253,6 @@
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden"/>
 
-        <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="af6dbb6829439f853e8e0bce8fc1ab1c13a25580"/>
-
         <!-- WIDGETS -->
 
         <!-- Icon restorer Widget -->

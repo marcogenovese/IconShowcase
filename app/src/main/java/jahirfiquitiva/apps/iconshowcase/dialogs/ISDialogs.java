@@ -4,14 +4,20 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
 
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
@@ -45,12 +51,15 @@ public final class ISDialogs {
     }
 
     public static void showIconsChangelogDialog(final Context context) {
+
         MaterialDialog dialog = new MaterialDialog.Builder(context).title(R.string.changelog)
                 .customView(R.layout.icons_changelog, false)
                 .positiveText(context.getResources().getString(R.string.close))
                 .build();
 
-        final RecyclerView iconsGrid = (RecyclerView) dialog.getCustomView().findViewById(R.id.changelogRV);
+        View v = dialog.getCustomView();
+
+        final RecyclerView iconsGrid = (RecyclerView) v.findViewById(R.id.changelogRV);
         iconsGrid.setHasFixedSize(true);
         final int grids = context.getResources().getInteger(R.integer.icons_grid_width);
         iconsGrid.setLayoutManager(new GridLayoutManager(context, grids));
@@ -134,6 +143,70 @@ public final class ISDialogs {
                 .progress(true, 0)
                 .cancelable(false)
                 .build();
+    }
+
+    public static void showWallpaperDetailsDialog(final Context context, String wallName,
+                                                  String wallAuthor, String wallDimensions,
+                                                  String wallCopyright) {
+
+        MaterialDialog dialog = new MaterialDialog.Builder(context).title(wallName)
+                .customView(R.layout.wallpaper_details, false)
+                .positiveText(context.getResources().getString(R.string.close))
+                .build();
+
+        View v = dialog.getCustomView();
+
+        ImageView authorIcon, dimensIcon, copyrightIcon;
+
+        authorIcon = (ImageView) v.findViewById(R.id.icon_author);
+        dimensIcon = (ImageView) v.findViewById(R.id.icon_dimensions);
+        copyrightIcon = (ImageView) v.findViewById(R.id.icon_copyright);
+
+        int light = ContextCompat.getColor(context, android.R.color.white);
+        int dark = ContextCompat.getColor(context, R.color.grey);
+
+        authorIcon.setImageDrawable(new IconicsDrawable(context)
+                .icon(GoogleMaterial.Icon.gmd_account)
+                .color(ThemeUtils.darkTheme ? light : dark)
+                .sizeDp(24));
+
+        dimensIcon.setImageDrawable(new IconicsDrawable(context)
+                .icon(GoogleMaterial.Icon.gmd_aspect_ratio_alt)
+                .color(ThemeUtils.darkTheme ? light : dark)
+                .sizeDp(24));
+
+        copyrightIcon.setImageDrawable(new IconicsDrawable(context)
+                .icon(GoogleMaterial.Icon.gmd_info)
+                .color(ThemeUtils.darkTheme ? light : dark)
+                .sizeDp(24));
+
+        LinearLayout author = (LinearLayout) v.findViewById(R.id.authorName);
+        LinearLayout dimensions = (LinearLayout) v.findViewById(R.id.wallDimensions);
+        LinearLayout copyright = (LinearLayout) v.findViewById(R.id.wallCopyright);
+
+        TextView authorText = (TextView) v.findViewById(R.id.wallpaper_author_text);
+        TextView dimensionsText = (TextView) v.findViewById(R.id.wallpaper_dimensions_text);
+        TextView copyrightText = (TextView) v.findViewById(R.id.wallpaper_copyright_text);
+
+        if (wallAuthor.equals("null") || wallAuthor.equals("")) {
+            author.setVisibility(View.GONE);
+        } else {
+            authorText.setText(wallAuthor);
+        }
+
+        if (wallDimensions.equals("null") || wallDimensions.equals("")) {
+            dimensions.setVisibility(View.GONE);
+        } else {
+            dimensionsText.setText(wallDimensions);
+        }
+
+        if (wallCopyright.equals("null") || wallCopyright.equals("")) {
+            copyright.setVisibility(View.GONE);
+        } else {
+            copyrightText.setText(wallCopyright);
+        }
+
+        dialog.show();
     }
 
 

@@ -30,7 +30,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
     public RequestsAdapter(Context context, final ArrayList<RequestItem> appsList) {
         this.context = context;
         this.appsList = appsList;
-        this.mCallback = new RequestsAdapter.ClickListener() {
+        this.mCallback = new ClickListener() {
             @Override
             public void onClick(int position) {
                 RequestItem requestsItem = appsList.get(position);
