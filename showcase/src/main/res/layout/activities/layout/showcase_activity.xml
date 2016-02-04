@@ -183,7 +183,6 @@
         android:visibility="gone"
         app:backgroundTint="@color/accent"
         app:fabSize="normal"
-        app:layout_behavior="jahirfiquitiva.iconshowcase.views.ScrollAwareFABBehavior"
         app:rippleColor="@color/semitransparent_white"/>
 
 </jahirfiquitiva.iconshowcase.views.CustomCoordinatorLayout>

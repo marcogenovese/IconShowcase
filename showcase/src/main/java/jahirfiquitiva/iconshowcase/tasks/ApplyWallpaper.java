@@ -89,7 +89,7 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
             dialog.dismiss();
             if (!isPicker) {
 
-                if (toHide1 != null & toHide2 != null) {
+                if (toHide1 != null && toHide2 != null) {
                     toHide1.setVisibility(View.GONE);
                     toHide2.setVisibility(View.GONE);
                 }
@@ -104,7 +104,7 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
                         if (fab != null) {
                             fab.showMenuButton(mPrefs.getAnimationsEnabled());
                         }
-                        if (toHide1 != null & toHide2 != null) {
+                        if (toHide1 != null && toHide2 != null) {
                             toHide1.setVisibility(View.VISIBLE);
                             toHide2.setVisibility(View.VISIBLE);
                         }
