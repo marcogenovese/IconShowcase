@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
-    <string-array name="preview" translatable="false" />
+    <string-array name="preview"/>
 
     <!-- These sections below are for your "Previews" section -->
     <!-- These names should match YOUR actual icon names
@@ -9,22 +9,22 @@
 
     <!-- LATEST ICONS -->
     <!-- All of your Latest icons listed here -->
-    <string-array name="latest" translatable="false" />
+    <string-array name="latest"/>
 
     <!-- SYSTEM ICONS -->
     <!-- System icons listed here -->
-    <string-array name="system" />
+    <string-array name="system"/>
 
     <!-- GOOGLE APPS ICONS -->
     <!-- Google Apps icons are listed here -->
-    <string-array name="google" />
+    <string-array name="google"/>
 
     <!-- GAMES ICONS -->
     <!-- Game icons are listed here -->
-    <string-array name="games" />
+    <string-array name="games"/>
 
-    <string-array name="drawers" translatable="false" />
+    <string-array name="drawers"/>
 
-    <string-array name="icon_pack" translatable="false" />
+    <string-array name="icon_pack"/>
 
 </resources>
