@@ -2,40 +2,71 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
     <!-- Structure :
-    Launcher Name|launcher.package.name|HEXCOLOR
+    Launcher Name|launcher.package.name
     -->
 
     <string name="extraapp">com.momocode.shortcuts</string>
 
     <string-array name="launchers">
-        <item>Action|com.actionlauncher.playstore|#F44336</item>
-        <item>ADW|org.adw.launcher|#5B9CC8</item>
-        <item>ADW EX|org.adwfreak.launcher|#5B9CC8</item>
-        <item>Apex|com.anddoes.launcher|#63CDED</item>
-        <item>Atom|com.dlto.atom.launcher|#A657BD</item>
-        <item>Aviate|com.tul.aviate|#FC842D</item>
-        <item>CM Theme Engine|org.cyanogenmod.theme.chooser|#29B6F6</item>
-        <item>Epic|com.epic.launcher|#2196F4</item>
-        <item>Go|com.gau.go.launcherex|#95C955</item>
-        <item>Google Now|com.google.android.launcher|#0097F6</item>
-        <item>Holo|com.mobint.hololauncher|#65473C</item>
-        <item>Holo HD|com.mobint.hololauncher.hd|#8BC34A</item>
-        <item>Inspire|com.bam.android.inspirelauncher|#F96EDF</item>
-        <item>KK|com.kk.launcher|#FFC107</item>
-        <item>L|com.l.launcher|#F67C00</item>
-        <item>LG Home|com.lge.launcher2|#00BCD4</item>
-        <item>Lucid|com.powerpoint45.launcher|#2196F3</item>
-        <item>Mini|com.jiubang.go.mini.launcher|#4CAF50</item>
-        <item>Nemus|com.nemustech.launcher|#607DA4</item>
-        <item>Next|com.gtp.nextlauncher|#5787C5</item>
-        <item>Nine|com.gridappsinc.launcher.free|#005292</item>
-        <item>Nova|com.teslacoilsw.launcher|#F83729</item>
-        <item>S|com.s.launcher|#00BCD4</item>
-        <item>Smart|ginlemon.flowerfree|#2EB3D9</item>
-        <item>Smart Pro|ginlemon.flowerpro|#2EB3D9</item>
-        <item>Solo|home.solo.launcher.free|#BA68C8</item>
-        <item>TSF|com.tsf.shell|#2196F3</item>
-        <item>Unicon Pro|sg.ruqqq.IconThemer|#78C257</item>
+        <item>Action|com.actionlauncher.playstore</item>
+        <item>ADW|org.adw.launcher</item>
+        <item>ADW EX|org.adwfreak.launcher</item>
+        <item>Apex|com.anddoes.launcher</item>
+        <item>Atom|com.dlto.atom.launcher</item>
+        <item>Aviate|com.tul.aviate</item>
+        <item>CM Theme Engine|org.cyanogenmod.theme.chooser</item>
+        <item>Epic|com.epic.launcher</item>
+        <item>Go|com.gau.go.launcherex</item>
+        <item>Google Now|com.google.android.launcher</item>
+        <item>Holo|com.mobint.hololauncher</item>
+        <item>Holo HD|com.mobint.hololauncher.hd</item>
+        <item>Inspire|com.bam.android.inspirelauncher</item>
+        <item>KK|com.kk.launcher</item>
+        <item>L|com.l.launcher</item>
+        <item>LG Home|com.lge.launcher2</item>
+        <item>Lucid|com.powerpoint45.launcher</item>
+        <item>Mini|com.jiubang.go.mini.launcher</item>
+        <item>Nemus|com.nemustech.launcher</item>
+        <item>Next|com.gtp.nextlauncher</item>
+        <item>Nine|com.gridappsinc.launcher.free</item>
+        <item>Nova|com.teslacoilsw.launcher</item>
+        <item>S|com.s.launcher</item>
+        <item>Smart|ginlemon.flowerfree</item>
+        <item>Smart Pro|ginlemon.flowerpro</item>
+        <item>Solo|home.solo.launcher.free</item>
+        <item>TSF|com.tsf.shell</item>
+        <item>Unicon Pro|sg.ruqqq.IconThemer</item>
     </string-array>
+
+    <array name="launcher_colors">
+        <item>@color/action_launcher_color</item>
+        <item>@color/adw_launcher_color</item>
+        <item>@color/adw_ex_launcher_color</item>
+        <item>@color/apex_launcher_color</item>
+        <item>@color/atom_launcher_color</item>
+        <item>@color/aviate_launcher_color</item>
+        <item>@color/cm_theme_engine_color</item>
+        <item>@color/epic_launcher_color</item>
+        <item>@color/go_launcher_color</item>
+        <item>@color/google_now_launcher_color</item>
+        <item>@color/holo_launcher_color</item>
+        <item>@color/holo_hd_launcher_color</item>
+        <item>@color/inspire_launcher_color</item>
+        <item>@color/kk_launcher_color</item>
+        <item>@color/l_launcher_color</item>
+        <item>@color/lg_home_color</item>
+        <item>@color/lucid_launcher_color</item>
+        <item>@color/mini_launcher_color</item>
+        <item>@color/nemus_launcher_color</item>
+        <item>@color/next_launcher_color</item>
+        <item>@color/nine_launcher_color</item>
+        <item>@color/nova_launcher_color</item>
+        <item>@color/s_launcher_color</item>
+        <item>@color/smart_launcher_color</item>
+        <item>@color/smart_pro_launcher_color</item>
+        <item>@color/solo_launcher_color</item>
+        <item>@color/tsf_launcher_color</item>
+        <item>@color/unicon_pro_color</item>
+    </array>
 
 </resources>
