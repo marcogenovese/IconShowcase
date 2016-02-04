@@ -13,9 +13,8 @@
         <item name="android:textColorSecondary">@color/secondary_text_light</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
         <item name="android:windowBackground">@color/light_bg</item>
-        <item name="android:popupMenuStyle">@style/CustomPopUpMenu</item>
         <item name="md_title_color">@color/primary_text_light</item>
-        <item name="md_content_color">@color/primary_text_light</item>
+        <item name="md_content_color">@color/md_dialog_content_light</item>
         <item name="md_positive_color">@color/md_button_text_light</item>
         <item name="md_negative_color">@color/md_button_text_light</item>
         <item name="md_neutral_color">@color/md_button_text_light</item>
@@ -32,9 +31,8 @@
         <item name="android:textColorSecondary">@color/secondary_text_dark</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
         <item name="android:windowBackground">@color/dark_bg</item>
-        <item name="android:popupMenuStyle">@style/CustomPopUpMenu</item>
         <item name="md_title_color">@color/primary_text_dark</item>
-        <item name="md_content_color">@color/primary_text_dark</item>
+        <item name="md_content_color">@color/md_dialog_content_dark</item>
         <item name="md_positive_color">@color/md_button_text_dark</item>
         <item name="md_negative_color">@color/md_button_text_dark</item>
         <item name="md_neutral_color">@color/md_button_text_dark</item>
@@ -113,10 +111,6 @@
     <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.Dark">
         <item name="android:textColorPrimary">@color/primary_text_dark</item>
         <item name="android:textColorSecondary">@color/primary_text_dark</item>
-    </style>
-
-    <style name="CustomPopUpMenu" parent="@style/Widget.AppCompat.PopupMenu">
-        <item name="android:layout_margin">@dimen/cards_margin</item>
     </style>
 
 </resources>
