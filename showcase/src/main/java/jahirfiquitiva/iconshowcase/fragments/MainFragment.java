@@ -126,8 +126,8 @@ public class MainFragment extends Fragment {
     }
 
     private void setupIcons(Context context) {
-        final int light = ContextCompat.getColor(context, android.R.color.white);
-        final int dark = ContextCompat.getColor(context, R.color.grey);
+        final int light = ContextCompat.getColor(context, R.color.drawable_tint_dark);
+        final int dark = ContextCompat.getColor(context, R.color.drawable_tint_light);
 
         iconsDrawable = new IconicsDrawable(context)
                 .icon(GoogleMaterial.Icon.gmd_android_alt)

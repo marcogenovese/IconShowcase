@@ -3,7 +3,6 @@
     <style name="AppTheme" parent="AppTheme.Base">
         <item name="android:statusBarColor">@color/primary_dark</item>
         <item name="android:navigationBarColor">@color/primary_dark</item>
-        <item name="colorCardBackground">@color/card_light_background</item>
         <item name="drawablesTintColor">@color/drawable_tint_light</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
         <item name="android:windowContentTransitions">true</item>
@@ -16,7 +15,6 @@
     <style name="AppThemeDark" parent="AppTheme.Base.Dark">
         <item name="android:statusBarColor">@color/primary_dark</item>
         <item name="android:navigationBarColor">@color/primary_dark</item>
-        <item name="colorCardBackground">@color/card_dark_background</item>
         <item name="drawablesTintColor">@color/drawable_tint_dark</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
         <item name="android:windowContentTransitions">true</item>

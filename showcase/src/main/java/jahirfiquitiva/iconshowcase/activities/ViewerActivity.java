@@ -99,7 +99,7 @@ public class ViewerActivity extends AppCompatActivity {
         toHide1 = (LinearLayout) findViewById(R.id.iconsA);
         toHide2 = (LinearLayout) findViewById(R.id.iconsB);
 
-        final int darkgrey = ContextCompat.getColor(context, R.color.card_dark_background);
+        final int darkgrey = ContextCompat.getColor(context, R.color.drawable_base_tint);
 
         Drawable save = new IconicsDrawable(context)
                 .icon(GoogleMaterial.Icon.gmd_save)
@@ -177,11 +177,11 @@ public class ViewerActivity extends AppCompatActivity {
 
         Drawable d = new GlideBitmapDrawable(getResources(), bmp);
 
-        int light = ContextCompat.getColor(context, android.R.color.white);
-        int grey = ContextCompat.getColor(context, R.color.grey);
+        int tintLight = ContextCompat.getColor(context, R.color.drawable_tint_light);
+        int tintDark = ContextCompat.getColor(context, R.color.drawable_tint_dark);
         Drawable errorIcon = new IconicsDrawable(context)
                 .icon(GoogleMaterial.Icon.gmd_alert_triangle)
-                .color(ThemeUtils.darkTheme ? light : grey)
+                .color(ThemeUtils.darkTheme ? tintDark : tintLight)
                 .sizeDp(192);
 
         if (mPrefs.getAnimationsEnabled()) {

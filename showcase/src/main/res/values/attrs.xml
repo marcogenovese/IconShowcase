@@ -15,6 +15,8 @@
 
         <!-- Default color of cardview background. -->
         <attr name="colorCardBackground" format="color"/>
+        <!--Additional color for home in case you want to make it different-->
+        <attr name="homeBackground" format="color"/>
         <!-- Color to tint drawables. -->
         <attr name="drawablesTintColor" format="color"/>
         <!-- Custom toolbar theme. -->
