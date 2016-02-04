@@ -265,8 +265,8 @@ public class CreditsFragment extends Fragment {
     }
 
     private void setupLayout(Context context) {
-        final int light = ContextCompat.getColor(context, android.R.color.white);
-        final int dark = ContextCompat.getColor(context, R.color.grey);
+        int light = ContextCompat.getColor(context, R.color.drawable_tint_dark);
+        int dark = ContextCompat.getColor(context, R.color.drawable_tint_light);
 
         person = new IconicsDrawable(context)
                 .icon(GoogleMaterial.Icon.gmd_account)

@@ -162,8 +162,8 @@ public final class ISDialogs {
         dimensIcon = (ImageView) v.findViewById(R.id.icon_dimensions);
         copyrightIcon = (ImageView) v.findViewById(R.id.icon_copyright);
 
-        int light = ContextCompat.getColor(context, android.R.color.white);
-        int dark = ContextCompat.getColor(context, R.color.grey);
+        int light = ContextCompat.getColor(context, R.color.drawable_tint_dark);
+        int dark = ContextCompat.getColor(context, R.color.drawable_tint_light);
 
         authorIcon.setImageDrawable(new IconicsDrawable(context)
                 .icon(GoogleMaterial.Icon.gmd_account)

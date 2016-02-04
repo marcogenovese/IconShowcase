@@ -56,8 +56,8 @@ public class ZooperFragment extends Fragment {
 
         context = getActivity();
 
-        final int light = ContextCompat.getColor(context, android.R.color.white);
-        final int dark = ContextCompat.getColor(context, R.color.grey);
+        final int light = ContextCompat.getColor(context, R.color.drawable_tint_dark);
+        final int dark = ContextCompat.getColor(context, R.color.drawable_tint_light);
 
         Drawable alert = new IconicsDrawable(context)
                 .icon(GoogleMaterial.Icon.gmd_alert_triangle)

@@ -19,6 +19,7 @@
         <item name="md_negative_color">@color/md_button_text_light</item>
         <item name="md_neutral_color">@color/md_button_text_light</item>
         <item name="colorCardBackground">@color/card_light_background</item>
+        <item name="homeBackground">@color/home_light_background</item>
         <item name="drawablesTintColor">@color/drawable_tint_light</item>
     </style>
 
@@ -37,6 +38,7 @@
         <item name="md_negative_color">@color/md_button_text_dark</item>
         <item name="md_neutral_color">@color/md_button_text_dark</item>
         <item name="colorCardBackground">@color/card_dark_background</item>
+        <item name="homeBackground">@color/home_dark_background</item>
         <item name="drawablesTintColor">@color/drawable_tint_dark</item>
     </style>
 

@@ -5,14 +5,19 @@
     <color name="primary_dark">#263238</color>
     <color name="accent">#00b0ff</color>
 
+    <!--ripple colors-->
     <color name="semitransparent_white">#80ffffff</color>
     <color name="semitransparent_black">#66000000</color>
+
+    <color name="fab_background_tint">@color/accent</color>
 
     <color name="primary_text_light">#303030</color>
     <color name="secondary_text_light">#616161</color>
     <color name="primary_text_dark">#ffffff</color>
     <color name="secondary_text_dark">#f5f5f5</color>
+    <color name="semitransparent_text_dark">#80ffffff</color>
 
+    <!--colors for material dialog-->
     <color name="md_button_text_light">@color/accent</color>
     <color name="md_button_text_dark">@color/accent</color>
     <color name="md_dialog_content_light">#5e5e5e</color>
@@ -31,16 +36,27 @@
     <color name="splash_light_statusbar">#e0e0e0</color>
 
     <!--drawable icon tint color-->
-    <color name="drawable_tint_light">#424242</color>
+    <color name="drawable_tint_light">#757575</color>
     <color name="drawable_tint_dark">@android:color/white</color>
+    <color name="drawable_base_tint">#757575</color>
 
     <!--window background colors-->
     <color name="light_bg">#f5f5f5</color>
     <color name="dark_bg">#303030</color>
 
-    <color name="grey">#757575</color>
     <color name="divider">#757575</color>
 
+    <!--Extra background colors for home section-->
+    <color name="home_dark_background">@color/card_dark_background</color>
+    <color name="home_light_background">@color/card_light_background</color>
+
+    <!--colors for apply launcher (for launchers that aren't installed)-->
+    <color name="launcher_tint_light">@color/drawable_tint_light</color>
+    <color name="launcher_tint_dark">@color/drawable_tint_dark</color>
+    <color name="launcher_text_light">@color/primary_text_light</color>
+    <color name="launcher_text_dark">@color/primary_text_dark</color>
+    
+    <!--colors for installed launchers-->
     <color name="action_launcher_color">#f44336</color>
     <color name="adw_launcher_color">#5b9cc8</color>
     <color name="adw_ex_launcher_color">#5b9cc8</color>
@@ -69,5 +85,4 @@
     <color name="solo_launcher_color">#ba68c8</color>
     <color name="tsf_launcher_color">#2196f3</color>
     <color name="unicon_pro_color">#78c257</color>
-
 </resources>
