@@ -94,8 +94,8 @@ public class WallpapersFragment extends Fragment {
             showWallsAdviceDialog(getActivity());
         }
 
-        int light = ContextCompat.getColor(context, android.R.color.white);
-        int dark = ContextCompat.getColor(context, R.color.card_dark_background);
+        int light = ContextCompat.getColor(context, R.color.drawable_tint_dark);
+        int dark = ContextCompat.getColor(context, R.color.drawable_tint_light);
 
         noConnection = (ImageView) layout.findViewById(R.id.no_connected_icon);
         noConnection.setImageDrawable(new IconicsDrawable(context)
@@ -275,10 +275,10 @@ public class WallpapersFragment extends Fragment {
         mRecyclerView.setVisibility(View.GONE);
         fastScroller.setVisibility(View.GONE);
         if (Utils.hasNetwork(context)) {
-            Utils.showSimpleSnackbar(layout,
+            Utils.showSimpleSnackbar(context, layout,
                     context.getResources().getString(R.string.refreshing_walls), 1);
         } else {
-            Utils.showSimpleSnackbar(layout,
+            Utils.showSimpleSnackbar(context, layout,
                     context.getResources().getString(R.string.no_conn_title), 1);
         }
         mSwipeRefreshLayout.setEnabled(true);
@@ -502,7 +502,7 @@ public class WallpapersFragment extends Fragment {
     }
 
     public static void showLoadPictureSnackbar(View layout) {
-        Utils.showSimpleSnackbar(layout,
+        Utils.showSimpleSnackbar(context, layout,
                 Utils.getStringFromResources(context, R.string.wait_for_walls), 1);
     }
 
