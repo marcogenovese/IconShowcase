@@ -4,7 +4,7 @@
         <item name="android:statusBarColor">@color/primary_dark</item>
         <item name="android:navigationBarColor">@color/primary_dark</item>
         <item name="colorCardBackground">@color/card_light_background</item>
-        <item name="drawablesTintColor">@color/grey</item>
+        <item name="drawablesTintColor">@color/drawable_tint_light</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
@@ -17,7 +17,7 @@
         <item name="android:statusBarColor">@color/primary_dark</item>
         <item name="android:navigationBarColor">@color/primary_dark</item>
         <item name="colorCardBackground">@color/card_dark_background</item>
-        <item name="drawablesTintColor">@android:color/white</item>
+        <item name="drawablesTintColor">@color/drawable_tint_dark</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
