@@ -21,6 +21,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
 import com.github.florent37.glidepalette.GlidePalette;
@@ -31,6 +32,7 @@ import java.util.concurrent.Callable;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.adapters.WallpapersAdapter;
+import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 
 /**
  * @author Aidan Follestad (afollestad)
@@ -64,21 +66,30 @@ public class Utils {
         return installed;
     }
 
-    public static void showSimpleSnackbar(View location, String text, int duration) {
+    public static void showSimpleSnackbar(Context context, View location, String text, int duration) {
+        final int snackbarLight = ContextCompat.getColor(context, R.color.snackbar_light);
+        final int snackbarDark = ContextCompat.getColor(context, R.color.snackbar_dark);
+
         switch (duration) {
             case 1:
                 Snackbar shortSnackbar = Snackbar.make(location, text,
                         Snackbar.LENGTH_SHORT);
+                ViewGroup shortGroup = (ViewGroup) shortSnackbar.getView();
+                shortGroup.setBackgroundColor(ThemeUtils.darkTheme ? snackbarDark : snackbarLight);
                 shortSnackbar.show();
                 break;
             case 2:
                 Snackbar longSnackbar = Snackbar.make(location, text,
                         Snackbar.LENGTH_LONG);
+                ViewGroup longGroup = (ViewGroup) longSnackbar.getView();
+                longGroup.setBackgroundColor(ThemeUtils.darkTheme ? snackbarDark : snackbarLight);
                 longSnackbar.show();
                 break;
             case 3:
                 Snackbar indefiniteSnackbar = Snackbar.make(location, text,
                         Snackbar.LENGTH_INDEFINITE);
+                ViewGroup indefiniteGroup = (ViewGroup) indefiniteSnackbar.getView();
+                indefiniteGroup.setBackgroundColor(ThemeUtils.darkTheme ? snackbarDark : snackbarLight);
                 indefiniteSnackbar.show();
                 break;
         }

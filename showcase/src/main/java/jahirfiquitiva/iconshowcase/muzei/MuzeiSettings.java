@@ -108,7 +108,8 @@ public class MuzeiSettings extends AppCompatActivity implements View.OnClickList
             Intent intent = new Intent(MuzeiSettings.this, ArtSource.class);
             intent.putExtra("service", "restarted");
             startService(intent);
-            Utils.showSimpleSnackbar(muzeiLayout,
+            //TODO check context
+            Utils.showSimpleSnackbar(getApplicationContext(), muzeiLayout,
                     Utils.getStringFromResources(this, R.string.settings_saved), 1);
             finish();
             return true;

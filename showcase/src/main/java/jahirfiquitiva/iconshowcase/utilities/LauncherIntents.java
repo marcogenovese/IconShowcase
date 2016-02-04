@@ -253,7 +253,7 @@ public class LauncherIntents {
                 nine.putExtra("launch", true);
                 context.sendBroadcast(nine);
             } else {
-                Utils.showSimpleSnackbar(layout,
+                Utils.showSimpleSnackbar(context, layout,
                         context.getResources().getString(R.string.updateninelauncher), 1);
             }
             context.startActivity(nineApply);

@@ -172,7 +172,7 @@ public class ZooperFragment extends Fragment {
                             .show();
                     new CopyFilesToStorage(context, dialog, "Fonts").execute();
                 } else {
-                    Utils.showSimpleSnackbar(layout,
+                    Utils.showSimpleSnackbar(context, layout,
                             getResources().getString(R.string.fonts_installed), 1);
                 }
             }
@@ -190,7 +190,7 @@ public class ZooperFragment extends Fragment {
                             .show();
                     new CopyFilesToStorage(context, dialog, "IconSets").execute();
                 } else {
-                    Utils.showSimpleSnackbar(layout,
+                    Utils.showSimpleSnackbar(context, layout,
                             getResources().getString(R.string.iconsets_installed), 1);
                 }
             }

@@ -46,16 +46,22 @@
 
     <color name="divider">#757575</color>
 
+    <!--You likely don't need to modify the colors below, but they're here if you need them-->
+
     <!--Extra background colors for home section-->
     <color name="home_dark_background">@color/card_dark_background</color>
     <color name="home_light_background">@color/card_light_background</color>
+
+    <!--snackbar background colors-->
+    <color name="snackbar_light">@color/card_light_background</color>
+    <color name="snackbar_dark">@color/card_dark_background</color>
 
     <!--colors for apply launcher (for launchers that aren't installed)-->
     <color name="launcher_tint_light">@color/drawable_tint_light</color>
     <color name="launcher_tint_dark">@color/drawable_tint_dark</color>
     <color name="launcher_text_light">@color/primary_text_light</color>
     <color name="launcher_text_dark">@color/primary_text_dark</color>
-    
+
     <!--colors for installed launchers-->
     <color name="action_launcher_color">#f44336</color>
     <color name="adw_launcher_color">#5b9cc8</color>
