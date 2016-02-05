@@ -17,6 +17,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayout;
 import android.support.v7.widget.Toolbar;
@@ -66,7 +67,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     public static boolean WITH_LICENSE_CHECKER = false,
             WITH_INSTALLED_FROM_AMAZON = false,
             WITH_ZOOPER_SECTION = false,
-            WITH_ICONS_BASED_CHANGELOG = false,
+            WITH_ICONS_BASED_CHANGELOG = true,
             WITH_USER_WALLPAPER_AS_TOOLBAR_HEADER = true,
             WITH_ALTERNATIVE_ABOUT_SECTION = true,
             WITH_SECONDARY_DRAWER_ITEMS_ICONS = false;
@@ -77,7 +78,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     MINI_HEADER
     NO_HEADER
      */
-    public static DrawerHeaderStyle drawerHeaderStyle = DrawerHeaderStyle.MINI_HEADER;
+    public static DrawerHeaderStyle drawerHeaderStyle = DrawerHeaderStyle.NORMAL_HEADER;
 
     private static final String MARKET_URL = "https://play.google.com/store/apps/details?id=";
 
@@ -116,8 +117,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        setTheme(R.style.AppTheme);
-
         ThemeUtils.onActivityCreateSetTheme(this);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -125,6 +124,25 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         }
 
         super.onCreate(savedInstanceState);
+
+        WITH_INSTALLED_FROM_AMAZON = getResources().getBoolean(R.bool.installs_from_amazon);
+        WITH_ZOOPER_SECTION = getResources().getBoolean(R.bool.zooper_included);
+        WITH_ICONS_BASED_CHANGELOG = getResources().getBoolean(R.bool.icons_changelog);
+        WITH_USER_WALLPAPER_AS_TOOLBAR_HEADER = getResources().getBoolean(R.bool.user_wallpaper_in_home);
+        WITH_ALTERNATIVE_ABOUT_SECTION = getResources().getBoolean(R.bool.cards_credits);
+        WITH_SECONDARY_DRAWER_ITEMS_ICONS = getResources().getBoolean(R.bool.secondary_drawer_items_icons);
+
+        switch (getResources().getInteger(R.integer.nav_drawer_header_style)) {
+            case 1:
+                drawerHeaderStyle = DrawerHeaderStyle.NORMAL_HEADER;
+                break;
+            case 2:
+                drawerHeaderStyle = DrawerHeaderStyle.MINI_HEADER;
+                break;
+            case 3:
+                drawerHeaderStyle = DrawerHeaderStyle.NO_HEADER;
+                break;
+        }
 
         context = this;
         mPrefs = new Preferences(ShowcaseActivity.this);
@@ -544,6 +562,13 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         if (drawerHeaderStyle.equals(DrawerHeaderStyle.MINI_HEADER)) {
             ImageView miniHeader = (ImageView) drawer.getHeader().findViewById(R.id.mini_drawer_header);
             miniHeader.getLayoutParams().height = UIUtils.getActionBarHeight(this) + UIUtils.getStatusBarHeight(this);
+            if(context.getResources().getBoolean(R.bool.mini_header_solid_color)) {
+                miniHeader.setBackgroundColor(ThemeUtils.darkTheme ?
+                        ContextCompat.getColor(context, R.color.dark_theme_primary) :
+                        ContextCompat.getColor(context, R.color.light_theme_primary));
+            } else {
+                miniHeader.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawer_header));
+            }
             TextView appVersion = (TextView) drawer.getHeader().findViewById(R.id.text_app_version);
             appVersion.setText(getString(R.string.app_version, Utils.getAppVersion(this)));
         }
@@ -721,12 +746,12 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         } else {
 
             ArrayList<Integer> wallpapersArray = new ArrayList<>();
-            String[] newIcons = context.getResources().getStringArray(R.array.wallpapers);
+            String[] wallpapers = context.getResources().getStringArray(R.array.wallpapers);
 
-            for (String extra : newIcons) {
-                int res = context.getResources().getIdentifier(extra, "drawable", context.getPackageName());
+            for (String wallpaper : wallpapers) {
+                int res = context.getResources().getIdentifier(wallpaper, "drawable", context.getPackageName());
                 if (res != 0) {
-                    final int thumbRes = context.getResources().getIdentifier(extra, "drawable", context.getPackageName());
+                    final int thumbRes = context.getResources().getIdentifier(wallpaper, "drawable", context.getPackageName());
                     if (thumbRes != 0) {
                         wallpapersArray.add(thumbRes);
                     }

@@ -32,10 +32,11 @@ import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 /**
- * This Class was created by Patrick J
+ * This Class was created by Patrick Jung
  * on 07.01.16. For more Details and Licensing
  * have a look at the README.md
  */
+
 public final class ISDialogs {
 
     /*

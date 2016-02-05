@@ -57,7 +57,7 @@ public class ApplyFragment extends Fragment {
         try {
             layout = (ViewGroup) inflater.inflate(R.layout.apply_section, container, false);
         } catch (InflateException e) {
-
+            //Do nothing
         }
 
         mPrefs = new Preferences(getActivity());

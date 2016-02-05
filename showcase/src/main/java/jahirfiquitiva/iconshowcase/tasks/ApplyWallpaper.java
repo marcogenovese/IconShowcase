@@ -3,11 +3,13 @@ package jahirfiquitiva.iconshowcase.tasks;
 import android.app.Activity;
 import android.app.WallpaperManager;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -28,7 +30,6 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
     private Bitmap resource;
     private View layout;
     private boolean isPicker;
-    private Snackbar snackbar;
     private FloatingActionMenu fab;
     private WeakReference<Activity> wrActivity;
     private LinearLayout toHide1, toHide2;
@@ -72,7 +73,7 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
             try {
                 wm.setBitmap(scaleToActualAspectRatio(resource));
             } catch (OutOfMemoryError ex) {
-                Utils.showLog("OutOfMemoryError: " + ex.getLocalizedMessage());
+                Utils.showLog(context, "OutOfMemoryError: " + ex.getLocalizedMessage());
                 showRetrySnackbar();
             }
             worked = true;
@@ -165,7 +166,7 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
 
     private void showRetrySnackbar() {
         String retry = context.getResources().getString(R.string.retry);
-        snackbar = Snackbar
+        Snackbar snackbar = Snackbar
                 .make(layout, R.string.error, Snackbar.LENGTH_INDEFINITE)
                 .setAction(retry.toUpperCase(), new View.OnClickListener() {
                     @Override
@@ -173,7 +174,11 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
                         new ApplyWallpaper((Activity) context, dialog, resource, isPicker, layout, fab);
                     }
                 });
-        snackbar.setActionTextColor(ContextCompat.getColor(context, R.color.accent));
+        TypedValue typedValue = new TypedValue();
+        Resources.Theme theme = context.getTheme();
+        theme.resolveAttribute(R.attr.accentColor, typedValue, true);
+        int actionTextColor = typedValue.data;
+        snackbar.setActionTextColor(actionTextColor);
         snackbar.show();
     }
 

@@ -120,9 +120,10 @@ public class WallpapersFragment extends Fragment {
         mSwipeRefreshLayout.setProgressBackgroundColorSchemeColor(ThemeUtils.darkTheme ? dark : light);
 
         mSwipeRefreshLayout.setColorSchemeResources(
-                R.color.accent,
-                R.color.accent,
-                R.color.accent);
+                ThemeUtils.darkTheme ? R.color.dark_theme_accent : R.color.light_theme_accent,
+                ThemeUtils.darkTheme ? R.color.dark_theme_accent : R.color.light_theme_accent,
+                ThemeUtils.darkTheme ? R.color.dark_theme_accent : R.color.light_theme_accent);
+
         mSwipeRefreshLayout.setEnabled(false);
 
         setupLayout(false);
@@ -409,7 +410,7 @@ public class WallpapersFragment extends Fragment {
                             if (json.getString("dimensions") != null) {
                                 dimensions.add(json.getString("dimensions"));
                             }
-                        } catch(JSONException e) {
+                        } catch (JSONException e) {
                             dimensions.add("null");
                         }
 
@@ -417,7 +418,7 @@ public class WallpapersFragment extends Fragment {
                             if (json.getString("copyright") != null) {
                                 copyrights.add(json.getString("copyright"));
                             }
-                        } catch(JSONException e) {
+                        } catch (JSONException e) {
                             copyrights.add("null");
                         }
 

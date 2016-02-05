@@ -1,5 +1,6 @@
 package jahirfiquitiva.iconshowcase.muzei;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Build;
@@ -7,7 +8,6 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,6 +29,7 @@ public class MuzeiSettings extends AppCompatActivity implements View.OnClickList
     private Preferences mPrefs;
     private RelativeLayout muzeiLayout;
     private boolean mLastTheme, mLastNavBar;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,15 +38,11 @@ public class MuzeiSettings extends AppCompatActivity implements View.OnClickList
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             ThemeUtils.onActivityCreateSetNavBar(this);
-            /*
-            Window window = getWindow();
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(getResources().getColor(android.R.color.transparent));
-            */
         }
 
         super.onCreate(savedInstanceState);
+
+        context = this;
 
         setContentView(R.layout.muzei_settings);
 
@@ -76,11 +73,11 @@ public class MuzeiSettings extends AppCompatActivity implements View.OnClickList
         if (mPrefs.isRotateMinute()) {
             hour.setChecked(false);
             minute.setChecked(true);
-            numberpicker.setValue(ConvertMiliToMinute(mPrefs.getRotateTime()));
+            numberpicker.setValue(convertMillisToMinutes(mPrefs.getRotateTime()));
         } else {
             hour.setChecked(true);
             minute.setChecked(false);
-            numberpicker.setValue(ConvertMiliToMinute(mPrefs.getRotateTime()) / 60);
+            numberpicker.setValue(convertMillisToMinutes(mPrefs.getRotateTime()) / 60);
         }
     }
 
@@ -97,19 +94,18 @@ public class MuzeiSettings extends AppCompatActivity implements View.OnClickList
         if (i == R.id.save) {
             int rotate_time;
             if (minute.isChecked()) {
-                rotate_time = ConvertMinuteToMili(numberpicker.getValue());
+                rotate_time = convertMinutesToMillis(numberpicker.getValue());
                 mPrefs.setRotateMinute(true);
                 mPrefs.setRotateTime(rotate_time);
             } else {
-                rotate_time = ConvertMinuteToMili(numberpicker.getValue()) * 60;
+                rotate_time = convertMinutesToMillis(numberpicker.getValue()) * 60;
                 mPrefs.setRotateMinute(false);
                 mPrefs.setRotateTime(rotate_time);
             }
             Intent intent = new Intent(MuzeiSettings.this, ArtSource.class);
             intent.putExtra("service", "restarted");
             startService(intent);
-            //TODO check context
-            Utils.showSimpleSnackbar(getApplicationContext(), muzeiLayout,
+            Utils.showSimpleSnackbar(context, muzeiLayout,
                     Utils.getStringFromResources(this, R.string.settings_saved), 1);
             finish();
             return true;
@@ -128,15 +124,9 @@ public class MuzeiSettings extends AppCompatActivity implements View.OnClickList
     protected void onResume() {
         super.onResume();
 
-        // Restart activity if theme or navbar changed
-        // You may be able to just use 'this.recreate()'
         if (mLastTheme != ThemeUtils.darkTheme
                 || mLastNavBar != ThemeUtils.coloredNavBar) {
-            this.recreate();/*
-            this.startActivity(new Intent(this, this.getClass()));
-            this.finish();
-            this.overridePendingTransition(0, 0);
-            */
+            this.recreate();
         }
     }
 
@@ -158,12 +148,12 @@ public class MuzeiSettings extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    private int ConvertMinuteToMili(int minute) {
+    private int convertMinutesToMillis(int minute) {
         return minute * 60 * 1000;
     }
 
-    private int ConvertMiliToMinute(int mili) {
-        return mili / 60 / 1000;
+    private int convertMillisToMinutes(int millis) {
+        return millis / 60 / 1000;
     }
 
     private void setDividerColor(NumberPicker picker) {
@@ -174,7 +164,7 @@ public class MuzeiSettings extends AppCompatActivity implements View.OnClickList
                 try {
                     pf.set(picker, ContextCompat.getDrawable(this, R.drawable.numberpicker));
                 } catch (IllegalArgumentException | IllegalAccessException | Resources.NotFoundException e) {
-                    Log.d("MuzeiSettings", Log.getStackTraceString(e));
+                    //Do nothing
                 }
                 break;
             }

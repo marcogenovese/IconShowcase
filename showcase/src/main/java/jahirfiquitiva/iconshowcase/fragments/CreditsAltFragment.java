@@ -18,7 +18,6 @@ import com.mikepenz.iconics.IconicsDrawable;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
-import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
@@ -26,7 +25,6 @@ public class CreditsAltFragment extends Fragment {
 
     private Context context;
     private ViewGroup layout;
-    private Preferences mPrefs;
 
     private boolean YOU_HAVE_WEBSITE = false;
 
@@ -40,7 +38,7 @@ public class CreditsAltFragment extends Fragment {
 
         context = getActivity();
 
-        mPrefs = new Preferences(getActivity());
+        YOU_HAVE_WEBSITE = context.getResources().getBoolean(R.bool.you_have_a_website);
 
         libsLinks = context.getResources().getStringArray(R.array.libs_links);
         contributorsLinks = context.getResources().getStringArray(R.array.contributors_links);

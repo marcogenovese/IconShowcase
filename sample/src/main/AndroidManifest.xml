@@ -243,7 +243,7 @@
                 android:value="@color/primary"/>
             <meta-data
                 android:name="settingsActivity"
-                android:value=".muzei.MuzeiSettings"/>
+                android:value="jahirfiquitiva.iconshowcase.muzei.MuzeiSettings"/>
         </service>
 
         <activity

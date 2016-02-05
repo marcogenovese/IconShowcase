@@ -12,7 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:scaleType="centerCrop"
-        android:src="@drawable/drawer_header"
         tools:ignore="ContentDescription"/>
 
     <LinearLayout

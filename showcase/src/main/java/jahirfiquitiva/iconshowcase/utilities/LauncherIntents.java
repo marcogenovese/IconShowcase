@@ -95,7 +95,7 @@ public class LauncherIntents {
                 Unicon(context);
                 break;
             default:
-                Utils.showLog("No method for: " + launcherName);
+                Utils.showLog(context, "No method for: " + launcherName);
                 break;
         }
     }

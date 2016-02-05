@@ -33,16 +33,6 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
     private ArrayList<WallpaperItem> wallsList;
 
     private boolean USE_PALETTE = true, USE_PALETTE_IN_TEXTS = false;
-
-    /*
-    * Palette styles: (use this format only)
-    * VIBRANT
-    * VIBRANT_LIGHT
-    * VIBRANT_DARK
-    * MUTED
-    * MUTED_LIGHT
-    * MUTED_DARK
-     */
     public String PALETTE_STYLE = "VIBRANT";
 
     private final ClickListener mCallback;
@@ -51,6 +41,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
         this.context = context;
         this.mCallback = callback;
         this.mPrefs = new Preferences(context);
+        setupValues(context);
     }
 
     public void setData(ArrayList<WallpaperItem> wallsList) {
@@ -154,6 +145,31 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
             if (mCallback != null)
                 mCallback.onClick(this, index, true);
             return false;
+        }
+    }
+
+    public void setupValues(Context context) {
+        this.USE_PALETTE = context.getResources().getBoolean(R.bool.use_palette_api);
+        this.USE_PALETTE_IN_TEXTS = context.getResources().getBoolean(R.bool.use_palette_api_in_texts);
+        switch (context.getResources().getInteger(R.integer.palette_swatch)) {
+            case 1:
+                this.PALETTE_STYLE = "VIBRANT";
+                break;
+            case 2:
+                this.PALETTE_STYLE = "VIBRANT_LIGHT";
+                break;
+            case 3:
+                this.PALETTE_STYLE = "VIBRANT_DARK";
+                break;
+            case 4:
+                this.PALETTE_STYLE = "MUTED";
+                break;
+            case 5:
+                this.PALETTE_STYLE = "MUTED_LIGHT";
+                break;
+            case 6:
+                this.PALETTE_STYLE = "MUTED_DARK";
+                break;
         }
     }
 

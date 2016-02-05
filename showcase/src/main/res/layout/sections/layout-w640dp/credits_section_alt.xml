@@ -95,7 +95,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/send_email"
-                        android:textColor="@color/accent"/>
+                        android:textColor="?attr/accentColor"/>
 
                     <android.support.v7.widget.AppCompatButton
                         android:id="@+id/googleplus_btn"
@@ -103,7 +103,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/google_plus"
-                        android:textColor="@color/accent"/>
+                        android:textColor="?attr/accentColor"/>
 
                     <android.support.v7.widget.AppCompatButton
                         android:id="@+id/website_btn"
@@ -111,7 +111,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/visit_website"
-                        android:textColor="@color/accent"/>
+                        android:textColor="?attr/accentColor"/>
 
                 </LinearLayout>
 
@@ -327,7 +327,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/fork_on_github"
-                        android:textColor="@color/accent"/>
+                        android:textColor="?attr/accentColor"/>
 
                     <android.support.v7.widget.AppCompatButton
                         android:id="@+id/dev_website_btn"
@@ -335,7 +335,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/visit_website"
-                        android:textColor="@color/accent"/>
+                        android:textColor="?attr/accentColor"/>
 
                     <android.support.v7.widget.AppCompatButton
                         android:id="@+id/dev_googleplus_btn"
@@ -343,7 +343,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/google_plus"
-                        android:textColor="@color/accent"/>
+                        android:textColor="?attr/accentColor"/>
 
                 </LinearLayout>
 

@@ -29,7 +29,6 @@ public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.Laun
     private final Context context;
     private final List<ApplyFragment.Launcher> launchers;
     private final ClickListener mCallback;
-    private View view;
 
     public LaunchersAdapter(Context context, List<ApplyFragment.Launcher> launchers, ClickListener callback) {
         this.context = context;

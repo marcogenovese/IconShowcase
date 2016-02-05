@@ -94,7 +94,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/download"
-                            android:textColor="@color/accent"/>
+                            android:textColor="?attr/accentColor"/>
 
                     </LinearLayout>
 
@@ -177,7 +177,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/download"
-                            android:textColor="@color/accent"/>
+                            android:textColor="?attr/accentColor"/>
 
                     </LinearLayout>
 
@@ -364,7 +364,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/open"
-                            android:textColor="@color/accent"/>
+                            android:textColor="?attr/accentColor"/>
 
                     </LinearLayout>
 

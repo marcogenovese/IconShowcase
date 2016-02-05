@@ -135,4 +135,5 @@ public class IconsLists {
     public static void setNewIconsL(List<String> newIconsL) {
         IconsLists.newIconsL = newIconsL;
     }
+
 }

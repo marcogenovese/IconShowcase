@@ -1,6 +1,5 @@
 package jahirfiquitiva.iconshowcase.adapters;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +14,6 @@ import jahirfiquitiva.iconshowcase.models.FAQsItem;
 
 public class FAQsAdapter extends RecyclerView.Adapter<FAQsAdapter.FAQsHolder> {
 
-    Context context;
     private List<FAQsItem> faqs;
 
     public FAQsAdapter(List<FAQsItem> faqs) {
@@ -33,8 +31,8 @@ public class FAQsAdapter extends RecyclerView.Adapter<FAQsAdapter.FAQsHolder> {
 
         FAQsItem faq = faqs.get(position);
 
-        holder.txtAnswer.setText(faq.getanswer());
-        holder.txtQuestion.setText(faq.getquestion());
+        holder.txtQuestion.setText(faq.getQuestion());
+        holder.txtAnswer.setText(faq.getAnswer());
 
         holder.view.setTag(position);
 

@@ -16,6 +16,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
     private Drawable mDivider;
     private boolean mShowFirstDivider = false;
     private boolean mShowLastDivider = false;
+    private int height = 0;
 
     int mOrientation = -1;
 
@@ -55,6 +56,14 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
         mShowLastDivider = showLastDivider;
     }
 
+    public DividerItemDecoration(Context context, AttributeSet attrs, int height, boolean showFirstDivider,
+                                 boolean showLastDivider) {
+        this(context, attrs);
+        this.height = height;
+        mShowFirstDivider = showFirstDivider;
+        mShowLastDivider = showLastDivider;
+    }
+
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent,
                                RecyclerView.State state) {
@@ -72,7 +81,11 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
             getOrientation(parent);
 
         if (mOrientation == LinearLayoutManager.VERTICAL) {
-            outRect.top = mDivider.getIntrinsicHeight();
+            if (height == 0) {
+                outRect.top = mDivider.getIntrinsicHeight();
+            } else {
+                outRect.top = height;
+            }
             if (mShowLastDivider && position == (state.getItemCount() - 1)) {
                 outRect.bottom = outRect.top;
             }
@@ -97,7 +110,11 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
         int childCount = parent.getChildCount();
 
         if (orientation == LinearLayoutManager.VERTICAL) {
-            size = mDivider.getIntrinsicHeight();
+            if (height == 0) {
+                size = mDivider.getIntrinsicHeight();
+            } else {
+                size = height;
+            }
             left = parent.getPaddingLeft();
             right = parent.getWidth() - parent.getPaddingRight();
         } else { //horizontal

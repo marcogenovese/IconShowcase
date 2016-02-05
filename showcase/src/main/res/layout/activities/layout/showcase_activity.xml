@@ -152,7 +152,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:background="@color/primary"
+                android:background="?attr/primaryColor"
                 android:clipToPadding="false"
                 android:paddingLeft="@dimen/tabs_contentInset"
                 android:paddingStart="@dimen/tabs_contentInset"
@@ -181,7 +181,7 @@
         android:layout_margin="@dimen/cards_padding"
         android:src="@drawable/ic_apply_icons"
         android:visibility="gone"
-        app:backgroundTint="@color/fab_background_tint"
+        app:backgroundTint="?attr/fabTintColor"
         app:fabSize="normal"
         app:rippleColor="@color/semitransparent_white"/>
 

@@ -45,6 +45,7 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
 
         if (mPrefs.getDownloadsFolder() != null) {
             location = mPrefs.getDownloadsFolder();
+            location = mPrefs.getDownloadsFolder();
         } else {
             location = getString(R.string.walls_save_location,
                     Environment.getExternalStorageDirectory().getAbsolutePath());
@@ -92,9 +93,9 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     mPrefs.setSettingsModified(true);
                     if (newValue.toString().equals("true")) {
-                        ThemeUtils.changeNavBar(getActivity(), ThemeUtils.NAVBAR_DEFAULT);
+                        ThemeUtils.changeNavBar(getActivity(), ThemeUtils.NAV_BAR_DEFAULT);
                     } else {
-                        ThemeUtils.changeNavBar(getActivity(), ThemeUtils.NAVBAR_BLACK);
+                        ThemeUtils.changeNavBar(getActivity(), ThemeUtils.NAV_BAR_BLACK);
                     }
                     return true;
                 }
@@ -242,14 +243,15 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
     public static boolean deleteDir(File dir) {
         if (dir != null && dir.isDirectory()) {
             String[] children = dir.list();
-            for (int i = 0; i < children.length; i++) {
-                boolean success = deleteDir(new File(dir, children[i]));
+            for (String aChildren : children) {
+                boolean success = deleteDir(new File(dir, aChildren));
                 if (!success) {
                     return false;
                 }
             }
         }
-        return dir.delete();
+
+        return dir != null && dir.delete();
     }
 
     private static String fullCacheDataSize(Context context) {
@@ -260,20 +262,27 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
         double finalResult, mbFinalResult;
 
         File[] fileList = context.getCacheDir().listFiles();
-        for (int i = 0; i < fileList.length; i++) {
-            if (fileList[i].isDirectory()) {
-                cache += dirSize(fileList[i]);
+        for (File aFileList : fileList) {
+            if (aFileList.isDirectory()) {
+                cache += dirSize(aFileList);
             } else {
-                cache += fileList[i].length();
+                cache += aFileList.length();
             }
         }
         try {
-            File[] fileExtList = context.getExternalCacheDir().listFiles();
-            for (int j = 0; j < fileExtList.length; j++) {
-                if (fileExtList[j].isDirectory()) {
-                    extCache += dirSize(fileExtList[j]);
-                } else {
-                    extCache += fileExtList[j].length();
+            File[] fileExtList = new File[0];
+            try {
+                fileExtList = context.getExternalCacheDir().listFiles();
+            } catch (NullPointerException e) {
+                //Do nothing
+            }
+            if (fileExtList != null) {
+                for (File aFileExtList : fileExtList) {
+                    if (aFileExtList.isDirectory()) {
+                        extCache += dirSize(aFileExtList);
+                    } else {
+                        extCache += aFileExtList.length();
+                    }
                 }
             }
         } catch (NullPointerException npe) {
@@ -296,11 +305,11 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
         if (dir.exists()) {
             long result = 0;
             File[] fileList = dir.listFiles();
-            for (int i = 0; i < fileList.length; i++) {
-                if (fileList[i].isDirectory()) {
-                    result += dirSize(fileList[i]);
+            for (File aFileList : fileList) {
+                if (aFileList.isDirectory()) {
+                    result += dirSize(aFileList);
                 } else {
-                    result += fileList[i].length();
+                    result += aFileList.length();
                 }
             }
             return result;

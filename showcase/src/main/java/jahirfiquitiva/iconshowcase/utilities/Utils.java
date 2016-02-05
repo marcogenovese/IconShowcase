@@ -32,7 +32,6 @@ import java.util.concurrent.Callable;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.adapters.WallpapersAdapter;
-import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 
 /**
  * @author Aidan Follestad (afollestad)
@@ -129,7 +128,9 @@ public class Utils {
 
         CustomTabsClient.bindCustomTabsService(context, "com.android.chrome", mCustomTabsServiceConnection);
         customTabsIntent = new CustomTabsIntent.Builder(mCustomTabsSession[0])
-                .setToolbarColor(ContextCompat.getColor(context, R.color.primary))
+                .setToolbarColor(ThemeUtils.darkTheme ?
+                        ContextCompat.getColor(context, R.color.dark_theme_primary_dark) :
+                        ContextCompat.getColor(context, R.color.light_theme_primary_dark))
                 .setShowTitle(true)
                 .build();
 
@@ -137,8 +138,13 @@ public class Utils {
 
     }
 
+    public static void showLog(Context context, String s) {
+        String tag = "IconShowcase + " + context.getResources().getString(R.string.app_name);
+        Log.d(tag, s);
+    }
+
     public static void showLog(String s) {
-        Log.d("IconShowcase", s);
+        Log.d("App: ", s);
     }
 
     public static String getStringFromResources(Context context, int id) {

@@ -35,9 +35,9 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
         Resources r = context.getResources();
         String p = context.getPackageName();
 
-        // PREVIEWS
+        // ICONS IN CHANGELOG
         newIconsAL = new ArrayList<>();
-        String[] newIcons = r.getStringArray(R.array.icons_changelog);
+        String[] newIcons = r.getStringArray(R.array.changelog_icons);
         newIconsL = sortLists(newIcons);
         for (String extra : newIconsL) {
             int res = r.getIdentifier(extra, "drawable", p);
@@ -169,11 +169,11 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
     @Override
     protected void onPostExecute(Boolean worked) {
         endTime = System.currentTimeMillis();
-        Utils.showLog("Load of icons task completed succesfully in: " + String.valueOf((endTime - startTime)) + " millisecs.");
+        Utils.showLog(context, "Load of icons task completed succesfully in: " + String.valueOf((endTime - startTime)) + " millisecs.");
     }
 
     private List<String> sortLists(String[] array) {
-        List<String> list = new ArrayList<String>(Arrays.asList(array));
+        List<String> list = new ArrayList<>(Arrays.asList(array));
         Collections.sort(list);
         return list;
     }

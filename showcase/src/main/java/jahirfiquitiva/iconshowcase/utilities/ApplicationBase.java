@@ -24,7 +24,6 @@ public class ApplicationBase extends Application {
     // Main list off all apps to request.
     public static ArrayList<RequestItem> allAppsToRequest;
 
-    public static ArrayList<Integer> wallpapersArray;
     public static int wallpaper;
 
     @Override

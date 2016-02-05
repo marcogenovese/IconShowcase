@@ -22,7 +22,6 @@ import com.mikepenz.iconics.IconicsDrawable;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
-import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
@@ -32,19 +31,15 @@ public class MainFragment extends Fragment {
 
     private String PlayStoreListing;
     private ViewGroup layout;
-    private Preferences mPrefs;
 
-    private Drawable iconsDrawable, wallsDrawable, widgetsDrawable, playStoreDrawable;
     private ImageView iconsIV, wallsIV, widgetsIV, playStoreIV;
-
-    private String themedIcons = "600",
-            availableWallpapers = "100",
-            includedWidgets = "-2";
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
 
-        mPrefs = new Preferences(getActivity());
+        String themedIcons = String.valueOf(getActivity().getResources().getInteger(R.integer.icons_amount));
+        String availableWallpapers = String.valueOf(getActivity().getResources().getInteger(R.integer.walls_amount));
+        String includedWidgets = String.valueOf(getActivity().getResources().getInteger(R.integer.zooper_widgets));
 
         if (layout != null) {
             ViewGroup parent = (ViewGroup) layout.getParent();
@@ -55,7 +50,7 @@ public class MainFragment extends Fragment {
         try {
             layout = (ViewGroup) inflater.inflate(R.layout.main_section, container, false);
         } catch (InflateException e) {
-
+            //Do nothing
         }
 
         ShowcaseActivity.setupToolbarHeader(getActivity());
@@ -103,7 +98,6 @@ public class MainFragment extends Fragment {
             }
         });
 
-        //ObservableScrollView content = (ObservableScrollView) layout.findViewById(R.id.HomeContent);
         AppCompatButton ratebtn = (AppCompatButton) layout.findViewById(R.id.rate_button);
         ratebtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,22 +123,22 @@ public class MainFragment extends Fragment {
         final int light = ContextCompat.getColor(context, R.color.drawable_tint_dark);
         final int dark = ContextCompat.getColor(context, R.color.drawable_tint_light);
 
-        iconsDrawable = new IconicsDrawable(context)
+        Drawable iconsDrawable = new IconicsDrawable(context)
                 .icon(GoogleMaterial.Icon.gmd_android_alt)
                 .color(ThemeUtils.darkTheme ? light : dark)
                 .sizeDp(24);
 
-        wallsDrawable = new IconicsDrawable(context)
+        Drawable wallsDrawable = new IconicsDrawable(context)
                 .icon(GoogleMaterial.Icon.gmd_collection_image)
                 .color(ThemeUtils.darkTheme ? light : dark)
                 .sizeDp(24);
 
-        widgetsDrawable = new IconicsDrawable(context)
+        Drawable widgetsDrawable = new IconicsDrawable(context)
                 .icon(GoogleMaterial.Icon.gmd_widgets)
                 .color(ThemeUtils.darkTheme ? light : dark)
                 .sizeDp(24);
 
-        playStoreDrawable = new IconicsDrawable(context)
+        Drawable playStoreDrawable = new IconicsDrawable(context)
                 .icon(GoogleMaterial.Icon.gmd_case_play)
                 .color(ThemeUtils.darkTheme ? light : dark)
                 .sizeDp(24);

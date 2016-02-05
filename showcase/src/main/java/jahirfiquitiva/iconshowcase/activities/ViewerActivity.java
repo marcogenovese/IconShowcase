@@ -99,21 +99,23 @@ public class ViewerActivity extends AppCompatActivity {
         toHide1 = (LinearLayout) findViewById(R.id.iconsA);
         toHide2 = (LinearLayout) findViewById(R.id.iconsB);
 
-        final int darkgrey = ContextCompat.getColor(context, R.color.drawable_base_tint);
+        int tintLightLighter = ContextCompat.getColor(context, R.color.drawable_base_tint);
+        int tintLight = ContextCompat.getColor(context, R.color.drawable_tint_light);
+        int tintDark = ContextCompat.getColor(context, R.color.drawable_tint_dark);
 
         Drawable save = new IconicsDrawable(context)
                 .icon(GoogleMaterial.Icon.gmd_save)
-                .color(darkgrey)
+                .color(ThemeUtils.darkTheme ? tintDark : tintLightLighter)
                 .sizeDp(24);
 
         Drawable apply = new IconicsDrawable(context)
                 .icon(GoogleMaterial.Icon.gmd_format_paint)
-                .color(darkgrey)
+                .color(ThemeUtils.darkTheme ? tintDark : tintLightLighter)
                 .sizeDp(24);
 
         Drawable info = new IconicsDrawable(context)
                 .icon(GoogleMaterial.Icon.gmd_info_outline)
-                .color(darkgrey)
+                .color(ThemeUtils.darkTheme ? tintDark : tintLightLighter)
                 .sizeDp(24);
 
         ImageView saveIV = (ImageView) findViewById(R.id.download);
@@ -177,8 +179,6 @@ public class ViewerActivity extends AppCompatActivity {
 
         Drawable d = new GlideBitmapDrawable(getResources(), bmp);
 
-        int tintLight = ContextCompat.getColor(context, R.color.drawable_tint_light);
-        int tintDark = ContextCompat.getColor(context, R.color.drawable_tint_dark);
         Drawable errorIcon = new IconicsDrawable(context)
                 .icon(GoogleMaterial.Icon.gmd_alert_triangle)
                 .color(ThemeUtils.darkTheme ? tintDark : tintLight)

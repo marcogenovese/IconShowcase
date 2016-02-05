@@ -142,7 +142,7 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
                 inImage.compress(Bitmap.CompressFormat.PNG, 100,
                         new FileOutputStream(destFile));
             } catch (final Exception e) {
-                Utils.showLog(e.getLocalizedMessage());
+                Utils.showLog(context, e.getLocalizedMessage());
             }
         }
 

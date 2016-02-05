@@ -27,7 +27,7 @@
         <item>Some renamed stuff for better understanding.</item>
     </string-array>
 
-    <string-array name="icons_changelog">
+    <string-array name="changelog_icons">
         <item>facebook</item>
         <item>chrome</item>
         <item>dumb_ways_to_die</item>

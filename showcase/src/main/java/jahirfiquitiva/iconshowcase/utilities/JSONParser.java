@@ -18,7 +18,7 @@ public class JSONParser {
                 return new JSONObject(data);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            //Do nothing
         }
         return null;
     }

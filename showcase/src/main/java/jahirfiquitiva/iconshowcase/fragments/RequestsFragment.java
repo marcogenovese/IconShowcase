@@ -53,8 +53,6 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
         columnsNumber = getResources().getInteger(R.integer.requests_grid_width);
         withBorders = true;
 
-        layout = (ViewGroup) inflater.inflate(R.layout.icon_request_section, container, false);
-
         context = getActivity();
 
         if (layout != null) {
@@ -63,9 +61,11 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
                 parent.removeView(layout);
             }
         }
+
         try {
+            layout = (ViewGroup) inflater.inflate(R.layout.icon_request_section, container, false);
         } catch (InflateException e) {
-            e.printStackTrace();
+            // Do nothing
         }
 
         mPrefs = new Preferences(getActivity());

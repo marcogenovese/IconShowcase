@@ -45,7 +45,7 @@
         android:layout_alignParentRight="true"
         android:layout_margin="16dp"
         android:src="@drawable/ic_send"
-        app:backgroundTint="@color/fab_background_tint"
+        app:backgroundTint="?attr/fabTintColor"
         app:fabSize="normal"
         app:rippleColor="@color/semitransparent_white"/>
 

@@ -26,7 +26,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import jahirfiquitiva.iconshowcase.R;
-import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 
 public class FolderChooserDialog extends DialogFragment implements MaterialDialog.ListCallback {
 
@@ -152,16 +151,6 @@ public class FolderChooserDialog extends DialogFragment implements MaterialDialo
                     .remove(frag).commit();
         }
         show(context.getSupportFragmentManager(), "FOLDER_SELECTOR");
-    }
-
-    public void showThis(ShowcaseActivity showcaseActivity) {
-        Fragment frag = showcaseActivity.getSupportFragmentManager().findFragmentByTag("FOLDER_SELECTOR");
-        if (frag != null) {
-            ((DialogFragment) frag).dismiss();
-            showcaseActivity.getSupportFragmentManager().beginTransaction()
-                    .remove(frag).commitAllowingStateLoss();
-        }
-        show(showcaseActivity.getSupportFragmentManager(), "FOLDER_SELECTOR");
     }
 
     private void createFolder(Context context, final MaterialDialog folderChooserDialog, final String folderPath) {

@@ -11,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.SearchView;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -49,7 +50,11 @@ public class PreviewsFragment extends Fragment {
             }
         }
 
-        layout = (ViewGroup) inflater.inflate(R.layout.icons_preview_section, container, false);
+        try {
+            layout = (ViewGroup) inflater.inflate(R.layout.icons_preview_section, container, false);
+        } catch (InflateException e) {
+            //Do nothing
+        }
 
         return layout;
     }

@@ -43,7 +43,7 @@ public class FAQsFragment extends Fragment {
         try {
             layout = (ViewGroup) inflater.inflate(R.layout.faqs_section, container, false);
         } catch (InflateException e) {
-
+            //Do nothing
         }
 
         questions = getResources().getStringArray(R.array.questions);
@@ -62,7 +62,7 @@ public class FAQsFragment extends Fragment {
         FAQsAdapter faqsAdapter = new FAQsAdapter(faqs);
         faqsList.setLayoutManager(new LinearLayoutManager(getActivity()));
         faqsList.setItemAnimator(new DefaultItemAnimator());
-        faqsList.addItemDecoration(new DividerItemDecoration(getActivity(), null, false, false));
+        faqsList.addItemDecoration(new DividerItemDecoration(getActivity(), null, cardsSpacing, false, false));
         faqsList.setHasFixedSize(true);
         faqsList.setAdapter(faqsAdapter);
 

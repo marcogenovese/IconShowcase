@@ -12,6 +12,7 @@ import android.support.v4.app.ActivityCompat;
  * on 07.01.16. For more Details and Licensing
  * have a look at the README.md
  */
+
 public final class PermissionUtils {
 
     public static final int PERMISSION_REQUEST_CODE = 42;
