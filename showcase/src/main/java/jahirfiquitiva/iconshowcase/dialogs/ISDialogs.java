@@ -44,11 +44,20 @@ public final class ISDialogs {
      */
 
     public static void showChangelogDialog(Context context) {
-        new MaterialDialog.Builder(context)
-                .title(R.string.changelog_dialog_title)
-                .adapter(new ChangelogAdapter(context, R.array.fullchangelog), null)
-                .positiveText(R.string.great)
-                .show();
+        if (context.getResources().getBoolean(R.bool.ripples_changelog)) {
+            new MaterialDialog.Builder(context)
+                    .title(R.string.changelog_dialog_title)
+                    .adapter(new ChangelogAdapter(context, R.array.fullchangelog), null)
+                    .positiveText(R.string.great)
+                    .listSelector(android.R.color.transparent)
+                    .show();
+        } else {
+            new MaterialDialog.Builder(context)
+                    .title(R.string.changelog_dialog_title)
+                    .adapter(new ChangelogAdapter(context, R.array.fullchangelog), null)
+                    .positiveText(R.string.great)
+                    .show();
+        }
     }
 
     public static void showIconsChangelogDialog(final Context context) {

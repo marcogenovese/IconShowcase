@@ -28,7 +28,7 @@
     False, means that the drawer header will use the 'header' picture.
     You can ignore this if you won't use the mini header style.
     -->
-    <bool name="mini_header_solid_color">false</bool>
+    <bool name="mini_header_solid_color">true</bool>
 
     <!--
     Do you want the drawer secondary items to show icons?
@@ -43,6 +43,11 @@
     False, mean the text based changelog will be used.
     -->
     <bool name="icons_changelog">true</bool>
+
+    <!--
+    Do you want to have ripples when pressing an item in the changelog?
+    -->
+    <bool name="ripples_changelog">false</bool>
 
     <!--
     Do you want to enable the use of user's wallpapers in home section?
@@ -117,12 +122,12 @@
     <!--
     How many icons does your app include?
     -->
-    <integer name="icons_amount">900</integer>
+    <integer name="icons_amount">600</integer>
 
     <!--
     How many wallpapers does your app include?
     -->
-    <integer name="walls_amount">150</integer>
+    <integer name="walls_amount">100</integer>
 
     <!--
     How many Zooper widget does your app include?

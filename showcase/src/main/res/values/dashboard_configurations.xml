@@ -45,6 +45,11 @@
     <bool name="icons_changelog">true</bool>
 
     <!--
+    Do you want to have ripples when pressing an item in the changelog?
+    -->
+    <bool name="ripples_changelog">false</bool>
+
+    <!--
     Do you want to enable the use of user's wallpapers in home section?
     True, means yes.
     False, means no.
