@@ -125,7 +125,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
         super.onCreate(savedInstanceState);
 
-        WITH_INSTALLED_FROM_AMAZON = getResources().getBoolean(R.bool.installs_from_amazon);
         WITH_ZOOPER_SECTION = getResources().getBoolean(R.bool.zooper_included);
         WITH_ICONS_BASED_CHANGELOG = getResources().getBoolean(R.bool.icons_changelog);
         WITH_USER_WALLPAPER_AS_TOOLBAR_HEADER = getResources().getBoolean(R.bool.user_wallpaper_in_home);

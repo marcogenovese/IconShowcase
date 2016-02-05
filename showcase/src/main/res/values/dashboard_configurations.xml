@@ -38,13 +38,6 @@
     <bool name="secondary_drawer_items_icons">false</bool>
 
     <!--
-    Do you want to allow installs from Amazon Apps Store?
-    True, means yes.
-    False, means no.
-    -->
-    <bool name="installs_from_amazon">false</bool>
-
-    <!--
     Do you want the app to use the icons based changelog, instead of texts one?
     True, means the icons based changelog will be used.
     False, mean the text based changelog will be used.

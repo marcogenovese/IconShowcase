@@ -75,7 +75,9 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
         }
         holder.view.setTag(position);
         holder.view.setOnClickListener(this);
-        setAnimation(holder.icon, position);
+        if(!inChangelog) {
+            setAnimation(holder.icon, position);
+        }
     }
 
     private int lastPosition = -1;

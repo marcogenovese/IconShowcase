@@ -86,7 +86,7 @@
         android:layout_gravity="center_vertical"
         android:layout_toLeftOf="@id/iconsA"
         android:layout_toStartOf="@id/iconsA"
-        android:background="@android:color/white"
+        android:background="?attr/colorCardBackground"
         android:gravity="center_vertical"
         android:minHeight="?actionBarSize"
         android:orientation="horizontal"

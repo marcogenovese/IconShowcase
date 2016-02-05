@@ -28,7 +28,7 @@
     False, means that the drawer header will use the 'header' picture.
     You can ignore this if you won't use the mini header style.
     -->
-    <bool name="mini_header_solid_color">true</bool>
+    <bool name="mini_header_solid_color">false</bool>
 
     <!--
     Do you want the drawer secondary items to show icons?
@@ -36,13 +36,6 @@
     False, means no.
     -->
     <bool name="secondary_drawer_items_icons">false</bool>
-
-    <!--
-    Do you want to allow installs from Amazon Apps Store?
-    True, means yes.
-    False, means no.
-    -->
-    <bool name="installs_from_amazon">false</bool>
 
     <!--
     Do you want the app to use the icons based changelog, instead of texts one?
@@ -124,12 +117,12 @@
     <!--
     How many icons does your app include?
     -->
-    <integer name="icons_amount">600</integer>
+    <integer name="icons_amount">900</integer>
 
     <!--
     How many wallpapers does your app include?
     -->
-    <integer name="walls_amount">100</integer>
+    <integer name="walls_amount">150</integer>
 
     <!--
     How many Zooper widget does your app include?
