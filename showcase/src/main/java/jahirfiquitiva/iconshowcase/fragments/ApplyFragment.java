@@ -77,6 +77,21 @@ public class ApplyFragment extends Fragment {
         RecyclerFastScroller fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
         fastScroller.attachRecyclerView(recyclerView);
 
+        updateLaunchersList();
+
+        return layout;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateLaunchersList();
+    }
+
+    private void updateLaunchersList(){
+
+        launchers.clear();
+
         // Splits all launcher  arrays by the | delimiter {name}|{package}
         final String[] launcherArray = getResources().getStringArray(R.array.launchers);
         final int[] launcherColors = getResources().getIntArray(R.array.launcher_colors);
@@ -106,8 +121,6 @@ public class ApplyFragment extends Fragment {
                 });
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
-
-        return layout;
     }
 
     private void openLauncher(String name) {

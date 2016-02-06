@@ -44,7 +44,7 @@ public final class ISDialogs {
      */
 
     public static void showChangelogDialog(Context context) {
-        if (context.getResources().getBoolean(R.bool.ripples_changelog)) {
+        if (context.getResources().getBoolean(R.bool.changelog_ripples)) {
             new MaterialDialog.Builder(context)
                     .title(R.string.changelog_dialog_title)
                     .adapter(new ChangelogAdapter(context, R.array.fullchangelog), null)
@@ -282,6 +282,14 @@ public final class ISDialogs {
                 .progress(true, 0)
                 .cancelable(false)
                 .build();
+    }
+
+    public static void showNoSelectedAppsDialog(Context context){
+        new MaterialDialog.Builder(context)
+                .title(R.string.no_selected_apps_title)
+                .content(R.string.no_selected_apps_content)
+                .positiveText(android.R.string.ok)
+                .show();
     }
 
     public static MaterialDialog showThemeChooserDialog(final Activity context) {

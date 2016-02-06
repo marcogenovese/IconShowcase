@@ -28,7 +28,7 @@
     False, means that the drawer header will use the 'header' picture.
     You can ignore this if you won't use the mini header style.
     -->
-    <bool name="mini_header_solid_color">true</bool>
+    <bool name="mini_header_solid_color">false</bool>
 
     <!--
     Do you want the drawer secondary items to show icons?
@@ -45,9 +45,11 @@
     <bool name="icons_changelog">true</bool>
 
     <!--
-    Do you want to have ripples when pressing an item in the changelog?
+    Do you want to have ripples when pressing an item in the text changelog?
+    True, means yes.
+    False, means no.
     -->
-    <bool name="ripples_changelog">false</bool>
+    <bool name="changelog_ripples">false</bool>
 
     <!--
     Do you want to enable the use of user's wallpapers in home section?

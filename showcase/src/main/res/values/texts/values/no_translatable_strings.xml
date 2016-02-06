@@ -52,37 +52,40 @@
     <string name="josh_gray">Josh Gray</string>
     <string name="kevin">Kevin Aguilar</string>
     <string name="anthony">Anthony Nguyen</string>
-    <string name="patrick">Patrick J</string>
+    <string name="patrick">Patrick Jung</string>
     <string name="james">James Fenn</string>
     <string name="alexandre">Alexandre Piveteau</string>
     <string name="heinrich">Heinrich Reimer</string>
     <string name="ahmed">Ahmed Rizwan</string>
     <string name="joaquin">Joaquin Cuitiño</string>
+    <string name="allan">Allan Wang</string>
 
     <string-array name="contributors_names">
+        <item>@string/allan</item>
+        <item>@string/joaquin</item>
+        <item>@string/patrick</item>
+        <item>@string/steve_albright</item>
+        <item>@string/ahmed</item>
+        <item>@string/heinrich</item>
+        <item>@string/alexandre</item>
+        <item>@string/james</item>
         <item>@string/materialdialogs_author</item>
         <item>@string/materialdrawer_author</item>
         <item>@string/dani_mahardika</item>
-        <item>@string/steve_albright</item>
-        <item>@string/patrick</item>
-        <item>@string/james</item>
-        <item>@string/alexandre</item>
-        <item>@string/heinrich</item>
-        <item>@string/ahmed</item>
-        <item>@string/joaquin</item>
     </string-array>
 
     <string-array name="contributors_links">
+        <item>https://plus.google.com/+AllanWPitchedApps/posts</item>
+        <item>https://plus.google.com/+JoaquinCuitiñoF/posts</item>
+        <item>https://plus.google.com/+PatrickJung42/posts</item>
+        <item>https://plus.google.com/111777412946608276908/auto</item>
+        <item>https://plus.google.com/+AhmedRizwan/posts</item>
+        <item>https://plus.google.com/+HeinrichReimer/posts</item>
+        <item>https://plus.google.com/+AlexandrePiveteau/posts</item>
+        <item>https://plus.google.com/+JamesFennJAFFA2157/posts</item>
         <item>http://www.aidanfollestad.com/</item>
         <item>http://portfolio.mikepenz.com/</item>
         <item>https://plus.google.com/+DaniMahardhika/posts</item>
-        <item>https://plus.google.com/111777412946608276908/auto</item>
-        <item>https://plus.google.com/+PatrickJung42/posts</item>
-        <item>https://plus.google.com/+JamesFennJAFFA2157/posts</item>
-        <item>https://plus.google.com/+AlexandrePiveteau/posts</item>
-        <item>https://plus.google.com/+HeinrichReimer/posts</item>
-        <item>https://plus.google.com/+AhmedRizwan/posts</item>
-        <item>https://plus.google.com/+JoaquinCuitiñoF/posts</item>
     </string-array>
 
     <string-array name="ui_collaborators_names">

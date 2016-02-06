@@ -144,7 +144,7 @@ public class Utils {
     }
 
     public static void showLog(String s) {
-        Log.d("App: ", s);
+        Log.d("IconShowcase ", s);
     }
 
     public static String getStringFromResources(Context context, int id) {

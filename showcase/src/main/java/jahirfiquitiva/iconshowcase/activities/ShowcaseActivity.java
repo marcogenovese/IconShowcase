@@ -51,6 +51,7 @@ import java.util.Random;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.dialogs.FolderChooserDialog;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
+import jahirfiquitiva.iconshowcase.fragments.RequestsFragment;
 import jahirfiquitiva.iconshowcase.fragments.SettingsFragment;
 import jahirfiquitiva.iconshowcase.fragments.WallpapersFragment;
 import jahirfiquitiva.iconshowcase.models.DrawerHeaderStyle;
@@ -72,12 +73,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             WITH_ALTERNATIVE_ABOUT_SECTION = true,
             WITH_SECONDARY_DRAWER_ITEMS_ICONS = false;
 
-    /*
-    Change between drawer header options:
-    NORMAL_HEADER
-    MINI_HEADER
-    NO_HEADER
-     */
     public static DrawerHeaderStyle drawerHeaderStyle = DrawerHeaderStyle.NORMAL_HEADER;
 
     private static final String MARKET_URL = "https://play.google.com/store/apps/details?id=";
@@ -353,14 +348,13 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             } else {
                 ISDialogs.showChangelogDialog(this);
             }
-
         } else if (i == R.id.refresh) {
             WallpapersFragment.refreshWalls(context);
             loadWallsList();
-
         } else if (i == R.id.columns) {
             ISDialogs.showColumnsSelectorDialog(context);
-
+        } else if (i == R.id.select_all) {
+            RequestsFragment.requestsAdapter.selectOrUnselectAll();
         }
         return true;
     }
@@ -561,7 +555,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         if (drawerHeaderStyle.equals(DrawerHeaderStyle.MINI_HEADER)) {
             ImageView miniHeader = (ImageView) drawer.getHeader().findViewById(R.id.mini_drawer_header);
             miniHeader.getLayoutParams().height = UIUtils.getActionBarHeight(this) + UIUtils.getStatusBarHeight(this);
-            if(context.getResources().getBoolean(R.bool.mini_header_solid_color)) {
+            if (context.getResources().getBoolean(R.bool.mini_header_solid_color)) {
                 miniHeader.setBackgroundColor(ThemeUtils.darkTheme ?
                         ContextCompat.getColor(context, R.color.dark_theme_primary) :
                         ContextCompat.getColor(context, R.color.light_theme_primary));
@@ -709,21 +703,18 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     }
 
     private static void setupFAB(String fragment) {
-        switch (fragment) {
-            case "Main":
-                fab.setVisibility(View.VISIBLE);
-                fab.show();
-                fab.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        drawerItemClick(5);
-                        drawer.setSelection(5);
-                    }
-                });
-                break;
-            default:
-                fab.setVisibility(View.GONE);
-                break;
+        if (fragment.equals("Main")) {
+            fab.setVisibility(View.VISIBLE);
+            fab.show();
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    drawerItemClick(5);
+                    drawer.setSelection(5);
+                }
+            });
+        } else {
+            fab.setVisibility(View.GONE);
         }
     }
 

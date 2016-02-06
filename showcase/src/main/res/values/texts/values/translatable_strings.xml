@@ -86,9 +86,11 @@
 
     <!-- Requests -->
     <string name="request_advice">If you do not select any app for the icon request, but press the
-        button, it will be automatically generated with all of your apps.\nNo need to select each
-        one.
+        button, it will be automatically generated with all of your apps.
     </string>
+    <string name="select_all">Select all</string>
+    <string name="no_selected_apps_title">No selected apps</string>
+    <string name="no_selected_apps_content">You have no selected any apps to request. Select some before pressing the FAB again.</string>
 
     <!-- Icon search -->
     <string name="search_icons">Search icons…</string>

@@ -180,7 +180,6 @@
         android:layout_gravity="end|bottom"
         android:layout_margin="@dimen/cards_padding"
         android:src="@drawable/ic_apply_icons"
-        android:visibility="gone"
         app:backgroundTint="?attr/fabTintColor"
         app:fabSize="normal"
         app:rippleColor="@color/semitransparent_white"/>
