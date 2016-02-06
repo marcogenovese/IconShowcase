@@ -142,7 +142,7 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
     @Override
     public void onResume() {
         super.onResume();
-        requestsAdapter.unselectAll();
+        requestsAdapter.unselectAll(); //TODO fix this
     }
 
     @Override

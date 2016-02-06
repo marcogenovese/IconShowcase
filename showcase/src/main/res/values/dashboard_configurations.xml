@@ -182,4 +182,14 @@
 
     <!--paypal currency code (ie CAD); make sure this is a valid code-->
     <string name="paypal_currency_code"></string>
+
+    <string-array name="primary_drawer_items">
+        <item>Requests</item>
+        <item>Previews</item>
+    </string-array>
+
+    <string-array name="secondary_drawer_items">
+        <item>Settings</item>
+        <item>Donations</item>
+    </string-array>
 </resources>

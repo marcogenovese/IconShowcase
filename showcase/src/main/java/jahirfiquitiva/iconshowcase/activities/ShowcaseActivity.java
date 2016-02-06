@@ -92,8 +92,8 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             GOOGLE_CATALOG_VALUES = new String[0];
 
     ///test array values
-    private static ArrayList<String> primaryDrawerItems = new ArrayList<String>(), //test lists
-            secondaryDrawerItems = new ArrayList<String>();
+    private static String[] primaryDrawerItems = new String[0], //TODO see if you need to intialize it
+            secondaryDrawerItems = new String[0];
 
     private static String GOOGLE_PUBKEY = new String(),
             PAYPAL_USER = new String(),
@@ -120,7 +120,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
     public String version;
 
-    public static int currentItem = -1, wallpaper = -1, seven = 7, wallsIdentifier = 0, requestIdentifier = 0;
+    public static int currentItem = -1, wallpaper = -1, seven = 7, wallsIdentifier = 0, requestIdentifier = 0, secondaryStart = 0;
 
     private boolean mLastTheme, mLastNavBar;
     private static Preferences mPrefs;
@@ -151,10 +151,19 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         context = this;
         mPrefs = new Preferences(ShowcaseActivity.this);
 
-        primaryDrawerItems.add("Previews");
-        primaryDrawerItems.add("Requests");
-        secondaryDrawerItems.add("Credits");
-        secondaryDrawerItems.add("Settings");
+        String[] configurePrimaryDrawerItems = getResources().getStringArray(R.array.primary_drawer_items);
+        primaryDrawerItems = new String[configurePrimaryDrawerItems.length + 1];
+        primaryDrawerItems[0] = "Main";
+        for (int i = 0; i < configurePrimaryDrawerItems.length; i++) {
+            primaryDrawerItems[i + 1] = configurePrimaryDrawerItems[i];
+        }
+
+        String[] configureSecondaryDrawerItems = getResources().getStringArray(R.array.secondary_drawer_items);
+        secondaryDrawerItems = new String[configureSecondaryDrawerItems.length + 1];
+        secondaryDrawerItems[0] = "Credits";
+        for (int i = 0; i < configureSecondaryDrawerItems.length; i++) {
+            secondaryDrawerItems[i + 1] = configureSecondaryDrawerItems[i];
+        }
 
         getAction();
 
@@ -307,25 +316,23 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         }
     }
 
-    public static String fragment2title (String fragment) {
+    public static String fragment2title (String fragment) { //TODO add another function that will correct naming errors
         switch (fragment) {
             case "Main":
                 return "  ";
-            case "Home":
-                return thaHome;
-            case "Preview":
+            case "Previews":
                 return thaPreviews;
             case "Apply":
                 return thaApply;
-            case "Wallpapers": //TODO CHECK IF SAME
+            case "Wallpapers":
                 return thaWalls;
-            case "Request":
+            case "Requests":
                 return thaRequest;
             case "Zooper":
                 return thaZooper;
-            case "Donate":
+            case "Donations":
                 return thaDonate;
-            case "FAQ":
+            case "Faqs":
                 return thaFAQs;
             case "Credits":
                 return thaCredits;
@@ -495,7 +502,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             loadWallsList();
         } else if (i == R.id.columns) {
             ISDialogs.showColumnsSelectorDialog(context);
-        } else if (i == R.id.select_all) {
+        } else if (i == R.id.select_all) { //TODO fix this
             RequestsFragment.requestsAdapter.selectOrUnselectAll();
         }
         return true;
@@ -633,71 +640,13 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     public void setupDrawer(Toolbar toolbar, Bundle savedInstanceState) {
 
         //Initialize PrimaryDrawerItem
-        PrimaryDrawerItem home = new PrimaryDrawerItem(), previews = new PrimaryDrawerItem(), walls = new PrimaryDrawerItem(), requests = new PrimaryDrawerItem(), apply = new PrimaryDrawerItem(), faqs = new PrimaryDrawerItem(), zooper = new PrimaryDrawerItem();
-
-        for(int i = 0; i < primaryDrawerItems.size(); i++) {
-            switch (primaryDrawerItems.get(i)) {
-                case "home":
-                    home = new PrimaryDrawerItem().withName(thaHome).withIcon(GoogleMaterial.Icon.gmd_home).withIdentifier(i + 1);
-                    break;
-                case "previews":
-                    previews = new PrimaryDrawerItem().withName(thaPreviews).withIcon(GoogleMaterial.Icon.gmd_palette).withIdentifier(i + 1);
-                    break;
-                case "walls":
-                    wallsEnabled = true;
-                    wallsIdentifier = i + 1;
-                    walls = new PrimaryDrawerItem().withName(thaWalls).withIcon(GoogleMaterial.Icon.gmd_landscape).withIdentifier(wallsIdentifier);
-                    break;
-                case "requests":
-                    requestEnabled = true;
-                    requestIdentifier = i + 1;
-                    requests = new PrimaryDrawerItem().withName(thaRequest).withIcon(GoogleMaterial.Icon.gmd_comment_list).withIdentifier(requestIdentifier);
-                    break;
-                case "apply":
-                    apply = new PrimaryDrawerItem().withName(thaApply).withIcon(GoogleMaterial.Icon.gmd_open_in_browser).withIdentifier(i + 1);
-                    break;
-                case "faqs":
-                    faqs = new PrimaryDrawerItem().withName(thaFAQs).withIcon(GoogleMaterial.Icon.gmd_help).withIdentifier(i + 1);
-                    break;
-                case "zooper":
-                    zooper = new PrimaryDrawerItem().withName(thaZooper).withIcon(GoogleMaterial.Icon.gmd_widgets).withIdentifier(i + 1);
-                    break;
-            }
-        }
+        PrimaryDrawerItem home, previews, walls, requests, apply, faqs, zooper;
 
         //initialize SecondaryDrawerItem
-        SecondaryDrawerItem creditsItem = new SecondaryDrawerItem(), settingsItem = new SecondaryDrawerItem(), donationsItem = new SecondaryDrawerItem();
+        SecondaryDrawerItem creditsItem, settingsItem, donationsItem;
 
-        int secondaryStart = primaryDrawerItems.size() + 1; //marks the first identifier value that should be used
-        if (WITH_SECONDARY_DRAWER_ITEMS_ICONS) {
-            for(int i = 0; i < secondaryDrawerItems.size(); i++) {
-                switch (secondaryDrawerItems.get(i)) {
-                    case "Credits":
-                        creditsItem = new SecondaryDrawerItem().withName(thaCredits).withIcon(GoogleMaterial.Icon.gmd_info).withIdentifier(i + secondaryStart);
-                        break;
-                    case "settings":
-                        settingsItem = new SecondaryDrawerItem().withName(thaSettings).withIcon(GoogleMaterial.Icon.gmd_settings).withIdentifier(i + secondaryStart);
-                        break;
-                    case "donations":
-                        donationsItem = new SecondaryDrawerItem().withName(thaDonate).withIcon(GoogleMaterial.Icon.gmd_money_box).withIdentifier(i + secondaryStart);
-                        break;
-                }
-            }
-        } else {
-            for (int i = 0; i < secondaryDrawerItems.size(); i++) {
-                switch (secondaryDrawerItems.get(i)) {
-                    case "Credits":
-                        creditsItem = new SecondaryDrawerItem().withName(thaCredits).withIdentifier(i + secondaryStart);
-                        break;
-                    case "settings":
-                        settingsItem = new SecondaryDrawerItem().withName(thaSettings).withIdentifier(i + secondaryStart);
-                        break;
-                    case "donations":
-                        donationsItem = new SecondaryDrawerItem().withName(thaDonate).withIdentifier(i + secondaryStart);
-                        break;
-                }
-            }
-        }
+        secondaryStart = primaryDrawerItems.length + 1; //marks the first identifier value that should be used
+
 
         DrawerBuilder drawerBuilder = new DrawerBuilder()
                 .withActivity(this)
@@ -715,7 +664,81 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                 })
                 .withDisplayBelowStatusBar(false);
 
-        drawerBuilder.addDrawerItems(home, previews, walls, requests, apply, faqs, zooper, new DividerDrawerItem(), creditsItem, settingsItem, donationsItem);
+        for(int i = 0; i < primaryDrawerItems.length; i++) {
+            switch (primaryDrawerItems[i]) {
+                case "Main":
+                    home = new PrimaryDrawerItem().withName(thaHome).withIcon(GoogleMaterial.Icon.gmd_home).withIdentifier(i + 1);
+                    drawerBuilder.addDrawerItems(home);
+                    break;
+                case "Previews":
+                    previews = new PrimaryDrawerItem().withName(thaPreviews).withIcon(GoogleMaterial.Icon.gmd_palette).withIdentifier(i + 1);
+                    drawerBuilder.addDrawerItems(previews);
+                    break;
+                case "Walls":
+                    wallsEnabled = true;
+                    wallsIdentifier = i + 1;
+                    walls = new PrimaryDrawerItem().withName(thaWalls).withIcon(GoogleMaterial.Icon.gmd_landscape).withIdentifier(wallsIdentifier);
+                    drawerBuilder.addDrawerItems(walls);
+                    break;
+                case "Requests":
+                    requestEnabled = true;
+                    requestIdentifier = i + 1;
+                    requests = new PrimaryDrawerItem().withName(thaRequest).withIcon(GoogleMaterial.Icon.gmd_comment_list).withIdentifier(requestIdentifier);
+                    drawerBuilder.addDrawerItems(requests);
+                    break;
+                case "Apply":
+                    apply = new PrimaryDrawerItem().withName(thaApply).withIcon(GoogleMaterial.Icon.gmd_open_in_browser).withIdentifier(i + 1);
+                    drawerBuilder.addDrawerItems(apply);
+                    break;
+                case "Faqs":
+                    faqs = new PrimaryDrawerItem().withName(thaFAQs).withIcon(GoogleMaterial.Icon.gmd_help).withIdentifier(i + 1);
+                    drawerBuilder.addDrawerItems(faqs);
+                    break;
+                case "Zooper":
+                    zooper = new PrimaryDrawerItem().withName(thaZooper).withIcon(GoogleMaterial.Icon.gmd_widgets).withIdentifier(i + 1);
+                    drawerBuilder.addDrawerItems(zooper);
+                    break;
+            }
+        }
+
+        drawerBuilder.addDrawerItems(new DividerDrawerItem()); //divider between primary and secondary
+
+        if (WITH_SECONDARY_DRAWER_ITEMS_ICONS) {
+            for(int i = 0; i < secondaryDrawerItems.length; i++) {
+                switch (secondaryDrawerItems[i]) {
+                    case "Credits":
+                        creditsItem = new SecondaryDrawerItem().withName(thaCredits).withIcon(GoogleMaterial.Icon.gmd_info).withIdentifier(i + secondaryStart);
+                        drawerBuilder.addDrawerItems(creditsItem);
+                        break;
+                    case "Settings":
+                        settingsItem = new SecondaryDrawerItem().withName(thaSettings).withIcon(GoogleMaterial.Icon.gmd_settings).withIdentifier(i + secondaryStart);
+                        drawerBuilder.addDrawerItems(settingsItem);
+                        break;
+                    case "Donations":
+                        donationsItem = new SecondaryDrawerItem().withName(thaDonate).withIcon(GoogleMaterial.Icon.gmd_money_box).withIdentifier(i + secondaryStart);
+                        drawerBuilder.addDrawerItems(donationsItem);
+                        break;
+                }
+            }
+        } else {
+            for (int i = 0; i < secondaryDrawerItems.length; i++) {
+                switch (secondaryDrawerItems[i]) {
+                    case "Credits":
+                        creditsItem = new SecondaryDrawerItem().withName(thaCredits).withIdentifier(i + secondaryStart);
+                        drawerBuilder.addDrawerItems(creditsItem);
+                        break;
+                    case "Settings":
+                        settingsItem = new SecondaryDrawerItem().withName(thaSettings).withIdentifier(i + secondaryStart);
+                        drawerBuilder.addDrawerItems(settingsItem);
+                        break;
+                    case "Donations":
+                        donationsItem = new SecondaryDrawerItem().withName(thaDonate).withIdentifier(i + secondaryStart);
+                        drawerBuilder.addDrawerItems(donationsItem);
+                        break;
+                }
+            }
+        }
+
         drawerBuilder.withSavedInstance(savedInstanceState);
 
         switch (drawerHeaderStyle) {
@@ -760,66 +783,12 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     }
 
     public static void drawerItemClick(int id) {
-        switchFragment(id, primaryDrawerItems.get(id+1), context);
+        if (id <= primaryDrawerItems.length) {
+            switchFragment(id, primaryDrawerItems[id - 1], context);
+        } else {
+            switchFragment(id, secondaryDrawerItems[id - secondaryStart], context);
+        }
     }
-
-//    public static void drawerItemClick(int id) {
-//        switch (id) {
-//            case 1:
-//                switchFragment(1, "   ", "Main", context);
-//                break;
-//            case 2:
-//                switchFragment(2, thaPreviews, "Previews", context);
-//                break;
-//            case 3:
-//                switchFragment(3, thaWalls, "Wallpapers", context);
-//                break;
-//            case 4:
-//                switchFragment(4, thaRequest, "Requests", context);
-//                break;
-//            case 5:
-//                switchFragment(5, thaApply, "Apply", context);
-//                break;
-//            case 6:
-//                switchFragment(6, thaFAQs, "FAQs", context);
-//                break;
-//            case 7:
-//                if (WITH_ZOOPER_SECTION) {
-//                    switchFragment(7, thaZooper, "Zooper", context);
-//                } else {
-//                    if (WITH_ALTERNATIVE_ABOUT_SECTION) {
-//                        switchFragment(7, thaCredits, "CreditsAlt", context);
-//                    } else {
-//                        switchFragment(7, thaCredits, "Credits", context);
-//                    }
-//                }
-//                break;
-//            case 8:
-//                if (WITH_ZOOPER_SECTION) {
-//                    if (WITH_ALTERNATIVE_ABOUT_SECTION) {
-//                        switchFragment(8, thaCredits, "CreditsAlt", context);
-//                    } else {
-//                        switchFragment(8, thaCredits, "Credits", context);
-//                    }
-//                } else {
-//                    switchFragment(8, thaSettings, "Settings", context);
-//                }
-//                break;
-//            case 9:
-//                if (WITH_ZOOPER_SECTION) {
-//                    switchFragment(9, thaSettings, "Settings", context);
-//                } else if (WITH_DONATIONS_SECTION) {
-//                    switchFragment(9, thaDonate, "Donations", context);
-//                }
-//                break;
-//            case 10:
-//                if (WITH_DONATIONS_SECTION && WITH_ZOOPER_SECTION) {
-//                    switchFragment(10, thaDonate, "Donations", context);
-//                }
-//                break;
-//        }
-//
-//    }
 
     public void getAction() {
         try {
