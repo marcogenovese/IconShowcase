@@ -29,7 +29,6 @@ public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.Laun
     private final Context context;
     private final List<ApplyFragment.Launcher> launchers;
     private final ClickListener mCallback;
-    private View view;
 
     public LaunchersAdapter(Context context, List<ApplyFragment.Launcher> launchers, ClickListener callback) {
         this.context = context;
@@ -52,8 +51,10 @@ public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.Laun
                 context.getPackageName()
         );
 
-        final int light = ContextCompat.getColor(context, android.R.color.white);
-        final int grey = ContextCompat.getColor(context, R.color.grey);
+        final int light = ContextCompat.getColor(context, R.color.launcher_tint_dark);
+        final int dark = ContextCompat.getColor(context, R.color.launcher_tint_light);
+        final int textLight = ContextCompat.getColor(context, R.color.launcher_text_light);
+        final int textDark = ContextCompat.getColor(context, R.color.launcher_text_dark);
 
         holder.icon.setImageResource(iconResource);
         holder.launcherName.setText(launchers.get(position).name.toUpperCase(Locale.getDefault()));
@@ -63,9 +64,9 @@ public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.Laun
             holder.itemBG.setBackgroundColor(launchers.get(position).launcherColor);
             holder.launcherName.setTextColor(light);
         } else {
-            holder.icon.setColorFilter(ThemeUtils.darkTheme ? light : grey);
-            holder.itemBG.setBackgroundColor(ThemeUtils.darkTheme ? light : grey);
-            holder.launcherName.setTextColor(ThemeUtils.darkTheme ? grey : light);
+            holder.icon.setColorFilter(ThemeUtils.darkTheme ? light : dark);
+            holder.itemBG.setBackgroundColor(ThemeUtils.darkTheme ? light : dark);
+            holder.launcherName.setTextColor(ThemeUtils.darkTheme ? textLight : textDark);
         }
 
         holder.view.setTag(position);

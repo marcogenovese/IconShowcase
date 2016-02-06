@@ -3,7 +3,6 @@ package jahirfiquitiva.iconshowcase.muzei;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.google.android.apps.muzei.api.Artwork;
 import com.google.android.apps.muzei.api.RemoteMuzeiArtSource;
@@ -47,7 +46,7 @@ public class ArtSource extends RemoteMuzeiArtSource {
             try {
                 onTryUpdate(UPDATE_REASON_USER_NEXT);
             } catch (RetryException e) {
-                Log.v("MuzeiArtSource", Log.getStackTraceString(e));
+                //Do nothing
             }
         }
         return super.onStartCommand(intent, flags, startId);
@@ -103,7 +102,7 @@ public class ArtSource extends RemoteMuzeiArtSource {
                 .viewIntent(new Intent(Intent.ACTION_VIEW, Uri.parse(url)))
                 .build());
         scheduleUpdate(System.currentTimeMillis() + mPrefs.getRotateTime());
-        Utils.showLog("Muzei Update scheduled to: " + String.valueOf((System.currentTimeMillis() + mPrefs.getRotateTime()) / 1000));
+        Utils.showLog(ArtSource.this, "Muzei Update scheduled to: " + String.valueOf((System.currentTimeMillis() + mPrefs.getRotateTime()) / 1000));
     }
 
     public class DownloadJSONAndSetWall extends AsyncTask<Void, String, Boolean> {
@@ -144,7 +143,7 @@ public class ArtSource extends RemoteMuzeiArtSource {
                 worked = true;
             } catch (Exception e) {
                 worked = false;
-                Log.e("Wall", "Error " + e.getMessage());
+                //Do nothing
             }
             return worked;
         }
@@ -156,9 +155,9 @@ public class ArtSource extends RemoteMuzeiArtSource {
                 try {
                     i = new Random().nextInt(names.size());
                     setImageForMuzei(names.get(i), authors.get(i), urls.get(i));
-                    Utils.showLog("Setting picture: " + names.get(i));
+                    Utils.showLog(ArtSource.this, "Setting picture: " + names.get(i));
                 } catch (IllegalArgumentException e) {
-                    Utils.showLog("Muzei error: " + e.getLocalizedMessage());
+                    Utils.showLog(ArtSource.this, "Muzei error: " + e.getLocalizedMessage());
                 }
 
             }

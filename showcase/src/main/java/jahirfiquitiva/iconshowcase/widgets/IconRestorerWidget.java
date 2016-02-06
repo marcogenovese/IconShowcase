@@ -17,9 +17,7 @@ public class IconRestorerWidget extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        for (int i = 0; i < appWidgetIds.length; i++) {
-            int appWidgetId = appWidgetIds[i];
-
+        for (int appWidgetId : appWidgetIds) {
             try {
                 Intent intent = new Intent("android.intent.action.MAIN");
                 intent.addCategory("android.intent.category.LAUNCHER");
@@ -38,7 +36,7 @@ public class IconRestorerWidget extends AppWidgetProvider {
                 appWidgetManager.updateAppWidget(appWidgetId, views);
 
             } catch (ActivityNotFoundException e) {
-                Utils.showLog("App not found!");
+                Utils.showLog(context, "App not found!");
             }
 
         }

@@ -14,6 +14,8 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.InflateException;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -36,6 +38,7 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
     public static ProgressBar progressBar;
     public static RecyclerView mRecyclerView;
     public static RecyclerFastScroller fastScroller;
+    public static RequestsAdapter requestsAdapter;
     private static FloatingActionButton fab;
 
     static int columnsNumber, gridSpacing;
@@ -53,8 +56,7 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
         columnsNumber = getResources().getInteger(R.integer.requests_grid_width);
         withBorders = true;
 
-        layout = (ViewGroup) inflater.inflate(R.layout.icon_request_section, container, false);
-
+        setHasOptionsMenu(true);
         context = getActivity();
 
         if (layout != null) {
@@ -63,9 +65,11 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
                 parent.removeView(layout);
             }
         }
+
         try {
+            layout = (ViewGroup) inflater.inflate(R.layout.icon_request_section, container, false);
         } catch (InflateException e) {
-            e.printStackTrace();
+            // Do nothing
         }
 
         mPrefs = new Preferences(getActivity());
@@ -127,13 +131,33 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         context = getActivity();
+    }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.requests_menu, menu);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        requestsAdapter.unselectAll();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RequestsAdapter adapter = ((RequestsAdapter) mRecyclerView.getAdapter());
+        if (adapter != null) {
+            adapter.stopAppIconFetching();
+        }
     }
 
     public static void setupContent() {
         if (layout != null) {
             if (ApplicationBase.allAppsToRequest != null && ApplicationBase.allAppsToRequest.size() > 0) {
-                RequestsAdapter requestsAdapter = new RequestsAdapter(context, ApplicationBase.allAppsToRequest);
+                requestsAdapter = new RequestsAdapter(context, ApplicationBase.allAppsToRequest);
                 mRecyclerView.setHasFixedSize(true);
                 mRecyclerView.setAdapter(requestsAdapter);
                 requestsAdapter.startIconFetching(mRecyclerView);
@@ -159,15 +183,6 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
         fastScroller.setVisibility(View.GONE);
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        RequestsAdapter adapter = ((RequestsAdapter) mRecyclerView.getAdapter());
-        if (adapter != null) {
-            adapter.stopAppIconFetching();
-        }
-    }
-
     private void showRequestsAdviceDialog(Context dialogContext) {
         if (!mPrefs.getRequestsDialogDismissed()) {
             MaterialDialog.SingleButtonCallback singleButtonCallback = new MaterialDialog.SingleButtonCallback() {
@@ -184,19 +199,26 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
     }
 
     public static void showRequestsFilesCreationDialog(Context context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-                ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) !=
-                        PackageManager.PERMISSION_GRANTED) {
 
-            ISDialogs.showPermissionNotGrantedDialog(context);
+        if (requestsAdapter.getSelectedApps() > 0) {
 
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+                    ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) !=
+                            PackageManager.PERMISSION_GRANTED) {
+
+                ISDialogs.showPermissionNotGrantedDialog(context);
+
+            } else {
+                final MaterialDialog dialog = ISDialogs.showBuildingRequestDialog(context);
+                dialog.show();
+
+                new ZipFilesToRequest((Activity) context, dialog,
+                        ((RequestsAdapter) mRecyclerView.getAdapter()).appsList).execute();
+            }
         } else {
-            final MaterialDialog dialog = ISDialogs.showBuildingRequestDialog(context);
-            dialog.show();
-
-            new ZipFilesToRequest((Activity) context, dialog,
-                    ((RequestsAdapter) mRecyclerView.getAdapter()).appsList).execute();
+            ISDialogs.showNoSelectedAppsDialog(context);
         }
+
     }
 
     @Override

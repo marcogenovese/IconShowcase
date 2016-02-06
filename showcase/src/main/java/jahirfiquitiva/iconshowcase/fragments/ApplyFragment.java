@@ -2,7 +2,6 @@ package jahirfiquitiva.iconshowcase.fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -58,7 +57,7 @@ public class ApplyFragment extends Fragment {
         try {
             layout = (ViewGroup) inflater.inflate(R.layout.apply_section, container, false);
         } catch (InflateException e) {
-
+            //Do nothing
         }
 
         mPrefs = new Preferences(getActivity());
@@ -78,10 +77,27 @@ public class ApplyFragment extends Fragment {
         RecyclerFastScroller fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
         fastScroller.attachRecyclerView(recyclerView);
 
+        updateLaunchersList();
+
+        return layout;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateLaunchersList();
+    }
+
+    private void updateLaunchersList() {
+
+        launchers.clear();
+
         // Splits all launcher  arrays by the | delimiter {name}|{package}
         final String[] launcherArray = getResources().getStringArray(R.array.launchers);
-        for (String launcher : launcherArray)
-            launchers.add(new Launcher(launcher.split("\\|")));
+        final int[] launcherColors = getResources().getIntArray(R.array.launcher_colors);
+        for (int i = 0; i < launcherArray.length; i++) {
+            launchers.add(new Launcher(launcherArray[i].split("\\|"), launcherColors[i]));
+        }
         Collections.sort(launchers, new InstalledLauncherComparator(getActivity()));
 
         LaunchersAdapter adapter = new LaunchersAdapter(getActivity(), launchers,
@@ -105,8 +121,6 @@ public class ApplyFragment extends Fragment {
                 });
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
-
-        return layout;
     }
 
     private void openLauncher(String name) {
@@ -144,10 +158,10 @@ public class ApplyFragment extends Fragment {
         public final int launcherColor;
         private int isInstalled = -1;
 
-        public Launcher(String[] values) {
+        public Launcher(String[] values, int color) {
             name = values[0];
             packageName = values[1];
-            launcherColor = Color.parseColor(values[2]);
+            launcherColor = color;
         }
 
         public boolean isInstalled(Context context) {

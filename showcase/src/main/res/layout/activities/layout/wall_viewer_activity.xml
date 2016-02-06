@@ -35,7 +35,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/iconsB"
         android:layout_gravity="center_vertical"
-        android:background="@android:color/white"
+        android:background="?attr/colorCardBackground"
         android:minHeight="?actionBarSize"
         android:orientation="horizontal"
         tools:ignore="UnusedAttribute">
@@ -56,7 +56,6 @@
                 android:layout_marginLeft="@dimen/dialog_margin"
                 android:layout_marginStart="@dimen/dialog_margin"
                 android:background="?selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_wallpapers_fab"
                 tools:ignore="ContentDescription"/>
 
             <ImageView
@@ -66,7 +65,6 @@
                 android:layout_marginLeft="@dimen/dialog_margin"
                 android:layout_marginRight="@dimen/dialog_margin"
                 android:background="?selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_wallpapers_fab"
                 tools:ignore="ContentDescription"/>
 
             <ImageView
@@ -74,7 +72,6 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:background="?selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_wallpapers_fab"
                 tools:ignore="ContentDescription"/>
 
         </LinearLayout>
@@ -89,7 +86,7 @@
         android:layout_gravity="center_vertical"
         android:layout_toLeftOf="@id/iconsA"
         android:layout_toStartOf="@id/iconsA"
-        android:background="@android:color/white"
+        android:background="?attr/colorCardBackground"
         android:gravity="center_vertical"
         android:minHeight="?actionBarSize"
         android:orientation="horizontal"
@@ -104,7 +101,7 @@
             android:ellipsize="end"
             android:singleLine="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            tools:text="Geometric 4 sdqa feaf egeg ergreg wfed aed aecfaefa efae asa aaerf eg efae feag "/>
+            tools:text="This is a super long text just to test how the app puts the ellipsis."/>
 
     </LinearLayout>
 

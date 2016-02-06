@@ -85,7 +85,7 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
     @Override
     protected void onPostExecute(Boolean worked) {
         final Preferences mPrefs = new Preferences(context);
-        if (toHide1 != null & toHide2 != null) {
+        if (toHide1 != null && toHide2 != null) {
             toHide1.setVisibility(View.GONE);
             toHide2.setVisibility(View.GONE);
         }
@@ -105,7 +105,7 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
                 @Override
                 public void onDismissed(Snackbar snackbar, int event) {
                     super.onDismissed(snackbar, event);
-                    if (toHide1 != null & toHide2 != null) {
+                    if (toHide1 != null && toHide2 != null) {
                         toHide1.setVisibility(View.VISIBLE);
                         toHide2.setVisibility(View.VISIBLE);
                     }
@@ -142,7 +142,7 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
                 inImage.compress(Bitmap.CompressFormat.PNG, 100,
                         new FileOutputStream(destFile));
             } catch (final Exception e) {
-                Utils.showLog(e.getLocalizedMessage());
+                Utils.showLog(context, e.getLocalizedMessage());
             }
         }
 

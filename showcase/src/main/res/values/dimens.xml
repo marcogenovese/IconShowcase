@@ -25,7 +25,7 @@
     <dimen name="toolbar_elevation">4dp</dimen>
     <dimen name="tabs_contentInset">57dp</dimen>
 
-    <dimen name="dividers_height">2dp</dimen>
+    <dimen name="dividers_height">1.5dp</dimen>
 
     <dimen name="icons_preview_row">12dp</dimen>
     <dimen name="welcome_card_content_padding">12dp</dimen>

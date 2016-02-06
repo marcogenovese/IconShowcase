@@ -152,15 +152,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:background="@color/primary"
+                android:background="?attr/primaryColor"
                 android:clipToPadding="false"
                 android:paddingLeft="@dimen/tabs_contentInset"
                 android:paddingStart="@dimen/tabs_contentInset"
                 android:visibility="gone"
-                app:tabIndicatorColor="@android:color/white"
+                app:tabIndicatorColor="@color/primary_text_dark"
                 app:tabMode="scrollable"
-                app:tabSelectedTextColor="@android:color/white"
-                app:tabTextColor="@color/semitransparent_white"
+                app:tabSelectedTextColor="@color/primary_text_dark"
+                app:tabTextColor="@color/semitransparent_text_dark"
                 tools:ignore="NewApi,RtlSymmetry,UnusedAttribute"/>
 
         </android.support.design.widget.CollapsingToolbarLayout>
@@ -180,10 +180,8 @@
         android:layout_gravity="end|bottom"
         android:layout_margin="@dimen/cards_padding"
         android:src="@drawable/ic_apply_icons"
-        android:visibility="gone"
-        app:backgroundTint="@color/accent"
+        app:backgroundTint="?attr/fabTintColor"
         app:fabSize="normal"
-        app:layout_behavior="jahirfiquitiva.iconshowcase.views.ScrollAwareFABBehavior"
         app:rippleColor="@color/semitransparent_white"/>
 
 </jahirfiquitiva.iconshowcase.views.CustomCoordinatorLayout>

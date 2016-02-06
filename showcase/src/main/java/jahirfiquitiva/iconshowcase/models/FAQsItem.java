@@ -10,19 +10,19 @@ public class FAQsItem {
         this.answer = answer;
     }
 
-    public String getanswer() {
+    public String getAnswer() {
         return answer;
     }
 
-    public void setanswer(String answer) {
+    public void setAnswer(String answer) {
         this.answer = answer;
     }
 
-    public String getquestion() {
+    public String getQuestion() {
         return question;
     }
 
-    public void setquestion(String question) {
+    public void setQuestion(String question) {
         this.question = question;
     }
 

@@ -33,10 +33,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
         this.mCallback = new ClickListener() {
             @Override
             public void onClick(int position) {
-                RequestItem requestsItem = appsList.get(position);
-                requestsItem.setSelected(!requestsItem.isSelected());
-                appsList.set(position, requestsItem);
-                notifyItemChanged(position);
+                selectApp(position);
             }
         };
     }
@@ -86,6 +83,42 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
             }
         }
 
+    }
+
+    public void selectOrUnselectAll() {
+        for (int i = 0; i < appsList.size(); i++) {
+            selectApp(i);
+        }
+    }
+
+    public void unselectAll() {
+        for (int i = 0; i < appsList.size(); i++) {
+            unselectApp(i);
+        }
+    }
+
+    public void selectApp(int position) {
+        RequestItem requestsItem = appsList.get(position);
+        requestsItem.setSelected(!requestsItem.isSelected());
+        appsList.set(position, requestsItem);
+        notifyItemChanged(position);
+    }
+
+    public void unselectApp(int position) {
+        RequestItem requestsItem = appsList.get(position);
+        requestsItem.setSelected(false);
+        appsList.set(position, requestsItem);
+        notifyItemChanged(position);
+    }
+
+    public int getSelectedApps() {
+        int selected = 0;
+        for (int i = 0; i < appsList.size(); i++) {
+            if (appsList.get(i).isSelected()) {
+                selected += 1;
+            }
+        }
+        return selected;
     }
 
     public void startIconFetching(RecyclerView view) {

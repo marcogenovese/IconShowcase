@@ -35,21 +35,25 @@ public class CopyFilesToStorage extends AsyncTask<Void, String, Boolean> {
             try {
                 files = assetManager.list(folder);
             } catch (IOException e) {
+                //Do nothing
             }
 
-            for (String filename : files) {
-                InputStream in = null;
-                OutputStream out = null;
-                try {
-                    in = assetManager.open(folder + "/" + filename);
-                    out = new FileOutputStream(Environment.getExternalStorageDirectory().toString() + "/ZooperWidget/" + folder + "/" + filename);
-                    copyFiles(in, out);
-                    in.close();
-                    in = null;
-                    out.flush();
-                    out.close();
-                    out = null;
-                } catch (Exception e) {
+            if (files != null) {
+                for (String filename : files) {
+                    InputStream in;
+                    OutputStream out;
+                    try {
+                        in = assetManager.open(folder + "/" + filename);
+                        out = new FileOutputStream(Environment.getExternalStorageDirectory().toString() + "/ZooperWidget/" + folder + "/" + filename);
+                        copyFiles(in, out);
+                        in.close();
+                        in = null;
+                        out.flush();
+                        out.close();
+                        out = null;
+                    } catch (Exception e) {
+                        //Do nothing
+                    }
                 }
             }
             worked = true;

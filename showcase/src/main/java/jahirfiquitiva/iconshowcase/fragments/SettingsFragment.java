@@ -12,6 +12,7 @@ import android.preference.Preference;
 import android.preference.PreferenceCategory;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -26,6 +27,7 @@ import jahirfiquitiva.iconshowcase.fragments.base.PreferenceFragment;
 import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
+import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 public class SettingsFragment extends PreferenceFragment implements PermissionUtils.OnPermissionResultListener {
 
@@ -53,9 +55,22 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
         cacheSize = fullCacheDataSize(getActivity().getApplicationContext());
 
         p = getActivity().getPackageManager();
-        componentName = new ComponentName(getActivity(), ShowcaseActivity.class);
 
         addPreferencesFromResource(R.xml.preferences);
+
+        Class<?> className = null;
+
+        final String packageName = Utils.getAppPackageName(getActivity().getApplicationContext());
+        String activityName = getResources().getString(R.string.main_activity_name);
+        final String componentNameString = packageName + "." + activityName;
+
+        try {
+            className = Class.forName(componentNameString);
+            Utils.showLog(getActivity(), "Class Name: " + componentNameString);
+        } catch (ClassNotFoundException e) {
+            //Do nothing
+            Utils.showLog(getActivity(), "Class " + componentNameString + " not found in this app.");
+        }
 
         PreferenceCategory uiCategory = (PreferenceCategory) findPreference("uiPreferences");
         CheckBoxPreference wallHeaderCheck = (CheckBoxPreference) findPreference("wallHeader");
@@ -92,9 +107,9 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     mPrefs.setSettingsModified(true);
                     if (newValue.toString().equals("true")) {
-                        ThemeUtils.changeNavBar(getActivity(), ThemeUtils.NAVBAR_DEFAULT);
+                        ThemeUtils.changeNavBar(getActivity(), ThemeUtils.NAV_BAR_DEFAULT);
                     } else {
-                        ThemeUtils.changeNavBar(getActivity(), ThemeUtils.NAVBAR_BLACK);
+                        ThemeUtils.changeNavBar(getActivity(), ThemeUtils.NAV_BAR_BLACK);
                     }
                     return true;
                 }
@@ -145,52 +160,67 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
         if (mPrefs.getLauncherIconShown()) {
             hideIcon.setChecked(false);
         }
+
+        final Class<?> finalClassName = className;
+
         hideIcon.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                if (newValue.toString().equals("true")) {
-                    MaterialDialog.SingleButtonCallback positive = new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
-                            if (mPrefs.getLauncherIconShown()) {
-                                mPrefs.setIconShown(false);
-                                p.setComponentEnabledSetting(componentName,
-                                        PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                                        PackageManager.DONT_KILL_APP);
+                if (finalClassName != null) {
+                    componentName = new ComponentName(packageName, componentNameString);
+                    if (newValue.toString().equals("true")) {
+                        MaterialDialog.SingleButtonCallback positive = new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
+                                if (mPrefs.getLauncherIconShown()) {
+                                    mPrefs.setIconShown(false);
+                                    p.setComponentEnabledSetting(componentName,
+                                            PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                                            PackageManager.DONT_KILL_APP);
+                                }
+
+                                hideIcon.setChecked(true);
                             }
+                        };
 
-                            hideIcon.setChecked(true);
-                        }
-                    };
-
-                    MaterialDialog.SingleButtonCallback negative = new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
-                            hideIcon.setChecked(false);
-                        }
-                    };
-
-                    DialogInterface.OnDismissListener dismissListener = new DialogInterface.OnDismissListener() {
-                        @Override
-                        public void onDismiss(DialogInterface dialog) {
-                            if (mPrefs.getLauncherIconShown()) {
+                        MaterialDialog.SingleButtonCallback negative = new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
                                 hideIcon.setChecked(false);
                             }
+                        };
+
+                        DialogInterface.OnDismissListener dismissListener = new DialogInterface.OnDismissListener() {
+                            @Override
+                            public void onDismiss(DialogInterface dialog) {
+                                if (mPrefs.getLauncherIconShown()) {
+                                    hideIcon.setChecked(false);
+                                }
+                            }
+                        };
+
+                        ShowcaseActivity.settingsDialog = ISDialogs.showHideIconDialog(getActivity(), positive, negative, dismissListener);
+
+                    } else {
+                        if (!mPrefs.getLauncherIconShown()) {
+
+                            mPrefs.setIconShown(true);
+                            p.setComponentEnabledSetting(componentName,
+                                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                                    PackageManager.DONT_KILL_APP);
+
                         }
-                    };
-
-                    ShowcaseActivity.settingsDialog = ISDialogs.showHideIconDialog(getActivity(), positive, negative, dismissListener);
-
-                } else {
-                    if (!mPrefs.getLauncherIconShown()) {
-
-                        mPrefs.setIconShown(true);
-                        p.setComponentEnabledSetting(componentName,
-                                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                                PackageManager.DONT_KILL_APP);
-
                     }
+                    return true;
+                } else {
+                    String errorToastContent = getResources().getString(R.string.launcher_icon_restorer_error,
+                            getResources().getString(R.string.app_name));
+                    try {
+                        Utils.showSimpleSnackbar(getActivity(), getListView(), errorToastContent, 1);
+                    } catch (IllegalStateException e) {
+                        Toast.makeText(getActivity(), errorToastContent, Toast.LENGTH_LONG).show();
+                    }
+                    return false;
                 }
-                return true;
             }
         });
 
@@ -242,14 +272,15 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
     public static boolean deleteDir(File dir) {
         if (dir != null && dir.isDirectory()) {
             String[] children = dir.list();
-            for (int i = 0; i < children.length; i++) {
-                boolean success = deleteDir(new File(dir, children[i]));
+            for (String aChildren : children) {
+                boolean success = deleteDir(new File(dir, aChildren));
                 if (!success) {
                     return false;
                 }
             }
         }
-        return dir.delete();
+
+        return dir != null && dir.delete();
     }
 
     private static String fullCacheDataSize(Context context) {
@@ -260,20 +291,27 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
         double finalResult, mbFinalResult;
 
         File[] fileList = context.getCacheDir().listFiles();
-        for (int i = 0; i < fileList.length; i++) {
-            if (fileList[i].isDirectory()) {
-                cache += dirSize(fileList[i]);
+        for (File aFileList : fileList) {
+            if (aFileList.isDirectory()) {
+                cache += dirSize(aFileList);
             } else {
-                cache += fileList[i].length();
+                cache += aFileList.length();
             }
         }
         try {
-            File[] fileExtList = context.getExternalCacheDir().listFiles();
-            for (int j = 0; j < fileExtList.length; j++) {
-                if (fileExtList[j].isDirectory()) {
-                    extCache += dirSize(fileExtList[j]);
-                } else {
-                    extCache += fileExtList[j].length();
+            File[] fileExtList = new File[0];
+            try {
+                fileExtList = context.getExternalCacheDir().listFiles();
+            } catch (NullPointerException e) {
+                //Do nothing
+            }
+            if (fileExtList != null) {
+                for (File aFileExtList : fileExtList) {
+                    if (aFileExtList.isDirectory()) {
+                        extCache += dirSize(aFileExtList);
+                    } else {
+                        extCache += aFileExtList.length();
+                    }
                 }
             }
         } catch (NullPointerException npe) {
@@ -296,11 +334,11 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
         if (dir.exists()) {
             long result = 0;
             File[] fileList = dir.listFiles();
-            for (int i = 0; i < fileList.length; i++) {
-                if (fileList[i].isDirectory()) {
-                    result += dirSize(fileList[i]);
+            for (File aFileList : fileList) {
+                if (aFileList.isDirectory()) {
+                    result += dirSize(aFileList);
                 } else {
-                    result += fileList[i].length();
+                    result += aFileList.length();
                 }
             }
             return result;

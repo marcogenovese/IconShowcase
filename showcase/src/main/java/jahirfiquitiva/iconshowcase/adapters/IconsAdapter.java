@@ -20,10 +20,10 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import jahirfiquitiva.iconshowcase.utilities.Preferences;
-import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
+import jahirfiquitiva.iconshowcase.utilities.Preferences;
+import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder> implements View.OnClickListener {
 
@@ -75,7 +75,9 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
         }
         holder.view.setTag(position);
         holder.view.setOnClickListener(this);
-        setAnimation(holder.icon, position);
+        if (!inChangelog) {
+            setAnimation(holder.icon, position);
+        }
     }
 
     private int lastPosition = -1;
@@ -107,7 +109,7 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
             try {
                 bitmap = BitmapFactory.decodeResource(context.getResources(), resId);
             } catch (Exception e) {
-                Utils.showLog("Icons Picker error: " + Log.getStackTraceString(e));
+                Utils.showLog(context, "Icons Picker error: " + Log.getStackTraceString(e));
             }
 
             if (bitmap != null) {

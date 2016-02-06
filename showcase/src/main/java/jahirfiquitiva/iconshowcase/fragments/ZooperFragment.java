@@ -30,17 +30,17 @@ import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 public class ZooperFragment extends Fragment {
 
-    private boolean WITH_MEDIAUTILITIES_WIDGETS = true;
-
     private MaterialDialog dialog;
     private ViewGroup layout;
 
-    private AppCompatButton downloadZooper, downloadMU, openMU;
-    private CardView cardZooper, cardMU, cardMUInfo, installFonts, installIconsets;
     private Context context;
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
+
+        context = getActivity();
+
+        boolean WITH_MEDIA_UTILITIES_WIDGETS = context.getResources().getBoolean(R.bool.mu_needed);
 
         if (layout != null) {
             ViewGroup parent = (ViewGroup) layout.getParent();
@@ -51,13 +51,11 @@ public class ZooperFragment extends Fragment {
         try {
             layout = (ViewGroup) inflater.inflate(R.layout.zooper_section, container, false);
         } catch (InflateException e) {
-
+            //Do nothing
         }
 
-        context = getActivity();
-
-        final int light = ContextCompat.getColor(context, android.R.color.white);
-        final int dark = ContextCompat.getColor(context, R.color.grey);
+        final int light = ContextCompat.getColor(context, R.color.drawable_tint_dark);
+        final int dark = ContextCompat.getColor(context, R.color.drawable_tint_light);
 
         Drawable alert = new IconicsDrawable(context)
                 .icon(GoogleMaterial.Icon.gmd_alert_triangle)
@@ -86,7 +84,7 @@ public class ZooperFragment extends Fragment {
         ImageView iconsetsIV = (ImageView) layout.findViewById(R.id.icon_iconsets);
         iconsetsIV.setImageDrawable(iconsets);
 
-        cardZooper = (CardView) layout.findViewById(R.id.zooper_card);
+        CardView cardZooper = (CardView) layout.findViewById(R.id.zooper_card);
 
         if (Utils.isAppInstalled(context, "org.zooper.zwpro")) {
             cardZooper.setVisibility(View.GONE);
@@ -94,7 +92,7 @@ public class ZooperFragment extends Fragment {
             cardZooper.setVisibility(View.VISIBLE);
         }
 
-        downloadZooper = (AppCompatButton) layout.findViewById(R.id.download_button);
+        AppCompatButton downloadZooper = (AppCompatButton) layout.findViewById(R.id.download_button);
         downloadZooper.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,10 +123,10 @@ public class ZooperFragment extends Fragment {
             }
         });
 
-        cardMU = (CardView) layout.findViewById(R.id.mu_card);
-        cardMUInfo = (CardView) layout.findViewById(R.id.mediautilities_info_card);
+        CardView cardMU = (CardView) layout.findViewById(R.id.mu_card);
+        CardView cardMUInfo = (CardView) layout.findViewById(R.id.mediautilities_info_card);
 
-        if (WITH_MEDIAUTILITIES_WIDGETS) {
+        if (WITH_MEDIA_UTILITIES_WIDGETS) {
             if (!Utils.isAppInstalled(context, "com.batescorp.notificationmediacontrols.alpha")) {
                 cardMU.setVisibility(View.VISIBLE);
                 cardMUInfo.setVisibility(View.GONE);
@@ -141,7 +139,7 @@ public class ZooperFragment extends Fragment {
             cardMUInfo.setVisibility(View.GONE);
         }
 
-        downloadMU = (AppCompatButton) layout.findViewById(R.id.mu_download_button);
+        AppCompatButton downloadMU = (AppCompatButton) layout.findViewById(R.id.mu_download_button);
         downloadMU.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -150,7 +148,7 @@ public class ZooperFragment extends Fragment {
             }
         });
 
-        openMU = (AppCompatButton) layout.findViewById(R.id.mu_open_button);
+        AppCompatButton openMU = (AppCompatButton) layout.findViewById(R.id.mu_open_button);
         openMU.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -160,7 +158,7 @@ public class ZooperFragment extends Fragment {
             }
         });
 
-        installFonts = (CardView) layout.findViewById(R.id.fonts_card);
+        CardView installFonts = (CardView) layout.findViewById(R.id.fonts_card);
         installFonts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -172,13 +170,13 @@ public class ZooperFragment extends Fragment {
                             .show();
                     new CopyFilesToStorage(context, dialog, "Fonts").execute();
                 } else {
-                    Utils.showSimpleSnackbar(layout,
+                    Utils.showSimpleSnackbar(context, layout,
                             getResources().getString(R.string.fonts_installed), 1);
                 }
             }
         });
 
-        installIconsets = (CardView) layout.findViewById(R.id.iconsets_card);
+        CardView installIconsets = (CardView) layout.findViewById(R.id.iconsets_card);
         installIconsets.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -190,7 +188,7 @@ public class ZooperFragment extends Fragment {
                             .show();
                     new CopyFilesToStorage(context, dialog, "IconSets").execute();
                 } else {
-                    Utils.showSimpleSnackbar(layout,
+                    Utils.showSimpleSnackbar(context, layout,
                             getResources().getString(R.string.iconsets_installed), 1);
                 }
             }
@@ -208,15 +206,19 @@ public class ZooperFragment extends Fragment {
         try {
             files = assetManager.list("Fonts");
         } catch (IOException e) {
+            //Do nothing
         }
 
-        for (String filename : files) {
-            try {
-                File file = new File(Environment.getExternalStorageDirectory() + "/ZooperWidget/Fonts/" + filename);
-                if (!file.exists()) {
-                    fontsInDevice = false;
+        if (files != null) {
+            for (String filename : files) {
+                try {
+                    File file = new File(Environment.getExternalStorageDirectory() + "/ZooperWidget/Fonts/" + filename);
+                    if (!file.exists()) {
+                        fontsInDevice = false;
+                    }
+                } catch (Exception e) {
+                    //Do nothing
                 }
-            } catch (Exception e) {
             }
         }
 
@@ -233,15 +235,19 @@ public class ZooperFragment extends Fragment {
         try {
             files = assetManager.list("IconSets");
         } catch (IOException e) {
+            //Do nothing
         }
 
-        for (String filename : files) {
-            try {
-                File file = new File(Environment.getExternalStorageDirectory() + "/ZooperWidget/IconSets/" + filename);
-                if (!file.exists()) {
-                    iconsetsInDevice = false;
+        if (files != null) {
+            for (String filename : files) {
+                try {
+                    File file = new File(Environment.getExternalStorageDirectory() + "/ZooperWidget/IconSets/" + filename);
+                    if (!file.exists()) {
+                        iconsetsInDevice = false;
+                    }
+                } catch (Exception e) {
+                    //Do nothing
                 }
-            } catch (Exception e) {
             }
         }
 

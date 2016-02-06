@@ -21,6 +21,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
 import com.github.florent37.glidepalette.GlidePalette;
@@ -46,6 +47,10 @@ public class Utils {
         }
     }
 
+    public static String getAppPackageName(Context context) {
+        return context.getPackageName();
+    }
+
     public static boolean hasNetwork(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
@@ -64,21 +69,30 @@ public class Utils {
         return installed;
     }
 
-    public static void showSimpleSnackbar(View location, String text, int duration) {
+    public static void showSimpleSnackbar(Context context, View location, String text, int duration) {
+        final int snackbarLight = ContextCompat.getColor(context, R.color.snackbar_light);
+        final int snackbarDark = ContextCompat.getColor(context, R.color.snackbar_dark);
+
         switch (duration) {
             case 1:
                 Snackbar shortSnackbar = Snackbar.make(location, text,
                         Snackbar.LENGTH_SHORT);
+                ViewGroup shortGroup = (ViewGroup) shortSnackbar.getView();
+                shortGroup.setBackgroundColor(ThemeUtils.darkTheme ? snackbarDark : snackbarLight);
                 shortSnackbar.show();
                 break;
             case 2:
                 Snackbar longSnackbar = Snackbar.make(location, text,
                         Snackbar.LENGTH_LONG);
+                ViewGroup longGroup = (ViewGroup) longSnackbar.getView();
+                longGroup.setBackgroundColor(ThemeUtils.darkTheme ? snackbarDark : snackbarLight);
                 longSnackbar.show();
                 break;
             case 3:
                 Snackbar indefiniteSnackbar = Snackbar.make(location, text,
                         Snackbar.LENGTH_INDEFINITE);
+                ViewGroup indefiniteGroup = (ViewGroup) indefiniteSnackbar.getView();
+                indefiniteGroup.setBackgroundColor(ThemeUtils.darkTheme ? snackbarDark : snackbarLight);
                 indefiniteSnackbar.show();
                 break;
         }
@@ -118,7 +132,9 @@ public class Utils {
 
         CustomTabsClient.bindCustomTabsService(context, "com.android.chrome", mCustomTabsServiceConnection);
         customTabsIntent = new CustomTabsIntent.Builder(mCustomTabsSession[0])
-                .setToolbarColor(ContextCompat.getColor(context, R.color.primary))
+                .setToolbarColor(ThemeUtils.darkTheme ?
+                        ContextCompat.getColor(context, R.color.dark_theme_primary_dark) :
+                        ContextCompat.getColor(context, R.color.light_theme_primary_dark))
                 .setShowTitle(true)
                 .build();
 
@@ -126,8 +142,13 @@ public class Utils {
 
     }
 
+    public static void showLog(Context context, String s) {
+        String tag = "IconShowcase + " + context.getResources().getString(R.string.app_name);
+        Log.d(tag, s);
+    }
+
     public static void showLog(String s) {
-        Log.d("IconShowcase", s);
+        Log.d("IconShowcase ", s);
     }
 
     public static String getStringFromResources(Context context, int id) {

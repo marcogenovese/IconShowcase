@@ -1,10 +1,9 @@
 <resources>
 
     <style name="AppTheme" parent="AppTheme.Base">
-        <item name="android:statusBarColor">@color/primary_dark</item>
-        <item name="android:navigationBarColor">@color/primary_dark</item>
-        <item name="colorCardBackground">@color/card_light_background</item>
-        <item name="drawablesTintColor">@color/grey</item>
+        <item name="android:statusBarColor">@color/light_theme_primary_dark</item>
+        <item name="android:navigationBarColor">@color/light_theme_primary_dark</item>
+        <item name="drawablesTintColor">@color/drawable_tint_light</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
@@ -14,10 +13,9 @@
     </style>
 
     <style name="AppThemeDark" parent="AppTheme.Base.Dark">
-        <item name="android:statusBarColor">@color/primary_dark</item>
-        <item name="android:navigationBarColor">@color/primary_dark</item>
-        <item name="colorCardBackground">@color/card_dark_background</item>
-        <item name="drawablesTintColor">@android:color/white</item>
+        <item name="android:statusBarColor">@color/dark_theme_primary_dark</item>
+        <item name="android:navigationBarColor">@color/dark_theme_primary_dark</item>
+        <item name="drawablesTintColor">@color/drawable_tint_dark</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>

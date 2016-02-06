@@ -97,23 +97,25 @@ public class ViewerActivity extends AppCompatActivity {
         setContentView(R.layout.wall_viewer_activity);
 
         toHide1 = (LinearLayout) findViewById(R.id.iconsA);
-        toHide1 = (LinearLayout) findViewById(R.id.iconsB);
+        toHide2 = (LinearLayout) findViewById(R.id.iconsB);
 
-        final int darkgrey = ContextCompat.getColor(context, R.color.card_dark_background);
+        int tintLightLighter = ContextCompat.getColor(context, R.color.drawable_base_tint);
+        int tintLight = ContextCompat.getColor(context, R.color.drawable_tint_light);
+        int tintDark = ContextCompat.getColor(context, R.color.drawable_tint_dark);
 
         Drawable save = new IconicsDrawable(context)
                 .icon(GoogleMaterial.Icon.gmd_save)
-                .color(darkgrey)
+                .color(ThemeUtils.darkTheme ? tintDark : tintLightLighter)
                 .sizeDp(24);
 
         Drawable apply = new IconicsDrawable(context)
                 .icon(GoogleMaterial.Icon.gmd_format_paint)
-                .color(darkgrey)
+                .color(ThemeUtils.darkTheme ? tintDark : tintLightLighter)
                 .sizeDp(24);
 
         Drawable info = new IconicsDrawable(context)
                 .icon(GoogleMaterial.Icon.gmd_info_outline)
-                .color(darkgrey)
+                .color(ThemeUtils.darkTheme ? tintDark : tintLightLighter)
                 .sizeDp(24);
 
         ImageView saveIV = (ImageView) findViewById(R.id.download);
@@ -177,11 +179,9 @@ public class ViewerActivity extends AppCompatActivity {
 
         Drawable d = new GlideBitmapDrawable(getResources(), bmp);
 
-        int light = ContextCompat.getColor(context, android.R.color.white);
-        int grey = ContextCompat.getColor(context, R.color.grey);
         Drawable errorIcon = new IconicsDrawable(context)
                 .icon(GoogleMaterial.Icon.gmd_alert_triangle)
-                .color(ThemeUtils.darkTheme ? light : grey)
+                .color(ThemeUtils.darkTheme ? tintDark : tintLight)
                 .sizeDp(192);
 
         if (mPrefs.getAnimationsEnabled()) {
@@ -279,7 +279,7 @@ public class ViewerActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
             //Crop request
-            if (toHide1 != null & toHide2 != null) {
+            if (toHide1 != null && toHide2 != null) {
                 toHide1.setVisibility(View.VISIBLE);
                 toHide2.setVisibility(View.VISIBLE);
             }
@@ -336,7 +336,7 @@ public class ViewerActivity extends AppCompatActivity {
                     public void run() {
                         downloadDialog.dismiss();
 
-                        if (toHide1 != null & toHide2 != null) {
+                        if (toHide1 != null && toHide2 != null) {
                             toHide1.setVisibility(View.GONE);
                             toHide2.setVisibility(View.GONE);
                         }
@@ -348,7 +348,7 @@ public class ViewerActivity extends AppCompatActivity {
                             @Override
                             public void onDismissed(Snackbar snackbar, int event) {
                                 super.onDismissed(snackbar, event);
-                                if (toHide1 != null & toHide2 != null) {
+                                if (toHide1 != null && toHide2 != null) {
                                     toHide1.setVisibility(View.VISIBLE);
                                     toHide2.setVisibility(View.VISIBLE);
                                 }

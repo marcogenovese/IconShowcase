@@ -98,7 +98,7 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
         ApplicationBase.allAppsToRequest = list;
         RequestsFragment.setupContent();
         endTime = System.currentTimeMillis();
-        Utils.showLog("Apps to Request Task completed in: " + String.valueOf((endTime - startTime) / 1000) + " secs.");
+        Utils.showLog(context, "Apps to Request Task completed in: " + String.valueOf((endTime - startTime) / 1000) + " secs.");
     }
 
     private static ResolveInfo getResolveInfo(String componentString) {
@@ -187,7 +187,7 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
             }
 
         } catch (IOException | XmlPullParserException e) {
-            e.printStackTrace();
+            //Do nothing
         }
 
         return activitiesToRemove;

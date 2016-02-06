@@ -18,20 +18,16 @@ import java.util.Locale;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.adapters.IconsAdapter;
-import jahirfiquitiva.iconshowcase.utilities.Preferences;
 
 public class IconsFragment extends Fragment {
 
     private IconsAdapter mAdapter;
-    private Preferences mPrefs;
     private ArrayList<String> iconsNames, filteredIconsList;
     private ArrayList<Integer> iconsInts, filteredIconsInts;
     private ViewGroup layout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        mPrefs = new Preferences(getActivity());
 
         if (layout != null) {
             ViewGroup parent = (ViewGroup) layout.getParent();
@@ -42,7 +38,7 @@ public class IconsFragment extends Fragment {
         try {
             layout = (ViewGroup) inflater.inflate(R.layout.icons_grid, container, false);
         } catch (InflateException e) {
-
+            //Do nothing
         }
 
         RecyclerView iconsGrid = (RecyclerView) layout.findViewById(R.id.iconsGrid);

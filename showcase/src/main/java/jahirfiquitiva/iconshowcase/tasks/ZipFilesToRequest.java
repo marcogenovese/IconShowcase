@@ -48,15 +48,12 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
 
     public static String filesLocation;
 
-    public static ArrayList<String> appsNames = new ArrayList<String>();
-    public static ArrayList<String> appsPackages = new ArrayList<String>();
-    public static ArrayList<String> appsClasses = new ArrayList<String>();
-    public static ArrayList<Drawable> appsIcons = new ArrayList<Drawable>();
+    public static ArrayList<String> appsNames = new ArrayList<>();
+    public static ArrayList<String> appsPackages = new ArrayList<>();
+    public static ArrayList<String> appsClasses = new ArrayList<>();
+    public static ArrayList<Drawable> appsIcons = new ArrayList<>();
 
     private StringBuilder emailContent = new StringBuilder();
-    private boolean worked;
-
-    private int selected;
 
     private WeakReference<Activity> wrActivity;
 
@@ -91,7 +88,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
         appsPackages.clear();
         appsClasses.clear();
         appsIcons.clear();
-        selected = 0;
+        int selected = 0;
 
         for (int a = 0; a < appsListFinal.size(); a++) {
             if (!appsListFinal.get(a).isSelected()) {
@@ -120,6 +117,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
 
     @Override
     protected Boolean doInBackground(Void... params) {
+        boolean worked;
         try {
             final File zipFolder = new File(zipLocation);
             final File filesFolder = new File(filesLocation + "/");
@@ -168,8 +166,8 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
                     bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
                     fileOutputStream.flush();
                     fileOutputStream.close();
-                } catch (FileNotFoundException e) {
                 } catch (IOException e) {
+                    //Do nothing
                 }
 
                 appsCount++;
@@ -186,6 +184,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
                 sb.append("\nApp Version Name: " + appInfo.versionName);
                 sb.append("\nApp Version Code: " + appInfo.versionCode);
             } catch (Exception e) {
+                //Do nothing
             }
 
             if (appsCount != 0) {
@@ -257,6 +256,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
                 try {
                     activity.startActivity(Intent.createChooser(sendIntent, "Send mail..."));
                 } catch (ActivityNotFoundException e) {
+                    //Do nothing
                 }
             }
 
@@ -269,15 +269,15 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
     public static boolean deleteDirectory(File dir) {
         if (dir.exists()) {
             File[] files = dir.listFiles();
-            for (int j = 0; j < files.length; j++) {
-                if (files[j].isDirectory()) {
-                    deleteDirectory(files[j]);
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    deleteDirectory(file);
                     String[] children = dir.list();
-                    for (int i = 0; i < children.length; i++) {
-                        new File(dir, children[i]).delete();
+                    for (String aChildren : children) {
+                        new File(dir, aChildren).delete();
                     }
                 } else {
-                    files[j].delete();
+                    file.delete();
                 }
             }
 
@@ -337,13 +337,14 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
                 zipOutputStream.closeEntry();
                 in.close();
             } catch (ZipException e) {
+                //Do nothing
             } finally {
                 if (zipOutputStream != null) zipOutputStream.closeEntry();
-                if (in != null) in.close();
+                in.close();
             }
         } else if (files.length > 0) {
-            for (int i = 0, length = files.length; i < length; ++i) {
-                zipFile(zipFilesPath + "/" + files[i], zipOutputStream, zipPath + file.getName() + "/");
+            for (String file1 : files) {
+                zipFile(zipFilesPath + "/" + file1, zipOutputStream, zipPath + file.getName() + "/");
             }
         }
     }
@@ -363,9 +364,8 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
             bufferedInputStream.close();
         } else if (file.isDirectory()) {
             String[] list = file.list();
-            int listLength = list.length;
-            for (int i = 0; i < listLength; i++)
-                zipFolder(new File(file.getPath() + "/" + list[i]), zipOutputStream);
+            for (String aList : list)
+                zipFolder(new File(file.getPath() + "/" + aList), zipOutputStream);
         }
     }
 

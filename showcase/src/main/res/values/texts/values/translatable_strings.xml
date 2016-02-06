@@ -6,12 +6,13 @@
     <string name="share_text">My wallpaper for today is %1$s by %2$s, from %3$s.\nGet it now at %4$s</string>
 
     <!-- List Of Drawer Sections -->
-    <string name="section_one">Home</string>
-    <string name="section_two">Icons</string>
-    <string name="section_three">Apply</string>
-    <string name="section_four">Wallpapers</string>
-    <string name="section_five">Icon request</string>
-    <string name="section_six">About the app</string>
+    <string name="section_home">Home</string>
+    <string name="section_icons">Icons</string>
+    <string name="section_apply">Apply</string>
+    <string name="section_wallpapers">Wallpapers</string>
+    <string name="section_icon_request">Icon request</string>
+    <string name="section_donate">Donate</string>
+    <string name="section_about">About the app</string>
 
     <!-- Wallpapers Activity -->
     <string name="title_activity_detailed_wallpaper">Wallpaper viewer</string>
@@ -86,9 +87,11 @@
 
     <!-- Requests -->
     <string name="request_advice">If you do not select any app for the icon request, but press the
-        button, it will be automatically generated with all of your apps.\nNo need to select each
-        one.
+        button, it will be automatically generated with all of your apps.
     </string>
+    <string name="select_all">Select all</string>
+    <string name="no_selected_apps_title">No selected apps</string>
+    <string name="no_selected_apps_content">You have no selected any apps to request. Select some before pressing the FAB again.</string>
 
     <!-- Icon search -->
     <string name="search_icons">Search icons…</string>
@@ -143,14 +146,15 @@
         settings? Applied icons won\'t be affected.
     </string>
 
-    <string name="hideicon_dialog_title">@string/pref_title_launcher_icon</string>
+    <string name="hideicon_dialog_title">Warning!</string>
     <string name="hideicon_dialog_content">Are you sure you want to hide app icon in your launcher?
-        App may close unexpectedly. Read the FAQs to learn how to make it appear again, before hiding
+        \nApp may close unexpectedly.\nYou may want to read the FAQs to learn how to make it appear again, before hiding
         it.
     </string>
 
     <string name="launcher_icon_restored">%1$s launcher icon was restored</string>
     <string name="launcher_icon_no_restored">%1$s launcher icon is already visible</string>
+    <string name="launcher_icon_restorer_error">There is a problem with the code of %1$s. Please contact its developer.</string>
 
     <!-- Widgets Names -->
     <string name="iconrestorer_widget_title">Icon Restorer Widget</string>

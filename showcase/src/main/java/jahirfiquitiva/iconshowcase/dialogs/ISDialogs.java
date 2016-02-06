@@ -32,10 +32,11 @@ import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 /**
- * This Class was created by Patrick J
+ * This Class was created by Patrick Jung
  * on 07.01.16. For more Details and Licensing
  * have a look at the README.md
  */
+
 public final class ISDialogs {
 
     /*
@@ -43,11 +44,20 @@ public final class ISDialogs {
      */
 
     public static void showChangelogDialog(Context context) {
-        new MaterialDialog.Builder(context)
-                .title(R.string.changelog_dialog_title)
-                .adapter(new ChangelogAdapter(context, R.array.fullchangelog), null)
-                .positiveText(R.string.great)
-                .show();
+        if (context.getResources().getBoolean(R.bool.changelog_ripples)) {
+            new MaterialDialog.Builder(context)
+                    .title(R.string.changelog_dialog_title)
+                    .adapter(new ChangelogAdapter(context, R.array.fullchangelog), null)
+                    .positiveText(R.string.great)
+                    .listSelector(android.R.color.transparent)
+                    .show();
+        } else {
+            new MaterialDialog.Builder(context)
+                    .title(R.string.changelog_dialog_title)
+                    .adapter(new ChangelogAdapter(context, R.array.fullchangelog), null)
+                    .positiveText(R.string.great)
+                    .show();
+        }
     }
 
     public static void showIconsChangelogDialog(final Context context) {
@@ -108,8 +118,13 @@ public final class ISDialogs {
                 .show();
     }
 
-    public static void showLicenseFailedDialog(Context context, MaterialDialog.SingleButtonCallback onPositive, MaterialDialog.SingleButtonCallback onNegative) {
-        new MaterialDialog.Builder(context)
+    public static void showLicenseFailDialog(Context context,
+                                             MaterialDialog.SingleButtonCallback onPositive,
+                                             MaterialDialog.SingleButtonCallback onNegative,
+                                             MaterialDialog.OnCancelListener onCancel,
+                                             MaterialDialog.OnDismissListener onDismiss) {
+
+        MaterialDialog licenseFailDialog = new MaterialDialog.Builder(context)
                 .title(R.string.license_failed_title)
                 .content(R.string.license_failed)
                 .positiveText(R.string.download)
@@ -118,7 +133,13 @@ public final class ISDialogs {
                 .onNegative(onNegative)
                 .cancelable(false)
                 .autoDismiss(false)
-                .show();
+                .build();
+
+        licenseFailDialog.setOnCancelListener(onCancel);
+        licenseFailDialog.setOnDismissListener(onDismiss);
+
+        licenseFailDialog.show();
+
     }
 
     /*
@@ -162,8 +183,8 @@ public final class ISDialogs {
         dimensIcon = (ImageView) v.findViewById(R.id.icon_dimensions);
         copyrightIcon = (ImageView) v.findViewById(R.id.icon_copyright);
 
-        int light = ContextCompat.getColor(context, android.R.color.white);
-        int dark = ContextCompat.getColor(context, R.color.grey);
+        int light = ContextCompat.getColor(context, R.color.drawable_tint_dark);
+        int dark = ContextCompat.getColor(context, R.color.drawable_tint_light);
 
         authorIcon.setImageDrawable(new IconicsDrawable(context)
                 .icon(GoogleMaterial.Icon.gmd_account)
@@ -272,6 +293,14 @@ public final class ISDialogs {
                 .progress(true, 0)
                 .cancelable(false)
                 .build();
+    }
+
+    public static void showNoSelectedAppsDialog(Context context) {
+        new MaterialDialog.Builder(context)
+                .title(R.string.no_selected_apps_title)
+                .content(R.string.no_selected_apps_content)
+                .positiveText(android.R.string.ok)
+                .show();
     }
 
     public static MaterialDialog showThemeChooserDialog(final Activity context) {

@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
-    <!-- Provide a list of wallpaers -->
+    <!-- Provide a list of wallpapers -->
     <string-array name="wallpapers">
-        <item>arrows_wall</item>
-        <item>circles_wall</item>
-        <item>moonshine_wall</item>
-        <item>stars_wall</item>
+        <item>drawer_header</item>
+        <!--placeholder-->
     </string-array>
 
     <!-- This wallpaper will be used when a user applies the theme -->
-    <string name="default_wallpaper">stars_wall</string>
+    <string name="default_wallpaper">drawer_header</string>
 
 </resources>
