@@ -11,10 +11,6 @@ public class IconsCategory {
     private String name;
     private ArrayList<IconItem> iconsArray = new ArrayList<>();
 
-    public IconsCategory(String name) {
-        this.name = name;
-    }
-
     public IconsCategory(String name, ArrayList<IconItem> iconsArray) {
         this.name = name;
         this.iconsArray = iconsArray;
@@ -22,10 +18,6 @@ public class IconsCategory {
 
     public String getCategoryName() {
         return this.name;
-    }
-
-    public void setCategoryName(String name) {
-        this.name = name;
     }
 
     public ArrayList<IconItem> getIconsArray() {

@@ -66,22 +66,22 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
 
         String[] tabsNames = r.getStringArray(R.array.tabs);
         categories = new ArrayList<>();
-
         ArrayList<IconItem> allIcons = new ArrayList<>();
 
         for (String tabName : tabsNames) {
+
             int arrayId = r.getIdentifier(tabName, "array", p);
             String[] icons = r.getStringArray(arrayId);
             List<String> iconsList = sortList(icons);
 
             ArrayList<IconItem> iconsArray = new ArrayList<>();
 
-            for (String iconName : iconsList) {
-                int iconResId = getIconResId(r, p, iconName);
+            for (int j = 0; j < iconsList.size(); j++) {
+                int iconResId = getIconResId(r, p, iconsList.get(j));
                 if (iconResId != 0) {
-                    iconsArray.add(new IconItem(iconName, iconResId));
+                    iconsArray.add(new IconItem(iconsList.get(j), iconResId));
                     if (context.getResources().getBoolean(R.bool.auto_generate_all_icons)) {
-                        allIcons.add(new IconItem(iconName, iconResId));
+                        allIcons.add(new IconItem(iconsList.get(j), iconResId));
                     }
                 }
             }
@@ -92,6 +92,9 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
 
         if (context.getResources().getBoolean(R.bool.auto_generate_all_icons)) {
             categories.add(new IconsCategory("All", getAllIconsList(r, p, allIcons)));
+        } else {
+            String[] allIconsArray = r.getStringArray(R.array.all);
+            categories.add(new IconsCategory("All", sortAndOrganizeList(r, p, allIconsArray)));
         }
 
         return null;
@@ -109,42 +112,55 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
         return list;
     }
 
-    private List<String> sortAndOrganizeList(String[] array) {
+    private ArrayList<IconItem> sortAndOrganizeList(Resources r,
+                                                    String p,
+                                                    String[] array) {
+
         List<String> list = new ArrayList<>(Arrays.asList(array));
         Collections.sort(list);
 
-        Set<String> noDuplicatesList = new HashSet<>();
-        noDuplicatesList.addAll(list);
+        Set<String> noDuplicates = new HashSet<>();
+        noDuplicates.addAll(list);
+        list.clear();
+        list.addAll(noDuplicates);
+        Collections.sort(list);
 
-        List<String> newList = new ArrayList<>();
-        newList.addAll(noDuplicatesList);
-        Collections.sort(newList);
+        ArrayList<IconItem> sortedListArray = new ArrayList<>();
 
-        return newList;
+        for (int j = 0; j < list.size(); j++) {
+            int resId = getIconResId(r, p, list.get(j));
+            if (resId != 0) {
+                sortedListArray.add(new IconItem(list.get(j), resId));
+            }
+        }
+
+        return sortedListArray;
     }
 
     private ArrayList<IconItem> getAllIconsList(Resources r, String p,
                                                 ArrayList<IconItem> initialList) {
 
-        ArrayList<String> allIconsNames = new ArrayList<>();
+        String[] allIconsNames = new String[initialList.size()];
 
         for (int i = 0; i < initialList.size(); i++) {
-            allIconsNames.add(initialList.get(i).getName());
+            allIconsNames[i] = initialList.get(i).getName();
         }
 
-        Collections.sort(allIconsNames);
+        List<String> list = new ArrayList<>(Arrays.asList(allIconsNames));
+        Collections.sort(list);
 
         Set<String> noDuplicates = new HashSet<>();
-        noDuplicates.addAll(allIconsNames);
-        allIconsNames.clear();
-        allIconsNames.addAll(noDuplicates);
+        noDuplicates.addAll(list);
+        list.clear();
+        list.addAll(noDuplicates);
+        Collections.sort(list);
 
         ArrayList<IconItem> sortedListArray = new ArrayList<>();
 
-        for (int j = 0; j < allIconsNames.size(); j++) {
-            int resId = getIconResId(r, p, allIconsNames.get(j));
+        for (int j = 0; j < list.size(); j++) {
+            int resId = getIconResId(r, p, list.get(j));
             if (resId != 0) {
-                sortedListArray.add(new IconItem(allIconsNames.get(j), resId));
+                sortedListArray.add(new IconItem(list.get(j), resId));
             }
         }
 
@@ -157,7 +173,7 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
         if (res != 0) {
             return res;
         } else {
-            Utils.showLog(context, "missing icon: " + name);
+            Utils.showLog(context, "Missing icon: " + name);
             return 0;
         }
     }

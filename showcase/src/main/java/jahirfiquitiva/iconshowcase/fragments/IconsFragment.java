@@ -1,6 +1,7 @@
 package jahirfiquitiva.iconshowcase.fragments;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -83,7 +84,8 @@ public class IconsFragment extends Fragment {
         return layout;
     }
 
-    public static IconsFragment newInstance(ArrayList<String> iconsNames, ArrayList<Integer> iconsInts) {
+    public static IconsFragment newInstance(ArrayList<String> iconsNames,
+                                            ArrayList<Integer> iconsInts) {
         IconsFragment fragment = new IconsFragment();
         Bundle args = new Bundle();
         args.putStringArrayList("iconsNames", iconsNames);
