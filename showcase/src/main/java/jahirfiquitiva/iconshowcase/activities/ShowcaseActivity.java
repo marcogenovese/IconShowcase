@@ -43,6 +43,8 @@ import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialize.util.UIUtils;
 
+import org.sufficientlysecure.donations.DonationsFragment;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -176,6 +178,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         thaApply = getResources().getString(R.string.section_three);
         thaWalls = getResources().getString(R.string.section_four);
         thaRequest = getResources().getString(R.string.section_five);
+        thaDonate = getResources().getString(R.string.section_five);
         thaCredits = getResources().getString(R.string.section_six);
         thaSettings = getResources().getString(R.string.title_settings);
         thaFAQs = getResources().getString(R.string.faqs_section);
@@ -245,11 +248,27 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         setupFAB(fragment);
 
         if (mPrefs.getAnimationsEnabled()) {
-            context.getSupportFragmentManager().beginTransaction()
-                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                    .replace(R.id.main, Fragment.instantiate(context,
-                            "jahirfiquitiva.iconshowcase.fragments." + fragment + "Fragment"))
-                    .commit();
+            if (title.equals(thaDonate)) {
+                DonationsFragment donationsFragment;
+                if (BuildConfig.DONATIONS_GOOGLE) {
+                    donationsFragment = DonationsFragment.newInstance(BuildConfig.DEBUG, true, GOOGLE_PUBKEY, mGoogleCatalog,
+                            getResources().getStringArray(R.array.donation_google_catalog_values), true, PAYPAL_USER,
+                            PAYPAL_CURRENCY_CODE, getString(R.string.donation_paypal_item), false, null, null, false, null);
+                } else {
+                    donationsFragment = DonationsFragment.newInstance(BuildConfig.DEBUG, false, null, null, null, true, PAYPAL_USER,
+                            PAYPAL_CURRENCY_CODE, getString(R.string.donation_paypal_item), false, null, null, false, null);
+                }
+                getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                        .replace(R.id.main, donationsFragment, "donationsFragment")
+                        .commit();
+            } else {
+                context.getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
+                        .replace(R.id.main, Fragment.instantiate(context,
+                                "jahirfiquitiva.iconshowcase.fragments." + fragment + "Fragment"))
+                        .commit();
+            }
         } else {
             context.getSupportFragmentManager().beginTransaction()
                     .replace(R.id.main, Fragment.instantiate(context,
@@ -486,7 +505,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         PrimaryDrawerItem apply = new PrimaryDrawerItem().withName(thaApply).withIcon(GoogleMaterial.Icon.gmd_open_in_browser).withIdentifier(5);
         PrimaryDrawerItem faqs = new PrimaryDrawerItem().withName(thaFAQs).withIcon(GoogleMaterial.Icon.gmd_help).withIdentifier(6);
 
-        SecondaryDrawerItem creditsItem, settingsItem;
+        SecondaryDrawerItem donationsItem, creditsItem, settingsItem;
 
         DrawerBuilder drawerBuilder = new DrawerBuilder()
                 .withActivity(this)
@@ -507,6 +526,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         if (WITH_ZOOPER_SECTION) {
             PrimaryDrawerItem zooper = new PrimaryDrawerItem().withName(thaZooper).withIcon(GoogleMaterial.Icon.gmd_widgets).withIdentifier(seven);
             if (WITH_SECONDARY_DRAWER_ITEMS_ICONS) {
+                donationsItem = new SecondaryDrawerItem().withName(thaDonate).withIcon(GoogleMaterial.Icon.gmd_info).withIdentifier(seven + 1);
                 creditsItem = new SecondaryDrawerItem().withName(thaCredits).withIcon(GoogleMaterial.Icon.gmd_info).withIdentifier(seven + 1);
                 settingsItem = new SecondaryDrawerItem().withName(thaSettings).withIcon(GoogleMaterial.Icon.gmd_settings).withIdentifier(seven + 2);
             } else {

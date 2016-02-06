@@ -72,7 +72,7 @@ dependencies {
     compile 'com.android.support:customtabs:23.1.1'
 
     //Material Dialogs
-    compile('com.afollestad.material-dialogs:core:0.8.5.3@aar') {
+    compile('com.afollestad.material-dialogs:core:0.8.5.4@aar') {
         transitive = true
     }
 
@@ -101,5 +101,8 @@ dependencies {
 
     //RecyclerView Fast Scroller
     compile 'com.github.pluscubed:recycler-fast-scroll:0.3.0@aar'
+
+    //Donations Lib
+    compile 'org.sufficientlysecure:donations:2.4'
 
 }
