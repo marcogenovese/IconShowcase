@@ -6,12 +6,13 @@
     <string name="share_text">My wallpaper for today is %1$s by %2$s, from %3$s.\nGet it now at %4$s</string>
 
     <!-- List Of Drawer Sections -->
-    <string name="section_one">Home</string>
-    <string name="section_two">Icons</string>
-    <string name="section_three">Apply</string>
-    <string name="section_four">Wallpapers</string>
-    <string name="section_five">Icon request</string>
-    <string name="section_six">About the app</string>
+    <string name="section_home">Home</string>
+    <string name="section_icons">Icons</string>
+    <string name="section_apply">Apply</string>
+    <string name="section_wallpapers">Wallpapers</string>
+    <string name="section_icon_request">Icon request</string>
+    <string name="section_donate">Donate</string>
+    <string name="section_about">About the app</string>
 
     <!-- Wallpapers Activity -->
     <string name="title_activity_detailed_wallpaper">Wallpaper viewer</string>

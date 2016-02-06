@@ -87,7 +87,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
     public static boolean iconPicker, wallsPicker;
 
-    private static String thaHome, thaPreviews, thaApply, thaWalls, thaRequest, thaFAQs,
+    private static String thaHome, thaPreviews, thaApply, thaWalls, thaRequest, thaDonate, thaFAQs,
             thaZooper, thaCredits, thaSettings;
 
     private static AppCompatActivity context;
@@ -173,13 +173,13 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             }
         });
 
-        thaHome = getResources().getString(R.string.section_one);
-        thaPreviews = getResources().getString(R.string.section_two);
-        thaApply = getResources().getString(R.string.section_three);
-        thaWalls = getResources().getString(R.string.section_four);
-        thaRequest = getResources().getString(R.string.section_five);
-        thaDonate = getResources().getString(R.string.section_five);
-        thaCredits = getResources().getString(R.string.section_six);
+        thaHome = getResources().getString(R.string.section_home);
+        thaPreviews = getResources().getString(R.string.section_icons);
+        thaApply = getResources().getString(R.string.section_apply);
+        thaWalls = getResources().getString(R.string.section_wallpapers);
+        thaRequest = getResources().getString(R.string.section_icon_request);
+        thaDonate = getResources().getString(R.string.section_donate);
+        thaCredits = getResources().getString(R.string.section_about);
         thaSettings = getResources().getString(R.string.title_settings);
         thaFAQs = getResources().getString(R.string.faqs_section);
         thaZooper = getResources().getString(R.string.zooper_section_title);
@@ -526,23 +526,26 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         if (WITH_ZOOPER_SECTION) {
             PrimaryDrawerItem zooper = new PrimaryDrawerItem().withName(thaZooper).withIcon(GoogleMaterial.Icon.gmd_widgets).withIdentifier(seven);
             if (WITH_SECONDARY_DRAWER_ITEMS_ICONS) {
-                donationsItem = new SecondaryDrawerItem().withName(thaDonate).withIcon(GoogleMaterial.Icon.gmd_info).withIdentifier(seven + 1);
-                creditsItem = new SecondaryDrawerItem().withName(thaCredits).withIcon(GoogleMaterial.Icon.gmd_info).withIdentifier(seven + 1);
-                settingsItem = new SecondaryDrawerItem().withName(thaSettings).withIcon(GoogleMaterial.Icon.gmd_settings).withIdentifier(seven + 2);
+                donationsItem = new SecondaryDrawerItem().withName(thaDonate).withIcon(GoogleMaterial.Icon.gmd_money).withIdentifier(seven + 1);
+                creditsItem = new SecondaryDrawerItem().withName(thaCredits).withIcon(GoogleMaterial.Icon.gmd_info).withIdentifier(seven + 2);
+                settingsItem = new SecondaryDrawerItem().withName(thaSettings).withIcon(GoogleMaterial.Icon.gmd_settings).withIdentifier(seven + 3);
             } else {
-                creditsItem = new SecondaryDrawerItem().withName(thaCredits).withIdentifier(seven + 1);
-                settingsItem = new SecondaryDrawerItem().withName(thaSettings).withIdentifier(seven + 2);
+                donationsItem = new SecondaryDrawerItem().withName(thaDonate).withIdentifier(seven + 1);
+                creditsItem = new SecondaryDrawerItem().withName(thaCredits).withIdentifier(seven + 2);
+                settingsItem = new SecondaryDrawerItem().withName(thaSettings).withIdentifier(seven + 3);
             }
             drawerBuilder.addDrawerItems(home, previews, walls, requests, apply, faqs, zooper, new DividerDrawerItem(), creditsItem, settingsItem);
         } else {
             if (WITH_SECONDARY_DRAWER_ITEMS_ICONS) {
-                creditsItem = new SecondaryDrawerItem().withName(thaCredits).withIcon(GoogleMaterial.Icon.gmd_info).withIdentifier(seven);
-                settingsItem = new SecondaryDrawerItem().withName(thaSettings).withIcon(GoogleMaterial.Icon.gmd_settings).withIdentifier(seven + 1);
+                donationsItem = new SecondaryDrawerItem().withName(thaDonate).withIcon(GoogleMaterial.Icon.gmd_money).withIdentifier(seven);
+                creditsItem = new SecondaryDrawerItem().withName(thaCredits).withIcon(GoogleMaterial.Icon.gmd_info).withIdentifier(seven + 1);
+                settingsItem = new SecondaryDrawerItem().withName(thaSettings).withIcon(GoogleMaterial.Icon.gmd_settings).withIdentifier(seven + 2);
             } else {
-                creditsItem = new SecondaryDrawerItem().withName(thaCredits).withIdentifier(seven);
-                settingsItem = new SecondaryDrawerItem().withName(thaSettings).withIdentifier(seven + 1);
+                donationsItem = new SecondaryDrawerItem().withName(thaDonate).withIdentifier(seven);
+                creditsItem = new SecondaryDrawerItem().withName(thaCredits).withIdentifier(seven + 1);
+                settingsItem = new SecondaryDrawerItem().withName(thaSettings).withIdentifier(seven + 2);
             }
-            drawerBuilder.addDrawerItems(home, previews, walls, requests, apply, faqs, new DividerDrawerItem(), creditsItem, settingsItem);
+            drawerBuilder.addDrawerItems(home, previews, walls, requests, apply, faqs, new DividerDrawerItem(), donationsItem, creditsItem, settingsItem);
         }
 
         drawerBuilder.withSavedInstance(savedInstanceState);
