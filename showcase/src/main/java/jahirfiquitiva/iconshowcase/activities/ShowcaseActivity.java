@@ -310,7 +310,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         }
 
         setupFAB(fragment);
-        
+
         if (mPrefs.getAnimationsEnabled()) {
             if (title.equals(thaDonate)) { ///
                 DonationsFragment donationsFragment;
