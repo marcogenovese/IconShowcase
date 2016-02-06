@@ -164,7 +164,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             DONATIONS_GOOGLE = true; //google donations succesfully set up
         }
 
-        //paypal ///
+        //paypal
         PAYPAL_USER = getResources().getString(R.string.paypal_user);
         PAYPAL_CURRENCY_CODE = getResources().getString(R.string.paypal_currency_code);
         if (PAYPAL_USER.length() > 5 && PAYPAL_CURRENCY_CODE.length() > 1) {
@@ -312,7 +312,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         setupFAB(fragment);
 
         if (mPrefs.getAnimationsEnabled()) {
-            if (title.equals(thaDonate)) { ///
+            if (title.equals(thaDonate)) {
                 DonationsFragment donationsFragment;
                 donationsFragment = DonationsFragment.newInstance(BuildConfig.DEBUG,
                         DONATIONS_GOOGLE, GOOGLE_PUBKEY, mGoogleCatalog, GOOGLE_CATALOG_VALUES,
@@ -331,10 +331,22 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                         .commit();
             }
         } else {
-            context.getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main, Fragment.instantiate(context,
-                            "jahirfiquitiva.iconshowcase.fragments." + fragment + "Fragment"))
-                    .commit();
+            if (title.equals(thaDonate)) {
+                DonationsFragment donationsFragment;
+                donationsFragment = DonationsFragment.newInstance(BuildConfig.DEBUG,
+                        DONATIONS_GOOGLE, GOOGLE_PUBKEY, mGoogleCatalog, GOOGLE_CATALOG_VALUES,
+                        DONATIONS_PAYPAL, PAYPAL_USER, PAYPAL_CURRENCY_CODE, context.getString(R.string.section_donate),
+                        DONATIONS_FLATTR, null, null,
+                        DONATIONS_BITCOIN, null);
+                context.getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.main, donationsFragment, "donationsFragment")
+                        .commit();
+            } else {
+                context.getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.main, Fragment.instantiate(context,
+                                "jahirfiquitiva.iconshowcase.fragments." + fragment + "Fragment"))
+                        .commit();
+            }
         }
 
         titleView.setText(title);
