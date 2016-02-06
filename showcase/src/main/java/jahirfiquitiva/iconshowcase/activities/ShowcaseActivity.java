@@ -91,6 +91,10 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     private static String[] mGoogleCatalog = new String[0],
             GOOGLE_CATALOG_VALUES = new String[0];
 
+    ///test array values
+    private static ArrayList<String> primaryDrawerItems = new ArrayList<String>(), //test lists
+            secondaryDrawerItems = new ArrayList<String>();
+
     private static String GOOGLE_PUBKEY = new String(),
             PAYPAL_USER = new String(),
             PAYPAL_CURRENCY_CODE = new String();
@@ -107,7 +111,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             turbo_action = "com.phonemetra.turbo.launcher.icons.ACTION_PICK_ICON",
             nova_action = "com.novalauncher.THEME";
 
-    public static boolean iconPicker, wallsPicker;
+    public static boolean iconPicker, wallsPicker, requestEnabled, wallsEnabled;
 
     private static String thaHome, thaPreviews, thaApply, thaWalls, thaRequest, thaDonate, thaFAQs,
             thaZooper, thaCredits, thaSettings;
@@ -116,7 +120,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
     public String version;
 
-    public static int currentItem = -1, wallpaper = -1, seven = 7;
+    public static int currentItem = -1, wallpaper = -1, seven = 7, wallsIdentifier = 0, requestIdentifier = 0;
 
     private boolean mLastTheme, mLastNavBar;
     private static Preferences mPrefs;
@@ -146,6 +150,11 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
         context = this;
         mPrefs = new Preferences(ShowcaseActivity.this);
+
+        primaryDrawerItems.add("Previews");
+        primaryDrawerItems.add("Requests");
+        secondaryDrawerItems.add("Credits");
+        secondaryDrawerItems.add("Settings");
 
         getAction();
 
@@ -274,14 +283,14 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         setupDrawer(toolbar, savedInstanceState);
 
         if (savedInstanceState == null) {
-            if (iconPicker) {
-                drawerItemClick(2);
-                drawer.setSelection(2);
-            } else if (wallsPicker && mPrefs.areFeaturesEnabled()) {
-                drawerItemClick(3);
-                drawer.setSelection(3);
+            if (iconPicker && requestEnabled) {
+                drawerItemClick(requestIdentifier);
+                drawer.setSelection(requestIdentifier);
+            } else if (wallsPicker && mPrefs.areFeaturesEnabled() && wallsEnabled) {
+                drawerItemClick(wallsIdentifier);
+                drawer.setSelection(wallsIdentifier);
             } else {
-                if (mPrefs.getSettingsModified()) {
+                if (mPrefs.getSettingsModified()) { //TODO fix item click numbers
                     if (WITH_ZOOPER_SECTION) {
                         drawerItemClick(seven + 2);
                         drawer.setSelection(seven + 2);
@@ -298,7 +307,35 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         }
     }
 
-    public static void switchFragment(int itemId, String title, String fragment,
+    public static String fragment2title (String fragment) {
+        switch (fragment) {
+            case "Main":
+                return "  ";
+            case "Home":
+                return thaHome;
+            case "Preview":
+                return thaPreviews;
+            case "Apply":
+                return thaApply;
+            case "Wallpapers": //TODO CHECK IF SAME
+                return thaWalls;
+            case "Request":
+                return thaRequest;
+            case "Zooper":
+                return thaZooper;
+            case "Donate":
+                return thaDonate;
+            case "FAQ":
+                return thaFAQs;
+            case "Credits":
+                return thaCredits;
+            case "Settings":
+                return thaSettings;
+        }
+        return ":(";
+    }
+
+    public static void switchFragment(int itemId, String fragment,
                                       AppCompatActivity context) {
 
         if (currentItem == itemId) {
@@ -325,7 +362,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
         //Fragment Switcher
         if (mPrefs.getAnimationsEnabled()) {
-            if (title.equals(thaDonate)) {
+            if (fragment2title(fragment).equals(thaDonate)) {
                 DonationsFragment donationsFragment;
                 donationsFragment = DonationsFragment.newInstance(BuildConfig.DEBUG,
                         DONATIONS_GOOGLE, GOOGLE_PUBKEY, mGoogleCatalog, GOOGLE_CATALOG_VALUES,
@@ -344,7 +381,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                         .commit();
             }
         } else {
-            if (title.equals(thaDonate)) {
+            if (fragment2title(fragment).equals(thaDonate)) {
                 DonationsFragment donationsFragment;
                 donationsFragment = DonationsFragment.newInstance(BuildConfig.DEBUG,
                         DONATIONS_GOOGLE, GOOGLE_PUBKEY, mGoogleCatalog, GOOGLE_CATALOG_VALUES,
@@ -362,7 +399,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             }
         }
 
-        titleView.setText(title);
+        titleView.setText(fragment2title(fragment));
 
         if (drawer != null) {
             drawer.setSelection(itemId);
@@ -595,14 +632,72 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
     public void setupDrawer(Toolbar toolbar, Bundle savedInstanceState) {
 
-        PrimaryDrawerItem home = new PrimaryDrawerItem().withName(thaHome).withIcon(GoogleMaterial.Icon.gmd_home).withIdentifier(1);
-        PrimaryDrawerItem previews = new PrimaryDrawerItem().withName(thaPreviews).withIcon(GoogleMaterial.Icon.gmd_palette).withIdentifier(2);
-        PrimaryDrawerItem walls = new PrimaryDrawerItem().withName(thaWalls).withIcon(GoogleMaterial.Icon.gmd_landscape).withIdentifier(3);
-        PrimaryDrawerItem requests = new PrimaryDrawerItem().withName(thaRequest).withIcon(GoogleMaterial.Icon.gmd_comment_list).withIdentifier(4);
-        PrimaryDrawerItem apply = new PrimaryDrawerItem().withName(thaApply).withIcon(GoogleMaterial.Icon.gmd_open_in_browser).withIdentifier(5);
-        PrimaryDrawerItem faqs = new PrimaryDrawerItem().withName(thaFAQs).withIcon(GoogleMaterial.Icon.gmd_help).withIdentifier(6);
+        //Initialize PrimaryDrawerItem
+        PrimaryDrawerItem home = new PrimaryDrawerItem(), previews = new PrimaryDrawerItem(), walls = new PrimaryDrawerItem(), requests = new PrimaryDrawerItem(), apply = new PrimaryDrawerItem(), faqs = new PrimaryDrawerItem(), zooper = new PrimaryDrawerItem();
 
-        SecondaryDrawerItem creditsItem, settingsItem, donationsItem; //initialize donationsItem;
+        for(int i = 0; i < primaryDrawerItems.size(); i++) {
+            switch (primaryDrawerItems.get(i)) {
+                case "home":
+                    home = new PrimaryDrawerItem().withName(thaHome).withIcon(GoogleMaterial.Icon.gmd_home).withIdentifier(i + 1);
+                    break;
+                case "previews":
+                    previews = new PrimaryDrawerItem().withName(thaPreviews).withIcon(GoogleMaterial.Icon.gmd_palette).withIdentifier(i + 1);
+                    break;
+                case "walls":
+                    wallsEnabled = true;
+                    wallsIdentifier = i + 1;
+                    walls = new PrimaryDrawerItem().withName(thaWalls).withIcon(GoogleMaterial.Icon.gmd_landscape).withIdentifier(wallsIdentifier);
+                    break;
+                case "requests":
+                    requestEnabled = true;
+                    requestIdentifier = i + 1;
+                    requests = new PrimaryDrawerItem().withName(thaRequest).withIcon(GoogleMaterial.Icon.gmd_comment_list).withIdentifier(requestIdentifier);
+                    break;
+                case "apply":
+                    apply = new PrimaryDrawerItem().withName(thaApply).withIcon(GoogleMaterial.Icon.gmd_open_in_browser).withIdentifier(i + 1);
+                    break;
+                case "faqs":
+                    faqs = new PrimaryDrawerItem().withName(thaFAQs).withIcon(GoogleMaterial.Icon.gmd_help).withIdentifier(i + 1);
+                    break;
+                case "zooper":
+                    zooper = new PrimaryDrawerItem().withName(thaZooper).withIcon(GoogleMaterial.Icon.gmd_widgets).withIdentifier(i + 1);
+                    break;
+            }
+        }
+
+        //initialize SecondaryDrawerItem
+        SecondaryDrawerItem creditsItem = new SecondaryDrawerItem(), settingsItem = new SecondaryDrawerItem(), donationsItem = new SecondaryDrawerItem();
+
+        int secondaryStart = primaryDrawerItems.size() + 1; //marks the first identifier value that should be used
+        if (WITH_SECONDARY_DRAWER_ITEMS_ICONS) {
+            for(int i = 0; i < secondaryDrawerItems.size(); i++) {
+                switch (secondaryDrawerItems.get(i)) {
+                    case "Credits":
+                        creditsItem = new SecondaryDrawerItem().withName(thaCredits).withIcon(GoogleMaterial.Icon.gmd_info).withIdentifier(i + secondaryStart);
+                        break;
+                    case "settings":
+                        settingsItem = new SecondaryDrawerItem().withName(thaSettings).withIcon(GoogleMaterial.Icon.gmd_settings).withIdentifier(i + secondaryStart);
+                        break;
+                    case "donations":
+                        donationsItem = new SecondaryDrawerItem().withName(thaDonate).withIcon(GoogleMaterial.Icon.gmd_money_box).withIdentifier(i + secondaryStart);
+                        break;
+                }
+            }
+        } else {
+            for (int i = 0; i < secondaryDrawerItems.size(); i++) {
+                switch (secondaryDrawerItems.get(i)) {
+                    case "Credits":
+                        creditsItem = new SecondaryDrawerItem().withName(thaCredits).withIdentifier(i + secondaryStart);
+                        break;
+                    case "settings":
+                        settingsItem = new SecondaryDrawerItem().withName(thaSettings).withIdentifier(i + secondaryStart);
+                        break;
+                    case "donations":
+                        donationsItem = new SecondaryDrawerItem().withName(thaDonate).withIdentifier(i + secondaryStart);
+                        break;
+                }
+            }
+        }
 
         DrawerBuilder drawerBuilder = new DrawerBuilder()
                 .withActivity(this)
@@ -620,47 +715,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                 })
                 .withDisplayBelowStatusBar(false);
 
-        if (WITH_ZOOPER_SECTION) {
-            PrimaryDrawerItem zooper = new PrimaryDrawerItem().withName(thaZooper).withIcon(GoogleMaterial.Icon.gmd_widgets).withIdentifier(seven);
-            if (WITH_SECONDARY_DRAWER_ITEMS_ICONS) {
-                creditsItem = new SecondaryDrawerItem().withName(thaCredits).withIcon(GoogleMaterial.Icon.gmd_info).withIdentifier(seven + 1);
-                settingsItem = new SecondaryDrawerItem().withName(thaSettings).withIcon(GoogleMaterial.Icon.gmd_settings).withIdentifier(seven + 2);
-            } else {
-                creditsItem = new SecondaryDrawerItem().withName(thaCredits).withIdentifier(seven + 1);
-                settingsItem = new SecondaryDrawerItem().withName(thaSettings).withIdentifier(seven + 2);
-            }
-
-            if (WITH_DONATIONS_SECTION) {
-                if (WITH_SECONDARY_DRAWER_ITEMS_ICONS) {
-                    donationsItem = new SecondaryDrawerItem().withName(thaDonate).withIcon(GoogleMaterial.Icon.gmd_money_box).withIdentifier(seven + 3);
-                } else {
-                    donationsItem = new SecondaryDrawerItem().withName(thaDonate).withIdentifier(seven + 3);
-                }
-                drawerBuilder.addDrawerItems(home, previews, walls, requests, apply, faqs, zooper, new DividerDrawerItem(), creditsItem, settingsItem, donationsItem);
-            } else {
-                drawerBuilder.addDrawerItems(home, previews, walls, requests, apply, faqs, zooper, new DividerDrawerItem(), creditsItem, settingsItem);
-            }
-        } else {
-            if (WITH_SECONDARY_DRAWER_ITEMS_ICONS) {
-                creditsItem = new SecondaryDrawerItem().withName(thaCredits).withIcon(GoogleMaterial.Icon.gmd_info).withIdentifier(seven);
-                settingsItem = new SecondaryDrawerItem().withName(thaSettings).withIcon(GoogleMaterial.Icon.gmd_settings).withIdentifier(seven + 1);
-            } else {
-                creditsItem = new SecondaryDrawerItem().withName(thaCredits).withIdentifier(seven);
-                settingsItem = new SecondaryDrawerItem().withName(thaSettings).withIdentifier(seven + 1);
-            }
-
-            if (WITH_DONATIONS_SECTION) {
-                if (WITH_SECONDARY_DRAWER_ITEMS_ICONS) {
-                    donationsItem = new SecondaryDrawerItem().withName(thaDonate).withIcon(GoogleMaterial.Icon.gmd_money_box).withIdentifier(seven + 2);
-                } else {
-                    donationsItem = new SecondaryDrawerItem().withName(thaDonate).withIdentifier(seven + 2);
-                }
-                drawerBuilder.addDrawerItems(home, previews, walls, requests, apply, faqs, new DividerDrawerItem(), creditsItem, settingsItem, donationsItem);
-            } else {
-                drawerBuilder.addDrawerItems(home, previews, walls, requests, apply, faqs, new DividerDrawerItem(), creditsItem, settingsItem);
-            }
-        }
-
+        drawerBuilder.addDrawerItems(home, previews, walls, requests, apply, faqs, zooper, new DividerDrawerItem(), creditsItem, settingsItem, donationsItem);
         drawerBuilder.withSavedInstance(savedInstanceState);
 
         switch (drawerHeaderStyle) {
@@ -705,62 +760,66 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     }
 
     public static void drawerItemClick(int id) {
-        switch (id) {
-            case 1:
-                switchFragment(1, "   ", "Main", context);
-                break;
-            case 2:
-                switchFragment(2, thaPreviews, "Previews", context);
-                break;
-            case 3:
-                switchFragment(3, thaWalls, "Wallpapers", context);
-                break;
-            case 4:
-                switchFragment(4, thaRequest, "Requests", context);
-                break;
-            case 5:
-                switchFragment(5, thaApply, "Apply", context);
-                break;
-            case 6:
-                switchFragment(6, thaFAQs, "FAQs", context);
-                break;
-            case 7:
-                if (WITH_ZOOPER_SECTION) {
-                    switchFragment(7, thaZooper, "Zooper", context);
-                } else {
-                    if (WITH_ALTERNATIVE_ABOUT_SECTION) {
-                        switchFragment(7, thaCredits, "CreditsAlt", context);
-                    } else {
-                        switchFragment(7, thaCredits, "Credits", context);
-                    }
-                }
-                break;
-            case 8:
-                if (WITH_ZOOPER_SECTION) {
-                    if (WITH_ALTERNATIVE_ABOUT_SECTION) {
-                        switchFragment(8, thaCredits, "CreditsAlt", context);
-                    } else {
-                        switchFragment(8, thaCredits, "Credits", context);
-                    }
-                } else {
-                    switchFragment(8, thaSettings, "Settings", context);
-                }
-                break;
-            case 9:
-                if (WITH_ZOOPER_SECTION) {
-                    switchFragment(9, thaSettings, "Settings", context);
-                } else if (WITH_DONATIONS_SECTION) {
-                    switchFragment(9, thaDonate, "Donations", context);
-                }
-                break;
-            case 10:
-                if (WITH_DONATIONS_SECTION && WITH_ZOOPER_SECTION) {
-                    switchFragment(10, thaDonate, "Donations", context);
-                }
-                break;
-        }
-
+        switchFragment(id, primaryDrawerItems.get(id+1), context);
     }
+
+//    public static void drawerItemClick(int id) {
+//        switch (id) {
+//            case 1:
+//                switchFragment(1, "   ", "Main", context);
+//                break;
+//            case 2:
+//                switchFragment(2, thaPreviews, "Previews", context);
+//                break;
+//            case 3:
+//                switchFragment(3, thaWalls, "Wallpapers", context);
+//                break;
+//            case 4:
+//                switchFragment(4, thaRequest, "Requests", context);
+//                break;
+//            case 5:
+//                switchFragment(5, thaApply, "Apply", context);
+//                break;
+//            case 6:
+//                switchFragment(6, thaFAQs, "FAQs", context);
+//                break;
+//            case 7:
+//                if (WITH_ZOOPER_SECTION) {
+//                    switchFragment(7, thaZooper, "Zooper", context);
+//                } else {
+//                    if (WITH_ALTERNATIVE_ABOUT_SECTION) {
+//                        switchFragment(7, thaCredits, "CreditsAlt", context);
+//                    } else {
+//                        switchFragment(7, thaCredits, "Credits", context);
+//                    }
+//                }
+//                break;
+//            case 8:
+//                if (WITH_ZOOPER_SECTION) {
+//                    if (WITH_ALTERNATIVE_ABOUT_SECTION) {
+//                        switchFragment(8, thaCredits, "CreditsAlt", context);
+//                    } else {
+//                        switchFragment(8, thaCredits, "Credits", context);
+//                    }
+//                } else {
+//                    switchFragment(8, thaSettings, "Settings", context);
+//                }
+//                break;
+//            case 9:
+//                if (WITH_ZOOPER_SECTION) {
+//                    switchFragment(9, thaSettings, "Settings", context);
+//                } else if (WITH_DONATIONS_SECTION) {
+//                    switchFragment(9, thaDonate, "Donations", context);
+//                }
+//                break;
+//            case 10:
+//                if (WITH_DONATIONS_SECTION && WITH_ZOOPER_SECTION) {
+//                    switchFragment(10, thaDonate, "Donations", context);
+//                }
+//                break;
+//        }
+//
+//    }
 
     public void getAction() {
         try {
