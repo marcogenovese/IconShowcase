@@ -310,15 +310,13 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         }
 
         setupFAB(fragment);
-
-        String[] test = {"1", "2", "3"};
-
+        
         if (mPrefs.getAnimationsEnabled()) {
             if (title.equals(thaDonate)) { ///
                 DonationsFragment donationsFragment;
                 donationsFragment = DonationsFragment.newInstance(BuildConfig.DEBUG,
                         DONATIONS_GOOGLE, GOOGLE_PUBKEY, mGoogleCatalog, GOOGLE_CATALOG_VALUES,
-                        DONATIONS_PAYPAL, PAYPAL_USER, PAYPAL_CURRENCY_CODE, context.getString(R.string.donation_paypal_item),
+                        DONATIONS_PAYPAL, PAYPAL_USER, PAYPAL_CURRENCY_CODE, context.getString(R.string.section_donate),
                         DONATIONS_FLATTR, null, null,
                         DONATIONS_BITCOIN, null);
                 context.getSupportFragmentManager().beginTransaction()
