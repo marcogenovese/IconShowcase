@@ -70,6 +70,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     public static boolean WITH_LICENSE_CHECKER = false,
             WITH_INSTALLED_FROM_AMAZON = false,
             WITH_ZOOPER_SECTION = false,
+            WITH_DONATIONS_SECTION = false,
             WITH_ICONS_BASED_CHANGELOG = true,
             WITH_USER_WALLPAPER_AS_TOOLBAR_HEADER = true,
             WITH_ALTERNATIVE_ABOUT_SECTION = true,
@@ -523,29 +524,35 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                 })
                 .withDisplayBelowStatusBar(false);
 
-        if (WITH_ZOOPER_SECTION) {
-            PrimaryDrawerItem zooper = new PrimaryDrawerItem().withName(thaZooper).withIcon(GoogleMaterial.Icon.gmd_widgets).withIdentifier(seven);
-            if (WITH_SECONDARY_DRAWER_ITEMS_ICONS) {
-                donationsItem = new SecondaryDrawerItem().withName(thaDonate).withIcon(GoogleMaterial.Icon.gmd_money).withIdentifier(seven + 1);
-                creditsItem = new SecondaryDrawerItem().withName(thaCredits).withIcon(GoogleMaterial.Icon.gmd_info).withIdentifier(seven + 2);
-                settingsItem = new SecondaryDrawerItem().withName(thaSettings).withIcon(GoogleMaterial.Icon.gmd_settings).withIdentifier(seven + 3);
-            } else {
-                donationsItem = new SecondaryDrawerItem().withName(thaDonate).withIdentifier(seven + 1);
-                creditsItem = new SecondaryDrawerItem().withName(thaCredits).withIdentifier(seven + 2);
-                settingsItem = new SecondaryDrawerItem().withName(thaSettings).withIdentifier(seven + 3);
-            }
-            drawerBuilder.addDrawerItems(home, previews, walls, requests, apply, faqs, zooper, new DividerDrawerItem(), creditsItem, settingsItem);
+        if ((WITH_ZOOPER_SECTION && !WITH_DONATIONS_SECTION) || (!WITH_ZOOPER_SECTION && WITH_DONATIONS_SECTION)) { //one new tab, increase seven to eight
+            seven++;
+        } else if (WITH_ZOOPER_SECTION && WITH_DONATIONS_SECTION) { //two new tabs, increase seven to nine
+            seven+=2;
+        }
+        if (WITH_SECONDARY_DRAWER_ITEMS_ICONS) {
+            creditsItem = new SecondaryDrawerItem().withName(thaCredits).withIcon(GoogleMaterial.Icon.gmd_info).withIdentifier(seven);
+            settingsItem = new SecondaryDrawerItem().withName(thaSettings).withIcon(GoogleMaterial.Icon.gmd_settings).withIdentifier(seven + 1);
         } else {
+            creditsItem = new SecondaryDrawerItem().withName(thaCredits).withIdentifier(seven);
+            settingsItem = new SecondaryDrawerItem().withName(thaSettings).withIdentifier(seven + 1);
+        }
+        if (WITH_ZOOPER_SECTION && !WITH_DONATIONS_SECTION) { //zooper, no donations
+            PrimaryDrawerItem zooper = new PrimaryDrawerItem().withName(thaZooper).withIcon(GoogleMaterial.Icon.gmd_widgets).withIdentifier(seven);
+            drawerBuilder.addDrawerItems(home, previews, walls, requests, apply, faqs, zooper, new DividerDrawerItem(), creditsItem, settingsItem);
+        } else if (WITH_DONATIONS_SECTION) { //with donations, set up content
             if (WITH_SECONDARY_DRAWER_ITEMS_ICONS) {
                 donationsItem = new SecondaryDrawerItem().withName(thaDonate).withIcon(GoogleMaterial.Icon.gmd_money).withIdentifier(seven);
-                creditsItem = new SecondaryDrawerItem().withName(thaCredits).withIcon(GoogleMaterial.Icon.gmd_info).withIdentifier(seven + 1);
-                settingsItem = new SecondaryDrawerItem().withName(thaSettings).withIcon(GoogleMaterial.Icon.gmd_settings).withIdentifier(seven + 2);
             } else {
                 donationsItem = new SecondaryDrawerItem().withName(thaDonate).withIdentifier(seven);
-                creditsItem = new SecondaryDrawerItem().withName(thaCredits).withIdentifier(seven + 1);
-                settingsItem = new SecondaryDrawerItem().withName(thaSettings).withIdentifier(seven + 2);
             }
-            drawerBuilder.addDrawerItems(home, previews, walls, requests, apply, faqs, new DividerDrawerItem(), donationsItem, creditsItem, settingsItem);
+            if (!WITH_ZOOPER_SECTION) { //donations, no zooper
+                drawerBuilder.addDrawerItems(home, previews, walls, requests, apply, faqs, new DividerDrawerItem(), donationsItem, creditsItem, settingsItem);
+            } else { //donations, zooper
+                PrimaryDrawerItem zooper = new PrimaryDrawerItem().withName(thaZooper).withIcon(GoogleMaterial.Icon.gmd_widgets).withIdentifier(seven);
+                drawerBuilder.addDrawerItems(home, previews, walls, requests, apply, faqs, zooper, new DividerDrawerItem(), donationsItem, creditsItem, settingsItem);
+            }
+        } else { //no zooper, no domations
+            drawerBuilder.addDrawerItems(home, previews, walls, requests, apply, faqs, new DividerDrawerItem(), creditsItem, settingsItem);
         }
 
         drawerBuilder.withSavedInstance(savedInstanceState);
@@ -615,27 +622,34 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                 if (WITH_ZOOPER_SECTION) {
                     switchFragment(7, thaZooper, "Zooper", context);
                 } else {
-                    if (WITH_ALTERNATIVE_ABOUT_SECTION) {
-                        switchFragment(7, thaCredits, "CreditsAlt", context);
-                    } else {
-                        switchFragment(7, thaCredits, "Credits", context);
-                    }
+                    switchFragment(7, thaDonate, "Donations", context);
                 }
                 break;
             case 8:
                 if (WITH_ZOOPER_SECTION) {
+                    switchFragment(8, thaDonate, "Donations", context);
+                } else {
                     if (WITH_ALTERNATIVE_ABOUT_SECTION) {
                         switchFragment(8, thaCredits, "CreditsAlt", context);
                     } else {
                         switchFragment(8, thaCredits, "Credits", context);
                     }
-                } else {
-                    switchFragment(8, thaSettings, "Settings", context);
                 }
                 break;
             case 9:
                 if (WITH_ZOOPER_SECTION) {
+                    if (WITH_ALTERNATIVE_ABOUT_SECTION) {
+                        switchFragment(9, thaCredits, "CreditsAlt", context);
+                    } else {
+                        switchFragment(9, thaCredits, "Credits", context);
+                    }
+                } else {
                     switchFragment(9, thaSettings, "Settings", context);
+                }
+                break;
+            case 10:
+                if (WITH_ZOOPER_SECTION) {
+                    switchFragment(10, thaSettings, "Settings", context);
                 }
                 break;
         }
