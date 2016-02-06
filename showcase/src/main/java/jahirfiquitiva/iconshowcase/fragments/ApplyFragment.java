@@ -88,7 +88,7 @@ public class ApplyFragment extends Fragment {
         updateLaunchersList();
     }
 
-    private void updateLaunchersList(){
+    private void updateLaunchersList() {
 
         launchers.clear();
 

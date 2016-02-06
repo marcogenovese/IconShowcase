@@ -111,10 +111,10 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
         notifyItemChanged(position);
     }
 
-    public int getSelectedApps(){
+    public int getSelectedApps() {
         int selected = 0;
-        for (int i = 0; i< appsList.size(); i++){
-            if(appsList.get(i).isSelected()){
+        for (int i = 0; i < appsList.size(); i++) {
+            if (appsList.get(i).isSelected()) {
                 selected += 1;
             }
         }

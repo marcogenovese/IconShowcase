@@ -16,7 +16,6 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.bumptech.glide.util.Util;
 
 import java.io.File;
 
@@ -60,7 +59,6 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
         addPreferencesFromResource(R.xml.preferences);
 
         Class<?> className = null;
-
 
         final String packageName = Utils.getAppPackageName(getActivity().getApplicationContext());
         String activityName = getResources().getString(R.string.main_activity_name);

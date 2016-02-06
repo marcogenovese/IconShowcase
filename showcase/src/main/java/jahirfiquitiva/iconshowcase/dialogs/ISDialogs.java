@@ -118,8 +118,13 @@ public final class ISDialogs {
                 .show();
     }
 
-    public static void showLicenseFailedDialog(Context context, MaterialDialog.SingleButtonCallback onPositive, MaterialDialog.SingleButtonCallback onNegative) {
-        new MaterialDialog.Builder(context)
+    public static void showLicenseFailDialog(Context context,
+                                             MaterialDialog.SingleButtonCallback onPositive,
+                                             MaterialDialog.SingleButtonCallback onNegative,
+                                             MaterialDialog.OnCancelListener onCancel,
+                                             MaterialDialog.OnDismissListener onDismiss) {
+
+        MaterialDialog licenseFailDialog = new MaterialDialog.Builder(context)
                 .title(R.string.license_failed_title)
                 .content(R.string.license_failed)
                 .positiveText(R.string.download)
@@ -128,7 +133,13 @@ public final class ISDialogs {
                 .onNegative(onNegative)
                 .cancelable(false)
                 .autoDismiss(false)
-                .show();
+                .build();
+
+        licenseFailDialog.setOnCancelListener(onCancel);
+        licenseFailDialog.setOnDismissListener(onDismiss);
+
+        licenseFailDialog.show();
+
     }
 
     /*
@@ -284,7 +295,7 @@ public final class ISDialogs {
                 .build();
     }
 
-    public static void showNoSelectedAppsDialog(Context context){
+    public static void showNoSelectedAppsDialog(Context context) {
         new MaterialDialog.Builder(context)
                 .title(R.string.no_selected_apps_title)
                 .content(R.string.no_selected_apps_content)

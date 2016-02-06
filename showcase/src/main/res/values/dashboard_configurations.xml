@@ -155,8 +155,6 @@
 
     <!--donations stuff-->
 
-    <!--google stuff; must all be completed for this to be enabled-->
-    <string name="google_pubkey">insert complete key here</string>
     <!--MAKE SURE THAT THE ARRAYS BELOW ALL HAVE THE SAME NUMBER OF ITEMS, OR ELSE THIS WON'T WORK-->
     <string-array name="nonconsumable_google_donation_items">
         <!--Put NONCONSUMABLE google items here-->

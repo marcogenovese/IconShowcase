@@ -47,7 +47,7 @@ public class Utils {
         }
     }
 
-    public static String getAppPackageName(Context context){
+    public static String getAppPackageName(Context context) {
         return context.getPackageName();
     }
 

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.WallpaperManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -81,8 +82,8 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             WITH_ALTERNATIVE_ABOUT_SECTION = true,
             WITH_SECONDARY_DRAWER_ITEMS_ICONS = false,
 
-            //Donations stuff
-            DONATIONS_GOOGLE = false,
+    //Donations stuff
+    DONATIONS_GOOGLE = false,
             DONATIONS_PAYPAL = false,
             DONATIONS_FLATTR = false,
             DONATIONS_BITCOIN = false;
@@ -93,7 +94,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     private static String GOOGLE_PUBKEY = new String(),
             PAYPAL_USER = new String(),
             PAYPAL_CURRENCY_CODE = new String();
-
 
     public static DrawerHeaderStyle drawerHeaderStyle = DrawerHeaderStyle.NORMAL_HEADER;
 
@@ -144,34 +144,50 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
         super.onCreate(savedInstanceState);
 
+        context = this;
+        mPrefs = new Preferences(ShowcaseActivity.this);
+
+        getAction();
+
+        Intent intent = getIntent();
+        WITH_LICENSE_CHECKER = intent.getBooleanExtra("license_check", false);
+        WITH_INSTALLED_FROM_AMAZON = intent.getBooleanExtra("allow_installs_from_amazon", false);
+        WITH_DONATIONS_SECTION = intent.getBooleanExtra("with_donations_section", false);
+
+        if (WITH_DONATIONS_SECTION) {
+            DONATIONS_GOOGLE = intent.getBooleanExtra("google_method", false);
+            if (DONATIONS_GOOGLE) {
+                GOOGLE_PUBKEY = intent.getStringExtra("pubkey");
+            }
+            DONATIONS_PAYPAL = intent.getBooleanExtra("paypal_method", false);
+            DONATIONS_FLATTR = intent.getBooleanExtra("flattr_method", false);
+            DONATIONS_BITCOIN = intent.getBooleanExtra("bitcoin_method", false);
+        }
+
         WITH_ZOOPER_SECTION = getResources().getBoolean(R.bool.zooper_included);
         WITH_DONATIONS_SECTION = DONATIONS_GOOGLE || DONATIONS_PAYPAL || DONATIONS_FLATTR || DONATIONS_BITCOIN; //if one of the donations are enabled, then the section is enabled
         WITH_ICONS_BASED_CHANGELOG = getResources().getBoolean(R.bool.icons_changelog);
         WITH_USER_WALLPAPER_AS_TOOLBAR_HEADER = getResources().getBoolean(R.bool.user_wallpaper_in_home);
         WITH_ALTERNATIVE_ABOUT_SECTION = getResources().getBoolean(R.bool.cards_credits);
         WITH_SECONDARY_DRAWER_ITEMS_ICONS = getResources().getBoolean(R.bool.secondary_drawer_items_icons);
-        TAG = getResources().getString(R.string.debug_tag);
 
-        Log.d(TAG, "with donation section: " + WITH_DONATIONS_SECTION);
         //donations stuff
         //google
         final String[] GOOGLE_CATALOG_FREE = getResources().getStringArray(R.array.nonconsumable_google_donation_items);
         final String[] GOOGLE_CATALOG_PRO = getResources().getStringArray(R.array.consumable_google_donation_items);
-        GOOGLE_PUBKEY = getResources().getString(R.string.google_pubkey);
         mGoogleCatalog = GOOGLE_CATALOG_FREE;
         GOOGLE_CATALOG_VALUES = getResources().getStringArray(R.array.google_donations_catalog);
         //TODO check if 50 is a good reference value
-        if (GOOGLE_PUBKEY.length() > 50 && (GOOGLE_CATALOG_VALUES.length > 0) && (GOOGLE_CATALOG_FREE.length == GOOGLE_CATALOG_PRO.length) && (GOOGLE_CATALOG_FREE.length == GOOGLE_CATALOG_VALUES.length)) {
-            DONATIONS_GOOGLE = true; //google donations succesfully set up
+        if (!(GOOGLE_PUBKEY.length() > 50) || !(GOOGLE_CATALOG_VALUES.length > 0) || !(GOOGLE_CATALOG_FREE.length == GOOGLE_CATALOG_PRO.length) || !(GOOGLE_CATALOG_FREE.length == GOOGLE_CATALOG_VALUES.length)) {
+            DONATIONS_GOOGLE = false; //google donations setup is incorrent
         }
 
         //paypal
         PAYPAL_USER = getResources().getString(R.string.paypal_user);
         PAYPAL_CURRENCY_CODE = getResources().getString(R.string.paypal_currency_code);
-        if (PAYPAL_USER.length() > 5 && PAYPAL_CURRENCY_CODE.length() > 1) {
-            DONATIONS_PAYPAL = true; //paypal content filled in, may not necessarily be correct
+        if (!(PAYPAL_USER.length() > 5) || !(PAYPAL_CURRENCY_CODE.length() > 1)) {
+            DONATIONS_PAYPAL = false; //paypal content incorrect
         }
-
 
         switch (getResources().getInteger(R.integer.nav_drawer_header_style)) {
             case 1:
@@ -185,12 +201,9 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                 break;
         }
 
-        context = this;
-        mPrefs = new Preferences(ShowcaseActivity.this);
-
-        getAction();
-
         setContentView(R.layout.showcase_activity);
+
+        runLicenseChecker();
 
         coordinatorLayout = (CustomCoordinatorLayout) findViewById(R.id.mainCoordinatorLayout);
         appbar = (AppBarLayout) findViewById(R.id.appbar);
@@ -236,7 +249,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                 //TODO test this
                 if (inventory != null) {
                     Log.d(TAG, "IAP inventory exists");
-                    for(int i = 0; i < GOOGLE_CATALOG_FREE.length; i++) {
+                    for (int i = 0; i < GOOGLE_CATALOG_FREE.length; i++) {
                         Log.d(TAG, GOOGLE_CATALOG_FREE[i] + " is " + inventory.hasPurchase(GOOGLE_CATALOG_FREE[i]));
                         if (inventory.hasPurchase(GOOGLE_CATALOG_FREE[i])) { //at least one donation value found, now premium
                             mIsPremium = true;
@@ -259,8 +272,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         setupDrawer(toolbar, savedInstanceState);
-
-        runLicenseChecker();
 
         if (savedInstanceState == null) {
             if (iconPicker) {
@@ -527,7 +538,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
     private void showNotLicensedDialog() {
         mPrefs.setFeaturesEnabled(false);
-        ISDialogs.showLicenseFailedDialog(this,
+        ISDialogs.showLicenseFailDialog(this,
                 new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
@@ -537,6 +548,17 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                 }, new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+                        finish();
+                    }
+                }, new MaterialDialog.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        finish();
+                    }
+                }, new MaterialDialog.OnDismissListener() {
+
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
                         finish();
                     }
                 });
@@ -580,7 +602,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         PrimaryDrawerItem apply = new PrimaryDrawerItem().withName(thaApply).withIcon(GoogleMaterial.Icon.gmd_open_in_browser).withIdentifier(5);
         PrimaryDrawerItem faqs = new PrimaryDrawerItem().withName(thaFAQs).withIcon(GoogleMaterial.Icon.gmd_help).withIdentifier(6);
 
-        SecondaryDrawerItem creditsItem, settingsItem;
+        SecondaryDrawerItem creditsItem, settingsItem, donationsItem; //initialize donationsItem;
 
         DrawerBuilder drawerBuilder = new DrawerBuilder()
                 .withActivity(this)
@@ -598,36 +620,45 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                 })
                 .withDisplayBelowStatusBar(false);
 
-        if ((WITH_ZOOPER_SECTION && !WITH_DONATIONS_SECTION) || (!WITH_ZOOPER_SECTION && WITH_DONATIONS_SECTION)) { //one new tab, increase seven to eight
-            seven++;
-        } else if (WITH_ZOOPER_SECTION && WITH_DONATIONS_SECTION) { //two new tabs, increase seven to nine
-            seven+=2;
-        }
-        if (WITH_SECONDARY_DRAWER_ITEMS_ICONS) {
-            creditsItem = new SecondaryDrawerItem().withName(thaCredits).withIcon(GoogleMaterial.Icon.gmd_info).withIdentifier(seven);
-            settingsItem = new SecondaryDrawerItem().withName(thaSettings).withIcon(GoogleMaterial.Icon.gmd_settings).withIdentifier(seven + 1);
-        } else {
-            creditsItem = new SecondaryDrawerItem().withName(thaCredits).withIdentifier(seven);
-            settingsItem = new SecondaryDrawerItem().withName(thaSettings).withIdentifier(seven + 1);
-        }
-        if (WITH_ZOOPER_SECTION && !WITH_DONATIONS_SECTION) { //zooper, no donations
-            PrimaryDrawerItem zooper = new PrimaryDrawerItem().withName(thaZooper).withIcon(GoogleMaterial.Icon.gmd_widgets).withIdentifier(7);
-            drawerBuilder.addDrawerItems(home, previews, walls, requests, apply, faqs, zooper, new DividerDrawerItem(), creditsItem, settingsItem);
-        } else if (WITH_DONATIONS_SECTION) { //with donations, set up content
-            SecondaryDrawerItem donationsItem; //initialize donationsItem
+        if (WITH_ZOOPER_SECTION) {
+            PrimaryDrawerItem zooper = new PrimaryDrawerItem().withName(thaZooper).withIcon(GoogleMaterial.Icon.gmd_widgets).withIdentifier(seven);
             if (WITH_SECONDARY_DRAWER_ITEMS_ICONS) {
-                donationsItem = new SecondaryDrawerItem().withName(thaDonate).withIcon(GoogleMaterial.Icon.gmd_money).withIdentifier(7);
+                creditsItem = new SecondaryDrawerItem().withName(thaCredits).withIcon(GoogleMaterial.Icon.gmd_info).withIdentifier(seven + 1);
+                settingsItem = new SecondaryDrawerItem().withName(thaSettings).withIcon(GoogleMaterial.Icon.gmd_settings).withIdentifier(seven + 2);
             } else {
-                donationsItem = new SecondaryDrawerItem().withName(thaDonate).withIdentifier(7);
+                creditsItem = new SecondaryDrawerItem().withName(thaCredits).withIdentifier(seven + 1);
+                settingsItem = new SecondaryDrawerItem().withName(thaSettings).withIdentifier(seven + 2);
             }
-            if (!WITH_ZOOPER_SECTION) { //donations, no zooper
+
+            if (WITH_DONATIONS_SECTION) {
+                if (WITH_SECONDARY_DRAWER_ITEMS_ICONS) {
+                    donationsItem = new SecondaryDrawerItem().withName(thaDonate).withIcon(GoogleMaterial.Icon.gmd_money_box).withIdentifier(seven + 3);
+                } else {
+                    donationsItem = new SecondaryDrawerItem().withName(thaDonate).withIdentifier(seven + 3);
+                }
+                drawerBuilder.addDrawerItems(home, previews, walls, requests, apply, faqs, zooper, new DividerDrawerItem(), creditsItem, settingsItem, donationsItem);
+            } else {
+                drawerBuilder.addDrawerItems(home, previews, walls, requests, apply, faqs, zooper, new DividerDrawerItem(), creditsItem, settingsItem);
+            }
+        } else {
+            if (WITH_SECONDARY_DRAWER_ITEMS_ICONS) {
+                creditsItem = new SecondaryDrawerItem().withName(thaCredits).withIcon(GoogleMaterial.Icon.gmd_info).withIdentifier(seven);
+                settingsItem = new SecondaryDrawerItem().withName(thaSettings).withIcon(GoogleMaterial.Icon.gmd_settings).withIdentifier(seven + 1);
+            } else {
+                creditsItem = new SecondaryDrawerItem().withName(thaCredits).withIdentifier(seven);
+                settingsItem = new SecondaryDrawerItem().withName(thaSettings).withIdentifier(seven + 1);
+            }
+
+            if (WITH_DONATIONS_SECTION) {
+                if (WITH_SECONDARY_DRAWER_ITEMS_ICONS) {
+                    donationsItem = new SecondaryDrawerItem().withName(thaDonate).withIcon(GoogleMaterial.Icon.gmd_money_box).withIdentifier(seven + 2);
+                } else {
+                    donationsItem = new SecondaryDrawerItem().withName(thaDonate).withIdentifier(seven + 2);
+                }
+                drawerBuilder.addDrawerItems(home, previews, walls, requests, apply, faqs, new DividerDrawerItem(), creditsItem, settingsItem, donationsItem);
+            } else {
                 drawerBuilder.addDrawerItems(home, previews, walls, requests, apply, faqs, new DividerDrawerItem(), creditsItem, settingsItem);
-            } else { //donations, zooper
-                PrimaryDrawerItem zooper = new PrimaryDrawerItem().withName(thaZooper).withIcon(GoogleMaterial.Icon.gmd_widgets).withIdentifier(8);
-                drawerBuilder.addDrawerItems(home, previews, walls, requests, apply, faqs, zooper, new DividerDrawerItem(), donationsItem, creditsItem, settingsItem);
             }
-        } else { //no zooper, no donations
-            drawerBuilder.addDrawerItems(home, previews, walls, requests, apply, faqs, new DividerDrawerItem(), creditsItem, settingsItem);
         }
 
         drawerBuilder.withSavedInstance(savedInstanceState);
@@ -694,9 +725,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                 switchFragment(6, thaFAQs, "FAQs", context);
                 break;
             case 7:
-                if (WITH_DONATIONS_SECTION) {
-                    switchFragment(7, thaDonate, "Donations", context);
-                } else if (WITH_ZOOPER_SECTION) {
+                if (WITH_ZOOPER_SECTION) {
                     switchFragment(7, thaZooper, "Zooper", context);
                 } else {
                     if (WITH_ALTERNATIVE_ABOUT_SECTION) {
@@ -707,9 +736,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                 }
                 break;
             case 8:
-                if (WITH_DONATIONS_SECTION && WITH_ZOOPER_SECTION) {
-                    switchFragment(8, thaZooper, "Zooper", context);
-                } else if (WITH_DONATIONS_SECTION || WITH_ZOOPER_SECTION) {
+                if (WITH_ZOOPER_SECTION) {
                     if (WITH_ALTERNATIVE_ABOUT_SECTION) {
                         switchFragment(8, thaCredits, "CreditsAlt", context);
                     } else {
@@ -720,22 +747,19 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                 }
                 break;
             case 9:
-                if (WITH_DONATIONS_SECTION && WITH_ZOOPER_SECTION) {
-                    if (WITH_ALTERNATIVE_ABOUT_SECTION) {
-                        switchFragment(9, thaCredits, "CreditsAlt", context);
-                    } else {
-                        switchFragment(9, thaCredits, "Credits", context);
-                    }
-                } else if (WITH_DONATIONS_SECTION || WITH_ZOOPER_SECTION) {
+                if (WITH_ZOOPER_SECTION) {
                     switchFragment(9, thaSettings, "Settings", context);
+                } else if (WITH_DONATIONS_SECTION) {
+                    switchFragment(9, thaDonate, "Donations", context);
                 }
                 break;
             case 10:
                 if (WITH_DONATIONS_SECTION && WITH_ZOOPER_SECTION) {
-                    switchFragment(10, thaSettings, "Settings", context);
+                    switchFragment(10, thaDonate, "Donations", context);
                 }
                 break;
         }
+
     }
 
     public void getAction() {

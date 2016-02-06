@@ -75,7 +75,7 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
         }
         holder.view.setTag(position);
         holder.view.setOnClickListener(this);
-        if(!inChangelog) {
+        if (!inChangelog) {
             setAnimation(holder.icon, position);
         }
     }
