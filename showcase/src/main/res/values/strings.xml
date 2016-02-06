@@ -4,6 +4,7 @@
     <!-- ShowcaseActivity Strings -->
     <string name="app_name">IconShowcase</string>
     <string name="app_long_name">IconShowcase Sample</string>
+    <string name="debug_tag">@string/app_name</string>
     <string name="theme_description">IconShowcase is a Material Design based Icon Pack dashboard template. Free and open source.</string>
 
     <string name="iconpack_author_name">Jahir Fiquitiva</string>

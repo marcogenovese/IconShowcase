@@ -153,5 +153,17 @@
     <integer name="icons_columns_tablet_landscape">10</integer>
     <integer name="launchers_columns_tablet_landscape">6</integer>
 
+    <!--donations stuff-->
+    <string-array name="nonconsumable_google_donation_items">
+        <!--put NONCONSUMABLE google items here-->
+    </string-array>
+
+    <string-array name="consumable_google_donation_items">
+        <!--
+        put CONSUMABLE google items here
+        if one of the nonconsumable products is shown as purchased,
+        it will enable the pro boolean and will switch to here
+        -->
+    </string-array>
 
 </resources>

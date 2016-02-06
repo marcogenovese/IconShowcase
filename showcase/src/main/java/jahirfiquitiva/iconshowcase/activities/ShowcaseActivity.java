@@ -21,6 +21,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayout;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,12 +45,16 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialize.util.UIUtils;
 
 import org.sufficientlysecure.donations.DonationsFragment;
+import org.sufficientlysecure.donations.google.util.IabHelper;
+import org.sufficientlysecure.donations.google.util.IabResult;
+import org.sufficientlysecure.donations.google.util.Inventory;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
+import jahirfiquitiva.iconshowcase.BuildConfig;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.dialogs.FolderChooserDialog;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
@@ -74,11 +79,21 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             WITH_ICONS_BASED_CHANGELOG = true,
             WITH_USER_WALLPAPER_AS_TOOLBAR_HEADER = true,
             WITH_ALTERNATIVE_ABOUT_SECTION = true,
-            WITH_SECONDARY_DRAWER_ITEMS_ICONS = false;
+            WITH_SECONDARY_DRAWER_ITEMS_ICONS = false,
+
+            //Donations stuff
+            DONATIONS_GOOGLE = false,
+            DONATIONS_PAYPAL = false,
+            DONATIONS_FLATTR = false,
+            DONATIONS_BITCOIN = false;
+
+    private String[] mGoogleCatalog;
 
     public static DrawerHeaderStyle drawerHeaderStyle = DrawerHeaderStyle.NORMAL_HEADER;
 
     private static final String MARKET_URL = "https://play.google.com/store/apps/details?id=";
+    public boolean mIsPremium = false;
+    private static String TAG;
 
     private String action = "action";
     private static final String
@@ -124,11 +139,17 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         super.onCreate(savedInstanceState);
 
         WITH_ZOOPER_SECTION = getResources().getBoolean(R.bool.zooper_included);
+        WITH_DONATIONS_SECTION = DONATIONS_GOOGLE || DONATIONS_PAYPAL || DONATIONS_FLATTR || DONATIONS_BITCOIN; //if one of the donations are enabled, then the section is enabled
         WITH_ICONS_BASED_CHANGELOG = getResources().getBoolean(R.bool.icons_changelog);
         WITH_USER_WALLPAPER_AS_TOOLBAR_HEADER = getResources().getBoolean(R.bool.user_wallpaper_in_home);
         WITH_ALTERNATIVE_ABOUT_SECTION = getResources().getBoolean(R.bool.cards_credits);
         WITH_SECONDARY_DRAWER_ITEMS_ICONS = getResources().getBoolean(R.bool.secondary_drawer_items_icons);
+        TAG = getResources().getString(R.string.debug_tag);
 
+        //donations stuff
+        final String[] GOOGLE_CATALOG_FREE = getResources().getStringArray(R.array.nonconsumable_google_donation_items);
+        final String[] GOOGLE_CATALOG_PRO = getResources().getStringArray(R.array.consumable_google_donation_items);
+        mGoogleCatalog = GOOGLE_CATALOG_FREE;
         switch (getResources().getInteger(R.integer.nav_drawer_header_style)) {
             case 1:
                 drawerHeaderStyle = DrawerHeaderStyle.NORMAL_HEADER;
@@ -184,6 +205,26 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         thaSettings = getResources().getString(R.string.title_settings);
         thaFAQs = getResources().getString(R.string.faqs_section);
         thaZooper = getResources().getString(R.string.zooper_section_title);
+
+        //Setup donations
+        final IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
+            public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
+
+                //TODO test this
+                if (inventory != null) {
+                    Log.d(TAG, "IAP inventory exists");
+                    for(int i = 0; i < GOOGLE_CATALOG_FREE.length; i++) {
+                        Log.d(TAG, GOOGLE_CATALOG_FREE[i] + " is " + inventory.hasPurchase(GOOGLE_CATALOG_FREE[i]));
+                        if (inventory.hasPurchase(GOOGLE_CATALOG_FREE[i])) { //at least one donation value found, now premium
+                            mIsPremium = true;
+                        }
+                    }
+                }
+                if (isPremium()) {
+                    mGoogleCatalog = GOOGLE_CATALOG_PRO;
+                }
+            }
+        };
 
         CollapsingToolbarLayout.LayoutParams layoutParams = (CollapsingToolbarLayout.LayoutParams) toolbar.getLayoutParams();
         layoutParams.height = layoutParams.height + UIUtils.getStatusBarHeight(this);
@@ -251,15 +292,12 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         if (mPrefs.getAnimationsEnabled()) {
             if (title.equals(thaDonate)) {
                 DonationsFragment donationsFragment;
-                if (BuildConfig.DONATIONS_GOOGLE) {
-                    donationsFragment = DonationsFragment.newInstance(BuildConfig.DEBUG, true, GOOGLE_PUBKEY, mGoogleCatalog,
-                            getResources().getStringArray(R.array.donation_google_catalog_values), true, PAYPAL_USER,
-                            PAYPAL_CURRENCY_CODE, getString(R.string.donation_paypal_item), false, null, null, false, null);
-                } else {
-                    donationsFragment = DonationsFragment.newInstance(BuildConfig.DEBUG, false, null, null, null, true, PAYPAL_USER,
-                            PAYPAL_CURRENCY_CODE, getString(R.string.donation_paypal_item), false, null, null, false, null);
-                }
-                getSupportFragmentManager().beginTransaction()
+                donationsFragment = DonationsFragment.newInstance(BuildConfig.DEBUG,
+                        DONATIONS_GOOGLE, GOOGLE_PUBKEY, mGoogleCatalog, getResources().getStringArray(R.array.donation_google_catalog_values),
+                        DONATIONS_PAYPAL, PAYPAL_USER, PAYPAL_CURRENCY_CODE, getString(R.string.donation_paypal_item),
+                        DONATIONS_FLATTR, null, null,
+                        DONATIONS_BITCOIN, null);
+                context.getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
                         .replace(R.id.main, donationsFragment, "donationsFragment")
                         .commit();
@@ -800,6 +838,10 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
     public void openFileChooser() {
         //TODO ADD FOLDER CHOOSER
+    }
+
+    public boolean isPremium() {
+        return mIsPremium;
     }
 
 }
