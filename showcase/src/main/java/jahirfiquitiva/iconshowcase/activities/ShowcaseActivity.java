@@ -609,18 +609,18 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             settingsItem = new SecondaryDrawerItem().withName(thaSettings).withIdentifier(seven + 1);
         }
         if (WITH_ZOOPER_SECTION && !WITH_DONATIONS_SECTION) { //zooper, no donations
-            PrimaryDrawerItem zooper = new PrimaryDrawerItem().withName(thaZooper).withIcon(GoogleMaterial.Icon.gmd_widgets).withIdentifier(seven);
+            PrimaryDrawerItem zooper = new PrimaryDrawerItem().withName(thaZooper).withIcon(GoogleMaterial.Icon.gmd_widgets).withIdentifier(7);
             drawerBuilder.addDrawerItems(home, previews, walls, requests, apply, faqs, zooper, new DividerDrawerItem(), creditsItem, settingsItem);
         } else if (WITH_DONATIONS_SECTION) { //with donations, set up content
             if (WITH_SECONDARY_DRAWER_ITEMS_ICONS) {
-                donationsItem = new SecondaryDrawerItem().withName(thaDonate).withIcon(GoogleMaterial.Icon.gmd_money).withIdentifier(seven);
+                donationsItem = new SecondaryDrawerItem().withName(thaDonate).withIcon(GoogleMaterial.Icon.gmd_money).withIdentifier(7);
             } else {
-                donationsItem = new SecondaryDrawerItem().withName(thaDonate).withIdentifier(seven);
+                donationsItem = new SecondaryDrawerItem().withName(thaDonate).withIdentifier(7);
             }
             if (!WITH_ZOOPER_SECTION) { //donations, no zooper
                 drawerBuilder.addDrawerItems(home, previews, walls, requests, apply, faqs, new DividerDrawerItem(), donationsItem, creditsItem, settingsItem);
             } else { //donations, zooper
-                PrimaryDrawerItem zooper = new PrimaryDrawerItem().withName(thaZooper).withIcon(GoogleMaterial.Icon.gmd_widgets).withIdentifier(seven);
+                PrimaryDrawerItem zooper = new PrimaryDrawerItem().withName(thaZooper).withIcon(GoogleMaterial.Icon.gmd_widgets).withIdentifier(8);
                 drawerBuilder.addDrawerItems(home, previews, walls, requests, apply, faqs, zooper, new DividerDrawerItem(), donationsItem, creditsItem, settingsItem);
             }
         } else { //no zooper, no domations
