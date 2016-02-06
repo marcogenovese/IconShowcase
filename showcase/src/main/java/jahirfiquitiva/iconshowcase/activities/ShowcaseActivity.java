@@ -87,7 +87,13 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             DONATIONS_FLATTR = false,
             DONATIONS_BITCOIN = false;
 
-    private String[] mGoogleCatalog;
+    private static String[] mGoogleCatalog = new String[0],
+            GOOGLE_CATALOG_VALUES = new String[0];
+
+    private static String GOOGLE_PUBKEY = new String(),
+            PAYPAL_USER = new String(),
+            PAYPAL_CURRENCY_CODE = new String();
+
 
     public static DrawerHeaderStyle drawerHeaderStyle = DrawerHeaderStyle.NORMAL_HEADER;
 
@@ -147,9 +153,25 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         TAG = getResources().getString(R.string.debug_tag);
 
         //donations stuff
+        //google
         final String[] GOOGLE_CATALOG_FREE = getResources().getStringArray(R.array.nonconsumable_google_donation_items);
         final String[] GOOGLE_CATALOG_PRO = getResources().getStringArray(R.array.consumable_google_donation_items);
+        GOOGLE_PUBKEY = getResources().getString(R.string.google_pubkey);
         mGoogleCatalog = GOOGLE_CATALOG_FREE;
+        GOOGLE_CATALOG_VALUES = getResources().getStringArray(R.array.google_donations_catalog);
+        //TODO check if 50 is a good reference value
+        if (GOOGLE_PUBKEY.length() > 50 && (GOOGLE_CATALOG_VALUES.length > 0) && (GOOGLE_CATALOG_FREE.length == GOOGLE_CATALOG_PRO.length) && (GOOGLE_CATALOG_FREE.length == GOOGLE_CATALOG_VALUES.length)) {
+            DONATIONS_GOOGLE = true; //google donations succesfully set up
+        }
+
+        //paypal ///
+        PAYPAL_USER = getResources().getString(R.string.paypal_user);
+        PAYPAL_CURRENCY_CODE = getResources().getString(R.string.paypal_currency_code);
+        if (PAYPAL_USER.length() > 5 && PAYPAL_CURRENCY_CODE.length() > 1) {
+            DONATIONS_PAYPAL = true; //paypal content filled in, may not necessarily be correct
+        }
+
+
         switch (getResources().getInteger(R.integer.nav_drawer_header_style)) {
             case 1:
                 drawerHeaderStyle = DrawerHeaderStyle.NORMAL_HEADER;
@@ -289,12 +311,14 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
         setupFAB(fragment);
 
+        String[] test = {"1", "2", "3"};
+
         if (mPrefs.getAnimationsEnabled()) {
-            if (title.equals(thaDonate)) {
+            if (title.equals(thaDonate)) { ///
                 DonationsFragment donationsFragment;
                 donationsFragment = DonationsFragment.newInstance(BuildConfig.DEBUG,
-                        DONATIONS_GOOGLE, GOOGLE_PUBKEY, mGoogleCatalog, getResources().getStringArray(R.array.donation_google_catalog_values),
-                        DONATIONS_PAYPAL, PAYPAL_USER, PAYPAL_CURRENCY_CODE, getString(R.string.donation_paypal_item),
+                        DONATIONS_GOOGLE, GOOGLE_PUBKEY, mGoogleCatalog, GOOGLE_CATALOG_VALUES,
+                        DONATIONS_PAYPAL, PAYPAL_USER, PAYPAL_CURRENCY_CODE, context.getString(R.string.donation_paypal_item),
                         DONATIONS_FLATTR, null, null,
                         DONATIONS_BITCOIN, null);
                 context.getSupportFragmentManager().beginTransaction()
