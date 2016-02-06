@@ -47,6 +47,10 @@ public class Utils {
         }
     }
 
+    public static String getAppPackageName(Context context){
+        return context.getPackageName();
+    }
+
     public static boolean hasNetwork(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
