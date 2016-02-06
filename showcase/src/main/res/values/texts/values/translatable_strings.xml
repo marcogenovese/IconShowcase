@@ -145,9 +145,9 @@
         settings? Applied icons won\'t be affected.
     </string>
 
-    <string name="hideicon_dialog_title">@string/pref_title_launcher_icon</string>
+    <string name="hideicon_dialog_title">Warning!</string>
     <string name="hideicon_dialog_content">Are you sure you want to hide app icon in your launcher?
-        App may close unexpectedly. Read the FAQs to learn how to make it appear again, before hiding
+        \nApp may close unexpectedly.\nYou may want to read the FAQs to learn how to make it appear again, before hiding
         it.
     </string>
 
