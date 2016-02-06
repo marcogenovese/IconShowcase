@@ -1,24 +1,23 @@
+/*
+ * Copyright (c) 2016. Jahir Fiquitiva. Android Developer. All rights reserved.
+ */
+
 package jahirfiquitiva.iconshowcase.models;
 
 import java.util.ArrayList;
 
-public class IconsLists {
+public class IconsCategory {
 
     private String name;
     private ArrayList<IconItem> iconsArray = new ArrayList<>();
-    private static ArrayList<IconsCategory> categoriesList = new ArrayList<>();
 
-    public IconsLists(String name) {
+    public IconsCategory(String name) {
         this.name = name;
     }
 
-    public IconsLists(String name, ArrayList<IconItem> iconsArray) {
+    public IconsCategory(String name, ArrayList<IconItem> iconsArray) {
         this.name = name;
         this.iconsArray = iconsArray;
-    }
-
-    public IconsLists(ArrayList<IconsCategory> categoriesList) {
-        IconsLists.categoriesList = categoriesList;
     }
 
     public String getCategoryName() {
@@ -31,10 +30,6 @@ public class IconsLists {
 
     public ArrayList<IconItem> getIconsArray() {
         return iconsArray.size() > 0 ? this.iconsArray : null;
-    }
-
-    public static ArrayList<IconsCategory> getCategoriesList() {
-        return categoriesList.size() > 0 ? categoriesList : null;
     }
 
 }

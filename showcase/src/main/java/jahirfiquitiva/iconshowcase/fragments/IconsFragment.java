@@ -18,12 +18,13 @@ import java.util.Locale;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.adapters.IconsAdapter;
+import jahirfiquitiva.iconshowcase.models.IconItem;
+import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 public class IconsFragment extends Fragment {
 
     private IconsAdapter mAdapter;
-    private ArrayList<String> iconsNames, filteredIconsList;
-    private ArrayList<Integer> iconsInts, filteredIconsInts;
+    private ArrayList<IconItem> iconsList, filteredIconsList;
     private ViewGroup layout;
 
     @Override
@@ -53,12 +54,25 @@ public class IconsFragment extends Fragment {
         iconsGrid.setLayoutManager(new GridLayoutManager(getActivity(),
                 getResources().getInteger(R.integer.icons_grid_width)));
 
-        mAdapter = new IconsAdapter(getActivity(), new ArrayList<String>(), new ArrayList<Integer>());
+        iconsList = new ArrayList<>();
+
+        mAdapter = new IconsAdapter(getActivity(), iconsList);
 
         if (getArguments() != null) {
-            iconsNames = getArguments().getStringArrayList("iconsNamesList");
-            iconsInts = getArguments().getIntegerArrayList("iconsArray");
-            mAdapter.setIcons(iconsNames, iconsInts);
+            ArrayList<String> names = getArguments().getStringArrayList("iconsNames");
+            ArrayList<Integer> ints = getArguments().getIntegerArrayList("iconsInts");
+            if (names != null) {
+                if (ints != null) {
+                    if (names.size() == ints.size()) {
+                        for (int i = 0; i < names.size(); i++) {
+                            iconsList.add(new IconItem(names.get(i), ints.get(i)));
+                        }
+                    } else {
+                        Utils.showLog(getActivity(), "Inconsistent arrays");
+                    }
+                }
+            }
+            mAdapter.setIcons(iconsList);
         }
 
         iconsGrid.setAdapter(mAdapter);
@@ -69,11 +83,11 @@ public class IconsFragment extends Fragment {
         return layout;
     }
 
-    public static IconsFragment newInstance(ArrayList<String> iconsNames, ArrayList<Integer> iconsArray) {
+    public static IconsFragment newInstance(ArrayList<String> iconsNames, ArrayList<Integer> iconsInts) {
         IconsFragment fragment = new IconsFragment();
         Bundle args = new Bundle();
-        args.putStringArrayList("iconsNamesList", iconsNames);
-        args.putIntegerArrayList("iconsArray", iconsArray);
+        args.putStringArrayList("iconsNames", iconsNames);
+        args.putIntegerArrayList("iconsInts", iconsInts);
         fragment.setArguments(args);
         return fragment;
     }
@@ -87,31 +101,23 @@ public class IconsFragment extends Fragment {
             if (filteredIconsList != null) {
                 filteredIconsList = null;
             }
-            if (filteredIconsInts != null) {
-                filteredIconsList = null;
-            }
             adapter.clearIconsList();
-            adapter.setIcons(iconsNames, iconsInts);
+            adapter.setIcons(iconsList);
             adapter.notifyDataSetChanged();
         } else {
             if (filteredIconsList != null) {
                 filteredIconsList.clear();
             }
-            if (filteredIconsInts != null) {
-                filteredIconsList = null;
-            }
-            filteredIconsList = new ArrayList<String>();
-            filteredIconsInts = new ArrayList<Integer>();
-            for (int i = 0; i < iconsNames.size(); i++) {
-                String name = iconsNames.get(i);
+            filteredIconsList = new ArrayList<IconItem>();
+            for (int i = 0; i < iconsList.size(); i++) {
+                String name = iconsList.get(i).getName();
                 if (name.toLowerCase(Locale.getDefault())
                         .startsWith(s.toString().toLowerCase(Locale.getDefault()))) {
-                    filteredIconsList.add(iconsNames.get(i));
-                    filteredIconsInts.add(iconsInts.get(i));
+                    filteredIconsList.add(iconsList.get(i));
                 }
             }
             adapter.clearIconsList();
-            adapter.setIcons(filteredIconsList, filteredIconsInts);
+            adapter.setIcons(filteredIconsList);
             adapter.notifyDataSetChanged();
         }
     }

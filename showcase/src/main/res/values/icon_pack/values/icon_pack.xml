@@ -7,6 +7,15 @@
     <!-- These names should match YOUR actual icon names
     	 the names used below are just for sampling purposes -->
 
+    <!-- Make sure the tabs names are the same as the other arrays -->
+    <string-array name="tabs">
+        <item>latest</item>
+        <item>system</item>
+        <item>google_apps</item>
+        <item>games</item>
+        <item>drawers</item>
+    </string-array>
+
     <!-- LATEST ICONS -->
     <!-- All of your Latest icons listed here -->
     <string-array name="latest"/>
@@ -17,7 +26,7 @@
 
     <!-- GOOGLE APPS ICONS -->
     <!-- Google Apps icons are listed here -->
-    <string-array name="google"/>
+    <string-array name="google_apps"/>
 
     <!-- GAMES ICONS -->
     <!-- Game icons are listed here -->
@@ -25,6 +34,6 @@
 
     <string-array name="drawers"/>
 
-    <string-array name="icon_pack"/>
+    <string-array name="all"/>
 
 </resources>

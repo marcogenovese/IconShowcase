@@ -27,7 +27,9 @@ import java.util.Locale;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.fragments.base.FragmentStatePagerAdapter;
+import jahirfiquitiva.iconshowcase.models.IconsCategory;
 import jahirfiquitiva.iconshowcase.models.IconsLists;
+import jahirfiquitiva.iconshowcase.tasks.LoadIconsLists;
 import jahirfiquitiva.iconshowcase.views.CustomCoordinatorLayout;
 
 public class PreviewsFragment extends Fragment {
@@ -39,6 +41,7 @@ public class PreviewsFragment extends Fragment {
     private ViewGroup layout;
     public TabLayout mTabs;
     private SearchView mSearchView;
+    public ArrayList<IconsCategory> categories;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -55,6 +58,9 @@ public class PreviewsFragment extends Fragment {
         } catch (InflateException e) {
             //Do nothing
         }
+
+        //categories = IconsLists.getCategoriesList();
+        categories = LoadIconsLists.getIconsCategories();
 
         return layout;
     }
@@ -193,32 +199,30 @@ public class PreviewsFragment extends Fragment {
 
         public IconsPagerAdapter(FragmentManager fm) {
             super(fm);
-            tabs = getResources().getStringArray(R.array.tabs);
+
+            String[] tabsNames = new String[categories.size()];
+
+            for (int i = 0; i < tabsNames.length; i++) {
+                tabsNames[i] = categories.get(i).getCategoryName();
+            }
+
+            tabs = tabsNames;
         }
 
         @Override
         public Fragment getItem(int position) {
             Fragment f = new Fragment();
-            switch (position) {
-                case 0:
-                    f = IconsFragment.newInstance((ArrayList<String>) IconsLists.getListA(), IconsLists.getSectionA());
-                    break;
-                case 1:
-                    f = IconsFragment.newInstance((ArrayList<String>) IconsLists.getListB(), IconsLists.getSectionB());
-                    break;
-                case 2:
-                    f = IconsFragment.newInstance((ArrayList<String>) IconsLists.getListC(), IconsLists.getSectionC());
-                    break;
-                case 3:
-                    f = IconsFragment.newInstance((ArrayList<String>) IconsLists.getListD(), IconsLists.getSectionD());
-                    break;
-                case 4:
-                    f = IconsFragment.newInstance((ArrayList<String>) IconsLists.getListE(), IconsLists.getSectionE());
-                    break;
-                case 5:
-                    f = IconsFragment.newInstance((ArrayList<String>) IconsLists.getListF(), IconsLists.getSectionF());
-                    break;
+
+            ArrayList<String> iconsNames = new ArrayList<>();
+            ArrayList<Integer> iconsInts = new ArrayList<>();
+
+            for (int i = 0; i < categories.get(position).getIconsArray().size(); i++) {
+                iconsNames.add(categories.get(position).getIconsArray().get(i).getName());
+                iconsInts.add(categories.get(position).getIconsArray().get(i).getResId());
             }
+
+            f = IconsFragment.newInstance(iconsNames, iconsInts);
+
             return f;
         }
 

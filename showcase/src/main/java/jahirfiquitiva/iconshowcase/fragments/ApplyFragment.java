@@ -77,7 +77,7 @@ public class ApplyFragment extends Fragment {
         RecyclerFastScroller fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
         fastScroller.attachRecyclerView(recyclerView);
 
-        updateLaunchersList();
+        //updateLaunchersList();
 
         return layout;
     }

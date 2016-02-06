@@ -153,6 +153,16 @@
     <integer name="icons_columns_tablet_landscape">10</integer>
     <integer name="launchers_columns_tablet_landscape">6</integer>
 
+    <!--
+    Do you want the "ALL ICONS" tab to be generated automatically?
+    If you are sure you have put all the icons in categories.
+    True, means yes.
+    False, means no.
+    -->
+    <bool name="auto_generate_all_icons">true</bool>
+
+
+
     <!--donations stuff-->
 
     <!--MAKE SURE THAT THE ARRAYS BELOW ALL HAVE THE SAME NUMBER OF ITEMS, OR ELSE THIS WON'T WORK-->

@@ -7,17 +7,21 @@ import android.os.AsyncTask;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.models.IconItem;
+import jahirfiquitiva.iconshowcase.models.IconsCategory;
 import jahirfiquitiva.iconshowcase.models.IconsLists;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
 
     private Context context;
-    private ArrayList<Integer> newIconsAL, sectionA, sectionB, sectionC, sectionD, sectionE, sectionF, previewAL;
-    private List<String> newIconsL, listA, listB, listC, listD, listE, listF, previewL;
+    public static ArrayList<IconsLists> iconsLists;
+    public static ArrayList<IconsCategory> categories;
     long startTime, endTime;
 
     public LoadIconsLists(Context context) {
@@ -35,133 +39,60 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
         Resources r = context.getResources();
         String p = context.getPackageName();
 
-        // ICONS IN CHANGELOG
-        newIconsAL = new ArrayList<>();
+        iconsLists = new ArrayList<>();
+
         String[] newIcons = r.getStringArray(R.array.changelog_icons);
-        newIconsL = sortLists(newIcons);
-        for (String extra : newIconsL) {
-            int res = r.getIdentifier(extra, "drawable", p);
-            if (res != 0) {
-                final int thumbRes = r.getIdentifier(extra, "drawable", p);
-                if (thumbRes != 0) {
-                    newIconsAL.add(thumbRes);
-                }
+        List<String> newIconsL = sortList(newIcons);
+
+        ArrayList<IconItem> changelogIconsArray = new ArrayList<>();
+        for (String icon : newIconsL) {
+            int iconResId = getIconResId(r, p, icon);
+            if (iconResId != 0) {
+                changelogIconsArray.add(new IconItem(icon, iconResId));
             }
         }
-        IconsLists.setNewIconsAL(newIconsAL);
-        IconsLists.setNewIconsL(newIconsL);
+        iconsLists.add(new IconsLists("Changelog", changelogIconsArray));
 
-        // PREVIEWS
-        previewAL = new ArrayList<>();
         String[] prev = r.getStringArray(R.array.preview);
-        previewL = sortLists(prev);
-        for (String extra : previewL) {
-            int res = r.getIdentifier(extra, "drawable", p);
-            if (res != 0) {
-                final int thumbRes = r.getIdentifier(extra, "drawable", p);
-                if (thumbRes != 0) {
-                    previewAL.add(thumbRes);
-                }
+        List<String> previewIconsL = sortList(prev);
+        ArrayList<IconItem> previewIconsArray = new ArrayList<>();
+        for (String icon : previewIconsL) {
+            int iconResId = getIconResId(r, p, icon);
+            if (iconResId != 0) {
+                previewIconsArray.add(new IconItem(icon, iconResId));
             }
         }
-        IconsLists.setPreviewAL(previewAL);
-        IconsLists.setPreviewL(previewL);
+        iconsLists.add(new IconsLists("Previews", previewIconsArray));
 
-        // SECTION A
-        sectionA = new ArrayList<>();
-        String[] arrayA = r.getStringArray(R.array.latest);
-        listA = sortLists(arrayA);
-        for (String extra : listA) {
-            int res = r.getIdentifier(extra, "drawable", p);
-            if (res != 0) {
-                final int thumbRes = r.getIdentifier(extra, "drawable", p);
-                if (thumbRes != 0) {
-                    sectionA.add(thumbRes);
-                }
-            }
-        }
-        IconsLists.setSectionA(sectionA);
-        IconsLists.setListA(listA);
+        String[] tabsNames = r.getStringArray(R.array.tabs);
+        categories = new ArrayList<>();
 
-        // SECTION B
-        sectionB = new ArrayList<>();
-        String[] arrayB = r.getStringArray(R.array.system);
-        listB = sortLists(arrayB);
-        for (String extra : listB) {
-            int res = r.getIdentifier(extra, "drawable", p);
-            if (res != 0) {
-                final int thumbRes = r.getIdentifier(extra, "drawable", p);
-                if (thumbRes != 0) {
-                    sectionB.add(thumbRes);
-                }
-            }
-        }
-        IconsLists.setSectionB(sectionB);
-        IconsLists.setListB(listB);
+        ArrayList<IconItem> allIcons = new ArrayList<>();
 
-        // SECTION C
-        sectionC = new ArrayList<>();
-        String[] arrayC = r.getStringArray(R.array.google);
-        listC = sortLists(arrayC);
-        for (String extra : listC) {
-            int res = r.getIdentifier(extra, "drawable", p);
-            if (res != 0) {
-                final int thumbRes = r.getIdentifier(extra, "drawable", p);
-                if (thumbRes != 0) {
-                    sectionC.add(thumbRes);
-                }
-            }
-        }
-        IconsLists.setSectionC(sectionC);
-        IconsLists.setListC(listC);
+        for (String tabName : tabsNames) {
+            int arrayId = r.getIdentifier(tabName, "array", p);
+            String[] icons = r.getStringArray(arrayId);
+            List<String> iconsList = sortList(icons);
 
-        // SECTION D
-        sectionD = new ArrayList<>();
-        String[] arrayD = r.getStringArray(R.array.games);
-        listD = sortLists(arrayD);
-        for (String extra : listD) {
-            int res = r.getIdentifier(extra, "drawable", p);
-            if (res != 0) {
-                final int thumbRes = r.getIdentifier(extra, "drawable", p);
-                if (thumbRes != 0) {
-                    sectionD.add(thumbRes);
-                }
-            }
-        }
-        IconsLists.setSectionD(sectionD);
-        IconsLists.setListD(listD);
+            ArrayList<IconItem> iconsArray = new ArrayList<>();
 
-        // SECTION E
-        sectionE = new ArrayList<>();
-        String[] arrayE = r.getStringArray(R.array.icon_pack);
-        listE = sortLists(arrayE);
-        for (String extra : listE) {
-            int res = r.getIdentifier(extra, "drawable", p);
-            if (res != 0) {
-                final int thumbRes = r.getIdentifier(extra, "drawable", p);
-                if (thumbRes != 0) {
-                    sectionE.add(thumbRes);
+            for (String iconName : iconsList) {
+                int iconResId = getIconResId(r, p, iconName);
+                if (iconResId != 0) {
+                    iconsArray.add(new IconItem(iconName, iconResId));
+                    if (context.getResources().getBoolean(R.bool.auto_generate_all_icons)) {
+                        allIcons.add(new IconItem(iconName, iconResId));
+                    }
                 }
             }
-        }
-        IconsLists.setSectionE(sectionE);
-        IconsLists.setListE(listE);
 
-        // SECTION F
-        sectionF = new ArrayList<>();
-        String[] arrayF = r.getStringArray(R.array.drawers);
-        listF = sortLists(arrayF);
-        for (String extra : listF) {
-            int res = r.getIdentifier(extra, "drawable", p);
-            if (res != 0) {
-                final int thumbRes = r.getIdentifier(extra, "drawable", p);
-                if (thumbRes != 0) {
-                    sectionF.add(thumbRes);
-                }
-            }
+            categories.add(new IconsCategory(Utils.makeTextReadable(tabName), iconsArray));
+
         }
-        IconsLists.setSectionF(sectionF);
-        IconsLists.setListF(listF);
+
+        if (context.getResources().getBoolean(R.bool.auto_generate_all_icons)) {
+            categories.add(new IconsCategory("All", getAllIconsList(r, p, allIcons)));
+        }
 
         return null;
     }
@@ -172,10 +103,71 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
         Utils.showLog(context, "Load of icons task completed succesfully in: " + String.valueOf((endTime - startTime)) + " millisecs.");
     }
 
-    private List<String> sortLists(String[] array) {
+    private List<String> sortList(String[] array) {
         List<String> list = new ArrayList<>(Arrays.asList(array));
         Collections.sort(list);
         return list;
+    }
+
+    private List<String> sortAndOrganizeList(String[] array) {
+        List<String> list = new ArrayList<>(Arrays.asList(array));
+        Collections.sort(list);
+
+        Set<String> noDuplicatesList = new HashSet<>();
+        noDuplicatesList.addAll(list);
+
+        List<String> newList = new ArrayList<>();
+        newList.addAll(noDuplicatesList);
+        Collections.sort(newList);
+
+        return newList;
+    }
+
+    private ArrayList<IconItem> getAllIconsList(Resources r, String p,
+                                                ArrayList<IconItem> initialList) {
+
+        ArrayList<String> allIconsNames = new ArrayList<>();
+
+        for (int i = 0; i < initialList.size(); i++) {
+            allIconsNames.add(initialList.get(i).getName());
+        }
+
+        Collections.sort(allIconsNames);
+
+        Set<String> noDuplicates = new HashSet<>();
+        noDuplicates.addAll(allIconsNames);
+        allIconsNames.clear();
+        allIconsNames.addAll(noDuplicates);
+
+        ArrayList<IconItem> sortedListArray = new ArrayList<>();
+
+        for (int j = 0; j < allIconsNames.size(); j++) {
+            int resId = getIconResId(r, p, allIconsNames.get(j));
+            if (resId != 0) {
+                sortedListArray.add(new IconItem(allIconsNames.get(j), resId));
+            }
+        }
+
+        return sortedListArray;
+
+    }
+
+    private int getIconResId(Resources r, String p, String name) {
+        int res = r.getIdentifier(name, "drawable", p);
+        if (res != 0) {
+            return res;
+        } else {
+            Utils.showLog(context, "missing icon: " + name);
+            return 0;
+        }
+    }
+
+    public static ArrayList<IconsLists> getIconsLists() {
+        return iconsLists.size() > 0 ? iconsLists : null;
+    }
+
+    public static ArrayList<IconsCategory> getIconsCategories() {
+        return categories.size() > 0 ? categories : null;
     }
 
 }
