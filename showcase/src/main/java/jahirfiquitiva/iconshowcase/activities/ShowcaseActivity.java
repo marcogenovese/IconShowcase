@@ -94,8 +94,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             GOOGLE_CATALOG_VALUES = new String[0];
 
     ///test array values
-    private static String[] primaryDrawerItems = new String[0], //TODO see if you need to intialize it
-            secondaryDrawerItems = new String[0];
+    private static String[] primaryDrawerItems, secondaryDrawerItems;
 
     private static String GOOGLE_PUBKEY = new String(),
             PAYPAL_USER = new String(),
@@ -122,7 +121,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
     public String version;
 
-    public static int currentItem = -1, wallpaper = -1, seven = 7, wallsIdentifier = 0, requestIdentifier = 0, applyIdentifier = 0, secondaryStart = 0;
+    public static int currentItem = -1, wallpaper = -1, seven = 7, wallsIdentifier = 0, requestIdentifier = 0, applyIdentifier = 0, settingsIdentifier = 0, secondaryStart = 0;
 
     private boolean mLastTheme, mLastNavBar;
     private static Preferences mPrefs;
@@ -159,6 +158,8 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         for (int i = 0; i < configurePrimaryDrawerItems.length; i++) {
             primaryDrawerItems[i + 1] = configurePrimaryDrawerItems[i];
         }
+
+        primaryDrawerItems = validateDrawerItemNames(primaryDrawerItems);
 
         //SecondaryDrawerItems is now fixed; no need for this
 //        String[] configureSecondaryDrawerItems = getResources().getStringArray(R.array.secondary_drawer_items);
@@ -314,14 +315,9 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                 drawerItemClick(wallsIdentifier);
                 drawer.setSelection(wallsIdentifier);
             } else {
-                if (mPrefs.getSettingsModified()) { //TODO fix item click numbers
-                    if (WITH_ZOOPER_SECTION) {
-                        drawerItemClick(seven + 2);
-                        drawer.setSelection(seven + 2);
-                    } else {
-                        drawerItemClick(seven + 1);
-                        drawer.setSelection(seven + 1);
-                    }
+                if (mPrefs.getSettingsModified()) {
+                    drawerItemClick(settingsIdentifier);
+                    drawer.setSelection(settingsIdentifier);
                 } else {
                     currentItem = -1;
                     drawerItemClick(1);
@@ -331,7 +327,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         }
     }
 
-    public static String fragment2title (String fragment) { //TODO add another function that will correct naming errors
+    public static String fragment2title (String fragment) {
         switch (fragment) {
             case "Main":
                 return "  ";
@@ -360,21 +356,21 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     public static String[] validateDrawerItemNames (String[] list) {
         String[] validatedList = new String[list.length];
         for (int i = 0; i < list.length; i++) {
-            if (list[i].toLowerCase().indexOf("apply") != 1) {
+            if (list[i].toLowerCase().indexOf("apply") != -1) {
                 list[i] = "Apply";
-            } else if (list[i].toLowerCase().indexOf("credit") != 1) {
+            } else if (list[i].toLowerCase().indexOf("credit") != -1) {
                 list[i] = "Credits";
-            } else if (list[i].toLowerCase().indexOf("faq") != 1) {
+            } else if (list[i].toLowerCase().indexOf("faq") != -1) {
                 list[i] = "Faqs";
-            } else if (list[i].toLowerCase().indexOf("preview") != 1) {
+            } else if (list[i].toLowerCase().indexOf("preview") != -1) {
                 list[i] = "Previews";
-            } else if (list[i].toLowerCase().indexOf("request") != 1) {
+            } else if (list[i].toLowerCase().indexOf("request") != -1) {
                 list[i] = "Requests";
-            } else if (list[i].toLowerCase().indexOf("setting") != 1) {
+            } else if (list[i].toLowerCase().indexOf("setting") != -1) {
                 list[i] = "Settings";
-            } else if (list[i].toLowerCase().indexOf("wallpaper") != 1) {
+            } else if (list[i].toLowerCase().indexOf("wallpaper") != -1) {
                 list[i] = "Wallpapers";
-            } else if (list[i].toLowerCase().indexOf("zooper") != 1) {
+            } else if (list[i].toLowerCase().indexOf("zooper") != -1) {
                 list[i] = "Zooper";
             } else {
                 Log.e("DrawerItemError", list[i] + " is not a valid drawer item");
@@ -754,6 +750,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                         drawerBuilder.addDrawerItems(creditsItem);
                         break;
                     case "Settings":
+                        settingsIdentifier = i + secondaryStart;
                         settingsItem = new SecondaryDrawerItem().withName(thaSettings).withIcon(GoogleMaterial.Icon.gmd_settings).withIdentifier(i + secondaryStart);
                         drawerBuilder.addDrawerItems(settingsItem);
                         break;
@@ -923,18 +920,19 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         if (fragment.equals("Main")) {
             fab.setVisibility(View.VISIBLE);
             fab.show();
-            if (applyEnabled) {
-                fab.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (applyEnabled) {
                         drawerItemClick(applyIdentifier);
                         drawer.setSelection(applyIdentifier);
+                    } else {
+                        Toast.makeText(context, "Contact your dev :/. He or she forgot to add an apply fragment",
+                                Toast.LENGTH_LONG).show();
                     }
-                });
-            } else {
-                Toast.makeText(context, "Contact your dev :/. He or she forgot to add an apply fragment",
-                        Toast.LENGTH_LONG).show();
-            }
+                }
+            });
+
         } else {
             fab.setVisibility(View.GONE);
             fab.hide();

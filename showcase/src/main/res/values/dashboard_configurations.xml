@@ -6,6 +6,8 @@
 
     Other possible tabs:
     Previews, Wallpapers, Requests, Apply, Faqs, Zooper
+
+    Make sure you have an Apply section!
     -->
     <string-array name="primary_drawer_items">
         <item>Previews</item>
@@ -14,6 +16,11 @@
         <!--<item>Apply</item>-->
         <item>Faqs</item>
     </string-array>
+
+    <!--
+        Credits and settings will automatically be added as secondary items
+        Donations will be added if it is set up (see below)
+    -->
 
     <!-- Default theme
     1. Light
@@ -192,7 +199,10 @@
 
     <!--donations stuff-->
 
-    <!--MAKE SURE THAT THE ARRAYS BELOW ALL HAVE THE SAME NUMBER OF ITEMS, OR ELSE THIS WON'T WORK-->
+    <!--whichever sections you set up will automatically be added in the app-->
+
+    <!--google stuff; MAKE SURE THAT THE THREE ARRAYS BELOW ALL HAVE THE SAME NUMBER OF ITEMS,
+    OR ELSE THIS WON'T WORK-->
     <string-array name="nonconsumable_google_donation_items">
         <!--Put NONCONSUMABLE google items here-->
     </string-array>
