@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--
+    Tabs to be used as primary drawer items
+    The Home section will be added automatically
+
+    Other possible tabs:
+    Previews, Wallpapers, Requests, Apply, Faqs, Zooper
+    -->
+    <string-array name="primary_drawer_items">
+        <item>Previews</item>
+        <item>Wallpapers</item>
+        <item>Requests</item>
+        <!--<item>Apply</item>-->
+        <item>Faqs</item>
+    </string-array>
 
     <!-- Default theme
     1. Light
@@ -205,14 +219,4 @@
 
     <!--paypal currency code (ie CAD); make sure this is a valid code-->
     <string name="paypal_currency_code"></string>
-
-    <string-array name="primary_drawer_items">
-        <item>Requests</item>
-        <item>Previews</item>
-    </string-array>
-
-    <string-array name="secondary_drawer_items">
-        <item>Settings</item>
-        <item>Donations</item>
-    </string-array>
 </resources>

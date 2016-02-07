@@ -31,6 +31,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -112,7 +113,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             turbo_action = "com.phonemetra.turbo.launcher.icons.ACTION_PICK_ICON",
             nova_action = "com.novalauncher.THEME";
 
-    public static boolean iconPicker, wallsPicker, requestEnabled, wallsEnabled;
+    public static boolean iconPicker, wallsPicker, requestEnabled = false, wallsEnabled = false, applyEnabled = false;
 
     private static String thaHome, thaPreviews, thaApply, thaWalls, thaRequest, thaDonate, thaFAQs,
             thaZooper, thaCredits, thaSettings;
@@ -121,7 +122,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
     public String version;
 
-    public static int currentItem = -1, wallpaper = -1, seven = 7, wallsIdentifier = 0, requestIdentifier = 0, secondaryStart = 0;
+    public static int currentItem = -1, wallpaper = -1, seven = 7, wallsIdentifier = 0, requestIdentifier = 0, applyIdentifier = 0, secondaryStart = 0;
 
     private boolean mLastTheme, mLastNavBar;
     private static Preferences mPrefs;
@@ -159,12 +160,13 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             primaryDrawerItems[i + 1] = configurePrimaryDrawerItems[i];
         }
 
-        String[] configureSecondaryDrawerItems = getResources().getStringArray(R.array.secondary_drawer_items);
-        secondaryDrawerItems = new String[configureSecondaryDrawerItems.length + 1];
-        secondaryDrawerItems[0] = "Credits";
-        for (int i = 0; i < configureSecondaryDrawerItems.length; i++) {
-            secondaryDrawerItems[i + 1] = configureSecondaryDrawerItems[i];
-        }
+        //SecondaryDrawerItems is now fixed; no need for this
+//        String[] configureSecondaryDrawerItems = getResources().getStringArray(R.array.secondary_drawer_items);
+//        secondaryDrawerItems = new String[configureSecondaryDrawerItems.length + 1];
+//        secondaryDrawerItems[0] = "Credits";
+//        for (int i = 0; i < configureSecondaryDrawerItems.length; i++) {
+//            secondaryDrawerItems[i + 1] = configureSecondaryDrawerItems[i];
+//        }
 
         getAction();
 
@@ -208,6 +210,17 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         }
 
         WITH_DONATIONS_SECTION = DONATIONS_GOOGLE || DONATIONS_PAYPAL || DONATIONS_FLATTR || DONATIONS_BITCOIN; //if one of the donations are enabled, then the section is enabled
+
+        //Initialize SecondaryDrawerItems
+        if (WITH_DONATIONS_SECTION) {
+            secondaryDrawerItems = new String[] {"Credits", "Settings", "Donations"};
+        } else {
+            secondaryDrawerItems = new String[] {"Credits", "Settings"};
+        }
+
+        if (WITH_ALTERNATIVE_ABOUT_SECTION) { //use alternative credits layout if selected
+            secondaryDrawerItems[0] = "CreditsAlt";
+        }
 
         switch (getResources().getInteger(R.integer.nav_drawer_header_style)) {
             case 1:
@@ -342,6 +355,32 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                 return thaSettings;
         }
         return ":(";
+    }
+
+    public static String[] validateDrawerItemNames (String[] list) {
+        String[] validatedList = new String[list.length];
+        for (int i = 0; i < list.length; i++) {
+            if (list[i].toLowerCase().indexOf("apply") != 1) {
+                list[i] = "Apply";
+            } else if (list[i].toLowerCase().indexOf("credit") != 1) {
+                list[i] = "Credits";
+            } else if (list[i].toLowerCase().indexOf("faq") != 1) {
+                list[i] = "Faqs";
+            } else if (list[i].toLowerCase().indexOf("preview") != 1) {
+                list[i] = "Previews";
+            } else if (list[i].toLowerCase().indexOf("request") != 1) {
+                list[i] = "Requests";
+            } else if (list[i].toLowerCase().indexOf("setting") != 1) {
+                list[i] = "Settings";
+            } else if (list[i].toLowerCase().indexOf("wallpaper") != 1) {
+                list[i] = "Wallpapers";
+            } else if (list[i].toLowerCase().indexOf("zooper") != 1) {
+                list[i] = "Zooper";
+            } else {
+                Log.e("DrawerItemError", list[i] + " is not a valid drawer item");
+            }
+        }
+        return validatedList;
     }
 
     public static void switchFragment(int itemId, String fragment,
@@ -689,7 +728,9 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                     drawerBuilder.addDrawerItems(requests);
                     break;
                 case "Apply":
-                    apply = new PrimaryDrawerItem().withName(thaApply).withIcon(GoogleMaterial.Icon.gmd_open_in_browser).withIdentifier(i + 1);
+                    applyEnabled = true;
+                    applyIdentifier = i + 1;
+                    apply = new PrimaryDrawerItem().withName(thaApply).withIcon(GoogleMaterial.Icon.gmd_open_in_browser).withIdentifier(applyIdentifier);
                     drawerBuilder.addDrawerItems(apply);
                     break;
                 case "Faqs":
@@ -882,13 +923,18 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         if (fragment.equals("Main")) {
             fab.setVisibility(View.VISIBLE);
             fab.show();
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    drawerItemClick(5);
-                    drawer.setSelection(5);
-                }
-            });
+            if (applyEnabled) {
+                fab.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        drawerItemClick(applyIdentifier);
+                        drawer.setSelection(applyIdentifier);
+                    }
+                });
+            } else {
+                Toast.makeText(context, "Contact your dev :/. He or she forgot to add an apply fragment",
+                        Toast.LENGTH_LONG).show();
+            }
         } else {
             fab.setVisibility(View.GONE);
             fab.hide();
