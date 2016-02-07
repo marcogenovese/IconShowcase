@@ -94,7 +94,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             GOOGLE_CATALOG_VALUES = new String[0];
 
     ///test array values
-    private static String[] primaryDrawerItems, secondaryDrawerItems;
+    private static String[] primaryDrawerItems = new String[0], secondaryDrawerItems = new String[0];
 
     private static String GOOGLE_PUBKEY = new String(),
             PAYPAL_USER = new String(),
@@ -121,7 +121,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
     public String version;
 
-    public static int currentItem = -1, wallpaper = -1, seven = 7, wallsIdentifier = 0, requestIdentifier = 0, applyIdentifier = 0, settingsIdentifier = 0, secondaryStart = 0;
+    public static int currentItem = -1, wallpaper = -1, wallsIdentifier = 0, requestIdentifier = 0, applyIdentifier = 0, settingsIdentifier = 0, secondaryStart = 0;
 
     private boolean mLastTheme, mLastNavBar;
     private static Preferences mPrefs;
@@ -159,8 +159,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             primaryDrawerItems[i + 1] = configurePrimaryDrawerItems[i];
         }
 
-        primaryDrawerItems = validateDrawerItemNames(primaryDrawerItems);
-
         //SecondaryDrawerItems is now fixed; no need for this
 //        String[] configureSecondaryDrawerItems = getResources().getStringArray(R.array.secondary_drawer_items);
 //        secondaryDrawerItems = new String[configureSecondaryDrawerItems.length + 1];
@@ -168,6 +166,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 //        for (int i = 0; i < configureSecondaryDrawerItems.length; i++) {
 //            secondaryDrawerItems[i + 1] = configureSecondaryDrawerItems[i];
 //        }
+
 
         getAction();
 
@@ -346,36 +345,32 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                 return thaFAQs;
             case "Credits":
                 return thaCredits;
+            case "CreditsAlt":
+                return thaCredits;
             case "Settings":
                 return thaSettings;
         }
         return ":(";
     }
 
-    public static String[] validateDrawerItemNames (String[] list) {
-        String[] validatedList = new String[list.length];
-        for (int i = 0; i < list.length; i++) {
-            if (list[i].toLowerCase().indexOf("apply") != -1) {
-                list[i] = "Apply";
-            } else if (list[i].toLowerCase().indexOf("credit") != -1) {
-                list[i] = "Credits";
-            } else if (list[i].toLowerCase().indexOf("faq") != -1) {
-                list[i] = "FAQs";
-            } else if (list[i].toLowerCase().indexOf("preview") != -1) {
-                list[i] = "Previews";
-            } else if (list[i].toLowerCase().indexOf("request") != -1) {
-                list[i] = "Requests";
-            } else if (list[i].toLowerCase().indexOf("setting") != -1) {
-                list[i] = "Settings";
-            } else if (list[i].toLowerCase().indexOf("wallpaper") != -1) {
-                list[i] = "Wallpapers";
-            } else if (list[i].toLowerCase().indexOf("zooper") != -1) {
-                list[i] = "Zooper";
-            } else {
-                Log.e("DrawerItemError", list[i] + " is not a valid drawer item");
+    public static boolean errorDrawerItemNames (String[] list) {
+        for (int i = 0; i < list.length; i++) { //list of possible tab names
+            if (list[i] == "Main" ||
+                list[i] == "Apply" ||
+                list[i] == "Credits" ||
+                list[i] == "CreditsAlt" ||
+                list[i] == "FAQs" ||
+                list[i] == "Previews" ||
+                list[i] == "Requests" ||
+                list[i] == "Settings" ||
+                list[i] == "Wallpapers" ||
+                list[i] == "Zooper" ||
+                list[i] == "Donations") {
+
+                return false;
             }
         }
-        return validatedList;
+        return true;
     }
 
     public static void switchFragment(int itemId, String fragment,
@@ -705,37 +700,44 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                 case "Main":
                     home = new PrimaryDrawerItem().withName(thaHome).withIcon(GoogleMaterial.Icon.gmd_home).withIdentifier(i + 1);
                     drawerBuilder.addDrawerItems(home);
+
                     break;
                 case "Previews":
                     previews = new PrimaryDrawerItem().withName(thaPreviews).withIcon(GoogleMaterial.Icon.gmd_palette).withIdentifier(i + 1);
                     drawerBuilder.addDrawerItems(previews);
+
                     break;
-                case "Walls":
+                case "Wallpapers":
                     wallsEnabled = true;
                     wallsIdentifier = i + 1;
                     walls = new PrimaryDrawerItem().withName(thaWalls).withIcon(GoogleMaterial.Icon.gmd_landscape).withIdentifier(wallsIdentifier);
                     drawerBuilder.addDrawerItems(walls);
+
                     break;
                 case "Requests":
                     requestEnabled = true;
                     requestIdentifier = i + 1;
                     requests = new PrimaryDrawerItem().withName(thaRequest).withIcon(GoogleMaterial.Icon.gmd_comment_list).withIdentifier(requestIdentifier);
                     drawerBuilder.addDrawerItems(requests);
+
                     break;
                 case "Apply":
                     applyEnabled = true;
                     applyIdentifier = i + 1;
                     apply = new PrimaryDrawerItem().withName(thaApply).withIcon(GoogleMaterial.Icon.gmd_open_in_browser).withIdentifier(applyIdentifier);
                     drawerBuilder.addDrawerItems(apply);
+
                     break;
                 case "FAQs":
                     faqs = new PrimaryDrawerItem().withName(thaFAQs).withIcon(GoogleMaterial.Icon.gmd_help).withIdentifier(i + 1);
                     drawerBuilder.addDrawerItems(faqs);
+
                     break;
                 case "Zooper":
                     WITH_ZOOPER_SECTION = true;
                     zooper = new PrimaryDrawerItem().withName(thaZooper).withIcon(GoogleMaterial.Icon.gmd_widgets).withIdentifier(i + 1);
                     drawerBuilder.addDrawerItems(zooper);
+
                     break;
             }
         }
@@ -764,6 +766,10 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             for (int i = 0; i < secondaryDrawerItems.length; i++) {
                 switch (secondaryDrawerItems[i]) {
                     case "Credits":
+                        creditsItem = new SecondaryDrawerItem().withName(thaCredits).withIdentifier(i + secondaryStart);
+                        drawerBuilder.addDrawerItems(creditsItem);
+                        break;
+                    case "CreditsAlt":
                         creditsItem = new SecondaryDrawerItem().withName(thaCredits).withIdentifier(i + secondaryStart);
                         drawerBuilder.addDrawerItems(creditsItem);
                         break;
@@ -926,6 +932,9 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                     if (applyEnabled) {
                         drawerItemClick(applyIdentifier);
                         drawer.setSelection(applyIdentifier);
+                    } else {
+                        Utils.showSimpleSnackbar(context, coordinatorLayout,
+                                context.getResources().getString(R.string.no_apply_tab), 1);
                     }
                 }
             });

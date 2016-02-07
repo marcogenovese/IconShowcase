@@ -5,15 +5,16 @@
     The Home section will be added automatically
 
     Other possible tabs:
-    Previews, Wallpapers, Requests, Apply, Faqs, Zooper
+    Previews, Wallpapers, Requests, Apply, FAQs, Zooper
 
+    Make sure you add the tabs with the exact word as the options listed, with the proper caps as well
     Make sure you have an Apply section!
     -->
     <string-array name="primary_drawer_items">
-        <item>Previews</item>
+        <item>Preview</item>
         <item>Wallpapers</item>
         <item>Requests</item>
-        <!--<item>Apply</item>-->
+        <item>Apply</item>
         <item>FAQs</item>
     </string-array>
 
