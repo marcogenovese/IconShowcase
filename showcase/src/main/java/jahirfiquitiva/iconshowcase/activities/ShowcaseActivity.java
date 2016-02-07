@@ -186,7 +186,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             DONATIONS_BITCOIN = intent.getBooleanExtra("bitcoin_method", false);
         }
 
-        WITH_ZOOPER_SECTION = getResources().getBoolean(R.bool.zooper_included);
         WITH_ICONS_BASED_CHANGELOG = getResources().getBoolean(R.bool.icons_changelog);
         WITH_USER_WALLPAPER_AS_TOOLBAR_HEADER = getResources().getBoolean(R.bool.user_wallpaper_in_home);
         WITH_ALTERNATIVE_ABOUT_SECTION = getResources().getBoolean(R.bool.cards_credits);
@@ -343,7 +342,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                 return thaZooper;
             case "Donations":
                 return thaDonate;
-            case "Faqs":
+            case "FAQs":
                 return thaFAQs;
             case "Credits":
                 return thaCredits;
@@ -361,7 +360,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             } else if (list[i].toLowerCase().indexOf("credit") != -1) {
                 list[i] = "Credits";
             } else if (list[i].toLowerCase().indexOf("faq") != -1) {
-                list[i] = "Faqs";
+                list[i] = "FAQs";
             } else if (list[i].toLowerCase().indexOf("preview") != -1) {
                 list[i] = "Previews";
             } else if (list[i].toLowerCase().indexOf("request") != -1) {
@@ -729,11 +728,12 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                     apply = new PrimaryDrawerItem().withName(thaApply).withIcon(GoogleMaterial.Icon.gmd_open_in_browser).withIdentifier(applyIdentifier);
                     drawerBuilder.addDrawerItems(apply);
                     break;
-                case "Faqs":
+                case "FAQs":
                     faqs = new PrimaryDrawerItem().withName(thaFAQs).withIcon(GoogleMaterial.Icon.gmd_help).withIdentifier(i + 1);
                     drawerBuilder.addDrawerItems(faqs);
                     break;
                 case "Zooper":
+                    WITH_ZOOPER_SECTION = true;
                     zooper = new PrimaryDrawerItem().withName(thaZooper).withIcon(GoogleMaterial.Icon.gmd_widgets).withIdentifier(i + 1);
                     drawerBuilder.addDrawerItems(zooper);
                     break;
@@ -926,9 +926,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                     if (applyEnabled) {
                         drawerItemClick(applyIdentifier);
                         drawer.setSelection(applyIdentifier);
-                    } else {
-                        Toast.makeText(context, "Contact your dev :/. He or she forgot to add an apply fragment",
-                                Toast.LENGTH_LONG).show();
                     }
                 }
             });

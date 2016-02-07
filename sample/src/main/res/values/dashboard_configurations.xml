@@ -14,7 +14,7 @@
         <item>Wallpapers</item>
         <item>Requests</item>
         <!--<item>Apply</item>-->
-        <item>Faqs</item>
+        <item>FAQs</item>
     </string-array>
 
     <!--
@@ -77,7 +77,7 @@
     True, means the icons based changelog will be used.
     False, mean the text based changelog will be used.
     -->
-    <bool name="icons_changelog">true</bool>
+    <bool name="icons_changelog">false</bool>
 
     <!--
     Do you want to have ripples when pressing an item in the text changelog?
@@ -92,13 +92,6 @@
     False, means no.
     -->
     <bool name="user_wallpaper_in_home">true</bool>
-
-    <!--
-    Do you want the app to include Zooper section?
-    True, means yes.
-    False, means no.
-    -->
-    <bool name="zooper_included">false</bool>
 
     <!--
     If you include Zooper widgets, do any of them need MediaUtilities to work properly?
@@ -201,7 +194,7 @@
 
     <!--whichever sections you set up will automatically be added in the app-->
 
-    <!--google stuff; MAKE SURE THAT THE THREE ARRAYS BELOW ALL HAVE THE SAME NUMBER OF ITEMS, 
+    <!--google stuff; MAKE SURE THAT THE THREE ARRAYS BELOW ALL HAVE THE SAME NUMBER OF ITEMS,
     OR ELSE THIS WON'T WORK-->
     <string-array name="nonconsumable_google_donation_items">
         <!--Put NONCONSUMABLE google items here-->
@@ -225,8 +218,8 @@
     <!--paypal stuff; must all be completed for this to be enabled-->
 
     <!--add your email here-->
-    <string name="paypal_user"></string>
+    <string name="paypal_user">jahir.fiquitiva@gmail.com</string>
 
     <!--paypal currency code (ie CAD); make sure this is a valid code-->
-    <string name="paypal_currency_code"></string>
+    <string name="paypal_currency_code">USD</string>
 </resources>

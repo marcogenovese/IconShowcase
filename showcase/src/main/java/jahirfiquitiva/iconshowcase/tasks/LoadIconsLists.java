@@ -70,7 +70,7 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
 
         for (String tabName : tabsNames) {
 
-            int arrayId = r.getIdentifier(tabName, "arrays", p);
+            int arrayId = r.getIdentifier(tabName, "array", p);
             String[] icons = r.getStringArray(arrayId);
             List<String> iconsList = sortList(icons);
 

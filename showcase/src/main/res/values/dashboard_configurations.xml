@@ -14,7 +14,7 @@
         <item>Wallpapers</item>
         <item>Requests</item>
         <!--<item>Apply</item>-->
-        <item>Faqs</item>
+        <item>FAQs</item>
     </string-array>
 
     <!--
@@ -77,7 +77,7 @@
     True, means the icons based changelog will be used.
     False, mean the text based changelog will be used.
     -->
-    <bool name="icons_changelog">true</bool>
+    <bool name="icons_changelog">false</bool>
 
     <!--
     Do you want to have ripples when pressing an item in the text changelog?
@@ -92,13 +92,6 @@
     False, means no.
     -->
     <bool name="user_wallpaper_in_home">true</bool>
-
-    <!--
-    Do you want the app to include Zooper section?
-    True, means yes.
-    False, means no.
-    -->
-    <bool name="zooper_included">false</bool>
 
     <!--
     If you include Zooper widgets, do any of them need MediaUtilities to work properly?
