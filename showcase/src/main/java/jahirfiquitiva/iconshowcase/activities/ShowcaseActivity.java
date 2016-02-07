@@ -31,7 +31,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -167,7 +166,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 //            secondaryDrawerItems[i + 1] = configureSecondaryDrawerItems[i];
 //        }
 
-
         getAction();
 
         Intent intent = getIntent();
@@ -212,9 +210,9 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
         //Initialize SecondaryDrawerItems
         if (WITH_DONATIONS_SECTION) {
-            secondaryDrawerItems = new String[] {"Credits", "Settings", "Donations"};
+            secondaryDrawerItems = new String[]{"Credits", "Settings", "Donations"};
         } else {
-            secondaryDrawerItems = new String[] {"Credits", "Settings"};
+            secondaryDrawerItems = new String[]{"Credits", "Settings"};
         }
 
         if (WITH_ALTERNATIVE_ABOUT_SECTION) { //use alternative credits layout if selected
@@ -325,7 +323,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         }
     }
 
-    public static String fragment2title (String fragment) {
+    public static String fragment2title(String fragment) {
         switch (fragment) {
             case "Main":
                 return "  ";
@@ -658,7 +656,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
         secondaryStart = primaryDrawerItems.length + 1; //marks the first identifier value that should be used
 
-
         DrawerBuilder drawerBuilder = new DrawerBuilder()
                 .withActivity(this)
                 .withToolbar(toolbar)
@@ -675,7 +672,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                 })
                 .withDisplayBelowStatusBar(false);
 
-        for(int i = 0; i < primaryDrawerItems.length; i++) {
+        for (int i = 0; i < primaryDrawerItems.length; i++) {
             switch (primaryDrawerItems[i]) {
                 case "Main":
                     home = new PrimaryDrawerItem().withName(thaHome).withIcon(GoogleMaterial.Icon.gmd_home).withIdentifier(i + 1);
@@ -725,7 +722,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         drawerBuilder.addDrawerItems(new DividerDrawerItem()); //divider between primary and secondary
 
         if (WITH_SECONDARY_DRAWER_ITEMS_ICONS) {
-            for(int i = 0; i < secondaryDrawerItems.length; i++) {
+            for (int i = 0; i < secondaryDrawerItems.length; i++) {
                 switch (secondaryDrawerItems[i]) {
                     case "Credits":
                         creditsItem = new SecondaryDrawerItem().withName(thaCredits).withIcon(GoogleMaterial.Icon.gmd_info).withIdentifier(i + secondaryStart);
@@ -904,21 +901,22 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
     private static void setupFAB(String fragment) {
         if (fragment.equals("Main")) {
-            fab.setVisibility(View.VISIBLE);
-            fab.show();
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (applyEnabled) {
+            if (applyEnabled) {
+                fab.setVisibility(View.VISIBLE);
+                fab.show();
+                fab.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
                         drawerItemClick(applyIdentifier);
                         drawer.setSelection(applyIdentifier);
-                    } else {
-                        Utils.showSimpleSnackbar(context, coordinatorLayout,
-                                context.getResources().getString(R.string.no_apply_tab), 1);
                     }
-                }
-            });
-
+                });
+            } else {
+                fab.setVisibility(View.GONE);
+                fab.hide();
+                Utils.showSimpleSnackbar(context, coordinatorLayout,
+                        context.getResources().getString(R.string.no_apply_tab), 2);
+            }
         } else {
             fab.setVisibility(View.GONE);
             fab.hide();

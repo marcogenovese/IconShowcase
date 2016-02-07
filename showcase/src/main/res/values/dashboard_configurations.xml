@@ -188,7 +188,7 @@
     True, means yes.
     False, means no.
     -->
-    <bool name="auto_generate_all_icons">true</bool>
+    <bool name="auto_generate_all_icons">false</bool>
 
 
     <!--donations stuff-->
@@ -223,4 +223,5 @@
 
     <!--paypal currency code (ie CAD); make sure this is a valid code-->
     <string name="paypal_currency_code"></string>
+
 </resources>

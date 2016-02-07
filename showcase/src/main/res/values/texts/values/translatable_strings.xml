@@ -310,5 +310,6 @@
         <item>It\'s needed by Muzei Live Wallpaper.</item>
     </string-array>
 
-    <string name="no_apply_tab">Uh oh :/. Email the dev; there seems to be no apply fragment.</string>
+    <string name="no_apply_tab">Contact the dev because it seems there is something being missed in the app.</string>
+
 </resources>

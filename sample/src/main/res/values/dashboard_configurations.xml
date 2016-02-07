@@ -14,7 +14,6 @@
         <item>Previews</item>
         <item>Wallpapers</item>
         <item>Requests</item>
-        <item>Apply</item>
         <item>FAQs</item>
     </string-array>
 
@@ -188,7 +187,7 @@
     True, means yes.
     False, means no.
     -->
-    <bool name="auto_generate_all_icons">true</bool>
+    <bool name="auto_generate_all_icons">false</bool>
 
 
     <!--donations stuff-->
@@ -219,8 +218,9 @@
     <!--paypal stuff; must all be completed for this to be enabled-->
 
     <!--add your email here-->
-    <string name="paypal_user"></string>
+    <string name="paypal_user">jahir.fiquitiva@gmail.com</string>
 
     <!--paypal currency code (ie CAD); make sure this is a valid code-->
-    <string name="paypal_currency_code"></string>
+    <string name="paypal_currency_code">USD</string>
+
 </resources>
