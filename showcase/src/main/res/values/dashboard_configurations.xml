@@ -162,7 +162,6 @@
     <bool name="auto_generate_all_icons">true</bool>
 
 
-
     <!--donations stuff-->
 
     <!--MAKE SURE THAT THE ARRAYS BELOW ALL HAVE THE SAME NUMBER OF ITEMS, OR ELSE THIS WON'T WORK-->
@@ -192,4 +191,5 @@
 
     <!--paypal currency code (ie CAD); make sure this is a valid code-->
     <string name="paypal_currency_code"></string>
+
 </resources>

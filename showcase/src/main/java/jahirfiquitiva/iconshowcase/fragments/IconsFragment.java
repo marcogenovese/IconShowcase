@@ -1,7 +1,6 @@
 package jahirfiquitiva.iconshowcase.fragments;
 
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,7 +19,6 @@ import java.util.Locale;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.adapters.IconsAdapter;
 import jahirfiquitiva.iconshowcase.models.IconItem;
-import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 public class IconsFragment extends Fragment {
 
@@ -29,6 +27,7 @@ public class IconsFragment extends Fragment {
     private ViewGroup layout;
 
     @Override
+    @SuppressWarnings("unchecked")
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         if (layout != null) {
@@ -45,11 +44,16 @@ public class IconsFragment extends Fragment {
 
         RecyclerView iconsGrid = (RecyclerView) layout.findViewById(R.id.iconsGrid);
         RelativeLayout gridParent = (RelativeLayout) layout.findViewById(R.id.gridParent);
+        gridParent.setPadding(0, 0, 0, 0);
 
-        gridParent.setPadding(0, 0, 0,
-                getResources().getConfiguration().orientation == 1 ||
-                        getResources().getConfiguration().orientation == 2 ?
-                        UIUtils.getNavigationBarHeight(getActivity()) - 4 : 0);
+        switch (getResources().getConfiguration().orientation) {
+            case 1:
+                gridParent.setPadding(0, 0, 0, UIUtils.getNavigationBarHeight(getActivity()));
+                break;
+            case 2:
+                gridParent.setPadding(0, 0, 0, UIUtils.getNavigationBarHeight(getActivity()) - 16);
+                break;
+        }
 
         iconsGrid.setHasFixedSize(true);
         iconsGrid.setLayoutManager(new GridLayoutManager(getActivity(),
@@ -60,19 +64,7 @@ public class IconsFragment extends Fragment {
         mAdapter = new IconsAdapter(getActivity(), iconsList);
 
         if (getArguments() != null) {
-            ArrayList<String> names = getArguments().getStringArrayList("iconsNames");
-            ArrayList<Integer> ints = getArguments().getIntegerArrayList("iconsInts");
-            if (names != null) {
-                if (ints != null) {
-                    if (names.size() == ints.size()) {
-                        for (int i = 0; i < names.size(); i++) {
-                            iconsList.add(new IconItem(names.get(i), ints.get(i)));
-                        }
-                    } else {
-                        Utils.showLog(getActivity(), "Inconsistent arrays");
-                    }
-                }
-            }
+            iconsList = (ArrayList<IconItem>) getArguments().getSerializable("icons");
             mAdapter.setIcons(iconsList);
         }
 
@@ -84,12 +76,10 @@ public class IconsFragment extends Fragment {
         return layout;
     }
 
-    public static IconsFragment newInstance(ArrayList<String> iconsNames,
-                                            ArrayList<Integer> iconsInts) {
+    public static IconsFragment newInstance(ArrayList<IconItem> icons) {
         IconsFragment fragment = new IconsFragment();
         Bundle args = new Bundle();
-        args.putStringArrayList("iconsNames", iconsNames);
-        args.putIntegerArrayList("iconsInts", iconsInts);
+        args.putSerializable("icons", icons);
         fragment.setArguments(args);
         return fragment;
     }
@@ -110,7 +100,7 @@ public class IconsFragment extends Fragment {
             if (filteredIconsList != null) {
                 filteredIconsList.clear();
             }
-            filteredIconsList = new ArrayList<IconItem>();
+            filteredIconsList = new ArrayList<>();
             for (int i = 0; i < iconsList.size(); i++) {
                 String name = iconsList.get(i).getName();
                 if (name.toLowerCase(Locale.getDefault())

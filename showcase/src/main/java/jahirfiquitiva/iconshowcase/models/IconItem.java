@@ -4,21 +4,23 @@
 
 package jahirfiquitiva.iconshowcase.models;
 
-public class IconItem {
+import java.io.Serializable;
+
+public class IconItem implements Serializable {
 
     private String name;
     private int resId;
 
-    public IconItem(String name, int resId){
+    public IconItem(String name, int resId) {
         this.name = name;
         this.resId = resId;
     }
 
-    public String getName(){
+    public String getName() {
         return this.name;
     }
 
-    public int getResId(){
+    public int getResId() {
         return this.resId;
     }
 

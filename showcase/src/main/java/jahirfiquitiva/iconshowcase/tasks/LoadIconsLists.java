@@ -112,9 +112,7 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
         return list;
     }
 
-    private ArrayList<IconItem> sortAndOrganizeList(Resources r,
-                                                    String p,
-                                                    String[] array) {
+    private ArrayList<IconItem> sortAndOrganizeList(Resources r, String p, String[] array) {
 
         List<String> list = new ArrayList<>(Arrays.asList(array));
         Collections.sort(list);
