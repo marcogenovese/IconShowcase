@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:key="preferences">
 
     <PreferenceCategory
         android:key="uiPreferences"
@@ -49,7 +50,8 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/pref_header_launcher_icon">
+    <PreferenceCategory android:title="@string/pref_header_launcher_icon"
+        android:key="launcherIconPreference">
 
         <CheckBoxPreference
             android:defaultValue="false"
