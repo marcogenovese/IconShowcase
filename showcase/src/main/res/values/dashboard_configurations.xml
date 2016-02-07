@@ -11,7 +11,7 @@
     Make sure you have an Apply section!
     -->
     <string-array name="primary_drawer_items">
-        <item>Preview</item>
+        <item>Previews</item>
         <item>Wallpapers</item>
         <item>Requests</item>
         <item>Apply</item>

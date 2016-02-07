@@ -353,26 +353,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         return ":(";
     }
 
-    public static boolean errorDrawerItemNames (String[] list) {
-        for (int i = 0; i < list.length; i++) { //list of possible tab names
-            if (list[i] == "Main" ||
-                list[i] == "Apply" ||
-                list[i] == "Credits" ||
-                list[i] == "CreditsAlt" ||
-                list[i] == "FAQs" ||
-                list[i] == "Previews" ||
-                list[i] == "Requests" ||
-                list[i] == "Settings" ||
-                list[i] == "Wallpapers" ||
-                list[i] == "Zooper" ||
-                list[i] == "Donations") {
-
-                return false;
-            }
-        }
-        return true;
-    }
-
     public static void switchFragment(int itemId, String fragment,
                                       AppCompatActivity context) {
 
