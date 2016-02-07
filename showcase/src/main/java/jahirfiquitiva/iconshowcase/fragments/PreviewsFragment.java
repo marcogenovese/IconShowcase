@@ -209,7 +209,7 @@ public class PreviewsFragment extends Fragment {
 
         @Override
         public Fragment getItem(int position) {
-            return IconsFragment.newInstance(categories.get(position).getIconsArray());
+            return IconsFragment.newInstance(categories.get(position));
         }
 
         @Override

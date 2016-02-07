@@ -19,6 +19,7 @@ import java.util.Locale;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.adapters.IconsAdapter;
 import jahirfiquitiva.iconshowcase.models.IconItem;
+import jahirfiquitiva.iconshowcase.models.IconsCategory;
 
 public class IconsFragment extends Fragment {
 
@@ -65,6 +66,10 @@ public class IconsFragment extends Fragment {
 
         if (getArguments() != null) {
             iconsList = (ArrayList<IconItem>) getArguments().getSerializable("icons");
+            IconsCategory category = getArguments().getParcelable("icons");
+            if (category != null) {
+                iconsList = category.getIconsArray();
+            }
             mAdapter.setIcons(iconsList);
         }
 
@@ -76,10 +81,10 @@ public class IconsFragment extends Fragment {
         return layout;
     }
 
-    public static IconsFragment newInstance(ArrayList<IconItem> icons) {
+    public static IconsFragment newInstance(IconsCategory icons) {
         IconsFragment fragment = new IconsFragment();
         Bundle args = new Bundle();
-        args.putSerializable("icons", icons);
+        args.putParcelable("icons", icons);
         fragment.setArguments(args);
         return fragment;
     }

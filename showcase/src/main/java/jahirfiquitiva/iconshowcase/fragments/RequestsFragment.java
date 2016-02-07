@@ -74,8 +74,6 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
 
         mPrefs = new Preferences(getActivity());
 
-        showRequestsAdviceDialog(getActivity());
-
         fab = (FloatingActionButton) layout.findViewById(R.id.requests_fab);
 
         if (ApplicationBase.allAppsToRequest == null || ApplicationBase.allAppsToRequest.size() <= 0) {
@@ -181,21 +179,6 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
         }
         mRecyclerView.setVisibility(View.GONE);
         fastScroller.setVisibility(View.GONE);
-    }
-
-    private void showRequestsAdviceDialog(Context dialogContext) {
-        if (!mPrefs.getRequestsDialogDismissed()) {
-            MaterialDialog.SingleButtonCallback singleButtonCallback = new MaterialDialog.SingleButtonCallback() {
-                @Override
-                public void onClick(MaterialDialog dialog, DialogAction which) {
-                    if (which.equals(DialogAction.POSITIVE))
-                        mPrefs.setRequestsDialogDismissed(false);
-                    else if (which.equals(DialogAction.NEUTRAL))
-                        mPrefs.setRequestsDialogDismissed(true);
-                }
-            };
-            ISDialogs.showRequestAdviceDialog(dialogContext, singleButtonCallback);
-        }
     }
 
     public static void showRequestsFilesCreationDialog(Context context) {

@@ -20,7 +20,6 @@ public class Preferences {
             SETTINGS_MODIFIED = "settings_modified",
             ANIMATIONS_ENABLED = "animations_enabled",
             WALLPAPER_AS_TOOLBAR_HEADER = "wallpaper_as_toolbar_header",
-            REQUESTS_DIALOG_DISMISSED = "requests_dialog_dismissed",
             APPLY_DIALOG_DISMISSED = "apply_dialog_dismissed",
             WALLS_DIALOG_DISMISSED = "walls_dialog_dismissed",
             WALLS_COLUMNS_NUMBER = "walls_columns_number";
@@ -121,14 +120,6 @@ public class Preferences {
 
     public boolean getWallpaperAsToolbarHeaderEnabled() {
         return getSharedPreferences().getBoolean(WALLPAPER_AS_TOOLBAR_HEADER, true);
-    }
-
-    public void setRequestsDialogDismissed(boolean requestsDialogDismissed) {
-        getSharedPreferences().edit().putBoolean(REQUESTS_DIALOG_DISMISSED, requestsDialogDismissed).apply();
-    }
-
-    public boolean getRequestsDialogDismissed() {
-        return getSharedPreferences().getBoolean(REQUESTS_DIALOG_DISMISSED, false);
     }
 
     public void setApplyDialogDismissed(boolean applyDialogDismissed) {

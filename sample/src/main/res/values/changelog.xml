@@ -8,23 +8,12 @@
 
     <string-array name="newstuff">
         <item>New:</item>
-        <item>Reworked icon requests code. Thanks to Steve Albright.</item>
-        <item>Buttons in about section are working.</item>
-        <item>Implemented Chrome Custom Tabs in About section.</item>
-        <item>New design of Main section.</item>
-        <item>Implemented Icons and Wallpapers pickers.</item>
-        <item>Added facebook in designers card.</item>
-        <item>Added Zooper section.</item>
-        <item>Added Changelog grid.</item>
-        <item>Added option to enable or disable drawer header. (In Code).</item>
-        <item>Fixed apps names length in requests section.</item>
-        <item>Fixed ripples in requests section.</item>
+        <item>A lot of awesome stuff.</item>
     </string-array>
 
     <string-array name="improvements">
         <item>Improvements:</item>
-        <item>Back to advice dialogs in Requests and Apply sections.</item>
-        <item>Some renamed stuff for better understanding.</item>
+        <item>About everything.</item>
     </string-array>
 
     <string-array name="changelog_icons">

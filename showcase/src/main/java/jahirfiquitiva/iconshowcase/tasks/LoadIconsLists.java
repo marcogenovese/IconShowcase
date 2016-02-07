@@ -91,10 +91,15 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
         }
 
         if (context.getResources().getBoolean(R.bool.auto_generate_all_icons)) {
-            categories.add(new IconsCategory("All", getAllIconsList(r, p, allIcons)));
+            ArrayList<IconItem> allTheIcons = getAllIconsList(r, p, allIcons);
+            if (allTheIcons.size() > 0) {
+                categories.add(new IconsCategory("All", allTheIcons));
+            }
         } else {
-            String[] allIconsArray = r.getStringArray(R.array.all);
-            categories.add(new IconsCategory("All", sortAndOrganizeList(r, p, allIconsArray)));
+            String[] allIconsArray = r.getStringArray(R.array.icon_pack);
+            if (allIconsArray.length > 0) {
+                categories.add(new IconsCategory("All", sortAndOrganizeList(r, p, allIconsArray)));
+            }
         }
 
         return null;

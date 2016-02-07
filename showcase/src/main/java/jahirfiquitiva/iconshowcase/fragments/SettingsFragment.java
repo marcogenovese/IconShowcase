@@ -267,7 +267,6 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
         clearCache(context);
         mPrefs.setIconShown(true);
         mPrefs.setDownloadsFolder(null);
-        mPrefs.setRequestsDialogDismissed(false);
         mPrefs.setApplyDialogDismissed(false);
         mPrefs.setWallsDialogDismissed(false);
     }

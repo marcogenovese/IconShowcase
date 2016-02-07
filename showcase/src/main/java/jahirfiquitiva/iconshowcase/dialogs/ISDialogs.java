@@ -50,13 +50,13 @@ public final class ISDialogs {
                     .title(R.string.changelog_dialog_title)
                     .adapter(new ChangelogAdapter(context, R.array.fullchangelog), null)
                     .positiveText(R.string.great)
-                    .listSelector(android.R.color.transparent)
                     .show();
         } else {
             new MaterialDialog.Builder(context)
                     .title(R.string.changelog_dialog_title)
                     .adapter(new ChangelogAdapter(context, R.array.fullchangelog), null)
                     .positiveText(R.string.great)
+                    .listSelector(android.R.color.transparent)
                     .show();
         }
     }
@@ -280,16 +280,6 @@ public final class ISDialogs {
     /*
     Request Fragment Dialogs
      */
-
-    public static void showRequestAdviceDialog(Context context, MaterialDialog.SingleButtonCallback callback) {
-        new MaterialDialog.Builder(context)
-                .title(R.string.advice)
-                .content(R.string.request_advice)
-                .positiveText(R.string.close)
-                .neutralText(R.string.dontshow)
-                .onAny(callback)
-                .show();
-    }
 
     public static void showPermissionNotGrantedDialog(Context context) {
         new MaterialDialog.Builder(context)
