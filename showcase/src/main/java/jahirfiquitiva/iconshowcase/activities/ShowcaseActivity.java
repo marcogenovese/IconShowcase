@@ -63,8 +63,9 @@ import jahirfiquitiva.iconshowcase.fragments.RequestsFragment;
 import jahirfiquitiva.iconshowcase.fragments.SettingsFragment;
 import jahirfiquitiva.iconshowcase.fragments.WallpapersFragment;
 import jahirfiquitiva.iconshowcase.models.DrawerHeaderStyle;
-import jahirfiquitiva.iconshowcase.models.IconsLists;
+import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.models.WallpapersList;
+import jahirfiquitiva.iconshowcase.tasks.LoadIconsLists;
 import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
@@ -183,7 +184,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         }
 
         WITH_ZOOPER_SECTION = getResources().getBoolean(R.bool.zooper_included);
-        WITH_DONATIONS_SECTION = DONATIONS_GOOGLE || DONATIONS_PAYPAL || DONATIONS_FLATTR || DONATIONS_BITCOIN; //if one of the donations are enabled, then the section is enabled
         WITH_ICONS_BASED_CHANGELOG = getResources().getBoolean(R.bool.icons_changelog);
         WITH_USER_WALLPAPER_AS_TOOLBAR_HEADER = getResources().getBoolean(R.bool.user_wallpaper_in_home);
         WITH_ALTERNATIVE_ABOUT_SECTION = getResources().getBoolean(R.bool.cards_credits);
@@ -206,6 +206,8 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         if (!(PAYPAL_USER.length() > 5) || !(PAYPAL_CURRENCY_CODE.length() > 1)) {
             DONATIONS_PAYPAL = false; //paypal content incorrect
         }
+
+        WITH_DONATIONS_SECTION = DONATIONS_GOOGLE || DONATIONS_PAYPAL || DONATIONS_FLATTR || DONATIONS_BITCOIN; //if one of the donations are enabled, then the section is enabled
 
         switch (getResources().getInteger(R.integer.nav_drawer_header_style)) {
             case 1:
@@ -351,6 +353,8 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         }
         currentItem = itemId;
 
+        setupFAB(fragment);
+
         if (fragment.equals("Main")) {
             icon1.setVisibility(View.INVISIBLE);
             icon2.setVisibility(View.INVISIBLE);
@@ -364,8 +368,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             appbar.setActivated(false);
             coordinatorLayout.setScrollAllowed(false);
         }
-
-        setupFAB(fragment);
 
         //Fragment Switcher
         if (mPrefs.getAnimationsEnabled()) {
@@ -826,8 +828,12 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     public static void setupIcons(final ImageView icon1, final ImageView icon2,
                                   final ImageView icon3, final ImageView icon4, Context context) {
 
-        ArrayList<Integer> icons = IconsLists.getPreviewAL();
-        ArrayList<Integer> finalIconsList = new ArrayList<>();
+        ArrayList<IconItem> icons = null;
+
+        if (LoadIconsLists.getIconsLists() != null) {
+            icons = LoadIconsLists.getIconsLists().get(1).getIconsArray();
+        }
+        ArrayList<IconItem> finalIconsList = new ArrayList<>();
 
         if (icons != null) {
             Collections.shuffle(icons);
@@ -841,12 +847,10 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                 finalIconsList.add(icons.get(i));
                 i++;
             }
-
-            icon1.setImageResource(finalIconsList.get(0));
-            icon2.setImageResource(finalIconsList.get(1));
-            icon3.setImageResource(finalIconsList.get(2));
-            icon4.setImageResource(finalIconsList.get(3));
-
+            icon1.setImageResource(finalIconsList.get(0).getResId());
+            icon2.setImageResource(finalIconsList.get(1).getResId());
+            icon3.setImageResource(finalIconsList.get(2).getResId());
+            icon4.setImageResource(finalIconsList.get(3).getResId());
         }
     }
 
@@ -887,6 +891,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             });
         } else {
             fab.setVisibility(View.GONE);
+            fab.hide();
         }
     }
 

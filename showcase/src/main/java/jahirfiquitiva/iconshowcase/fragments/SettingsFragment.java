@@ -10,6 +10,7 @@ import android.os.Environment;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceCategory;
+import android.preference.PreferenceScreen;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
@@ -66,11 +67,12 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
 
         try {
             className = Class.forName(componentNameString);
-            Utils.showLog(getActivity(), "Class Name: " + componentNameString);
         } catch (ClassNotFoundException e) {
             //Do nothing
-            Utils.showLog(getActivity(), "Class " + componentNameString + " not found in this app.");
         }
+
+        PreferenceScreen preferences = (PreferenceScreen) findPreference("preferences");
+        PreferenceCategory launcherIcon = (PreferenceCategory) findPreference("launcherIconPreference");
 
         PreferenceCategory uiCategory = (PreferenceCategory) findPreference("uiPreferences");
         CheckBoxPreference wallHeaderCheck = (CheckBoxPreference) findPreference("wallHeader");
@@ -91,14 +93,21 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
         WSL.setSummary(getResources().getString(R.string.pref_summary_wsl, location));
 
         // Set the preference for current selected theme
-        findPreference("themes").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                ShowcaseActivity.settingsDialog = ISDialogs.showThemeChooserDialog(getActivity());
-                ShowcaseActivity.settingsDialog.show();
-                return true;
-            }
-        });
+
+        Preference themesSetting = findPreference("themes");
+
+        if (getResources().getBoolean(R.bool.allow_user_theme_change)) {
+            themesSetting.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    ShowcaseActivity.settingsDialog = ISDialogs.showThemeChooserDialog(getActivity());
+                    ShowcaseActivity.settingsDialog.show();
+                    return true;
+                }
+            });
+        } else {
+            uiCategory.removePreference(themesSetting);
+        }
 
         // Set the preference for colored nav bar on Lollipop
         final CheckBoxPreference coloredNavBar = (CheckBoxPreference) findPreference("coloredNavBar");
@@ -156,73 +165,78 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
             }
         });
 
-        final CheckBoxPreference hideIcon = (CheckBoxPreference) findPreference("launcherIcon");
-        if (mPrefs.getLauncherIconShown()) {
-            hideIcon.setChecked(false);
-        }
+        if (getResources().getBoolean(R.bool.allow_user_to_hide_app_icon)) {
+            final CheckBoxPreference hideIcon = (CheckBoxPreference) findPreference("launcherIcon");
+            if (mPrefs.getLauncherIconShown()) {
+                hideIcon.setChecked(false);
+            }
 
-        final Class<?> finalClassName = className;
+            final Class<?> finalClassName = className;
 
-        hideIcon.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                if (finalClassName != null) {
-                    componentName = new ComponentName(packageName, componentNameString);
-                    if (newValue.toString().equals("true")) {
-                        MaterialDialog.SingleButtonCallback positive = new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
-                                if (mPrefs.getLauncherIconShown()) {
-                                    mPrefs.setIconShown(false);
-                                    p.setComponentEnabledSetting(componentName,
-                                            PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                                            PackageManager.DONT_KILL_APP);
+            hideIcon.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    if (finalClassName != null) {
+                        componentName = new ComponentName(packageName, componentNameString);
+                        if (newValue.toString().equals("true")) {
+                            MaterialDialog.SingleButtonCallback positive = new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
+                                    if (mPrefs.getLauncherIconShown()) {
+                                        mPrefs.setIconShown(false);
+                                        p.setComponentEnabledSetting(componentName,
+                                                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                                                PackageManager.DONT_KILL_APP);
+                                    }
+
+                                    hideIcon.setChecked(true);
                                 }
+                            };
 
-                                hideIcon.setChecked(true);
-                            }
-                        };
-
-                        MaterialDialog.SingleButtonCallback negative = new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
-                                hideIcon.setChecked(false);
-                            }
-                        };
-
-                        DialogInterface.OnDismissListener dismissListener = new DialogInterface.OnDismissListener() {
-                            @Override
-                            public void onDismiss(DialogInterface dialog) {
-                                if (mPrefs.getLauncherIconShown()) {
+                            MaterialDialog.SingleButtonCallback negative = new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
                                     hideIcon.setChecked(false);
                                 }
+                            };
+
+                            DialogInterface.OnDismissListener dismissListener = new DialogInterface.OnDismissListener() {
+                                @Override
+                                public void onDismiss(DialogInterface dialog) {
+                                    if (mPrefs.getLauncherIconShown()) {
+                                        hideIcon.setChecked(false);
+                                    }
+                                }
+                            };
+
+                            ShowcaseActivity.settingsDialog = ISDialogs.showHideIconDialog(getActivity(), positive, negative, dismissListener);
+
+                        } else {
+                            if (!mPrefs.getLauncherIconShown()) {
+
+                                mPrefs.setIconShown(true);
+                                p.setComponentEnabledSetting(componentName,
+                                        PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                                        PackageManager.DONT_KILL_APP);
+
                             }
-                        };
-
-                        ShowcaseActivity.settingsDialog = ISDialogs.showHideIconDialog(getActivity(), positive, negative, dismissListener);
-
-                    } else {
-                        if (!mPrefs.getLauncherIconShown()) {
-
-                            mPrefs.setIconShown(true);
-                            p.setComponentEnabledSetting(componentName,
-                                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                                    PackageManager.DONT_KILL_APP);
-
                         }
+                        return true;
+                    } else {
+                        String errorToastContent = getResources().getString(R.string.launcher_icon_restorer_error,
+                                getResources().getString(R.string.app_name));
+                        try {
+                            Utils.showSimpleSnackbar(getActivity(), getListView(), errorToastContent, 1);
+                        } catch (IllegalStateException e) {
+                            Toast.makeText(getActivity(), errorToastContent, Toast.LENGTH_LONG).show();
+                        }
+                        return false;
                     }
-                    return true;
-                } else {
-                    String errorToastContent = getResources().getString(R.string.launcher_icon_restorer_error,
-                            getResources().getString(R.string.app_name));
-                    try {
-                        Utils.showSimpleSnackbar(getActivity(), getListView(), errorToastContent, 1);
-                    } catch (IllegalStateException e) {
-                        Toast.makeText(getActivity(), errorToastContent, Toast.LENGTH_LONG).show();
-                    }
-                    return false;
                 }
-            }
-        });
+            });
+
+        } else {
+            preferences.removePreference(launcherIcon);
+        }
 
     }
 

@@ -9,7 +9,7 @@ public class HomeActivity extends AppCompatActivity {
     private static boolean WITH_LICENSE_CHECKER = false,
             WITH_INSTALLED_FROM_AMAZON = false,
             WITH_DONATIONS_SECTION = true,
-            DONATIONS_GOOGLE = true,
+            DONATIONS_GOOGLE = false,
             DONATIONS_PAYPAL = true,
             DONATIONS_FLATTR = false,
             DONATIONS_BITCOIN = false;

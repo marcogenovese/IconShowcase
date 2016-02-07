@@ -26,7 +26,8 @@ import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.adapters.ChangelogAdapter;
 import jahirfiquitiva.iconshowcase.adapters.IconsAdapter;
 import jahirfiquitiva.iconshowcase.fragments.WallpapersFragment;
-import jahirfiquitiva.iconshowcase.models.IconsLists;
+import jahirfiquitiva.iconshowcase.models.IconItem;
+import jahirfiquitiva.iconshowcase.tasks.LoadIconsLists;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
@@ -74,15 +75,26 @@ public final class ISDialogs {
         final int grids = context.getResources().getInteger(R.integer.icons_grid_width);
         iconsGrid.setLayoutManager(new GridLayoutManager(context, grids));
 
-        final ArrayList<Integer> newIconsAL = IconsLists.getNewIconsAL();
-        final IconsAdapter adapter = new IconsAdapter(context, (ArrayList<String>) IconsLists.getNewIconsL(), newIconsAL, true);
+        ArrayList<IconItem> icons = null;
+
+        if (LoadIconsLists.getIconsLists() != null) {
+            icons = LoadIconsLists.getIconsLists().get(0).getIconsArray();
+        }
+
+        final IconsAdapter adapter = new IconsAdapter(context, icons, true);
         iconsGrid.setAdapter(adapter);
+
+        //get total number of images
+        int images = 0;
+        if (icons != null) {
+            images = icons.size();
+        }
+
+        final int numberOfImages = images;
 
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
-                //get total number of images
-                int numberOfImages = newIconsAL.size();
                 //calculate the total number of rows
                 final int rows = numberOfImages / grids + (numberOfImages % grids == 0 ? 0 : 1);
                 Utils.triggerMethodOnceViewIsDisplayed(iconsGrid, new Callable<Void>() {

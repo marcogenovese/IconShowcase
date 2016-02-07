@@ -22,6 +22,7 @@ import java.util.Locale;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
+import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
@@ -29,37 +30,32 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
 
     private final Context context;
     private boolean inChangelog = false;
-    private ArrayList<String> iconsList = new ArrayList<>();
-    private ArrayList<Integer> iconsArray = new ArrayList<>();
+    private ArrayList<IconItem> iconsList = new ArrayList<>();
     private Bitmap bitmap;
     private Preferences mPrefs;
 
-    public IconsAdapter(Context context, ArrayList<String> iconsList, ArrayList<Integer> iconsArray) {
+    public IconsAdapter(Context context, ArrayList<IconItem> iconsList) {
         this.context = context;
         this.iconsList = iconsList;
-        this.iconsArray = iconsArray;
         this.inChangelog = false;
         this.mPrefs = new Preferences(context);
     }
 
-    public IconsAdapter(Context context, ArrayList<String> iconsList, ArrayList<Integer> iconsArray,
+    public IconsAdapter(Context context, ArrayList<IconItem> iconsList,
                         boolean inChangelog) {
         this.context = context;
         this.iconsList = iconsList;
-        this.iconsArray = iconsArray;
         this.inChangelog = inChangelog;
         this.mPrefs = new Preferences(context);
     }
 
-    public void setIcons(ArrayList<String> iconsList, ArrayList<Integer> iconsArray) {
+    public void setIcons(ArrayList<IconItem> iconsList) {
         this.iconsList.addAll(iconsList);
-        this.iconsArray.addAll(iconsArray);
         this.notifyItemRangeInserted(0, iconsList.size() - 1);
     }
 
     public void clearIconsList() {
         this.iconsList.clear();
-        this.iconsArray.clear();
     }
 
     @Override
@@ -70,9 +66,7 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
 
     @Override
     public void onBindViewHolder(IconsHolder holder, int position) {
-        if (iconsArray.size() > 0) {
-            holder.icon.setImageResource(iconsArray.get(position));
-        }
+        holder.icon.setImageResource(iconsList.get(position).getResId());
         holder.view.setTag(position);
         holder.view.setOnClickListener(this);
         if (!inChangelog) {
@@ -99,8 +93,8 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
     @Override
     public void onClick(View v) {
         int position = (Integer) v.getTag();
-        int resId = iconsArray.get(position);
-        String name = iconsList.get(position).toLowerCase(Locale.getDefault());
+        int resId = iconsList.get(position).getResId();
+        String name = iconsList.get(position).getName().toLowerCase(Locale.getDefault());
 
         if (ShowcaseActivity.iconPicker) {
             Intent intent = new Intent();

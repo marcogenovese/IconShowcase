@@ -6,7 +6,21 @@
     2. Dark
     3. Auto
     -->
-    <integer name="default_theme">1</integer>
+    <integer name="default_theme">2</integer>
+
+    <!--
+    Do you want to allow users to change app theme?
+    True, means yes.
+    False, means no.
+    -->
+    <bool name="allow_user_theme_change">false</bool>
+
+    <!--
+    Do you want to allow users to hide the app icon?
+    True, means yes.
+    False, means no.
+    -->
+    <bool name="allow_user_to_hide_app_icon">false</bool>
 
     <!-- Default Navigation Bar value
     True, means colored.
@@ -152,6 +166,15 @@
     <!-- TABLETS - LANDSCAPE MODE -->
     <integer name="icons_columns_tablet_landscape">10</integer>
     <integer name="launchers_columns_tablet_landscape">6</integer>
+
+    <!--
+    Do you want the "ALL ICONS" tab to be generated automatically?
+    If you are sure you have put all the icons in categories.
+    True, means yes.
+    False, means no.
+    -->
+    <bool name="auto_generate_all_icons">true</bool>
+
 
     <!--donations stuff-->
 

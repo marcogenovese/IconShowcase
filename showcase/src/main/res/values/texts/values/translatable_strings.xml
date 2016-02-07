@@ -187,16 +187,6 @@
         community on Google Plus is a good place to go.
     </string>
 
-    <!-- Tabs Names list -->
-    <string-array name="tabs">
-        <item>Latest</item>
-        <item>System</item>
-        <item>Google Apps</item>
-        <item>Games</item>
-        <item>All</item>
-        <item>Drawers</item>
-    </string-array>
-
     <string name="saving_wallpaper">Saving wallpaper…</string>
     <string name="refresh">Refresh</string>
 
