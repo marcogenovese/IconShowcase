@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+
+    <string-array name="preview">
+        <item>a_better_camera</item>
+        <item>aa</item>
+        <item>acdisplay</item>
+        <item>action_launcher</item>
+        <item>adaway</item>
+        <item>adobe_creative_cloud</item>
+        <item>afterfocus</item>
+        <item>afterlight</item>
+        <item>airdroid</item>
+        <item>alarmpad</item>
+    </string-array>
+
+    <!-- These sections below are for your "Previews" section -->
+    <!-- These names should match YOUR actual icon names
+    	 the names used below are just for sampling purposes -->
+
+    <!-- Make sure the tabs names are the same as the other arrays -->
+    <string-array name="tabs">
+        <item>latest</item>
+        <item>system</item>
+        <item>google_apps</item>
+        <item>games</item>
+        <item>drawers</item>
+    </string-array>
+
+    <!-- LATEST ICONS -->
+    <!-- All of your Latest icons listed here -->
+    <string-array name="latest">
+        <item>a_better_camera</item>
+        <item>aa</item>
+        <item>acdisplay</item>
+        <item>action_launcher</item>
+        <item>adaway</item>
+        <item>adobe_creative_cloud</item>
+        <item>afterfocus</item>
+    </string-array>
+
+    <!-- SYSTEM ICONS -->
+    <!-- System icons listed here -->
+    <string-array name="system">
+        <item>a_better_camera</item>
+        <item>aa</item>
+        <item>acdisplay</item>
+        <item>action_launcher</item>
+        <item>adaway</item>
+    </string-array>
+
+    <!-- GOOGLE APPS ICONS -->
+    <!-- Google Apps icons are listed here -->
+    <string-array name="google_apps">
+        <item>a_better_camera</item>
+        <item>adobe_creative_cloud</item>
+        <item>afterfocus</item>
+        <item>afterlight</item>
+        <item>airdroid</item>
+        <item>alarmpad</item>
+    </string-array>
+
+    <!-- GAMES ICONS -->
+    <!-- Game icons are listed here -->
+    <string-array name="games">
+        <item>a_better_camera</item>
+        <item>adaway</item>
+        <item>adobe_creative_cloud</item>
+        <item>afterfocus</item>
+    </string-array>
+
+    <string-array name="drawers"><item>a_better_camera</item>
+        <item>aa</item>
+        <item>acdisplay</item>
+        <item>afterlight</item>
+        <item>airdroid</item>
+        <item>alarmpad</item>
+    </string-array>
+
+    <string-array name="icon_pack">
+        <item>a_better_camera</item>
+        <item>aa</item>
+        <item>acdisplay</item>
+        <item>action_launcher</item>
+        <item>adaway</item>
+        <item>adobe_creative_cloud</item>
+        <item>afterfocus</item>
+        <item>afterlight</item>
+        <item>airdroid</item>
+        <item>alarmpad</item>
+    </string-array>
+
+</resources>
