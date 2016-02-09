@@ -341,6 +341,7 @@ public final class ISDialogs {
                     }
                 })
                 .positiveText(android.R.string.ok)
+                .negativeText(android.R.string.cancel)
                 .build();
     }
 

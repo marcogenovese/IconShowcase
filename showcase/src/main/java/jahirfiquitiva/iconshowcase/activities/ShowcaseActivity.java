@@ -22,7 +22,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayout;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -158,14 +157,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             primaryDrawerItems[i + 1] = configurePrimaryDrawerItems[i];
         }
 
-        //SecondaryDrawerItems is now fixed; no need for this
-//        String[] configureSecondaryDrawerItems = getResources().getStringArray(R.array.secondary_drawer_items);
-//        secondaryDrawerItems = new String[configureSecondaryDrawerItems.length + 1];
-//        secondaryDrawerItems[0] = "Credits";
-//        for (int i = 0; i < configureSecondaryDrawerItems.length; i++) {
-//            secondaryDrawerItems[i + 1] = configureSecondaryDrawerItems[i];
-//        }
-
         getAction();
 
         Intent intent = getIntent();
@@ -183,8 +174,8 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             DONATIONS_BITCOIN = intent.getBooleanExtra("bitcoin_method", false);
         }
 
-        WITH_ICONS_BASED_CHANGELOG = getResources().getBoolean(R.bool.icons_changelog);
         WITH_USER_WALLPAPER_AS_TOOLBAR_HEADER = getResources().getBoolean(R.bool.user_wallpaper_in_home);
+        WITH_ICONS_BASED_CHANGELOG = getResources().getBoolean(R.bool.icons_changelog);
         WITH_ALTERNATIVE_ABOUT_SECTION = getResources().getBoolean(R.bool.cards_credits);
         WITH_SECONDARY_DRAWER_ITEMS_ICONS = getResources().getBoolean(R.bool.secondary_drawer_items_icons);
 
@@ -196,7 +187,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         GOOGLE_CATALOG_VALUES = getResources().getStringArray(R.array.google_donations_catalog);
         //TODO check if 50 is a good reference value
         if (!(GOOGLE_PUBKEY.length() > 50) || !(GOOGLE_CATALOG_VALUES.length > 0) || !(GOOGLE_CATALOG_FREE.length == GOOGLE_CATALOG_PRO.length) || !(GOOGLE_CATALOG_FREE.length == GOOGLE_CATALOG_VALUES.length)) {
-            DONATIONS_GOOGLE = false; //google donations setup is incorrent
+            DONATIONS_GOOGLE = false; //google donations setup is incorrect
         }
 
         //paypal
@@ -278,10 +269,10 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
                 //TODO test this
                 if (inventory != null) {
-                    Log.d(TAG, "IAP inventory exists");
-                    for (int i = 0; i < GOOGLE_CATALOG_FREE.length; i++) {
-                        Log.d(TAG, GOOGLE_CATALOG_FREE[i] + " is " + inventory.hasPurchase(GOOGLE_CATALOG_FREE[i]));
-                        if (inventory.hasPurchase(GOOGLE_CATALOG_FREE[i])) { //at least one donation value found, now premium
+                    Utils.showLog(context, "IAP inventory exists");
+                    for (String aGOOGLE_CATALOG_FREE : GOOGLE_CATALOG_FREE) {
+                        Utils.showLog(context, aGOOGLE_CATALOG_FREE + " is " + inventory.hasPurchase(aGOOGLE_CATALOG_FREE));
+                        if (inventory.hasPurchase(aGOOGLE_CATALOG_FREE)) { //at least one donation value found, now premium
                             mIsPremium = true;
                         }
                     }
@@ -725,6 +716,10 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             for (int i = 0; i < secondaryDrawerItems.length; i++) {
                 switch (secondaryDrawerItems[i]) {
                     case "Credits":
+                        creditsItem = new SecondaryDrawerItem().withName(thaCredits).withIcon(GoogleMaterial.Icon.gmd_info).withIdentifier(i + secondaryStart);
+                        drawerBuilder.addDrawerItems(creditsItem);
+                        break;
+                    case "CreditsAlt":
                         creditsItem = new SecondaryDrawerItem().withName(thaCredits).withIcon(GoogleMaterial.Icon.gmd_info).withIdentifier(i + secondaryStart);
                         drawerBuilder.addDrawerItems(creditsItem);
                         break;

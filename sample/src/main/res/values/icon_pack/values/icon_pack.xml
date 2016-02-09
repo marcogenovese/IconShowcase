@@ -69,7 +69,8 @@
         <item>afterfocus</item>
     </string-array>
 
-    <string-array name="drawers"><item>a_better_camera</item>
+    <string-array name="drawers">
+        <item>a_better_camera</item>
         <item>aa</item>
         <item>acdisplay</item>
         <item>afterlight</item>

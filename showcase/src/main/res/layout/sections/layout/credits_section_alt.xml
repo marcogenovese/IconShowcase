@@ -165,7 +165,7 @@
                         android:layout_marginTop="@dimen/cards_content_margin_small"
                         android:layout_toEndOf="@id/developerPhoto"
                         android:layout_toRightOf="@id/developerPhoto"
-                        android:text="@string/iconpack_author_name"
+                        android:text="@string/dashboard_author_name"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
 
                     <TextView

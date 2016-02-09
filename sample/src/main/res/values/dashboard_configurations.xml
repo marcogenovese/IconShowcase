@@ -16,6 +16,7 @@
         <item>Requests</item>
         <item>Apply</item>
         <item>FAQs</item>
+        <item>Zooper</item>
     </string-array>
 
     <!--
@@ -25,7 +26,7 @@
     <!-- Specify splashscreen color
     Can be LightLaunchScreen or DarkLaunchScreen
     -->
-    <style name="AppTheme.LaunchScreen" parent="@style/AppTheme.Base.LightLaunchScreen" />
+    <style name="AppTheme.LaunchScreen" parent="@style/AppTheme.Base.LightLaunchScreen"/>
 
     <!-- Default theme
     1. Light
@@ -193,5 +194,5 @@
     False, means no.
     -->
     <bool name="auto_generate_all_icons">false</bool>
-	
+
 </resources>
