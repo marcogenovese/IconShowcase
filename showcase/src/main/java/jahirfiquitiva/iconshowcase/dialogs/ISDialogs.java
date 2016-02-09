@@ -5,11 +5,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -63,15 +64,13 @@ public final class ISDialogs {
 
     public static void showIconsChangelogDialog(final Context context) {
 
-        MaterialDialog dialog = new MaterialDialog.Builder(context).title(R.string.changelog)
+        final MaterialDialog materialDialog = new MaterialDialog.Builder(context).title(R.string.changelog)
                 .customView(R.layout.icons_changelog, false)
                 .positiveText(context.getResources().getString(R.string.close))
                 .build();
 
-        View v = dialog.getCustomView();
-
+        final View v = materialDialog.getCustomView();
         final RecyclerView iconsGrid = (RecyclerView) v.findViewById(R.id.changelogRV);
-        iconsGrid.setHasFixedSize(true);
         final int grids = context.getResources().getInteger(R.integer.icons_grid_width);
         iconsGrid.setLayoutManager(new GridLayoutManager(context, grids));
 
@@ -92,9 +91,9 @@ public final class ISDialogs {
 
         final int numberOfImages = images;
 
-        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+        materialDialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
-            public void onShow(DialogInterface dialog) {
+            public void onShow(final DialogInterface dialog) {
                 //calculate the total number of rows
                 final int rows = numberOfImages / grids + (numberOfImages % grids == 0 ? 0 : 1);
                 Utils.triggerMethodOnceViewIsDisplayed(iconsGrid, new Callable<Void>() {
@@ -104,10 +103,16 @@ public final class ISDialogs {
                             //get single image height
                             if (iconsGrid.getChildCount() > 0) {
                                 int imageHeight = iconsGrid.getChildAt(0).getHeight();
-                                iconsGrid.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                                        imageHeight * rows + 2 * context.getResources().getDimensionPixelSize(R.dimen.dialog_margin_bottom)));
-                            } else {
-                                //show some sort of message in this case and calculate it's height + reset layoutParams
+                                final ViewGroup.LayoutParams layoutParams = v.getLayoutParams();
+                                int calculatedHeight = imageHeight * rows + 2 * context.getResources().getDimensionPixelSize(R.dimen.dialog_margin_bottom);
+                                DisplayMetrics displaymetrics = new DisplayMetrics();
+                                ((AppCompatActivity) context).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+                                int height = displaymetrics.heightPixels - 4 * context.getResources().getDimensionPixelSize(R.dimen.dialog_margin_bottom);
+
+                                if (calculatedHeight < height) {
+                                    layoutParams.height = calculatedHeight;
+                                    v.setLayoutParams(layoutParams);
+                                }
                             }
                         } catch (NullPointerException e) {
                             //do nothing
@@ -118,7 +123,7 @@ public final class ISDialogs {
             }
         });
 
-        dialog.show();
+        materialDialog.show();
     }
 
     public static void showLicenseSuccessDialog(Context context, MaterialDialog.SingleButtonCallback singleButtonCallback) {
