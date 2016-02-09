@@ -25,11 +25,13 @@ public class IconItem implements Parcelable {
         return this.resId;
     }
 
-    @Override public int describeContents() {
+    @Override
+    public int describeContents() {
         return 0;
     }
 
-    @Override public void writeToParcel(Parcel dest, int flags) {
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
         dest.writeInt(resId);
     }

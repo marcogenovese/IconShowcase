@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.concurrent.Callable;
 
 import jahirfiquitiva.iconshowcase.R;
-import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.adapters.ChangelogAdapter;
 import jahirfiquitiva.iconshowcase.adapters.IconsAdapter;
 import jahirfiquitiva.iconshowcase.fragments.WallpapersFragment;
@@ -472,76 +471,6 @@ public final class ISDialogs {
                 .onPositive(positive)
                 .onNegative(negative)
                 .dismissListener(dismissListener)
-                .show();
-    }
-
-    /*
-    TODO: Delete for official release
-     */
-
-    public static void showDrawerHeaderOptionsDialog(final Context context) {
-        final Preferences mPrefs = new Preferences(context);
-        final int current = mPrefs.getDrawerHeaderStyle();
-        new MaterialDialog.Builder(context)
-                .title(R.string.drawer_header_title)
-                .items(R.array.drawer_header_options)
-                .itemsCallbackSingleChoice(current - 1, new MaterialDialog.ListCallbackSingleChoice() {
-                    @Override
-                    public boolean onSelection(MaterialDialog dialog, View view, int position, CharSequence text) {
-                        int newSelected = position + 1;
-                        if (newSelected != current) {
-                            mPrefs.setDrawerHeaderStyle(newSelected);
-                            mPrefs.setSettingsModified(true);
-                            ThemeUtils.restartActivity((Activity) context);
-                        }
-                        return true;
-                    }
-                })
-                .positiveText(android.R.string.ok)
-                .negativeText(android.R.string.cancel)
-                .show();
-    }
-
-    public static void showChangelogStyleDialog(final Context context) {
-        final Preferences mPrefs = new Preferences(context);
-        final int current = mPrefs.getChangelogStyle();
-        new MaterialDialog.Builder(context)
-                .title(R.string.changelog_style_title)
-                .items(R.array.changelog_style_options)
-                .itemsCallbackSingleChoice(current - 1, new MaterialDialog.ListCallbackSingleChoice() {
-                    @Override
-                    public boolean onSelection(MaterialDialog dialog, View view, int position, CharSequence text) {
-                        int newSelected = position + 1;
-                        if (newSelected != current) {
-                            mPrefs.setChangelogStyle(newSelected);
-                        }
-                        return true;
-                    }
-                })
-                .positiveText(android.R.string.ok)
-                .negativeText(android.R.string.cancel)
-                .show();
-    }
-
-    public static void showCreditsOptionsDialog(final Context context) {
-        final Preferences mPrefs = new Preferences(context);
-        final int current = mPrefs.getCreditsStyle();
-        new MaterialDialog.Builder(context)
-                .title(R.string.credits_section_style)
-                .items(R.array.credits_section_options)
-                .itemsCallbackSingleChoice(current - 1, new MaterialDialog.ListCallbackSingleChoice() {
-                    @Override
-                    public boolean onSelection(MaterialDialog dialog, View view, int position, CharSequence text) {
-                        int newSelected = position + 1;
-                        if (newSelected != current) {
-                            mPrefs.setCreditsStyle(newSelected);
-                        }
-                        ShowcaseActivity.setupCreditsSectionStyle();
-                        return true;
-                    }
-                })
-                .positiveText(android.R.string.ok)
-                .negativeText(android.R.string.cancel)
                 .show();
     }
 

@@ -19,7 +19,6 @@ public class IconsCategory implements Parcelable {
         this.iconsArray = iconsArray;
     }
 
-
     public static final Creator<IconsCategory> CREATOR = new Creator<IconsCategory>() {
         @Override
         public IconsCategory createFromParcel(Parcel in) {
@@ -43,11 +42,13 @@ public class IconsCategory implements Parcelable {
         return iconsArray.size() > 0 ? this.iconsArray : null;
     }
 
-    @Override public int describeContents() {
+    @Override
+    public int describeContents() {
         return 0;
     }
 
-    @Override public void writeToParcel(Parcel dest, int flags) {
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
         dest.writeTypedList(iconsArray);
     }

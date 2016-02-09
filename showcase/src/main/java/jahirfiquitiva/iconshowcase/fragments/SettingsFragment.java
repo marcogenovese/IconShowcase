@@ -238,47 +238,6 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
             preferences.removePreference(launcherIcon);
         }
 
-
-        /*
-        TODO: Delete for official release.
-         */
-
-        findPreference("drawerHeader").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                ISDialogs.showDrawerHeaderOptionsDialog(getActivity());
-                return true;
-            }
-        });
-
-        findPreference("changelogStyle").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                ISDialogs.showChangelogStyleDialog(getActivity());
-                return true;
-            }
-        });
-
-        findPreference("creditsStyle").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                ISDialogs.showCreditsOptionsDialog(getActivity());
-                return true;
-            }
-        });
-
-        CheckBoxPreference icons = (CheckBoxPreference) findPreference("drawerIcons");
-        icons.setChecked(mPrefs.getSecondaryDrawerIconsEnabled());
-        icons.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                mPrefs.setSecondaryDrawerIconsEnabled(newValue.toString().equals("true"));
-                mPrefs.setSettingsModified(true);
-                ThemeUtils.restartActivity(getActivity());
-                return true;
-            }
-        });
-
     }
 
     public static void changeValues(Context context) {
