@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <!--
     Tabs to be used as primary drawer items
     The Home section will be added automatically
@@ -16,6 +17,7 @@
         <item>Requests</item>
         <item>Apply</item>
         <item>FAQs</item>
+        <item>Zooper</item>
     </string-array>
 
     <!--
