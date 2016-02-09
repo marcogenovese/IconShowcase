@@ -111,7 +111,7 @@
     True, means the About/Credits section will have cards.
     False, means such section will show the list.
     -->
-    <bool name="cards_credits">true</bool>
+    <bool name="cards_credits">false</bool>
 
     <!--
     Do you have a website?

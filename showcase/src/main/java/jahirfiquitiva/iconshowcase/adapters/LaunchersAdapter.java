@@ -1,6 +1,7 @@
 package jahirfiquitiva.iconshowcase.adapters;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,12 +11,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 import java.util.Locale;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.fragments.ApplyFragment;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
+import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 /**
  * @author Aidan Follestad (afollestad)
@@ -45,18 +49,21 @@ public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.Laun
     @Override
     public void onBindViewHolder(LauncherHolder holder, int position) {
         // Turns Launcher name "Something Pro" to "l_something_pro"
-        int iconResource = context.getResources().getIdentifier(
-                "ic_" + launchers.get(position).name.toLowerCase().replace(" ", "_"),
-                "drawable",
-                context.getPackageName()
-        );
+        String iconName = "ic_" + launchers.get(position).name.toLowerCase().replace(" ", "_");
+        int iconResource = getIconResId(context.getResources(), context.getPackageName(), iconName);
 
         final int light = ContextCompat.getColor(context, R.color.launcher_tint_dark);
         final int dark = ContextCompat.getColor(context, R.color.launcher_tint_light);
         final int textLight = ContextCompat.getColor(context, R.color.launcher_text_light);
         final int textDark = ContextCompat.getColor(context, R.color.launcher_text_dark);
 
-        holder.icon.setImageResource(iconResource);
+        if (iconResource != 0) {
+            Glide.with(context)
+                    .load(iconResource)
+                    .dontAnimate()
+                    .into(holder.icon);
+        }
+
         holder.launcherName.setText(launchers.get(position).name.toUpperCase(Locale.getDefault()));
 
         if (launchers.get(position).isInstalled(context)) {
@@ -84,6 +91,16 @@ public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.Laun
             int index = (Integer) v.getTag();
             if (mCallback != null)
                 mCallback.onClick(index);
+        }
+    }
+
+    private int getIconResId(Resources r, String p, String name) {
+        int res = r.getIdentifier(name, "drawable", p);
+        if (res != 0) {
+            return res;
+        } else {
+            Utils.showLog(context, "Missing icon: " + name);
+            return 0;
         }
     }
 

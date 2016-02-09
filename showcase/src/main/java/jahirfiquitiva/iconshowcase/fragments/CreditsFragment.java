@@ -1,6 +1,7 @@
 package jahirfiquitiva.iconshowcase.fragments;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -32,18 +33,36 @@ public class CreditsFragment extends Fragment {
     LinearLayout jahirL, authorFB, authorGPlus, authorTwitter, authorWebsite, authorYouTube,
             authorCommunity, authorPlayStore, devGitHub, libraries, uiCollaborators,
             thanksSherry, contributorsLayout, donateL, bugsL, communityL, emailL, translatorsL;
-    boolean withLinkToFacebook, withLinkToTwitter, withLinkToGPlus, withLinkToYouTube,
-            withLinkToCommunity, withLinkToPlayStore, withLinkToWebsite;
+    boolean withLinkToFacebook = false,
+            withLinkToTwitter = false,
+            withLinkToGPlus = false,
+            withLinkToYouTube = false,
+            withLinkToCommunity = false,
+            withLinkToPlayStore = false,
+            withLinkToWebsite = false;
     String[] libsLinks, contributorsLinks, uiCollaboratorsLinks, translatorsLinks;
 
-    private void setupBooleans() {
-        withLinkToFacebook = true;
-        withLinkToTwitter = true;
-        withLinkToGPlus = true;
-        withLinkToYouTube = true;
-        withLinkToCommunity = true;
-        withLinkToPlayStore = true;
-        withLinkToWebsite = true;
+    private void setupBooleans(Context context) {
+        Resources res = context.getResources();
+        String[] sites = res.getStringArray(R.array.iconpack_author_sites);
+
+        for (String site : sites) {
+            if (site.equals(res.getString(R.string.facebook))) {
+                withLinkToFacebook = true;
+            } else if (site.equals(res.getString(R.string.google_plus))) {
+                withLinkToGPlus = true;
+            } else if (site.equals(res.getString(R.string.join_community))) {
+                withLinkToCommunity = true;
+            } else if (site.equals(res.getString(R.string.youtube))) {
+                withLinkToYouTube = true;
+            } else if (site.equals(res.getString(R.string.twitter))) {
+                withLinkToTwitter = true;
+            } else if (site.equals(res.getString(R.string.play_store))) {
+                withLinkToPlayStore = true;
+            }
+        }
+
+        withLinkToWebsite = res.getBoolean(R.bool.you_have_a_website);
     }
 
     @Override
@@ -51,7 +70,7 @@ public class CreditsFragment extends Fragment {
 
         context = getActivity();
 
-        setupBooleans();
+        setupBooleans(context);
 
         libsLinks = context.getResources().getStringArray(R.array.libs_links);
         contributorsLinks = context.getResources().getStringArray(R.array.contributors_links);

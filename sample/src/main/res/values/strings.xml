@@ -43,6 +43,14 @@
         <item>@string/iconpack_author_playstore</item>
     </string-array>
 
+    <!-- This array will only be used if you enable the List style in About section. -->
+    <string-array name="iconpack_author_sites_in_list">
+        <item>@string/facebook</item>
+        <item>@string/google_plus</item>
+        <item>@string/join_community</item>
+        <item>@string/play_store</item>
+    </string-array>
+
     <!-- Muzei Stuff -->
     <string name="artsource_name">@string/app_name</string>
     <string name="artsource_desc">Wallpapers made by MinDesigns</string>

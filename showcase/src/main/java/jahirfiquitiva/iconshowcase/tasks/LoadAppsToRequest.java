@@ -81,7 +81,7 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
 
         final ArrayList<RequestItem> list = ApplicationBase.allApps;
 
-        list.removeAll(createListFromXML());
+        list.removeAll(createListFromXML(context));
 
         Collections.sort(list, new Comparator<RequestItem>() {
             @Override
@@ -107,12 +107,16 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
         // Example format:
         //intent.setComponent(new ComponentName("com.myapp", "com.myapp.launcher.settings"));
 
-        String[] split = componentString.split("/");
-        intent.setComponent(new ComponentName(split[0], split[1]));
-        return mPackageManager.resolveActivity(intent, 0);
+        if (componentString != null) {
+            String[] split = componentString.split("/");
+            intent.setComponent(new ComponentName(split[0], split[1]));
+            return mPackageManager.resolveActivity(intent, 0);
+        } else {
+            return null;
+        }
     }
 
-    private static String gComponentString(XmlPullParser xmlParser) {
+    private static String gComponentString(XmlPullParser xmlParser, Context context) {
 
         try {
 
@@ -121,10 +125,16 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
             final String initialComponentPackage = xmlParser.getAttributeValue(null, "component").split("/")[0];
             final String finalComponentPackage = initialComponentPackage.substring(14, initialComponentPackage.length());
 
+            final String iconName = xmlParser.getAttributeValue(null, "drawable");
+            int iconID = getIconResId(context, iconName);
+            if (iconID == 0) {
+                Utils.showLog(context, "Icon \'" + iconName + "\' is mentioned in appfilter.xml but can't be found in the app resources.");
+            }
+
             return finalComponentPackage + "/" + finalComponent;
 
         } catch (Exception e) {
-            e.printStackTrace();
+            Utils.showLog(context, e.getLocalizedMessage());
         }
 
         return null;
@@ -137,7 +147,7 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
         return mainIntent;
     }
 
-    private ArrayList<RequestItem> createListFromXML() {
+    private ArrayList<RequestItem> createListFromXML(Context context) {
 
         ArrayList<RequestItem> activitiesToRemove = new ArrayList<>();
 
@@ -161,7 +171,7 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
 
                         if (name.equals("item")) {
 
-                            ResolveInfo info = getResolveInfo(gComponentString(xmlParser));
+                            ResolveInfo info = getResolveInfo(gComponentString(xmlParser, context));
 
                             if (info != null) {
                                 Drawable icon;
@@ -187,10 +197,21 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
             }
 
         } catch (IOException | XmlPullParserException e) {
-            //Do nothing
+            Utils.showLog(context, e.getLocalizedMessage());
         }
 
         return activitiesToRemove;
+    }
+
+    private static int getIconResId(Context context, String name) {
+        Resources r = context.getResources();
+        String p = context.getPackageName();
+        int res = r.getIdentifier(name, "drawable", p);
+        if (res != 0) {
+            return res;
+        } else {
+            return 0;
+        }
     }
 
 }
