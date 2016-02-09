@@ -67,8 +67,8 @@
     <color name="home_light_background">@color/card_light_background</color>
 
     <!--snackbar background colors-->
-    <color name="snackbar_light">#ddd</color>
-    <color name="snackbar_dark">#333</color>
+    <color name="snackbar_light">#fafafa</color>
+    <color name="snackbar_dark">#424242</color>
 
     <!--colors for apply launcher (for launchers that aren't installed)-->
     <color name="launcher_tint_light">@color/drawable_tint_light</color>

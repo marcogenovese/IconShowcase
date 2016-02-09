@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="debug">Debug Options</string>
+
+    <string name="drawer_header_title">Navigation drawer header style</string>
+
+    <string-array name="drawer_header_options">
+        <item>Full height header</item>
+        <item>Mini header</item>
+        <item>No header</item>
+    </string-array>
+
+    <string name="changelog_style_title">Changelog style</string>
+
+    <string-array name="changelog_style_options">
+        <item>Text based</item>
+        <item>Icons based</item>
+    </string-array>
+
+    <string name="credits_section_style">About section style</string>
+
+    <string-array name="credits_section_options">
+        <item>Cards</item>
+        <item>List</item>
+    </string-array>
+
+    <string name="secondary_drawer_items_title">Enable secondary drawer items icons.</string>
+
+</resources>

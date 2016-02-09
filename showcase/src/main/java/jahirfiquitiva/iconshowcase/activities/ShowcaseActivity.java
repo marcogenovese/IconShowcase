@@ -174,10 +174,16 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             DONATIONS_BITCOIN = intent.getBooleanExtra("bitcoin_method", false);
         }
 
-        WITH_ICONS_BASED_CHANGELOG = getResources().getBoolean(R.bool.icons_changelog);
         WITH_USER_WALLPAPER_AS_TOOLBAR_HEADER = getResources().getBoolean(R.bool.user_wallpaper_in_home);
+        /*
+        WITH_ICONS_BASED_CHANGELOG = getResources().getBoolean(R.bool.icons_changelog);
         WITH_ALTERNATIVE_ABOUT_SECTION = getResources().getBoolean(R.bool.cards_credits);
         WITH_SECONDARY_DRAWER_ITEMS_ICONS = getResources().getBoolean(R.bool.secondary_drawer_items_icons);
+        */
+
+        WITH_ICONS_BASED_CHANGELOG = mPrefs.getChangelogStyle() == 2;
+        WITH_ALTERNATIVE_ABOUT_SECTION = mPrefs.getCreditsStyle() == 1;
+        WITH_SECONDARY_DRAWER_ITEMS_ICONS = mPrefs.getSecondaryDrawerIconsEnabled();
 
         //donations stuff
         //google
@@ -210,7 +216,8 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             secondaryDrawerItems[0] = "CreditsAlt";
         }
 
-        switch (getResources().getInteger(R.integer.nav_drawer_header_style)) {
+        //switch (getResources().getInteger(R.integer.nav_drawer_header_style)) {
+        switch (mPrefs.getDrawerHeaderStyle()) {
             case 1:
                 drawerHeaderStyle = DrawerHeaderStyle.NORMAL_HEADER;
                 break;
@@ -492,6 +499,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         super.onOptionsItemSelected(item);
         int i = item.getItemId();
         if (i == R.id.changelog) {
+            WITH_ICONS_BASED_CHANGELOG = mPrefs.getChangelogStyle() == 2;
             if (WITH_ICONS_BASED_CHANGELOG) {
                 ISDialogs.showIconsChangelogDialog(this);
             } else {
@@ -537,6 +545,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     private void showChangelogDialog() {
         String launchinfo = getSharedPreferences("PrefsFile", MODE_PRIVATE).getString("version", "0");
         storeSharedPrefs();
+        WITH_ICONS_BASED_CHANGELOG = mPrefs.getChangelogStyle() == 2;
         if (launchinfo != null && !launchinfo.equals(Utils.getAppVersion(this))) {
             if (WITH_ICONS_BASED_CHANGELOG) {
                 ISDialogs.showIconsChangelogDialog(this);
@@ -967,6 +976,15 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
     public boolean isPremium() {
         return mIsPremium;
+    }
+
+    public static void setupCreditsSectionStyle() {
+        WITH_ALTERNATIVE_ABOUT_SECTION = mPrefs.getCreditsStyle() == 1;
+        if (WITH_ALTERNATIVE_ABOUT_SECTION) { //use alternative credits layout if selected
+            secondaryDrawerItems[0] = "CreditsAlt";
+        } else {
+            secondaryDrawerItems[0] = "Credits";
+        }
     }
 
 }

@@ -24,6 +24,12 @@ public class Preferences {
             WALLS_DIALOG_DISMISSED = "walls_dialog_dismissed",
             WALLS_COLUMNS_NUMBER = "walls_columns_number";
 
+    private static final String
+            DRAWER_HEADER_STYLE = "drawer_header_style",
+            CHANGELOG_STYLE = "changelog_style",
+            CREDITS_STYLE = "credits_style",
+            SECONDARY_DRAWER_ICONS_ENABLED = "secondary_drawer_icons_enabled";
+
     private final Context context;
 
     public Preferences(Context context) {
@@ -145,6 +151,38 @@ public class Preferences {
     public int getWallsColumnsNumber() {
         return getSharedPreferences().getInt(WALLS_COLUMNS_NUMBER,
                 context.getResources().getInteger(R.integer.wallpapers_grid_width));
+    }
+
+    public void setDrawerHeaderStyle(int style) {
+        getSharedPreferences().edit().putInt(DRAWER_HEADER_STYLE, style).apply();
+    }
+
+    public int getDrawerHeaderStyle() {
+        return getSharedPreferences().getInt(DRAWER_HEADER_STYLE, 1);
+    }
+
+    public void setChangelogStyle(int changelogStyle) {
+        getSharedPreferences().edit().putInt(CHANGELOG_STYLE, changelogStyle).apply();
+    }
+
+    public int getChangelogStyle() {
+        return getSharedPreferences().getInt(CHANGELOG_STYLE, 1);
+    }
+
+    public void setCreditsStyle(int style) {
+        getSharedPreferences().edit().putInt(CREDITS_STYLE, style).apply();
+    }
+
+    public int getCreditsStyle() {
+        return getSharedPreferences().getInt(CREDITS_STYLE, 1);
+    }
+
+    public void setSecondaryDrawerIconsEnabled(boolean enable) {
+        getSharedPreferences().edit().putBoolean(SECONDARY_DRAWER_ICONS_ENABLED, enable).apply();
+    }
+
+    public boolean getSecondaryDrawerIconsEnabled() {
+        return getSharedPreferences().getBoolean(SECONDARY_DRAWER_ICONS_ENABLED, false);
     }
 
 }

@@ -3,6 +3,33 @@
                   android:key="preferences">
 
     <PreferenceCategory
+        android:key="debug"
+        android:title="@string/debug">
+
+        <Preference
+            android:key="drawerHeader"
+            android:persistent="true"
+            android:title="@string/drawer_header_title"/>
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="drawerIcons"
+            android:persistent="true"
+            android:title="@string/secondary_drawer_items_title"/>
+
+        <Preference
+            android:key="changelogStyle"
+            android:persistent="true"
+            android:title="@string/changelog_style_title"/>
+
+        <Preference
+            android:key="creditsStyle"
+            android:persistent="true"
+            android:title="@string/credits_section_style"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:key="uiPreferences"
         android:title="@string/pref_header_ui">
 

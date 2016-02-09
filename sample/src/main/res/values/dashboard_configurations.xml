@@ -16,6 +16,7 @@
         <item>Requests</item>
         <item>Apply</item>
         <item>FAQs</item>
+        <item>Zooper</item>
     </string-array>
 
     <!--
@@ -193,5 +194,5 @@
     False, means no.
     -->
     <bool name="auto_generate_all_icons">false</bool>
-	
+
 </resources>
