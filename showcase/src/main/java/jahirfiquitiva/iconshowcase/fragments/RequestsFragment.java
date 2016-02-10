@@ -139,7 +139,10 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
     @Override
     public void onResume() {
         super.onResume();
-        requestsAdapter.unselectAll(); //TODO fix this
+        RequestsAdapter adapter = ((RequestsAdapter) mRecyclerView.getAdapter());
+        if (adapter != null) {
+            adapter.unselectAll();
+        }
     }
 
     @Override

@@ -108,7 +108,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             turbo_action = "com.phonemetra.turbo.launcher.icons.ACTION_PICK_ICON",
             nova_action = "com.novalauncher.THEME";
 
-    public static boolean iconPicker, wallsPicker, requestEnabled = false, wallsEnabled = false,
+    public static boolean iconPicker, wallsPicker, iconPickerEnabled = false, wallsEnabled = false,
             applyEnabled = false, SHUFFLE = true;
 
     private static String thaHome, thaPreviews, thaApply, thaWalls, thaRequest, thaDonate, thaFAQs,
@@ -119,7 +119,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     public String version;
 
     public static int currentItem = -1, wallpaper = -1, wallsIdentifier = 0,
-            requestIdentifier = 0, applyIdentifier = 0, settingsIdentifier = 0,
+            iconPickerIdentifier = 0, applyIdentifier = 0, settingsIdentifier = 0,
             secondaryStart = 0, numOfIcons = 4;
 
     private boolean mLastTheme, mLastNavBar;
@@ -305,9 +305,9 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         setupDrawer(toolbar, savedInstanceState);
 
         if (savedInstanceState == null) {
-            if (iconPicker && requestEnabled) {
-                drawerItemClick(requestIdentifier);
-                drawer.setSelection(requestIdentifier);
+            if (iconPicker && iconPickerEnabled) {
+                drawerItemClick(iconPickerIdentifier);
+                drawer.setSelection(iconPickerIdentifier);
             } else if (wallsPicker && mPrefs.areFeaturesEnabled() && wallsEnabled) {
                 drawerItemClick(wallsIdentifier);
                 drawer.setSelection(wallsIdentifier);
@@ -361,8 +361,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         }
         currentItem = itemId;
 
-        setupFAB(fragment);
-
         if (fragment.equals("Main")) {
             icon1.setVisibility(View.INVISIBLE);
             icon2.setVisibility(View.INVISIBLE);
@@ -375,7 +373,11 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             appbar.setExpanded(false, mPrefs.getAnimationsEnabled());
             appbar.setActivated(false);
             coordinatorLayout.setScrollAllowed(false);
-        }
+        } /*else {
+            appbar.setExpanded(false, mPrefs.getAnimationsEnabled());
+            appbar.setActivated(false);
+            coordinatorLayout.setScrollAllowed(false);
+        }*/
 
         //Fragment Switcher
         if (mPrefs.getAnimationsEnabled()) {
@@ -678,44 +680,43 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                 case "Main":
                     home = new PrimaryDrawerItem().withName(thaHome).withIcon(GoogleMaterial.Icon.gmd_home).withIdentifier(i + 1);
                     drawerBuilder.addDrawerItems(home);
-
                     break;
+
                 case "Previews":
-                    previews = new PrimaryDrawerItem().withName(thaPreviews).withIcon(GoogleMaterial.Icon.gmd_palette).withIdentifier(i + 1);
+                    iconPickerEnabled = true;
+                    iconPickerIdentifier = i + 1;
+                    previews = new PrimaryDrawerItem().withName(thaPreviews).withIcon(GoogleMaterial.Icon.gmd_palette).withIdentifier(iconPickerIdentifier);
                     drawerBuilder.addDrawerItems(previews);
-
                     break;
+
                 case "Wallpapers":
                     wallsEnabled = true;
                     wallsIdentifier = i + 1;
                     walls = new PrimaryDrawerItem().withName(thaWalls).withIcon(GoogleMaterial.Icon.gmd_landscape).withIdentifier(wallsIdentifier);
                     drawerBuilder.addDrawerItems(walls);
-
                     break;
+
                 case "Requests":
-                    requestEnabled = true;
-                    requestIdentifier = i + 1;
-                    requests = new PrimaryDrawerItem().withName(thaRequest).withIcon(GoogleMaterial.Icon.gmd_comment_list).withIdentifier(requestIdentifier);
+                    requests = new PrimaryDrawerItem().withName(thaRequest).withIcon(GoogleMaterial.Icon.gmd_comment_list).withIdentifier(i + 1);
                     drawerBuilder.addDrawerItems(requests);
-
                     break;
+
                 case "Apply":
                     applyEnabled = true;
                     applyIdentifier = i + 1;
                     apply = new PrimaryDrawerItem().withName(thaApply).withIcon(GoogleMaterial.Icon.gmd_open_in_browser).withIdentifier(applyIdentifier);
                     drawerBuilder.addDrawerItems(apply);
-
                     break;
+
                 case "FAQs":
                     faqs = new PrimaryDrawerItem().withName(thaFAQs).withIcon(GoogleMaterial.Icon.gmd_help).withIdentifier(i + 1);
                     drawerBuilder.addDrawerItems(faqs);
-
                     break;
+
                 case "Zooper":
                     WITH_ZOOPER_SECTION = true;
                     zooper = new PrimaryDrawerItem().withName(thaZooper).withIcon(GoogleMaterial.Icon.gmd_widgets).withIdentifier(i + 1);
                     drawerBuilder.addDrawerItems(zooper);
-
                     break;
             }
         }
@@ -967,30 +968,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                 break;
         }
 
-    }
-
-    private static void setupFAB(String fragment) {
-        if (fragment.equals("Main")) {
-            if (applyEnabled) {
-                fab.setVisibility(View.VISIBLE);
-                fab.show();
-                fab.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        drawerItemClick(applyIdentifier);
-                        drawer.setSelection(applyIdentifier);
-                    }
-                });
-            } else {
-                fab.setVisibility(View.GONE);
-                fab.hide();
-                Utils.showSimpleSnackbar(context, coordinatorLayout,
-                        context.getResources().getString(R.string.no_apply_tab), 2);
-            }
-        } else {
-            fab.setVisibility(View.GONE);
-            fab.hide();
-        }
     }
 
     public static void setupToolbarHeader(Context context) {

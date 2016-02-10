@@ -34,9 +34,6 @@ public class LauncherIntents {
             case "Cmthemeengine":
                 CMThemeEngine(context);
                 break;
-            case "Epic":
-                EpicLauncher(context);
-                break;
             case "Go":
                 GoLauncher(context);
                 break;
@@ -45,9 +42,6 @@ public class LauncherIntents {
                 break;
             case "Holohd":
                 HoloLauncherHD(context);
-                break;
-            case "Inspire":
-                InspireLauncher(context);
                 break;
             case "KK":
                 KkLauncher(context);
@@ -64,14 +58,8 @@ public class LauncherIntents {
             case "Mini":
                 MiniLauncher(context);
                 break;
-            case "Nemus":
-                NemusLauncher(context);
-                break;
             case "Next":
                 NextLauncher(context);
-                break;
-            case "Nine":
-                NineLauncher(context, layout);
                 break;
             case "Nova":
                 NovaLauncher(context);
@@ -158,13 +146,6 @@ public class LauncherIntents {
         }
     }
 
-    public void EpicLauncher(Context context) {
-        Utils.forceCrash();
-        Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.setComponent(new ComponentName("com.epic.launcher", "com.epic.launcher.s"));
-        context.startActivity(intent);
-    }
-
     public void GoLauncher(Context context) {
         Intent intent = context.getPackageManager().getLaunchIntentForPackage("com.gau.go.launcherex");
         Intent go = new Intent("com.gau.go.launcherex.MyThemes.mythemeaction");
@@ -184,14 +165,6 @@ public class LauncherIntents {
         Intent holohdApply = new Intent(Intent.ACTION_MAIN);
         holohdApply.setComponent(new ComponentName("com.mobint.hololauncher.hd", "com.mobint.hololauncher.SettingsActivity"));
         context.startActivity(holohdApply);
-    }
-
-    public void InspireLauncher(Context context) {
-        Intent inspireMain = context.getPackageManager().getLaunchIntentForPackage("com.bam.android.inspirelauncher");
-        Intent inspire = new Intent("com.bam.android.inspirelauncher.action.ACTION_SET_THEME");
-        inspire.putExtra("icon_pack_name", context.getPackageName());
-        context.sendBroadcast(inspire);
-        context.startActivity(inspireMain);
     }
 
     public void KkLauncher(Context context) {
@@ -225,12 +198,6 @@ public class LauncherIntents {
         context.startActivity(intent);
     }
 
-    public void NemusLauncher(Context context) {
-        Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.setComponent(new ComponentName("com.nemustech.launcher", "com.nemustech.spareparts.SettingMainActivity"));
-        context.startActivity(intent);
-    }
-
     public void NextLauncher(Context context) {
         Intent nextApply = context.getPackageManager().getLaunchIntentForPackage("com.gtp.nextlauncher");
         if (nextApply == null) {
@@ -241,24 +208,6 @@ public class LauncherIntents {
         next.putExtra("pkgname", context.getPackageName());
         context.sendBroadcast(next);
         context.startActivity(nextApply);
-    }
-
-    public void NineLauncher(Context context, View layout) {
-        Intent nineApply = context.getPackageManager().getLaunchIntentForPackage("com.gidappsinc.launcher");
-        Intent nine = new Intent("com.gridappsinc.launcher.action.THEME");
-        try {
-            int NineLauncherVersion = context.getPackageManager().getPackageInfo("com.gidappsinc.launcher", 0).versionCode;
-            if (NineLauncherVersion >= 12210) {
-                nine.putExtra("iconpkg", context.getPackageName());
-                nine.putExtra("launch", true);
-                context.sendBroadcast(nine);
-            } else {
-                Utils.showSimpleSnackbar(context, layout,
-                        context.getResources().getString(R.string.updateninelauncher), 1);
-            }
-            context.startActivity(nineApply);
-        } catch (PackageManager.NameNotFoundException ignored) {
-        }
     }
 
     public void NovaLauncher(Context context) {

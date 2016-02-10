@@ -128,6 +128,8 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
                 } catch (ArrayIndexOutOfBoundsException e1) {
                     Utils.showAppFilterLog(context, "Empty ComponentInfo found for icon: \'" + iconName + "\'");
                 }
+            } else {
+                Utils.showAppFilterLog(context, "Empty ComponentInfo found for icon: \'" + iconName + "\'");
             }
             return mPackageManager.resolveActivity(intent, 0);
         } else {
@@ -157,13 +159,13 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
             String completeComponent = finalComponentPackage + "/" + finalComponent;
 
             if (halfEmptyPack) {
-                Utils.showAppFilterLog(context, "Empty component package for icon: " + iconName);
+                Utils.showAppFilterLog(context, "Empty component package for icon: \'" + iconName + "\'");
                 return null;
             } else if (halfEmptyComp) {
-                Utils.showAppFilterLog(context, "Empty component for icon: " + iconName);
+                Utils.showAppFilterLog(context, "Empty component for icon: \'" + iconName + "\'");
                 return null;
             } else if (iconName.equals("")) {
-                Utils.showAppFilterLog(context, "Empty drawable for component: " + completeComponent);
+                Utils.showAppFilterLog(context, "Empty drawable for component: \'" + completeComponent + "\'");
                 return null;
             } else {
                 int iconID = getIconResId(context, iconName);

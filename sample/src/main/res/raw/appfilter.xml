@@ -19,10 +19,22 @@
 
     <item
         component="ComponentInfo{com.android.contacts/com.android.contacts.DialtactsContactsEntryActivity}"
-        drawable="people"/>
+        drawable="something"/>
 
     <item
         component="ComponentInfo{com.android.contacts/com.android.contacts.DialtactsContactsEntryActivity}"
-        drawable="people"/>
+        drawable="icon"/>
+
+    <item
+        component="ComponentInfo{/com.android.contacts.DialtactsContactsEntryActivity}"
+        drawable="phone"/>
+
+    <item
+        component="ComponentInfo{com.android.contacts/}"
+        drawable="contacts"/>
+
+    <item
+        component="ComponentInfo{com.android.contacts/com.android.contacts.DialtactsContactsEntryActivity}"
+        drawable=""/>
 
 </resources>

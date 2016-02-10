@@ -22,6 +22,7 @@ import com.mikepenz.iconics.IconicsDrawable;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
+import jahirfiquitiva.iconshowcase.adapters.RequestsAdapter;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
@@ -53,6 +54,8 @@ public class MainFragment extends Fragment {
             //Do nothing
         }
 
+        showFAB();
+
         ShowcaseActivity.setupToolbarHeader(getActivity());
 
         ShowcaseActivity.setupIcons(ShowcaseActivity.icon1, ShowcaseActivity.icon2,
@@ -72,8 +75,6 @@ public class MainFragment extends Fragment {
             }
 
         }, 600);
-
-        ShowcaseActivity.fab.setVisibility(View.VISIBLE);
 
         PlayStoreListing = getActivity().getPackageName();
 
@@ -126,6 +127,31 @@ public class MainFragment extends Fragment {
         });
 
         return layout;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        showFAB();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ShowcaseActivity.fab.setVisibility(View.GONE);
+        ShowcaseActivity.fab.hide();
+    }
+
+    private void showFAB(){
+        ShowcaseActivity.fab.setVisibility(View.VISIBLE);
+        ShowcaseActivity.fab.show();
+        ShowcaseActivity.fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ShowcaseActivity.drawerItemClick(ShowcaseActivity.applyIdentifier);
+                ShowcaseActivity.drawer.setSelection(ShowcaseActivity.applyIdentifier);
+            }
+        });
     }
 
     private void setupIcons(Context context) {

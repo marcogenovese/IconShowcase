@@ -1,8 +1,10 @@
 package jahirfiquitiva.iconshowcase.fragments;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -89,6 +91,7 @@ public class PreviewsFragment extends Fragment {
         // Set custom offset for AppBar. This makes both toolbar and tabs visible
 
         AppBarLayout appbar = (AppBarLayout) getActivity().findViewById(R.id.appbar);
+        CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) getActivity().findViewById(R.id.collapsingToolbar);
         CustomCoordinatorLayout.LayoutParams params = (CustomCoordinatorLayout.LayoutParams) appbar.getLayoutParams();
         AppBarLayout.Behavior behavior = (AppBarLayout.Behavior) params.getBehavior();
         CustomCoordinatorLayout coordinatorLayout = (CustomCoordinatorLayout) getActivity().findViewById(R.id.mainCoordinatorLayout);
@@ -112,6 +115,11 @@ public class PreviewsFragment extends Fragment {
 
         // Lock CoordinatorLayout so the toolbar can't be scrolled away
         coordinatorLayout.setScrollAllowed(false);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            collapsingToolbar.setElevation((float) getActivity().getResources().getDimensionPixelSize(R.dimen.toolbar_elevation));
+        }
+
     }
 
     private void createTabs() {

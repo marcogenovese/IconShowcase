@@ -45,8 +45,6 @@
         yourself, but it requires the use of an external app. Would you like to download it?
     </string>
 
-    <string name="updateninelauncher">Please update Nine Launcher to the latest version.</string>
-
     <!-- Changelog Dialog Content -->
     <string name="changelog_dialog_title">Changelog</string>
     <string name="great">Great</string>
