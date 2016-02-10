@@ -2,6 +2,9 @@ package jahirfiquitiva.iconshowcase.adapters;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.ColorFilter;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -71,7 +74,11 @@ public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.Laun
             holder.itemBG.setBackgroundColor(launchers.get(position).launcherColor);
             holder.launcherName.setTextColor(light);
         } else {
-            holder.icon.setColorFilter(ThemeUtils.darkTheme ? light : dark);
+            if (context.getResources().getBoolean(R.bool.enable_bnw_filter)) {
+                holder.icon.setColorFilter(bnwFilter());
+            } else {
+                holder.icon.setColorFilter(ThemeUtils.darkTheme ? light : dark);
+            }
             holder.itemBG.setBackgroundColor(ThemeUtils.darkTheme ? light : dark);
             holder.launcherName.setTextColor(ThemeUtils.darkTheme ? textLight : textDark);
         }
@@ -118,6 +125,12 @@ public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.Laun
             icon = (ImageView) view.findViewById(R.id.launcherIcon);
             launcherName = (TextView) view.findViewById(R.id.launcherName);
         }
+    }
+
+    private ColorFilter bnwFilter() {
+        ColorMatrix matrix = new ColorMatrix();
+        matrix.setSaturation(0);
+        return new ColorMatrixColorFilter(matrix);
     }
 
 }

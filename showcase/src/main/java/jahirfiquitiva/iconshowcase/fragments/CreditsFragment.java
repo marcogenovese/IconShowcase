@@ -25,14 +25,14 @@ public class CreditsFragment extends Fragment {
     private Context context;
     private ViewGroup layout;
     Drawable person, facebook, gplus, twitter, website, youtube, community, playstore, github,
-            bugs, donate, collaboratorsIcon, libs, uiCollaboratorsIcon, sherryIcon, email, translators;
+            bugs, collaboratorsIcon, libs, uiCollaboratorsIcon, sherryIcon, email, translators;
     ImageView iconAuthor, iconDev, iconAuthorFacebook, iconAuthorGPlus, iconAuthorCommunity,
             youtubeIcon, twitterIcon, playStoreIcon, iconAuthorWebsite, uiCollaboratorsIV,
-            iconDevGitHub, iconDevCommunity, donateIcon, bugIcon, collaboratorsIV, libsIcon,
+            iconDevGitHub, iconDevCommunity, bugIcon, collaboratorsIV, libsIcon,
             sherryIV, emailIV, translatorsIV;
     LinearLayout jahirL, authorFB, authorGPlus, authorTwitter, authorWebsite, authorYouTube,
             authorCommunity, authorPlayStore, devGitHub, libraries, uiCollaborators,
-            thanksSherry, contributorsLayout, donateL, bugsL, communityL, emailL, translatorsL;
+            thanksSherry, contributorsLayout, bugsL, communityL, emailL, translatorsL;
     boolean withLinkToFacebook = false,
             withLinkToTwitter = false,
             withLinkToGPlus = false,
@@ -104,7 +104,6 @@ public class CreditsFragment extends Fragment {
         playStoreIcon = (ImageView) layout.findViewById(R.id.icon_play_store);
         iconAuthorWebsite = (ImageView) layout.findViewById(R.id.icon_website_author);
         iconDevGitHub = (ImageView) layout.findViewById(R.id.icon_github);
-        donateIcon = (ImageView) layout.findViewById(R.id.icon_donate);
         bugIcon = (ImageView) layout.findViewById(R.id.icon_bug_report);
         libsIcon = (ImageView) layout.findViewById(R.id.icon_libs);
         collaboratorsIV = (ImageView) layout.findViewById(R.id.icon_collaborators);
@@ -253,16 +252,6 @@ public class CreditsFragment extends Fragment {
             }
         });
 
-        //TODO: Add actual donation link
-        donateL = (LinearLayout) layout.findViewById(R.id.donate);
-        donateL.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Utils.openLinkInChromeCustomTab(context,
-                        "https://goo.gl/k7q8EB");
-            }
-        });
-
         bugsL = (LinearLayout) layout.findViewById(R.id.report_bugs);
         bugsL.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -337,11 +326,6 @@ public class CreditsFragment extends Fragment {
                 .color(ThemeUtils.darkTheme ? light : dark)
                 .sizeDp(24);
 
-        donate = new IconicsDrawable(context)
-                .icon(GoogleMaterial.Icon.gmd_money_box)
-                .color(ThemeUtils.darkTheme ? light : dark)
-                .sizeDp(24);
-
         collaboratorsIcon = new IconicsDrawable(context)
                 .icon(GoogleMaterial.Icon.gmd_code)
                 .color(ThemeUtils.darkTheme ? light : dark)
@@ -381,7 +365,6 @@ public class CreditsFragment extends Fragment {
         playStoreIcon.setImageDrawable(playstore);
         iconAuthorWebsite.setImageDrawable(website);
         iconDevGitHub.setImageDrawable(github);
-        donateIcon.setImageDrawable(donate);
         bugIcon.setImageDrawable(bugs);
         iconAuthorFacebook.setImageDrawable(facebook);
         libsIcon.setImageDrawable(libs);

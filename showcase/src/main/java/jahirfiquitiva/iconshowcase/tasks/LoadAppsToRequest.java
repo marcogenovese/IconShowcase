@@ -19,6 +19,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.fragments.RequestsFragment;
@@ -29,6 +31,7 @@ import jahirfiquitiva.iconshowcase.utilities.Utils;
 public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<RequestItem>> {
 
     private static PackageManager mPackageManager;
+    private static ArrayList<String> components = new ArrayList<>();
 
     final static ArrayList<RequestItem> appsList = new ArrayList<>();
 
@@ -98,18 +101,34 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
         ApplicationBase.allAppsToRequest = list;
         RequestsFragment.setupContent();
         endTime = System.currentTimeMillis();
-        Utils.showLog(context, "Apps to Request Task completed in: " + String.valueOf((endTime - startTime) / 1000) + " secs.");
+        if (components != null) {
+            showDuplicatedComponentsInLog(components, context);
+        }
+        Utils.showAppFilterLog(context, "Apps to Request Task completed in: " + String.valueOf((endTime - startTime) / 1000) + " secs.");
     }
 
-    private static ResolveInfo getResolveInfo(String componentString) {
+    private static ResolveInfo getResolveInfo(String componentString, Context context,
+                                              String iconName) {
         Intent intent = new Intent();
 
         // Example format:
         //intent.setComponent(new ComponentName("com.myapp", "com.myapp.launcher.settings"));
 
         if (componentString != null) {
-            String[] split = componentString.split("/");
-            intent.setComponent(new ComponentName(split[0], split[1]));
+            String[] split = null;
+            try {
+                split = componentString.split("/");
+            } catch (ArrayIndexOutOfBoundsException e) {
+                Utils.showAppFilterLog(context, "Empty ComponentInfo found for icon: \'" + iconName + "\'");
+            }
+            if (split != null) {
+                try {
+                    components.add(componentString);
+                    intent.setComponent(new ComponentName(split[0], split[1]));
+                } catch (ArrayIndexOutOfBoundsException e1) {
+                    Utils.showAppFilterLog(context, "Empty ComponentInfo found for icon: \'" + iconName + "\'");
+                }
+            }
             return mPackageManager.resolveActivity(intent, 0);
         } else {
             return null;
@@ -118,6 +137,8 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
 
     private static String gComponentString(XmlPullParser xmlParser, Context context) {
 
+        boolean halfEmptyPack = false, halfEmptyComp = false;
+
         try {
 
             final String initialComponent = xmlParser.getAttributeValue(null, "component").split("/")[1];
@@ -125,20 +146,43 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
             final String initialComponentPackage = xmlParser.getAttributeValue(null, "component").split("/")[0];
             final String finalComponentPackage = initialComponentPackage.substring(14, initialComponentPackage.length());
 
-            final String iconName = xmlParser.getAttributeValue(null, "drawable");
-            int iconID = getIconResId(context, iconName);
-            if (iconID == 0) {
-                Utils.showLog(context, "Icon \'" + iconName + "\' is mentioned in appfilter.xml but can't be found in the app resources.");
+            if (finalComponentPackage.equals("")) {
+                halfEmptyPack = true;
+            } else if (finalComponent.equals("")) {
+                halfEmptyComp = true;
             }
 
-            return finalComponentPackage + "/" + finalComponent;
+            final String iconName = getIconName(xmlParser);
+
+            String completeComponent = finalComponentPackage + "/" + finalComponent;
+
+            if (halfEmptyPack) {
+                Utils.showAppFilterLog(context, "Empty component package for icon: " + iconName);
+                return null;
+            } else if (halfEmptyComp) {
+                Utils.showAppFilterLog(context, "Empty component for icon: " + iconName);
+                return null;
+            } else if (iconName.equals("")) {
+                Utils.showAppFilterLog(context, "Empty drawable for component: " + completeComponent);
+                return null;
+            } else {
+                int iconID = getIconResId(context, iconName);
+                if (iconID == 0) {
+                    Utils.showAppFilterLog(context, "Icon \'" + iconName + "\' is mentioned in appfilter.xml but can't be found in the app resources.");
+                }
+                return completeComponent;
+            }
 
         } catch (Exception e) {
-            Utils.showLog(context, e.getLocalizedMessage());
+            Utils.showAppFilterLog(context, e.getLocalizedMessage());
         }
 
         return null;
 
+    }
+
+    public static String getIconName(XmlPullParser xmlParser) {
+        return xmlParser.getAttributeValue(null, "drawable");
     }
 
     public Intent getAllActivitiesIntent() {
@@ -171,7 +215,10 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
 
                         if (name.equals("item")) {
 
-                            ResolveInfo info = getResolveInfo(gComponentString(xmlParser, context));
+                            ResolveInfo info = getResolveInfo(
+                                    gComponentString(xmlParser, context),
+                                    context,
+                                    getIconName(xmlParser));
 
                             if (info != null) {
                                 Drawable icon;
@@ -197,7 +244,7 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
             }
 
         } catch (IOException | XmlPullParserException e) {
-            Utils.showLog(context, e.getLocalizedMessage());
+            Utils.showAppFilterLog(context, e.getLocalizedMessage());
         }
 
         return activitiesToRemove;
@@ -212,6 +259,30 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
         } else {
             return 0;
         }
+    }
+
+    private static void showDuplicatedComponentsInLog(ArrayList<String> components,
+                                                      Context context) {
+
+        String[] componentsArray = new String[components.size()];
+        componentsArray = components.toArray(componentsArray);
+
+        Map<String, Integer> occurrences = new HashMap<String, Integer>();
+
+        Integer count = 0;
+
+        for (String word : componentsArray) {
+            count = occurrences.get(word);
+            if (count == null) {
+                count = 0;
+            }
+            occurrences.put(word, count + 1);
+        }
+
+        for (String word : occurrences.keySet()) {
+            Utils.showAppFilterLog(context, "Duplicated component: \'" + word + "\' - " + String.valueOf(count) + " times.");
+        }
+
     }
 
 }

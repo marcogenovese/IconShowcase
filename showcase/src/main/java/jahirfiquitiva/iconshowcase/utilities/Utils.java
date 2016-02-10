@@ -147,6 +147,11 @@ public class Utils {
         Log.d(tag, s);
     }
 
+    public static void showAppFilterLog(Context context, String s) {
+        String tag = context.getResources().getString(R.string.app_name) + " AppFilter";
+        Log.d(tag, s);
+    }
+
     public static void showLog(String s) {
         Log.d("IconShowcase ", s);
     }

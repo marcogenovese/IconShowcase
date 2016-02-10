@@ -8,7 +8,7 @@ import android.view.View;
 
 public class CustomCoordinatorLayout extends CoordinatorLayout {
 
-    private boolean allowScroll = false;
+    private boolean allowScroll = true;
 
     public CustomCoordinatorLayout(Context context) {
         super(context);

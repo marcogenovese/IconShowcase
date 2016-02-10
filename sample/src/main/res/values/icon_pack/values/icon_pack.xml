@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
+    <!-- Make sure to put at least 8 icons -->
     <string-array name="preview">
         <item>a_better_camera</item>
         <item>aa</item>

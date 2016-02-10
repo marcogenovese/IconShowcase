@@ -111,7 +111,7 @@
     True, means the About/Credits section will have cards.
     False, means such section will show the list.
     -->
-    <bool name="cards_credits">false</bool>
+    <bool name="cards_credits">true</bool>
 
     <!--
     Do you have a website?
@@ -120,6 +120,13 @@
     False, means no.
     -->
     <bool name="you_have_a_website">true</bool>
+
+    <!--
+    Do you want to use black and white filter in launchers icons?
+    True, the app will use bnw filter.
+    False, the app will simply tint the icons.
+    -->
+    <bool name="enable_bnw_filter">true</bool>
 
     <!--
     Do you want the app to use palette api in wallpapers section?

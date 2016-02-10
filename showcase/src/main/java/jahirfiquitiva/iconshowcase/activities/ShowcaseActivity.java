@@ -28,7 +28,6 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -102,7 +101,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
     private static final String MARKET_URL = "https://play.google.com/store/apps/details?id=";
     public boolean mIsPremium = false;
-    private static String TAG;
 
     private String action = "action";
     private static final String
@@ -110,7 +108,8 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             turbo_action = "com.phonemetra.turbo.launcher.icons.ACTION_PICK_ICON",
             nova_action = "com.novalauncher.THEME";
 
-    public static boolean iconPicker, wallsPicker, requestEnabled = false, wallsEnabled = false, applyEnabled = false;
+    public static boolean iconPicker, wallsPicker, requestEnabled = false, wallsEnabled = false,
+            applyEnabled = false, SHUFFLE = true;
 
     private static String thaHome, thaPreviews, thaApply, thaWalls, thaRequest, thaDonate, thaFAQs,
             thaZooper, thaCredits, thaSettings;
@@ -119,7 +118,9 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
     public String version;
 
-    public static int currentItem = -1, wallpaper = -1, wallsIdentifier = 0, requestIdentifier = 0, applyIdentifier = 0, settingsIdentifier = 0, secondaryStart = 0;
+    public static int currentItem = -1, wallpaper = -1, wallsIdentifier = 0,
+            requestIdentifier = 0, applyIdentifier = 0, settingsIdentifier = 0,
+            secondaryStart = 0, numOfIcons = 4;
 
     private boolean mLastTheme, mLastNavBar;
     private static Preferences mPrefs;
@@ -130,7 +131,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     public static CollapsingToolbarLayout collapsingToolbarLayout;
     public static CustomCoordinatorLayout coordinatorLayout;
     public static FloatingActionButton fab;
-    public static ImageView icon1, icon2, icon3, icon4;
+    public static ImageView icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8;
     public static TextView titleView;
 
     public static Drawer drawer;
@@ -222,6 +223,8 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                 break;
         }
 
+        numOfIcons = context.getResources().getInteger(R.integer.toolbar_icons);
+
         setContentView(R.layout.showcase_activity);
 
         runLicenseChecker();
@@ -237,17 +240,24 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         icon2 = (ImageView) findViewById(R.id.iconTwo);
         icon3 = (ImageView) findViewById(R.id.iconThree);
         icon4 = (ImageView) findViewById(R.id.iconFour);
+        icon5 = (ImageView) findViewById(R.id.iconFive);
+        icon6 = (ImageView) findViewById(R.id.iconSix);
+        icon7 = (ImageView) findViewById(R.id.iconSeven);
+        icon8 = (ImageView) findViewById(R.id.iconEight);
 
         GridLayout iconsRow = (GridLayout) findViewById(R.id.iconsRow);
 
-        setupIcons(icon1, icon2, icon3, icon4, this);
+        if (mPrefs.getSettingsModified()) {
+            setupIcons(icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8, numOfIcons);
+        }
 
         iconsRow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (currentItem == 1) {
-                    setupIcons(icon1, icon2, icon3, icon4, context);
-                    animateIcons(icon1, icon2, icon3, icon4);
+                    SHUFFLE = true;
+                    setupIcons(icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8, numOfIcons);
+                    animateIcons(icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8, numOfIcons);
                 }
             }
         });
@@ -842,7 +852,10 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     }
 
     public static void setupIcons(final ImageView icon1, final ImageView icon2,
-                                  final ImageView icon3, final ImageView icon4, Context context) {
+                                  final ImageView icon3, final ImageView icon4,
+                                  final ImageView icon5, final ImageView icon6,
+                                  final ImageView icon7, final ImageView icon8,
+                                  int numOfIcons) {
 
         ArrayList<IconItem> icons = null;
 
@@ -851,11 +864,10 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         }
         ArrayList<IconItem> finalIconsList = new ArrayList<>();
 
-        if (icons != null) {
+        if (icons != null && SHUFFLE) {
             Collections.shuffle(icons);
         }
 
-        int numOfIcons = context.getResources().getInteger(R.integer.icons_grid_width);
         int i = 0;
 
         if (icons != null) {
@@ -867,30 +879,93 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             icon2.setImageResource(finalIconsList.get(1).getResId());
             icon3.setImageResource(finalIconsList.get(2).getResId());
             icon4.setImageResource(finalIconsList.get(3).getResId());
+            if (numOfIcons == 6) {
+                icon5.setImageResource(finalIconsList.get(4).getResId());
+                icon6.setImageResource(finalIconsList.get(5).getResId());
+            } else if (numOfIcons == 8) {
+                icon5.setImageResource(finalIconsList.get(4).getResId());
+                icon6.setImageResource(finalIconsList.get(5).getResId());
+                icon7.setImageResource(finalIconsList.get(6).getResId());
+                icon8.setImageResource(finalIconsList.get(7).getResId());
+            }
         }
+
+        SHUFFLE = false;
+
     }
 
     public static void animateIcons(ImageView icon1, ImageView icon2,
-                                    ImageView icon3, ImageView icon4) {
+                                    ImageView icon3, ImageView icon4,
+                                    ImageView icon5, ImageView icon6,
+                                    ImageView icon7, ImageView icon8,
+                                    int numOfIcons) {
 
-        icon1.setVisibility(View.VISIBLE);
-        icon2.setVisibility(View.VISIBLE);
-        icon3.setVisibility(View.VISIBLE);
-        icon4.setVisibility(View.VISIBLE);
+        icon1.setVisibility(View.GONE);
+        icon2.setVisibility(View.GONE);
+        icon3.setVisibility(View.GONE);
+        icon4.setVisibility(View.GONE);
+        icon5.setVisibility(View.GONE);
+        icon6.setVisibility(View.GONE);
+        icon7.setVisibility(View.GONE);
+        icon8.setVisibility(View.GONE);
+
+        switch (numOfIcons) {
+            case 4:
+                icon1.setVisibility(View.VISIBLE);
+                icon2.setVisibility(View.VISIBLE);
+                icon3.setVisibility(View.VISIBLE);
+                icon4.setVisibility(View.VISIBLE);
+                break;
+            case 6:
+                icon1.setVisibility(View.VISIBLE);
+                icon2.setVisibility(View.VISIBLE);
+                icon3.setVisibility(View.VISIBLE);
+                icon4.setVisibility(View.VISIBLE);
+                icon5.setVisibility(View.VISIBLE);
+                icon6.setVisibility(View.VISIBLE);
+                break;
+            case 8:
+                icon1.setVisibility(View.VISIBLE);
+                icon2.setVisibility(View.VISIBLE);
+                icon3.setVisibility(View.VISIBLE);
+                icon4.setVisibility(View.VISIBLE);
+                icon5.setVisibility(View.VISIBLE);
+                icon6.setVisibility(View.VISIBLE);
+                icon7.setVisibility(View.VISIBLE);
+                icon8.setVisibility(View.VISIBLE);
+                break;
+        }
 
         if (mPrefs.getAnimationsEnabled()) {
             Animation anim = AnimationUtils.loadAnimation(context, R.anim.bounce);
-            playIconsAnimations(icon1, icon2, icon3, icon4, anim);
+            playIconsAnimations(icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8, anim, numOfIcons);
         }
 
     }
 
     private static void playIconsAnimations(ImageView icon1, ImageView icon2,
-                                            ImageView icon3, ImageView icon4, Animation anim) {
+                                            ImageView icon3, ImageView icon4,
+                                            ImageView icon5, ImageView icon6,
+                                            ImageView icon7, ImageView icon8,
+                                            Animation anim, int numOfIcons) {
+
         icon1.startAnimation(anim);
         icon2.startAnimation(anim);
         icon3.startAnimation(anim);
         icon4.startAnimation(anim);
+
+        switch (numOfIcons) {
+            case 6:
+                icon5.startAnimation(anim);
+                icon6.startAnimation(anim);
+                break;
+            case 8:
+                icon5.startAnimation(anim);
+                icon6.startAnimation(anim);
+                icon7.startAnimation(anim);
+                icon8.startAnimation(anim);
+                break;
+        }
 
     }
 
@@ -921,7 +996,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     public static void setupToolbarHeader(Context context) {
 
         ImageView toolbarHeader = (ImageView) ((AppCompatActivity) context).findViewById(R.id.toolbarHeader);
-        ProgressBar progress = (ProgressBar) ((AppCompatActivity) context).findViewById(R.id.headerProgressBar);
 
         if (WITH_USER_WALLPAPER_AS_TOOLBAR_HEADER && mPrefs.getWallpaperAsToolbarHeaderEnabled()) {
             WallpaperManager wm = WallpaperManager.getInstance(context);
@@ -957,7 +1031,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             toolbarHeader.setImageResource(wallpapersArray.get(wallpaper));
         }
 
-        progress.setVisibility(View.INVISIBLE);
         toolbarHeader.setVisibility(View.VISIBLE);
     }
 

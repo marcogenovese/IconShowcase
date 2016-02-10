@@ -55,16 +55,25 @@ public class MainFragment extends Fragment {
 
         ShowcaseActivity.setupToolbarHeader(getActivity());
 
+        ShowcaseActivity.setupIcons(ShowcaseActivity.icon1, ShowcaseActivity.icon2,
+                ShowcaseActivity.icon3, ShowcaseActivity.icon4, ShowcaseActivity.icon5,
+                ShowcaseActivity.icon6, ShowcaseActivity.icon7, ShowcaseActivity.icon8,
+                ShowcaseActivity.numOfIcons);
+
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
 
             @Override
             public void run() {
                 ShowcaseActivity.animateIcons(ShowcaseActivity.icon1, ShowcaseActivity.icon2,
-                        ShowcaseActivity.icon3, ShowcaseActivity.icon4);
+                        ShowcaseActivity.icon3, ShowcaseActivity.icon4, ShowcaseActivity.icon5,
+                        ShowcaseActivity.icon6, ShowcaseActivity.icon7, ShowcaseActivity.icon8,
+                        ShowcaseActivity.numOfIcons);
             }
 
         }, 600);
+
+        ShowcaseActivity.fab.setVisibility(View.VISIBLE);
 
         PlayStoreListing = getActivity().getPackageName();
 

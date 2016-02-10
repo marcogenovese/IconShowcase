@@ -4,67 +4,25 @@
     <item
         component="ComponentInfo{com.android.contacts/com.android.contacts.DialtactsContactsEntryActivity}"
         drawable="people"/>
-    <item component="ComponentInfo{com.android.contacts/com.app.contacts.PhoneBookTopMenuActivity}"
-          drawable="people"/>
+
     <item
-        component="ComponentInfo{com.android.contacts/com.android.contacts.activities.PeopleActivity}"
+        component="ComponentInfo{/com.android.contacts.DialtactsContactsEntryActivity}"
         drawable="people"/>
+
     <item
-        component="ComponentInfo{com.android.contacts/com.android.contacts.activities.ContactsFrontDoor}"
+        component="ComponentInfo{com.android.contacts/}"
         drawable="people"/>
+
     <item
-        component="ComponentInfo{com.android.contacts/com.android.contacts.activities.ContactTabBrowserActivity}"
-        drawable="people"/>
-    <item
-        component="ComponentInfo{com.android.htccontacts/com.android.htccontacts.ContactsTabActivity}"
-        drawable="people"/>
-    <item
-        component="ComponentInfo{com.android.htccontacts/com.android.htccontacts.BrowseLayerCarouselActivity}"
-        drawable="people"/>
-    <item
-        component="ComponentInfo{com.android.htccontacts/com.android.htccontacts.ContactSearchEntryActivity}"
-        drawable="people"/>
-    <item
-        component="ComponentInfo{com.motorola.blur.contacts/com.motorola.blur.contacts.ViewIdentitiesFacetActivity}"
-        drawable="people"/>
-    <item
-        component="ComponentInfo{com.motorola.blur.contacts/com.motorola.blur.contacts.ViewIdentitiesTabActivity}"
-        drawable="people"/>
-    <item
-        component="ComponentInfo{com.sonyericsson.contacts/com.sonyericsson.contacts.ContactTabActivity}"
-        drawable="people"/>
-    <item
-        component="ComponentInfo{com.sonyericsson.android.socialphonebook/com.sonyericsson.android.socialphonebook.SocialPhonebookActivity}"
-        drawable="people"/>
-    <item
-        component="ComponentInfo{com.sonyericsson.android.socialphonebook/com.sonyericsson.android.socialphonebook.LaunchActivity}"
-        drawable="people"/>
+        component="ComponentInfo{com.android.contacts/com.android.contacts.DialtactsContactsEntryActivity}"
+        drawable=""/>
+
     <item
         component="ComponentInfo{com.android.contacts/com.android.contacts.DialtactsContactsEntryActivity}"
         drawable="people"/>
+
     <item
-        component="ComponentInfo{com.android.contacts/com.android.contacts.activities.TwelveKeyDialer}"
-        drawable="people"/>
-    <item
-        component="ComponentInfo{com.android.contacts/com.sec.android.app.contacts.DialerEntryActivity}"
-        drawable="people"/>
-    <item
-        component="ComponentInfo{com.android.contacts/com.sec.android.app.contacts.ContactsEntryActivity}"
-        drawable="people"/>
-    <item
-        component="ComponentInfo{com.android.contacts/com.sec.android.app.contacts.PhoneBookTopMenuActivity}"
-        drawable="people"/>
-    <item
-        component="ComponentInfo{com.android.contacts/com.android.contacts.DialtactsCallLogEntryActivity}"
-        drawable="people"/>
-    <item
-        component="ComponentInfo{com.android.contacts/com.sec.android.app.contacts.PhoneBookSplitTopMenuActivity}"
-        drawable="people"/>
-    <item
-        component="ComponentInfo{com.android.contacts/com.android.contacts.DialtactsRecentCallsEntryActivity}"
-        drawable="people"/>
-    <item
-        component="ComponentInfo{com.android.contacts/com.sec.android.app.contacts.RecntcallEntryActivity}"
+        component="ComponentInfo{com.android.contacts/com.android.contacts.DialtactsContactsEntryActivity}"
         drawable="people"/>
 
 </resources>
