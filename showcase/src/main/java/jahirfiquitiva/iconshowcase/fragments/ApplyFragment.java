@@ -1,13 +1,17 @@
 package jahirfiquitiva.iconshowcase.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,11 +27,14 @@ import java.util.Collections;
 import java.util.List;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.adapters.LaunchersAdapter;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.sort.InstalledLauncherComparator;
 import jahirfiquitiva.iconshowcase.utilities.LauncherIntents;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
+import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
+import jahirfiquitiva.iconshowcase.utilities.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 
@@ -84,6 +91,13 @@ public class ApplyFragment extends Fragment {
     public void onResume() {
         super.onResume();
         updateLaunchersList();
+        int iconsColor = ThemeUtils.darkTheme ?
+                ContextCompat.getColor(getActivity(), R.color.toolbar_text_dark) :
+                ContextCompat.getColor(getActivity(), R.color.toolbar_text_light);
+        ToolbarColorizer.colorizeToolbar(
+                ShowcaseActivity.toolbar,
+                iconsColor,
+                getActivity());
     }
 
     private void updateLaunchersList() {

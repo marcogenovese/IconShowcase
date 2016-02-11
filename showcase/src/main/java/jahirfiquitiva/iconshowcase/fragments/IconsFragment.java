@@ -65,7 +65,6 @@ public class IconsFragment extends Fragment {
         mAdapter = new IconsAdapter(getActivity(), iconsList);
 
         if (getArguments() != null) {
-            iconsList = (ArrayList<IconItem>) getArguments().getSerializable("icons");
             IconsCategory category = getArguments().getParcelable("icons");
             if (category != null) {
                 iconsList = category.getIconsArray();

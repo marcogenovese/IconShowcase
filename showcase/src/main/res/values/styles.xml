@@ -25,6 +25,10 @@
         <item name="homeBackground">@color/home_light_background</item>
         <item name="drawablesTintColor">@color/drawable_tint_light</item>
         <item name="fabTintColor">@color/fab_background_tint_light_theme</item>
+        <item name="toolbarTextColor">@color/toolbar_text_light</item>
+        <item name="tabsIndicatorColor">@color/tabs_indicator_light</item>
+        <item name="tabsNormalTextColor">@color/tabs_normal_text_light</item>
+        <item name="tabsSelectedTextColor">@color/tabs_selected_text_light</item>
     </style>
 
     <style name="AppTheme.Base.Dark" parent="MaterialDrawerTheme.TranslucentStatus">
@@ -48,6 +52,10 @@
         <item name="homeBackground">@color/home_dark_background</item>
         <item name="drawablesTintColor">@color/drawable_tint_dark</item>
         <item name="fabTintColor">@color/fab_background_tint_dark_theme</item>
+        <item name="toolbarTextColor">@color/toolbar_text_dark</item>
+        <item name="tabsIndicatorColor">@color/tabs_indicator_dark</item>
+        <item name="tabsNormalTextColor">@color/tabs_normal_text_dark</item>
+        <item name="tabsSelectedTextColor">@color/tabs_selected_text_dark</item>
     </style>
 
     <style name="AppTheme.Base.LightLaunchScreen">

@@ -1,12 +1,15 @@
 package jahirfiquitiva.iconshowcase.fragments;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.CardView;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +20,10 @@ import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
+import jahirfiquitiva.iconshowcase.utilities.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 public class CreditsAltFragment extends Fragment {
@@ -28,7 +33,7 @@ public class CreditsAltFragment extends Fragment {
 
     private boolean YOU_HAVE_WEBSITE = false;
 
-    String[] libsLinks, contributorsLinks, uiCollaboratorsLinks, designerLinks, translatorsLinks;
+    String[] libsLinks, contributorsLinks, uiCollaboratorsLinks, designerLinks;
 
     Drawable collaboratorsIcon, libs, uiCollaboratorsIcon, sherryIcon, translators;
     ImageView uiCollaboratorsIV, collaboratorsIV, libsIcon, sherryIV, translatorsIV;
@@ -44,7 +49,6 @@ public class CreditsAltFragment extends Fragment {
         contributorsLinks = context.getResources().getStringArray(R.array.contributors_links);
         uiCollaboratorsLinks = context.getResources().getStringArray(R.array.ui_collaborators_links);
         designerLinks = context.getResources().getStringArray(R.array.iconpack_author_links);
-        translatorsLinks = context.getResources().getStringArray(R.array.translators_links);
 
         if (layout != null) {
             ViewGroup parent = (ViewGroup) layout.getParent();
@@ -118,12 +122,24 @@ public class CreditsAltFragment extends Fragment {
         translators.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ISDialogs.showTranslatorsDialogs(context, translatorsLinks);
+                ISDialogs.showTranslatorsDialogs(context);
             }
 
         });
 
         return layout;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        int iconsColor = ThemeUtils.darkTheme ?
+                ContextCompat.getColor(context, R.color.toolbar_text_dark) :
+                ContextCompat.getColor(context, R.color.toolbar_text_light);
+        ToolbarColorizer.colorizeToolbar(
+                ShowcaseActivity.toolbar,
+                iconsColor,
+                getActivity());
     }
 
     private void setupViews(final ViewGroup layout) {

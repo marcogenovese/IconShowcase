@@ -59,6 +59,7 @@
     <string name="ahmed">Ahmed Rizwan</string>
     <string name="joaquin">Joaquin Cuitiño</string>
     <string name="allan">Allan Wang</string>
+    <string name="sherry">Sherry Sabatine</string>
 
     <string-array name="contributors_names">
         <item>@string/allan</item>
@@ -109,27 +110,23 @@
     </string-array>
 
     <string-array name="translators_names">
+        <item>@string/sherry</item>
+        <item>@string/patryk</item>
+        <item>@string/kevin</item>
         <item>Tijmen Ennik</item>
         <item>Julian Ostarek</item>
-        <item>@string/patryk</item>
         <item>Randle P</item>
         <item>Chebeto Sanchez</item>
         <item>Danet Mickael</item>
         <item>Otto Werse</item>
         <item>Redi Tafani</item>
         <item>Stefano Trevisani</item>
-    </string-array>
-
-    <string-array name="translators_links">
-        <item></item>
-        <item></item>
-        <item>https://plus.google.com/109304801957014561872/posts</item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
+        <item>TyronTM</item>
+        <item>Sandivisi Aditya</item>
+        <item>Jacek Kazimierowicz</item>
+        <item>Sven R.</item>
+        <item>Davide Della Giustina</item>
+        <item>Runar Olsen</item>
     </string-array>
 
     <string-array name="libs_names">

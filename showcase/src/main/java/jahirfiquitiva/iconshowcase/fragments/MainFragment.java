@@ -1,7 +1,9 @@
 package jahirfiquitiva.iconshowcase.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,6 +11,7 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatButton;
+import android.util.TypedValue;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,8 +25,8 @@ import com.mikepenz.iconics.IconicsDrawable;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
-import jahirfiquitiva.iconshowcase.adapters.RequestsAdapter;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
+import jahirfiquitiva.iconshowcase.utilities.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 public class MainFragment extends Fragment {
@@ -133,6 +136,13 @@ public class MainFragment extends Fragment {
     public void onResume() {
         super.onResume();
         showFAB();
+        int iconsColor = ThemeUtils.darkTheme ?
+                ContextCompat.getColor(getActivity(), R.color.toolbar_text_dark) :
+                ContextCompat.getColor(getActivity(), R.color.toolbar_text_light);
+        ToolbarColorizer.colorizeToolbar(
+                ShowcaseActivity.toolbar,
+                iconsColor,
+                getActivity());
     }
 
     @Override
@@ -142,7 +152,7 @@ public class MainFragment extends Fragment {
         ShowcaseActivity.fab.hide();
     }
 
-    private void showFAB(){
+    private void showFAB() {
         ShowcaseActivity.fab.setVisibility(View.VISIBLE);
         ShowcaseActivity.fab.show();
         ShowcaseActivity.fab.setOnClickListener(new View.OnClickListener() {

@@ -20,6 +20,25 @@
     <color name="material_drawer_selected_text">@color/light_theme_accent</color>
     <color name="material_drawer_dark_selected_text">@color/dark_theme_accent</color>
 
+    <color name="material_drawer_background">@color/light_bg</color>
+    <color name="material_drawer_dark_background">@color/dark_bg</color>
+
+    <!-- Toolbar text color -->
+    <color name="toolbar_text_light">#ffffff</color>
+    <color name="toolbar_text_dark">#ffffff</color>
+
+    <!-- Tabs indicator color -->
+    <color name="tabs_indicator_light">#ffffff</color>
+    <color name="tabs_indicator_dark">#ffffff</color>
+
+    <!-- No selected tabs text color -->
+    <color name="tabs_normal_text_light">#80ffffff</color>
+    <color name="tabs_normal_text_dark">#80ffffff</color>
+
+    <!-- Selected tabs text color -->
+    <color name="tabs_selected_text_light">#ffffff</color>
+    <color name="tabs_selected_text_dark">#ffffff</color>
+
     <!--Light and Dark backgrounds for Splash screen -->
     <color name="splash_dark_background">@color/dark_bg</color>
     <color name="splash_light_background">@color/light_bg</color>
@@ -76,6 +95,24 @@
     <color name="launcher_text_light">@color/secondary_text_light</color>
     <color name="launcher_text_dark">@color/primary_text_dark</color>
 
+    <!-- MaterialDrawer Light theme colors -->
+    <color name="material_drawer_primary_text">#de000000</color>
+    <color name="material_drawer_primary_icon">#8A000000</color>
+    <color name="material_drawer_secondary_text">#8A000000</color>
+    <color name="material_drawer_hint_text">#42000000</color>
+    <color name="material_drawer_divider">#1f000000</color>
+    <color name="material_drawer_selected">#e8e8e8</color>
+    <color name="material_drawer_header_selection_text">#fff</color>
+
+    <!-- MaterialDrawer Dark theme colors -->
+    <color name="material_drawer_dark_primary_text">#deffffff</color>
+    <color name="material_drawer_dark_primary_icon">#8Affffff</color>
+    <color name="material_drawer_dark_secondary_text">#8Affffff</color>
+    <color name="material_drawer_dark_hint_text">#42ffffff</color>
+    <color name="material_drawer_dark_divider">#1fffffff</color>
+    <color name="material_drawer_dark_selected">#202020</color>
+    <color name="material_drawer_dark_header_selection_text">#fff</color>
+
     <!--colors for installed launchers-->
     <color name="action_launcher_color">#f44336</color>
     <color name="adw_launcher_color">#5b9cc8</color>
@@ -84,20 +121,16 @@
     <color name="atom_launcher_color">#a657bd</color>
     <color name="aviate_launcher_color">#fc842d</color>
     <color name="cm_theme_engine_color">#29b6f6</color>
-    <color name="epic_launcher_color">#2196f4</color>
     <color name="go_launcher_color">#95c955</color>
     <color name="google_now_launcher_color">#0097f6</color>
     <color name="holo_launcher_color">#65473c</color>
     <color name="holo_hd_launcher_color">#8bc34a</color>
-    <color name="inspire_launcher_color">#f96edf</color>
     <color name="kk_launcher_color">#ffc107</color>
     <color name="l_launcher_color">#f67c00</color>
     <color name="lg_home_color">#00bcd4</color>
     <color name="lucid_launcher_color">#2196f4</color>
     <color name="mini_launcher_color">#4caf50</color>
-    <color name="nemus_launcher_color">#607da4</color>
     <color name="next_launcher_color">#5787c5</color>
-    <color name="nine_launcher_color">#009592</color>
     <color name="nova_launcher_color">#f83729</color>
     <color name="s_launcher_color">#00bcd4</color>
     <color name="smart_launcher_color">#2eb3d9</color>

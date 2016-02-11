@@ -1,11 +1,14 @@
 package jahirfiquitiva.iconshowcase.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +19,10 @@ import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
+import jahirfiquitiva.iconshowcase.utilities.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 public class CreditsFragment extends Fragment {
@@ -40,7 +45,7 @@ public class CreditsFragment extends Fragment {
             withLinkToCommunity = false,
             withLinkToPlayStore = false,
             withLinkToWebsite = false;
-    String[] libsLinks, contributorsLinks, uiCollaboratorsLinks, translatorsLinks;
+    String[] libsLinks, contributorsLinks, uiCollaboratorsLinks;
 
     private void setupBooleans(Context context) {
         Resources res = context.getResources();
@@ -75,7 +80,6 @@ public class CreditsFragment extends Fragment {
         libsLinks = context.getResources().getStringArray(R.array.libs_links);
         contributorsLinks = context.getResources().getStringArray(R.array.contributors_links);
         uiCollaboratorsLinks = context.getResources().getStringArray(R.array.ui_collaborators_links);
-        translatorsLinks = context.getResources().getStringArray(R.array.translators_links);
 
         if (layout != null) {
             ViewGroup parent = (ViewGroup) layout.getParent();
@@ -91,6 +95,18 @@ public class CreditsFragment extends Fragment {
         setupExtraAuthorOptions();
 
         return layout;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        int iconsColor = ThemeUtils.darkTheme ?
+                ContextCompat.getColor(context, R.color.toolbar_text_dark) :
+                ContextCompat.getColor(context, R.color.toolbar_text_light);
+        ToolbarColorizer.colorizeToolbar(
+                ShowcaseActivity.toolbar,
+                iconsColor,
+                getActivity());
     }
 
     private void setupViewsIDs(final ViewGroup layout) {
@@ -248,7 +264,7 @@ public class CreditsFragment extends Fragment {
         translatorsL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ISDialogs.showTranslatorsDialogs(context, translatorsLinks);
+                ISDialogs.showTranslatorsDialogs(context);
             }
         });
 

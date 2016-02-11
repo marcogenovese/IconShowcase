@@ -4,14 +4,17 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.content.res.TypedArray;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,12 +27,15 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.adapters.RequestsAdapter;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.tasks.ZipFilesToRequest;
 import jahirfiquitiva.iconshowcase.utilities.ApplicationBase;
 import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
+import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
+import jahirfiquitiva.iconshowcase.utilities.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 
 public class RequestsFragment extends Fragment implements PermissionUtils.OnPermissionResultListener {
@@ -139,6 +145,15 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
     @Override
     public void onResume() {
         super.onResume();
+
+        int iconsColor = ThemeUtils.darkTheme ?
+                ContextCompat.getColor(context, R.color.toolbar_text_dark) :
+                ContextCompat.getColor(context, R.color.toolbar_text_light);
+        ToolbarColorizer.colorizeToolbar(
+                ShowcaseActivity.toolbar,
+                iconsColor,
+                getActivity());
+
         RequestsAdapter adapter = ((RequestsAdapter) mRecyclerView.getAdapter());
         if (adapter != null) {
             adapter.unselectAll();

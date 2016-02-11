@@ -67,6 +67,7 @@ import jahirfiquitiva.iconshowcase.tasks.LoadIconsLists;
 import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
+import jahirfiquitiva.iconshowcase.utilities.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.views.CustomCoordinatorLayout;
 
@@ -109,7 +110,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             nova_action = "com.novalauncher.THEME";
 
     public static boolean iconPicker, wallsPicker, iconPickerEnabled = false, wallsEnabled = false,
-            applyEnabled = false, SHUFFLE = true;
+            applyEnabled = false, SHUFFLE = true, shuffleIcons = true;
 
     private static String thaHome, thaPreviews, thaApply, thaWalls, thaRequest, thaDonate, thaFAQs,
             thaZooper, thaCredits, thaSettings;
@@ -179,6 +180,8 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         WITH_ICONS_BASED_CHANGELOG = getResources().getBoolean(R.bool.icons_changelog);
         WITH_ALTERNATIVE_ABOUT_SECTION = getResources().getBoolean(R.bool.cards_credits);
         WITH_SECONDARY_DRAWER_ITEMS_ICONS = getResources().getBoolean(R.bool.secondary_drawer_items_icons);
+
+        shuffleIcons = getResources().getBoolean(R.bool.shuffle_toolbar_icons);
 
         //donations stuff
         //google
@@ -367,11 +370,9 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             icon3.setVisibility(View.INVISIBLE);
             icon4.setVisibility(View.INVISIBLE);
             appbar.setExpanded(true, mPrefs.getAnimationsEnabled());
-            appbar.setActivated(true);
             coordinatorLayout.setScrollAllowed(true);
         } else if (!fragment.equals("Previews")) {
             appbar.setExpanded(false, mPrefs.getAnimationsEnabled());
-            appbar.setActivated(false);
             coordinatorLayout.setScrollAllowed(false);
         } /*else {
             appbar.setExpanded(false, mPrefs.getAnimationsEnabled());
@@ -436,6 +437,13 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     @Override
     protected void onResume() {
         super.onResume();
+        int iconsColor = ThemeUtils.darkTheme ?
+                ContextCompat.getColor(this, R.color.toolbar_text_dark) :
+                ContextCompat.getColor(this, R.color.toolbar_text_light);
+        ToolbarColorizer.colorizeToolbar(
+                ShowcaseActivity.toolbar,
+                iconsColor,
+                this);
         if (mLastTheme != ThemeUtils.darkTheme
                 || mLastNavBar != ThemeUtils.coloredNavBar) {
             ThemeUtils.restartActivity(this);
@@ -486,6 +494,13 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
+        int iconsColor = ThemeUtils.darkTheme ?
+                ContextCompat.getColor(this, R.color.toolbar_text_dark) :
+                ContextCompat.getColor(this, R.color.toolbar_text_light);
+        ToolbarColorizer.colorizeToolbar(
+                ShowcaseActivity.toolbar,
+                iconsColor,
+                this);
         return true;
     }
 
@@ -798,14 +813,22 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         if (drawerHeaderStyle.equals(DrawerHeaderStyle.MINI_HEADER)) {
             ImageView miniHeader = (ImageView) drawer.getHeader().findViewById(R.id.mini_drawer_header);
             miniHeader.getLayoutParams().height = UIUtils.getActionBarHeight(this) + UIUtils.getStatusBarHeight(this);
+            TextView appVersion = (TextView) drawer.getHeader().findViewById(R.id.text_app_version);
+            TextView appName = (TextView) drawer.getHeader().findViewById(R.id.text_app_name);
             if (context.getResources().getBoolean(R.bool.mini_header_solid_color)) {
                 miniHeader.setBackgroundColor(ThemeUtils.darkTheme ?
                         ContextCompat.getColor(context, R.color.dark_theme_primary) :
                         ContextCompat.getColor(context, R.color.light_theme_primary));
+                int iconsColor = ThemeUtils.darkTheme ?
+                        ContextCompat.getColor(this, R.color.toolbar_text_dark) :
+                        ContextCompat.getColor(this, R.color.toolbar_text_light);
+                appVersion.setTextColor(iconsColor);
+                appName.setTextColor(iconsColor);
             } else {
                 miniHeader.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawer_header));
+                appVersion.setTextColor(ContextCompat.getColor(context, android.R.color.white));
+                appName.setTextColor(ContextCompat.getColor(context, android.R.color.white));
             }
-            TextView appVersion = (TextView) drawer.getHeader().findViewById(R.id.text_app_version);
             appVersion.setText(getString(R.string.app_version, Utils.getAppVersion(this)));
         }
 
@@ -865,7 +888,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         }
         ArrayList<IconItem> finalIconsList = new ArrayList<>();
 
-        if (icons != null && SHUFFLE) {
+        if (icons != null && SHUFFLE && shuffleIcons) {
             Collections.shuffle(icons);
         }
 

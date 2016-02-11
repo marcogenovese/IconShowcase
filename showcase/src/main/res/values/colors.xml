@@ -20,6 +20,25 @@
     <color name="material_drawer_selected_text">@color/light_theme_accent</color>
     <color name="material_drawer_dark_selected_text">@color/dark_theme_accent</color>
 
+    <color name="material_drawer_background">@color/light_bg</color>
+    <color name="material_drawer_dark_background">@color/dark_bg</color>
+
+    <!-- Toolbar text color -->
+    <color name="toolbar_text_light">#ffffff</color>
+    <color name="toolbar_text_dark">#ffffff</color>
+
+    <!-- Tabs indicator color -->
+    <color name="tabs_indicator_light">#ffffff</color>
+    <color name="tabs_indicator_dark">#ffffff</color>
+
+    <!-- No selected tabs text color -->
+    <color name="tabs_normal_text_light">#80ffffff</color>
+    <color name="tabs_normal_text_dark">#80ffffff</color>
+
+    <!-- Selected tabs text color -->
+    <color name="tabs_selected_text_light">#ffffff</color>
+    <color name="tabs_selected_text_dark">#ffffff</color>
+
     <!--Light and Dark backgrounds for Splash screen -->
     <color name="splash_dark_background">@color/dark_bg</color>
     <color name="splash_light_background">@color/light_bg</color>
@@ -75,6 +94,24 @@
     <color name="launcher_tint_dark">@color/drawable_tint_dark</color>
     <color name="launcher_text_light">@color/secondary_text_light</color>
     <color name="launcher_text_dark">@color/primary_text_dark</color>
+
+    <!-- MaterialDrawer Light theme colors -->
+    <color name="material_drawer_primary_text">#de000000</color>
+    <color name="material_drawer_primary_icon">#8A000000</color>
+    <color name="material_drawer_secondary_text">#8A000000</color>
+    <color name="material_drawer_hint_text">#42000000</color>
+    <color name="material_drawer_divider">#1f000000</color>
+    <color name="material_drawer_selected">#e8e8e8</color>
+    <color name="material_drawer_header_selection_text">#fff</color>
+
+    <!-- MaterialDrawer Dark theme colors -->
+    <color name="material_drawer_dark_primary_text">#deffffff</color>
+    <color name="material_drawer_dark_primary_icon">#8Affffff</color>
+    <color name="material_drawer_dark_secondary_text">#8Affffff</color>
+    <color name="material_drawer_dark_hint_text">#42ffffff</color>
+    <color name="material_drawer_dark_divider">#1fffffff</color>
+    <color name="material_drawer_dark_selected">#202020</color>
+    <color name="material_drawer_dark_header_selection_text">#fff</color>
 
     <!--colors for installed launchers-->
     <color name="action_launcher_color">#f44336</color>

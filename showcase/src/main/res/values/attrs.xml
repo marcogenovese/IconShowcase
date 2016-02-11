@@ -29,6 +29,14 @@
         <attr name="accentColor" format="color"/>
         <!-- Custom toolbar theme. -->
         <attr name="toolbarTheme" format="reference"/>
+        <!-- Toolbar Text Color. -->
+        <attr name="toolbarTextColor" format="color"/>
+        <!-- Tabs Indicator Color. -->
+        <attr name="tabsIndicatorColor" format="color"/>
+        <!-- Tabs Normal Text Color. -->
+        <attr name="tabsNormalTextColor" format="color"/>
+        <!-- Tabs Selected Text Color. -->
+        <attr name="tabsSelectedTextColor" format="color"/>
 
     </declare-styleable>
 

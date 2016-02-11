@@ -101,6 +101,13 @@
     <bool name="user_wallpaper_in_home">true</bool>
 
     <!--
+    Do you want the icons in toolbar to be randomized?
+    True, means yes.
+    False, means no.
+    -->
+    <bool name="shuffle_toolbar_icons">true</bool>
+
+    <!--
     If you include Zooper widgets, do any of them need MediaUtilities to work properly?
     True, means yes.
     False, means no.

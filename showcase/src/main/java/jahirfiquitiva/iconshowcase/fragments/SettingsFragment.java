@@ -1,9 +1,11 @@
 package jahirfiquitiva.iconshowcase.fragments;
 
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.content.res.TypedArray;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -11,8 +13,10 @@ import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.util.TypedValue;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -28,6 +32,7 @@ import jahirfiquitiva.iconshowcase.fragments.base.PreferenceFragment;
 import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
+import jahirfiquitiva.iconshowcase.utilities.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 public class SettingsFragment extends PreferenceFragment implements PermissionUtils.OnPermissionResultListener {
@@ -238,6 +243,18 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
             preferences.removePreference(launcherIcon);
         }
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        int iconsColor = ThemeUtils.darkTheme ?
+                ContextCompat.getColor(getActivity(), R.color.toolbar_text_dark) :
+                ContextCompat.getColor(getActivity(), R.color.toolbar_text_light);
+        ToolbarColorizer.colorizeToolbar(
+                ShowcaseActivity.toolbar,
+                iconsColor,
+                getActivity());
     }
 
     public static void changeValues(Context context) {

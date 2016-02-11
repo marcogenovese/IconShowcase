@@ -1,13 +1,12 @@
 package jahirfiquitiva.iconshowcase.fragments;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.SearchView;
@@ -28,9 +27,12 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.fragments.base.FragmentStatePagerAdapter;
 import jahirfiquitiva.iconshowcase.models.IconsCategory;
 import jahirfiquitiva.iconshowcase.tasks.LoadIconsLists;
+import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
+import jahirfiquitiva.iconshowcase.utilities.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.views.CustomCoordinatorLayout;
 
 public class PreviewsFragment extends Fragment {
@@ -84,6 +86,14 @@ public class PreviewsFragment extends Fragment {
             createTabs();
         }
 
+        int iconsColor = ThemeUtils.darkTheme ?
+                ContextCompat.getColor(getActivity(), R.color.toolbar_text_dark) :
+                ContextCompat.getColor(getActivity(), R.color.toolbar_text_light);
+        ToolbarColorizer.colorizeToolbar(
+                ShowcaseActivity.toolbar,
+                iconsColor,
+                getActivity());
+
     }
 
     private void setupToolbar() {
@@ -91,7 +101,6 @@ public class PreviewsFragment extends Fragment {
         // Set custom offset for AppBar. This makes both toolbar and tabs visible
 
         AppBarLayout appbar = (AppBarLayout) getActivity().findViewById(R.id.appbar);
-        CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) getActivity().findViewById(R.id.collapsingToolbar);
         CustomCoordinatorLayout.LayoutParams params = (CustomCoordinatorLayout.LayoutParams) appbar.getLayoutParams();
         AppBarLayout.Behavior behavior = (AppBarLayout.Behavior) params.getBehavior();
         CustomCoordinatorLayout coordinatorLayout = (CustomCoordinatorLayout) getActivity().findViewById(R.id.mainCoordinatorLayout);
@@ -115,10 +124,6 @@ public class PreviewsFragment extends Fragment {
 
         // Lock CoordinatorLayout so the toolbar can't be scrolled away
         coordinatorLayout.setScrollAllowed(false);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            collapsingToolbar.setElevation((float) getActivity().getResources().getDimensionPixelSize(R.dimen.toolbar_elevation));
-        }
 
     }
 
@@ -194,29 +199,54 @@ public class PreviewsFragment extends Fragment {
                 if (frag != null)
                     frag.performSearch(null);
                 mSearchItem.collapseActionView();
+                int iconsColor = ThemeUtils.darkTheme ?
+                        ContextCompat.getColor(getActivity(), R.color.toolbar_text_dark) :
+                        ContextCompat.getColor(getActivity(), R.color.toolbar_text_light);
+                ToolbarColorizer.colorizeToolbar(
+                        ShowcaseActivity.toolbar,
+                        iconsColor,
+                        getActivity());
                 return false;
             }
         });
 
         mSearchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+        mSearchView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int iconsColor = ThemeUtils.darkTheme ?
+                        ContextCompat.getColor(getActivity(), R.color.toolbar_text_dark) :
+                        ContextCompat.getColor(getActivity(), R.color.toolbar_text_light);
+                ToolbarColorizer.colorizeToolbar(
+                        ShowcaseActivity.toolbar,
+                        iconsColor,
+                        getActivity());
+            }
+        });
+
     }
 
     class IconsPagerAdapter extends FragmentStatePagerAdapter {
 
         public IconsPagerAdapter(FragmentManager fm) {
             super(fm);
-
             String[] tabsNames = new String[categories.size()];
-
             for (int i = 0; i < tabsNames.length; i++) {
                 tabsNames[i] = categories.get(i).getCategoryName();
             }
-
             tabs = tabsNames;
         }
 
         @Override
         public Fragment getItem(int position) {
+            int iconsColor = ThemeUtils.darkTheme ?
+                    ContextCompat.getColor(getActivity(), R.color.toolbar_text_dark) :
+                    ContextCompat.getColor(getActivity(), R.color.toolbar_text_light);
+            ToolbarColorizer.colorizeToolbar(
+                    ShowcaseActivity.toolbar,
+                    iconsColor,
+                    getActivity());
             return IconsFragment.newInstance(categories.get(position));
         }
 

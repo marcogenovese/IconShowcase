@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <!--
     Tabs to be used as primary drawer items
     The Home section will be added automatically
@@ -20,8 +21,8 @@
     </string-array>
 
     <!--
-        Credits and settings will automatically be added as secondary items
-    -->
+       Credits and settings will automatically be added as secondary items
+   -->
 
     <!-- Specify splashscreen color
     Can be LightLaunchScreen or DarkLaunchScreen
@@ -100,6 +101,13 @@
     <bool name="user_wallpaper_in_home">true</bool>
 
     <!--
+    Do you want the icons in toolbar to be randomized?
+    True, means yes.
+    False, means no.
+    -->
+    <bool name="shuffle_toolbar_icons">true</bool>
+
+    <!--
     If you include Zooper widgets, do any of them need MediaUtilities to work properly?
     True, means yes.
     False, means no.
@@ -126,7 +134,7 @@
     True, the app will use bnw filter.
     False, the app will simply tint the icons.
     -->
-    <bool name="enable_bnw_filter">true</bool>
+    <bool name="enable_bnw_filter">false</bool>
 
     <!--
     Do you want the app to use palette api in wallpapers section?

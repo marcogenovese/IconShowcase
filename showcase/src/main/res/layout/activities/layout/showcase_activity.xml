@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="false">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -42,7 +42,7 @@
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
+                android:layout_height="?actionBarSize"
                 android:minHeight="?actionBarSize"
                 android:paddingTop="@dimen/tool_bar_top_padding"
                 android:transitionName="actionBar"
@@ -60,8 +60,7 @@
                     android:gravity="start|center_vertical"
                     android:text=""
                     android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
-                    android:textColor="#fff"
-                    android:textSize="20sp"/>
+                    android:textColor="?attr/toolbarTextColor"/>
 
             </android.support.v7.widget.Toolbar>
 
@@ -75,10 +74,10 @@
                 android:paddingLeft="@dimen/tabs_contentInset"
                 android:paddingStart="@dimen/tabs_contentInset"
                 android:visibility="gone"
-                app:tabIndicatorColor="@color/primary_text_dark"
+                app:tabIndicatorColor="?attr/tabsIndicatorColor"
                 app:tabMode="scrollable"
-                app:tabSelectedTextColor="@color/primary_text_dark"
-                app:tabTextColor="@color/semitransparent_text_dark"
+                app:tabSelectedTextColor="?attr/tabsSelectedTextColor"
+                app:tabTextColor="?attr/tabsNormalTextColor"
                 tools:ignore="NewApi,RtlSymmetry,UnusedAttribute"/>
 
         </android.support.design.widget.CollapsingToolbarLayout>

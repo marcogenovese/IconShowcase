@@ -127,9 +127,11 @@ public final class ISDialogs {
     }
 
     public static void showLicenseSuccessDialog(Context context, MaterialDialog.SingleButtonCallback singleButtonCallback) {
+        String message = context.getResources().getString(R.string.license_success,
+                context.getResources().getString(R.string.app_name));
         new MaterialDialog.Builder(context)
                 .title(R.string.license_success_title)
-                .content(R.string.license_success)
+                .content(message)
                 .positiveText(R.string.close)
                 .onPositive(singleButtonCallback)
                 .show();
@@ -141,9 +143,12 @@ public final class ISDialogs {
                                              MaterialDialog.OnCancelListener onCancel,
                                              MaterialDialog.OnDismissListener onDismiss) {
 
+        String message = context.getResources().getString(R.string.license_failed,
+                context.getResources().getString(R.string.app_name));
+
         MaterialDialog licenseFailDialog = new MaterialDialog.Builder(context)
                 .title(R.string.license_failed_title)
-                .content(R.string.license_failed)
+                .content(message)
                 .positiveText(R.string.download)
                 .negativeText(R.string.exit)
                 .onPositive(onPositive)
@@ -439,18 +444,13 @@ public final class ISDialogs {
                 }).show();
     }
 
-    public static void showTranslatorsDialogs(final Context context, final String[] links) {
+    public static void showTranslatorsDialogs(final Context context) {
         new MaterialDialog.Builder(context)
                 .title(R.string.translators)
                 .negativeText(R.string.close)
                 .items(R.array.translators_names)
-                .itemsCallback(new MaterialDialog.ListCallback() {
-                    @Override
-                    public void onSelection(MaterialDialog materialDialog, View view,
-                                            final int i, CharSequence charSequence) {
-                        Utils.openLinkInChromeCustomTab(context, links[i]);
-                    }
-                }).show();
+                .listSelector(android.R.color.transparent)
+                .show();
     }
 
     /*
