@@ -237,6 +237,34 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         titleView = (TextView) findViewById(R.id.title);
 
+        thaHome = getResources().getString(R.string.section_home);
+        thaPreviews = getResources().getString(R.string.section_icons);
+        thaApply = getResources().getString(R.string.section_apply);
+        thaWalls = getResources().getString(R.string.section_wallpapers);
+        thaRequest = getResources().getString(R.string.section_icon_request);
+        thaDonate = getResources().getString(R.string.section_donate);
+        thaCredits = getResources().getString(R.string.section_about);
+        thaSettings = getResources().getString(R.string.title_settings);
+        thaFAQs = getResources().getString(R.string.faqs_section);
+        thaZooper = getResources().getString(R.string.zooper_section_title);
+
+        CollapsingToolbarLayout.LayoutParams layoutParams = (CollapsingToolbarLayout.LayoutParams) toolbar.getLayoutParams();
+        layoutParams.height = layoutParams.height + UIUtils.getStatusBarHeight(this);
+        toolbar.setLayoutParams(layoutParams);
+        setSupportActionBar(toolbar);
+
+        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbar);
+        collapsingToolbarLayout.setTitleEnabled(false);
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        int iconsColor = ThemeUtils.darkTheme ?
+                ContextCompat.getColor(this, R.color.toolbar_text_dark) :
+                ContextCompat.getColor(this, R.color.toolbar_text_light);
+        ToolbarColorizer.colorizeToolbar(
+                ShowcaseActivity.toolbar,
+                iconsColor,
+                this);
+
         fab = (FloatingActionButton) findViewById(R.id.fab);
 
         icon1 = (ImageView) findViewById(R.id.iconOne);
@@ -265,21 +293,9 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             }
         });
 
-        thaHome = getResources().getString(R.string.section_home);
-        thaPreviews = getResources().getString(R.string.section_icons);
-        thaApply = getResources().getString(R.string.section_apply);
-        thaWalls = getResources().getString(R.string.section_wallpapers);
-        thaRequest = getResources().getString(R.string.section_icon_request);
-        thaDonate = getResources().getString(R.string.section_donate);
-        thaCredits = getResources().getString(R.string.section_about);
-        thaSettings = getResources().getString(R.string.title_settings);
-        thaFAQs = getResources().getString(R.string.faqs_section);
-        thaZooper = getResources().getString(R.string.zooper_section_title);
-
         //Setup donations
         final IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
             public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
-
                 //TODO test this
                 if (inventory != null) {
                     Utils.showLog(context, "IAP inventory exists");
@@ -295,15 +311,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                 }
             }
         };
-
-        CollapsingToolbarLayout.LayoutParams layoutParams = (CollapsingToolbarLayout.LayoutParams) toolbar.getLayoutParams();
-        layoutParams.height = layoutParams.height + UIUtils.getStatusBarHeight(this);
-        toolbar.setLayoutParams(layoutParams);
-        setSupportActionBar(toolbar);
-
-        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbar);
-        collapsingToolbarLayout.setTitleEnabled(false);
-        if (getSupportActionBar() != null) getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         setupDrawer(toolbar, savedInstanceState);
 
@@ -374,11 +381,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         } else if (!fragment.equals("Previews")) {
             appbar.setExpanded(false, mPrefs.getAnimationsEnabled());
             coordinatorLayout.setScrollAllowed(false);
-        } /*else {
-            appbar.setExpanded(false, mPrefs.getAnimationsEnabled());
-            appbar.setActivated(false);
-            coordinatorLayout.setScrollAllowed(false);
-        }*/
+        }
 
         //Fragment Switcher
         if (mPrefs.getAnimationsEnabled()) {
