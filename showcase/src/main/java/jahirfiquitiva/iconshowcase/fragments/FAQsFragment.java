@@ -1,14 +1,12 @@
 package jahirfiquitiva.iconshowcase.fragments;
 
-import android.app.Activity;
-import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.TypedValue;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +23,9 @@ import jahirfiquitiva.iconshowcase.adapters.FAQsAdapter;
 import jahirfiquitiva.iconshowcase.models.FAQsItem;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.ToolbarColorizer;
+import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.views.DividerItemDecoration;
+import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 
 public class FAQsFragment extends Fragment {
 
@@ -66,10 +66,18 @@ public class FAQsFragment extends Fragment {
 
         RecyclerView faqsList = (RecyclerView) layout.findViewById(R.id.faqs_list);
 
-        FAQsAdapter faqsAdapter = new FAQsAdapter(faqs);
-        faqsList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        FAQsAdapter faqsAdapter = new FAQsAdapter(faqs, getActivity());
+        if (getActivity().getResources().getBoolean(R.bool.faqs_cards)) {
+            faqsList.setLayoutManager(new GridLayoutManager(getActivity(), 1));
+            faqsList.addItemDecoration(new GridSpacingItemDecoration(1,
+                    getActivity().getResources().getDimensionPixelSize(R.dimen.cards_margin),
+                    true));
+        } else {
+            faqsList.setLayoutManager(new LinearLayoutManager(getActivity()));
+            faqsList.addItemDecoration(new DividerItemDecoration(getActivity(), null, cardsSpacing, false, false));
+        }
+
         faqsList.setItemAnimator(new DefaultItemAnimator());
-        faqsList.addItemDecoration(new DividerItemDecoration(getActivity(), null, cardsSpacing, false, false));
         faqsList.setHasFixedSize(true);
         faqsList.setAdapter(faqsAdapter);
 
@@ -82,6 +90,7 @@ public class FAQsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        Utils.collapseToolbar(getActivity());
         int iconsColor = ThemeUtils.darkTheme ?
                 ContextCompat.getColor(getActivity(), R.color.toolbar_text_dark) :
                 ContextCompat.getColor(getActivity(), R.color.toolbar_text_light);

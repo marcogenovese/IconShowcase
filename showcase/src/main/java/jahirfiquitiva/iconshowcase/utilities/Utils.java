@@ -17,6 +17,7 @@ import android.support.customtabs.CustomTabsClient;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.customtabs.CustomTabsServiceConnection;
 import android.support.customtabs.CustomTabsSession;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -32,6 +33,7 @@ import java.util.concurrent.Callable;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.adapters.WallpapersAdapter;
+import jahirfiquitiva.iconshowcase.views.CustomCoordinatorLayout;
 
 /**
  * @author Aidan Follestad (afollestad)
@@ -306,6 +308,15 @@ public class Utils {
     public static boolean isRtl(Resources res) {
         return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) &&
                 (res.getConfiguration().getLayoutDirection() == View.LAYOUT_DIRECTION_RTL);
+    }
+
+    public static void collapseToolbar(Context context) {
+        Preferences mPrefs = new Preferences(context);
+        AppBarLayout appbar = (AppBarLayout) ((Activity) context).findViewById(R.id.appbar);
+        CustomCoordinatorLayout coordinatorLayout = (CustomCoordinatorLayout) ((Activity) context).findViewById(R.id.mainCoordinatorLayout);
+        appbar.setExpanded(false, mPrefs.getAnimationsEnabled());
+        appbar.setEnabled(false);
+        coordinatorLayout.setScrollAllowed(false);
     }
 
 }

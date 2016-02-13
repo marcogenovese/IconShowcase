@@ -16,6 +16,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -26,7 +27,7 @@ import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
-public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder> implements View.OnClickListener {
+public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder> {
 
     private final Context context;
     private boolean inChangelog = false;
@@ -65,10 +66,20 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
     }
 
     @Override
-    public void onBindViewHolder(IconsHolder holder, int position) {
-        holder.icon.setImageResource(iconsList.get(position).getResId());
-        holder.view.setTag(position);
-        holder.view.setOnClickListener(this);
+    public void onBindViewHolder(IconsHolder holder, final int position) {
+        int iconResource = iconsList.get(position).getResId();
+        if (iconResource != 0) {
+            Glide.with(context)
+                    .load(iconResource)
+                    .dontAnimate()
+                    .into(holder.icon);
+        }
+        holder.view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                iconClick(v, position);
+            }
+        });
         if (!inChangelog) {
             setAnimation(holder.icon, position);
         }
@@ -90,9 +101,7 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
         return iconsList == null ? 0 : iconsList.size();
     }
 
-    @Override
-    public void onClick(View v) {
-        int position = (Integer) v.getTag();
+    private void iconClick(View v, int position) {
         int resId = iconsList.get(position).getResId();
         String name = iconsList.get(position).getName().toLowerCase(Locale.getDefault());
 

@@ -8,6 +8,7 @@ import android.content.res.TypedArray;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -36,6 +37,8 @@ import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.ToolbarColorizer;
+import jahirfiquitiva.iconshowcase.utilities.Utils;
+import jahirfiquitiva.iconshowcase.views.CustomCoordinatorLayout;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 
 public class RequestsFragment extends Fragment implements PermissionUtils.OnPermissionResultListener {
@@ -145,7 +148,7 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
     @Override
     public void onResume() {
         super.onResume();
-
+        Utils.collapseToolbar(getActivity());
         int iconsColor = ThemeUtils.darkTheme ?
                 ContextCompat.getColor(context, R.color.toolbar_text_dark) :
                 ContextCompat.getColor(context, R.color.toolbar_text_light);
@@ -153,11 +156,6 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
                 ShowcaseActivity.toolbar,
                 iconsColor,
                 getActivity());
-
-        RequestsAdapter adapter = ((RequestsAdapter) mRecyclerView.getAdapter());
-        if (adapter != null) {
-            adapter.unselectAll();
-        }
     }
 
     @Override

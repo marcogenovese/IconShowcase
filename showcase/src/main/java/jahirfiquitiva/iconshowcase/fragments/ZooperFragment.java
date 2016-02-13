@@ -8,6 +8,7 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatButton;
@@ -29,9 +30,11 @@ import java.io.IOException;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.tasks.CopyFilesToStorage;
+import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
+import jahirfiquitiva.iconshowcase.views.CustomCoordinatorLayout;
 
 public class ZooperFragment extends Fragment {
 
@@ -205,6 +208,7 @@ public class ZooperFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        Utils.collapseToolbar(getActivity());
         int iconsColor = ThemeUtils.darkTheme ?
                 ContextCompat.getColor(context, R.color.toolbar_text_dark) :
                 ContextCompat.getColor(context, R.color.toolbar_text_light);

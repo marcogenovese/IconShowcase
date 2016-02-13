@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -36,6 +37,7 @@ import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
+import jahirfiquitiva.iconshowcase.views.CustomCoordinatorLayout;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 
 public class ApplyFragment extends Fragment {
@@ -90,6 +92,7 @@ public class ApplyFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        Utils.collapseToolbar(getActivity());
         updateLaunchersList();
         int iconsColor = ThemeUtils.darkTheme ?
                 ContextCompat.getColor(getActivity(), R.color.toolbar_text_dark) :

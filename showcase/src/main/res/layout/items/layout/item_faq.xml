@@ -3,6 +3,7 @@
     android:id="@+id/faq_card"
     style="@style/CardContent"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?attr/colorCardBackground">
@@ -11,12 +12,14 @@
         android:id="@+id/faq_question"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        tools:text="Question"/>
 
     <TextView
         android:id="@+id/faq_answer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/lists_padding"/>
+        android:paddingTop="@dimen/lists_padding"
+        tools:text="Answer"/>
 
 </LinearLayout>

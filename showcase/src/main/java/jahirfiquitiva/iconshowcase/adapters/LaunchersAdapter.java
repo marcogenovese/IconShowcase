@@ -24,9 +24,6 @@ import jahirfiquitiva.iconshowcase.fragments.ApplyFragment;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
-/**
- * @author Aidan Follestad (afollestad)
- */
 public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.LauncherHolder> implements View.OnClickListener {
 
     public interface ClickListener {

@@ -1,6 +1,7 @@
 package jahirfiquitiva.iconshowcase.adapters;
 
 import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +25,6 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
     public ArrayList<RequestItem> appsList;
     Context context;
     private final ClickListener mCallback;
-
     AppIconFetchingQueue mAppIconFetchingQueue;
 
     public RequestsAdapter(Context context, final ArrayList<RequestItem> appsList) {
@@ -40,7 +40,10 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
 
     @Override
     public RequestsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(context).inflate(R.layout.item_app_to_request, parent, false);
+        View v = LayoutInflater.from(context).inflate(
+                context.getResources().getBoolean(R.bool.request_cards) ?
+                        R.layout.card_app_to_request :
+                        R.layout.item_app_to_request, parent, false);
         return new RequestsHolder(v);
     }
 
@@ -50,7 +53,11 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
         holder.txtName.setText(requestsItem.getAppName());
         holder.imgIcon.setImageDrawable(requestsItem.getIcon());
         holder.chkSelected.setChecked(requestsItem.isSelected());
-        holder.view.setTag(position);
+        if (context.getResources().getBoolean(R.bool.request_cards)) {
+            holder.cardView.setTag(position);
+        } else {
+            holder.view.setTag(position);
+        }
     }
 
     @Override
@@ -60,18 +67,24 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
 
     public class RequestsHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        final LinearLayout view;
+        LinearLayout view = null;
+        CardView cardView = null;
         final ImageView imgIcon;
         final TextView txtName;
         final CheckBox chkSelected;
 
         public RequestsHolder(View v) {
             super(v);
-            view = (LinearLayout) v.findViewById(R.id.requestCard);
             imgIcon = (ImageView) v.findViewById(R.id.imgIcon);
             txtName = (TextView) v.findViewById(R.id.txtName);
             chkSelected = (CheckBox) v.findViewById(R.id.chkSelected);
-            view.setOnClickListener(this);
+            if (context.getResources().getBoolean(R.bool.request_cards)) {
+                cardView = (CardView) v.findViewById(R.id.requestCard);
+                cardView.setOnClickListener(this);
+            } else {
+                view = (LinearLayout) v.findViewById(R.id.requestCard);
+                view.setOnClickListener(this);
+            }
         }
 
         @Override
@@ -85,30 +98,32 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
 
     }
 
-    public void selectOrUnselectAll() {
+    public void selectOrDeselectAll(boolean select) {
         for (int i = 0; i < appsList.size(); i++) {
-            selectApp(i);
-        }
-    }
-
-    public void unselectAll() {
-        for (int i = 0; i < appsList.size(); i++) {
-            unselectApp(i);
+            if (select) {
+                selectApp(i);
+            } else {
+                deselectApp(i);
+            }
         }
     }
 
     public void selectApp(int position) {
         RequestItem requestsItem = appsList.get(position);
-        requestsItem.setSelected(!requestsItem.isSelected());
-        appsList.set(position, requestsItem);
-        notifyItemChanged(position);
+        if (!requestsItem.isSelected()) {
+            requestsItem.setSelected(true);
+            appsList.set(position, requestsItem);
+            notifyItemChanged(position);
+        }
     }
 
-    public void unselectApp(int position) {
+    public void deselectApp(int position) {
         RequestItem requestsItem = appsList.get(position);
-        requestsItem.setSelected(false);
-        appsList.set(position, requestsItem);
-        notifyItemChanged(position);
+        if (requestsItem.isSelected()) {
+            requestsItem.setSelected(false);
+            appsList.set(position, requestsItem);
+            notifyItemChanged(position);
+        }
     }
 
     public int getSelectedApps() {

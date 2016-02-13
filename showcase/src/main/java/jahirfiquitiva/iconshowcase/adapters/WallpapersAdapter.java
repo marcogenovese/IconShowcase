@@ -56,6 +56,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
     }
 
     @Override
+    @SuppressWarnings("Unchecked assignment")
     public void onBindViewHolder(final WallsHolder holder, int position) {
 
         WallpaperItem wallItem = wallsList.get(position);

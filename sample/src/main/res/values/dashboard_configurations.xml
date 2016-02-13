@@ -65,6 +65,13 @@
     <integer name="nav_drawer_header_style">2</integer>
 
     <!--
+    Do you want the app name and version in the drawer header?
+    True, means yes.
+    False, means no.
+    -->
+    <bool name="with_drawer_texts">true</bool>
+
+    <!--
     Mini Navigation Drawer Header Solid Color?
     True, means that the drawer header will use the primary color instead of a picture.
     False, means that the drawer header will use the 'header' picture.
@@ -171,6 +178,13 @@
     <bool name="high_definition_walls">true</bool>
 
     <!--
+    Do you want to hide "Icon Pack in numbers" section?
+    True, means yes.
+    False, means no.
+    -->
+    <bool name="hide_pack_info">false</bool>
+
+    <!--
     How many icons does your app include?
     -->
     <integer name="icons_amount">600</integer>
@@ -209,5 +223,19 @@
     False, means no.
     -->
     <bool name="auto_generate_all_icons">false</bool>
+
+    <!--
+    Do you want request items as cards?
+    True, means cards.
+    False, means flat stuff.
+    -->
+    <bool name="request_cards">false</bool>
+
+    <!--
+    Do you want faqs items as cards?
+    True, means cards.
+    False, means flat stuff.
+    -->
+    <bool name="faqs_cards">false</bool>
 
 </resources>

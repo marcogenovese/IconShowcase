@@ -81,6 +81,15 @@ public class MainFragment extends Fragment {
 
         PlayStoreListing = getActivity().getPackageName();
 
+        LinearLayout packInfo = (LinearLayout) layout.findViewById(R.id.appDetails);
+        View divider = layout.findViewById(R.id.divider);
+        packInfo.setVisibility(getActivity().getResources().getBoolean(R.bool.hide_pack_info) ?
+                View.GONE :
+                View.VISIBLE);
+        divider.setVisibility(getActivity().getResources().getBoolean(R.bool.hide_pack_info) ?
+                View.GONE :
+                View.VISIBLE);
+
         if (!ShowcaseActivity.WITH_ZOOPER_SECTION) {
             LinearLayout widgets = (LinearLayout) layout.findViewById(R.id.widgets);
             widgets.setVisibility(View.GONE);

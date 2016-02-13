@@ -254,7 +254,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
                 sendIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
                 try {
-                    activity.startActivity(Intent.createChooser(sendIntent, "Send mail..."));
+                    activity.startActivityForResult(Intent.createChooser(sendIntent, "Send mail..."), 2);
                 } catch (ActivityNotFoundException e) {
                     //Do nothing
                 }

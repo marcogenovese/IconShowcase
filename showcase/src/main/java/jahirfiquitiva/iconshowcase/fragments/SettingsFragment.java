@@ -13,6 +13,7 @@ import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -34,6 +35,7 @@ import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
+import jahirfiquitiva.iconshowcase.views.CustomCoordinatorLayout;
 
 public class SettingsFragment extends PreferenceFragment implements PermissionUtils.OnPermissionResultListener {
 
@@ -248,6 +250,7 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
     @Override
     public void onResume() {
         super.onResume();
+        Utils.collapseToolbar(getActivity());
         int iconsColor = ThemeUtils.darkTheme ?
                 ContextCompat.getColor(getActivity(), R.color.toolbar_text_dark) :
                 ContextCompat.getColor(getActivity(), R.color.toolbar_text_light);

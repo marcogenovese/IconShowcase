@@ -71,22 +71,33 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
         for (String tabName : tabsNames) {
 
             int arrayId = r.getIdentifier(tabName, "array", p);
-            String[] icons = r.getStringArray(arrayId);
-            List<String> iconsList = sortList(icons);
+            String[] icons = null;
 
-            ArrayList<IconItem> iconsArray = new ArrayList<>();
-
-            for (int j = 0; j < iconsList.size(); j++) {
-                int iconResId = getIconResId(r, p, iconsList.get(j));
-                if (iconResId != 0) {
-                    iconsArray.add(new IconItem(iconsList.get(j), iconResId));
-                    if (context.getResources().getBoolean(R.bool.auto_generate_all_icons)) {
-                        allIcons.add(new IconItem(iconsList.get(j), iconResId));
-                    }
-                }
+            try {
+                icons = r.getStringArray(arrayId);
+            } catch (Resources.NotFoundException e) {
+                Utils.showLog(context, "Couldn't find array: " + tabName);
             }
 
-            categories.add(new IconsCategory(Utils.makeTextReadable(tabName), iconsArray));
+            if (icons != null && icons.length > 0) {
+
+                List<String> iconsList = sortList(icons);
+
+                ArrayList<IconItem> iconsArray = new ArrayList<>();
+
+                for (int j = 0; j < iconsList.size(); j++) {
+                    int iconResId = getIconResId(r, p, iconsList.get(j));
+                    if (iconResId != 0) {
+                        iconsArray.add(new IconItem(iconsList.get(j), iconResId));
+                        if (context.getResources().getBoolean(R.bool.auto_generate_all_icons)) {
+                            allIcons.add(new IconItem(iconsList.get(j), iconResId));
+                        }
+                    }
+                }
+
+                categories.add(new IconsCategory(Utils.makeTextReadable(tabName), iconsArray));
+
+            }
 
         }
 

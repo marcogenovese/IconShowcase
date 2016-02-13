@@ -55,6 +55,7 @@ import java.util.Random;
 
 import jahirfiquitiva.iconshowcase.BuildConfig;
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.adapters.RequestsAdapter;
 import jahirfiquitiva.iconshowcase.dialogs.FolderChooserDialog;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.fragments.RequestsFragment;
@@ -110,7 +111,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             nova_action = "com.novalauncher.THEME";
 
     public static boolean iconPicker, wallsPicker, iconPickerEnabled = false, wallsEnabled = false,
-            applyEnabled = false, SHUFFLE = true, shuffleIcons = true;
+            applyEnabled = false, SHUFFLE = true, shuffleIcons = true, selectAll = true;
 
     private static String thaHome, thaPreviews, thaApply, thaWalls, thaRequest, thaDonate, thaFAQs,
             thaZooper, thaCredits, thaSettings;
@@ -532,10 +533,22 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             loadWallsList();
         } else if (i == R.id.columns) {
             ISDialogs.showColumnsSelectorDialog(context);
-        } else if (i == R.id.select_all) { //TODO fix this
-            RequestsFragment.requestsAdapter.selectOrUnselectAll();
+        } else if (i == R.id.select_all) {
+            RequestsFragment.requestsAdapter.selectOrDeselectAll(selectAll);
+            selectAll = !selectAll;
         }
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == 2) {
+            RequestsAdapter adapter = ((RequestsAdapter) RequestsFragment.mRecyclerView.getAdapter());
+            if (adapter != null) {
+                adapter.selectOrDeselectAll(false);
+            }
+        }
     }
 
     private void runLicenseChecker() {
@@ -788,13 +801,20 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
         drawerBuilder.withSavedInstance(savedInstanceState);
 
+        String headerAppName = "", headerAppVersion = "";
+
+        if (getResources().getBoolean(R.bool.with_drawer_texts)) {
+            headerAppName = getResources().getString(R.string.app_long_name);
+            headerAppVersion = "v " + Utils.getAppVersion(this);
+        }
+
         switch (drawerHeaderStyle) {
             case NORMAL_HEADER:
                 drawerHeader = new AccountHeaderBuilder()
                         .withActivity(this)
                         .withHeaderBackground(R.drawable.drawer_header)
-                        .withSelectionFirstLine(getResources().getString(R.string.app_long_name))
-                        .withSelectionSecondLine("v " + Utils.getAppVersion(this))
+                        .withSelectionFirstLine(headerAppName)
+                        .withSelectionSecondLine(headerAppVersion)
                         .withProfileImagesClickable(false)
                         .withResetDrawerOnProfileListClick(false)
                         .withSelectionListEnabled(false)
@@ -832,7 +852,8 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                 appVersion.setTextColor(ContextCompat.getColor(context, android.R.color.white));
                 appName.setTextColor(ContextCompat.getColor(context, android.R.color.white));
             }
-            appVersion.setText(getString(R.string.app_version, Utils.getAppVersion(this)));
+            appName.setText(headerAppName);
+            appVersion.setText(headerAppVersion);
         }
 
     }
