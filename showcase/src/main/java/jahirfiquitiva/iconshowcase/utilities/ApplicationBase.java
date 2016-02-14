@@ -10,8 +10,10 @@ import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.fragments.WallpapersFragment;
 import jahirfiquitiva.iconshowcase.models.RequestItem;
 import jahirfiquitiva.iconshowcase.models.WallpapersList;
+import jahirfiquitiva.iconshowcase.models.ZooperWidget;
 import jahirfiquitiva.iconshowcase.tasks.LoadAppsToRequest;
 import jahirfiquitiva.iconshowcase.tasks.LoadIconsLists;
+import jahirfiquitiva.iconshowcase.tasks.LoadZooperWidgets;
 
 public class ApplicationBase extends Application {
 
@@ -39,8 +41,8 @@ public class ApplicationBase extends Application {
             public void run() {
                 new LoadIconsLists(context).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 loadWallsList();
+                new LoadZooperWidgets(context).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 loadAppsForRequest();
-
             }
         }).start();
 

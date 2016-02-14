@@ -29,6 +29,7 @@
         <item name="tabsIndicatorColor">@color/tabs_indicator_light</item>
         <item name="tabsNormalTextColor">@color/tabs_normal_text_light</item>
         <item name="tabsSelectedTextColor">@color/tabs_selected_text_light</item>
+        <item name="android:actionOverflowButtonStyle">@style/OverflowIcon</item>
     </style>
 
     <style name="AppTheme.Base.Dark" parent="MaterialDrawerTheme.TranslucentStatus">
@@ -56,6 +57,7 @@
         <item name="tabsIndicatorColor">@color/tabs_indicator_dark</item>
         <item name="tabsNormalTextColor">@color/tabs_normal_text_dark</item>
         <item name="tabsSelectedTextColor">@color/tabs_selected_text_dark</item>
+        <item name="android:actionOverflowButtonStyle">@style/OverflowIcon</item>
     </style>
 
     <style name="AppTheme.Base.LightLaunchScreen">
@@ -129,6 +131,11 @@
     <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.Dark">
         <item name="android:textColorPrimary">@color/primary_text_dark</item>
         <item name="android:textColorSecondary">@color/primary_text_dark</item>
+    </style>
+
+    <style name="OverflowIcon" parent="android:style/Widget.Holo.ActionButton.Overflow">
+        <item name="android:src">@drawable/ic_changelog</item>
+        <item name="android:contentDescription">"IconShowcaseOverflowIcon"</item>
     </style>
 
 </resources>

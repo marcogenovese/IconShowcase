@@ -98,14 +98,12 @@ public class MuzeiSettings extends AppCompatActivity implements View.OnClickList
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.muzei_settings, menu);
+        getMenuInflater().inflate(R.menu.muzei, menu);
+        MenuItem save = menu.findItem(R.id.save);
         int iconsColor = ThemeUtils.darkTheme ?
                 ContextCompat.getColor(this, R.color.toolbar_text_dark) :
                 ContextCompat.getColor(this, R.color.toolbar_text_light);
-        ToolbarColorizer.colorizeToolbar(
-                toolbar,
-                iconsColor,
-                this);
+        ToolbarColorizer.tintSaveIcon(save, this, iconsColor);
         return true;
     }
 
@@ -148,7 +146,10 @@ public class MuzeiSettings extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onResume() {
         super.onResume();
-
+        int iconsColor = ThemeUtils.darkTheme ?
+                ContextCompat.getColor(this, R.color.toolbar_text_dark) :
+                ContextCompat.getColor(this, R.color.toolbar_text_light);
+        ToolbarColorizer.colorizeToolbar(toolbar, iconsColor);
         if (mLastTheme != ThemeUtils.darkTheme
                 || mLastNavBar != ThemeUtils.coloredNavBar) {
             this.recreate();

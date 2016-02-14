@@ -1,19 +1,15 @@
 package jahirfiquitiva.iconshowcase.fragments;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
-import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.CardView;
-import android.util.TypedValue;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,22 +22,23 @@ import com.mikepenz.iconics.IconicsDrawable;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
+import jahirfiquitiva.iconshowcase.models.ZooperWidget;
 import jahirfiquitiva.iconshowcase.tasks.CopyFilesToStorage;
-import jahirfiquitiva.iconshowcase.utilities.Preferences;
+import jahirfiquitiva.iconshowcase.tasks.LoadZooperWidgets;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
-import jahirfiquitiva.iconshowcase.views.CustomCoordinatorLayout;
 
 public class ZooperFragment extends Fragment {
 
     private MaterialDialog dialog;
     private ViewGroup layout;
-
     private Context context;
+    private int i = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
@@ -79,6 +76,32 @@ public class ZooperFragment extends Fragment {
                 .icon(GoogleMaterial.Icon.gmd_toys)
                 .color(ThemeUtils.darkTheme ? light : dark)
                 .sizeDp(24);
+
+        Drawable fire = new IconicsDrawable(context)
+                .icon(GoogleMaterial.Icon.gmd_fire)
+                .color(ThemeUtils.darkTheme ? light : dark)
+                .sizeDp(24);
+
+        ImageView fireIV = (ImageView) layout.findViewById(R.id.icon_preview);
+        fireIV.setImageDrawable(fire);
+
+        final ImageView preview = (ImageView) layout.findViewById(R.id.preview_picture);
+
+        final ArrayList<ZooperWidget> widgets = LoadZooperWidgets.widgets;
+
+        preview.setImageBitmap(widgets.get(i).getPreview());
+        preview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                i += 1;
+                if (widgets.size() > 0) {
+                    preview.setImageBitmap(widgets.get(i).getPreview());
+                    if (i == widgets.size() - 1) {
+                        i = -1;
+                    }
+                }
+            }
+        });
 
         ImageView zooperIV = (ImageView) layout.findViewById(R.id.icon_zooper);
         zooperIV.setImageDrawable(alert);
@@ -166,42 +189,6 @@ public class ZooperFragment extends Fragment {
             }
         });
 
-        CardView installFonts = (CardView) layout.findViewById(R.id.fonts_card);
-        installFonts.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!fontsInstalled(context)) {
-                    dialog = new MaterialDialog.Builder(context)
-                            .content(R.string.downloading_wallpaper)
-                            .progress(true, 0)
-                            .cancelable(false)
-                            .show();
-                    new CopyFilesToStorage(context, dialog, "Fonts").execute();
-                } else {
-                    Utils.showSimpleSnackbar(context, layout,
-                            getResources().getString(R.string.fonts_installed), 1);
-                }
-            }
-        });
-
-        CardView installIconsets = (CardView) layout.findViewById(R.id.iconsets_card);
-        installIconsets.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!iconsetsInstalled()) {
-                    dialog = new MaterialDialog.Builder(context)
-                            .content(R.string.downloading_wallpaper)
-                            .progress(true, 0)
-                            .cancelable(false)
-                            .show();
-                    new CopyFilesToStorage(context, dialog, "IconSets").execute();
-                } else {
-                    Utils.showSimpleSnackbar(context, layout,
-                            getResources().getString(R.string.iconsets_installed), 1);
-                }
-            }
-        });
-
         return layout;
     }
 
@@ -214,66 +201,104 @@ public class ZooperFragment extends Fragment {
                 ContextCompat.getColor(context, R.color.toolbar_text_light);
         ToolbarColorizer.colorizeToolbar(
                 ShowcaseActivity.toolbar,
-                iconsColor,
-                getActivity());
+                iconsColor);
+        if (layout != null) {
+            setupCards(true, true);
+        }
     }
 
-    private boolean fontsInstalled(Context context) {
+    private void setupCards(boolean fonts, boolean iconsets) {
+        CardView installFonts = (CardView) layout.findViewById(R.id.fonts_card);
+        if (fonts) {
+            if (checkAssetsInstalled("fonts")) {
+                installFonts.setVisibility(View.GONE);
+            } else {
+                installFonts.setVisibility(View.VISIBLE);
+                installFonts.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (!checkAssetsInstalled("fonts")) {
+                            dialog = new MaterialDialog.Builder(context)
+                                    .content(R.string.downloading_wallpaper)
+                                    .progress(true, 0)
+                                    .cancelable(false)
+                                    .show();
+                            new CopyFilesToStorage(context, dialog, "fonts").execute();
+                        } else {
+                            Utils.showSimpleSnackbar(context, layout,
+                                    getResources().getString(R.string.fonts_installed), 1);
+                            setupCards(true, false);
+                        }
+                    }
+                });
+            }
+        }
 
-        boolean fontsInDevice = true;
+        CardView installIconsets = (CardView) layout.findViewById(R.id.iconsets_card);
+        if (iconsets) {
+            if (checkAssetsInstalled("iconsets")) {
+                installIconsets.setVisibility(View.GONE);
+            } else {
+                installIconsets.setVisibility(View.VISIBLE);
+                installIconsets.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (!checkAssetsInstalled("iconsets")) {
+                            dialog = new MaterialDialog.Builder(context)
+                                    .content(R.string.downloading_wallpaper)
+                                    .progress(true, 0)
+                                    .cancelable(false)
+                                    .show();
+                            new CopyFilesToStorage(context, dialog, "iconsets").execute();
+                        } else {
+                            Utils.showSimpleSnackbar(context, layout,
+                                    getResources().getString(R.string.iconsets_installed), 1);
+                            setupCards(false, true);
+                        }
+                    }
+                });
+            }
+        }
+    }
+
+    private boolean checkAssetsInstalled(String folder) {
+        boolean assetsInstalled = true;
+
+        String fileToIgnore1 = "material-design-iconic-font-v2.2.0.ttf";
+        String fileToIgnore2 = "materialdrawerfont.ttf";
 
         AssetManager assetManager = context.getAssets();
         String[] files = null;
         try {
-            files = assetManager.list("Fonts");
+            files = assetManager.list(folder);
         } catch (IOException e) {
             //Do nothing
         }
 
-        if (files != null) {
+        if (files != null && files.length > 0) {
             for (String filename : files) {
-                try {
-                    File file = new File(Environment.getExternalStorageDirectory() + "/ZooperWidget/Fonts/" + filename);
+                Utils.showLog(context, "File in assets " + folder + ": " + filename);
+                if (!filename.equals(fileToIgnore1) && !filename.equals(fileToIgnore2)) {
+                    File file = new File(Environment.getExternalStorageDirectory() + "/ZooperWidget/" + getFolderName(folder) + "/" + filename);
                     if (!file.exists()) {
-                        fontsInDevice = false;
+                        assetsInstalled = false;
                     }
-                } catch (Exception e) {
-                    //Do nothing
                 }
             }
         }
 
-        return fontsInDevice;
-
+        return assetsInstalled;
     }
 
-    private boolean iconsetsInstalled() {
-
-        boolean iconsetsInDevice = true;
-
-        AssetManager assetManager = context.getAssets();
-        String[] files = null;
-        try {
-            files = assetManager.list("IconSets");
-        } catch (IOException e) {
-            //Do nothing
+    private String getFolderName(String folder) {
+        switch (folder) {
+            case "fonts":
+                return "Fonts";
+            case "iconsets":
+                return "IconSets";
+            default:
+                return folder;
         }
-
-        if (files != null) {
-            for (String filename : files) {
-                try {
-                    File file = new File(Environment.getExternalStorageDirectory() + "/ZooperWidget/IconSets/" + filename);
-                    if (!file.exists()) {
-                        iconsetsInDevice = false;
-                    }
-                } catch (Exception e) {
-                    //Do nothing
-                }
-            }
-        }
-
-        return iconsetsInDevice;
-
     }
 
 }

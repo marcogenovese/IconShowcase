@@ -55,7 +55,7 @@ public class Preferences {
     }
 
     public int getRotateTime() {
-        return getSharedPreferences().getInt(ROTATE_TIME, 21600000);
+        return getSharedPreferences().getInt(ROTATE_TIME, 3 * 60 * 60 * 1000);
     }
 
     public void setRotateMinute(boolean bool) {

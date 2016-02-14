@@ -231,12 +231,19 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
         setContentView(R.layout.showcase_activity);
 
-        runLicenseChecker();
-
         coordinatorLayout = (CustomCoordinatorLayout) findViewById(R.id.mainCoordinatorLayout);
         appbar = (AppBarLayout) findViewById(R.id.appbar);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         titleView = (TextView) findViewById(R.id.title);
+
+
+        CollapsingToolbarLayout.LayoutParams layoutParams = (CollapsingToolbarLayout.LayoutParams) toolbar.getLayoutParams();
+        layoutParams.height = layoutParams.height + UIUtils.getStatusBarHeight(this);
+        toolbar.setLayoutParams(layoutParams);
+
+        setSupportActionBar(toolbar);
+
+        runLicenseChecker();
 
         thaHome = getResources().getString(R.string.section_home);
         thaPreviews = getResources().getString(R.string.section_icons);
@@ -249,11 +256,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         thaFAQs = getResources().getString(R.string.faqs_section);
         thaZooper = getResources().getString(R.string.zooper_section_title);
 
-        CollapsingToolbarLayout.LayoutParams layoutParams = (CollapsingToolbarLayout.LayoutParams) toolbar.getLayoutParams();
-        layoutParams.height = layoutParams.height + UIUtils.getStatusBarHeight(this);
-        toolbar.setLayoutParams(layoutParams);
-        setSupportActionBar(toolbar);
-
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbar);
         collapsingToolbarLayout.setTitleEnabled(false);
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -261,10 +263,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         int iconsColor = ThemeUtils.darkTheme ?
                 ContextCompat.getColor(this, R.color.toolbar_text_dark) :
                 ContextCompat.getColor(this, R.color.toolbar_text_light);
-        ToolbarColorizer.colorizeToolbar(
-                ShowcaseActivity.toolbar,
-                iconsColor,
-                this);
+        ToolbarColorizer.colorizeToolbar(toolbar, iconsColor);
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
 
@@ -366,6 +365,11 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     public static void switchFragment(int itemId, String fragment,
                                       AppCompatActivity context) {
 
+        int iconsColor = ThemeUtils.darkTheme ?
+                ContextCompat.getColor(context, R.color.toolbar_text_dark) :
+                ContextCompat.getColor(context, R.color.toolbar_text_light);
+        ToolbarColorizer.colorizeToolbar(toolbar, iconsColor);
+
         if (currentItem == itemId) {
             // Don't allow re-selection of the currently active item
             return;
@@ -441,13 +445,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     @Override
     protected void onResume() {
         super.onResume();
-        int iconsColor = ThemeUtils.darkTheme ?
-                ContextCompat.getColor(this, R.color.toolbar_text_dark) :
-                ContextCompat.getColor(this, R.color.toolbar_text_light);
-        ToolbarColorizer.colorizeToolbar(
-                ShowcaseActivity.toolbar,
-                iconsColor,
-                this);
         if (mLastTheme != ThemeUtils.darkTheme
                 || mLastNavBar != ThemeUtils.coloredNavBar) {
             ThemeUtils.restartActivity(this);
@@ -497,14 +494,13 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
+        getMenuInflater().inflate(R.menu.main, menu);
         int iconsColor = ThemeUtils.darkTheme ?
                 ContextCompat.getColor(this, R.color.toolbar_text_dark) :
                 ContextCompat.getColor(this, R.color.toolbar_text_light);
-        ToolbarColorizer.colorizeToolbar(
-                ShowcaseActivity.toolbar,
-                iconsColor,
-                this);
+        MenuItem changelog = menu.findItem(R.id.changelog);
+        ToolbarColorizer.tintChangelogIcon(changelog, this, iconsColor);
+        ToolbarColorizer.colorizeToolbar(toolbar, iconsColor);
         return true;
     }
 

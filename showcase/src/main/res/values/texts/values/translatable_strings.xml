@@ -193,6 +193,9 @@
 
     <string name="zooper_section_title">Zooper Setup</string>
 
+    <string name="zooper_preview_title">Preview widgets</string>
+    <string name="zooper_preview_content">Tap the picture to load another widget.</string>
+
     <string name="zooper_download_title">Install Zooper Widget Pro</string>
     <string name="zooper_download_content">You need Zooper Widget Pro to be able to use the included skins.</string>
 

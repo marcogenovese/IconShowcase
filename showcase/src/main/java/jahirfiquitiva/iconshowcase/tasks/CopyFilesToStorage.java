@@ -31,12 +31,7 @@ public class CopyFilesToStorage extends AsyncTask<Void, String, Boolean> {
         Boolean worked;
         try {
             AssetManager assetManager = context.getAssets();
-            String[] files = null;
-            try {
-                files = assetManager.list(folder);
-            } catch (IOException e) {
-                //Do nothing
-            }
+            String[] files = assetManager.list(folder);
 
             if (files != null) {
                 for (String filename : files) {
@@ -44,13 +39,11 @@ public class CopyFilesToStorage extends AsyncTask<Void, String, Boolean> {
                     OutputStream out;
                     try {
                         in = assetManager.open(folder + "/" + filename);
-                        out = new FileOutputStream(Environment.getExternalStorageDirectory().toString() + "/ZooperWidget/" + folder + "/" + filename);
+                        out = new FileOutputStream(Environment.getExternalStorageDirectory().toString() + "/ZooperWidget/" + getFolderName(folder) + "/" + filename);
                         copyFiles(in, out);
                         in.close();
-                        in = null;
-                        out.flush();
                         out.close();
-                        out = null;
+                        out.flush();
                     } catch (Exception e) {
                         //Do nothing
                     }
@@ -69,10 +62,22 @@ public class CopyFilesToStorage extends AsyncTask<Void, String, Boolean> {
     }
 
     private void copyFiles(InputStream in, OutputStream out) throws IOException {
-        byte[] buffer = new byte[1024];
+        byte[] buffer = new byte[2048];
         int read;
         while ((read = in.read(buffer)) != -1) {
             out.write(buffer, 0, read);
+        }
+        out.flush();
+    }
+
+    private String getFolderName(String folder) {
+        switch (folder) {
+            case "fonts":
+                return "Fonts";
+            case "iconsets":
+                return "IconSets";
+            default:
+                return folder;
         }
     }
 

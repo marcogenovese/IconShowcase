@@ -3,14 +3,12 @@ package jahirfiquitiva.iconshowcase.fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -19,7 +17,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.TypedValue;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -60,7 +57,6 @@ import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
-import jahirfiquitiva.iconshowcase.views.CustomCoordinatorLayout;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 
 public class WallpapersFragment extends Fragment {
@@ -145,14 +141,13 @@ public class WallpapersFragment extends Fragment {
                 ContextCompat.getColor(context, R.color.toolbar_text_light);
         ToolbarColorizer.colorizeToolbar(
                 ShowcaseActivity.toolbar,
-                iconsColor,
-                getActivity());
+                iconsColor);
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.walls_menu, menu);
+        inflater.inflate(R.menu.wallpapers, menu);
     }
 
     public static void setupLayout(final boolean fromTask) {

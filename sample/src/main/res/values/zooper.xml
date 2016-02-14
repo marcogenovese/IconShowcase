@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- These texts are shown in Zooper -->
+    <string name="zooper_pack_name">@string/app_name</string>
+    <string name="zooper_pack_desc">Cool widgets</string>
+    <string name="zooper_pack_author">@string/iconpack_author_name</string>
+
+    <!--
+    If set to 0, the user will not be allowed to save the templates you provide
+    If set to 1, the user will be allowed to save them
+    -->
+    <integer name="zooper_pack_allowsave">0</integer>
+
+    <!-- This is the icon that will be shown in Zooper -->
+    <drawable name="zooper_pack_icon">@mipmap/ic_launcher</drawable>
+
+</resources>

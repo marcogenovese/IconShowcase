@@ -1,9 +1,7 @@
 package jahirfiquitiva.iconshowcase.fragments;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,7 +9,6 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatButton;
-import android.util.TypedValue;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,10 +29,8 @@ import jahirfiquitiva.iconshowcase.utilities.Utils;
 public class MainFragment extends Fragment {
 
     private static final String MARKET_URL = "https://play.google.com/store/apps/details?id=";
-
     private String PlayStoreListing;
     private ViewGroup layout;
-
     private ImageView iconsIV, wallsIV, widgetsIV, playStoreIV;
 
     @Override
@@ -133,8 +128,8 @@ public class MainFragment extends Fragment {
         iconsbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShowcaseActivity.drawerItemClick(2);
-                ShowcaseActivity.drawer.setSelection(2);
+                ShowcaseActivity.drawerItemClick(ShowcaseActivity.iconPickerIdentifier);
+                ShowcaseActivity.drawer.setSelection(ShowcaseActivity.iconPickerIdentifier);
             }
         });
 
@@ -150,8 +145,7 @@ public class MainFragment extends Fragment {
                 ContextCompat.getColor(getActivity(), R.color.toolbar_text_light);
         ToolbarColorizer.colorizeToolbar(
                 ShowcaseActivity.toolbar,
-                iconsColor,
-                getActivity());
+                iconsColor);
     }
 
     @Override

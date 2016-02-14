@@ -37,7 +37,6 @@ import jahirfiquitiva.iconshowcase.views.CustomCoordinatorLayout;
 
 public class PreviewsFragment extends Fragment {
 
-    private MenuItem mSearchItem;
     private int mLastSelected = 0;
     private ViewPager mPager;
     private String[] tabs;
@@ -84,15 +83,14 @@ public class PreviewsFragment extends Fragment {
             mPager.setOffscreenPageLimit(6);
             mPager.setAdapter(new IconsPagerAdapter(getChildFragmentManager()));
             createTabs();
-        }
+        }/*
 
         int iconsColor = ThemeUtils.darkTheme ?
                 ContextCompat.getColor(getActivity(), R.color.toolbar_text_dark) :
                 ContextCompat.getColor(getActivity(), R.color.toolbar_text_light);
         ToolbarColorizer.colorizeToolbar(
                 ShowcaseActivity.toolbar,
-                iconsColor,
-                getActivity());
+                iconsColor);*/
 
     }
 
@@ -112,14 +110,17 @@ public class PreviewsFragment extends Fragment {
             toolbarCollapsedHeight = TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics());
         }
         Integer toolbarExpandedHeight = getActivity().getResources().getDimensionPixelOffset(R.dimen.toolbar_expanded);
-        Integer statusbarHeight = UIUtils.getStatusBarHeight(getActivity());
 
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         float extra = (metrics.densityDpi * 0.05f);
 
+        Integer statusbarHeight = UIUtils.getStatusBarHeight(getActivity());
+
         // Set toolbarCollapsedHeight as offset so tabs are shown
         if (behavior != null) {
-            behavior.setTopAndBottomOffset(-toolbarExpandedHeight + statusbarHeight + (toolbarCollapsedHeight * 2) - Math.round(extra));
+            if (!ShowcaseActivity.iconPicker) {
+                behavior.setTopAndBottomOffset(-toolbarExpandedHeight + statusbarHeight + (toolbarCollapsedHeight * 2) - Math.round(extra));
+            }
         }
 
         // Lock CoordinatorLayout so the toolbar can't be scrolled away
@@ -166,8 +167,8 @@ public class PreviewsFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.icons_menu, menu);
-        mSearchItem = menu.findItem(R.id.search);
+        inflater.inflate(R.menu.search, menu);
+        MenuItem mSearchItem = menu.findItem(R.id.search);
         mSearchView = (SearchView) MenuItemCompat.getActionView(mSearchItem);
         mSearchView.setQueryHint(getString(R.string.search_x, tabs[mLastSelected]));
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -192,39 +193,16 @@ public class PreviewsFragment extends Fragment {
 
         });
 
-        mSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                IconsFragment frag = (IconsFragment) getChildFragmentManager().findFragmentByTag("page:" + mPager.getCurrentItem());
-                if (frag != null)
-                    frag.performSearch(null);
-                mSearchItem.collapseActionView();
-                int iconsColor = ThemeUtils.darkTheme ?
-                        ContextCompat.getColor(getActivity(), R.color.toolbar_text_dark) :
-                        ContextCompat.getColor(getActivity(), R.color.toolbar_text_light);
-                ToolbarColorizer.colorizeToolbar(
-                        ShowcaseActivity.toolbar,
-                        iconsColor,
-                        getActivity());
-                return false;
-            }
-        });
-
         mSearchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
-        mSearchView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int iconsColor = ThemeUtils.darkTheme ?
-                        ContextCompat.getColor(getActivity(), R.color.toolbar_text_dark) :
-                        ContextCompat.getColor(getActivity(), R.color.toolbar_text_light);
-                ToolbarColorizer.colorizeToolbar(
-                        ShowcaseActivity.toolbar,
-                        iconsColor,
-                        getActivity());
-            }
-        });
+        int iconsColor = ThemeUtils.darkTheme ?
+                ContextCompat.getColor(getActivity(), R.color.toolbar_text_dark) :
+                ContextCompat.getColor(getActivity(), R.color.toolbar_text_light);
 
+        if (getActivity() != null) {
+            ToolbarColorizer.tintSearchView(getActivity(), ShowcaseActivity.toolbar, mSearchItem,
+                    mSearchView, iconsColor);
+        }
     }
 
     class IconsPagerAdapter extends FragmentStatePagerAdapter {
@@ -240,13 +218,6 @@ public class PreviewsFragment extends Fragment {
 
         @Override
         public Fragment getItem(int position) {
-            int iconsColor = ThemeUtils.darkTheme ?
-                    ContextCompat.getColor(getActivity(), R.color.toolbar_text_dark) :
-                    ContextCompat.getColor(getActivity(), R.color.toolbar_text_light);
-            ToolbarColorizer.colorizeToolbar(
-                    ShowcaseActivity.toolbar,
-                    iconsColor,
-                    getActivity());
             return IconsFragment.newInstance(categories.get(position));
         }
 

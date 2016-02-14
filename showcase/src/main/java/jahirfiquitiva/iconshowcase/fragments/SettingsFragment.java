@@ -1,11 +1,9 @@
 package jahirfiquitiva.iconshowcase.fragments;
 
-import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
-import android.content.res.TypedArray;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -13,11 +11,9 @@ import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
-import android.support.design.widget.AppBarLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.util.TypedValue;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -35,7 +31,6 @@ import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
-import jahirfiquitiva.iconshowcase.views.CustomCoordinatorLayout;
 
 public class SettingsFragment extends PreferenceFragment implements PermissionUtils.OnPermissionResultListener {
 
@@ -256,8 +251,7 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
                 ContextCompat.getColor(getActivity(), R.color.toolbar_text_light);
         ToolbarColorizer.colorizeToolbar(
                 ShowcaseActivity.toolbar,
-                iconsColor,
-                getActivity());
+                iconsColor);
     }
 
     public static void changeValues(Context context) {

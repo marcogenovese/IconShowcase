@@ -15,15 +15,91 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:paddingBottom="@dimen/cards_margin"
             android:layout_height="wrap_content"
             android:clipToPadding="false"
+            android:paddingBottom="@dimen/cards_margin"
             >
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/previews_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/cards_margin"
+                android:layout_marginRight="@dimen/cards_margin"
+                android:layout_marginTop="@dimen/cards_margin"
+                android:clickable="false"
+                app:cardBackgroundColor="?attr/colorCardBackground">
+
+                <LinearLayout
+                    style="@style/ZooperCardContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/previewTexts"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:minHeight="@dimen/md_listitem_height"
+                        android:orientation="horizontal"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp">
+
+                        <ImageView
+                            android:id="@+id/icon_preview"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            tools:ignore="ContentDescription"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="24dp"
+                            android:layout_marginStart="24dp"
+                            android:orientation="vertical"
+                            android:paddingBottom="8dp"
+                            android:paddingTop="8dp">
+
+                            <TextView
+                                android:id="@+id/preview_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/zooper_preview_title"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+
+                            <TextView
+                                android:id="@+id/preview_content"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/cards_margin"
+                                android:text="@string/zooper_preview_content"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/preview_picture"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/cards_margin"
+                        android:layout_marginTop="@dimen/cards_margin"
+                        android:foreground="?selectableItemBackground"
+                        android:maxHeight="@dimen/toolbar_expanded"
+                        android:scaleType="fitCenter"
+                        tools:ignore="ContentDescription"/>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
                 android:id="@+id/zooper_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/previews_card"
                 android:layout_marginLeft="@dimen/cards_margin"
                 android:layout_marginRight="@dimen/cards_margin"
                 android:layout_marginTop="@dimen/cards_margin"

@@ -119,7 +119,7 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
     @Override
     protected void onPostExecute(Boolean worked) {
         endTime = System.currentTimeMillis();
-        Utils.showLog(context, "Load of icons task completed succesfully in: " + String.valueOf((endTime - startTime)) + " millisecs.");
+        Utils.showLog(context, "Load of icons task completed successfully in: " + String.valueOf((endTime - startTime)) + " millisecs.");
     }
 
     private List<String> sortList(String[] array) {

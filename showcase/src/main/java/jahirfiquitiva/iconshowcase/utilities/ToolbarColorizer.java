@@ -16,29 +16,42 @@ limitations under the License.
 
 package jahirfiquitiva.iconshowcase.utilities;
 
-import android.app.Activity;
+import android.content.Context;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.VectorDrawable;
+import android.os.Build;
+import android.support.annotation.ColorInt;
+import android.support.annotation.FloatRange;
+import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.view.menu.ActionMenuItemView;
 import android.support.v7.widget.ActionMenuView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import java.lang.reflect.Field;
+
+import jahirfiquitiva.iconshowcase.R;
 
 public class ToolbarColorizer {
 
     /**
      * Use this method to colorize toolbar icons to the desired target color
      *
-     * @param toolbar       toolbar view being colored
+     * @param toolbar           toolbar view being colored
      * @param toolbarIconsColor the target color of toolbar icons
-     * @param activity          reference to activity needed to register observers
      */
-    public static void colorizeToolbar(Toolbar toolbar, int toolbarIconsColor, Activity activity) {
+    public static void colorizeToolbar(Toolbar toolbar, int toolbarIconsColor) {
         final PorterDuffColorFilter colorFilter = new PorterDuffColorFilter(toolbarIconsColor, PorterDuff.Mode.SRC_IN);
 
         for (int i = 0; i < toolbar.getChildCount(); i++) {
@@ -77,28 +90,109 @@ public class ToolbarColorizer {
             //Step 3: Changing the color of title and subtitle.
             toolbar.setTitleTextColor(toolbarIconsColor);
             toolbar.setSubtitleTextColor(toolbarIconsColor);
-
-            //Step 4: Changing the color of the Overflow Menu icon.
-            setOverflowButtonColor(activity, toolbar, toolbarIconsColor);
         }
     }
 
-    private static void setOverflowButtonColor(final Activity activity, final Toolbar toolbar, final int toolbarIconsColor) {
-        final ViewGroup decorView = (ViewGroup) activity.getWindow().getDecorView();
-        final ViewTreeObserver viewTreeObserver = decorView.getViewTreeObserver();
-        viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                if (toolbar != null && toolbar.getOverflowIcon() != null) {
-                    Drawable bg = DrawableCompat.wrap(toolbar.getOverflowIcon());
-                    DrawableCompat.setTint(bg, toolbarIconsColor);
-                }
-                removeOnGlobalLayoutListener(decorView, this);
-            }
-        });
+    public static void tintChangelogIcon(MenuItem item, Context context, int color) {
+        item.setIcon(
+                getTintedIcon(
+                        ContextCompat.getDrawable(context, R.drawable.ic_changelog),
+                        color));
     }
 
-    private static void removeOnGlobalLayoutListener(View v, ViewTreeObserver.OnGlobalLayoutListener listener) {
-        v.getViewTreeObserver().removeOnGlobalLayoutListener(listener);
+    public static void tintSaveIcon(MenuItem item, Context context, int color) {
+        item.setIcon(
+                getTintedIcon(
+                        ContextCompat.getDrawable(context, R.drawable.ic_save),
+                        color));
     }
+
+    @SuppressWarnings("PrivateResource")
+    public static void tintSearchView(Context context, @NonNull Toolbar toolbar, MenuItem item,
+                                      @NonNull SearchView searchView, @ColorInt int color) {
+        item.setIcon(getTintedIcon(
+                        ContextCompat.getDrawable(context, R.drawable.abc_ic_search_api_mtrl_alpha),
+                        color));
+        final Class<?> cls = searchView.getClass();
+        try {
+            final Field mCollapseIconField = toolbar.getClass().getDeclaredField("mCollapseIcon");
+            mCollapseIconField.setAccessible(true);
+            final Drawable drawable = (Drawable) mCollapseIconField.get(toolbar);
+            if (drawable != null)
+                mCollapseIconField.set(toolbar, getTintedIcon(drawable, color));
+
+            final Field mSearchSrcTextViewField = cls.getDeclaredField("mSearchSrcTextView");
+            mSearchSrcTextViewField.setAccessible(true);
+            final EditText mSearchSrcTextView = (EditText) mSearchSrcTextViewField.get(searchView);
+            mSearchSrcTextView.setTextColor(color);
+            mSearchSrcTextView.setHintTextColor(adjustAlpha(color, 0.5f));
+            setCursorTint(mSearchSrcTextView, color);
+
+            Field field = cls.getDeclaredField("mSearchButton");
+            tintImageView(searchView, field, color);
+            field = cls.getDeclaredField("mGoButton");
+            tintImageView(searchView, field, color);
+            field = cls.getDeclaredField("mCloseButton");
+            tintImageView(searchView, field, color);
+            field = cls.getDeclaredField("mVoiceButton");
+            tintImageView(searchView, field, color);
+            field = cls.getDeclaredField("mCollapsedIcon");
+            tintImageView(searchView, field, color);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void setCursorTint(@NonNull EditText editText, @ColorInt int color) {
+        try {
+            Field fCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");
+            fCursorDrawableRes.setAccessible(true);
+            int mCursorDrawableRes = fCursorDrawableRes.getInt(editText);
+            Field fEditor = TextView.class.getDeclaredField("mEditor");
+            fEditor.setAccessible(true);
+            Object editor = fEditor.get(editText);
+            Class<?> clazz = editor.getClass();
+            Field fCursorDrawable = clazz.getDeclaredField("mCursorDrawable");
+            fCursorDrawable.setAccessible(true);
+            Drawable[] drawables = new Drawable[2];
+            drawables[0] = ContextCompat.getDrawable(editText.getContext(), mCursorDrawableRes);
+            drawables[0] = getTintedIcon(drawables[0], color);
+            drawables[1] = ContextCompat.getDrawable(editText.getContext(), mCursorDrawableRes);
+            drawables[1] = getTintedIcon(drawables[1], color);
+            fCursorDrawable.set(editor, drawables);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void tintImageView(Object target, Field field, int tintColor) throws Exception {
+        field.setAccessible(true);
+        final ImageView imageView = (ImageView) field.get(target);
+        if (imageView == null) return;
+        if (imageView.getDrawable() != null)
+            imageView.setImageDrawable(getTintedIcon(imageView.getDrawable(), tintColor));
+    }
+
+    public static Drawable getTintedIcon(Drawable drawable, int color) {
+        if (drawable != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && drawable instanceof VectorDrawable) {
+                drawable.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+            }
+            drawable = DrawableCompat.wrap(drawable.mutate());
+            DrawableCompat.setTintMode(drawable, PorterDuff.Mode.SRC_IN);
+            DrawableCompat.setTint(drawable, color);
+            return drawable;
+        } else {
+            return null;
+        }
+    }
+
+    public static int adjustAlpha(@ColorInt int color, @FloatRange(from = 0.0, to = 1.0) float factor) {
+        int alpha = Math.round(Color.alpha(color) * factor);
+        int red = Color.red(color);
+        int green = Color.green(color);
+        int blue = Color.blue(color);
+        return Color.argb(alpha, red, green, blue);
+    }
+
 }

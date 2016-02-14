@@ -96,8 +96,7 @@ public class FAQsFragment extends Fragment {
                 ContextCompat.getColor(getActivity(), R.color.toolbar_text_light);
         ToolbarColorizer.colorizeToolbar(
                 ShowcaseActivity.toolbar,
-                iconsColor,
-                getActivity());
+                iconsColor);
     }
 
 }

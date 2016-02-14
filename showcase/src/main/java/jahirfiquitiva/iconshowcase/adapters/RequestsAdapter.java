@@ -33,7 +33,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
         this.mCallback = new ClickListener() {
             @Override
             public void onClick(int position) {
-                selectApp(position);
+                changeAppSelectedState(position);
             }
         };
     }
@@ -124,6 +124,13 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
             appsList.set(position, requestsItem);
             notifyItemChanged(position);
         }
+    }
+
+    public void changeAppSelectedState(int position) {
+        RequestItem requestsItem = appsList.get(position);
+        requestsItem.setSelected(!requestsItem.isSelected());
+        appsList.set(position, requestsItem);
+        notifyItemChanged(position);
     }
 
     public int getSelectedApps() {
