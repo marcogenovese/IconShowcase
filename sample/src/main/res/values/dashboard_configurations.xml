@@ -225,6 +225,16 @@
     <bool name="auto_generate_all_icons">false</bool>
 
     <!--
+    Do you want the request tool to add the app name in comments in the generated files?
+    -->
+    <bool name="request_tool_comments">true</bool>
+
+    <!--
+    Do you want the request tool to show info for theme engines (cm, cyngn, rro)
+    -->
+    <bool name="theme_engine_info">false</bool>
+
+    <!--
     Do you want request items as cards?
     True, means cards.
     False, means flat stuff.
@@ -237,5 +247,4 @@
     False, means flat stuff.
     -->
     <bool name="faqs_cards">false</bool>
-
 </resources>

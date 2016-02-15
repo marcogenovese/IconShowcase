@@ -140,17 +140,25 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
 
             for (int i = 0; i < appsNames.size(); i++) {
 
-                appFilterBuilder.append("<!-- " + appsNames.get(i) +
-                        " -->\n<item component=\"ComponentInfo{" +
+                if(context.getResources().getBoolean(R.bool.request_tool_comments)) {
+                    appFilterBuilder.append("<!-- " + appsNames.get(i) +
+                            " -->\n");
+
+                    appMapBuilder.append("<!-- " + appsNames.get(i) +
+                            " -->\n");
+
+                    themeResourcesBuilder.append("<!-- " + appsNames.get(i) +
+                            " -->\n");
+                }
+                
+                appFilterBuilder.append("<item component=\"ComponentInfo{" +
                         appsPackages.get(i) + "/" + appsClasses.get(i) + "}\"" +
                         "drawable=\"" + appsNames.get(i).replace(" ", "_").toLowerCase() + "\"/>" + "\n");
 
-                appMapBuilder.append("<!-- " + appsNames.get(i) +
-                        " -->\n<item name=\"" + appsNames.get(i).replace(" ", "_").toLowerCase() +
+                appMapBuilder.append("<item name=\"" + appsNames.get(i).replace(" ", "_").toLowerCase() +
                         "\" class=\"" + appsClasses.get(i) + "\" />" + "\n");
 
-                themeResourcesBuilder.append("<!-- " + appsNames.get(i) +
-                        " -->\n<AppIcon name=\"" +
+                themeResourcesBuilder.append("<AppIcon name=\"" +
                         appsPackages.get(i) + "/" + appsClasses.get(i) +
                         "\" image=\"" + appsNames.get(i).replace(" ", "_").toLowerCase() + "\"/>" + "\n");
 
