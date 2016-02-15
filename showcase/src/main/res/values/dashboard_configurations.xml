@@ -272,4 +272,8 @@
     <!--paypal currency code (ie CAD); make sure this is a valid code-->
     <string name="paypal_currency_code"></string>
 
+    <!--
+    Choose whether to show info for theme engines (cm, cyngn, rro)
+    -->
+    <bool name="theme_engine_info">false</bool>
 </resources>

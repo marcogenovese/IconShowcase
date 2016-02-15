@@ -36,6 +36,7 @@ import java.util.zip.ZipOutputStream;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.models.RequestItem;
+import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
 
@@ -65,6 +66,8 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
         this.appsListFinal = appsListFinal;
     }
 
+    private SimpleDateFormat date = new SimpleDateFormat("yyyyMMdd_hhmmss", Locale.getDefault());
+
     @Override
     protected void onPreExecute() {
 
@@ -78,7 +81,6 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
                 Environment.getExternalStorageDirectory().getAbsolutePath());
         filesLocation = zipLocation + "Files/";
 
-        SimpleDateFormat date = new SimpleDateFormat("yyyyMMdd_hhmmss", Locale.getDefault());
         String appNameCorrected = context.getResources().getString(R.string.app_name).replace(" ", "");
 
         zipFilePath = zipLocation + appNameCorrected
@@ -178,6 +180,17 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
             sb.append("\nDevice: " + Build.DEVICE);
             sb.append("\nManufacturer: " + Build.MANUFACTURER);
             sb.append("\nModel (and Product): " + Build.MODEL + " (" + Build.PRODUCT + ")");
+            if(context.getResources().getBoolean(R.bool.theme_engine_info)) {
+                if (Utils.isAppInstalled(context, "org.cyanogenmod.theme.chooser")) {
+                    sb.append("\nCMTE is installed");
+                }
+                if (Utils.isAppInstalled(context, "com.cyngn.theme.chooser")) {
+                    sb.append("\nCyngn theme engine is installed");
+                }
+                if (Utils.isAppInstalled(context, "com.lovejoy777.rroandlayersmanager")) {
+                    sb.append("\nLayers Manager is installed");
+                }
+            }
 
             try {
                 PackageInfo appInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
@@ -190,7 +203,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
             if (appsCount != 0) {
 
                 try {
-                    FileWriter fileWriter1 = new FileWriter(filesLocation + "/appfilter.xml");
+                    FileWriter fileWriter1 = new FileWriter(filesLocation + "/" + date + "_appfilter.xml");
                     BufferedWriter bufferedWriter1 = new BufferedWriter(fileWriter1);
                     bufferedWriter1.write(appFilterBuilder.toString());
                     bufferedWriter1.close();
@@ -199,7 +212,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
                 }
 
                 try {
-                    FileWriter fileWriter2 = new FileWriter(filesLocation + "/appmap.xml");
+                    FileWriter fileWriter2 = new FileWriter(filesLocation + "/" + date + "_appmap.xml");
                     BufferedWriter bufferedWriter2 = new BufferedWriter(fileWriter2);
                     bufferedWriter2.write(appMapBuilder.toString());
                     bufferedWriter2.close();
@@ -208,7 +221,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
                 }
 
                 try {
-                    FileWriter fileWriter3 = new FileWriter(filesLocation + "/theme_resources.xml");
+                    FileWriter fileWriter3 = new FileWriter(filesLocation + "/" + date + "_theme_resources.xml");
                     BufferedWriter bufferedWriter3 = new BufferedWriter(fileWriter3);
                     bufferedWriter3.write(themeResourcesBuilder.toString());
                     bufferedWriter3.close();
@@ -249,7 +262,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
                 sendIntent.putExtra(Intent.EXTRA_STREAM, uri);
                 sendIntent.putExtra("android.intent.extra.EMAIL", recipients);
                 sendIntent.putExtra("android.intent.extra.SUBJECT",
-                        context.getString(R.string.app_name) + " Icon Request");
+                        context.getString(R.string.request_title));
                 sendIntent.putExtra("android.intent.extra.TEXT", emailContent.toString());
                 sendIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
