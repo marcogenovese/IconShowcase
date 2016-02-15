@@ -10,7 +10,7 @@ import jahirfiquitiva.iconshowcase.R;
 
 public class LauncherIntents {
 
-    public LauncherIntents(Context context, String launcherName, View layout) {
+    public LauncherIntents(Context context, String launcherName) {
         switch (launcherName) {
             case "Action":
                 ActionLauncher(context);
@@ -80,6 +80,9 @@ public class LauncherIntents {
                 break;
             case "Uniconpro":
                 Unicon(context);
+                break;
+            case "Layers":
+                Layers(context);
                 break;
             default:
                 Utils.showLog(context, "No method for: " + launcherName);
@@ -261,5 +264,15 @@ public class LauncherIntents {
         unicon.setPackage("sg.ruqqq.IconThemer");
         context.startActivity(unicon);
     }
+
+    //for theme support
+    public void Layers(Context context) {
+        Intent intent = new Intent("android.intent.action.MAIN");
+        intent.setComponent(new ComponentName("com.lovejoy777.rroandlayersmanager",
+                "com.lovejoy777.rroandlayersmanager.MainActivity"));
+        intent.putExtra("pkgName", context.getPackageName());
+        context.startActivity(intent);
+    }
+
 
 }

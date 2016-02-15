@@ -230,11 +230,6 @@
     <bool name="request_tool_comments">true</bool>
 
     <!--
-    Do you want the request tool to show info for theme engines (cm, cyngn, rro)
-    -->
-    <bool name="theme_engine_info">false</bool>
-
-    <!--
     Do you want request items as cards?
     True, means cards.
     False, means flat stuff.

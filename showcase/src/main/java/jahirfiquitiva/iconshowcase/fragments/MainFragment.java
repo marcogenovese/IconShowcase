@@ -22,11 +22,13 @@ import com.mikepenz.iconics.IconicsDrawable;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
+import jahirfiquitiva.iconshowcase.utilities.LauncherIntents;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 public class MainFragment extends Fragment {
+    private Context context;
 
     private static final String MARKET_URL = "https://play.google.com/store/apps/details?id=";
     private String PlayStoreListing;
@@ -35,6 +37,8 @@ public class MainFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
+
+        context = this.getContext().getApplicationContext(); //TODO see if this is good
 
         String themedIcons = String.valueOf(getActivity().getResources().getInteger(R.integer.icons_amount));
         String availableWallpapers = String.valueOf(getActivity().getResources().getInteger(R.integer.walls_amount));
@@ -161,8 +165,14 @@ public class MainFragment extends Fragment {
         ShowcaseActivity.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShowcaseActivity.drawerItemClick(ShowcaseActivity.applyIdentifier);
-                ShowcaseActivity.drawer.setSelection(ShowcaseActivity.applyIdentifier);
+//                ShowcaseActivity.drawerItemClick(ShowcaseActivity.applyIdentifier);
+//                ShowcaseActivity.drawer.setSelection(ShowcaseActivity.applyIdentifier);
+
+                if (Utils.isAppInstalled(getContext().getApplicationContext(), "org.cyanogenmod.theme.chooser") || Utils.isAppInstalled(context, "com.cyngn.theme.chooser")) {
+                    new LauncherIntents(getActivity(), "Cmthemeengine");
+                } else if (Utils.isAppInstalled(context, "com.lovejoy777.rroandlayersmanager")) {
+                    new LauncherIntents(getActivity(), "Layers");
+                }
             }
         });
     }

@@ -150,7 +150,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
                     themeResourcesBuilder.append("<!-- " + appsNames.get(i) +
                             " -->\n");
                 }
-                
+
                 appFilterBuilder.append("<item component=\"ComponentInfo{" +
                         appsPackages.get(i) + "/" + appsClasses.get(i) + "}\"" +
                         "drawable=\"" + appsNames.get(i).replace(" ", "_").toLowerCase() + "\"/>" + "\n");
