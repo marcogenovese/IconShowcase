@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+    Private configurations that should not be opened to sample.
+    They are currently for the theme flavour that I'm testing
+
+    - Allan
+    -->
+
+    <!--universal toggle for theme mode-->
+    <bool name="theme_mode">true</bool>
+
+    <!--
+    Do you want the request tool to show info for theme engines (cm, cyngn, rro)
+    -->
+    <bool name="theme_engine_info">true</bool>
+</resources>
