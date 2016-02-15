@@ -1,0 +1,15 @@
+<!--
+  ~ Copyright (c) 2016. Jahir Fiquitiva. Android Developer. All rights reserved.
+  -->
+
+<resources>
+
+    <style name="AppTheme" parent="AppTheme.Base">
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+    <style name="AppThemeDark" parent="AppTheme.Base.Dark">
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
+</resources>

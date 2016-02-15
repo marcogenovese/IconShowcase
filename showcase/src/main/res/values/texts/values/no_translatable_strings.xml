@@ -18,9 +18,6 @@
     <string name="materialdrawer_web">https://github.com/mikepenz/MaterialDrawer</string>
     <string name="materialdrawer_name">MaterialDrawer</string>
 
-    <string name="materialize_web">https://github.com/mikepenz/Materialize</string>
-    <string name="materialize_name">Materialize</string>
-
     <string name="iconics_web">https://github.com/mikepenz/Android-Iconics</string>
     <string name="iconics_name">Android Iconics</string>
 
@@ -132,7 +129,6 @@
     <string-array name="libs_names">
         <item>@string/materialdialogs_name</item>
         <item>@string/materialdrawer_name</item>
-        <item>@string/materialize_name</item>
         <item>@string/fab_name</item>
         <item>@string/iconics_name</item>
         <item>@string/glide_name</item>
@@ -145,7 +141,6 @@
     <string-array name="libs_links">
         <item>@string/materialdialogs_web</item>
         <item>@string/materialdrawer_web</item>
-        <item>@string/materialize_web</item>
         <item>@string/fab_web</item>
         <item>@string/iconics_web</item>
         <item>@string/glide_web</item>

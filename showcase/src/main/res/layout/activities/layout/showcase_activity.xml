@@ -5,12 +5,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="false">
+    android:fitsSystemWindows="true">
 
     <jahirfiquitiva.iconshowcase.views.FixedElevationAppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_expanded"
+        android:clipChildren="false"
         android:fitsSystemWindows="true"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
@@ -18,11 +19,13 @@
             android:id="@+id/collapsingToolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:clipChildren="false"
             android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimary"
             app:expandedTitleMarginBottom="32dp"
             app:expandedTitleMarginEnd="64dp"
             app:expandedTitleMarginStart="24dp"
+            app:expandedTitleTextAppearance="@android:color/transparent"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
@@ -44,7 +47,6 @@
                 android:layout_height="?actionBarSize"
                 android:clipChildren="false"
                 android:minHeight="?actionBarSize"
-                android:paddingTop="@dimen/tool_bar_top_padding"
                 android:transitionName="actionBar"
                 app:contentInsetStart="@dimen/toolbar_contentInset"
                 app:layout_collapseMode="pin"
@@ -60,7 +62,7 @@
                     android:gravity="start|center_vertical"
                     android:text=""
                     android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
-                    android:textColor="?attr/toolbarTextColor"/>
+                    android:textColor="@android:color/transparent"/>
 
             </android.support.v7.widget.Toolbar>
 

@@ -113,16 +113,18 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     public static boolean iconPicker, wallsPicker, iconPickerEnabled = false, wallsEnabled = false,
             applyEnabled = false, SHUFFLE = true, shuffleIcons = true, selectAll = true;
 
-    private static String thaHome, thaPreviews, thaApply, thaWalls, thaRequest, thaDonate, thaFAQs,
+    private static String thaAppName, thaHome, thaPreviews, thaApply, thaWalls, thaRequest, thaDonate, thaFAQs,
             thaZooper, thaCredits, thaSettings;
 
     private static AppCompatActivity context;
 
     public String version;
 
-    public static int currentItem = -1, wallpaper = -1, wallsIdentifier = 0,
+    public static long currentItem = -1, wallsIdentifier = 0,
             iconPickerIdentifier = 0, applyIdentifier = 0, settingsIdentifier = 0,
-            secondaryStart = 0, numOfIcons = 4;
+            secondaryStart = 0;
+
+    public static int numOfIcons = 4, wallpaper = -1;
 
     private boolean mLastTheme, mLastNavBar;
     private static Preferences mPrefs;
@@ -236,14 +238,11 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         titleView = (TextView) findViewById(R.id.title);
 
-        CollapsingToolbarLayout.LayoutParams layoutParams = (CollapsingToolbarLayout.LayoutParams) toolbar.getLayoutParams();
-        layoutParams.height = layoutParams.height + UIUtils.getStatusBarHeight(this);
-        toolbar.setLayoutParams(layoutParams);
-
         setSupportActionBar(toolbar);
 
         runLicenseChecker();
 
+        thaAppName = getResources().getString(R.string.app_name);
         thaHome = getResources().getString(R.string.section_home);
         thaPreviews = getResources().getString(R.string.section_icons);
         thaApply = getResources().getString(R.string.section_apply);
@@ -255,14 +254,16 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         thaFAQs = getResources().getString(R.string.faqs_section);
         thaZooper = getResources().getString(R.string.zooper_section_title);
 
-        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbar);
-        collapsingToolbarLayout.setTitleEnabled(false);
-        if (getSupportActionBar() != null) getSupportActionBar().setDisplayShowTitleEnabled(false);
-
         int iconsColor = ThemeUtils.darkTheme ?
                 ContextCompat.getColor(this, R.color.toolbar_text_dark) :
                 ContextCompat.getColor(this, R.color.toolbar_text_light);
+
+        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbar);
+        collapsingToolbarLayout.setTitleEnabled(true);
+        collapsingToolbarLayout.setCollapsedTitleTextColor(iconsColor);
+
         ToolbarColorizer.colorizeToolbar(toolbar, iconsColor);
+        //if (getSupportActionBar() != null) getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
 
@@ -336,7 +337,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     public static String fragment2title(String fragment) {
         switch (fragment) {
             case "Main":
-                return "  ";
+                return thaAppName;
             case "Previews":
                 return thaPreviews;
             case "Apply":
@@ -361,7 +362,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         return ":(";
     }
 
-    public static void switchFragment(int itemId, String fragment,
+    public static void switchFragment(long itemId, String fragment,
                                       AppCompatActivity context) {
 
         if (currentItem == itemId) {
@@ -416,7 +417,8 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             }
         }
 
-        titleView.setText(fragment2title(fragment));
+        //titleView.setText(fragment2title(fragment));
+        collapsingToolbarLayout.setTitle(fragment2title(fragment));
 
         if (drawer != null) {
             drawer.setSelection(itemId);
@@ -449,18 +451,26 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     protected void onSaveInstanceState(Bundle outState) {
         if (drawer != null)
             outState = drawer.saveInstanceState(outState);
+        /*
         if (getSupportActionBar() != null) {
             outState.putString("toolbarTitle", String.valueOf(titleView.getText()));
+        }*/
+        if (collapsingToolbarLayout != null && collapsingToolbarLayout.getTitle() != null) {
+            outState.putString("toolbarTitle", collapsingToolbarLayout.getTitle().toString());
         }
-        outState.putInt("currentSection", currentItem);
+        outState.putInt("currentSection", (int) currentItem);
         super.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        if (getSupportActionBar() != null)
-            titleView.setText(savedInstanceState.getString("toolbarTitle", "   "));
+        if (collapsingToolbarLayout != null) {
+            collapsingToolbarLayout.setTitle(savedInstanceState.getString("toolbarTitle",
+                    getResources().getString(R.string.app_name)));
+        }
+        //if (getSupportActionBar() != null)
+        //titleView.setText(savedInstanceState.getString("toolbarTitle", "   "));
         drawerItemClick(savedInstanceState.getInt("currentSection"));
     }
 
@@ -686,7 +696,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             drawerBuilder = new DrawerBuilder()
                     .withActivity(this)
                     .withToolbar(toolbar)
-                    .withFullscreen(true)
                     .withFireOnInitialOnClick(true)
                     .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                         @Override
@@ -706,13 +715,11 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                             }
                             return false;
                         }
-                    })
-                    .withDisplayBelowStatusBar(false);
+                    });
         } else {
             drawerBuilder = new DrawerBuilder()
                     .withActivity(this)
                     .withToolbar(toolbar)
-                    .withFullscreen(true)
                     .withFireOnInitialOnClick(true)
                     .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                         @Override
@@ -722,8 +729,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                             }
                             return false;
                         }
-                    })
-                    .withDisplayBelowStatusBar(false);
+                    });
         }
 
         for (int i = 0; i < primaryDrawerItems.length; i++) {
@@ -869,9 +875,9 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 //                appVersion.setTextColor(iconsColor);
 //                appName.setTextColor(iconsColor);
 //            } else {
-                miniHeader.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawer_header));
-                appVersion.setTextColor(ContextCompat.getColor(context, android.R.color.white));
-                appName.setTextColor(ContextCompat.getColor(context, android.R.color.white));
+            miniHeader.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawer_header));
+            appVersion.setTextColor(ContextCompat.getColor(context, android.R.color.white));
+            appName.setTextColor(ContextCompat.getColor(context, android.R.color.white));
 //            }
             appName.setText(headerAppName);
             appVersion.setText(headerAppVersion);
@@ -879,11 +885,11 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
     }
 
-    public static void drawerItemClick(int id) {
+    public static void drawerItemClick(long id) {
         if (id <= primaryDrawerItems.length) {
-            switchFragment(id, primaryDrawerItems[id - 1], context);
+            switchFragment(id, primaryDrawerItems[(int) id - 1], context);
         } else {
-            switchFragment(id, secondaryDrawerItems[id - secondaryStart], context);
+            switchFragment(id, secondaryDrawerItems[((int) (id - secondaryStart))], context);
         }
     }
 

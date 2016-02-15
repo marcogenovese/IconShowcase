@@ -77,7 +77,9 @@ public class PreviewsFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        setupToolbar();
+        Utils.collapseToolbar(getActivity());
+
+        //setupToolbar();
 
         if (mPager == null) {
             mPager = (ViewPager) layout.findViewById(R.id.pager);
