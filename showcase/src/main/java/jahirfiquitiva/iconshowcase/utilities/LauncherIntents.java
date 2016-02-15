@@ -10,7 +10,7 @@ import jahirfiquitiva.iconshowcase.R;
 
 public class LauncherIntents {
 
-    public LauncherIntents(Context context, String launcherName, View layout) {
+    public LauncherIntents(Context context, String launcherName) {
         switch (launcherName) {
             case "Action":
                 ActionLauncher(context);

@@ -236,7 +236,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         titleView = (TextView) findViewById(R.id.title);
 
-
         CollapsingToolbarLayout.LayoutParams layoutParams = (CollapsingToolbarLayout.LayoutParams) toolbar.getLayoutParams();
         layoutParams.height = layoutParams.height + UIUtils.getStatusBarHeight(this);
         toolbar.setLayoutParams(layoutParams);
@@ -365,11 +364,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     public static void switchFragment(int itemId, String fragment,
                                       AppCompatActivity context) {
 
-        int iconsColor = ThemeUtils.darkTheme ?
-                ContextCompat.getColor(context, R.color.toolbar_text_dark) :
-                ContextCompat.getColor(context, R.color.toolbar_text_light);
-        ToolbarColorizer.colorizeToolbar(toolbar, iconsColor);
-
         if (currentItem == itemId) {
             // Don't allow re-selection of the currently active item
             return;
@@ -381,11 +375,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             icon2.setVisibility(View.INVISIBLE);
             icon3.setVisibility(View.INVISIBLE);
             icon4.setVisibility(View.INVISIBLE);
-            appbar.setExpanded(true, mPrefs.getAnimationsEnabled());
-            coordinatorLayout.setScrollAllowed(true);
-        } else if (!fragment.equals("Previews")) {
-            appbar.setExpanded(false, mPrefs.getAnimationsEnabled());
-            coordinatorLayout.setScrollAllowed(false);
         }
 
         //Fragment Switcher
@@ -432,6 +421,11 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         if (drawer != null) {
             drawer.setSelection(itemId);
         }
+
+        int iconsColor = ThemeUtils.darkTheme ?
+                ContextCompat.getColor(context, R.color.toolbar_text_dark) :
+                ContextCompat.getColor(context, R.color.toolbar_text_light);
+        ToolbarColorizer.colorizeToolbar(toolbar, iconsColor);
 
     }
 

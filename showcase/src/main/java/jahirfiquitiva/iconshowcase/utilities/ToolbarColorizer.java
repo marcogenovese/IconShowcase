@@ -107,6 +107,9 @@ public class ToolbarColorizer {
                         color));
     }
 
+    /**
+     * This code was created by Aidan Follestad. Complete credits to him.
+     */
     @SuppressWarnings("PrivateResource")
     public static void tintSearchView(Context context, @NonNull Toolbar toolbar, MenuItem item,
                                       @NonNull SearchView searchView, @ColorInt int color) {

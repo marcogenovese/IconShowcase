@@ -21,6 +21,7 @@ import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -148,6 +149,17 @@ public class WallpapersFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.wallpapers, menu);
+        MenuItem columns = menu.findItem(R.id.columns);
+        int iconsColor = ThemeUtils.darkTheme ?
+                ContextCompat.getColor(context, R.color.toolbar_text_dark) :
+                ContextCompat.getColor(context, R.color.toolbar_text_light);
+        columns.setIcon(
+                ToolbarColorizer.getTintedIcon(
+                        ContextCompat.getDrawable(getActivity(), R.drawable.ic_columns),
+                        iconsColor));
+        ToolbarColorizer.colorizeToolbar(
+                ShowcaseActivity.toolbar,
+                iconsColor);
     }
 
     public static void setupLayout(final boolean fromTask) {

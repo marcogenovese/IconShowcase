@@ -1,18 +1,15 @@
 package jahirfiquitiva.iconshowcase.utilities;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
-import android.support.annotation.NonNull;
 import android.support.customtabs.CustomTabsClient;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.customtabs.CustomTabsServiceConnection;
@@ -27,8 +24,6 @@ import android.view.ViewTreeObserver;
 
 import com.github.florent37.glidepalette.GlidePalette;
 
-import java.util.Iterator;
-import java.util.Set;
 import java.util.concurrent.Callable;
 
 import jahirfiquitiva.iconshowcase.R;
@@ -36,7 +31,7 @@ import jahirfiquitiva.iconshowcase.adapters.WallpapersAdapter;
 import jahirfiquitiva.iconshowcase.views.CustomCoordinatorLayout;
 
 /**
- * @author Aidan Follestad (afollestad)
+ * With a little help from Aidan Follestad (afollestad)
  */
 public class Utils {
 
@@ -100,11 +95,6 @@ public class Utils {
         }
     }
 
-    public static void openActivity(Context context, Class className) {
-        Intent intent = new Intent(context, className);
-        context.startActivity(intent);
-    }
-
     public static void openLink(Context context, String link) {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -160,25 +150,6 @@ public class Utils {
 
     public static String getStringFromResources(Context context, int id) {
         return context.getResources().getString(id);
-    }
-
-    /**
-     * Returns a string representation of {@param set}. Used only for debugging purposes.
-     */
-    @NonNull
-    public static String setToString(@NonNull Set<String> set) {
-        Iterator<String> i = set.iterator();
-        if (!i.hasNext()) {
-            return "[]";
-        }
-        StringBuilder sb = new StringBuilder().append('[');
-        while (true) {
-            sb.append(i.next());
-            if (!i.hasNext()) {
-                return sb.append(']').toString();
-            }
-            sb.append(", ");
-        }
     }
 
     public static String makeTextReadable(String name) {
@@ -293,23 +264,6 @@ public class Utils {
         });
     }
 
-    /**
-     * Converts dp to px
-     *
-     * @param res Resources
-     * @param dp  the value in dp
-     * @return int
-     */
-    public static int toPixels(Resources res, float dp) {
-        return (int) (dp * res.getDisplayMetrics().density);
-    }
-
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-    public static boolean isRtl(Resources res) {
-        return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) &&
-                (res.getConfiguration().getLayoutDirection() == View.LAYOUT_DIRECTION_RTL);
-    }
-
     public static void collapseToolbar(Context context) {
         Preferences mPrefs = new Preferences(context);
         AppBarLayout appbar = (AppBarLayout) ((Activity) context).findViewById(R.id.appbar);
@@ -317,6 +271,15 @@ public class Utils {
         appbar.setExpanded(false, mPrefs.getAnimationsEnabled());
         appbar.setEnabled(false);
         coordinatorLayout.setScrollAllowed(false);
+    }
+
+    public static void expandToolbar(Context context) {
+        Preferences mPrefs = new Preferences(context);
+        AppBarLayout appbar = (AppBarLayout) ((Activity) context).findViewById(R.id.appbar);
+        CustomCoordinatorLayout coordinatorLayout = (CustomCoordinatorLayout) ((Activity) context).findViewById(R.id.mainCoordinatorLayout);
+        appbar.setExpanded(true, mPrefs.getAnimationsEnabled());
+        appbar.setEnabled(true);
+        coordinatorLayout.setScrollAllowed(true);
     }
 
 }

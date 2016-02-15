@@ -135,7 +135,7 @@ public class ApplyFragment extends Fragment {
     private void openLauncher(String name) {
         final String launcherName = Character.toUpperCase(name.charAt(0))
                 + name.substring(1).toLowerCase().replace(" ", "").replace("launcher", "");
-        new LauncherIntents(getActivity(), launcherName, applyLayout);
+        new LauncherIntents(getActivity(), launcherName);
     }
 
     private void openInPlayStore(final Launcher launcher) {
