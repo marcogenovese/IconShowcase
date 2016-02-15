@@ -266,7 +266,7 @@ public class LauncherIntents {
     }
 
     //for theme support
-    public void Layers(Context context) {
+    public void Layers(Context context) { //TODO see if this can be improved
         Intent intent = new Intent("android.intent.action.MAIN");
         intent.setComponent(new ComponentName("com.lovejoy777.rroandlayersmanager",
                 "com.lovejoy777.rroandlayersmanager.MainActivity"));

@@ -670,7 +670,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         SettingsFragment.changeValues(getApplicationContext());
     }
 
-    public void setupDrawer(Toolbar toolbar, Bundle savedInstanceState) {
+    public void setupDrawer(Toolbar toolbar, Bundle savedInstanceState) { //TODO check if toolbar can be final
 
         //Initialize PrimaryDrawerItem
         PrimaryDrawerItem home, previews, walls, requests, apply, faqs, zooper;
@@ -680,21 +680,51 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
         secondaryStart = primaryDrawerItems.length + 1; //marks the first identifier value that should be used
 
-        DrawerBuilder drawerBuilder = new DrawerBuilder()
-                .withActivity(this)
-                .withToolbar(toolbar)
-                .withFullscreen(true)
-                .withFireOnInitialOnClick(true)
-                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                    @Override
-                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        if (drawerItem != null) {
-                            drawerItemClick(drawerItem.getIdentifier());
+        DrawerBuilder drawerBuilder;
+
+        if (getResources().getBoolean(R.bool.theme_mode)) { //enabled theme mode, long press added
+            drawerBuilder = new DrawerBuilder()
+                    .withActivity(this)
+                    .withToolbar(toolbar)
+                    .withFullscreen(true)
+                    .withFireOnInitialOnClick(true)
+                    .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                        @Override
+                        public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                            if (drawerItem != null) {
+                                drawerItemClick(drawerItem.getIdentifier());
+                            }
+                            return false;
                         }
-                        return false;
-                    }
-                })
-                .withDisplayBelowStatusBar(false);
+                    })
+                    .withOnDrawerItemLongClickListener(new Drawer.OnDrawerItemLongClickListener() {
+                        @Override
+                        public boolean onItemLongClick(View view, int position, IDrawerItem drawerItem) {
+                            if (drawerItem.getIdentifier() == iconPickerIdentifier && mIsPremium) {
+                                switchFragment(iconPickerIdentifier, "Requests", context);
+                                drawer.closeDrawer();
+                            }
+                            return false;
+                        }
+                    })
+                    .withDisplayBelowStatusBar(false);
+        } else {
+            drawerBuilder = new DrawerBuilder()
+                    .withActivity(this)
+                    .withToolbar(toolbar)
+                    .withFullscreen(true)
+                    .withFireOnInitialOnClick(true)
+                    .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                        @Override
+                        public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                            if (drawerItem != null) {
+                                drawerItemClick(drawerItem.getIdentifier());
+                            }
+                            return false;
+                        }
+                    })
+                    .withDisplayBelowStatusBar(false);
+        }
 
         for (int i = 0; i < primaryDrawerItems.length; i++) {
             switch (primaryDrawerItems[i]) {
@@ -828,20 +858,21 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             miniHeader.getLayoutParams().height = UIUtils.getActionBarHeight(this) + UIUtils.getStatusBarHeight(this);
             TextView appVersion = (TextView) drawer.getHeader().findViewById(R.id.text_app_version);
             TextView appName = (TextView) drawer.getHeader().findViewById(R.id.text_app_name);
-            if (context.getResources().getBoolean(R.bool.mini_header_solid_color)) {
-                miniHeader.setBackgroundColor(ThemeUtils.darkTheme ?
-                        ContextCompat.getColor(context, R.color.dark_theme_primary) :
-                        ContextCompat.getColor(context, R.color.light_theme_primary));
-                int iconsColor = ThemeUtils.darkTheme ?
-                        ContextCompat.getColor(this, R.color.toolbar_text_dark) :
-                        ContextCompat.getColor(this, R.color.toolbar_text_light);
-                appVersion.setTextColor(iconsColor);
-                appName.setTextColor(iconsColor);
-            } else {
+//            if (context.getResources().getBoolean(R.bool.mini_header_solid_color)) {
+//                int backgroundColor = ThemeUtils.darkTheme ?
+//                        ContextCompat.getColor(context, R.color.dark_theme_primary) :
+//                        ContextCompat.getColor(context, R.color.light_theme_primary);
+//                miniHeader.setBackgroundColor(backgroundColor);
+//                int iconsColor = ThemeUtils.darkTheme ?
+//                        ContextCompat.getColor(this, R.color.toolbar_text_dark) :
+//                        ContextCompat.getColor(this, R.color.toolbar_text_light);
+//                appVersion.setTextColor(iconsColor);
+//                appName.setTextColor(iconsColor);
+//            } else {
                 miniHeader.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawer_header));
                 appVersion.setTextColor(ContextCompat.getColor(context, android.R.color.white));
                 appName.setTextColor(ContextCompat.getColor(context, android.R.color.white));
-            }
+//            }
             appName.setText(headerAppName);
             appVersion.setText(headerAppVersion);
         }
