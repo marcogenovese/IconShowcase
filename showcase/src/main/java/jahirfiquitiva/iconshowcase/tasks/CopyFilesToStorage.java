@@ -15,12 +15,10 @@ import java.io.OutputStream;
 
 public class CopyFilesToStorage extends AsyncTask<Void, String, Boolean> {
     private Context context;
-    private Activity activity;
     private MaterialDialog dialog;
     private String folder;
 
     public CopyFilesToStorage(Context context, MaterialDialog dialog, String folder) {
-        this.activity = (Activity) context;
         this.context = context;
         this.dialog = dialog;
         this.folder = folder;
@@ -43,7 +41,6 @@ public class CopyFilesToStorage extends AsyncTask<Void, String, Boolean> {
                         copyFiles(in, out);
                         in.close();
                         out.close();
-                        out.flush();
                     } catch (Exception e) {
                         //Do nothing
                     }

@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 
@@ -35,6 +36,8 @@ public class MainFragment extends Fragment {
     private ViewGroup layout;
     private ImageView iconsIV, wallsIV, widgetsIV, playStoreIV;
 
+    private boolean themeMode, cm, cyngn, rro; //to store theme engine installation status
+
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
 
@@ -43,6 +46,12 @@ public class MainFragment extends Fragment {
         String themedIcons = String.valueOf(getActivity().getResources().getInteger(R.integer.icons_amount));
         String availableWallpapers = String.valueOf(getActivity().getResources().getInteger(R.integer.walls_amount));
         String includedWidgets = String.valueOf(getActivity().getResources().getInteger(R.integer.zooper_widgets));
+
+        //check which theme engines are installed
+        themeMode = getResources().getBoolean(R.bool.theme_mode);
+        cm = Utils.isAppInstalled(context, "org.cyanogenmod.theme.chooser");
+        cyngn = Utils.isAppInstalled(context, "com.cyngn.theme.chooser");
+        rro = Utils.isAppInstalled(context, "com.lovejoy777.rroandlayersmanager");
 
         if (layout != null) {
             ViewGroup parent = (ViewGroup) layout.getParent();
@@ -54,6 +63,18 @@ public class MainFragment extends Fragment {
             layout = (ViewGroup) inflater.inflate(R.layout.main_section, container, false);
         } catch (InflateException e) {
             //Do nothing
+        }
+
+        if(themeMode) {
+            if (cm) { //TODO add appropriate drawables
+                ShowcaseActivity.fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_apply_icons));
+            } else if (rro) {
+                ShowcaseActivity.fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_apply_icons));
+            } else if (cyngn) {
+                ShowcaseActivity.fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_apply_icons));
+            }
+        } else {
+            ShowcaseActivity.fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_apply_icons));
         }
 
         showFAB();
@@ -143,6 +164,7 @@ public class MainFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        Utils.expandToolbar(getActivity());
         showFAB();
         int iconsColor = ThemeUtils.darkTheme ?
                 ContextCompat.getColor(getActivity(), R.color.toolbar_text_dark) :
@@ -165,14 +187,22 @@ public class MainFragment extends Fragment {
         ShowcaseActivity.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                ShowcaseActivity.drawerItemClick(ShowcaseActivity.applyIdentifier);
-//                ShowcaseActivity.drawer.setSelection(ShowcaseActivity.applyIdentifier);
-
-                if (Utils.isAppInstalled(getContext().getApplicationContext(), "org.cyanogenmod.theme.chooser") || Utils.isAppInstalled(context, "com.cyngn.theme.chooser")) {
-                    new LauncherIntents(getActivity(), "Cmthemeengine");
-                } else if (Utils.isAppInstalled(context, "com.lovejoy777.rroandlayersmanager")) {
-                    new LauncherIntents(getActivity(), "Layers");
+                if (themeMode) {
+                    if (cm || cyngn) {
+                        new LauncherIntents(getActivity(), "Cmthemeengine");
+                    } else if (rro) {
+                        new LauncherIntents(getActivity(), "Layers");
+                    } else {
+                        new MaterialDialog.Builder(getActivity())
+                                .title(R.string.NTED_title)
+                                .content(R.string.NTED_message)
+                                .show();
+                    }
+                } else {
+                    ShowcaseActivity.drawerItemClick(ShowcaseActivity.applyIdentifier);
+                    ShowcaseActivity.drawer.setSelection(ShowcaseActivity.applyIdentifier);
                 }
+
             }
         });
     }

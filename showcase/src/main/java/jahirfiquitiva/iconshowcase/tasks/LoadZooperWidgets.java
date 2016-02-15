@@ -80,6 +80,22 @@ public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
         }
     }
 
+    private void copyFiles(InputStream in, OutputStream out) throws IOException {
+        byte[] buffer = new byte[2048];
+        int read;
+        while ((read = in.read(buffer)) != -1) {
+            out.write(buffer, 0, read);
+        }
+        out.flush();
+    }
+
+    private String getFilenameWithoutExtension(String fileName) {
+        return fileName.substring(0, fileName.lastIndexOf("."));
+    }
+
+    /**
+     * This code was created by Aidan Follestad. Complete credits to him.
+     */
     private Bitmap getWidgetPreviewFromZip(String name, InputStream in, File previewsFolder, File widgetFile) {
         OutputStream out = null;
         File preview = new File(previewsFolder, name + ".png");
@@ -118,19 +134,6 @@ public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
         }
 
         return BitmapFactory.decodeFile(preview.getAbsolutePath());
-    }
-
-    private void copyFiles(InputStream in, OutputStream out) throws IOException {
-        byte[] buffer = new byte[2048];
-        int read;
-        while ((read = in.read(buffer)) != -1) {
-            out.write(buffer, 0, read);
-        }
-        out.flush();
-    }
-
-    private String getFilenameWithoutExtension(String fileName) {
-        return fileName.substring(0, fileName.lastIndexOf("."));
     }
 
 }

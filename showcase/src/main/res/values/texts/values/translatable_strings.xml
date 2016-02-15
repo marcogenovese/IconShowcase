@@ -313,4 +313,8 @@
 
     <string name="no_apply_tab">Contact the dev because it seems there is something being missed in the app.</string>
 
+    <!--No Theme Engine Dialog-->
+    <string name="NTED_title">Uh Oh!</string>
+    <string name="NTED_message">It seems like we aren\'t able to find a theme engine on your phone. If you know you have one, please open it and proceed from there. If you don\'t have one, please get a rom that supports either cyanogenmod or layers theming and follow their instructions.</string>
+
 </resources>

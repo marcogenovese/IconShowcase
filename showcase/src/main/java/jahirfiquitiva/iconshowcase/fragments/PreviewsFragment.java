@@ -33,6 +33,7 @@ import jahirfiquitiva.iconshowcase.models.IconsCategory;
 import jahirfiquitiva.iconshowcase.tasks.LoadIconsLists;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.ToolbarColorizer;
+import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.views.CustomCoordinatorLayout;
 
 public class PreviewsFragment extends Fragment {
@@ -83,20 +84,15 @@ public class PreviewsFragment extends Fragment {
             mPager.setOffscreenPageLimit(6);
             mPager.setAdapter(new IconsPagerAdapter(getChildFragmentManager()));
             createTabs();
-        }/*
-
-        int iconsColor = ThemeUtils.darkTheme ?
-                ContextCompat.getColor(getActivity(), R.color.toolbar_text_dark) :
-                ContextCompat.getColor(getActivity(), R.color.toolbar_text_light);
-        ToolbarColorizer.colorizeToolbar(
-                ShowcaseActivity.toolbar,
-                iconsColor);*/
+        }
 
     }
 
     private void setupToolbar() {
         // Are you ready for the ugliest fix in the history of the universe?
         // Set custom offset for AppBar. This makes both toolbar and tabs visible
+
+        //Utils.expandToolbar(getActivity());
 
         AppBarLayout appbar = (AppBarLayout) getActivity().findViewById(R.id.appbar);
         CustomCoordinatorLayout.LayoutParams params = (CustomCoordinatorLayout.LayoutParams) appbar.getLayoutParams();
@@ -118,10 +114,10 @@ public class PreviewsFragment extends Fragment {
 
         // Set toolbarCollapsedHeight as offset so tabs are shown
         if (behavior != null) {
-            if (!ShowcaseActivity.iconPicker) {
-                behavior.setTopAndBottomOffset(-toolbarExpandedHeight + statusbarHeight + (toolbarCollapsedHeight * 2) - Math.round(extra));
-            }
+            behavior.setTopAndBottomOffset(-toolbarExpandedHeight + statusbarHeight + (toolbarCollapsedHeight * 2) - Math.round(extra));
         }
+
+        //Utils.collapseToolbar(getActivity());
 
         // Lock CoordinatorLayout so the toolbar can't be scrolled away
         coordinatorLayout.setScrollAllowed(false);
@@ -130,6 +126,7 @@ public class PreviewsFragment extends Fragment {
 
     private void createTabs() {
         mTabs = (TabLayout) getActivity().findViewById(R.id.tabs);
+        setMarginsToView(mTabs, 0, UIUtils.getActionBarHeight(getActivity()), 0, 0);
         mTabs.setVisibility(View.VISIBLE);
         mTabs.setupWithViewPager(mPager);
         mTabs.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -160,7 +157,7 @@ public class PreviewsFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
-        super.onDestroy();
+        super.onDestroyView();
         if (mTabs != null) mTabs.setVisibility(View.GONE);
     }
 
@@ -247,4 +244,13 @@ public class PreviewsFragment extends Fragment {
             mLastSelected = savedInstanceState.getInt("lastSelected", 0);
         }
     }
+
+    private void setMarginsToView(View v, int l, int t, int r, int b) {
+        if (v.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
+            p.setMargins(l, t, r, b);
+            v.requestLayout();
+        }
+    }
+
 }

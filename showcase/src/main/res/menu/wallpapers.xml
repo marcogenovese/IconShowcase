@@ -12,6 +12,6 @@
         android:id="@+id/columns"
         android:icon="@drawable/ic_columns"
         android:title="@string/columns"
-        app:showAsAction="always"/>
+        app:showAsAction="ifRoom"/>
 
 </menu>

@@ -15,7 +15,7 @@
         android:background="?attr/primaryColor"
         android:minHeight="?actionBarSize"
         android:transitionName="actionBar"
-        app:elevation="0dp"
+        app:elevation="@integer/toolbar_elevation"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         tools:ignore="UnusedAttribute"/>
 
