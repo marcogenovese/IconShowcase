@@ -27,7 +27,7 @@
 
     <style name="AppThemeDark" parent="AppTheme.Base.Dark"/>
 
-    <style name="AppTheme.Base" parent="MaterialDrawerTheme.Light.DarkToolbar.TranslucentStatus">
+    <style name="AppTheme.Base" parent="MaterialDrawerTheme.Light.DarkToolbar">
         <item name="colorPrimary">@color/light_theme_primary</item>
         <item name="primaryColor">@color/light_theme_primary</item>
         <item name="colorPrimaryDark">@color/light_theme_primary_dark</item>
@@ -55,7 +55,7 @@
         <item name="android:actionOverflowButtonStyle">@style/OverflowIcon</item>
     </style>
 
-    <style name="AppTheme.Base.Dark" parent="MaterialDrawerTheme.TranslucentStatus">
+    <style name="AppTheme.Base.Dark" parent="MaterialDrawerTheme">
         <item name="colorPrimary">@color/dark_theme_primary</item>
         <item name="primaryColor">@color/dark_theme_primary</item>
         <item name="colorPrimaryDark">@color/dark_theme_primary_dark</item>

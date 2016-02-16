@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Set;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.models.IconsCategory;
 import jahirfiquitiva.iconshowcase.models.IconsLists;
@@ -58,6 +59,8 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
 
     @Override
     protected Boolean doInBackground(Void... params) {
+
+        boolean worked = false;
 
         Resources r = context.getResources();
         String p = context.getPackageName();
@@ -119,9 +122,7 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
                 }
 
                 categories.add(new IconsCategory(Utils.makeTextReadable(tabName), iconsArray));
-
             }
-
         }
 
         if (context.getResources().getBoolean(R.bool.auto_generate_all_icons)) {
@@ -143,6 +144,12 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
     protected void onPostExecute(Boolean worked) {
         endTime = System.currentTimeMillis();
         Utils.showLog(context, "Load of icons task completed successfully in: " + String.valueOf((endTime - startTime)) + " millisecs.");
+        if (categories.get(categories.size() - 1).getCategoryName().equals("All")) {
+            ShowcaseActivity.SHOW_LOAD_ICONS_DIALOG = false;
+            if (ShowcaseActivity.loadIcons != null) {
+                ShowcaseActivity.loadIcons.dismiss();
+            }
+        }
     }
 
     private List<String> sortList(String[] array) {
@@ -202,7 +209,6 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
         }
 
         return sortedListArray;
-
     }
 
     private int getIconResId(Resources r, String p, String name) {
@@ -222,5 +228,4 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
     public static ArrayList<IconsCategory> getIconsCategories() {
         return categories.size() > 0 ? categories : null;
     }
-
 }

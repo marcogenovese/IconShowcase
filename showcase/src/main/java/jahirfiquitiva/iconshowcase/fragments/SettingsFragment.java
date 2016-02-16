@@ -402,6 +402,6 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
 
     @Override
     public void onStoragePermissionGranted() {
-        ShowcaseActivity.showFolderChooserDialog();
+        //TODO Show Folder Chooser dialog
     }
 }

@@ -116,6 +116,7 @@
     <string name="search_x">Search %1$s…</string>
 
     <string name="building_request_dialog">Building request files…</string>
+    <string name="loading_icons">Loading icons…</string>
 
     <string name="choose">Choose</string>
 
@@ -239,6 +240,12 @@
 
     <string name="zooper_install_iconsets_title">Install Iconsets</string>
     <string name="zooper_install_iconsets_content">This will fix issues with widgets iconsets.</string>
+
+    <string name="zooper_install_bitmaps_title">Install Bitmaps</string>
+    <string name="zooper_install_bitmaps_content">This will fix issues with widgets bitmaps.</string>
+
+    <string name="assets_installed">1%$s already installed</string>
+    <string name="copying_assets">Copying files to ZooperWidget/1%$s</string>
 
     <string name="fonts_installed">Fonts already installed</string>
     <string name="iconsets_installed">IconSets already installed</string>

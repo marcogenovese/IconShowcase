@@ -36,6 +36,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -110,7 +111,8 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     DONATIONS_GOOGLE = false,
             DONATIONS_PAYPAL = false,
             DONATIONS_FLATTR = false,
-            DONATIONS_BITCOIN = false;
+            DONATIONS_BITCOIN = false,
+            SHOW_LOAD_ICONS_DIALOG = true;
 
     private static String[] mGoogleCatalog = new String[0],
             GOOGLE_CATALOG_VALUES = new String[0];
@@ -152,7 +154,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     private boolean mLastTheme, mLastNavBar;
     private static Preferences mPrefs;
 
-    public static MaterialDialog settingsDialog;
+    public static MaterialDialog settingsDialog, loadIcons;
     public static Toolbar toolbar;
     public static AppBarLayout appbar;
     public static CollapsingToolbarLayout collapsingToolbarLayout;
@@ -306,6 +308,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         }
 
         iconsRow.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 if (currentItem == 1) {
@@ -318,6 +321,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
         //Setup donations
         final IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
+
             public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
                 //TODO test this
                 if (inventory != null) {
@@ -339,8 +343,24 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
         if (savedInstanceState == null) {
             if (iconPicker && iconPickerEnabled) {
-                drawerItemClick(iconPickerIdentifier);
-                drawer.setSelection(iconPickerIdentifier);
+                loadIcons = ISDialogs.showLoadingIconsDialog(context);
+                loadIcons.show();
+                loadIcons.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        drawerItemClick(iconPickerIdentifier);
+                        drawer.setSelection(iconPickerIdentifier);
+                    }
+                });
+                if (!SHOW_LOAD_ICONS_DIALOG) {
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            loadIcons.dismiss();
+                        }
+                    }, 500);
+                }
             } else if (wallsPicker && mPrefs.areFeaturesEnabled() && wallsEnabled) {
                 drawerItemClick(wallsIdentifier);
                 drawer.setSelection(wallsIdentifier);
@@ -450,7 +470,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                 ContextCompat.getColor(context, R.color.toolbar_text_dark) :
                 ContextCompat.getColor(context, R.color.toolbar_text_light);
         ToolbarColorizer.colorizeToolbar(toolbar, iconsColor);
-
     }
 
     @Override
@@ -499,7 +518,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     public void onBackPressed() {
         if (drawer != null && drawer.isDrawerOpen()) {
             drawer.closeDrawer();
-        } else if (drawer != null && currentItem != 1) {
+        } else if (drawer != null && currentItem != 1 && !iconPicker) {
             drawer.setSelection(1);
         } else if (drawer != null) {
             super.onBackPressed();
@@ -622,6 +641,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             if (installer.equals("com.google.android.feedback") ||
                     installer.equals("com.android.vending")) {
                 ISDialogs.showLicenseSuccessDialog(this, new MaterialDialog.SingleButtonCallback() {
+
                     @Override
                     public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
                         mPrefs.setFeaturesEnabled(true);
@@ -630,6 +650,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                 });
             } else if (installer.equals("com.amazon.venezia") && WITH_INSTALLED_FROM_AMAZON) {
                 ISDialogs.showLicenseSuccessDialog(this, new MaterialDialog.SingleButtonCallback() {
+
                     @Override
                     public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
                         mPrefs.setFeaturesEnabled(true);
@@ -648,25 +669,32 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         mPrefs.setFeaturesEnabled(false);
         ISDialogs.showLicenseFailDialog(this,
                 new MaterialDialog.SingleButtonCallback() {
+
                     @Override
                     public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+
                         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(MARKET_URL + getPackageName()));
                         startActivity(browserIntent);
                     }
                 }, new MaterialDialog.SingleButtonCallback() {
+
                     @Override
                     public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+
                         finish();
                     }
                 }, new MaterialDialog.OnCancelListener() {
+
                     @Override
                     public void onCancel(DialogInterface dialog) {
+
                         finish();
                     }
                 }, new MaterialDialog.OnDismissListener() {
 
                     @Override
                     public void onDismiss(DialogInterface dialog) {
+
                         finish();
                     }
                 });
@@ -678,6 +706,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             mPrefs.setWallsListLoaded(!mPrefs.getWallsListLoaded());
         }
         new WallpapersFragment.DownloadJSON(new WallsListInterface() {
+
             @Override
             public void checkWallsListCreation(boolean result) {
                 mPrefs.setWallsListLoaded(result);
@@ -693,6 +722,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     }
 
     public interface WallsListInterface {
+
         void checkWallsListCreation(boolean result);
     }
 
@@ -719,6 +749,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                     .withToolbar(toolbar)
                     .withFireOnInitialOnClick(true)
                     .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+
                         @Override
                         public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                             if (drawerItem != null) {
@@ -728,6 +759,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                         }
                     })
                     .withOnDrawerItemLongClickListener(new Drawer.OnDrawerItemLongClickListener() {
+
                         @Override
                         public boolean onItemLongClick(View view, int position, IDrawerItem drawerItem) {
                             if (drawerItem.getIdentifier() == iconPickerIdentifier && mIsPremium) {
@@ -743,6 +775,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                     .withToolbar(toolbar)
                     .withFireOnInitialOnClick(true)
                     .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+
                         @Override
                         public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                             if (drawerItem != null) {
@@ -903,7 +936,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             appName.setText(headerAppName);
             appVersion.setText(headerAppVersion);
         }
-
     }
 
     public static void drawerItemClick(long id) {
@@ -944,7 +976,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             iconPicker = false;
             wallsPicker = false;
         }
-
     }
 
     public static void setupIcons(final ImageView icon1, final ImageView icon2,
@@ -958,6 +989,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         if (LoadIconsLists.getIconsLists() != null) {
             icons = LoadIconsLists.getIconsLists().get(1).getIconsArray();
         }
+
         ArrayList<IconItem> finalIconsList = new ArrayList<>();
 
         if (icons != null && SHUFFLE && shuffleIcons) {
@@ -987,7 +1019,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         }
 
         SHUFFLE = false;
-
     }
 
     public static void animateIcons(ImageView icon1, ImageView icon2,
@@ -1036,7 +1067,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             Animation anim = AnimationUtils.loadAnimation(context, R.anim.bounce);
             playIconsAnimations(icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8, anim, numOfIcons);
         }
-
     }
 
     private static void playIconsAnimations(ImageView icon1, ImageView icon2,
@@ -1062,7 +1092,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                 icon8.startAnimation(anim);
                 break;
         }
-
     }
 
     public static void setupToolbarHeader(Context context) {
@@ -1109,9 +1138,4 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     public boolean isPremium() {
         return mIsPremium;
     }
-
-    public static void showFolderChooserDialog() {
-        new FolderChooserDialog().show(context);
-    }
-
 }

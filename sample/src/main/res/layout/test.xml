@@ -44,6 +44,7 @@
             android:layout_height="match_parent"
             android:clipChildren="false"
             android:fitsSystemWindows="true"
+            android:minHeight="104dp"
             app:contentScrim="?attr/colorPrimary"
             app:expandedTitleMarginBottom="32dp"
             app:expandedTitleMarginEnd="64dp"
@@ -72,21 +73,7 @@
                 app:contentInsetStart="@dimen/toolbar_contentInset"
                 app:layout_collapseMode="pin"
                 app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                tools:ignore="UnusedAttribute">
-
-                <TextView
-                    android:id="@+id/title"
-                    android:layout_width="fill_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="start|center_vertical"
-                    android:layout_weight="1"
-                    android:gravity="start|center_vertical"
-                    android:text="@string/section_icons"
-                    android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
-                    android:textColor="?attr/toolbarTextColor"
-                    android:visibility="gone"/>
-
-            </android.support.v7.widget.Toolbar>
+                tools:ignore="UnusedAttribute"/>
 
             <android.support.design.widget.TabLayout
                 android:id="@+id/tabs"
@@ -94,7 +81,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:background="?attr/primaryColor"
-                android:visibility="gone"
+                android:clipToPadding="false"
+                android:layout_marginTop="?actionBarSize"
+                android:visibility="visible"
                 app:tabContentStart="@dimen/tabs_contentInset"
                 app:tabGravity="fill"
                 app:tabIndicatorColor="?attr/tabsIndicatorColor"

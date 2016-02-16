@@ -42,6 +42,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -101,6 +103,9 @@ public class ViewerActivity extends AppCompatActivity {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             ThemeUtils.onActivityCreateSetNavBar(this);
+            Window window = getWindow();
+            //window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
 
         super.onCreate(savedInstanceState);
@@ -249,7 +254,6 @@ public class ViewerActivity extends AppCompatActivity {
                     })
                     .into(mPhoto);
         }
-
     }
 
     @Override
@@ -292,7 +296,7 @@ public class ViewerActivity extends AppCompatActivity {
             if (grantResult.length > 0 && grantResult[0] == PackageManager.PERMISSION_GRANTED) {
                 showDialogs(PermissionUtils.getViewerActivityAction());
             } else {
-                showErrorDialog();
+                ISDialogs.showPermissionNotGrantedDialog(this);
             }
         }
     }
@@ -487,11 +491,6 @@ public class ViewerActivity extends AppCompatActivity {
                 showNotConnectedSnackBar(null);
             }
         }
-
-    }
-
-    private void showErrorDialog() {
-        //TODO: Add a error dialog
     }
 
 }

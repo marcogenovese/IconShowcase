@@ -184,7 +184,6 @@ public final class ISDialogs {
         licenseFailDialog.setOnDismissListener(onDismiss);
 
         licenseFailDialog.show();
-
     }
 
     /*
@@ -502,4 +501,15 @@ public final class ISDialogs {
                 .show();
     }
 
+    /*
+    Another dialog
+     */
+
+    public static MaterialDialog showLoadingIconsDialog(Context context) {
+        return new MaterialDialog.Builder(context)
+                .content(R.string.loading_icons)
+                .progress(true, 0)
+                .cancelable(false)
+                .build();
+    }
 }

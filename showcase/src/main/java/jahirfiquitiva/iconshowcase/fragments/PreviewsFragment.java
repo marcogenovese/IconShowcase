@@ -33,7 +33,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.InflateException;
@@ -44,6 +43,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.TextView;
 
 import com.mikepenz.materialize.util.UIUtils;
 
@@ -57,7 +57,6 @@ import jahirfiquitiva.iconshowcase.models.IconsCategory;
 import jahirfiquitiva.iconshowcase.tasks.LoadIconsLists;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.ToolbarColorizer;
-import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.views.CustomCoordinatorLayout;
 
 public class PreviewsFragment extends Fragment {
@@ -109,7 +108,6 @@ public class PreviewsFragment extends Fragment {
             mPager.setAdapter(new IconsPagerAdapter(getChildFragmentManager()));
             createTabs();
         }
-
     }
 
     private void setupToolbar() {
@@ -139,9 +137,11 @@ public class PreviewsFragment extends Fragment {
             behavior.setTopAndBottomOffset(-toolbarExpandedHeight + statusbarHeight + (toolbarCollapsedHeight * 2) - Math.round(extra));
         }
 
+        TextView title = (TextView) getActivity().findViewById(R.id.title);
+        title.setVisibility(View.VISIBLE);
+
         // Lock CoordinatorLayout so the toolbar can't be scrolled away
         coordinatorLayout.setScrollAllowed(false);
-
     }
 
     private void createTabs() {
@@ -177,6 +177,8 @@ public class PreviewsFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        TextView title = (TextView) getActivity().findViewById(R.id.title);
+        title.setVisibility(View.GONE);
         if (mTabs != null) mTabs.setVisibility(View.GONE);
     }
 
@@ -206,7 +208,6 @@ public class PreviewsFragment extends Fragment {
                 if (frag != null)
                     frag.performSearch(s);
             }
-
         });
 
         mSearchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
@@ -263,5 +264,4 @@ public class PreviewsFragment extends Fragment {
             mLastSelected = savedInstanceState.getInt("lastSelected", 0);
         }
     }
-
 }

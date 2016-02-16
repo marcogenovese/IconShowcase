@@ -52,6 +52,7 @@ import jahirfiquitiva.iconshowcase.utilities.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 public class MainFragment extends Fragment {
+
     private Context context;
 
     private static final String MARKET_URL = "https://play.google.com/store/apps/details?id=";
@@ -66,16 +67,6 @@ public class MainFragment extends Fragment {
 
         context = getActivity();
 
-        String themedIcons = String.valueOf(getActivity().getResources().getInteger(R.integer.icons_amount));
-        String availableWallpapers = String.valueOf(getActivity().getResources().getInteger(R.integer.walls_amount));
-        String includedWidgets = String.valueOf(getActivity().getResources().getInteger(R.integer.zooper_widgets));
-
-        //check which theme engines are installed
-        themeMode = getResources().getBoolean(R.bool.theme_mode);
-        cm = Utils.isAppInstalled(context, "org.cyanogenmod.theme.chooser");
-        cyngn = Utils.isAppInstalled(context, "com.cyngn.theme.chooser");
-        rro = Utils.isAppInstalled(context, "com.lovejoy777.rroandlayersmanager");
-
         if (layout != null) {
             ViewGroup parent = (ViewGroup) layout.getParent();
             if (parent != null) {
@@ -87,6 +78,34 @@ public class MainFragment extends Fragment {
         } catch (InflateException e) {
             //Do nothing
         }
+
+        ShowcaseActivity.setupToolbarHeader(getActivity());
+
+        ShowcaseActivity.setupIcons(ShowcaseActivity.icon1, ShowcaseActivity.icon2,
+                ShowcaseActivity.icon3, ShowcaseActivity.icon4, ShowcaseActivity.icon5,
+                ShowcaseActivity.icon6, ShowcaseActivity.icon7, ShowcaseActivity.icon8,
+                ShowcaseActivity.numOfIcons);
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ShowcaseActivity.animateIcons(ShowcaseActivity.icon1, ShowcaseActivity.icon2,
+                        ShowcaseActivity.icon3, ShowcaseActivity.icon4, ShowcaseActivity.icon5,
+                        ShowcaseActivity.icon6, ShowcaseActivity.icon7, ShowcaseActivity.icon8,
+                        ShowcaseActivity.numOfIcons);
+            }
+        }, 800);
+
+        String themedIcons = String.valueOf(getActivity().getResources().getInteger(R.integer.icons_amount));
+        String availableWallpapers = String.valueOf(getActivity().getResources().getInteger(R.integer.walls_amount));
+        String includedWidgets = String.valueOf(getActivity().getResources().getInteger(R.integer.zooper_widgets));
+
+        //check which theme engines are installed
+        themeMode = getResources().getBoolean(R.bool.theme_mode);
+        cm = Utils.isAppInstalled(context, "org.cyanogenmod.theme.chooser");
+        cyngn = Utils.isAppInstalled(context, "com.cyngn.theme.chooser");
+        rro = Utils.isAppInstalled(context, "com.lovejoy777.rroandlayersmanager");
 
         if (themeMode) {
             if (cm) { //TODO add appropriate drawables
@@ -101,28 +120,6 @@ public class MainFragment extends Fragment {
         }
 
         showFAB();
-
-        if (!ShowcaseActivity.iconPicker) {
-            ShowcaseActivity.setupToolbarHeader(getActivity());
-
-            ShowcaseActivity.setupIcons(ShowcaseActivity.icon1, ShowcaseActivity.icon2,
-                    ShowcaseActivity.icon3, ShowcaseActivity.icon4, ShowcaseActivity.icon5,
-                    ShowcaseActivity.icon6, ShowcaseActivity.icon7, ShowcaseActivity.icon8,
-                    ShowcaseActivity.numOfIcons);
-
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-
-                @Override
-                public void run() {
-                    ShowcaseActivity.animateIcons(ShowcaseActivity.icon1, ShowcaseActivity.icon2,
-                            ShowcaseActivity.icon3, ShowcaseActivity.icon4, ShowcaseActivity.icon5,
-                            ShowcaseActivity.icon6, ShowcaseActivity.icon7, ShowcaseActivity.icon8,
-                            ShowcaseActivity.numOfIcons);
-                }
-
-            }, 600);
-        }
 
         PlayStoreListing = getActivity().getPackageName();
 
@@ -227,7 +224,6 @@ public class MainFragment extends Fragment {
                     ShowcaseActivity.drawerItemClick(ShowcaseActivity.applyIdentifier);
                     ShowcaseActivity.drawer.setSelection(ShowcaseActivity.applyIdentifier);
                 }
-
             }
         });
     }
@@ -260,7 +256,6 @@ public class MainFragment extends Fragment {
         wallsIV.setImageDrawable(wallsDrawable);
         widgetsIV.setImageDrawable(widgetsDrawable);
         playStoreIV.setImageDrawable(playStoreDrawable);
-
     }
 
 }

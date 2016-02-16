@@ -31,6 +31,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -39,11 +40,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.NumberPicker;
 import android.widget.RadioButton;
-import android.widget.RelativeLayout;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.mikepenz.materialize.MaterializeBuilder;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
@@ -51,15 +50,17 @@ import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
+import jahirfiquitiva.iconshowcase.views.CustomCoordinatorLayout;
+import jahirfiquitiva.iconshowcase.views.FixedElevationAppBarLayout;
 
 public class MuzeiSettings extends AppCompatActivity implements View.OnClickListener {
 
     private RadioButton minute, hour;
     private NumberPicker numberpicker;
     private Preferences mPrefs;
-    private RelativeLayout muzeiLayout;
     private boolean mLastTheme, mLastNavBar;
     private Context context;
+    private CustomCoordinatorLayout customCoordinatorLayout;
     private Toolbar toolbar;
     private static final String MARKET_URL = "https://play.google.com/store/apps/details?id=";
 
@@ -76,19 +77,26 @@ public class MuzeiSettings extends AppCompatActivity implements View.OnClickList
 
         context = this;
 
+        int iconsColor = ThemeUtils.darkTheme ?
+                ContextCompat.getColor(this, R.color.toolbar_text_dark) :
+                ContextCompat.getColor(this, R.color.toolbar_text_light);
+
         setContentView(R.layout.muzei_settings);
-
-        new MaterializeBuilder()
-                .withActivity(this)
-                .build();
-
-        muzeiLayout = (RelativeLayout) findViewById(R.id.muzeiLayout);
 
         mPrefs = new Preferences(MuzeiSettings.this);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle(Utils.getStringFromResources(this, R.string.muzei_settings));
         setSupportActionBar(toolbar);
+
+        customCoordinatorLayout = (CustomCoordinatorLayout) findViewById(R.id.muzeiLayout);
+        customCoordinatorLayout.setScrollAllowed(false);
+
+        CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbar);
+        collapsingToolbarLayout.setCollapsedTitleTextColor(iconsColor);
+        collapsingToolbarLayout.setTitle(Utils.getStringFromResources(this, R.string.muzei_settings));
+
+        FixedElevationAppBarLayout appBarLayout = (FixedElevationAppBarLayout) findViewById(R.id.appbar);
+        appBarLayout.setExpanded(false, false);
 
         numberpicker = (NumberPicker) findViewById(R.id.number_picker);
         numberpicker.setMaxValue(100);
@@ -148,7 +156,7 @@ public class MuzeiSettings extends AppCompatActivity implements View.OnClickList
                 Intent intent = new Intent(MuzeiSettings.this, ArtSource.class);
                 intent.putExtra("service", "restarted");
                 startService(intent);
-                Utils.showSimpleSnackbar(context, muzeiLayout,
+                Utils.showSimpleSnackbar(context, customCoordinatorLayout,
                         Utils.getStringFromResources(this, R.string.settings_saved), 1);
                 finish();
                 return true;
@@ -248,5 +256,4 @@ public class MuzeiSettings extends AppCompatActivity implements View.OnClickList
                     }
                 });
     }
-
 }

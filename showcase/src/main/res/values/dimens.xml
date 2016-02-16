@@ -46,7 +46,7 @@
     <dimen name="toolbar_expanded">256dp</dimen>
     <dimen name="toolbar_contentInset">72dp</dimen>
     <integer name="toolbar_elevation">4</integer>
-    <dimen name="tabs_contentInset">57dp</dimen>
+    <dimen name="tabs_contentInset">68dp</dimen>
 
     <dimen name="dividers_height">1dp</dimen>
 

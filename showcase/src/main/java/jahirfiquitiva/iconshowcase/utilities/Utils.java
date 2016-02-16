@@ -292,7 +292,6 @@ public class Utils {
         AppBarLayout appbar = (AppBarLayout) ((Activity) context).findViewById(R.id.appbar);
         CustomCoordinatorLayout coordinatorLayout = (CustomCoordinatorLayout) ((Activity) context).findViewById(R.id.mainCoordinatorLayout);
         appbar.setExpanded(false, mPrefs.getAnimationsEnabled());
-        appbar.setEnabled(false);
         coordinatorLayout.setScrollAllowed(false);
     }
 
@@ -301,7 +300,6 @@ public class Utils {
         AppBarLayout appbar = (AppBarLayout) ((Activity) context).findViewById(R.id.appbar);
         CustomCoordinatorLayout coordinatorLayout = (CustomCoordinatorLayout) ((Activity) context).findViewById(R.id.mainCoordinatorLayout);
         appbar.setExpanded(true, mPrefs.getAnimationsEnabled());
-        appbar.setEnabled(true);
         coordinatorLayout.setScrollAllowed(true);
     }
 
