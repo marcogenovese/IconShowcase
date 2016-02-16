@@ -343,7 +343,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             case "Main":
                 return thaAppName;
             case "Previews":
-                return thaPreviews;
+                return " ";
             case "Apply":
                 return thaApply;
             case "Wallpapers":
@@ -454,7 +454,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     protected void onSaveInstanceState(Bundle outState) {
         if (drawer != null)
             outState = drawer.saveInstanceState(outState);
-
         if (collapsingToolbarLayout != null && collapsingToolbarLayout.getTitle() != null) {
             outState.putString("toolbarTitle", collapsingToolbarLayout.getTitle().toString());
         }
@@ -1090,6 +1089,10 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
     public boolean isPremium() {
         return mIsPremium;
+    }
+
+    public static void showFolderChooserDialog() {
+        new FolderChooserDialog().show(context);
     }
 
 }

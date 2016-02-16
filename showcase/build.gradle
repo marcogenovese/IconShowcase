@@ -106,4 +106,7 @@ dependencies {
     //Donations Lib
     compile 'org.sufficientlysecure:donations:2.4'
 
+    //Required for better Zooper setup
+    compile 'io.reactivex:rxandroid:1.1.0'
+
 }

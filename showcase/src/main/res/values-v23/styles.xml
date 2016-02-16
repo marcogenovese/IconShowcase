@@ -5,11 +5,11 @@
 <resources>
 
     <style name="AppTheme" parent="AppTheme.Base">
-        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightStatusBar">@bool/light_statusbar_in_light_theme</item>
     </style>
 
     <style name="AppThemeDark" parent="AppTheme.Base.Dark">
-        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightStatusBar">@bool/light_statusbar_in_dark_theme</item>
     </style>
 
 </resources>

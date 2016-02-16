@@ -81,7 +81,7 @@
     False, means that the drawer header will use the 'header' picture.
     You can ignore this if you won't use the mini header style.
     -->
-    <bool name="mini_header_solid_color">true</bool>
+    <bool name="mini_header_solid_color">false</bool>
 
     <!--
     Do you want the drawer secondary items to show icons?
@@ -246,4 +246,13 @@
     False, means flat stuff.
     -->
     <bool name="faqs_cards">false</bool>
+
+    <!--
+    Do you want to use Light Status Bar in Light, or Dark theme?
+    True, means yes.
+    False, means no.
+    -->
+    <bool name="light_statusbar_in_light_theme">true</bool>
+    <bool name="light_statusbar_in_dark_theme">false</bool>
+
 </resources>

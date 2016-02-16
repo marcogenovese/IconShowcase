@@ -83,25 +83,27 @@ public class MainFragment extends Fragment {
 
         showFAB();
 
-        ShowcaseActivity.setupToolbarHeader(getActivity());
+        if (!ShowcaseActivity.iconPicker) {
+            ShowcaseActivity.setupToolbarHeader(getActivity());
 
-        ShowcaseActivity.setupIcons(ShowcaseActivity.icon1, ShowcaseActivity.icon2,
-                ShowcaseActivity.icon3, ShowcaseActivity.icon4, ShowcaseActivity.icon5,
-                ShowcaseActivity.icon6, ShowcaseActivity.icon7, ShowcaseActivity.icon8,
-                ShowcaseActivity.numOfIcons);
+            ShowcaseActivity.setupIcons(ShowcaseActivity.icon1, ShowcaseActivity.icon2,
+                    ShowcaseActivity.icon3, ShowcaseActivity.icon4, ShowcaseActivity.icon5,
+                    ShowcaseActivity.icon6, ShowcaseActivity.icon7, ShowcaseActivity.icon8,
+                    ShowcaseActivity.numOfIcons);
 
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
 
-            @Override
-            public void run() {
-                ShowcaseActivity.animateIcons(ShowcaseActivity.icon1, ShowcaseActivity.icon2,
-                        ShowcaseActivity.icon3, ShowcaseActivity.icon4, ShowcaseActivity.icon5,
-                        ShowcaseActivity.icon6, ShowcaseActivity.icon7, ShowcaseActivity.icon8,
-                        ShowcaseActivity.numOfIcons);
-            }
+                @Override
+                public void run() {
+                    ShowcaseActivity.animateIcons(ShowcaseActivity.icon1, ShowcaseActivity.icon2,
+                            ShowcaseActivity.icon3, ShowcaseActivity.icon4, ShowcaseActivity.icon5,
+                            ShowcaseActivity.icon6, ShowcaseActivity.icon7, ShowcaseActivity.icon8,
+                            ShowcaseActivity.numOfIcons);
+                }
 
-        }, 600);
+            }, 600);
+        }
 
         PlayStoreListing = getActivity().getPackageName();
 

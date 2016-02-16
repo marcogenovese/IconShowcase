@@ -247,6 +247,14 @@
     -->
     <bool name="faqs_cards">false</bool>
 
+    <!--
+    Do you want to use Light Status Bar in Light, or Dark theme?
+    True, means yes.
+    False, means no.
+    -->
+    <bool name="light_statusbar_in_light_theme">true</bool>
+    <bool name="light_statusbar_in_dark_theme">false</bool>
+
 
     <!--donations stuff-->
 
