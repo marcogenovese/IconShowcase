@@ -1,3 +1,7 @@
+/*
+ *
+ */
+
 package jahirfiquitiva.iconshowcase.fragments;
 
 import android.os.Bundle;
@@ -37,11 +41,8 @@ public class IconsFragment extends Fragment {
                 parent.removeView(layout);
             }
         }
-        try {
-            layout = (ViewGroup) inflater.inflate(R.layout.icons_grid, container, false);
-        } catch (InflateException e) {
-            //Do nothing
-        }
+
+        layout = (ViewGroup) inflater.inflate(R.layout.icons_grid, container, false);
 
         RecyclerView iconsGrid = (RecyclerView) layout.findViewById(R.id.iconsGrid);
         RelativeLayout gridParent = (RelativeLayout) layout.findViewById(R.id.gridParent);

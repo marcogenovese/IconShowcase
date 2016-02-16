@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<!--
+  ~
+  -->
+
 <!-- Formatting note: terminate all comments with a period, to avoid breaking
      the documentation output. To suppress comment lines from the documentation
      output, insert an eat-comment element after the comment lines.

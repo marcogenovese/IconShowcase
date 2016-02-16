@@ -1,3 +1,7 @@
+/*
+ *
+ */
+
 package jahirfiquitiva.iconshowcase.adapters;
 
 import android.content.Context;
@@ -71,6 +75,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
         if (mPrefs.getAnimationsEnabled()) {
 
             if (USE_PALETTE) {
+                //noinspection unchecked
                 Glide.with(context)
                         .load(wallUrl)
                         .centerCrop()
@@ -87,6 +92,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
         } else {
 
             if (USE_PALETTE) {
+                //noinspection unchecked
                 Glide.with(context)
                         .load(wallUrl)
                         .centerCrop()

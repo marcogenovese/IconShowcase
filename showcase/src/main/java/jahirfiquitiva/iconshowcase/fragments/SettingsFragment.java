@@ -1,3 +1,7 @@
+/*
+ *
+ */
+
 package jahirfiquitiva.iconshowcase.fragments;
 
 import android.content.ComponentName;
@@ -379,6 +383,6 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
 
     @Override
     public void onStoragePermissionGranted() {
-        ((ShowcaseActivity) getActivity()).openFileChooser();
+        showFolderChooserDialog();
     }
 }

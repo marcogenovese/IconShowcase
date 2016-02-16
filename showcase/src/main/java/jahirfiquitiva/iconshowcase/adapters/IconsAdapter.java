@@ -1,3 +1,7 @@
+/*
+ *
+ */
+
 package jahirfiquitiva.iconshowcase.adapters;
 
 import android.app.Activity;

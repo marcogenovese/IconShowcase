@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~
+  -->
+
 <resources>
 
     <integer name="icons_grid_width">@integer/icons_columns_tablet_landscape</integer>

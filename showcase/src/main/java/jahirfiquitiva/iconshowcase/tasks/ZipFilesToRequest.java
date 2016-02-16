@@ -1,3 +1,7 @@
+/*
+ *
+ */
+
 package jahirfiquitiva.iconshowcase.tasks;
 
 import android.app.Activity;
@@ -12,7 +16,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
-import android.util.Log;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -140,7 +143,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
 
             for (int i = 0; i < appsNames.size(); i++) {
 
-                if(context.getResources().getBoolean(R.bool.request_tool_comments)) {
+                if (context.getResources().getBoolean(R.bool.request_tool_comments)) {
                     appFilterBuilder.append("<!-- " + appsNames.get(i) +
                             " -->\n");
 
@@ -153,7 +156,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
 
                 appFilterBuilder.append("<item component=\"ComponentInfo{" +
                         appsPackages.get(i) + "/" + appsClasses.get(i) + "}\"" +
-                        "drawable=\"" + appsNames.get(i).replace(" ", "_").toLowerCase() + "\"/>" + "\n");
+                        " drawable=\"" + appsNames.get(i).replace(" ", "_").toLowerCase() + "\"/>" + "\n");
 
                 appMapBuilder.append("<item name=\"" + appsNames.get(i).replace(" ", "_").toLowerCase() +
                         "\" class=\"" + appsClasses.get(i) + "\" />" + "\n");
@@ -188,7 +191,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
             sb.append("\nDevice: " + Build.DEVICE);
             sb.append("\nManufacturer: " + Build.MANUFACTURER);
             sb.append("\nModel (and Product): " + Build.MODEL + " (" + Build.PRODUCT + ")");
-            if(context.getResources().getBoolean(R.bool.theme_engine_info)) {
+            if (context.getResources().getBoolean(R.bool.theme_engine_info)) {
                 if (Utils.isAppInstalled(context, "org.cyanogenmod.theme.chooser")) {
                     sb.append("\nCMTE is installed");
                 }
@@ -287,7 +290,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
 
     }
 
-    public static boolean deleteDirectory(File dir) {
+    public static void deleteDirectory(File dir) {
         if (dir.exists()) {
             File[] files = dir.listFiles();
             for (File file : files) {
@@ -303,14 +306,13 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
             }
 
         }
-        return (dir.delete());
     }
 
-    public static boolean createZipFile(final String path, final boolean keepDirectoryStructure, final String outputFile) {
+    public static void createZipFile(final String path, final boolean keepDirectoryStructure, final String outputFile) {
         final File filesFolder = new File(path);
 
         if (!filesFolder.canRead() || !filesFolder.canWrite()) {
-            return false;
+            return;
         }
 
         try {
@@ -327,14 +329,10 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
             }
             zipOutputStream.close();
         } catch (FileNotFoundException e) {
-            Log.e("File not found", e.getMessage());
-            return false;
+            Utils.showLog("File not found" + e.getMessage());
         } catch (IOException e) {
-            Log.e("IOException", e.getMessage());
-            return false;
+            Utils.showLog("IOException" + e.getMessage());
         }
-
-        return true;
     }
 
     public static void zipFile(final String zipFilesPath, final ZipOutputStream zipOutputStream, final String zipPath) throws IOException {

@@ -1,3 +1,7 @@
+/*
+ *
+ */
+
 package jahirfiquitiva.iconshowcase.activities;
 
 import android.annotation.SuppressLint;
@@ -95,9 +99,9 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     ///test array values
     private static String[] primaryDrawerItems = new String[0], secondaryDrawerItems = new String[0];
 
-    private static String GOOGLE_PUBKEY = new String(),
-            PAYPAL_USER = new String(),
-            PAYPAL_CURRENCY_CODE = new String();
+    private static String GOOGLE_PUBKEY = "",
+            PAYPAL_USER = "",
+            PAYPAL_CURRENCY_CODE = "";
 
     public static DrawerHeaderStyle drawerHeaderStyle = DrawerHeaderStyle.NORMAL_HEADER;
 
@@ -259,11 +263,11 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                 ContextCompat.getColor(this, R.color.toolbar_text_light);
 
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbar);
-        collapsingToolbarLayout.setTitleEnabled(true);
+        collapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(this, android.R.color.transparent));
         collapsingToolbarLayout.setCollapsedTitleTextColor(iconsColor);
+        collapsingToolbarLayout.setTitle(thaAppName);
 
         ToolbarColorizer.colorizeToolbar(toolbar, iconsColor);
-        //if (getSupportActionBar() != null) getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
 
@@ -417,7 +421,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             }
         }
 
-        //titleView.setText(fragment2title(fragment));
         collapsingToolbarLayout.setTitle(fragment2title(fragment));
 
         if (drawer != null) {
@@ -451,10 +454,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     protected void onSaveInstanceState(Bundle outState) {
         if (drawer != null)
             outState = drawer.saveInstanceState(outState);
-        /*
-        if (getSupportActionBar() != null) {
-            outState.putString("toolbarTitle", String.valueOf(titleView.getText()));
-        }*/
+
         if (collapsingToolbarLayout != null && collapsingToolbarLayout.getTitle() != null) {
             outState.putString("toolbarTitle", collapsingToolbarLayout.getTitle().toString());
         }
@@ -466,11 +466,14 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         if (collapsingToolbarLayout != null) {
+            int iconsColor = ThemeUtils.darkTheme ?
+                    ContextCompat.getColor(this, R.color.toolbar_text_dark) :
+                    ContextCompat.getColor(this, R.color.toolbar_text_light);
+            collapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(this, android.R.color.transparent));
+            collapsingToolbarLayout.setCollapsedTitleTextColor(iconsColor);
             collapsingToolbarLayout.setTitle(savedInstanceState.getString("toolbarTitle",
-                    getResources().getString(R.string.app_name)));
+                    thaAppName));
         }
-        //if (getSupportActionBar() != null)
-        //titleView.setText(savedInstanceState.getString("toolbarTitle", "   "));
         drawerItemClick(savedInstanceState.getInt("currentSection"));
     }
 
@@ -680,7 +683,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         SettingsFragment.changeValues(getApplicationContext());
     }
 
-    public void setupDrawer(Toolbar toolbar, Bundle savedInstanceState) { //TODO check if toolbar can be final
+    public void setupDrawer(final Toolbar toolbar, Bundle savedInstanceState) {
 
         //Initialize PrimaryDrawerItem
         PrimaryDrawerItem home, previews, walls, requests, apply, faqs, zooper;
@@ -864,21 +867,21 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             miniHeader.getLayoutParams().height = UIUtils.getActionBarHeight(this) + UIUtils.getStatusBarHeight(this);
             TextView appVersion = (TextView) drawer.getHeader().findViewById(R.id.text_app_version);
             TextView appName = (TextView) drawer.getHeader().findViewById(R.id.text_app_name);
-//            if (context.getResources().getBoolean(R.bool.mini_header_solid_color)) {
-//                int backgroundColor = ThemeUtils.darkTheme ?
-//                        ContextCompat.getColor(context, R.color.dark_theme_primary) :
-//                        ContextCompat.getColor(context, R.color.light_theme_primary);
-//                miniHeader.setBackgroundColor(backgroundColor);
-//                int iconsColor = ThemeUtils.darkTheme ?
-//                        ContextCompat.getColor(this, R.color.toolbar_text_dark) :
-//                        ContextCompat.getColor(this, R.color.toolbar_text_light);
-//                appVersion.setTextColor(iconsColor);
-//                appName.setTextColor(iconsColor);
-//            } else {
-            miniHeader.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawer_header));
-            appVersion.setTextColor(ContextCompat.getColor(context, android.R.color.white));
-            appName.setTextColor(ContextCompat.getColor(context, android.R.color.white));
-//            }
+            if (context.getResources().getBoolean(R.bool.mini_header_solid_color)) {
+                int backgroundColor = ThemeUtils.darkTheme ?
+                        ContextCompat.getColor(context, R.color.dark_theme_primary) :
+                        ContextCompat.getColor(context, R.color.light_theme_primary);
+                miniHeader.setBackgroundColor(backgroundColor);
+                int iconsColor = ThemeUtils.darkTheme ?
+                        ContextCompat.getColor(this, R.color.toolbar_text_dark) :
+                        ContextCompat.getColor(this, R.color.toolbar_text_light);
+                appVersion.setTextColor(iconsColor);
+                appName.setTextColor(iconsColor);
+            } else {
+                miniHeader.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawer_header));
+                appVersion.setTextColor(ContextCompat.getColor(context, android.R.color.white));
+                appName.setTextColor(ContextCompat.getColor(context, android.R.color.white));
+            }
             appName.setText(headerAppName);
             appVersion.setText(headerAppVersion);
         }
@@ -1083,10 +1086,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         }
 
         toolbarHeader.setVisibility(View.VISIBLE);
-    }
-
-    public void openFileChooser() {
-        //TODO ADD FOLDER CHOOSER
     }
 
     public boolean isPremium() {

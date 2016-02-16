@@ -1,10 +1,14 @@
+/*
+ *
+ */
+
 package jahirfiquitiva.iconshowcase.models;
 
 import java.util.ArrayList;
 
 public class WallpapersList {
 
-    public static ArrayList<WallpaperItem> wallsList = new ArrayList<WallpaperItem>();
+    public static ArrayList<WallpaperItem> wallsList = new ArrayList<>();
 
     public static void createWallpapersList(ArrayList<String> names, ArrayList<String> authors,
                                             ArrayList<String> urls, ArrayList<String> dimensions,

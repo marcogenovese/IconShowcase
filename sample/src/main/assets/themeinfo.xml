@@ -1,4 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?><!-- This is for Atom Launcher -->
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~
+  -->
+
+<!-- This is for Atom Launcher -->
 <themeInfo>
     <packageName>jahirfiquitiva.iconpacks.erts</packageName>
     <versionName>0.1</versionName>

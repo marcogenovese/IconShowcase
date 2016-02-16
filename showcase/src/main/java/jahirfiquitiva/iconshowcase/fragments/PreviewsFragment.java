@@ -1,3 +1,7 @@
+/*
+ *
+ */
+
 package jahirfiquitiva.iconshowcase.fragments;
 
 import android.os.Bundle;
@@ -77,9 +81,7 @@ public class PreviewsFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        Utils.collapseToolbar(getActivity());
-
-        //setupToolbar();
+        setupToolbar();
 
         if (mPager == null) {
             mPager = (ViewPager) layout.findViewById(R.id.pager);
@@ -93,8 +95,6 @@ public class PreviewsFragment extends Fragment {
     private void setupToolbar() {
         // Are you ready for the ugliest fix in the history of the universe?
         // Set custom offset for AppBar. This makes both toolbar and tabs visible
-
-        //Utils.expandToolbar(getActivity());
 
         AppBarLayout appbar = (AppBarLayout) getActivity().findViewById(R.id.appbar);
         CustomCoordinatorLayout.LayoutParams params = (CustomCoordinatorLayout.LayoutParams) appbar.getLayoutParams();
@@ -119,8 +119,6 @@ public class PreviewsFragment extends Fragment {
             behavior.setTopAndBottomOffset(-toolbarExpandedHeight + statusbarHeight + (toolbarCollapsedHeight * 2) - Math.round(extra));
         }
 
-        //Utils.collapseToolbar(getActivity());
-
         // Lock CoordinatorLayout so the toolbar can't be scrolled away
         coordinatorLayout.setScrollAllowed(false);
 
@@ -128,7 +126,6 @@ public class PreviewsFragment extends Fragment {
 
     private void createTabs() {
         mTabs = (TabLayout) getActivity().findViewById(R.id.tabs);
-        setMarginsToView(mTabs, 0, UIUtils.getActionBarHeight(getActivity()), 0, 0);
         mTabs.setVisibility(View.VISIBLE);
         mTabs.setupWithViewPager(mPager);
         mTabs.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -244,14 +241,6 @@ public class PreviewsFragment extends Fragment {
         if (savedInstanceState != null) {
             // Restore last selected position
             mLastSelected = savedInstanceState.getInt("lastSelected", 0);
-        }
-    }
-
-    private void setMarginsToView(View v, int l, int t, int r, int b) {
-        if (v.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
-            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
-            p.setMargins(l, t, r, b);
-            v.requestLayout();
         }
     }
 

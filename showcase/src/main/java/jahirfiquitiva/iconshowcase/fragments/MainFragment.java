@@ -1,3 +1,7 @@
+/*
+ *
+ */
+
 package jahirfiquitiva.iconshowcase.fragments;
 
 import android.content.Context;
@@ -41,7 +45,7 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
 
-        context = this.getContext().getApplicationContext(); //TODO see if this is good
+        context = getActivity();
 
         String themedIcons = String.valueOf(getActivity().getResources().getInteger(R.integer.icons_amount));
         String availableWallpapers = String.valueOf(getActivity().getResources().getInteger(R.integer.walls_amount));
@@ -65,7 +69,7 @@ public class MainFragment extends Fragment {
             //Do nothing
         }
 
-        if(themeMode) {
+        if (themeMode) {
             if (cm) { //TODO add appropriate drawables
                 ShowcaseActivity.fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_apply_icons));
             } else if (rro) {

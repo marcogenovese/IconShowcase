@@ -1,3 +1,7 @@
+/*
+ *
+ */
+
 package jahirfiquitiva.iconshowcase.fragments;
 
 import android.content.Context;
@@ -41,8 +45,6 @@ public class ApplyFragment extends Fragment {
 
     private String intentString;
     private final List<Launcher> launchers = new ArrayList<>();
-
-    private RelativeLayout applyLayout;
     private RecyclerView recyclerView;
 
     private Preferences mPrefs;
@@ -68,7 +70,6 @@ public class ApplyFragment extends Fragment {
 
         showApplyAdviceDialog(getActivity());
 
-        applyLayout = (RelativeLayout) layout.findViewById(R.id.applyLayout);
         recyclerView = (RecyclerView) layout.findViewById(R.id.launchersList);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),
                 getResources().getInteger(R.integer.launchers_grid_width)));

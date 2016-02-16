@@ -1,3 +1,7 @@
+/*
+ *
+ */
+
 package jahirfiquitiva.iconshowcase.fragments;
 
 import android.os.Bundle;
@@ -56,7 +60,7 @@ public class FAQsFragment extends Fragment {
         questions = getResources().getStringArray(R.array.questions);
         answers = getResources().getStringArray(R.array.answers);
 
-        faqs = new ArrayList<FAQsItem>();
+        faqs = new ArrayList<>();
         for (int i = 0; i < questions.length; i++) {
             FAQsItem item = new FAQsItem(questions[i], answers[i]);
             faqs.add(item);

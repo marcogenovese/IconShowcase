@@ -1,3 +1,7 @@
+/*
+ *
+ */
+
 package jahirfiquitiva.iconshowcase.muzei;
 
 import android.content.Intent;
@@ -22,8 +26,6 @@ import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 public class ArtSource extends RemoteMuzeiArtSource {
-
-    private ArrayList<WallpaperItem> wallsInfoList = new ArrayList<>();
 
     private Preferences mPrefs;
 

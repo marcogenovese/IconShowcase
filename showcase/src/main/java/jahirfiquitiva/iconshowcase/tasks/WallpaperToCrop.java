@@ -1,3 +1,7 @@
+/*
+ *
+ */
+
 package jahirfiquitiva.iconshowcase.tasks;
 
 import android.app.Activity;
@@ -37,7 +41,7 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
 
     public WallpaperToCrop(Activity activity, MaterialDialog dialog, Bitmap resource,
                            View layout, FloatingActionMenu fab, String wallName) {
-        this.wrActivity = new WeakReference<Activity>(activity);
+        this.wrActivity = new WeakReference<>(activity);
         this.dialog = dialog;
         this.resource = resource;
         this.layout = layout;
@@ -47,7 +51,7 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
 
     public WallpaperToCrop(Activity activity, MaterialDialog dialog, Bitmap resource,
                            View layout, FloatingActionMenu fab, String wallName, LinearLayout toHide1, LinearLayout toHide2) {
-        this.wrActivity = new WeakReference<Activity>(activity);
+        this.wrActivity = new WeakReference<>(activity);
         this.dialog = dialog;
         this.resource = resource;
         this.layout = layout;

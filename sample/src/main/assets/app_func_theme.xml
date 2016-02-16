@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~
+  -->
+
 <Theme version="1">
     <!-- Wallpaper name/Background color and transparency -->
     <Wallpaper bg_color="#00000000" image="funbg"></Wallpaper>

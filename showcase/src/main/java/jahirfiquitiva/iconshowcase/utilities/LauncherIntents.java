@@ -1,10 +1,13 @@
+/*
+ *
+ */
+
 package jahirfiquitiva.iconshowcase.utilities;
 
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.view.View;
 
 import jahirfiquitiva.iconshowcase.R;
 
@@ -266,13 +269,12 @@ public class LauncherIntents {
     }
 
     //for theme support
-    public void Layers(Context context) { //TODO see if this can be improved
-        Intent intent = new Intent("android.intent.action.MAIN");
-        intent.setComponent(new ComponentName("com.lovejoy777.rroandlayersmanager",
+    public void Layers(Context context) {
+        Intent layers = new Intent("android.intent.action.MAIN");
+        layers.setComponent(new ComponentName("com.lovejoy777.rroandlayersmanager",
                 "com.lovejoy777.rroandlayersmanager.MainActivity"));
-        intent.putExtra("pkgName", context.getPackageName());
-        context.startActivity(intent);
+        layers.putExtra("pkgName", context.getPackageName());
+        context.startActivity(layers);
     }
-
 
 }

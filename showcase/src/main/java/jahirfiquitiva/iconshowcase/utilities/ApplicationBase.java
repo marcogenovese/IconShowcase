@@ -1,3 +1,7 @@
+/*
+ *
+ */
+
 package jahirfiquitiva.iconshowcase.utilities;
 
 import android.app.Application;
@@ -10,7 +14,6 @@ import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.fragments.WallpapersFragment;
 import jahirfiquitiva.iconshowcase.models.RequestItem;
 import jahirfiquitiva.iconshowcase.models.WallpapersList;
-import jahirfiquitiva.iconshowcase.models.ZooperWidget;
 import jahirfiquitiva.iconshowcase.tasks.LoadAppsToRequest;
 import jahirfiquitiva.iconshowcase.tasks.LoadIconsLists;
 import jahirfiquitiva.iconshowcase.tasks.LoadZooperWidgets;

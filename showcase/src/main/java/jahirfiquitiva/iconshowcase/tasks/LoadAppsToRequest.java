@@ -1,3 +1,7 @@
+/*
+ *
+ */
+
 package jahirfiquitiva.iconshowcase.tasks;
 
 import android.content.ComponentName;
@@ -270,7 +274,7 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
         String[] componentsArray = new String[components.size()];
         componentsArray = components.toArray(componentsArray);
 
-        Map<String, Integer> occurrences = new HashMap<String, Integer>();
+        Map<String, Integer> occurrences = new HashMap<>();
 
         Integer count = 0;
 

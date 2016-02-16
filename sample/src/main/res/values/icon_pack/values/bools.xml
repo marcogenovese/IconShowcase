@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~
+  -->
+
 <resources>
 
     <bool name="use_drawer_icons_bg">false</bool>

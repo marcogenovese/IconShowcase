@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--
+  ~
+  -->
+
+<!--
 The IconShader in ADW Launcher implements a very basic machine
 for manipulating color values in icons. 
 

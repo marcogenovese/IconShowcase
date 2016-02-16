@@ -1,6 +1,9 @@
+/*
+ *
+ */
+
 package jahirfiquitiva.iconshowcase.tasks;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.os.AsyncTask;

@@ -1,3 +1,7 @@
+/*
+ *
+ */
+
 package jahirfiquitiva.iconshowcase.tasks;
 
 import android.app.Activity;
@@ -35,7 +39,7 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
 
     public ApplyWallpaper(Activity activity, MaterialDialog dialog, Bitmap resource, Boolean isPicker,
                           View layout, FloatingActionMenu fab) {
-        this.wrActivity = new WeakReference<Activity>(activity);
+        this.wrActivity = new WeakReference<>(activity);
         this.dialog = dialog;
         this.resource = resource;
         this.isPicker = isPicker;
@@ -45,7 +49,7 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
 
     public ApplyWallpaper(Activity activity, MaterialDialog dialog, Bitmap resource, Boolean isPicker,
                           View layout, FloatingActionMenu fab, LinearLayout toHide1, LinearLayout toHide2) {
-        this.wrActivity = new WeakReference<Activity>(activity);
+        this.wrActivity = new WeakReference<>(activity);
         this.dialog = dialog;
         this.resource = resource;
         this.isPicker = isPicker;
