@@ -119,7 +119,21 @@ public class MainFragment extends Fragment {
             ShowcaseActivity.fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_apply_icons));
         }
 
-        showFAB();
+        setupIcons(getActivity());
+
+        TextView iconsT = (TextView) layout.findViewById(R.id.text_themed_icons);
+        iconsT.setText(getActivity().getResources().getString(R.string.themed_icons, themedIcons));
+
+        TextView wallsT = (TextView) layout.findViewById(R.id.text_available_wallpapers);
+        wallsT.setText(getActivity().getResources().getString(R.string.available_wallpapers, availableWallpapers));
+
+        TextView widgetsT = (TextView) layout.findViewById(R.id.text_included_widgets);
+        widgetsT.setText(getActivity().getResources().getString(R.string.included_widgets, includedWidgets));
+
+        iconsIV = (ImageView) layout.findViewById(R.id.icon_themed_icons);
+        wallsIV = (ImageView) layout.findViewById(R.id.icon_available_wallpapers);
+        widgetsIV = (ImageView) layout.findViewById(R.id.icon_included_widgets);
+        playStoreIV = (ImageView) layout.findViewById(R.id.icon_more_apps);
 
         PlayStoreListing = getActivity().getPackageName();
 
@@ -136,22 +150,6 @@ public class MainFragment extends Fragment {
             LinearLayout widgets = (LinearLayout) layout.findViewById(R.id.widgets);
             widgets.setVisibility(View.GONE);
         }
-
-        TextView iconsT = (TextView) layout.findViewById(R.id.text_themed_icons);
-        iconsT.setText(getActivity().getResources().getString(R.string.themed_icons, themedIcons));
-
-        TextView wallsT = (TextView) layout.findViewById(R.id.text_available_wallpapers);
-        wallsT.setText(getActivity().getResources().getString(R.string.available_wallpapers, availableWallpapers));
-
-        TextView widgetsT = (TextView) layout.findViewById(R.id.text_included_widgets);
-        widgetsT.setText(getActivity().getResources().getString(R.string.included_widgets, includedWidgets));
-
-        iconsIV = (ImageView) layout.findViewById(R.id.icon_themed_icons);
-        wallsIV = (ImageView) layout.findViewById(R.id.icon_available_wallpapers);
-        widgetsIV = (ImageView) layout.findViewById(R.id.icon_included_widgets);
-        playStoreIV = (ImageView) layout.findViewById(R.id.icon_more_apps);
-
-        setupIcons(getActivity());
 
         LinearLayout moreApps = (LinearLayout) layout.findViewById(R.id.moreApps);
         moreApps.setOnClickListener(new View.OnClickListener() {

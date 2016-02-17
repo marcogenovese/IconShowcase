@@ -39,10 +39,12 @@ import android.support.v4.app.ActivityCompat;
 public final class PermissionUtils {
 
     public static final int PERMISSION_REQUEST_CODE = 42;
+    public static String folderName;
     private static String VIEWER_ACTIVITY_ACTION;
     private static OnPermissionResultListener onPermissionResultListener;
 
     public interface OnPermissionResultListener {
+
         void onStoragePermissionGranted();
     }
 
@@ -63,6 +65,12 @@ public final class PermissionUtils {
         requestStoragePermission(activity);
     }
 
+    public static void requestStoragePermission(Activity activity, OnPermissionResultListener permissionResultListener, String folderName) {
+        PermissionUtils.folderName = folderName;
+        onPermissionResultListener = permissionResultListener;
+        requestStoragePermission(activity);
+    }
+
     public static OnPermissionResultListener permissionReceived() {
         return onPermissionResultListener;
     }
@@ -74,5 +82,4 @@ public final class PermissionUtils {
     public static String getViewerActivityAction() {
         return VIEWER_ACTIVITY_ACTION;
     }
-
 }

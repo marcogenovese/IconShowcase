@@ -52,11 +52,12 @@ import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.models.ZooperWidget;
 import jahirfiquitiva.iconshowcase.tasks.CopyFilesToStorage;
 import jahirfiquitiva.iconshowcase.tasks.LoadZooperWidgets;
+import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
-public class ZooperFragment extends Fragment {
+public class ZooperFragment extends Fragment implements PermissionUtils.OnPermissionResultListener {
 
     private MaterialDialog dialog;
     private ViewGroup layout;
@@ -105,6 +106,11 @@ public class ZooperFragment extends Fragment {
                 .color(ThemeUtils.darkTheme ? light : dark)
                 .sizeDp(24);
 
+        Drawable bitmaps = new IconicsDrawable(context)
+                .icon(GoogleMaterial.Icon.gmd_image_alt)
+                .color(ThemeUtils.darkTheme ? light : dark)
+                .sizeDp(24);
+
         ImageView fireIV = (ImageView) layout.findViewById(R.id.icon_preview);
         fireIV.setImageDrawable(fire);
 
@@ -137,6 +143,9 @@ public class ZooperFragment extends Fragment {
 
         ImageView iconsetsIV = (ImageView) layout.findViewById(R.id.icon_iconsets);
         iconsetsIV.setImageDrawable(iconsets);
+
+        ImageView bitmapsIV = (ImageView) layout.findViewById(R.id.icon_bitmaps);
+        bitmapsIV.setImageDrawable(bitmaps);
 
         CardView cardZooper = (CardView) layout.findViewById(R.id.zooper_card);
 
@@ -226,61 +235,111 @@ public class ZooperFragment extends Fragment {
                 ShowcaseActivity.toolbar,
                 iconsColor);
         if (layout != null) {
-            setupCards(true, true);
+            setupCards(true, true, true);
         }
     }
 
-    private void setupCards(boolean fonts, boolean iconsets) {
-        CardView installFonts = (CardView) layout.findViewById(R.id.fonts_card);
+    private void setupCards(boolean fonts, boolean iconsets, boolean bitmaps) {
+
+        final String fontsFolder = "fonts", iconsetsFolder = "iconsets", bitmapsFolder = "bitmaps";
+
+        final CardView installFonts = (CardView) layout.findViewById(R.id.fonts_card);
         if (fonts) {
-            if (checkAssetsInstalled("fonts")) {
-                installFonts.setVisibility(View.GONE);
-            } else {
-                installFonts.setVisibility(View.VISIBLE);
-                installFonts.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (!checkAssetsInstalled("fonts")) {
-                            dialog = new MaterialDialog.Builder(context)
-                                    .content(R.string.downloading_wallpaper)
-                                    .progress(true, 0)
-                                    .cancelable(false)
-                                    .show();
-                            new CopyFilesToStorage(context, dialog, "fonts").execute();
+            installFonts.setVisibility(View.VISIBLE);
+            installFonts.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!checkAssetsInstalled(fontsFolder)) {
+                        if (!PermissionUtils.canAccessStorage(getContext())) {
+                            PermissionUtils.requestStoragePermission(getActivity(),
+                                    ZooperFragment.this,
+                                    fontsFolder);
                         } else {
-                            Utils.showSimpleSnackbar(context, layout,
-                                    getResources().getString(R.string.fonts_installed), 1);
-                            setupCards(true, false);
+                            installFonts(fontsFolder);
                         }
+                    } else {
+                        String snackBarContext =
+                                getActivity().getResources().getString(
+                                        R.string.assets_installed, Utils.capitalizeText(fontsFolder));
+                        Utils.showSimpleSnackbar(context, layout,
+                                snackBarContext, 1);
+                        setupCards(true, false, false);
                     }
-                });
+                }
+            });
+            /*
+            if (checkAssetsInstalled(fontsFolder)) {
+                //installFonts.setVisibility(View.GONE);
+            } else {
+
             }
+            */
         }
 
         CardView installIconsets = (CardView) layout.findViewById(R.id.iconsets_card);
         if (iconsets) {
-            if (checkAssetsInstalled("iconsets")) {
-                installIconsets.setVisibility(View.GONE);
-            } else {
-                installIconsets.setVisibility(View.VISIBLE);
-                installIconsets.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (!checkAssetsInstalled("iconsets")) {
-                            dialog = new MaterialDialog.Builder(context)
-                                    .content(R.string.downloading_wallpaper)
-                                    .progress(true, 0)
-                                    .cancelable(false)
-                                    .show();
-                            new CopyFilesToStorage(context, dialog, "iconsets").execute();
+            installIconsets.setVisibility(View.VISIBLE);
+            installIconsets.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!checkAssetsInstalled(iconsetsFolder)) {
+                        if (!PermissionUtils.canAccessStorage(getContext())) {
+                            PermissionUtils.requestStoragePermission(getActivity(),
+                                    ZooperFragment.this,
+                                    iconsetsFolder);
                         } else {
-                            Utils.showSimpleSnackbar(context, layout,
-                                    getResources().getString(R.string.iconsets_installed), 1);
-                            setupCards(false, true);
+                            installFonts(iconsetsFolder);
                         }
+                    } else {
+                        String snackBarContext =
+                                getActivity().getResources().getString(
+                                        R.string.assets_installed, Utils.capitalizeText(iconsetsFolder));
+                        Utils.showSimpleSnackbar(context, layout,
+                                snackBarContext, 1);
+                        setupCards(false, true, false);
                     }
-                });
+                }
+            });
+            /*
+            if (checkAssetsInstalled(iconsetsFolder)) {
+                //installIconsets.setVisibility(View.GONE);
+            } else {
+
             }
+            */
+        }
+
+        CardView installBitmaps = (CardView) layout.findViewById(R.id.bitmaps_card);
+        if (bitmaps) {
+            installBitmaps.setVisibility(View.VISIBLE);
+            installBitmaps.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!checkAssetsInstalled(bitmapsFolder)) {
+                        if (!PermissionUtils.canAccessStorage(getContext())) {
+                            PermissionUtils.requestStoragePermission(getActivity(),
+                                    ZooperFragment.this,
+                                    bitmapsFolder);
+                        } else {
+                            installFonts(bitmapsFolder);
+                        }
+                    } else {
+                        String snackBarContext =
+                                getActivity().getResources().getString(
+                                        R.string.assets_installed, Utils.capitalizeText(bitmapsFolder));
+                        Utils.showSimpleSnackbar(context, layout,
+                                snackBarContext, 1);
+                        setupCards(false, false, true);
+                    }
+                }
+            });
+            /*
+            if (checkAssetsInstalled(bitmapsFolder)) {
+                //installBitmaps.setVisibility(View.GONE);
+            } else {
+
+            }
+            */
         }
     }
 
@@ -319,9 +378,28 @@ public class ZooperFragment extends Fragment {
                 return "Fonts";
             case "iconsets":
                 return "IconSets";
+            case "bitmaps":
+                return "Bitmaps";
             default:
                 return folder;
         }
+    }
+
+    private void installFonts(String folderName) {
+        String dialogContent =
+                getActivity().getResources().getString(
+                        R.string.copying_assets, getFolderName(folderName));
+        dialog = new MaterialDialog.Builder(context)
+                .content(dialogContent)
+                .progress(true, 0)
+                .cancelable(false)
+                .show();
+        new CopyFilesToStorage(context, dialog, folderName).execute();
+    }
+
+    @Override
+    public void onStoragePermissionGranted() {
+        installFonts(PermissionUtils.folderName);
     }
 
 }

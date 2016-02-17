@@ -258,14 +258,14 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
         setContentView(R.layout.showcase_activity);
 
+        runLicenseChecker();
+
         coordinatorLayout = (CustomCoordinatorLayout) findViewById(R.id.mainCoordinatorLayout);
         appbar = (AppBarLayout) findViewById(R.id.appbar);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         titleView = (TextView) findViewById(R.id.title);
 
         setSupportActionBar(toolbar);
-
-        runLicenseChecker();
 
         thaAppName = getResources().getString(R.string.app_name);
         thaHome = getResources().getString(R.string.section_home);
@@ -669,10 +669,8 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         mPrefs.setFeaturesEnabled(false);
         ISDialogs.showLicenseFailDialog(this,
                 new MaterialDialog.SingleButtonCallback() {
-
                     @Override
                     public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
-
                         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(MARKET_URL + getPackageName()));
                         startActivity(browserIntent);
                     }
@@ -680,21 +678,17 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
                     @Override
                     public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
-
                         finish();
                     }
                 }, new MaterialDialog.OnCancelListener() {
 
                     @Override
                     public void onCancel(DialogInterface dialog) {
-
                         finish();
                     }
                 }, new MaterialDialog.OnDismissListener() {
-
                     @Override
                     public void onDismiss(DialogInterface dialog) {
-
                         finish();
                     }
                 });

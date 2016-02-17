@@ -47,6 +47,7 @@ import android.view.ViewTreeObserver;
 
 import com.github.florent37.glidepalette.GlidePalette;
 
+import java.util.Locale;
 import java.util.concurrent.Callable;
 
 import jahirfiquitiva.iconshowcase.R;
@@ -187,6 +188,10 @@ public class Utils {
             }
         }
         return sb.toString();
+    }
+
+    public static String capitalizeText(String text) {
+        return text.substring(0, 1).toUpperCase(Locale.getDefault()) + text.substring(1);
     }
 
     public static void forceCrash() {
