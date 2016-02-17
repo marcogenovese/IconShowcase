@@ -79,46 +79,19 @@ public class MainFragment extends Fragment {
             //Do nothing
         }
 
-        ShowcaseActivity.setupToolbarHeader(getActivity());
-
         ShowcaseActivity.setupIcons(ShowcaseActivity.icon1, ShowcaseActivity.icon2,
                 ShowcaseActivity.icon3, ShowcaseActivity.icon4, ShowcaseActivity.icon5,
                 ShowcaseActivity.icon6, ShowcaseActivity.icon7, ShowcaseActivity.icon8,
                 ShowcaseActivity.numOfIcons);
 
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                ShowcaseActivity.animateIcons(ShowcaseActivity.icon1, ShowcaseActivity.icon2,
-                        ShowcaseActivity.icon3, ShowcaseActivity.icon4, ShowcaseActivity.icon5,
-                        ShowcaseActivity.icon6, ShowcaseActivity.icon7, ShowcaseActivity.icon8,
-                        ShowcaseActivity.numOfIcons);
-            }
-        }, 800);
-
         String themedIcons = String.valueOf(getActivity().getResources().getInteger(R.integer.icons_amount));
         String availableWallpapers = String.valueOf(getActivity().getResources().getInteger(R.integer.walls_amount));
         String includedWidgets = String.valueOf(getActivity().getResources().getInteger(R.integer.zooper_widgets));
 
-        //check which theme engines are installed
-        themeMode = getResources().getBoolean(R.bool.theme_mode);
-        cm = Utils.isAppInstalled(context, "org.cyanogenmod.theme.chooser");
-        cyngn = Utils.isAppInstalled(context, "com.cyngn.theme.chooser");
-        rro = Utils.isAppInstalled(context, "com.lovejoy777.rroandlayersmanager");
-
-        if (themeMode) {
-            if (cm) { //TODO add appropriate drawables
-                ShowcaseActivity.fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_apply_icons));
-            } else if (rro) {
-                ShowcaseActivity.fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_apply_icons));
-            } else if (cyngn) {
-                ShowcaseActivity.fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_apply_icons));
-            }
-        } else {
-            ShowcaseActivity.fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_apply_icons));
-        }
-
+        iconsIV = (ImageView) layout.findViewById(R.id.icon_themed_icons);
+        wallsIV = (ImageView) layout.findViewById(R.id.icon_available_wallpapers);
+        widgetsIV = (ImageView) layout.findViewById(R.id.icon_included_widgets);
+        playStoreIV = (ImageView) layout.findViewById(R.id.icon_more_apps);
         setupIcons(getActivity());
 
         TextView iconsT = (TextView) layout.findViewById(R.id.text_themed_icons);
@@ -129,11 +102,6 @@ public class MainFragment extends Fragment {
 
         TextView widgetsT = (TextView) layout.findViewById(R.id.text_included_widgets);
         widgetsT.setText(getActivity().getResources().getString(R.string.included_widgets, includedWidgets));
-
-        iconsIV = (ImageView) layout.findViewById(R.id.icon_themed_icons);
-        wallsIV = (ImageView) layout.findViewById(R.id.icon_available_wallpapers);
-        widgetsIV = (ImageView) layout.findViewById(R.id.icon_included_widgets);
-        playStoreIV = (ImageView) layout.findViewById(R.id.icon_more_apps);
 
         PlayStoreListing = getActivity().getPackageName();
 
@@ -178,13 +146,23 @@ public class MainFragment extends Fragment {
             }
         });
 
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ShowcaseActivity.animateIcons(ShowcaseActivity.icon1, ShowcaseActivity.icon2,
+                        ShowcaseActivity.icon3, ShowcaseActivity.icon4, ShowcaseActivity.icon5,
+                        ShowcaseActivity.icon6, ShowcaseActivity.icon7, ShowcaseActivity.icon8,
+                        ShowcaseActivity.numOfIcons);
+            }
+        }, 500);
+
         return layout;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Utils.expandToolbar(getActivity());
         showFAB();
         int iconsColor = ThemeUtils.darkTheme ?
                 ContextCompat.getColor(getActivity(), R.color.toolbar_text_dark) :
@@ -202,6 +180,10 @@ public class MainFragment extends Fragment {
     }
 
     private void showFAB() {
+        themeMode = getResources().getBoolean(R.bool.theme_mode);
+        if (themeMode) {
+            modifyFABIcon();
+        }
         ShowcaseActivity.fab.setVisibility(View.VISIBLE);
         ShowcaseActivity.fab.show();
         ShowcaseActivity.fab.setOnClickListener(new View.OnClickListener() {
@@ -256,4 +238,17 @@ public class MainFragment extends Fragment {
         playStoreIV.setImageDrawable(playStoreDrawable);
     }
 
+    private void modifyFABIcon() {
+        cm = Utils.isAppInstalled(context, "org.cyanogenmod.theme.chooser");
+        cyngn = Utils.isAppInstalled(context, "com.cyngn.theme.chooser");
+        rro = Utils.isAppInstalled(context, "com.lovejoy777.rroandlayersmanager");
+
+        if (cm) { //TODO add appropriate drawables
+            ShowcaseActivity.fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_apply_icons));
+        } else if (rro) {
+            ShowcaseActivity.fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_apply_icons));
+        } else if (cyngn) {
+            ShowcaseActivity.fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_apply_icons));
+        }
+    }
 }

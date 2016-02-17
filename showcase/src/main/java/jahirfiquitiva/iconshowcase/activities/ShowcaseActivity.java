@@ -94,9 +94,10 @@ import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
+import jahirfiquitiva.iconshowcase.utilities.ZooperIconFontsHelper;
 import jahirfiquitiva.iconshowcase.views.CustomCoordinatorLayout;
 
-public class ShowcaseActivity extends AppCompatActivity implements FolderChooserDialog.FolderSelectionCallback {
+public class ShowcaseActivity extends AppCompatActivity implements FolderChooserDialog.FolderSelectionCallback, PermissionUtils.OnPermissionResultListener {
 
     public static boolean WITH_LICENSE_CHECKER = false,
             WITH_INSTALLED_FROM_AMAZON = false,
@@ -257,6 +258,10 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         numOfIcons = context.getResources().getInteger(R.integer.toolbar_icons);
 
         setContentView(R.layout.showcase_activity);
+
+        if (!iconPicker && !wallsPicker) {
+            setupToolbarHeader(this);
+        }
 
         runLicenseChecker();
 
@@ -419,6 +424,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             icon2.setVisibility(View.INVISIBLE);
             icon3.setVisibility(View.INVISIBLE);
             icon4.setVisibility(View.INVISIBLE);
+            Utils.expandToolbar(context);
         }
 
         //Fragment Switcher
@@ -621,6 +627,13 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         String launchinfo = getSharedPreferences("PrefsFile", MODE_PRIVATE).getString("version", "0");
         storeSharedPrefs();
         if (launchinfo != null && !launchinfo.equals(Utils.getAppVersion(this))) {
+            if (WITH_ZOOPER_SECTION) {
+                if (!PermissionUtils.canAccessStorage(this)) {
+                    PermissionUtils.requestStoragePermission(this, this);
+                } else {
+                    new ZooperIconFontsHelper(context).check(true);
+                }
+            }
             if (WITH_ICONS_BASED_CHANGELOG) {
                 ISDialogs.showIconsChangelogDialog(this);
             } else {
@@ -713,6 +726,11 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                 }
             }
         }, this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    @Override
+    public void onStoragePermissionGranted() {
+        new ZooperIconFontsHelper(context).check(true);
     }
 
     public interface WallsListInterface {

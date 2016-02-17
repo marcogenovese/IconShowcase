@@ -245,101 +245,91 @@ public class ZooperFragment extends Fragment implements PermissionUtils.OnPermis
 
         final CardView installFonts = (CardView) layout.findViewById(R.id.fonts_card);
         if (fonts) {
-            installFonts.setVisibility(View.VISIBLE);
-            installFonts.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (!checkAssetsInstalled(fontsFolder)) {
-                        if (!PermissionUtils.canAccessStorage(getContext())) {
-                            PermissionUtils.requestStoragePermission(getActivity(),
-                                    ZooperFragment.this,
-                                    fontsFolder);
-                        } else {
-                            installFonts(fontsFolder);
-                        }
-                    } else {
-                        String snackBarContext =
-                                getActivity().getResources().getString(
-                                        R.string.assets_installed, Utils.capitalizeText(fontsFolder));
-                        Utils.showSimpleSnackbar(context, layout,
-                                snackBarContext, 1);
-                        setupCards(true, false, false);
-                    }
-                }
-            });
-            /*
             if (checkAssetsInstalled(fontsFolder)) {
-                //installFonts.setVisibility(View.GONE);
+                installFonts.setVisibility(View.GONE);
             } else {
-
+                installFonts.setVisibility(View.VISIBLE);
+                installFonts.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (!checkAssetsInstalled(fontsFolder)) {
+                            if (!PermissionUtils.canAccessStorage(getContext())) {
+                                PermissionUtils.requestStoragePermission(getActivity(),
+                                        ZooperFragment.this,
+                                        fontsFolder);
+                            } else {
+                                installFonts(fontsFolder);
+                            }
+                        } else {
+                            String snackBarContext = getActivity().getResources().getString(
+                                    R.string.assets_installed, Utils.capitalizeText(fontsFolder));
+                            Utils.showSimpleSnackbar(context, layout,
+                                    snackBarContext, 1);
+                            setupCards(true, false, false);
+                        }
+                    }
+                });
             }
-            */
         }
 
         CardView installIconsets = (CardView) layout.findViewById(R.id.iconsets_card);
         if (iconsets) {
-            installIconsets.setVisibility(View.VISIBLE);
-            installIconsets.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (!checkAssetsInstalled(iconsetsFolder)) {
-                        if (!PermissionUtils.canAccessStorage(getContext())) {
-                            PermissionUtils.requestStoragePermission(getActivity(),
-                                    ZooperFragment.this,
-                                    iconsetsFolder);
-                        } else {
-                            installFonts(iconsetsFolder);
-                        }
-                    } else {
-                        String snackBarContext =
-                                getActivity().getResources().getString(
-                                        R.string.assets_installed, Utils.capitalizeText(iconsetsFolder));
-                        Utils.showSimpleSnackbar(context, layout,
-                                snackBarContext, 1);
-                        setupCards(false, true, false);
-                    }
-                }
-            });
-            /*
             if (checkAssetsInstalled(iconsetsFolder)) {
-                //installIconsets.setVisibility(View.GONE);
+                installIconsets.setVisibility(View.GONE);
             } else {
-
+                installIconsets.setVisibility(View.VISIBLE);
+                installIconsets.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (!checkAssetsInstalled(iconsetsFolder)) {
+                            if (!PermissionUtils.canAccessStorage(getContext())) {
+                                PermissionUtils.requestStoragePermission(getActivity(),
+                                        ZooperFragment.this,
+                                        iconsetsFolder);
+                            } else {
+                                installFonts(iconsetsFolder);
+                            }
+                        } else {
+                            String snackBarContext =
+                                    getActivity().getResources().getString(
+                                            R.string.assets_installed, Utils.capitalizeText(iconsetsFolder));
+                            Utils.showSimpleSnackbar(context, layout,
+                                    snackBarContext, 1);
+                            setupCards(false, true, false);
+                        }
+                    }
+                });
             }
-            */
         }
 
         CardView installBitmaps = (CardView) layout.findViewById(R.id.bitmaps_card);
         if (bitmaps) {
-            installBitmaps.setVisibility(View.VISIBLE);
-            installBitmaps.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (!checkAssetsInstalled(bitmapsFolder)) {
-                        if (!PermissionUtils.canAccessStorage(getContext())) {
-                            PermissionUtils.requestStoragePermission(getActivity(),
-                                    ZooperFragment.this,
-                                    bitmapsFolder);
-                        } else {
-                            installFonts(bitmapsFolder);
-                        }
-                    } else {
-                        String snackBarContext =
-                                getActivity().getResources().getString(
-                                        R.string.assets_installed, Utils.capitalizeText(bitmapsFolder));
-                        Utils.showSimpleSnackbar(context, layout,
-                                snackBarContext, 1);
-                        setupCards(false, false, true);
-                    }
-                }
-            });
-            /*
             if (checkAssetsInstalled(bitmapsFolder)) {
-                //installBitmaps.setVisibility(View.GONE);
+                installBitmaps.setVisibility(View.GONE);
             } else {
-
+                installBitmaps.setVisibility(View.VISIBLE);
+                installBitmaps.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (!checkAssetsInstalled(bitmapsFolder)) {
+                            if (!PermissionUtils.canAccessStorage(getContext())) {
+                                PermissionUtils.requestStoragePermission(getActivity(),
+                                        ZooperFragment.this,
+                                        bitmapsFolder);
+                            } else {
+                                installFonts(bitmapsFolder);
+                            }
+                        } else {
+                            String snackBarContext =
+                                    getActivity().getResources().getString(
+                                            R.string.assets_installed, Utils.capitalizeText(bitmapsFolder));
+                            Utils.showSimpleSnackbar(context, layout,
+                                    snackBarContext, 1);
+                            setupCards(false, false, true);
+                        }
+                    }
+                });
             }
-            */
         }
     }
 
@@ -359,7 +349,6 @@ public class ZooperFragment extends Fragment implements PermissionUtils.OnPermis
 
         if (files != null && files.length > 0) {
             for (String filename : files) {
-                Utils.showLog(context, "File in assets " + folder + ": " + filename);
                 if (!filename.equals(fileToIgnore1) && !filename.equals(fileToIgnore2)) {
                     File file = new File(Environment.getExternalStorageDirectory() + "/ZooperWidget/" + getFolderName(folder) + "/" + filename);
                     if (!file.exists()) {
@@ -401,5 +390,4 @@ public class ZooperFragment extends Fragment implements PermissionUtils.OnPermis
     public void onStoragePermissionGranted() {
         installFonts(PermissionUtils.folderName);
     }
-
 }
