@@ -267,6 +267,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
         coordinatorLayout = (CustomCoordinatorLayout) findViewById(R.id.mainCoordinatorLayout);
         appbar = (AppBarLayout) findViewById(R.id.appbar);
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         titleView = (TextView) findViewById(R.id.title);
 
@@ -284,16 +285,38 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         thaFAQs = getResources().getString(R.string.faqs_section);
         thaZooper = getResources().getString(R.string.zooper_section_title);
 
-        int iconsColor = ThemeUtils.darkTheme ?
+        final int iconsColor = ThemeUtils.darkTheme ?
                 ContextCompat.getColor(this, R.color.toolbar_text_dark) :
                 ContextCompat.getColor(this, R.color.toolbar_text_light);
+
+        final int expandedIconsColor = ThemeUtils.darkTheme ?
+                ContextCompat.getColor(this, R.color.expanded_toolbar_icons_dark) :
+                ContextCompat.getColor(this, R.color.expanded_toolbar_icons_light);
 
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbar);
         collapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(this, android.R.color.transparent));
         collapsingToolbarLayout.setCollapsedTitleTextColor(iconsColor);
         collapsingToolbarLayout.setTitle(thaAppName);
 
-        ToolbarColorizer.colorizeToolbar(toolbar, iconsColor);
+        ToolbarColorizer.colorizeToolbar(toolbar, expandedIconsColor);
+
+        appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                double alpha = Utils.round(((double) (verticalOffset * -1) / 288.0), 1);
+                int finalIconsColor = 0;
+                if (alpha > 1.0) {
+                    finalIconsColor = Utils.blendColors(
+                            expandedIconsColor,
+                            iconsColor, 1.0f);
+                } else {
+                    finalIconsColor = Utils.blendColors(
+                            ContextCompat.getColor(context, R.color.expanded_toolbar_icons_light),
+                            iconsColor, (float) alpha);
+                }
+                ToolbarColorizer.colorizeToolbar(toolbar, finalIconsColor);
+            }
+        });
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
 
@@ -472,10 +495,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             drawer.setSelection(itemId);
         }
 
-        int iconsColor = ThemeUtils.darkTheme ?
-                ContextCompat.getColor(context, R.color.toolbar_text_dark) :
-                ContextCompat.getColor(context, R.color.toolbar_text_light);
-        ToolbarColorizer.colorizeToolbar(toolbar, iconsColor);
     }
 
     @Override
@@ -546,8 +565,8 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         int iconsColor = ThemeUtils.darkTheme ?
-                ContextCompat.getColor(this, R.color.toolbar_text_dark) :
-                ContextCompat.getColor(this, R.color.toolbar_text_light);
+                ContextCompat.getColor(this, R.color.expanded_toolbar_icons_dark) :
+                ContextCompat.getColor(this, R.color.expanded_toolbar_icons_light);
         MenuItem changelog = menu.findItem(R.id.changelog);
         ToolbarColorizer.tintChangelogIcon(changelog, this, iconsColor);
         ToolbarColorizer.colorizeToolbar(toolbar, iconsColor);

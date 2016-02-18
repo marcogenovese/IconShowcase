@@ -23,12 +23,16 @@
 
 package jahirfiquitiva.iconshowcase.utilities;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -44,9 +48,12 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.ImageView;
 
 import com.github.florent37.glidepalette.GlidePalette;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Locale;
 import java.util.concurrent.Callable;
 
@@ -143,7 +150,6 @@ public class Utils {
             public void onServiceDisconnected(ComponentName name) {
                 mClient[0] = null;
             }
-
         };
 
         CustomTabsClient.bindCustomTabsService(context, "com.android.chrome", mCustomTabsServiceConnection);
@@ -155,7 +161,6 @@ public class Utils {
                 .build();
 
         customTabsIntent.launchUrl((Activity) context, Uri.parse(link));
-
     }
 
     public static void showLog(Context context, String s) {
@@ -263,7 +268,6 @@ public class Utils {
         }
 
         return palette;
-
     }
 
     /***
@@ -308,4 +312,51 @@ public class Utils {
         coordinatorLayout.setScrollAllowed(true);
     }
 
+    public static void animateImageView(Context context, final ImageView v) {
+        final int toolbarExpandedIconsColor = ContextCompat.getColor(context, R.color.expanded_toolbar_icons_dark);
+
+        final ValueAnimator colorAnim = ObjectAnimator.ofFloat(0f, 1f);
+        colorAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float factor = (Float) animation.getAnimatedValue();
+                int alpha = adjustAlpha(toolbarExpandedIconsColor, factor);
+                v.setColorFilter(alpha, PorterDuff.Mode.SRC_ATOP);
+                if (factor == 0.0) {
+                    v.setColorFilter(null);
+                }
+            }
+        });
+
+        colorAnim.setDuration(500);
+        colorAnim.setRepeatMode(ValueAnimator.REVERSE);
+        colorAnim.setRepeatCount(-1);
+        colorAnim.start();
+    }
+
+    public static int adjustAlpha(int color, float factor) {
+        int alpha = Math.round(Color.alpha(color) * factor);
+        int red = Color.red(color);
+        int green = Color.green(color);
+        int blue = Color.blue(color);
+        return Color.argb(alpha, red, green, blue);
+    }
+
+    public static int blendColors(int from, int to, float ratio) {
+        final float inverseRatio = 1f - ratio;
+
+        final float r = Color.red(to) * ratio + Color.red(from) * inverseRatio;
+        final float g = Color.green(to) * ratio + Color.green(from) * inverseRatio;
+        final float b = Color.blue(to) * ratio + Color.blue(from) * inverseRatio;
+
+        return Color.rgb((int) r, (int) g, (int) b);
+    }
+
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
+    }
 }
