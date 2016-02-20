@@ -36,7 +36,6 @@ import com.mikepenz.materialize.util.UIUtils;
 import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.adapters.IconsAdapter;
@@ -113,28 +112,25 @@ public class IconsFragment extends Fragment {
 
     private synchronized void filter(CharSequence s, IconsAdapter adapter) {
         if (s == null || s.toString().trim().isEmpty()) {
-            if (filteredIconsList != null) {
-                filteredIconsList = null;
-            }
+            filteredIconsList = null;
             adapter.clearIconsList();
             adapter.setIcons(iconsList);
-            adapter.notifyDataSetChanged();
         } else {
             if (filteredIconsList != null) {
                 filteredIconsList.clear();
             }
             filteredIconsList = new ArrayList<>();
+            String search = s.toString().toLowerCase();
             for (int i = 0; i < iconsList.size(); i++) {
                 String name = iconsList.get(i).getName();
-                if (name.toLowerCase(Locale.getDefault())
-                        .contains(s.toString().toLowerCase(Locale.getDefault()))) {
+                if (name.toLowerCase().contains(search)) {
                     filteredIconsList.add(iconsList.get(i));
                 }
             }
             adapter.clearIconsList();
             adapter.setIcons(filteredIconsList);
-            adapter.notifyDataSetChanged();
         }
+        adapter.notifyDataSetChanged();
     }
 
 }

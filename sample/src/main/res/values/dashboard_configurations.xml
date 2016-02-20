@@ -224,6 +224,14 @@
     <integer name="zooper_widgets">0</integer>
 
     <!--
+    Do you want the Zooper widgets previews background to be removed?
+    This may result in showing some incorrect previews.
+    True, means yes.
+    False, means no.
+    -->
+    <bool name="remove_zooper_previews_background">true</bool>
+
+    <!--
     Setup the columns amount you want in different sections
     -->
     <!-- PHONES - PORTRAIT MODE -->

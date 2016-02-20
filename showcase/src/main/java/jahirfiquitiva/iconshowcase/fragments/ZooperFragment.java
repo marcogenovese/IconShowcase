@@ -23,6 +23,7 @@
 
 package jahirfiquitiva.iconshowcase.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
@@ -33,6 +34,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.GridLayout;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,20 +50,20 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import jahirfiquitiva.iconshowcase.R;
-import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.models.ZooperWidget;
 import jahirfiquitiva.iconshowcase.tasks.CopyFilesToStorage;
 import jahirfiquitiva.iconshowcase.tasks.LoadZooperWidgets;
 import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
-import jahirfiquitiva.iconshowcase.utilities.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
+import jahirfiquitiva.iconshowcase.views.CustomCoordinatorLayout;
 
 public class ZooperFragment extends Fragment implements PermissionUtils.OnPermissionResultListener {
 
     private MaterialDialog dialog;
     private ViewGroup layout;
     private Context context;
+    private CardView cardZooper, cardMU, cardMUInfo, installFonts, installIconsets, installBitmaps;
     private int i = 0;
 
     @Override
@@ -114,17 +116,26 @@ public class ZooperFragment extends Fragment implements PermissionUtils.OnPermis
         ImageView fireIV = (ImageView) layout.findViewById(R.id.icon_preview);
         fireIV.setImageDrawable(fire);
 
-        final ImageView preview = (ImageView) layout.findViewById(R.id.preview_picture);
+        final ImageView preview = (ImageView) getActivity().findViewById(R.id.zooperWidget);
 
         final ArrayList<ZooperWidget> widgets = LoadZooperWidgets.widgets;
 
-        preview.setImageBitmap(widgets.get(i).getPreview());
+        if (context.getResources().getBoolean(R.bool.remove_zooper_previews_background)) {
+            preview.setImageBitmap(widgets.get(i).getTransparentBackgroundPreview());
+        } else {
+            preview.setImageBitmap(widgets.get(i).getPreview());
+        }
+
         preview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 i += 1;
                 if (widgets.size() > 0) {
-                    preview.setImageBitmap(widgets.get(i).getPreview());
+                    if (context.getResources().getBoolean(R.bool.remove_zooper_previews_background)) {
+                        preview.setImageBitmap(widgets.get(i).getTransparentBackgroundPreview());
+                    } else {
+                        preview.setImageBitmap(widgets.get(i).getPreview());
+                    }
                     if (i == widgets.size() - 1) {
                         i = -1;
                     }
@@ -147,7 +158,7 @@ public class ZooperFragment extends Fragment implements PermissionUtils.OnPermis
         ImageView bitmapsIV = (ImageView) layout.findViewById(R.id.icon_bitmaps);
         bitmapsIV.setImageDrawable(bitmaps);
 
-        CardView cardZooper = (CardView) layout.findViewById(R.id.zooper_card);
+        cardZooper = (CardView) layout.findViewById(R.id.zooper_card);
 
         if (Utils.isAppInstalled(context, "org.zooper.zwpro")) {
             cardZooper.setVisibility(View.GONE);
@@ -186,8 +197,8 @@ public class ZooperFragment extends Fragment implements PermissionUtils.OnPermis
             }
         });
 
-        CardView cardMU = (CardView) layout.findViewById(R.id.mu_card);
-        CardView cardMUInfo = (CardView) layout.findViewById(R.id.mediautilities_info_card);
+        cardMU = (CardView) layout.findViewById(R.id.mu_card);
+        cardMUInfo = (CardView) layout.findViewById(R.id.mediautilities_info_card);
 
         if (WITH_MEDIA_UTILITIES_WIDGETS) {
             if (!Utils.isAppInstalled(context, "com.batescorp.notificationmediacontrols.alpha")) {
@@ -227,23 +238,30 @@ public class ZooperFragment extends Fragment implements PermissionUtils.OnPermis
     @Override
     public void onResume() {
         super.onResume();
-        Utils.collapseToolbar(getActivity());
-        int iconsColor = ThemeUtils.darkTheme ?
-                ContextCompat.getColor(context, R.color.toolbar_text_dark) :
-                ContextCompat.getColor(context, R.color.toolbar_text_light);
-        ToolbarColorizer.colorizeToolbar(
-                ShowcaseActivity.toolbar,
-                iconsColor);
+        Utils.expandToolbar(getActivity());
+        GridLayout grid = (GridLayout) getActivity().findViewById(R.id.iconsRow);
+        grid.setVisibility(View.GONE);
+        ImageView preview = (ImageView) getActivity().findViewById(R.id.zooperWidget);
+        preview.setVisibility(View.VISIBLE);
         if (layout != null) {
             setupCards(true, true, true);
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        GridLayout grid = (GridLayout) getActivity().findViewById(R.id.iconsRow);
+        grid.setVisibility(View.VISIBLE);
+        ImageView preview = (ImageView) getActivity().findViewById(R.id.zooperWidget);
+        preview.setVisibility(View.INVISIBLE);
     }
 
     private void setupCards(boolean fonts, boolean iconsets, boolean bitmaps) {
 
         final String fontsFolder = "fonts", iconsetsFolder = "iconsets", bitmapsFolder = "bitmaps";
 
-        final CardView installFonts = (CardView) layout.findViewById(R.id.fonts_card);
+        installFonts = (CardView) layout.findViewById(R.id.fonts_card);
         if (fonts) {
             if (checkAssetsInstalled(fontsFolder)) {
                 installFonts.setVisibility(View.GONE);
@@ -272,7 +290,7 @@ public class ZooperFragment extends Fragment implements PermissionUtils.OnPermis
             }
         }
 
-        CardView installIconsets = (CardView) layout.findViewById(R.id.iconsets_card);
+        installIconsets = (CardView) layout.findViewById(R.id.iconsets_card);
         if (iconsets) {
             if (checkAssetsInstalled(iconsetsFolder)) {
                 installIconsets.setVisibility(View.GONE);
@@ -302,7 +320,7 @@ public class ZooperFragment extends Fragment implements PermissionUtils.OnPermis
             }
         }
 
-        CardView installBitmaps = (CardView) layout.findViewById(R.id.bitmaps_card);
+        installBitmaps = (CardView) layout.findViewById(R.id.bitmaps_card);
         if (bitmaps) {
             if (checkAssetsInstalled(bitmapsFolder)) {
                 installBitmaps.setVisibility(View.GONE);
@@ -331,6 +349,9 @@ public class ZooperFragment extends Fragment implements PermissionUtils.OnPermis
                 });
             }
         }
+
+        CustomCoordinatorLayout coordinatorLayout = (CustomCoordinatorLayout) ((Activity) context).findViewById(R.id.mainCoordinatorLayout);
+        coordinatorLayout.setScrollAllowed(getShownCardsNumber() > 3);
     }
 
     private boolean checkAssetsInstalled(String folder) {
@@ -384,6 +405,36 @@ public class ZooperFragment extends Fragment implements PermissionUtils.OnPermis
                 .cancelable(false)
                 .show();
         new CopyFilesToStorage(context, dialog, folderName).execute();
+    }
+
+    private int getShownCardsNumber() {
+        int num = 1;
+
+        if (cardZooper.getVisibility() == View.VISIBLE) {
+            num += 1;
+        }
+
+        if (cardMU.getVisibility() == View.VISIBLE) {
+            num += 1;
+        }
+
+        if (cardMUInfo.getVisibility() == View.VISIBLE) {
+            num += 1;
+        }
+
+        if (installFonts.getVisibility() == View.VISIBLE) {
+            num += 1;
+        }
+
+        if (installIconsets.getVisibility() == View.VISIBLE) {
+            num += 1;
+        }
+
+        if (installBitmaps.getVisibility() == View.VISIBLE) {
+            num += 1;
+        }
+
+        return num;
     }
 
     @Override

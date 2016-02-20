@@ -21,7 +21,7 @@
  *
  */
 
-package jahirfiquitiva.iconshowcase.sort;
+package jahirfiquitiva.iconshowcase.utilities.sort;
 
 import android.content.Context;
 

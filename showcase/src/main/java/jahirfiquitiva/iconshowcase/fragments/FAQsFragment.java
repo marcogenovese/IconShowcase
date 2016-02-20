@@ -25,7 +25,6 @@ package jahirfiquitiva.iconshowcase.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -41,11 +40,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jahirfiquitiva.iconshowcase.R;
-import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.adapters.FAQsAdapter;
 import jahirfiquitiva.iconshowcase.models.FAQsItem;
-import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
-import jahirfiquitiva.iconshowcase.utilities.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.views.DividerItemDecoration;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
@@ -114,12 +110,6 @@ public class FAQsFragment extends Fragment {
     public void onResume() {
         super.onResume();
         Utils.collapseToolbar(getActivity());
-        int iconsColor = ThemeUtils.darkTheme ?
-                ContextCompat.getColor(getActivity(), R.color.toolbar_text_dark) :
-                ContextCompat.getColor(getActivity(), R.color.toolbar_text_light);
-        ToolbarColorizer.colorizeToolbar(
-                ShowcaseActivity.toolbar,
-                iconsColor);
     }
 
 }

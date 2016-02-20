@@ -34,10 +34,8 @@ import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -52,7 +50,6 @@ import jahirfiquitiva.iconshowcase.fragments.base.PreferenceFragment;
 import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
-import jahirfiquitiva.iconshowcase.utilities.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 public class SettingsFragment extends PreferenceFragment implements PermissionUtils.OnPermissionResultListener {
@@ -96,8 +93,8 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
             //Do nothing
         }
 
-        PreferenceScreen preferences = (PreferenceScreen) findPreference("preferences");
-        PreferenceCategory launcherIcon = (PreferenceCategory) findPreference("launcherIconPreference");
+        final PreferenceScreen preferences = (PreferenceScreen) findPreference("preferences");
+        final PreferenceCategory launcherIcon = (PreferenceCategory) findPreference("launcherIconPreference");
 
         PreferenceCategory uiCategory = (PreferenceCategory) findPreference("uiPreferences");
         CheckBoxPreference wallHeaderCheck = (CheckBoxPreference) findPreference("wallHeader");
@@ -108,7 +105,9 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
             wallHeaderCheck.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     mPrefs.setWallpaperAsToolbarHeaderEnabled(newValue.toString().equals("true"));
-                    ShowcaseActivity.setupToolbarHeader(getActivity());
+                    ShowcaseActivity.setupToolbarHeader(getActivity(), ShowcaseActivity.toolbarHeader);
+                    Utils.setupToolbarIconsAndTextsColors(getActivity(), ShowcaseActivity.appbar,
+                            ShowcaseActivity.toolbar, ShowcaseActivity.toolbarHeaderImage);
                     return true;
                 }
             });
@@ -234,47 +233,29 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
                             };
 
                             ShowcaseActivity.settingsDialog = ISDialogs.showHideIconDialog(getActivity(), positive, negative, dismissListener);
-
                         } else {
                             if (!mPrefs.getLauncherIconShown()) {
-
                                 mPrefs.setIconShown(true);
                                 p.setComponentEnabledSetting(componentName,
                                         PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
                                         PackageManager.DONT_KILL_APP);
-
                             }
                         }
                         return true;
                     } else {
-                        String errorToastContent = getResources().getString(R.string.launcher_icon_restorer_error,
-                                getResources().getString(R.string.app_name));
-                        try {
-                            Utils.showSimpleSnackbar(getActivity(), getListView(), errorToastContent, 1);
-                        } catch (IllegalStateException e) {
-                            Toast.makeText(getActivity(), errorToastContent, Toast.LENGTH_LONG).show();
-                        }
                         return false;
                     }
                 }
             });
-
         } else {
             preferences.removePreference(launcherIcon);
         }
-
     }
 
     @Override
     public void onResume() {
         super.onResume();
         Utils.collapseToolbar(getActivity());
-        int iconsColor = ThemeUtils.darkTheme ?
-                ContextCompat.getColor(getActivity(), R.color.toolbar_text_dark) :
-                ContextCompat.getColor(getActivity(), R.color.toolbar_text_light);
-        ToolbarColorizer.colorizeToolbar(
-                ShowcaseActivity.toolbar,
-                iconsColor);
     }
 
     public static void changeValues(Context context) {
@@ -287,7 +268,6 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
         WSL.setSummary(context.getResources().getString(R.string.pref_summary_wsl, location));
         cacheSize = fullCacheDataSize(context);
         data.setSummary(context.getResources().getString(R.string.pref_summary_cache, cacheSize));
-
     }
 
     public static void clearApplicationDataAndCache(Context context) {

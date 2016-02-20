@@ -63,6 +63,7 @@ public class FixedElevationAppBarLayout extends AppBarLayout {
      * A helper method for converting dps to pixels.
      *
      * @param dp The dp parameters
+     *
      * @return The pixel-converted result
      */
     private int dpToPx(int dp) {

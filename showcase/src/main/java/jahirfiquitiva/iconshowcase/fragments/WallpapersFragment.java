@@ -27,9 +27,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -44,7 +41,6 @@ import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -79,7 +75,6 @@ import jahirfiquitiva.iconshowcase.tasks.ApplyWallpaper;
 import jahirfiquitiva.iconshowcase.utilities.JSONParser;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
-import jahirfiquitiva.iconshowcase.utilities.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 
@@ -160,29 +155,12 @@ public class WallpapersFragment extends Fragment {
     public void onResume() {
         super.onResume();
         Utils.collapseToolbar(getActivity());
-        int iconsColor = ThemeUtils.darkTheme ?
-                ContextCompat.getColor(context, R.color.toolbar_text_dark) :
-                ContextCompat.getColor(context, R.color.toolbar_text_light);
-        ToolbarColorizer.colorizeToolbar(
-                ShowcaseActivity.toolbar,
-                iconsColor);
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.wallpapers, menu);
-        MenuItem columns = menu.findItem(R.id.columns);
-        int iconsColor = ThemeUtils.darkTheme ?
-                ContextCompat.getColor(context, R.color.toolbar_text_dark) :
-                ContextCompat.getColor(context, R.color.toolbar_text_light);
-        columns.setIcon(
-                ToolbarColorizer.getTintedIcon(
-                        ContextCompat.getDrawable(getActivity(), R.drawable.ic_columns),
-                        iconsColor));
-        ToolbarColorizer.colorizeToolbar(
-                ShowcaseActivity.toolbar,
-                iconsColor);
     }
 
     public static void setupLayout(final boolean fromTask) {
@@ -202,7 +180,6 @@ public class WallpapersFragment extends Fragment {
                                         openViewer(context, view, position, WallpapersList.getWallpapersList());
                                     }
                                 }
-
                             });
 
                     mAdapter.setData(WallpapersList.getWallpapersList());
@@ -355,7 +332,7 @@ public class WallpapersFragment extends Fragment {
         Bitmap bitmap;
 
         if (wallsHolder.wall.getDrawable() != null) {
-            bitmap = drawableToBitmap(wallsHolder.wall.getDrawable());
+            bitmap = Utils.drawableToBitmap(wallsHolder.wall.getDrawable());
             try {
                 String filename = "temp.png";
                 FileOutputStream stream = context.openFileOutput(filename, Context.MODE_PRIVATE);
@@ -372,26 +349,6 @@ public class WallpapersFragment extends Fragment {
         } else {
             showLoadPictureSnackbar(layout);
         }
-
-    }
-
-    public static Bitmap drawableToBitmap(Drawable drawable) {
-        Bitmap bitmap;
-        if (drawable instanceof BitmapDrawable) {
-            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
-            if (bitmapDrawable.getBitmap() != null) {
-                return bitmapDrawable.getBitmap();
-            }
-        }
-        if (drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
-            bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
-        } else {
-            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        }
-        Canvas canvas = new Canvas(bitmap);
-        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-        drawable.draw(canvas);
-        return bitmap;
     }
 
     // DownloadJSON AsyncTask
@@ -469,13 +426,11 @@ public class WallpapersFragment extends Fragment {
                         } catch (JSONException e) {
                             copyrights.add("null");
                         }
-
                     }
 
                     WallpapersList.createWallpapersList(names, authors, urls, dimensions, copyrights);
 
                     worked = true;
-
                 } catch (JSONException e) {
                     worked = false;
                     e.printStackTrace();
@@ -499,7 +454,6 @@ public class WallpapersFragment extends Fragment {
 
             if (wi != null)
                 wi.checkWallsListCreation(worked);
-
         }
     }
 
@@ -554,5 +508,4 @@ public class WallpapersFragment extends Fragment {
         Utils.showSimpleSnackbar(context, layout,
                 Utils.getStringFromResources(context, R.string.wait_for_walls), 1);
     }
-
 }

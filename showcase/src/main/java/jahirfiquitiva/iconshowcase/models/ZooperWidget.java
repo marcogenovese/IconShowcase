@@ -24,11 +24,14 @@
 package jahirfiquitiva.iconshowcase.models;
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
+
+import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 public class ZooperWidget {
 
-    private final String name;
-    private final Bitmap preview;
+    public final String name;
+    public final Bitmap preview;
 
     public ZooperWidget(String name, Bitmap preview) {
         this.name = name;
@@ -43,4 +46,7 @@ public class ZooperWidget {
         return this.preview;
     }
 
+    public Bitmap getTransparentBackgroundPreview() {
+        return Utils.getBitmapWithReplacedColor(this.preview, Color.parseColor("#555555"), Color.TRANSPARENT);
+    }
 }

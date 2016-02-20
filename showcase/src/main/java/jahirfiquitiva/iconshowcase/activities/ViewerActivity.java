@@ -41,7 +41,10 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -76,6 +79,7 @@ import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
+import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.views.TouchImageView;
 
 public class ViewerActivity extends AppCompatActivity {
@@ -91,6 +95,7 @@ public class ViewerActivity extends AppCompatActivity {
     private static Preferences mPrefs;
     private static File downloadsFolder;
     public static MaterialDialog dialogApply;
+    private Toolbar toolbar;
 
     public static LinearLayout toHide1, toHide2;
 
@@ -123,6 +128,16 @@ public class ViewerActivity extends AppCompatActivity {
         wallCopyright = intent.getStringExtra("wallCopyright");
 
         setContentView(R.layout.wall_viewer_activity);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("");
+            getSupportActionBar().setHomeButtonEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
 
         toHide1 = (LinearLayout) findViewById(R.id.iconsA);
         toHide2 = (LinearLayout) findViewById(R.id.iconsB);
@@ -227,6 +242,7 @@ public class ViewerActivity extends AppCompatActivity {
 
                         @Override
                         public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                            ToolbarColorizer.colorizeToolbar(toolbar, Utils.getIconsColorForViewer(((GlideBitmapDrawable) resource).getBitmap(), context));
                             spinner.setVisibility(View.GONE);
                             return false;
                         }
@@ -248,6 +264,7 @@ public class ViewerActivity extends AppCompatActivity {
 
                         @Override
                         public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                            ToolbarColorizer.colorizeToolbar(toolbar, Utils.getIconsColorForViewer(((GlideBitmapDrawable) resource).getBitmap(), context));
                             spinner.setVisibility(View.GONE);
                             return false;
                         }
@@ -273,21 +290,27 @@ public class ViewerActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            supportFinishAfterTransition();
-        } else {
-            finish();
-        }
-    }
-
-    @Override
     public void onDestroy() {
         super.onDestroy();
         if (dialogApply != null) {
             dialogApply.dismiss();
             dialogApply = null;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        closeViewer();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                closeViewer();
+                break;
+        }
+        return true;
     }
 
     @Override
@@ -310,6 +333,14 @@ public class ViewerActivity extends AppCompatActivity {
                 toHide1.setVisibility(View.VISIBLE);
                 toHide2.setVisibility(View.VISIBLE);
             }
+        }
+    }
+
+    private void closeViewer() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            supportFinishAfterTransition();
+        } else {
+            finish();
         }
     }
 
@@ -370,6 +401,10 @@ public class ViewerActivity extends AppCompatActivity {
 
                         Snackbar longSnackbar = Snackbar.make(layout, finalSnackbarText,
                                 Snackbar.LENGTH_LONG);
+                        final int snackbarLight = ContextCompat.getColor(context, R.color.snackbar_light);
+                        final int snackbarDark = ContextCompat.getColor(context, R.color.snackbar_dark);
+                        ViewGroup snackbarView = (ViewGroup) longSnackbar.getView();
+                        snackbarView.setBackgroundColor(ThemeUtils.darkTheme ? snackbarDark : snackbarLight);
                         longSnackbar.show();
                         longSnackbar.setCallback(new Snackbar.Callback() {
                             @Override
@@ -449,6 +484,11 @@ public class ViewerActivity extends AppCompatActivity {
 
         Snackbar notConnectedSnackBar = Snackbar.make(layout, R.string.no_conn_title,
                 Snackbar.LENGTH_LONG);
+
+        final int snackbarLight = ContextCompat.getColor(context, R.color.snackbar_light);
+        final int snackbarDark = ContextCompat.getColor(context, R.color.snackbar_dark);
+        ViewGroup snackbarView = (ViewGroup) notConnectedSnackBar.getView();
+        snackbarView.setBackgroundColor(ThemeUtils.darkTheme ? snackbarDark : snackbarLight);
         notConnectedSnackBar.show();
         notConnectedSnackBar.setCallback(new Snackbar.Callback() {
             @Override
@@ -492,5 +532,4 @@ public class ViewerActivity extends AppCompatActivity {
             }
         }
     }
-
 }

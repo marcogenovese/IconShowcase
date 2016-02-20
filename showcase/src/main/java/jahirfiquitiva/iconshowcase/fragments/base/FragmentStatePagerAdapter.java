@@ -41,6 +41,7 @@ import java.util.ArrayList;
  */
 
 public abstract class FragmentStatePagerAdapter extends PagerAdapter {
+
     private static final String TAG = "FSPA";
     private static final boolean DEBUG = false;
 

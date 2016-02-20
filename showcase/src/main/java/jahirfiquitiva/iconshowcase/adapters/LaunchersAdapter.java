@@ -50,6 +50,7 @@ import jahirfiquitiva.iconshowcase.utilities.Utils;
 public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.LauncherHolder> implements View.OnClickListener {
 
     public interface ClickListener {
+
         void onClick(int index);
     }
 

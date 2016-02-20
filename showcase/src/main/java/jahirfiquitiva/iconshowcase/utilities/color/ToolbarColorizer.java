@@ -21,7 +21,7 @@
  *
  */
 
-package jahirfiquitiva.iconshowcase.utilities;
+package jahirfiquitiva.iconshowcase.utilities.color;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -45,8 +45,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.bumptech.glide.util.Util;
 
 import java.lang.reflect.Field;
 
@@ -99,86 +97,6 @@ public class ToolbarColorizer {
             //Step 3: Changing the color of title and subtitle.
             toolbar.setTitleTextColor(toolbarIconsColor);
             toolbar.setSubtitleTextColor(toolbarIconsColor);
-        }
-    }
-
-    public static void colorizeToolbarWithAlpha(Toolbar toolbar, int toolbarIconsColor, float alpha) {
-        final PorterDuffColorFilter colorFilter = new PorterDuffColorFilter(toolbarIconsColor, PorterDuff.Mode.SRC_IN);
-
-        for (int i = 0; i < toolbar.getChildCount(); i++) {
-            final View v = toolbar.getChildAt(i);
-
-            //Step 1 : Changing the color of back button (or open drawer button).
-            if (v instanceof ImageButton) {
-                //Action Bar back button
-                ((ImageButton) v).getDrawable().setColorFilter(colorFilter);
-            }
-
-            if (v instanceof ActionMenuView) {
-                for (int j = 0; j < ((ActionMenuView) v).getChildCount(); j++) {
-                    //Step 2: Changing the color of any ActionMenuViews - icons that are not back button, nor text, nor overflow menu icon.
-                    //Colorize the ActionViews -> all icons that are NOT: back button | overflow menu
-                    final View innerView = ((ActionMenuView) v).getChildAt(j);
-                    if (innerView instanceof ActionMenuItemView) {
-                        for (int k = 0; k < ((ActionMenuItemView) innerView).getCompoundDrawables().length; k++) {
-                            if (((ActionMenuItemView) innerView).getCompoundDrawables()[k] != null) {
-                                final int finalK = k;
-
-                                //Important to set the color filter in separate thread, by adding it to the message queue
-                                //Won't work otherwise.
-                                innerView.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        ((ActionMenuItemView) innerView).getCompoundDrawables()[finalK].setColorFilter(colorFilter);
-                                    }
-                                });
-                            }
-                        }
-                    }
-                }
-            }
-
-            //Step 3: Changing the color of title and subtitle.
-            toolbar.setTitleTextColor(toolbarIconsColor);
-            toolbar.setSubtitleTextColor(toolbarIconsColor);
-        }
-    }
-
-    public static void colorizeToolbarIcons(final Context context, Toolbar toolbar) {
-
-        for (int i = 0; i < toolbar.getChildCount(); i++) {
-            final View v = toolbar.getChildAt(i);
-
-            //Step 1 : Changing the color of back button (or open drawer button).
-            if (v instanceof ImageButton) {
-                //Action Bar back button
-                Utils.animateImageView(context, (ImageButton) v);
-            }
-
-            if (v instanceof ActionMenuView) {
-                for (int j = 0; j < ((ActionMenuView) v).getChildCount(); j++) {
-                    //Step 2: Changing the color of any ActionMenuViews - icons that are not back button, nor text, nor overflow menu icon.
-                    //Colorize the ActionViews -> all icons that are NOT: back button | overflow menu
-                    final View innerView = ((ActionMenuView) v).getChildAt(j);
-                    if (innerView instanceof ActionMenuItemView) {
-                        for (int k = 0; k < ((ActionMenuItemView) innerView).getCompoundDrawables().length; k++) {
-                            if (((ActionMenuItemView) innerView).getCompoundDrawables()[k] != null) {
-                                final int finalK = k;
-
-                                //Important to set the color filter in separate thread, by adding it to the message queue
-                                //Won't work otherwise.
-                                innerView.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        //Utils.animateImageView(context,((ActionMenuItemView) innerView));
-                                    }
-                                });
-                            }
-                        }
-                    }
-                }
-            }
-
         }
     }
 

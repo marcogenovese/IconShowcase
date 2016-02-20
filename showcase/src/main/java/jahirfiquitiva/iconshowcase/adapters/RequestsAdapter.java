@@ -42,6 +42,7 @@ import jahirfiquitiva.iconshowcase.models.RequestItem;
 public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.RequestsHolder> {
 
     public interface ClickListener {
+
         void onClick(int index);
     }
 
@@ -177,6 +178,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
     }
 
     public class AppIconFetchingQueue {
+
         int mIconsRemaining;
         RecyclerView mRecyclerView;
 

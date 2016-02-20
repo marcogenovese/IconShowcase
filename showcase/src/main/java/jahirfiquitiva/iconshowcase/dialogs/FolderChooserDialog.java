@@ -59,6 +59,7 @@ public class FolderChooserDialog extends DialogFragment implements MaterialDialo
     private String initialPath;
 
     public interface FolderSelectionCallback {
+
         void onFolderSelection(File folder);
     }
 
@@ -200,6 +201,7 @@ public class FolderChooserDialog extends DialogFragment implements MaterialDialo
     }
 
     private static class FolderSorter implements Comparator<File> {
+
         @Override
         public int compare(File lhs, File rhs) {
             return lhs.getName().compareTo(rhs.getName());

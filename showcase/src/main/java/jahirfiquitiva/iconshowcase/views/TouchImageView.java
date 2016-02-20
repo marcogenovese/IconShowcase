@@ -653,6 +653,7 @@ public class TouchImageView extends ImageView {
      * @param mode
      * @param size
      * @param drawableWidth
+     *
      * @return
      */
     private int setViewSize(int mode, int size, int drawableWidth) {
@@ -791,6 +792,7 @@ public class TouchImageView extends ImageView {
     }
 
     public interface OnTouchImageViewListener {
+
         void onMove();
     }
 
@@ -863,6 +865,7 @@ public class TouchImageView extends ImageView {
      * @author Ortiz
      */
     private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
+
         @Override
         public boolean onScaleBegin(ScaleGestureDetector detector) {
             setState(State.ZOOM);
@@ -1018,6 +1021,7 @@ public class TouchImageView extends ImageView {
          * from the current zoom.
          *
          * @param t
+         *
          * @return
          */
         private double calculateDeltaScale(float t) {
@@ -1034,6 +1038,7 @@ public class TouchImageView extends ImageView {
      * @param y            y-coordinate of touch event
      * @param clipToBitmap Touch event may occur within view, but outside image content. True, to clip return value
      *                     to the bounds of the bitmap size.
+     *
      * @return Coordinates of the point touched, in the coordinate system of the original drawable.
      */
     private PointF transformCoordTouchToBitmap(float x, float y, boolean clipToBitmap) {
@@ -1057,6 +1062,7 @@ public class TouchImageView extends ImageView {
      *
      * @param bx x-coordinate in original bitmap coordinate system
      * @param by y-coordinate in original bitmap coordinate system
+     *
      * @return Coordinates of the point in the view's coordinate system.
      */
     private PointF transformCoordBitmapToTouch(float bx, float by) {
@@ -1146,6 +1152,7 @@ public class TouchImageView extends ImageView {
 
     @TargetApi(VERSION_CODES.GINGERBREAD)
     private class CompatScroller {
+
         Scroller scroller;
         OverScroller overScroller;
         boolean isPreGingerbread;
@@ -1222,6 +1229,7 @@ public class TouchImageView extends ImageView {
     }
 
     private class ZoomVariables {
+
         public float scale;
         public float focusX;
         public float focusY;

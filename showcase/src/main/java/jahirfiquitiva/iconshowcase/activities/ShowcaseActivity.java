@@ -31,6 +31,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -92,7 +93,6 @@ import jahirfiquitiva.iconshowcase.tasks.LoadIconsLists;
 import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
-import jahirfiquitiva.iconshowcase.utilities.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.utilities.ZooperIconFontsHelper;
 import jahirfiquitiva.iconshowcase.views.CustomCoordinatorLayout;
@@ -136,7 +136,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             turbo_action = "com.phonemetra.turbo.launcher.icons.ACTION_PICK_ICON",
             nova_action = "com.novalauncher.THEME";
 
-    public static boolean iconPicker, wallsPicker, iconPickerEnabled = false, wallsEnabled = false,
+    public static boolean iconsPicker, wallsPicker, iconsPickerEnabled = false, wallsEnabled = false,
             applyEnabled = false, SHUFFLE = true, shuffleIcons = true, selectAll = true;
 
     private static String thaAppName, thaHome, thaPreviews, thaApply, thaWalls, thaRequest, thaDonate, thaFAQs,
@@ -147,7 +147,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     public String version;
 
     public static long currentItem = -1, wallsIdentifier = 0,
-            iconPickerIdentifier = 0, applyIdentifier = 0, settingsIdentifier = 0,
+            iconsPickerIdentifier = 0, applyIdentifier = 0, settingsIdentifier = 0,
             secondaryStart = 0;
 
     public static int numOfIcons = 4, wallpaper = -1;
@@ -163,6 +163,8 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     public static FloatingActionButton fab;
     public static ImageView icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8;
     public static TextView titleView;
+    public static ImageView toolbarHeader;
+    public static Bitmap toolbarHeaderImage;
 
     public static Drawer drawer;
     public AccountHeader drawerHeader;
@@ -259,17 +261,14 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
         setContentView(R.layout.showcase_activity);
 
-        if (!iconPicker && !wallsPicker) {
-            setupToolbarHeader(this);
-        }
-
         runLicenseChecker();
 
         coordinatorLayout = (CustomCoordinatorLayout) findViewById(R.id.mainCoordinatorLayout);
         appbar = (AppBarLayout) findViewById(R.id.appbar);
-
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         titleView = (TextView) findViewById(R.id.title);
+        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbar);
+        toolbarHeader = (ImageView) findViewById(R.id.toolbarHeader);
 
         setSupportActionBar(toolbar);
 
@@ -285,38 +284,9 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         thaFAQs = getResources().getString(R.string.faqs_section);
         thaZooper = getResources().getString(R.string.zooper_section_title);
 
-        final int iconsColor = ThemeUtils.darkTheme ?
-                ContextCompat.getColor(this, R.color.toolbar_text_dark) :
-                ContextCompat.getColor(this, R.color.toolbar_text_light);
-
-        final int expandedIconsColor = ThemeUtils.darkTheme ?
-                ContextCompat.getColor(this, R.color.expanded_toolbar_icons_dark) :
-                ContextCompat.getColor(this, R.color.expanded_toolbar_icons_light);
-
-        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbar);
-        collapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(this, android.R.color.transparent));
-        collapsingToolbarLayout.setCollapsedTitleTextColor(iconsColor);
         collapsingToolbarLayout.setTitle(thaAppName);
 
-        ToolbarColorizer.colorizeToolbar(toolbar, expandedIconsColor);
-
-        appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                double alpha = Utils.round(((double) (verticalOffset * -1) / 288.0), 1);
-                int finalIconsColor = 0;
-                if (alpha > 1.0) {
-                    finalIconsColor = Utils.blendColors(
-                            expandedIconsColor,
-                            iconsColor, 1.0f);
-                } else {
-                    finalIconsColor = Utils.blendColors(
-                            ContextCompat.getColor(context, R.color.expanded_toolbar_icons_light),
-                            iconsColor, (float) alpha);
-                }
-                ToolbarColorizer.colorizeToolbar(toolbar, finalIconsColor);
-            }
-        });
+        Utils.setupCollapsingToolbarTextColors(context, collapsingToolbarLayout);
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
 
@@ -370,14 +340,14 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         setupDrawer(toolbar, savedInstanceState);
 
         if (savedInstanceState == null) {
-            if (iconPicker && iconPickerEnabled) {
+            if (iconsPicker && iconsPickerEnabled) {
                 loadIcons = ISDialogs.showLoadingIconsDialog(context);
                 loadIcons.show();
                 loadIcons.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
-                        drawerItemClick(iconPickerIdentifier);
-                        drawer.setSelection(iconPickerIdentifier);
+                        drawerItemClick(iconsPickerIdentifier);
+                        drawer.setSelection(iconsPickerIdentifier);
                     }
                 });
                 if (!SHOW_LOAD_ICONS_DIALOG) {
@@ -494,7 +464,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         if (drawer != null) {
             drawer.setSelection(itemId);
         }
-
     }
 
     @Override
@@ -507,6 +476,10 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     @Override
     protected void onResume() {
         super.onResume();
+        if (!iconsPicker && !wallsPicker) {
+            setupToolbarHeader(this, toolbarHeader);
+        }
+        Utils.setupToolbarIconsAndTextsColors(context, appbar, toolbar, toolbarHeaderImage);
         if (mLastTheme != ThemeUtils.darkTheme
                 || mLastNavBar != ThemeUtils.coloredNavBar) {
             ThemeUtils.restartActivity(this);
@@ -528,11 +501,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         if (collapsingToolbarLayout != null) {
-            int iconsColor = ThemeUtils.darkTheme ?
-                    ContextCompat.getColor(this, R.color.toolbar_text_dark) :
-                    ContextCompat.getColor(this, R.color.toolbar_text_light);
-            collapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(this, android.R.color.transparent));
-            collapsingToolbarLayout.setCollapsedTitleTextColor(iconsColor);
+            Utils.setupCollapsingToolbarTextColors(this, collapsingToolbarLayout);
             collapsingToolbarLayout.setTitle(savedInstanceState.getString("toolbarTitle",
                     thaAppName));
         }
@@ -543,7 +512,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     public void onBackPressed() {
         if (drawer != null && drawer.isDrawerOpen()) {
             drawer.closeDrawer();
-        } else if (drawer != null && currentItem != 1 && !iconPicker) {
+        } else if (drawer != null && currentItem != 1 && !iconsPicker) {
             drawer.setSelection(1);
         } else if (drawer != null) {
             super.onBackPressed();
@@ -564,12 +533,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
-        int iconsColor = ThemeUtils.darkTheme ?
-                ContextCompat.getColor(this, R.color.expanded_toolbar_icons_dark) :
-                ContextCompat.getColor(this, R.color.expanded_toolbar_icons_light);
-        MenuItem changelog = menu.findItem(R.id.changelog);
-        ToolbarColorizer.tintChangelogIcon(changelog, this, iconsColor);
-        ToolbarColorizer.colorizeToolbar(toolbar, iconsColor);
         return true;
     }
 
@@ -793,8 +756,8 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
                         @Override
                         public boolean onItemLongClick(View view, int position, IDrawerItem drawerItem) {
-                            if (drawerItem.getIdentifier() == iconPickerIdentifier && mIsPremium) {
-                                switchFragment(iconPickerIdentifier, "Requests", context);
+                            if (drawerItem.getIdentifier() == iconsPickerIdentifier && mIsPremium) {
+                                switchFragment(iconsPickerIdentifier, "Requests", context);
                                 drawer.closeDrawer();
                             }
                             return false;
@@ -825,9 +788,9 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                     break;
 
                 case "Previews":
-                    iconPickerEnabled = true;
-                    iconPickerIdentifier = i + 1;
-                    previews = new PrimaryDrawerItem().withName(thaPreviews).withIcon(GoogleMaterial.Icon.gmd_palette).withIdentifier(iconPickerIdentifier);
+                    iconsPickerEnabled = true;
+                    iconsPickerIdentifier = i + 1;
+                    previews = new PrimaryDrawerItem().withName(thaPreviews).withIcon(GoogleMaterial.Icon.gmd_palette).withIdentifier(iconsPickerIdentifier);
                     drawerBuilder.addDrawerItems(previews);
                     break;
 
@@ -991,20 +954,20 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                 case nova_action:
                 case Intent.ACTION_PICK:
                 case Intent.ACTION_GET_CONTENT:
-                    iconPicker = true;
+                    iconsPicker = true;
                     wallsPicker = false;
                     break;
                 case Intent.ACTION_SET_WALLPAPER:
-                    iconPicker = false;
+                    iconsPicker = false;
                     wallsPicker = true;
                     break;
                 default:
-                    iconPicker = false;
+                    iconsPicker = false;
                     wallsPicker = false;
                     break;
             }
         } catch (ActivityNotFoundException | NullPointerException e) {
-            iconPicker = false;
+            iconsPicker = false;
             wallsPicker = false;
         }
     }
@@ -1067,31 +1030,33 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         icon7.setVisibility(View.GONE);
         icon8.setVisibility(View.GONE);
 
-        switch (numOfIcons) {
-            case 4:
-                icon1.setVisibility(View.VISIBLE);
-                icon2.setVisibility(View.VISIBLE);
-                icon3.setVisibility(View.VISIBLE);
-                icon4.setVisibility(View.VISIBLE);
-                break;
-            case 6:
-                icon1.setVisibility(View.VISIBLE);
-                icon2.setVisibility(View.VISIBLE);
-                icon3.setVisibility(View.VISIBLE);
-                icon4.setVisibility(View.VISIBLE);
-                icon5.setVisibility(View.VISIBLE);
-                icon6.setVisibility(View.VISIBLE);
-                break;
-            case 8:
-                icon1.setVisibility(View.VISIBLE);
-                icon2.setVisibility(View.VISIBLE);
-                icon3.setVisibility(View.VISIBLE);
-                icon4.setVisibility(View.VISIBLE);
-                icon5.setVisibility(View.VISIBLE);
-                icon6.setVisibility(View.VISIBLE);
-                icon7.setVisibility(View.VISIBLE);
-                icon8.setVisibility(View.VISIBLE);
-                break;
+        if (!iconsPicker && !wallsPicker) {
+            switch (numOfIcons) {
+                case 4:
+                    icon1.setVisibility(View.VISIBLE);
+                    icon2.setVisibility(View.VISIBLE);
+                    icon3.setVisibility(View.VISIBLE);
+                    icon4.setVisibility(View.VISIBLE);
+                    break;
+                case 6:
+                    icon1.setVisibility(View.VISIBLE);
+                    icon2.setVisibility(View.VISIBLE);
+                    icon3.setVisibility(View.VISIBLE);
+                    icon4.setVisibility(View.VISIBLE);
+                    icon5.setVisibility(View.VISIBLE);
+                    icon6.setVisibility(View.VISIBLE);
+                    break;
+                case 8:
+                    icon1.setVisibility(View.VISIBLE);
+                    icon2.setVisibility(View.VISIBLE);
+                    icon3.setVisibility(View.VISIBLE);
+                    icon4.setVisibility(View.VISIBLE);
+                    icon5.setVisibility(View.VISIBLE);
+                    icon6.setVisibility(View.VISIBLE);
+                    icon7.setVisibility(View.VISIBLE);
+                    icon8.setVisibility(View.VISIBLE);
+                    break;
+            }
         }
 
         if (mPrefs.getAnimationsEnabled()) {
@@ -1125,18 +1090,16 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         }
     }
 
-    public static void setupToolbarHeader(Context context) {
-
-        ImageView toolbarHeader = (ImageView) ((AppCompatActivity) context).findViewById(R.id.toolbarHeader);
+    public static void setupToolbarHeader(Context context, ImageView toolbarHeader) {
 
         if (WITH_USER_WALLPAPER_AS_TOOLBAR_HEADER && mPrefs.getWallpaperAsToolbarHeaderEnabled()) {
             WallpaperManager wm = WallpaperManager.getInstance(context);
             if (wm != null) {
                 Drawable currentWallpaper = wm.getFastDrawable();
                 if (currentWallpaper != null) {
-                    float alpha = 0.8f;
-                    toolbarHeader.setAlpha(alpha);
+                    toolbarHeader.setAlpha(0.9f);
                     toolbarHeader.setImageDrawable(currentWallpaper);
+                    ShowcaseActivity.toolbarHeaderImage = Utils.drawableToBitmap(currentWallpaper);
                 }
             }
         } else {
@@ -1161,6 +1124,8 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             }
 
             toolbarHeader.setImageResource(wallpapersArray.get(wallpaper));
+            ShowcaseActivity.toolbarHeaderImage = Utils.drawableToBitmap(
+                    ContextCompat.getDrawable(context, wallpapersArray.get(wallpaper)));
         }
 
         toolbarHeader.setVisibility(View.VISIBLE);

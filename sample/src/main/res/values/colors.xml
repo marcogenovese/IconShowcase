@@ -33,7 +33,7 @@
     <color name="md_button_text_light">@color/light_theme_accent</color>
     <color name="material_drawer_selected_text">@color/light_theme_accent</color>
     <color name="material_drawer_background">@color/light_bg</color>
-    <color name="toolbar_text_light">#f44336</color>
+    <color name="toolbar_text_light">#656565</color>
     <color name="tabs_indicator_light">#656565</color>
     <color name="tabs_normal_text_light">#80656565</color>
     <color name="tabs_selected_text_light">#656565</color>

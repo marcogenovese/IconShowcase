@@ -55,14 +55,35 @@
                 android:id="@+id/toolbarHeader"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/toolbar_expanded"
-                android:background="@android:color/black"
                 android:fitsSystemWindows="true"
                 android:scaleType="centerCrop"
                 android:visibility="invisible"
                 app:layout_collapseMode="parallax"
                 tools:ignore="ContentDescription"/>
 
-            <include layout="@layout/toolbar_icons_grid"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/materialize_statusbar"
+                android:fitsSystemWindows="true"
+                app:layout_collapseMode="parallax">
+
+                <ImageView
+                    android:id="@+id/zooperWidget"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/fab_size_mini"
+                    android:fitsSystemWindows="true"
+                    android:scaleType="fitCenter"
+                    android:visibility="invisible"
+                    app:layout_collapseMode="parallax"
+                    tools:ignore="ContentDescription"/>
+
+            </LinearLayout>
+
+            <include
+                layout="@layout/toolbar_icons_grid"
+                app:layout_collapseMode="parallax"/>
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"

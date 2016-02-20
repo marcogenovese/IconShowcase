@@ -21,8 +21,9 @@
  *
  */
 
-package jahirfiquitiva.iconshowcase.utilities;
+package jahirfiquitiva.iconshowcase.utilities.glide;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.os.Build;
 
@@ -37,7 +38,28 @@ public class GlideConfiguration implements GlideModule {
 
     @Override
     public void applyOptions(Context context, GlideBuilder builder) {
-        builder.setDecodeFormat(context.getResources().getBoolean(R.bool.high_definition_walls) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN ? DecodeFormat.PREFER_ARGB_8888 : DecodeFormat.PREFER_RGB_565);
+        boolean runsMinSDK = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
+        boolean enableHDWalls = context.getResources().getBoolean(R.bool.high_definition_walls);
+
+        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        boolean lowRAMDevice = false;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+            lowRAMDevice = activityManager.isLowRamDevice();
+        }
+
+        if (runsMinSDK) {
+            if (lowRAMDevice) {
+                builder.setDecodeFormat(DecodeFormat.PREFER_RGB_565);
+            } else {
+                if (enableHDWalls) {
+                    builder.setDecodeFormat(DecodeFormat.PREFER_ARGB_8888);
+                } else {
+                    builder.setDecodeFormat(DecodeFormat.PREFER_RGB_565);
+                }
+            }
+        } else {
+            builder.setDecodeFormat(DecodeFormat.PREFER_RGB_565);
+        }
     }
 
     @Override

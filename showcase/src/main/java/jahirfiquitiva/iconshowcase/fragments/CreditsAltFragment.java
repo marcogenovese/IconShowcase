@@ -40,16 +40,15 @@ import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 
 import jahirfiquitiva.iconshowcase.R;
-import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
-import jahirfiquitiva.iconshowcase.utilities.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 public class CreditsAltFragment extends Fragment {
 
     private Context context;
     private ViewGroup layout;
+    //private CircularTransform circularTransform;
 
     private boolean YOU_HAVE_WEBSITE = false;
 
@@ -62,6 +61,8 @@ public class CreditsAltFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         context = getActivity();
+
+        //circularTransform = new CircularTransform(context);
 
         YOU_HAVE_WEBSITE = context.getResources().getBoolean(R.bool.you_have_a_website);
 
@@ -91,6 +92,7 @@ public class CreditsAltFragment extends Fragment {
 
         Glide.with(context)
                 .load(Utils.getStringFromResources(context, R.string.dashboard_author_photo))
+                        //.transform(circularTransform)
                 .into(devPhoto);
 
         ImageView designerBanner = (ImageView) layout.findViewById(R.id.designerHeader);
@@ -102,6 +104,7 @@ public class CreditsAltFragment extends Fragment {
         ImageView designerPhoto = (ImageView) layout.findViewById(R.id.designerPhoto);
         Glide.with(context)
                 .load(Utils.getStringFromResources(context, R.string.iconpack_author_photo))
+                        //.transform(circularTransform)
                 .into(designerPhoto);
 
         CardView sherryCV = (CardView) layout.findViewById(R.id.sherryCard);
@@ -126,7 +129,6 @@ public class CreditsAltFragment extends Fragment {
             public void onClick(View v) {
                 ISDialogs.showUICollaboratorsDialog(context, uiCollaboratorsLinks);
             }
-
         });
 
         CardView libsCard = (CardView) layout.findViewById(R.id.libsCard);
@@ -135,7 +137,6 @@ public class CreditsAltFragment extends Fragment {
             public void onClick(View v) {
                 ISDialogs.showLibrariesDialog(context, libsLinks);
             }
-
         });
 
         CardView translators = (CardView) layout.findViewById(R.id.translatorsCard);
@@ -144,7 +145,6 @@ public class CreditsAltFragment extends Fragment {
             public void onClick(View v) {
                 ISDialogs.showTranslatorsDialogs(context);
             }
-
         });
 
         return layout;
@@ -154,12 +154,6 @@ public class CreditsAltFragment extends Fragment {
     public void onResume() {
         super.onResume();
         Utils.collapseToolbar(getActivity());
-        int iconsColor = ThemeUtils.darkTheme ?
-                ContextCompat.getColor(context, R.color.toolbar_text_dark) :
-                ContextCompat.getColor(context, R.color.toolbar_text_light);
-        ToolbarColorizer.colorizeToolbar(
-                ShowcaseActivity.toolbar,
-                iconsColor);
     }
 
     private void setupViews(final ViewGroup layout) {
@@ -265,7 +259,5 @@ public class CreditsAltFragment extends Fragment {
                         getResources().getString(R.string.dashboard_author_gplus_community));
             }
         });
-
     }
-
 }

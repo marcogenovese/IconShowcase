@@ -30,9 +30,11 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -43,9 +45,11 @@ import java.lang.ref.WeakReference;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
+import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
+
     private Context context;
     private Activity activity;
     private MaterialDialog dialog;
@@ -119,6 +123,10 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
 
                 Snackbar longSnackbar = Snackbar.make(layout,
                         context.getString(R.string.set_as_wall_done), Snackbar.LENGTH_LONG);
+                final int snackbarLight = ContextCompat.getColor(context, R.color.snackbar_light);
+                final int snackbarDark = ContextCompat.getColor(context, R.color.snackbar_dark);
+                ViewGroup snackbarView = (ViewGroup) longSnackbar.getView();
+                snackbarView.setBackgroundColor(ThemeUtils.darkTheme ? snackbarDark : snackbarLight);
                 longSnackbar.show();
                 longSnackbar.setCallback(new Snackbar.Callback() {
                     @Override

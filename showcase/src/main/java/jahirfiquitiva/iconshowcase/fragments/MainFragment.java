@@ -48,7 +48,6 @@ import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.utilities.LauncherIntents;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
-import jahirfiquitiva.iconshowcase.utilities.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 public class MainFragment extends Fragment {
@@ -141,8 +140,8 @@ public class MainFragment extends Fragment {
         iconsbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShowcaseActivity.drawerItemClick(ShowcaseActivity.iconPickerIdentifier);
-                ShowcaseActivity.drawer.setSelection(ShowcaseActivity.iconPickerIdentifier);
+                ShowcaseActivity.drawerItemClick(ShowcaseActivity.iconsPickerIdentifier);
+                ShowcaseActivity.drawer.setSelection(ShowcaseActivity.iconsPickerIdentifier);
             }
         });
 
@@ -164,12 +163,7 @@ public class MainFragment extends Fragment {
     public void onResume() {
         super.onResume();
         showFAB();
-        int iconsColor = ThemeUtils.darkTheme ?
-                ContextCompat.getColor(getActivity(), R.color.toolbar_text_dark) :
-                ContextCompat.getColor(getActivity(), R.color.toolbar_text_light);
-        ToolbarColorizer.colorizeToolbar(
-                ShowcaseActivity.toolbar,
-                iconsColor);
+        Utils.expandToolbar(getActivity());
     }
 
     @Override

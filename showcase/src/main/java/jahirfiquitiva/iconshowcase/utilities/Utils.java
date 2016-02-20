@@ -23,34 +23,40 @@
 
 package jahirfiquitiva.iconshowcase.utilities;
 
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
+import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
 import android.support.customtabs.CustomTabsClient;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.customtabs.CustomTabsServiceConnection;
 import android.support.customtabs.CustomTabsSession;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.graphics.Palette;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.ImageView;
 
 import com.github.florent37.glidepalette.GlidePalette;
+import com.mikepenz.materialize.util.UIUtils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -59,6 +65,8 @@ import java.util.concurrent.Callable;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.adapters.WallpapersAdapter;
+import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
+import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.views.CustomCoordinatorLayout;
 
 /**
@@ -312,44 +320,204 @@ public class Utils {
         coordinatorLayout.setScrollAllowed(true);
     }
 
-    public static void animateImageView(Context context, final ImageView v) {
-        final int toolbarExpandedIconsColor = ContextCompat.getColor(context, R.color.expanded_toolbar_icons_dark);
+    public static void setupToolbarIconsAndTextsColors(Context context, AppBarLayout appbar,
+                                                       final Toolbar toolbar, final Bitmap bitmap) {
 
-        final ValueAnimator colorAnim = ObjectAnimator.ofFloat(0f, 1f);
-        colorAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                float factor = (Float) animation.getAnimatedValue();
-                int alpha = adjustAlpha(toolbarExpandedIconsColor, factor);
-                v.setColorFilter(alpha, PorterDuff.Mode.SRC_ATOP);
-                if (factor == 0.0) {
-                    v.setColorFilter(null);
+        final int iconsColor = ThemeUtils.darkTheme ?
+                ContextCompat.getColor(context, R.color.toolbar_text_dark) :
+                ContextCompat.getColor(context, R.color.toolbar_text_light);
+
+        final int paletteGeneratedColor = getIconsColorFromBitmap(bitmap, context);
+
+        if (appbar != null) {
+            appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+                @Override
+                public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                    double alpha = round(((double) (verticalOffset * -1) / 288.0), 1);
+                    int paletteColor = ColorUtils.blendColors(
+                            paletteGeneratedColor != 0 ? paletteGeneratedColor : iconsColor,
+                            iconsColor, alpha > 1.0 ? 1.0f : (float) alpha);
+                    if (toolbar != null) {
+                        ToolbarColorizer.colorizeToolbar(toolbar, paletteColor);
+                    }
+                }
+            });
+        }
+    }
+
+    public static void setupCollapsingToolbarTextColors(Context context,
+                                                        CollapsingToolbarLayout collapsingToolbarLayout) {
+        int iconsColor = ThemeUtils.darkTheme ?
+                ContextCompat.getColor(context, R.color.toolbar_text_dark) :
+                ContextCompat.getColor(context, R.color.toolbar_text_light);
+        collapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(context, android.R.color.transparent));
+        collapsingToolbarLayout.setCollapsedTitleTextColor(iconsColor);
+    }
+
+    public static Bitmap drawableToBitmap(Drawable drawable) {
+        Bitmap bitmap;
+        if (drawable instanceof BitmapDrawable) {
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+            if (bitmapDrawable.getBitmap() != null) {
+                return bitmapDrawable.getBitmap();
+            }
+        }
+        if (drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
+            bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
+        } else {
+            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        }
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+        drawable.draw(canvas);
+        return bitmap;
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    public static Bitmap getBitmapWithReplacedColor(@NonNull Bitmap bitmap, @ColorInt int colorToReplace, @ColorInt int replaceWith) {
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        int[] pixels = new int[width * height];
+        bitmap.getPixels(pixels, 0, width, 0, 0, width, height);
+
+        int minX = width;
+        int minY = height;
+        int maxX = -1;
+        int maxY = -1;
+
+        Bitmap newBitmap = Bitmap.createBitmap(width, height, bitmap.getConfig());
+        int pixel;
+
+        for (int y = 0; y < height; ++y) {
+            for (int x = 0; x < width; ++x) {
+                int index = y * width + x;
+                pixel = pixels[index];
+                if (pixel == colorToReplace) {
+                    pixels[index] = replaceWith;
+                }
+                if (pixels[index] != replaceWith) {
+                    if (x < minX)
+                        minX = x;
+                    if (x > maxX)
+                        maxX = x;
+                    if (y < minY)
+                        minY = y;
+                    if (y > maxY)
+                        maxY = y;
                 }
             }
-        });
+        }
 
-        colorAnim.setDuration(500);
-        colorAnim.setRepeatMode(ValueAnimator.REVERSE);
-        colorAnim.setRepeatCount(-1);
-        colorAnim.start();
+        newBitmap.setPixels(pixels, 0, width, 0, 0, width, height);
+
+        return Bitmap.createBitmap(newBitmap, minX, minY, (maxX - minX) + 1, (maxY - minY) + 1);
     }
 
-    public static int adjustAlpha(int color, float factor) {
-        int alpha = Math.round(Color.alpha(color) * factor);
-        int red = Color.red(color);
-        int green = Color.green(color);
-        int blue = Color.blue(color);
-        return Color.argb(alpha, red, green, blue);
+    public static int getIconsColorFromBitmap(Bitmap bitmap, Context context) {
+        int color = 0;
+
+        final int twentyFourDip = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                24, context.getResources().getDisplayMetrics());
+
+        final int pictureHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                256, context.getResources().getDisplayMetrics());
+
+        int divider = (int) (twentyFourDip) + UIUtils.getStatusBarHeight(context, true);
+
+        final int heightDivider = (int) (pictureHeight / divider);
+
+        if (bitmap != null) {
+
+            Palette palette = new Palette.Builder(bitmap)
+                    .clearFilters()
+                    .generate();
+
+            boolean isDark;
+            @ColorUtils.Lightness int lightness = ColorUtils.isDark(palette, false);
+            if (lightness == ColorUtils.LIGHTNESS_UNKNOWN) {
+                isDark = ColorUtils.isDark(bitmap, true, 1, heightDivider, false);
+            } else {
+                isDark = lightness == ColorUtils.IS_DARK;
+            }
+
+            Palette.Swatch swatch1 = null, swatch2 = null, swatch3 = null, swatch4 = null;
+
+            if (isDark) {
+                swatch1 = palette.getVibrantSwatch();
+                swatch2 = palette.getMutedSwatch();
+                swatch3 = palette.getLightVibrantSwatch();
+                swatch4 = palette.getLightMutedSwatch();
+            } else {
+                swatch1 = palette.getDarkVibrantSwatch();
+                swatch2 = palette.getDarkMutedSwatch();
+            }
+
+            if (swatch1 != null) {
+                color = swatch1.getRgb();
+            } else if (swatch2 != null) {
+                color = swatch2.getRgb();
+            } else if (swatch3 != null && isDark) {
+                color = swatch3.getRgb();
+            } else if (swatch4 != null && isDark) {
+                color = swatch4.getRgb();
+            }
+
+        }
+
+        return color;
     }
 
-    public static int blendColors(int from, int to, float ratio) {
-        final float inverseRatio = 1f - ratio;
+    public static int getIconsColorForViewer(Bitmap bitmap, Context context) {
+        int color = 0;
 
-        final float r = Color.red(to) * ratio + Color.red(from) * inverseRatio;
-        final float g = Color.green(to) * ratio + Color.green(from) * inverseRatio;
-        final float b = Color.blue(to) * ratio + Color.blue(from) * inverseRatio;
+        final int twentyFourDip = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                24, context.getResources().getDisplayMetrics());
 
-        return Color.rgb((int) r, (int) g, (int) b);
+        if (bitmap != null) {
+
+            Palette palette = new Palette.Builder(bitmap)
+                    .clearFilters()
+                    .setRegion(0, 0, bitmap.getWidth() - 1, twentyFourDip)
+                    .generate();
+
+            boolean isDark;
+            @ColorUtils.Lightness int lightness = ColorUtils.isDark(palette, true);
+            if (lightness == ColorUtils.LIGHTNESS_UNKNOWN) {
+                isDark = ColorUtils.isDark(bitmap, bitmap.getWidth() / 2, 0, true);
+            } else {
+                isDark = lightness == ColorUtils.IS_DARK;
+            }
+
+            Palette.Swatch swatch1 = null, swatch2 = null, swatch3 = null, swatch4 = null;
+
+            if (isDark) {
+                swatch1 = palette.getVibrantSwatch();
+                swatch2 = palette.getMutedSwatch();
+            } else {
+                swatch1 = palette.getDarkVibrantSwatch();
+                swatch2 = palette.getDarkMutedSwatch();
+            }
+
+            swatch3 = palette.getLightVibrantSwatch();
+            swatch4 = palette.getLightMutedSwatch();
+
+            if (swatch1 != null) {
+                showLog("Using vibrant swatch - dark: " + isDark);
+                color = swatch1.getRgb();
+            } else if (swatch2 != null) {
+                showLog("Using muted swatch - dark: " + isDark);
+                color = swatch2.getRgb();
+            } else if (swatch3 != null && isDark) {
+                showLog("Using light vibrant swatch");
+                color = swatch3.getRgb();
+            } else if (swatch4 != null && isDark) {
+                showLog("Using light muted swatch");
+                color = swatch4.getRgb();
+            }
+
+        }
+
+        return color;
     }
 
     public static double round(double value, int places) {

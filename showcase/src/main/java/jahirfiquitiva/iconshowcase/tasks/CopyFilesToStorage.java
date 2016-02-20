@@ -36,6 +36,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public class CopyFilesToStorage extends AsyncTask<Void, String, Boolean> {
+
     private Context context;
     private MaterialDialog dialog;
     private String folder;

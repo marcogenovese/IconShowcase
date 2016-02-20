@@ -34,7 +34,6 @@
     <color name="material_drawer_selected_text">@color/light_theme_accent</color>
     <color name="material_drawer_background">@color/light_bg</color>
     <color name="toolbar_text_light">#ffffff</color>
-    <color name="expanded_toolbar_icons_light">#00b0ff</color>
     <color name="tabs_indicator_light">#ffffff</color>
     <color name="tabs_normal_text_light">#80ffffff</color>
     <color name="tabs_selected_text_light">#ffffff</color>
@@ -51,7 +50,6 @@
     <color name="material_drawer_dark_selected_text">@color/dark_theme_accent</color>
     <color name="material_drawer_dark_background">@color/dark_bg</color>
     <color name="toolbar_text_dark">#ffffff</color>
-    <color name="expanded_toolbar_icons_dark">#ffffff</color>
     <color name="tabs_indicator_dark">#ffffff</color>
     <color name="tabs_normal_text_dark">#80ffffff</color>
     <color name="tabs_selected_text_dark">#ffffff</color>
