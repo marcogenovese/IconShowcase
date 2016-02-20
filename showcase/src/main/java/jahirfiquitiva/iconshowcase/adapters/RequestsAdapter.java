@@ -37,6 +37,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.models.RequestItem;
 
 public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.RequestsHolder> {
@@ -48,16 +49,31 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
 
     public ArrayList<RequestItem> appsList;
     Context context;
+    private int limit;
     private final ClickListener mCallback;
     AppIconFetchingQueue mAppIconFetchingQueue;
 
-    public RequestsAdapter(Context context, final ArrayList<RequestItem> appsList) {
+    public RequestsAdapter(final Context context, final ArrayList<RequestItem> appsList,
+                           final int limit) {
         this.context = context;
         this.appsList = appsList;
+        this.limit = limit;
         this.mCallback = new ClickListener() {
             @Override
             public void onClick(int position) {
-                changeAppSelectedState(position);
+                if (limit <= 0) {
+                    changeAppSelectedState(position);
+                } else {
+                    if (getSelectedApps() < limit) {
+                        changeAppSelectedState(position);
+                    } else {
+                        if (isSelected(position)) {
+                            changeAppSelectedState(position);
+                        } else {
+                            ISDialogs.showRequestLimitDialog(context, limit);
+                        }
+                    }
+                }
             }
         };
     }
@@ -123,13 +139,29 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
     }
 
     public void selectOrDeselectAll(boolean select) {
+        boolean showDialog = false;
+
         for (int i = 0; i < appsList.size(); i++) {
             if (select) {
-                selectApp(i);
+                if (limit <= 0) {
+                    selectApp(i);
+                } else {
+                    if (getSelectedApps() < limit) {
+                        selectApp(i);
+                    } else {
+                        showDialog = true;
+                        break;
+                    }
+                }
             } else {
                 deselectApp(i);
             }
         }
+
+        if (showDialog) {
+            ISDialogs.showRequestLimitDialog(context, limit);
+        }
+
     }
 
     public void selectApp(int position) {
@@ -165,6 +197,10 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
             }
         }
         return selected;
+    }
+
+    public boolean isSelected(int i) {
+        return appsList.get(i).isSelected();
     }
 
     public void startIconFetching(RecyclerView view) {

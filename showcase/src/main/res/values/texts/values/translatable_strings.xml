@@ -110,6 +110,8 @@
     <string name="select_all">Select all</string>
     <string name="no_selected_apps_title">No selected apps</string>
     <string name="no_selected_apps_content">You did not select any app to request. Select some before pressing the FAB again.</string>
+    <string name="apps_limit_dialog">Sorry, but you are only allowed to select %1$s apps to request.</string>
+    <string name="apps_limit_dialog_day">Sorry, but you are only allowed to request icons every %1$s hours.</string>
 
     <!-- Icon search -->
     <string name="search_icons">Search icons…</string>
@@ -246,9 +248,6 @@
 
     <string name="assets_installed">%1$s already installed</string>
     <string name="copying_assets">Copying files to ZooperWidget/%1$s</string>
-
-    <string name="fonts_installed">Fonts already installed</string>
-    <string name="iconsets_installed">IconSets already installed</string>
 
     <string name="icon_pack_in_numbers">Icon Pack in numbers</string>
     <string name="themed_icons">Over %1$s themed icons.</string>

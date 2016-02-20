@@ -181,6 +181,20 @@
     <bool name="use_palette_api_in_texts">false</bool>
 
     <!--
+       Do you want the app to use palette api in toolbar header?
+       True, means yes.
+       False, means no.
+       -->
+    <bool name="use_palette_api_in_toolbar">true</bool>
+
+    <!--
+       Do you want the app to use palette api in wallpapers viewer?
+       True, means yes.
+       False, means no.
+       -->
+    <bool name="use_palette_api_in_viewer">true</bool>
+
+    <!--
     Choose one of the palette styles: (use only the numbers here (1~6))
     1. VIBRANT
     2. VIBRANT_LIGHT
@@ -281,6 +295,18 @@
     -->
     <bool name="light_statusbar_in_light_theme">true</bool>
     <bool name="light_statusbar_in_dark_theme">false</bool>
+
+    <!--
+    1. Set the max amount of apps to request.
+    2. Limit requests to 1 ever X hours.
+    Replace X with the number of hours you want.
+    1 means 1 request every 1 hour.
+    24 means 1 request per day.
+    168 means 1 request per week.
+    SET THE FIRST TO 0 IF YOU DON'T WANT TO LIMIT REQUESTS. IF THE FIRST IS 0, THE OTHER WILL BE IGNORED!!
+    -->
+    <integer name="max_apps_to_request">0</integer>
+    <integer name="limit_request_to_x_hours">24</integer>
 
 
     <!--donations stuff-->

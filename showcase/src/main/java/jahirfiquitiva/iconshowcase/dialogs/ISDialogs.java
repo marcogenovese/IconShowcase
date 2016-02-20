@@ -337,6 +337,24 @@ public final class ISDialogs {
                 .show();
     }
 
+    public static void showRequestLimitDialog(Context context, int maxApps) {
+        String content = context.getResources().getString(R.string.apps_limit_dialog, String.valueOf(maxApps));
+        new MaterialDialog.Builder(context)
+                .title(R.string.section_icon_request)
+                .content(content)
+                .positiveText(android.R.string.ok)
+                .show();
+    }
+
+    public static void showRequestLimitDayDialog(Context context, int hours) {
+        String content = context.getResources().getString(R.string.apps_limit_dialog_day, String.valueOf(hours));
+        new MaterialDialog.Builder(context)
+                .title(R.string.section_icon_request)
+                .content(content)
+                .positiveText(android.R.string.ok)
+                .show();
+    }
+
     public static MaterialDialog showThemeChooserDialog(final Activity context) {
         final int[] selectedTheme = {PreferenceManager.getDefaultSharedPreferences(context).getInt("theme", 0)};
         final int[] newSelectedTheme = new int[1];

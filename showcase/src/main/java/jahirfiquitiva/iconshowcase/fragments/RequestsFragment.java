@@ -24,6 +24,7 @@
 package jahirfiquitiva.iconshowcase.fragments;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -46,6 +47,11 @@ import android.widget.ProgressBar;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.adapters.RequestsAdapter;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
@@ -63,13 +69,13 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
     public static RecyclerFastScroller fastScroller;
     public static RequestsAdapter requestsAdapter;
     private static FloatingActionButton fab;
+    private static int maxApps = 0, hoursLimit = 0;
 
     static int columnsNumber, gridSpacing;
     static boolean withBorders;
     public static ViewGroup layout;
 
     private Preferences mPrefs;
-
     private static Activity context;
 
     @Override
@@ -78,6 +84,9 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
         gridSpacing = getResources().getDimensionPixelSize(R.dimen.lists_padding);
         columnsNumber = getResources().getInteger(R.integer.requests_grid_width);
         withBorders = true;
+
+        maxApps = getResources().getInteger(R.integer.max_apps_to_request);
+        hoursLimit = getResources().getInteger(R.integer.limit_request_to_x_hours);
 
         setHasOptionsMenu(true);
         context = getActivity();
@@ -111,7 +120,10 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
                 if (!PermissionUtils.canAccessStorage(getContext())) {
                     PermissionUtils.requestStoragePermission(getActivity(), RequestsFragment.this);
                 } else {
-                    showRequestsFilesCreationDialog(context);
+                    if (maxApps < 0) {
+                        maxApps = 0;
+                    }
+                    startRequestProcess();
                 }
             }
         });
@@ -178,7 +190,7 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
     public static void setupContent() {
         if (layout != null) {
             if (ApplicationBase.allAppsToRequest != null && ApplicationBase.allAppsToRequest.size() > 0) {
-                requestsAdapter = new RequestsAdapter(context, ApplicationBase.allAppsToRequest);
+                requestsAdapter = new RequestsAdapter(context, ApplicationBase.allAppsToRequest, maxApps);
                 mRecyclerView.setHasFixedSize(true);
                 mRecyclerView.setAdapter(requestsAdapter);
                 requestsAdapter.startIconFetching(mRecyclerView);
@@ -230,6 +242,95 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
     @Override
     public void onStoragePermissionGranted() {
         showRequestsFilesCreationDialog(context);
+    }
+
+    public boolean haveHappenedXHoursSinceLastRequest(Context context, int numOfHours) {
+
+        float hoursToDays = numOfHours / 24.0f;
+        int hoursToMins = numOfHours * 60;
+
+        boolean hasHappenedTheTime = false;
+
+        Calendar c = Calendar.getInstance();
+
+        String time = "";
+        int dayNum = 0;
+
+        if (!mPrefs.getRequestsCreated()) {
+            time = String.format("%02d", c.get(Calendar.HOUR_OF_DAY)) + ":" +
+                    String.format("%02d", c.get(Calendar.MINUTE));
+            String day = String.format("%02d", c.get(Calendar.DAY_OF_YEAR));
+            mPrefs.setRequestHour(time);
+            mPrefs.setRequestDay(Integer.valueOf(day));
+            mPrefs.setRequestsCreated(true);
+            hasHappenedTheTime = true;
+        } else {
+            time = mPrefs.getRequestHour();
+            dayNum = mPrefs.getRequestDay();
+
+            String currentTime = String.format("%02d", c.get(Calendar.HOUR_OF_DAY)) + ":" +
+                    String.format("%02d", c.get(Calendar.MINUTE));
+            String currentDay = String.format("%02d", c.get(Calendar.DAY_OF_YEAR));
+
+            @SuppressLint("SimpleDateFormat")
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+            Date startDate = null;
+            try {
+                startDate = simpleDateFormat.parse(time);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            Date endDate = null;
+            try {
+                endDate = simpleDateFormat.parse(currentTime);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            long difference = endDate.getTime() - startDate.getTime();
+            if (difference < 0) {
+                Date dateMax = null;
+                try {
+                    dateMax = simpleDateFormat.parse("24:00");
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                Date dateMin = null;
+                try {
+                    dateMin = simpleDateFormat.parse("00:00");
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                difference = (dateMax.getTime() - startDate.getTime()) + (endDate.getTime() - dateMin.getTime());
+            }
+            int days = (int) Integer.valueOf(currentDay) - dayNum;
+            int hours = (int) ((difference - (1000 * 60 * 60 * 24 * days)) / (1000 * 60 * 60));
+            int min = (int) (difference - (1000 * 60 * 60 * 24 * days) - (1000 * 60 * 60 * hours)) / (1000 * 60);
+
+            if (days >= hoursToDays) {
+                hasHappenedTheTime = true;
+            } else if (hours >= numOfHours) {
+                hasHappenedTheTime = true;
+            } else if (min >= hoursToMins) {
+                hasHappenedTheTime = true;
+            }
+
+        }
+
+        return hasHappenedTheTime;
+
+    }
+
+    private void startRequestProcess() {
+        if (maxApps > 0) {
+            if (haveHappenedXHoursSinceLastRequest(context, hoursLimit)) {
+                showRequestsFilesCreationDialog(context);
+            } else {
+                ISDialogs.showRequestLimitDayDialog(context, hoursLimit);
+            }
+        } else {
+            showRequestsFilesCreationDialog(context);
+        }
     }
 
 }

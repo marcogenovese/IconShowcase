@@ -283,8 +283,13 @@ public class WallpapersFragment extends Fragment {
                 true);
         mRecyclerView.addItemDecoration(gridSpacing);
         mRecyclerView.setHasFixedSize(true);
+
         if (mRecyclerView.getVisibility() != View.VISIBLE) {
             mRecyclerView.setVisibility(View.VISIBLE);
+        }
+
+        if (fastScroller.getVisibility() != View.VISIBLE) {
+            fastScroller.setVisibility(View.VISIBLE);
         }
     }
 

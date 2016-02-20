@@ -79,6 +79,7 @@ import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
+import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.views.TouchImageView;
 
@@ -138,6 +139,12 @@ public class ViewerActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
+
+        final int iconsColor = ThemeUtils.darkTheme ?
+                ContextCompat.getColor(context, R.color.toolbar_text_dark) :
+                ContextCompat.getColor(context, R.color.toolbar_text_light);
+
+        ToolbarColorizer.colorizeToolbar(toolbar, iconsColor);
 
         toHide1 = (LinearLayout) findViewById(R.id.iconsA);
         toHide2 = (LinearLayout) findViewById(R.id.iconsB);
@@ -242,7 +249,8 @@ public class ViewerActivity extends AppCompatActivity {
 
                         @Override
                         public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                            ToolbarColorizer.colorizeToolbar(toolbar, Utils.getIconsColorForViewer(((GlideBitmapDrawable) resource).getBitmap(), context));
+                            Bitmap picture = ((GlideBitmapDrawable) resource).getBitmap();
+                            colorizeToolbar(picture, context.getResources().getBoolean(R.bool.use_palette_api_in_viewer));
                             spinner.setVisibility(View.GONE);
                             return false;
                         }
@@ -264,7 +272,8 @@ public class ViewerActivity extends AppCompatActivity {
 
                         @Override
                         public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                            ToolbarColorizer.colorizeToolbar(toolbar, Utils.getIconsColorForViewer(((GlideBitmapDrawable) resource).getBitmap(), context));
+                            Bitmap picture = ((GlideBitmapDrawable) resource).getBitmap();
+                            colorizeToolbar(picture, context.getResources().getBoolean(R.bool.use_palette_api_in_viewer));
                             spinner.setVisibility(View.GONE);
                             return false;
                         }
@@ -333,6 +342,27 @@ public class ViewerActivity extends AppCompatActivity {
                 toHide1.setVisibility(View.VISIBLE);
                 toHide2.setVisibility(View.VISIBLE);
             }
+        }
+    }
+
+    private void colorizeToolbar(Bitmap picture, boolean usePalette) {
+        int paletteIconsColor = 0;
+        if (usePalette) {
+            paletteIconsColor = Utils.getIconsColorForViewer(picture, context);
+            if (paletteIconsColor == 0) {
+                int light = Color.parseColor("#80000000");
+                int dark = Color.parseColor("#80ffffff");
+                if (ColorUtils.isDark(picture, 0, picture.getHeight() / 2, true)) {
+                    ToolbarColorizer.colorizeToolbar(toolbar, dark);
+                } else {
+                    ToolbarColorizer.colorizeToolbar(toolbar, light);
+                }
+            } else {
+                ToolbarColorizer.colorizeToolbar(toolbar, paletteIconsColor);
+            }
+        } else {
+            paletteIconsColor = Color.parseColor("b3ffffff");
+            ToolbarColorizer.colorizeToolbar(toolbar, paletteIconsColor);
         }
     }
 

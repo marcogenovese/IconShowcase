@@ -115,11 +115,11 @@ public class MuzeiSettings extends AppCompatActivity implements View.OnClickList
             if (mPrefs.isRotateMinute()) {
                 hour.setChecked(false);
                 minute.setChecked(true);
-                numberpicker.setValue(convertMillisToMinutes(mPrefs.getRotateTime()));
+                numberpicker.setValue(Utils.convertMillisToMinutes(mPrefs.getRotateTime()));
             } else {
                 hour.setChecked(true);
                 minute.setChecked(false);
-                numberpicker.setValue(convertMillisToMinutes(mPrefs.getRotateTime()) / 60);
+                numberpicker.setValue(Utils.convertMillisToMinutes(mPrefs.getRotateTime()) / 60);
             }
         } else {
             showNotLicensedDialog();
@@ -145,11 +145,11 @@ public class MuzeiSettings extends AppCompatActivity implements View.OnClickList
             if (i == R.id.save) {
                 int rotate_time;
                 if (minute.isChecked()) {
-                    rotate_time = convertMinutesToMillis(numberpicker.getValue());
+                    rotate_time = Utils.convertMinutesToMillis(numberpicker.getValue());
                     mPrefs.setRotateMinute(true);
                     mPrefs.setRotateTime(rotate_time);
                 } else {
-                    rotate_time = convertMinutesToMillis(numberpicker.getValue()) * 60;
+                    rotate_time = Utils.convertMinutesToMillis(numberpicker.getValue()) * 60;
                     mPrefs.setRotateMinute(false);
                     mPrefs.setRotateTime(rotate_time);
                 }
@@ -205,14 +205,6 @@ public class MuzeiSettings extends AppCompatActivity implements View.OnClickList
         } else {
             showNotLicensedDialog();
         }
-    }
-
-    private int convertMinutesToMillis(int minute) {
-        return minute * 60 * 1000;
-    }
-
-    private int convertMillisToMinutes(int millis) {
-        return millis / 60 / 1000;
     }
 
     private void setDividerColor(NumberPicker picker) {

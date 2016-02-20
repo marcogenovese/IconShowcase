@@ -31,6 +31,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
@@ -327,7 +328,22 @@ public class Utils {
                 ContextCompat.getColor(context, R.color.toolbar_text_dark) :
                 ContextCompat.getColor(context, R.color.toolbar_text_light);
 
-        final int paletteGeneratedColor = getIconsColorFromBitmap(bitmap, context);
+        int paletteGeneratedColor = 0;
+
+        if(context.getResources().getBoolean(R.bool.use_palette_api_in_toolbar)){
+            paletteGeneratedColor = getIconsColorFromBitmap(bitmap, context);
+            if (paletteGeneratedColor == 0) {
+                if (ColorUtils.isDark(bitmap, 0, bitmap.getHeight() / 2, true)) {
+                    paletteGeneratedColor = Color.parseColor("#80ffffff");
+                } else {
+                    paletteGeneratedColor = Color.parseColor("#80000000");
+                }
+            }
+        } else {
+            paletteGeneratedColor = Color.parseColor("#b3ffffff");
+        }
+
+        final int finalPaletteGeneratedColor = paletteGeneratedColor;
 
         if (appbar != null) {
             appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
@@ -335,7 +351,7 @@ public class Utils {
                 public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
                     double alpha = round(((double) (verticalOffset * -1) / 288.0), 1);
                     int paletteColor = ColorUtils.blendColors(
-                            paletteGeneratedColor != 0 ? paletteGeneratedColor : iconsColor,
+                            finalPaletteGeneratedColor != 0 ? finalPaletteGeneratedColor : iconsColor,
                             iconsColor, alpha > 1.0 ? 1.0f : (float) alpha);
                     if (toolbar != null) {
                         ToolbarColorizer.colorizeToolbar(toolbar, paletteColor);
@@ -445,12 +461,13 @@ public class Utils {
             if (isDark) {
                 swatch1 = palette.getVibrantSwatch();
                 swatch2 = palette.getMutedSwatch();
-                swatch3 = palette.getLightVibrantSwatch();
-                swatch4 = palette.getLightMutedSwatch();
             } else {
                 swatch1 = palette.getDarkVibrantSwatch();
                 swatch2 = palette.getDarkMutedSwatch();
             }
+
+            swatch3 = palette.getLightVibrantSwatch();
+            swatch4 = palette.getLightMutedSwatch();
 
             if (swatch1 != null) {
                 color = swatch1.getRgb();
@@ -477,13 +494,13 @@ public class Utils {
 
             Palette palette = new Palette.Builder(bitmap)
                     .clearFilters()
-                    .setRegion(0, 0, bitmap.getWidth() - 1, twentyFourDip)
+                    .setRegion(0, 0, twentyFourDip, bitmap.getHeight() - 1)
                     .generate();
 
             boolean isDark;
             @ColorUtils.Lightness int lightness = ColorUtils.isDark(palette, true);
             if (lightness == ColorUtils.LIGHTNESS_UNKNOWN) {
-                isDark = ColorUtils.isDark(bitmap, bitmap.getWidth() / 2, 0, true);
+                isDark = ColorUtils.isDark(bitmap, 0, bitmap.getHeight() / 2, true);
             } else {
                 isDark = lightness == ColorUtils.IS_DARK;
             }
@@ -502,16 +519,12 @@ public class Utils {
             swatch4 = palette.getLightMutedSwatch();
 
             if (swatch1 != null) {
-                showLog("Using vibrant swatch - dark: " + isDark);
                 color = swatch1.getRgb();
             } else if (swatch2 != null) {
-                showLog("Using muted swatch - dark: " + isDark);
                 color = swatch2.getRgb();
             } else if (swatch3 != null && isDark) {
-                showLog("Using light vibrant swatch");
                 color = swatch3.getRgb();
             } else if (swatch4 != null && isDark) {
-                showLog("Using light muted swatch");
                 color = swatch4.getRgb();
             }
 
@@ -527,4 +540,17 @@ public class Utils {
         bd = bd.setScale(places, RoundingMode.HALF_UP);
         return bd.doubleValue();
     }
+
+    public static int convertMinutesToMillis(int minute) {
+        return minute * 60 * 1000;
+    }
+
+    public static int convertMillisToMinutes(int millis) {
+        return millis / 60 / 1000;
+    }
+
+    public static int convertMillisToHours(long millis) {
+        return (int) millis / 60 / 60 / 1000;
+    }
+
 }

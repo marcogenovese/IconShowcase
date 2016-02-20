@@ -50,6 +50,7 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.zip.ZipEntry;
@@ -57,7 +58,9 @@ import java.util.zip.ZipException;
 import java.util.zip.ZipOutputStream;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.models.RequestItem;
+import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
@@ -112,31 +115,17 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
         appsPackages.clear();
         appsClasses.clear();
         appsIcons.clear();
-        int selected = 0;
 
-        for (int a = 0; a < appsListFinal.size(); a++) {
-            if (!appsListFinal.get(a).isSelected()) {
-                selected += 1;
+        for (int i = 0; i < appsListFinal.size(); i++) {
+            RequestItem icon = appsListFinal.get(i);
+            if (icon.isSelected()) {
+                appsNames.add(icon.getAppName());
+                appsPackages.add(icon.getPackageName());
+                appsClasses.add(icon.getClassName());
+                appsIcons.add(icon.getIcon());
             }
         }
 
-        if (selected >= appsListFinal.size()) {
-            for (int b = 0; b < appsListFinal.size(); b++) {
-                appsNames.add(appsListFinal.get(b).getAppName());
-                appsPackages.add(appsListFinal.get(b).getPackageName());
-                appsClasses.add(appsListFinal.get(b).getClassName());
-                appsIcons.add(appsListFinal.get(b).getIcon());
-            }
-        } else {
-            for (int c = 0; c < appsListFinal.size(); c++) {
-                if (appsListFinal.get(c).isSelected()) {
-                    appsNames.add(appsListFinal.get(c).getAppName());
-                    appsPackages.add(appsListFinal.get(c).getPackageName());
-                    appsClasses.add(appsListFinal.get(c).getClassName());
-                    appsIcons.add(appsListFinal.get(c).getIcon());
-                }
-            }
-        }
     }
 
     @Override
@@ -298,6 +287,14 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
 
                 try {
                     activity.startActivityForResult(Intent.createChooser(sendIntent, "Send mail..."), 2);
+                    Calendar c = Calendar.getInstance();
+                    Preferences mPrefs = new Preferences(context);
+                    String time = String.format("%02d", c.get(Calendar.HOUR_OF_DAY)) + ":" +
+                            String.format("%02d", c.get(Calendar.MINUTE));
+                    String day = String.format("%02d", c.get(Calendar.DAY_OF_YEAR));
+                    mPrefs.setRequestHour(time);
+                    mPrefs.setRequestDay(Integer.valueOf(day));
+                    mPrefs.setRequestsCreated(true);
                 } catch (ActivityNotFoundException e) {
                     //Do nothing
                 }

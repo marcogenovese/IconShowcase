@@ -45,7 +45,10 @@ public class Preferences {
             WALLPAPER_AS_TOOLBAR_HEADER = "wallpaper_as_toolbar_header",
             APPLY_DIALOG_DISMISSED = "apply_dialog_dismissed",
             WALLS_DIALOG_DISMISSED = "walls_dialog_dismissed",
-            WALLS_COLUMNS_NUMBER = "walls_columns_number";
+            WALLS_COLUMNS_NUMBER = "walls_columns_number",
+            REQUEST_HOUR = "request_hour",
+            REQUEST_DAY = "request_day",
+            REQUESTS_CREATED = "requests_created";
 
     private final Context context;
 
@@ -168,6 +171,30 @@ public class Preferences {
     public int getWallsColumnsNumber() {
         return getSharedPreferences().getInt(WALLS_COLUMNS_NUMBER,
                 context.getResources().getInteger(R.integer.wallpapers_grid_width));
+    }
+
+    public void setRequestHour(String hour) {
+        getSharedPreferences().edit().putString(REQUEST_HOUR, hour).apply();
+    }
+
+    public String getRequestHour() {
+        return getSharedPreferences().getString(REQUEST_HOUR, "00:00");
+    }
+
+    public void setRequestDay(int day) {
+        getSharedPreferences().edit().putInt(REQUEST_DAY, day).apply();
+    }
+
+    public int getRequestDay() {
+        return getSharedPreferences().getInt(REQUEST_DAY, 0);
+    }
+
+    public void setRequestsCreated(boolean requestsCreated) {
+        getSharedPreferences().edit().putBoolean(REQUESTS_CREATED, requestsCreated).apply();
+    }
+
+    public boolean getRequestsCreated() {
+        return getSharedPreferences().getBoolean(REQUESTS_CREATED, false);
     }
 
 }
