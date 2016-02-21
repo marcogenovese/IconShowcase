@@ -243,21 +243,21 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
 
-            <!-- Uncomment for Zooper -->
+            <!-- Remove comment marks to enable Zooper
             <intent-filter>
                 <action android:name="org.zooper.zw.TEMPLATES"/>
             </intent-filter>
+			-->
 
         </activity>
 
-        <!--
-        ZOOPER
+        <!-- Remove comment marks to enable Zooper
         Replace jahirfiquitiva.apps.iconshowcase.sample with your app's package
-        -->
         <provider
             android:name=".zooper.TemplateProvider"
             android:authorities="jahirfiquitiva.apps.iconshowcase.sample.zwprovider"
             tools:ignore="ExportedContentProvider"/>
+		-->
 
         <!-- Wallpapers Activity -->
         <activity

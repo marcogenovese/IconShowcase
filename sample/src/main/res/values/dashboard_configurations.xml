@@ -185,7 +185,7 @@
        True, means yes.
        False, means no.
        -->
-    <bool name="use_palette_api_in_toolbar">true</bool>
+    <bool name="use_palette_api_in_toolbar">false</bool>
 
     <!--
        Do you want the app to use palette api in wallpapers viewer?
