@@ -27,6 +27,8 @@
 
     <style name="AppThemeDark" parent="AppTheme.Base.Dark"/>
 
+    <style name="AppThemeClear" parent="AppTheme.Base.Clear"/>
+
     <style name="AppTheme.Base" parent="MaterialDrawerTheme.Light.DarkToolbar">
         <item name="colorPrimary">@color/light_theme_primary</item>
         <item name="primaryColor">@color/light_theme_primary</item>
@@ -53,6 +55,19 @@
         <item name="tabsNormalTextColor">@color/tabs_normal_text_light</item>
         <item name="tabsSelectedTextColor">@color/tabs_selected_text_light</item>
         <item name="android:actionOverflowButtonStyle">@style/OverflowIcon</item>
+    </style>
+
+    <style name="AppTheme.Base.Clear" parent="AppTheme.Base.Dark">
+        <item name="colorCardBackground">@color/card_clear_background</item>
+        <item name="android:windowShowWallpaper">true</item>
+        <item name="android:windowBackground">@color/clear_bg</item>
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Clear</item>
+        <item name="homeBackground">@color/home_dark_background</item>
+    </style>
+
+    <style name="ThemeOverlay.AppCompat.Clear" parent="ThemeOverlay.AppCompat.Dark">
+        <item name="android:windowBackground">@color/home_dark_background</item>
+        <item name="android:colorBackground">@color/home_dark_background</item>
     </style>
 
     <style name="AppTheme.Base.Dark" parent="MaterialDrawerTheme">
@@ -93,6 +108,11 @@
         <item name="android:windowBackground">@drawable/splash_screen_dark</item>
         <item name="colorPrimaryDark">@color/splash_dark_statusbar</item>
         <item name="colorAccent">@color/splash_dark_statusbar</item>
+    </style>
+
+    <style name="AppTheme.Base.ClearLaunchScreen">
+        <item name="android:windowBackground">@drawable/splash_screen_clear</item>
+        <item name="colorAccent">@android:color/transparent</item>
     </style>
 
     <style name="EmptyActivity" parent="@style/Theme.AppCompat.NoActionBar">
