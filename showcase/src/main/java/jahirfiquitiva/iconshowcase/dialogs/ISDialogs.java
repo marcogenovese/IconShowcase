@@ -373,6 +373,9 @@ public final class ISDialogs {
                                 ThemeUtils.changeToTheme(context, ThemeUtils.DARK);
                                 break;
                             case 2:
+                                ThemeUtils.changeToTheme(context, ThemeUtils.CLEAR);
+                                break;
+                            case 3:
                                 ThemeUtils.changeToTheme(context, ThemeUtils.AUTO);
                                 break;
                         }

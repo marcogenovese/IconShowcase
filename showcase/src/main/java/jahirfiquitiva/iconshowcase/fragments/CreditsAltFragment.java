@@ -87,6 +87,9 @@ public class CreditsAltFragment extends Fragment {
                 .load(Utils.getStringFromResources(context, R.string.dashboard_author_banner))
                 .centerCrop()
                 .into(devBanner);
+//        if (ThemeUtils.transparent) { //TODO add transparency
+//            devBanner.setAlpha(0.9f);
+//        }
 
         ImageView devPhoto = (ImageView) layout.findViewById(R.id.developerPhoto);
 
@@ -100,6 +103,9 @@ public class CreditsAltFragment extends Fragment {
                 .load(Utils.getStringFromResources(context, R.string.iconpack_author_banner))
                 .centerCrop()
                 .into(designerBanner);
+//        if (ThemeUtils.transparent) {
+//            designerBanner.setAlpha(0.9f);
+//        }
 
         ImageView designerPhoto = (ImageView) layout.findViewById(R.id.designerPhoto);
         Glide.with(context)

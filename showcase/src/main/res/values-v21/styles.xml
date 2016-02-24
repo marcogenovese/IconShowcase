@@ -52,6 +52,7 @@
     </style>
 
     <style name="AppTheme.Base.ClearLaunchScreen">
+        <item name="android:windowShowWallpaper">true</item>
         <item name="android:windowBackground">@drawable/splash_screen_clear</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="colorAccent">@android:color/transparent</item>

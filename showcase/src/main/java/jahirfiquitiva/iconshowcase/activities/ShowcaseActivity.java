@@ -882,12 +882,16 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             headerAppVersion = "v " + Utils.getAppVersion(this);
         }
 
+        Drawable header = ContextCompat.getDrawable(context, R.drawable.drawer_header);
+        header.setAlpha(150); //Add transparency both for clear themes and to add some "tint" due to the background
+
         switch (drawerHeaderStyle) {
             case NORMAL_HEADER:
                 drawerHeader = new AccountHeaderBuilder()
                         .withActivity(this)
-                        .withHeaderBackground(R.drawable.drawer_header)
+                        .withHeaderBackground(header)
                         .withSelectionFirstLine(headerAppName)
+                        .withTextColor(ThemeUtils.darkTheme ? ContextCompat.getColor(context, R.color.primary_text_dark) : ContextCompat.getColor(context, R.color.primary_text_light))
                         .withSelectionSecondLine(headerAppVersion)
                         .withProfileImagesClickable(false)
                         .withResetDrawerOnProfileListClick(false)
@@ -924,8 +928,8 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                 appName.setTextColor(iconsColor);
             } else {
                 miniHeader.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawer_header));
-                appVersion.setTextColor(ContextCompat.getColor(context, android.R.color.white));
-                appName.setTextColor(ContextCompat.getColor(context, android.R.color.white));
+                appVersion.setTextColor(ThemeUtils.darkTheme ? ContextCompat.getColor(context, R.color.primary_text_dark) : ContextCompat.getColor(context, R.color.primary_text_light));
+                appName.setTextColor(ThemeUtils.darkTheme ? ContextCompat.getColor(context, R.color.primary_text_dark) : ContextCompat.getColor(context, R.color.primary_text_light));
             }
             appName.setText(headerAppName);
             appVersion.setText(headerAppVersion);

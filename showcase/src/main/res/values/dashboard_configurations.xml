@@ -55,7 +55,8 @@
     <!-- Default theme
     1. Light
     2. Dark
-    3. Auto
+    3. Clear
+    4. Auto (Light & Dark)
     -->
     <integer name="default_theme">1</integer>
 

@@ -98,10 +98,11 @@
     <string name="title_settings">Instellingen</string>
     <string name="pref_header_ui">GI</string>
     <string name="pref_title_themes">Basis thema</string>
-    <string name="pref_summary_themes">Kies uit licht, donker of automatisch</string>
+    <string name="pref_summary_themes">Kies uit licht, donker, duidelijk of automatisch</string>
     <string-array name="themes">
         <item>Licht</item>
         <item>Donker</item>
+        <item>Duidelijk</item>
         <item>Automatisch</item>
     </string-array>
     <string name="pref_title_anims">Animaties inschakelen</string>

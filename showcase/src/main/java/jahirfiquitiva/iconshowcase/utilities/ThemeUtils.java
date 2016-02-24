@@ -45,9 +45,11 @@ public class ThemeUtils {
 
     public final static int LIGHT = 0;
     public final static int DARK = 1;
-    public final static int AUTO = 2;
+    public final static int CLEAR = 2;
+    public final static int AUTO = 3;
 
     public static boolean darkTheme;
+    public static boolean transparent;
     public static boolean coloredNavBar;
 
     public static void onActivityCreateSetTheme(Activity activity) {
@@ -58,14 +60,22 @@ public class ThemeUtils {
             case LIGHT:
                 activity.setTheme(R.style.AppTheme);
                 darkTheme = false;
+                transparent = false;
                 break;
             case DARK:
                 activity.setTheme(R.style.AppThemeDark);
                 darkTheme = true;
+                transparent = false;
+                break;
+            case CLEAR:
+                activity.setTheme(R.style.AppThemeClear);
+                darkTheme = true;
+                transparent = true;
                 break;
             case AUTO:
                 Calendar c = Calendar.getInstance();
                 int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
+                transparent = false;
                 if (timeOfDay >= 7 && timeOfDay < 20) {
                     activity.setTheme(R.style.AppTheme);
                     darkTheme = false;

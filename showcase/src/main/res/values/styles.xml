@@ -62,12 +62,13 @@
         <item name="android:windowShowWallpaper">true</item>
         <item name="android:windowBackground">@color/clear_bg</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Clear</item>
-        <item name="homeBackground">@color/home_dark_background</item>
+        <item name="homeBackground">@color/home_clear_background</item>
+        <item name="material_drawer_background">@color/material_drawer_clear_background</item>
     </style>
 
     <style name="ThemeOverlay.AppCompat.Clear" parent="ThemeOverlay.AppCompat.Dark">
-        <item name="android:windowBackground">@color/home_dark_background</item>
-        <item name="android:colorBackground">@color/home_dark_background</item>
+        <item name="android:windowBackground">@color/home_clear_background</item>
+        <item name="android:colorBackground">@color/home_clear_background</item>
     </style>
 
     <style name="AppTheme.Base.Dark" parent="MaterialDrawerTheme">
@@ -111,6 +112,7 @@
     </style>
 
     <style name="AppTheme.Base.ClearLaunchScreen">
+        <item name="android:windowShowWallpaper">true</item>
         <item name="android:windowBackground">@drawable/splash_screen_clear</item>
         <item name="colorAccent">@android:color/transparent</item>
     </style>

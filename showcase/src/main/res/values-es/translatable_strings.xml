@@ -98,10 +98,11 @@
     <string name="title_settings">Configuración</string>
     <string name="pref_header_ui">Interfaz</string>
     <string name="pref_title_themes">Tema principal</string>
-    <string name="pref_summary_themes">Escoge entre Claro, Oscuro o Automático.</string>
+    <string name="pref_summary_themes">Escoge entre Ligero, Oscuro, Claro o Automático.</string>
     <string-array name="themes">
-        <item>Claro</item>
+        <item>Ligero</item>
         <item>Oscuro</item>
+        <item>Claro</item>
         <item>Automático</item>
     </string-array>
     <string name="pref_title_anims">Habilitar animaciones</string>
