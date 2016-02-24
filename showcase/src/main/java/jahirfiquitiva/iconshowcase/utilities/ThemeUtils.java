@@ -103,8 +103,8 @@ public class ThemeUtils {
                 break;
             case NAV_BAR_BLACK:
                 activity.getWindow().setNavigationBarColor(transparent ?
-                        ContextCompat.getColor(activity, android.R.color.black) :
-                        ContextCompat.getColor(activity, R.color.home_clear_background));
+                        ContextCompat.getColor(activity, R.color.home_clear_background) :
+                        ContextCompat.getColor(activity, android.R.color.black));
                 coloredNavBar = false;
                 break;
         }
