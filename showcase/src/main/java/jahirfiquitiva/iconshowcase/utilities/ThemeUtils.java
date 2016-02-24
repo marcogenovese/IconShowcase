@@ -49,6 +49,7 @@ public class ThemeUtils {
     public final static int AUTO = 3;
 
     public static boolean darkTheme;
+    public static boolean transparent;
     public static boolean coloredNavBar;
 
     public static void onActivityCreateSetTheme(Activity activity) {
@@ -59,17 +60,21 @@ public class ThemeUtils {
             case LIGHT:
                 activity.setTheme(R.style.AppTheme);
                 darkTheme = false;
+                transparent = false;
                 break;
             case DARK:
                 activity.setTheme(R.style.AppThemeDark);
                 darkTheme = true;
+                transparent = false;
                 break;
             case CLEAR:
                 activity.setTheme(R.style.AppThemeClear);
                 darkTheme = true;
+                transparent = true;
                 break;
             case AUTO:
                 Calendar c = Calendar.getInstance();
+                transparent = false;
                 int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
                 if (timeOfDay >= 7 && timeOfDay < 20) {
                     activity.setTheme(R.style.AppTheme);
@@ -97,7 +102,9 @@ public class ThemeUtils {
                 coloredNavBar = true;
                 break;
             case NAV_BAR_BLACK:
-                activity.getWindow().setNavigationBarColor(ContextCompat.getColor(activity, android.R.color.black));
+                activity.getWindow().setNavigationBarColor(transparent ?
+                        ContextCompat.getColor(activity, android.R.color.black) :
+                        ContextCompat.getColor(activity, R.color.home_clear_background));
                 coloredNavBar = false;
                 break;
         }

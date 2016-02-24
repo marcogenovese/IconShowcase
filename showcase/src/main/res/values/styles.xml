@@ -46,6 +46,7 @@
         <item name="md_positive_color">@color/md_button_text_light</item>
         <item name="md_negative_color">@color/md_button_text_light</item>
         <item name="md_neutral_color">@color/md_button_text_light</item>
+        <item name="md_background_color">@color/md_background_color_light</item>
         <item name="colorCardBackground">@color/card_light_background</item>
         <item name="homeBackground">@color/home_light_background</item>
         <item name="drawablesTintColor">@color/drawable_tint_light</item>
@@ -64,6 +65,7 @@
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Clear</item>
         <item name="homeBackground">@color/home_clear_background</item>
         <item name="material_drawer_background">@color/material_drawer_clear_background</item>
+        <item name="md_background_color">@color/md_background_color_clear</item>
     </style>
 
     <style name="ThemeOverlay.AppCompat.Clear" parent="ThemeOverlay.AppCompat.Dark">
@@ -88,6 +90,7 @@
         <item name="md_positive_color">@color/md_button_text_dark</item>
         <item name="md_negative_color">@color/md_button_text_dark</item>
         <item name="md_neutral_color">@color/md_button_text_dark</item>
+        <item name="md_background_color">@color/md_background_color_dark</item>
         <item name="colorCardBackground">@color/card_dark_background</item>
         <item name="homeBackground">@color/home_dark_background</item>
         <item name="drawablesTintColor">@color/drawable_tint_dark</item>
@@ -113,8 +116,11 @@
 
     <style name="AppTheme.Base.ClearLaunchScreen">
         <item name="android:windowShowWallpaper">true</item>
+        <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@drawable/splash_screen_clear</item>
         <item name="colorAccent">@android:color/transparent</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@android:color/transparent</item>
     </style>
 
     <style name="EmptyActivity" parent="@style/Theme.AppCompat.NoActionBar">

@@ -169,6 +169,8 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     public static Drawer drawer;
     public AccountHeader drawerHeader;
 
+    private static boolean themeMode;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -189,6 +191,8 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         for (int i = 0; i < configurePrimaryDrawerItems.length; i++) {
             primaryDrawerItems[i + 1] = configurePrimaryDrawerItems[i];
         }
+
+        themeMode = getResources().getBoolean(R.bool.theme_mode);
 
         getAction();
 
@@ -257,7 +261,9 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                 break;
         }
 
-        numOfIcons = context.getResources().getInteger(R.integer.toolbar_icons);
+        if (!themeMode) {
+            numOfIcons = context.getResources().getInteger(R.integer.toolbar_icons);
+        }
 
         setContentView(R.layout.showcase_activity);
 
@@ -290,32 +296,35 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
 
-        icon1 = (ImageView) findViewById(R.id.iconOne);
-        icon2 = (ImageView) findViewById(R.id.iconTwo);
-        icon3 = (ImageView) findViewById(R.id.iconThree);
-        icon4 = (ImageView) findViewById(R.id.iconFour);
-        icon5 = (ImageView) findViewById(R.id.iconFive);
-        icon6 = (ImageView) findViewById(R.id.iconSix);
-        icon7 = (ImageView) findViewById(R.id.iconSeven);
-        icon8 = (ImageView) findViewById(R.id.iconEight);
+        if(!themeMode) {
+            icon1 = (ImageView) findViewById(R.id.iconOne);
+            icon2 = (ImageView) findViewById(R.id.iconTwo);
+            icon3 = (ImageView) findViewById(R.id.iconThree);
+            icon4 = (ImageView) findViewById(R.id.iconFour);
+            icon5 = (ImageView) findViewById(R.id.iconFive);
+            icon6 = (ImageView) findViewById(R.id.iconSix);
+            icon7 = (ImageView) findViewById(R.id.iconSeven);
+            icon8 = (ImageView) findViewById(R.id.iconEight);
 
-        GridLayout iconsRow = (GridLayout) findViewById(R.id.iconsRow);
+            GridLayout iconsRow = (GridLayout) findViewById(R.id.iconsRow);
 
-        if (mPrefs.getSettingsModified()) {
-            setupIcons(icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8, numOfIcons);
-        }
 
-        iconsRow.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                if (currentItem == 1) {
-                    SHUFFLE = true;
-                    setupIcons(icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8, numOfIcons);
-                    animateIcons(icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8, numOfIcons);
-                }
+            if (mPrefs.getSettingsModified()) {
+                setupIcons(icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8, numOfIcons);
             }
-        });
+
+            iconsRow.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    if (currentItem == 1) {
+                        SHUFFLE = true;
+                        setupIcons(icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8, numOfIcons);
+                        animateIcons(icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8, numOfIcons);
+                    }
+                }
+            });
+        }
 
         //Setup donations
         final IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
@@ -412,12 +421,14 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         }
         currentItem = itemId;
 
-        if (fragment.equals("Main")) {
-            icon1.setVisibility(View.INVISIBLE);
-            icon2.setVisibility(View.INVISIBLE);
-            icon3.setVisibility(View.INVISIBLE);
-            icon4.setVisibility(View.INVISIBLE);
-            Utils.expandToolbar(context);
+        if (!themeMode) {
+            if (fragment.equals("Main")) {
+                icon1.setVisibility(View.INVISIBLE);
+                icon2.setVisibility(View.INVISIBLE);
+                icon3.setVisibility(View.INVISIBLE);
+                icon4.setVisibility(View.INVISIBLE);
+                Utils.expandToolbar(context);
+            }
         }
 
         //Fragment Switcher
@@ -737,7 +748,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
         DrawerBuilder drawerBuilder;
 
-        if (getResources().getBoolean(R.bool.theme_mode)) { //enabled theme mode, long press added
+        if (themeMode) { //enabled theme mode, long press added
             drawerBuilder = new DrawerBuilder()
                     .withActivity(this)
                     .withToolbar(toolbar)

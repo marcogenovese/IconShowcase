@@ -27,11 +27,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatButton;
+import android.util.Log;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -78,10 +80,14 @@ public class MainFragment extends Fragment {
             //Do nothing
         }
 
-        ShowcaseActivity.setupIcons(ShowcaseActivity.icon1, ShowcaseActivity.icon2,
-                ShowcaseActivity.icon3, ShowcaseActivity.icon4, ShowcaseActivity.icon5,
-                ShowcaseActivity.icon6, ShowcaseActivity.icon7, ShowcaseActivity.icon8,
-                ShowcaseActivity.numOfIcons);
+        themeMode = getResources().getBoolean(R.bool.theme_mode);
+
+        if(!themeMode) {
+            ShowcaseActivity.setupIcons(ShowcaseActivity.icon1, ShowcaseActivity.icon2,
+                    ShowcaseActivity.icon3, ShowcaseActivity.icon4, ShowcaseActivity.icon5,
+                    ShowcaseActivity.icon6, ShowcaseActivity.icon7, ShowcaseActivity.icon8,
+                    ShowcaseActivity.numOfIcons);
+        }
 
         String themedIcons = String.valueOf(getActivity().getResources().getInteger(R.integer.icons_amount));
         String availableWallpapers = String.valueOf(getActivity().getResources().getInteger(R.integer.walls_amount));
@@ -145,16 +151,18 @@ public class MainFragment extends Fragment {
             }
         });
 
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                ShowcaseActivity.animateIcons(ShowcaseActivity.icon1, ShowcaseActivity.icon2,
-                        ShowcaseActivity.icon3, ShowcaseActivity.icon4, ShowcaseActivity.icon5,
-                        ShowcaseActivity.icon6, ShowcaseActivity.icon7, ShowcaseActivity.icon8,
-                        ShowcaseActivity.numOfIcons);
-            }
-        }, 500);
+        if(!themeMode) {
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    ShowcaseActivity.animateIcons(ShowcaseActivity.icon1, ShowcaseActivity.icon2,
+                            ShowcaseActivity.icon3, ShowcaseActivity.icon4, ShowcaseActivity.icon5,
+                            ShowcaseActivity.icon6, ShowcaseActivity.icon7, ShowcaseActivity.icon8,
+                            ShowcaseActivity.numOfIcons);
+                }
+            }, 500);
+        }
 
         return layout;
     }
@@ -174,7 +182,6 @@ public class MainFragment extends Fragment {
     }
 
     private void showFAB() {
-        themeMode = getResources().getBoolean(R.bool.theme_mode);
         if (themeMode) {
             modifyFABIcon();
         }
@@ -235,14 +242,19 @@ public class MainFragment extends Fragment {
     private void modifyFABIcon() {
         cm = Utils.isAppInstalled(context, "org.cyanogenmod.theme.chooser");
         cyngn = Utils.isAppInstalled(context, "com.cyngn.theme.chooser");
-        rro = Utils.isAppInstalled(context, "com.lovejoy777.rroandlayersmanager");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            rro = Utils.isAppInstalled(context, "com.lovejoy777.rroandlayersmanager");
+        } else {
+            rro = false; //don't enable rro before lollipop, it didn't exist before that
+        }
 
-        if (cm) { //TODO add appropriate drawables
-            ShowcaseActivity.fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_apply_icons));
+        if (cm || cyngn) {
+            ShowcaseActivity.fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_apply_cm));
         } else if (rro) {
-            ShowcaseActivity.fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_apply_icons));
-        } else if (cyngn) {
-            ShowcaseActivity.fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_apply_icons));
+            ShowcaseActivity.fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_apply_layers));
+            Log.e("asdf", "layers icon");
+        } else {
+            ShowcaseActivity.fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_question));
         }
     }
 }
