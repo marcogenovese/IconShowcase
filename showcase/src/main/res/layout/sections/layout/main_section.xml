@@ -241,58 +241,10 @@
             android:layout_height="1dp"
             android:background="?dividerHorizontal"/>
 
-        <LinearLayout
-            android:id="@+id/moreApps"
-            style="@style/HomeCardContent"
+        <android.support.v7.widget.RecyclerView
+            android:layout_height="match_parent"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?selectableItemBackground"
-            android:clickable="true"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start|center_vertical"
-                android:paddingBottom="16dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="16dp"
-                android:text="@string/more_apps"
-                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:clickable="false"
-                android:gravity="center_vertical"
-                android:minHeight="@dimen/md_listitem_height"
-                android:orientation="horizontal"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp">
-
-                <ImageView
-                    android:id="@+id/icon_more_apps"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    tools:ignore="ContentDescription"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="24dp"
-                    android:layout_marginStart="24dp"
-                    android:gravity="center_vertical"
-                    android:paddingBottom="8dp"
-                    android:paddingTop="8dp"
-                    android:text="@string/more_apps_long"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
+            android:id="@+id/home_rv"/>
 
         <View
             android:layout_width="match_parent"

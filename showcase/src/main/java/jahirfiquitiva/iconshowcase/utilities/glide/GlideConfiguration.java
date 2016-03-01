@@ -43,7 +43,7 @@ public class GlideConfiguration implements GlideModule {
 
         ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         boolean lowRAMDevice = false;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             lowRAMDevice = activityManager.isLowRamDevice();
         }
 

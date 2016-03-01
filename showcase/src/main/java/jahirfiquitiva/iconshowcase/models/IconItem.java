@@ -55,7 +55,7 @@ public class IconItem implements Parcelable {
         dest.writeInt(resId);
     }
 
-    public static final Creator<IconItem> CREATOR = new Parcelable.Creator<IconItem>() {
+    public static final Creator<IconItem> CREATOR = new Creator<IconItem>() {
         @Override
         public IconItem createFromParcel(Parcel in) {
             String name = in.readString();

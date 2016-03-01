@@ -108,8 +108,8 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             WITH_ALTERNATIVE_ABOUT_SECTION = true,
             WITH_SECONDARY_DRAWER_ITEMS_ICONS = false,
 
-    //Donations stuff
-    DONATIONS_GOOGLE = false,
+            //Donations stuff
+            DONATIONS_GOOGLE = false,
             DONATIONS_PAYPAL = false,
             DONATIONS_FLATTR = false,
             DONATIONS_BITCOIN = false,
@@ -171,6 +171,12 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
     private static boolean themeMode;
 
+    //mainFragment stuff
+//    private Intent mainIntent; //TODO remove
+
+//    public ArrayList<HomeCard> homeCards = new ArrayList<>();
+//    public static ArrayList<HomeCard> sHomeCards = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -195,21 +201,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         themeMode = getResources().getBoolean(R.bool.theme_mode);
 
         getAction();
-
-        Intent intent = getIntent();
-        WITH_LICENSE_CHECKER = intent.getBooleanExtra("license_check", false);
-        WITH_INSTALLED_FROM_AMAZON = intent.getBooleanExtra("allow_installs_from_amazon", false);
-        WITH_DONATIONS_SECTION = intent.getBooleanExtra("with_donations_section", false);
-
-        if (WITH_DONATIONS_SECTION) {
-            DONATIONS_GOOGLE = intent.getBooleanExtra("google_method", false);
-            if (DONATIONS_GOOGLE) {
-                GOOGLE_PUBKEY = intent.getStringExtra("pubkey");
-            }
-            DONATIONS_PAYPAL = intent.getBooleanExtra("paypal_method", false);
-            DONATIONS_FLATTR = intent.getBooleanExtra("flattr_method", false);
-            DONATIONS_BITCOIN = intent.getBooleanExtra("bitcoin_method", false);
-        }
 
         WITH_USER_WALLPAPER_AS_TOOLBAR_HEADER = getResources().getBoolean(R.bool.user_wallpaper_in_home);
         WITH_ICONS_BASED_CHANGELOG = getResources().getBoolean(R.bool.icons_changelog);
@@ -433,7 +424,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
         //Fragment Switcher
         if (mPrefs.getAnimationsEnabled()) {
-            if (fragment2title(fragment).equals(thaDonate)) {
+            if (fragment.equals("Donations")) {
                 DonationsFragment donationsFragment;
                 donationsFragment = DonationsFragment.newInstance(BuildConfig.DEBUG,
                         DONATIONS_GOOGLE, GOOGLE_PUBKEY, mGoogleCatalog, GOOGLE_CATALOG_VALUES,
@@ -444,6 +435,14 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                         .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
                         .replace(R.id.main, donationsFragment, "donationsFragment")
                         .commit();
+//            } else if (fragment.equals("Main")) {
+//
+//                MainFragment mainFragment;
+//                mainFragment = MainFragment.newInstance(sHomeCards);
+//                context.getSupportFragmentManager().beginTransaction()
+//                        .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+//                        .replace(R.id.main, mainFragment, "mainFragment")
+//                        .commit();
             } else {
                 context.getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
@@ -452,7 +451,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                         .commit();
             }
         } else {
-            if (fragment2title(fragment).equals(thaDonate)) {
+            if (fragment.equals("Donations")) {
                 DonationsFragment donationsFragment;
                 donationsFragment = DonationsFragment.newInstance(BuildConfig.DEBUG,
                         DONATIONS_GOOGLE, GOOGLE_PUBKEY, mGoogleCatalog, GOOGLE_CATALOG_VALUES,
@@ -1144,5 +1143,56 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
     public boolean isPremium() {
         return mIsPremium;
+    }
+
+//    public void addHomeCard(HomeCard object) {
+//        homeCards.add(object);
+//    }
+
+//    public void sendCards() {
+//        mainIntent = new Intent(this, MainFragment.class);
+//        Log.e("asdf home", homeCards.toString());
+//        mainIntent.putParcelableArrayListExtra("homeCards", homeCards);
+//        sHomeCards = homeCards;
+//        Log.e("asdf", "cards sent");
+//        Log.e("asdf", "" + sHomeCards.toString());
+//        Bundle bundle = new Bundle();
+//        bundle.putParcelable("homeCards", (Parcelable) homeCards);
+// set Fragmentclass Arguments
+//        MainFragment mF = new MainFragment();
+//        mF.setArguments(bundle);
+//        MainFragment(mainIntent);
+//    }
+
+    public void enableDonations(boolean WITH_DONATIONS_SECTION) {
+        this.WITH_DONATIONS_SECTION = WITH_DONATIONS_SECTION;
+    }
+
+    public void enableGoogleDonations(boolean DONATIONS_GOOGLE) {
+        this.DONATIONS_GOOGLE = DONATIONS_GOOGLE;
+    }
+
+    public void enablePaypalDonations(boolean DONATIONS_PAYPAL) {
+        this.DONATIONS_PAYPAL = DONATIONS_PAYPAL;
+    }
+
+    public void enableFlattrDonations(boolean DONATIONS_FLATTR) {
+        this.DONATIONS_FLATTR = DONATIONS_FLATTR;
+    }
+
+    public void enableBitcoinDonations(boolean DONATIONS_BITCOIN) {
+        this.DONATIONS_BITCOIN = DONATIONS_BITCOIN;
+    }
+
+    public void enableLicenseCheck(boolean WITH_LICENSE_CHECKER) {
+        this.WITH_LICENSE_CHECKER = WITH_LICENSE_CHECKER;
+    }
+
+    public void enableAmazonInstalls(boolean WITH_INSTALLED_FROM_AMAZON) {
+        this.WITH_INSTALLED_FROM_AMAZON = WITH_INSTALLED_FROM_AMAZON;
+    }
+
+    public void setGooglePubkey(String GOOGLE_PUBKEY) {
+        this.GOOGLE_PUBKEY = GOOGLE_PUBKEY;
     }
 }

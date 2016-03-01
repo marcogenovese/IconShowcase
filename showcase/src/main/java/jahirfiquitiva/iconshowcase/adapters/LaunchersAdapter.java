@@ -76,10 +76,10 @@ public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.Laun
         String iconName = "ic_" + launchers.get(position).name.toLowerCase().replace(" ", "_");
         int iconResource = getIconResId(context.getResources(), context.getPackageName(), iconName);
 
-        final int light = ContextCompat.getColor(context, R.color.launcher_tint_dark);
-        final int dark = ContextCompat.getColor(context, R.color.launcher_tint_light);
-        final int textLight = ContextCompat.getColor(context, R.color.launcher_text_light);
-        final int textDark = ContextCompat.getColor(context, R.color.launcher_text_dark);
+        final int dark = ContextCompat.getColor(context, R.color.launcher_tint_dark);
+        final int light = ContextCompat.getColor(context, R.color.launcher_tint_light);
+        final int textDark = ContextCompat.getColor(context, R.color.launcher_text_light);
+        final int textLight = ContextCompat.getColor(context, R.color.launcher_text_dark);
 
         if (iconResource != 0) {
             Glide.with(context)
