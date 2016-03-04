@@ -55,6 +55,7 @@ public class ThemeUtils {
     public static void onActivityCreateSetTheme(Activity activity) {
         final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
         int mTheme = sp.getInt("theme", (activity.getResources().getInteger(R.integer.default_theme) - 1));
+        boolean enableClear = activity.getResources().getBoolean(R.bool.enable_clear_theme_option);
         switch (mTheme) {
             default:
             case LIGHT:
@@ -68,9 +69,22 @@ public class ThemeUtils {
                 transparent = false;
                 break;
             case CLEAR:
-                activity.setTheme(R.style.AppThemeClear);
-                darkTheme = true;
-                transparent = true;
+                if (enableClear) {
+                    activity.setTheme(R.style.AppThemeClear);
+                    darkTheme = true;
+                    transparent = true;
+                    break;
+                }
+                Calendar c2 = Calendar.getInstance();
+                transparent = false;
+                int timeOfDay2 = c2.get(Calendar.HOUR_OF_DAY);
+                if (timeOfDay2 >= 7 && timeOfDay2 < 20) {
+                    activity.setTheme(R.style.AppTheme);
+                    darkTheme = false;
+                } else {
+                    activity.setTheme(R.style.AppThemeDark);
+                    darkTheme = true;
+                }
                 break;
             case AUTO:
                 Calendar c = Calendar.getInstance();

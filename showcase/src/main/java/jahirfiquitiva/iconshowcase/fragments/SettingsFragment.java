@@ -98,6 +98,10 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
 
         PreferenceCategory uiCategory = (PreferenceCategory) findPreference("uiPreferences");
         CheckBoxPreference wallHeaderCheck = (CheckBoxPreference) findPreference("wallHeader");
+        Preference theme = findPreference("themes");
+        if (getResources().getBoolean(R.bool.enable_clear_theme_option)) {
+            theme.setSummary(getResources().getString(R.string.pref_summary_themes));
+        }
         if (!ShowcaseActivity.WITH_USER_WALLPAPER_AS_TOOLBAR_HEADER) {
             uiCategory.removePreference(wallHeaderCheck);
         } else {
