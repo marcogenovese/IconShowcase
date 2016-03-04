@@ -119,11 +119,14 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             GOOGLE_CATALOG_VALUES = new String[0];
 
     ///test array values
-    private static String[] primaryDrawerItems = new String[0], secondaryDrawerItems = new String[0];
+    private static String[] primaryDrawerItems = new String[0], secondaryDrawerItems = new String[0],
+            GOOGLE_CATALOG_FREE, GOOGLE_CATALOG_PRO;
 
     private static String GOOGLE_PUBKEY = "",
             PAYPAL_USER = "",
             PAYPAL_CURRENCY_CODE = "";
+
+    IabHelper mHelper;
 
     public static DrawerHeaderStyle drawerHeaderStyle = DrawerHeaderStyle.NORMAL_HEADER;
 
@@ -211,23 +214,29 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
         //donations stuff
         //google
-        final String[] GOOGLE_CATALOG_FREE = getResources().getStringArray(R.array.nonconsumable_google_donation_items);
-        final String[] GOOGLE_CATALOG_PRO = getResources().getStringArray(R.array.consumable_google_donation_items);
-        mGoogleCatalog = GOOGLE_CATALOG_FREE;
-        GOOGLE_CATALOG_VALUES = getResources().getStringArray(R.array.google_donations_catalog);
-        //TODO check if 50 is a good reference value
-        if (!(GOOGLE_PUBKEY.length() > 50) || !(GOOGLE_CATALOG_VALUES.length > 0) || !(GOOGLE_CATALOG_FREE.length == GOOGLE_CATALOG_PRO.length) || !(GOOGLE_CATALOG_FREE.length == GOOGLE_CATALOG_VALUES.length)) {
-            DONATIONS_GOOGLE = false; //google donations setup is incorrect
+        if (DONATIONS_GOOGLE) {
+            GOOGLE_CATALOG_FREE = getResources().getStringArray(R.array.nonconsumable_google_donation_items);
+            GOOGLE_CATALOG_PRO = getResources().getStringArray(R.array.consumable_google_donation_items);
+            mGoogleCatalog = GOOGLE_CATALOG_FREE;
+            GOOGLE_CATALOG_VALUES = getResources().getStringArray(R.array.google_donations_catalog);
+            //TODO check if 50 is a good reference value
+            if (!(GOOGLE_PUBKEY.length() > 50) || !(GOOGLE_CATALOG_VALUES.length > 0) || !(GOOGLE_CATALOG_FREE.length == GOOGLE_CATALOG_PRO.length) || !(GOOGLE_CATALOG_FREE.length == GOOGLE_CATALOG_VALUES.length)) {
+                DONATIONS_GOOGLE = false; //google donations setup is incorrect
+            }
         }
 
         //paypal
-        PAYPAL_USER = getResources().getString(R.string.paypal_user);
-        PAYPAL_CURRENCY_CODE = getResources().getString(R.string.paypal_currency_code);
-        if (!(PAYPAL_USER.length() > 5) || !(PAYPAL_CURRENCY_CODE.length() > 1)) {
-            DONATIONS_PAYPAL = false; //paypal content incorrect
+        if (DONATIONS_PAYPAL) {
+            PAYPAL_USER = getResources().getString(R.string.paypal_user);
+            PAYPAL_CURRENCY_CODE = getResources().getString(R.string.paypal_currency_code);
+            if (!(PAYPAL_USER.length() > 5) || !(PAYPAL_CURRENCY_CODE.length() > 1)) {
+                DONATIONS_PAYPAL = false; //paypal content incorrect
+            }
         }
 
-        WITH_DONATIONS_SECTION = DONATIONS_GOOGLE || DONATIONS_PAYPAL || DONATIONS_FLATTR || DONATIONS_BITCOIN; //if one of the donations are enabled, then the section is enabled
+        if (WITH_DONATIONS_SECTION) {
+            WITH_DONATIONS_SECTION = DONATIONS_GOOGLE || DONATIONS_PAYPAL || DONATIONS_FLATTR || DONATIONS_BITCOIN; //if one of the donations are enabled, then the section is enabled
+        }
 
         //Initialize SecondaryDrawerItems
         if (WITH_DONATIONS_SECTION) {
@@ -335,6 +344,25 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                 }
             }
         };
+
+        mHelper = new IabHelper(ShowcaseActivity.this, GOOGLE_PUBKEY);
+        mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+            public void onIabSetupFinished(IabResult result)
+            {
+                if (!result.isSuccess()) {
+                    Utils.showLog(context, "In-app Billing setup failed: " + result); //TODO move text to string?
+                    new MaterialDialog.Builder(ShowcaseActivity.this)
+                            .title("Donations unavailable.")
+                            .content("Your device doesn't support In App Billing.  This could be because you need to update your Google Play Store application, or because you live in a country where In App Billing is disabled.")
+                            .positiveText(android.R.string.ok)
+                            .show();
+
+                } else {
+                    mHelper.queryInventoryAsync(false, mGotInventoryListener);
+                }
+
+            }
+        });
 
         setupDrawer(toolbar, savedInstanceState);
 
