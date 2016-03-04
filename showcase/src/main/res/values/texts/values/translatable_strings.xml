@@ -95,7 +95,7 @@
 
     <!-- License Check Dialog -->
     <string name="license_failed_title">License Check Failed</string>
-    <string name="license_success_title">License Check Success</string>
+    <string name="license_success_title">License Check Successful</string>
     <string name="exit">Exit</string>
 
     <!-- Some texts for Dialogs and Cards -->
