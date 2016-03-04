@@ -124,14 +124,15 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
     private static String GOOGLE_PUBKEY = "",
             PAYPAL_USER = "",
-            PAYPAL_CURRENCY_CODE = "";
+            PAYPAL_CURRENCY_CODE = "",
+            installer;
 
     IabHelper mHelper;
 
     public static DrawerHeaderStyle drawerHeaderStyle = DrawerHeaderStyle.NORMAL_HEADER;
 
     private static final String MARKET_URL = "https://play.google.com/store/apps/details?id=";
-    public boolean mIsPremium = false;
+    public boolean mIsPremium = false, playStore = false;
 
     private String action = "action";
     private static final String
@@ -212,6 +213,20 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
         shuffleIcons = getResources().getBoolean(R.bool.shuffle_toolbar_icons);
 
+        installer = getPackageManager().getInstallerPackageName(getPackageName());
+        try {
+            playStore = (installer.equals("com.google.android.feedback") ||
+                    installer.equals("com.android.vending"));
+        } catch (Exception e) {
+            //Do nothing
+        }
+
+        if (playStore) {
+            DONATIONS_PAYPAL = false; ///disable paypal as you can't use it in the play store.
+        } else {
+            DONATIONS_GOOGLE = false; //TODO check boolean stuff
+        }
+
         //donations stuff
         //google
         if (DONATIONS_GOOGLE) {
@@ -219,6 +234,9 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             GOOGLE_CATALOG_PRO = getResources().getStringArray(R.array.consumable_google_donation_items);
             mGoogleCatalog = GOOGLE_CATALOG_FREE;
             GOOGLE_CATALOG_VALUES = getResources().getStringArray(R.array.google_donations_catalog);
+            if (GOOGLE_CATALOG_FREE == null || GOOGLE_CATALOG_PRO == null || mGoogleCatalog == null) {
+                DONATIONS_GOOGLE = false;
+            } else
             //TODO check if 50 is a good reference value
             if (!(GOOGLE_PUBKEY.length() > 50) || !(GOOGLE_CATALOG_VALUES.length > 0) || !(GOOGLE_CATALOG_FREE.length == GOOGLE_CATALOG_PRO.length) || !(GOOGLE_CATALOG_FREE.length == GOOGLE_CATALOG_VALUES.length)) {
                 DONATIONS_GOOGLE = false; //google donations setup is incorrect
@@ -326,43 +344,44 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         }
 
         //Setup donations
-        final IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
+        if (DONATIONS_GOOGLE) {
+            final IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
 
-            public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
-                //TODO test this
-                if (inventory != null) {
-                    Utils.showLog(context, "IAP inventory exists");
-                    for (String aGOOGLE_CATALOG_FREE : GOOGLE_CATALOG_FREE) {
-                        Utils.showLog(context, aGOOGLE_CATALOG_FREE + " is " + inventory.hasPurchase(aGOOGLE_CATALOG_FREE));
-                        if (inventory.hasPurchase(aGOOGLE_CATALOG_FREE)) { //at least one donation value found, now premium
-                            mIsPremium = true;
+                public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
+                    //TODO test this
+                    if (inventory != null) {
+                        Utils.showLog(context, "IAP inventory exists");
+                        for (String aGOOGLE_CATALOG_FREE : GOOGLE_CATALOG_FREE) {
+                            Utils.showLog(context, aGOOGLE_CATALOG_FREE + " is " + inventory.hasPurchase(aGOOGLE_CATALOG_FREE));
+                            if (inventory.hasPurchase(aGOOGLE_CATALOG_FREE)) { //at least one donation value found, now premium
+                                mIsPremium = true;
+                            }
                         }
                     }
+                    if (isPremium()) {
+                        mGoogleCatalog = GOOGLE_CATALOG_PRO;
+                    }
                 }
-                if (isPremium()) {
-                    mGoogleCatalog = GOOGLE_CATALOG_PRO;
+            };
+
+            mHelper = new IabHelper(ShowcaseActivity.this, GOOGLE_PUBKEY);
+            mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+                public void onIabSetupFinished(IabResult result) {
+                    if (!result.isSuccess()) {
+                        Utils.showLog(context, "In-app Billing setup failed: " + result); //TODO move text to string?
+                        new MaterialDialog.Builder(ShowcaseActivity.this)
+                                .title("Donations unavailable.")
+                                .content("Your device doesn't support In App Billing.  This could be because you need to update your Google Play Store application, or because you live in a country where In App Billing is disabled.")
+                                .positiveText(android.R.string.ok)
+                                .show();
+
+                    } else {
+                        mHelper.queryInventoryAsync(false, mGotInventoryListener);
+                    }
+
                 }
-            }
-        };
-
-        mHelper = new IabHelper(ShowcaseActivity.this, GOOGLE_PUBKEY);
-        mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
-            public void onIabSetupFinished(IabResult result)
-            {
-                if (!result.isSuccess()) {
-                    Utils.showLog(context, "In-app Billing setup failed: " + result); //TODO move text to string?
-                    new MaterialDialog.Builder(ShowcaseActivity.this)
-                            .title("Donations unavailable.")
-                            .content("Your device doesn't support In App Billing.  This could be because you need to update your Google Play Store application, or because you live in a country where In App Billing is disabled.")
-                            .positiveText(android.R.string.ok)
-                            .show();
-
-                } else {
-                    mHelper.queryInventoryAsync(false, mGotInventoryListener);
-                }
-
-            }
-        });
+            });
+        }
 
         setupDrawer(toolbar, savedInstanceState);
 
@@ -672,10 +691,8 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     }
 
     private void checkLicense() {
-        String installer = getPackageManager().getInstallerPackageName(getPackageName());
         try {
-            if (installer.equals("com.google.android.feedback") ||
-                    installer.equals("com.android.vending")) {
+            if (playStore) {
                 ISDialogs.showLicenseSuccessDialog(this, new MaterialDialog.SingleButtonCallback() {
 
                     @Override
