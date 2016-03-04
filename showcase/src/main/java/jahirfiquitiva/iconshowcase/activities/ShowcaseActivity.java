@@ -234,13 +234,16 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             GOOGLE_CATALOG_PRO = getResources().getStringArray(R.array.consumable_google_donation_items);
             mGoogleCatalog = GOOGLE_CATALOG_FREE;
             GOOGLE_CATALOG_VALUES = getResources().getStringArray(R.array.google_donations_catalog);
-            if (GOOGLE_CATALOG_FREE == null || GOOGLE_CATALOG_PRO == null || mGoogleCatalog == null) {
-                DONATIONS_GOOGLE = false;
-            } else
+
             //TODO check if 50 is a good reference value
-            if (!(GOOGLE_PUBKEY.length() > 50) || !(GOOGLE_CATALOG_VALUES.length > 0) || !(GOOGLE_CATALOG_FREE.length == GOOGLE_CATALOG_PRO.length) || !(GOOGLE_CATALOG_FREE.length == GOOGLE_CATALOG_VALUES.length)) {
-                DONATIONS_GOOGLE = false; //google donations setup is incorrect
+            try {
+                if (!(GOOGLE_PUBKEY.length() > 50) || !(GOOGLE_CATALOG_VALUES.length > 0) || !(GOOGLE_CATALOG_FREE.length == GOOGLE_CATALOG_PRO.length) || !(GOOGLE_CATALOG_FREE.length == GOOGLE_CATALOG_VALUES.length)) {
+                    DONATIONS_GOOGLE = false; //google donations setup is incorrect
+                }
+            } catch (Exception e) {
+                DONATIONS_GOOGLE = false;
             }
+
         }
 
         //paypal
