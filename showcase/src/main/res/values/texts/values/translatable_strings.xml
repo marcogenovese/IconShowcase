@@ -138,6 +138,12 @@
         <item>Auto</item>
     </string-array>
 
+    <string-array name="themes_no_clear">
+        <item>Light</item>
+        <item>Dark</item>
+        <item>Auto</item>
+    </string-array>
+
     <string name="pref_title_anims">Enable animations</string>
     <string name="pref_summary_anims">This may cause lag in some devices.</string>
 

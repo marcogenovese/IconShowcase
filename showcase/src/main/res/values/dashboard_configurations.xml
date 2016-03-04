@@ -52,11 +52,16 @@
     -->
     <style name="AppTheme.LaunchScreen" parent="@style/AppTheme.Base.LightLaunchScreen"/>
 
+    <!--enables clear theme as an option in the theme dialog
+    see below-->
+    <bool name="enable_clear_theme_option">false</bool>
+
     <!-- Default theme
     1. Light
     2. Dark
     3. Clear
     4. Auto (Light & Dark)
+    ***If enable_clear_theme_option is false, don't use 3, as it won't be in the dialog***
     -->
     <integer name="default_theme">1</integer>
 

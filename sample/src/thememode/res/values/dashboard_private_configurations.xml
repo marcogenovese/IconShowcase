@@ -27,6 +27,8 @@
     Private configurations that should not be opened to sample.
     They are currently for the theme flavour that I'm testing
 
+
+    Keep these as true; it has no effect on you as long as you don't use the thememode flavour
     - Allan
     -->
 
