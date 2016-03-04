@@ -24,6 +24,7 @@ public class HomeCard implements Parcelable {
     }
 
     public static class Builder {
+
         private String title, desc;
         private Drawable img;
         private boolean imgEnabled = false;
@@ -51,7 +52,7 @@ public class HomeCard implements Parcelable {
             return this;
         }
 
-        public Builder onClickLink (String s) {
+        public Builder onClickLink(String s) {
             this.onClickLink = s;
             return this;
         }

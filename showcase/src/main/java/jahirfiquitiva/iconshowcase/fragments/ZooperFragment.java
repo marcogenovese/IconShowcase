@@ -350,15 +350,15 @@ public class ZooperFragment extends Fragment implements PermissionUtils.OnPermis
             }
         }
 
-        CustomCoordinatorLayout coordinatorLayout = (CustomCoordinatorLayout) ((Activity) context).findViewById(R.id.mainCoordinatorLayout);
-        coordinatorLayout.setScrollAllowed(getShownCardsNumber() > 3);
+        setupCoordinatorLayoutScrolling(getActivity());
     }
 
     private boolean checkAssetsInstalled(String folder) {
         boolean assetsInstalled = true;
 
-        String fileToIgnore1 = "material-design-iconic-font-v2.2.0.ttf";
-        String fileToIgnore2 = "materialdrawerfont.ttf";
+        String fileToIgnore1 = "material-design-iconic-font-v2.2.0.ttf",
+                fileToIgnore2 = "materialdrawerfont.ttf",
+                fileToIgnore3 = "materialdrawerfont-font-v5.0.0.ttf";
 
         AssetManager assetManager = context.getAssets();
         String[] files = null;
@@ -370,8 +370,11 @@ public class ZooperFragment extends Fragment implements PermissionUtils.OnPermis
 
         if (files != null && files.length > 0) {
             for (String filename : files) {
-                if (!filename.equals(fileToIgnore1) && !filename.equals(fileToIgnore2)) {
-                    File file = new File(Environment.getExternalStorageDirectory() + "/ZooperWidget/" + getFolderName(folder) + "/" + filename);
+                //Utils.showLog(filename);
+                if (!filename.equals(fileToIgnore1) && !filename.equals(fileToIgnore2)
+                        && !filename.equals(fileToIgnore3)) {
+                    File file = new File(Environment.getExternalStorageDirectory()
+                            + "/ZooperWidget/" + getFolderName(folder) + "/" + filename);
                     if (!file.exists()) {
                         assetsInstalled = false;
                     }
@@ -407,19 +410,23 @@ public class ZooperFragment extends Fragment implements PermissionUtils.OnPermis
         new CopyFilesToStorage(context, dialog, folderName).execute();
     }
 
-    private int getShownCardsNumber() {
+    private void setupCoordinatorLayoutScrolling(Context context) {
         int num = 1;
+        boolean bigCards = false, enableScroll = false;
 
         if (cardZooper.getVisibility() == View.VISIBLE) {
             num += 1;
+            bigCards = true;
         }
 
         if (cardMU.getVisibility() == View.VISIBLE) {
             num += 1;
+            bigCards = true;
         }
 
         if (cardMUInfo.getVisibility() == View.VISIBLE) {
             num += 1;
+            bigCards = true;
         }
 
         if (installFonts.getVisibility() == View.VISIBLE) {
@@ -434,7 +441,14 @@ public class ZooperFragment extends Fragment implements PermissionUtils.OnPermis
             num += 1;
         }
 
-        return num;
+        if (num > 3 && !bigCards) {
+            enableScroll = true;
+        } else if (num >= 2 && bigCards) {
+            enableScroll = true;
+        }
+
+        CustomCoordinatorLayout coordinatorLayout = (CustomCoordinatorLayout) ((Activity) context).findViewById(R.id.mainCoordinatorLayout);
+        coordinatorLayout.setScrollAllowed(enableScroll);
     }
 
     @Override

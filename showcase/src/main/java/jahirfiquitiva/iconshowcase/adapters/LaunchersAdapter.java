@@ -93,15 +93,15 @@ public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.Laun
         if (launchers.get(position).isInstalled(context)) {
             holder.icon.setColorFilter(null);
             holder.itemBG.setBackgroundColor(launchers.get(position).launcherColor);
-            holder.launcherName.setTextColor(light);
+            holder.launcherName.setTextColor(textLight);
         } else {
             if (context.getResources().getBoolean(R.bool.enable_bnw_filter)) {
                 holder.icon.setColorFilter(bnwFilter());
             } else {
-                holder.icon.setColorFilter(ThemeUtils.darkTheme ? light : dark);
+                holder.icon.setColorFilter(ThemeUtils.darkTheme ? dark : light);
             }
-            holder.itemBG.setBackgroundColor(ThemeUtils.darkTheme ? light : dark);
-            holder.launcherName.setTextColor(ThemeUtils.darkTheme ? textLight : textDark);
+            holder.itemBG.setBackgroundColor(ThemeUtils.darkTheme ? dark : light);
+            holder.launcherName.setTextColor(ThemeUtils.darkTheme ? textDark : textLight);
         }
 
         holder.view.setTag(position);

@@ -44,7 +44,6 @@ public class HomeActivity extends ShowcaseActivity {
         enableAmazonInstalls(false);
         setGooglePubkey("insert key here");
 
-
         Intent intent = new Intent(HomeActivity.this, jahirfiquitiva.iconshowcase.activities.ShowcaseActivity.class);
         startActivity(intent);
 

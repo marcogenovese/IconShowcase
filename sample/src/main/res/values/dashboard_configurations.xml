@@ -185,7 +185,7 @@
        True, means yes.
        False, means no.
        -->
-    <bool name="use_palette_api_in_toolbar">false</bool>
+    <bool name="use_palette_api_in_toolbar">true</bool>
 
     <!--
        Do you want the app to use palette api in wallpapers viewer?
@@ -295,6 +295,7 @@
     -->
     <bool name="light_statusbar_in_light_theme">true</bool>
     <bool name="light_statusbar_in_dark_theme">false</bool>
+    <bool name="light_statusbar_in_clear_theme">false</bool>
 
     <!--
     1. Set the max amount of apps to request.

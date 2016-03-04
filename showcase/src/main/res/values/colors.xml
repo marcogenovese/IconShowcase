@@ -66,7 +66,6 @@
     <color name="material_drawer_clear_background">#bb000000</color>
     <color name="md_background_color_clear">@color/dark_bg</color>
 
-
     <!-- COLORS FOR INSTALLED LAUNCHERS -->
     <color name="action_launcher_color">#f44336</color>
     <color name="adw_launcher_color">#5b9cc8</color>

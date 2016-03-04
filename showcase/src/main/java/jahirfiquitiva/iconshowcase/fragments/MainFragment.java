@@ -109,7 +109,7 @@ public class MainFragment extends Fragment {
         themeMode = getResources().getBoolean(R.bool.theme_mode);
         mRecyclerView = (RecyclerView) layout.findViewById(R.id.home_rv);
 
-        if(!themeMode) {
+        if (!themeMode) {
             ShowcaseActivity.setupIcons(ShowcaseActivity.icon1, ShowcaseActivity.icon2,
                     ShowcaseActivity.icon3, ShowcaseActivity.icon4, ShowcaseActivity.icon5,
                     ShowcaseActivity.icon6, ShowcaseActivity.icon7, ShowcaseActivity.icon8,
@@ -168,7 +168,7 @@ public class MainFragment extends Fragment {
             }
         });
 
-        if(!themeMode) {
+        if (!themeMode) {
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
@@ -191,7 +191,6 @@ public class MainFragment extends Fragment {
 //        ArrayList<HomeCard> homeCards = bundle
 //                .getParcelableArrayList("homeCards");
 
-
 //        Log.e("asdf to string", getActivity().getIntent().getParcelableArrayListExtra("homeCards").toString());
 //        ArrayList<HomeCard> homeCards = getActivity().getIntent().getParcelableArrayListExtra("homeCards");
 
@@ -211,6 +210,9 @@ public class MainFragment extends Fragment {
 
         HomeListAdapter mAdapter = new HomeListAdapter(homeCards, context);
         mRecyclerView.setAdapter(mAdapter);
+
+        showFAB();
+
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -288,11 +290,10 @@ public class MainFragment extends Fragment {
     private void modifyFABIcon() {
         cm = Utils.isAppInstalled(context, "org.cyanogenmod.theme.chooser");
         cyngn = Utils.isAppInstalled(context, "com.cyngn.theme.chooser");
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            rro = Utils.isAppInstalled(context, "com.lovejoy777.rroandlayersmanager");
-        } else {
-            rro = false; //don't enable rro before lollipop, it didn't exist before that
-        }
+
+        //don't enable rro before lollipop, it didn't exist before that
+        rro = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP &&
+                Utils.isAppInstalled(context, "com.lovejoy777.rroandlayersmanager");
 
         if (cm || cyngn) {
             ShowcaseActivity.fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_apply_cm));
@@ -302,6 +303,5 @@ public class MainFragment extends Fragment {
             ShowcaseActivity.fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_question));
         }
     }
-
 
 }

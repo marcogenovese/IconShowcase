@@ -23,6 +23,7 @@
 
 package jahirfiquitiva.iconshowcase.tasks;
 
+import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -49,7 +50,9 @@ import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.fragments.RequestsFragment;
 import jahirfiquitiva.iconshowcase.models.RequestItem;
 import jahirfiquitiva.iconshowcase.utilities.ApplicationBase;
+import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
+import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
 
 public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<RequestItem>> {
 
@@ -62,6 +65,7 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
 
     long startTime, endTime;
 
+    @SuppressLint("PrivateResource")
     public LoadAppsToRequest(Context context) {
         startTime = System.currentTimeMillis();
         this.context = context;
@@ -81,7 +85,16 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
             try {
                 icon = info.loadIcon(mPackageManager);
             } catch (Resources.NotFoundException e) {
-                icon = ContextCompat.getDrawable(context, R.drawable.ic_launcher);
+                try {
+                    icon = ContextCompat.getDrawable(context, R.drawable.ic_launcher);
+                } catch (Resources.NotFoundException e1) {
+                    icon = ThemeUtils.darkTheme ? ToolbarColorizer.getTintedIcon(
+                            ContextCompat.getDrawable(context, R.drawable.abc_btn_radio_on_mtrl),
+                            ContextCompat.getColor(context, R.color.drawable_tint_dark))
+                            : ToolbarColorizer.getTintedIcon(
+                            ContextCompat.getDrawable(context, R.drawable.abc_btn_radio_on_mtrl),
+                            ContextCompat.getColor(context, R.color.drawable_tint_light));
+                }
             }
 
             RequestItem appInfo = new RequestItem(
@@ -217,6 +230,7 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
         return mainIntent;
     }
 
+    @SuppressLint("PrivateResource")
     private ArrayList<RequestItem> createListFromXML(Context context) {
 
         ArrayList<RequestItem> activitiesToRemove = new ArrayList<>();
@@ -251,7 +265,16 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
                                 try {
                                     icon = info.loadIcon(mPackageManager);
                                 } catch (Resources.NotFoundException e) {
-                                    icon = ContextCompat.getDrawable(context, R.drawable.ic_launcher);
+                                    try {
+                                        icon = ContextCompat.getDrawable(context, R.drawable.ic_launcher);
+                                    } catch (Resources.NotFoundException e1) {
+                                        icon = ThemeUtils.darkTheme ? ToolbarColorizer.getTintedIcon(
+                                                ContextCompat.getDrawable(context, R.drawable.abc_btn_radio_on_mtrl),
+                                                ContextCompat.getColor(context, R.color.drawable_tint_dark))
+                                                : ToolbarColorizer.getTintedIcon(
+                                                ContextCompat.getDrawable(context, R.drawable.abc_btn_radio_on_mtrl),
+                                                ContextCompat.getColor(context, R.color.drawable_tint_light));
+                                    }
                                 }
                                 RequestItem appInfo = new RequestItem(
                                         info.loadLabel(mPackageManager).toString(),

@@ -533,4 +533,12 @@ public final class ISDialogs {
                 .cancelable(false)
                 .build();
     }
+
+    public static void showLoadingRequestAppsDialog(Context context) {
+        new MaterialDialog.Builder(context)
+                .content(R.string.loading_apps)
+                .positiveText(android.R.string.ok)
+                .show();
+    }
+
 }

@@ -18,13 +18,13 @@ import jahirfiquitiva.iconshowcase.utilities.Utils;
 /**
  * Created by 7681 on 2016-02-24.
  */
-public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.HomeCardView>{
+public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.HomeCardView> {
 
     private Context c;
     public View view;
     ArrayList<HomeCard> homeCards;
 
-    public HomeListAdapter(ArrayList<HomeCard> homeCards, Context c){
+    public HomeListAdapter(ArrayList<HomeCard> homeCards, Context c) {
         this.c = c;
         this.homeCards = homeCards;
     }
@@ -38,9 +38,9 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.HomeCa
         HomeCardView(View itemView) {
             super(itemView);
             view = itemView;
-            lly = (LinearLayout)itemView.findViewById(R.id.home_card);
-            cardTitle = (TextView)itemView.findViewById(R.id.home_card_text);
-            cardDesc = (TextView)itemView.findViewById(R.id.home_card_description);
+            lly = (LinearLayout) itemView.findViewById(R.id.home_card);
+            cardTitle = (TextView) itemView.findViewById(R.id.home_card_text);
+            cardDesc = (TextView) itemView.findViewById(R.id.home_card_description);
             cardIcon = (ImageView) itemView.findViewById(R.id.home_card_image);
             subLly = (LinearLayout) itemView.findViewById(R.id.home_card_sub_layout);
         }
@@ -64,7 +64,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.HomeCa
     public void onBindViewHolder(HomeCardView homeCardView, int i) {
         homeCardView.cardTitle.setText(homeCards.get(i).title);
         homeCardView.cardDesc.setText(homeCards.get(i).desc);
-        if(homeCards.get(i).imgEnabled) {
+        if (homeCards.get(i).imgEnabled) {
             homeCardView.cardIcon.setImageDrawable(homeCards.get(i).img);
         } else {
             homeCardView.subLly.removeView(homeCardView.cardIcon);

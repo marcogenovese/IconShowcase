@@ -330,7 +330,7 @@ public class Utils {
 
         int paletteGeneratedColor = 0;
 
-        if(context.getResources().getBoolean(R.bool.use_palette_api_in_toolbar)){
+        if (context.getResources().getBoolean(R.bool.use_palette_api_in_toolbar)) {
             paletteGeneratedColor = getIconsColorFromBitmap(bitmap, context);
             if (paletteGeneratedColor == 0) {
                 if (ColorUtils.isDark(bitmap, 0, bitmap.getHeight() / 2, true)) {

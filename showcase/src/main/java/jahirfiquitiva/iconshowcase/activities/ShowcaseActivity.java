@@ -108,8 +108,8 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             WITH_ALTERNATIVE_ABOUT_SECTION = true,
             WITH_SECONDARY_DRAWER_ITEMS_ICONS = false,
 
-            //Donations stuff
-            DONATIONS_GOOGLE = false,
+    //Donations stuff
+    DONATIONS_GOOGLE = false,
             DONATIONS_PAYPAL = false,
             DONATIONS_FLATTR = false,
             DONATIONS_BITCOIN = false,
@@ -287,7 +287,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
 
-        if(!themeMode) {
+        if (!themeMode) {
             icon1 = (ImageView) findViewById(R.id.iconOne);
             icon2 = (ImageView) findViewById(R.id.iconTwo);
             icon3 = (ImageView) findViewById(R.id.iconThree);
@@ -298,7 +298,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             icon8 = (ImageView) findViewById(R.id.iconEight);
 
             GridLayout iconsRow = (GridLayout) findViewById(R.id.iconsRow);
-
 
             if (mPrefs.getSettingsModified()) {
                 setupIcons(icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8, numOfIcons);
@@ -572,8 +571,12 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         } else if (i == R.id.columns) {
             ISDialogs.showColumnsSelectorDialog(context);
         } else if (i == R.id.select_all) {
-            RequestsFragment.requestsAdapter.selectOrDeselectAll(selectAll);
-            selectAll = !selectAll;
+            if (RequestsFragment.requestsAdapter != null && RequestsFragment.requestsAdapter.appsList.size() > 0) {
+                RequestsFragment.requestsAdapter.selectOrDeselectAll(selectAll);
+                selectAll = !selectAll;
+            } else {
+                ISDialogs.showLoadingRequestAppsDialog(this);
+            }
         }
         return true;
     }
