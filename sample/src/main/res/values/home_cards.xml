@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2016. Jahir Fiquitiva. Android Developer. All rights reserved.
+  -->
+
+<resources>
+
+    <string-array name="apps_titles">
+        <item>Action Launcher</item>
+    </string-array>
+
+    <string-array name="apps_descriptions">
+        <item>Not good enough</item>
+    </string-array>
+
+    <string-array name="apps_icons">
+        <item>action_launcher</item>
+    </string-array>
+
+    <string-array name="apps_packages">
+        <item>com.actionlauncher.playstore</item>
+    </string-array>
+
+</resources>

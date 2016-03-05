@@ -1,6 +1,11 @@
 package jahirfiquitiva.iconshowcase.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,70 +14,215 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
+
 import java.util.ArrayList;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.models.HomeCard;
+import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 /**
  * Created by 7681 on 2016-02-24.
  */
-public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.HomeCardView> {
+public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private Context c;
+    private Context context;
     public View view;
+    int cards = 3;
     ArrayList<HomeCard> homeCards;
 
-    public HomeListAdapter(ArrayList<HomeCard> homeCards, Context c) {
-        this.c = c;
+    public HomeListAdapter(ArrayList<HomeCard> homeCards, Context context) {
+        this.context = context;
         this.homeCards = homeCards;
     }
 
-    public class HomeCardView extends RecyclerView.ViewHolder {
-
-        LinearLayout lly, subLly;
-        TextView cardTitle, cardDesc;
-        ImageView cardIcon;
-
-        HomeCardView(View itemView) {
-            super(itemView);
-            view = itemView;
-            lly = (LinearLayout) itemView.findViewById(R.id.home_card);
-            cardTitle = (TextView) itemView.findViewById(R.id.home_card_text);
-            cardDesc = (TextView) itemView.findViewById(R.id.home_card_description);
-            cardIcon = (ImageView) itemView.findViewById(R.id.home_card_image);
-            subLly = (LinearLayout) itemView.findViewById(R.id.home_card_sub_layout);
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+        switch (i) {
+            case 0:
+                View welcomeCard = LayoutInflater.from(
+                        viewGroup.getContext()).inflate(R.layout.item_welcome_card,
+                        viewGroup, false);
+                return new WelcomeCard(welcomeCard);
+            case 1:
+                View infoCard = LayoutInflater.from(
+                        viewGroup.getContext()).inflate(R.layout.item_packinfo_card,
+                        viewGroup, false);
+                return new AppInfoCard(infoCard);
+            case 2:
+                View moreAppsCard = LayoutInflater.from(
+                        viewGroup.getContext()).inflate(R.layout.item_moreapps_card,
+                        viewGroup, false);
+                return new MoreAppsCard(moreAppsCard);
+            default:
+                View appCard = LayoutInflater.from(
+                        viewGroup.getContext()).inflate(R.layout.item_app_card,
+                        viewGroup, false);
+                return new AppCard(appCard);
         }
     }
 
     @Override
-    public HomeCardView onCreateViewHolder(ViewGroup viewGroup, int i) {
-        final int finalI = i;
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_card_home, viewGroup, false);
-        v.setOnClickListener(new View.OnClickListener() { //TODO make clicks work for more than just links
-            @Override
-            public void onClick(View v) {
-                Utils.openLink(c, homeCards.get(finalI).onClickLink);
-            }
-        });
-        HomeCardView hcv = new HomeCardView(v);
-        return hcv;
-    }
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
-    @Override
-    public void onBindViewHolder(HomeCardView homeCardView, int i) {
-        homeCardView.cardTitle.setText(homeCards.get(i).title);
-        homeCardView.cardDesc.setText(homeCards.get(i).desc);
-        if (homeCards.get(i).imgEnabled) {
-            homeCardView.cardIcon.setImageDrawable(homeCards.get(i).img);
-        } else {
-            homeCardView.subLly.removeView(homeCardView.cardIcon);
-        }
     }
 
     @Override
     public int getItemCount() {
-        return homeCards.size();
+        if (context.getResources().getBoolean(R.bool.hide_pack_info)) {
+            cards -= 1;
+        }
+        return homeCards.size() + cards;
     }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    public class WelcomeCard extends RecyclerView.ViewHolder {
+
+        AppCompatButton ratebtn, iconsbtn;
+
+        public WelcomeCard(View itemView) {
+            super(itemView);
+            ratebtn = (AppCompatButton) itemView.findViewById(R.id.rate_button);
+            ratebtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent rate = new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("https://play.google.com/store/apps/details?id=" + context.getPackageName()));
+                    context.startActivity(rate);
+                }
+            });
+            iconsbtn = (AppCompatButton) itemView.findViewById(R.id.icons_button);
+            iconsbtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ShowcaseActivity.drawerItemClick(ShowcaseActivity.iconsPickerIdentifier);
+                    ShowcaseActivity.drawer.setSelection(ShowcaseActivity.iconsPickerIdentifier);
+                }
+            });
+        }
+    }
+
+    public class AppInfoCard extends RecyclerView.ViewHolder {
+
+        String themedIcons = String.valueOf(context.getResources().getInteger(R.integer.icons_amount));
+        String availableWallpapers = String.valueOf(context.getResources().getInteger(R.integer.walls_amount));
+        String includedWidgets = String.valueOf(context.getResources().getInteger(R.integer.zooper_widgets));
+
+        ImageView iconsIV, wallsIV, widgetsIV;
+        TextView iconsT, wallsT, widgetsT;
+        LinearLayout packInfo, widgets;
+        View divider;
+
+        public AppInfoCard(View itemView) {
+            super(itemView);
+
+            iconsIV = (ImageView) itemView.findViewById(R.id.icon_themed_icons);
+            wallsIV = (ImageView) itemView.findViewById(R.id.icon_available_wallpapers);
+            widgetsIV = (ImageView) itemView.findViewById(R.id.icon_included_widgets);
+            setupIcons(context, iconsIV, wallsIV, widgetsIV);
+
+            iconsT = (TextView) itemView.findViewById(R.id.text_themed_icons);
+            iconsT.setText(context.getResources().getString(R.string.themed_icons, themedIcons));
+
+            wallsT = (TextView) itemView.findViewById(R.id.text_available_wallpapers);
+            wallsT.setText(context.getResources().getString(R.string.available_wallpapers, availableWallpapers));
+
+            widgetsT = (TextView) itemView.findViewById(R.id.text_included_widgets);
+            widgetsT.setText(context.getResources().getString(R.string.included_widgets, includedWidgets));
+
+            packInfo = (LinearLayout) itemView.findViewById(R.id.appDetails);
+            divider = itemView.findViewById(R.id.divider);
+            packInfo.setVisibility(context.getResources().getBoolean(R.bool.hide_pack_info) ?
+                    View.GONE :
+                    View.VISIBLE);
+            divider.setVisibility(context.getResources().getBoolean(R.bool.hide_pack_info) ?
+                    View.GONE :
+                    View.VISIBLE);
+
+            if (!ShowcaseActivity.WITH_ZOOPER_SECTION) {
+                widgets = (LinearLayout) itemView.findViewById(R.id.widgets);
+                widgets.setVisibility(View.GONE);
+            }
+
+        }
+    }
+
+    private void setupIcons(Context context, ImageView iconsIV, ImageView wallsIV,
+                            ImageView widgetsIV) {
+        final int light = ContextCompat.getColor(context, R.color.drawable_tint_dark);
+        final int dark = ContextCompat.getColor(context, R.color.drawable_tint_light);
+
+        Drawable iconsDrawable = new IconicsDrawable(context)
+                .icon(GoogleMaterial.Icon.gmd_android_alt)
+                .color(ThemeUtils.darkTheme ? light : dark)
+                .sizeDp(24);
+
+        Drawable wallsDrawable = new IconicsDrawable(context)
+                .icon(GoogleMaterial.Icon.gmd_collection_image)
+                .color(ThemeUtils.darkTheme ? light : dark)
+                .sizeDp(24);
+
+        Drawable widgetsDrawable = new IconicsDrawable(context)
+                .icon(GoogleMaterial.Icon.gmd_widgets)
+                .color(ThemeUtils.darkTheme ? light : dark)
+                .sizeDp(24);
+        
+        /*
+
+        playStoreDrawable = new IconicsDrawable(context)
+                .icon(GoogleMaterial.Icon.gmd_case_play)
+                .color(ThemeUtils.darkTheme ? light : dark)
+                .sizeDp(24);
+                */
+
+        iconsIV.setImageDrawable(iconsDrawable);
+        wallsIV.setImageDrawable(wallsDrawable);
+        widgetsIV.setImageDrawable(widgetsDrawable);
+    }
+
+    public class MoreAppsCard extends RecyclerView.ViewHolder {
+
+        final int light = ContextCompat.getColor(context, R.color.drawable_tint_dark);
+        final int dark = ContextCompat.getColor(context, R.color.drawable_tint_light);
+
+        LinearLayout lly, subLly;
+        TextView title, desc;
+        ImageView icon;
+
+        public MoreAppsCard(View itemView) {
+            super(itemView);
+            view = itemView;
+            lly = (LinearLayout) itemView.findViewById(R.id.more_apps);
+            title = (TextView) itemView.findViewById(R.id.more_apps_text);
+            desc = (TextView) itemView.findViewById(R.id.more_apps_description);
+            icon = (ImageView) itemView.findViewById(R.id.more_apps_icon);
+            subLly = (LinearLayout) itemView.findViewById(R.id.more_apps_sub_layout);
+            icon.setImageDrawable(new IconicsDrawable(context)
+                    .icon(GoogleMaterial.Icon.gmd_case_play)
+                    .color(ThemeUtils.darkTheme ? light : dark)
+                    .sizeDp(24));
+            lly.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Utils.openLink(context, context.getResources().getString(R.string.iconpack_author_playstore));
+                }
+            });
+        }
+    }
+
+    public class AppCard extends RecyclerView.ViewHolder {
+
+        public AppCard(View itemView) {
+            super(itemView);
+        }
+    }
+
 }

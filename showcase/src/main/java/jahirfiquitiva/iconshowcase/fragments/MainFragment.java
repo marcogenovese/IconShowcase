@@ -226,8 +226,10 @@ public class MainFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ShowcaseActivity.fab.setVisibility(View.GONE);
-        ShowcaseActivity.fab.hide();
+        if (ShowcaseActivity.currentItem != 1) { //TODO figure out why I need this; without it, fab is hidden on first run
+            ShowcaseActivity.fab.setVisibility(View.GONE);
+            ShowcaseActivity.fab.hide();
+        }
     }
 
     private void showFAB() {

@@ -50,6 +50,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.models.ZooperWidget;
 import jahirfiquitiva.iconshowcase.tasks.CopyFilesToStorage;
 import jahirfiquitiva.iconshowcase.tasks.LoadZooperWidgets;
@@ -238,6 +239,8 @@ public class ZooperFragment extends Fragment implements PermissionUtils.OnPermis
     @Override
     public void onResume() {
         super.onResume();
+        ShowcaseActivity.fab.hide();
+        ShowcaseActivity.fab.setVisibility(View.GONE);
         Utils.expandToolbar(getActivity());
         GridLayout grid = (GridLayout) getActivity().findViewById(R.id.iconsRow);
         grid.setVisibility(View.GONE);

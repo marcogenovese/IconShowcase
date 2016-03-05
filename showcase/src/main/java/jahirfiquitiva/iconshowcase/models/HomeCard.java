@@ -48,12 +48,17 @@ public class HomeCard implements Parcelable {
 
         public Builder icon(Drawable img) {
             this.img = img;
-            this.imgEnabled = true;
+            this.imgEnabled = img != null;
             return this;
         }
 
         public Builder onClickLink(String s) {
             this.onClickLink = s;
+            return this;
+        }
+
+        public Builder onClickLink(String s, boolean isAnApp) {
+            this.onClickLink = isAnApp ? "https://play.google.com/store/apps/details?id=" + s : s;
             return this;
         }
 

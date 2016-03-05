@@ -48,6 +48,7 @@ import java.util.Map;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.fragments.RequestsFragment;
+import jahirfiquitiva.iconshowcase.models.AppFilterError;
 import jahirfiquitiva.iconshowcase.models.RequestItem;
 import jahirfiquitiva.iconshowcase.utilities.ApplicationBase;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
@@ -57,18 +58,20 @@ import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
 public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<RequestItem>> {
 
     private static PackageManager mPackageManager;
+    private static boolean debugging = false;
     private static ArrayList<String> components = new ArrayList<>();
-
     final static ArrayList<RequestItem> appsList = new ArrayList<>();
-
+    private static ArrayList<AppFilterError> appFilterErrors = new ArrayList<>();
     private Context context;
-
     long startTime, endTime;
 
     @SuppressLint("PrivateResource")
     public LoadAppsToRequest(Context context) {
         startTime = System.currentTimeMillis();
         this.context = context;
+
+        debugging = context.getResources().getBoolean(R.bool.debugging);
+
         mPackageManager = context.getPackageManager();
 
         ArrayList<ResolveInfo> rAllActivitiesList =
@@ -137,10 +140,15 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
         ApplicationBase.allAppsToRequest = list;
         RequestsFragment.setupContent();
         endTime = System.currentTimeMillis();
-        if (components != null) {
-            showDuplicatedComponentsInLog(components, context);
-        }
         Utils.showLog(context, "Apps to Request Task completed in: " + String.valueOf((endTime - startTime) / 1000) + " secs.");
+        if (debugging) {
+            if (appFilterErrors != null) {
+                showAppFilterErrors(appFilterErrors, context);
+            }
+            if (components != null) {
+                showDuplicatedComponentsInLog(components, context);
+            }
+        }
     }
 
     private static ResolveInfo getResolveInfo(String componentString, Context context,
@@ -193,22 +201,22 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
             String emptyComponent = finalComponentPackage + finalComponent;
             String completeComponent = finalComponentPackage + "/" + finalComponent;
 
-            if (emptyComponent.equals("")) {
-                Utils.showAppFilterLog(context, "Found empty ComponentInfo for icon: \'" + iconName + "\'");
-            } else if (halfEmptyPack) {
-                Utils.showAppFilterLog(context, "Found empty component package for icon: \'" + iconName + "\'");
-                return null;
-            } else if (halfEmptyComp) {
-                Utils.showAppFilterLog(context, "Found empty component for icon: \'" + iconName + "\'");
-                return null;
-            } else if (iconName.equals("")) {
-                Utils.showAppFilterLog(context, "Found empty drawable for component: \'" + completeComponent + "\'");
+            boolean error = emptyComponent.equals("") || halfEmptyPack || halfEmptyComp;
+
+            if (debugging) {
+                appFilterErrors.add(new AppFilterError(
+                        emptyComponent.equals(""),
+                        halfEmptyPack,
+                        halfEmptyComp,
+                        iconName,
+                        completeComponent,
+                        getIconResId(context, iconName)
+                ));
+            }
+
+            if (error || iconName.equals("")) {
                 return null;
             } else {
-                int iconID = getIconResId(context, iconName);
-                if (iconID == 0) {
-                    Utils.showAppFilterLog(context, "Icon \'" + iconName + "\' is mentioned in appfilter.xml but could not be found in the app resources.");
-                }
                 return completeComponent;
             }
 
@@ -310,6 +318,30 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
         }
     }
 
+    private static void showAppFilterErrors(ArrayList<AppFilterError> errors, Context context) {
+
+
+        Utils.showAppFilterLog(context, "----- START OF APPFILTER DEBUG -----");
+
+        for (AppFilterError error : errors) {
+            String iconName = error.getIconName();
+            if (iconName.equals("")) {
+                Utils.showAppFilterLog(context, "Found empty drawable for component: \'" + error.getCompleteComponent() + "\'");
+            } else {
+                if (error.hasEmptyComponent()) {
+                    Utils.showAppFilterLog(context, "Found empty ComponentInfo for icon: \'" + iconName + "\'");
+                } else if (error.hasHalfEmptyPackage()) {
+                    Utils.showAppFilterLog(context, "Found empty component package for icon: \'" + iconName + "\'");
+                } else if (error.hasHalfEmptyComponent()) {
+                    Utils.showAppFilterLog(context, "Found empty component for icon: \'" + iconName + "\'");
+                }
+                if (error.getIconID() == 0) {
+                    Utils.showAppFilterLog(context, "Icon \'" + iconName + "\' is mentioned in appfilter.xml but could not be found in the app resources.");
+                }
+            }
+        }
+    }
+
     private static void showDuplicatedComponentsInLog(ArrayList<String> components,
                                                       Context context) {
 
@@ -329,8 +361,12 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
         }
 
         for (String word : occurrences.keySet()) {
-            Utils.showAppFilterLog(context, "Duplicated component: \'" + word + "\' - " + String.valueOf(count) + " times.");
+            if (count > 0) {
+                Utils.showAppFilterLog(context, "Duplicated component: \'" + word + "\' - " + String.valueOf(count) + " times.");
+            }
         }
+
+        Utils.showAppFilterLog(context, "----- END OF APPFILTER DEBUG -----");
 
     }
 

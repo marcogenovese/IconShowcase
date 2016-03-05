@@ -228,4 +228,5 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
     public static ArrayList<IconsCategory> getIconsCategories() {
         return categories.size() > 0 ? categories : null;
     }
+
 }
