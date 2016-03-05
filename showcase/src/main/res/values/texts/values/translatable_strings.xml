@@ -95,7 +95,7 @@
 
     <!-- License Check Dialog -->
     <string name="license_failed_title">License Check Failed</string>
-    <string name="license_success_title">License Check Success</string>
+    <string name="license_success_title">License Check Successful</string>
     <string name="exit">Exit</string>
 
     <!-- Some texts for Dialogs and Cards -->
@@ -118,7 +118,7 @@
     <string name="search_x">Search %1$s…</string>
 
     <string name="building_request_dialog">Building request files…</string>
-    <string name="loading_apps">Please wait until apps load, it will take a few seconds more…</string>
+    <string name="loading_apps">Please wait until the apps load, it will take a few seconds more…</string>
     <string name="loading_icons">Loading icons…</string>
 
     <string name="choose">Choose</string>
@@ -130,11 +130,18 @@
 
     <string name="pref_title_themes">Base theme</string>
     <string name="pref_summary_themes">Choose between light, dark, clear or auto.</string>
+    <string name="pref_summary_themes_no_clear">Choose between light, dark or auto.</string>
 
     <string-array name="themes">
         <item>Light</item>
         <item>Dark</item>
         <item>Clear</item>
+        <item>Auto</item>
+    </string-array>
+
+    <string-array name="themes_no_clear">
+        <item>Light</item>
+        <item>Dark</item>
         <item>Auto</item>
     </string-array>
 
