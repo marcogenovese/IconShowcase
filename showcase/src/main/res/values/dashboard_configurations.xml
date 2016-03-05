@@ -24,6 +24,9 @@
 
 <resources>
 
+    <!-- Option to enable the appfilter checker in Log-->
+    <bool name="debugging">true</bool>
+
     <!--
     Tabs to be used as primary drawer items
     The Home section will be added automatically

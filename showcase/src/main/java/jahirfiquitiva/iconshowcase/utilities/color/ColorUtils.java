@@ -147,8 +147,10 @@ public class ColorUtils {
         float min = 0;
         if (forViewer) {
             min = 0.3f;
+            Utils.showLog("HSL: " + hsl[2] + " Min: " + min + " for Viewer." + " Dark: " + String.valueOf(hsl[2] < min));
         } else {
             min = 0.4f;
+            Utils.showLog("HSL: " + hsl[2] + " Min: " + min + " for toolbar." + " Dark: " + String.valueOf(hsl[2] < min));
         }
         return hsl[2] < min;
     }

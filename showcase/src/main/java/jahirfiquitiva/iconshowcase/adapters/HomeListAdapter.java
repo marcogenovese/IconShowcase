@@ -42,6 +42,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+        final int pos = i;
         switch (i) {
             case 0:
                 View welcomeCard = LayoutInflater.from(
@@ -62,7 +63,13 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 View appCard = LayoutInflater.from(
                         viewGroup.getContext()).inflate(R.layout.item_app_card,
                         viewGroup, false);
-                return new AppCard(appCard);
+                appCard.setOnClickListener(new View.OnClickListener() { //TODO make clicks work for more than just links
+                    @Override
+                    public void onClick(View v) {
+                        Utils.openLink(context, homeCards.get(pos - cards).onClickLink);
+                    }
+                });
+                return new AppCard(appCard, i);
         }
     }
 
@@ -119,7 +126,6 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         ImageView iconsIV, wallsIV, widgetsIV;
         TextView iconsT, wallsT, widgetsT;
         LinearLayout packInfo, widgets;
-        View divider;
 
         public AppInfoCard(View itemView) {
             super(itemView);
@@ -139,11 +145,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             widgetsT.setText(context.getResources().getString(R.string.included_widgets, includedWidgets));
 
             packInfo = (LinearLayout) itemView.findViewById(R.id.appDetails);
-            divider = itemView.findViewById(R.id.divider);
             packInfo.setVisibility(context.getResources().getBoolean(R.bool.hide_pack_info) ?
-                    View.GONE :
-                    View.VISIBLE);
-            divider.setVisibility(context.getResources().getBoolean(R.bool.hide_pack_info) ?
                     View.GONE :
                     View.VISIBLE);
 
@@ -174,14 +176,6 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 .icon(GoogleMaterial.Icon.gmd_widgets)
                 .color(ThemeUtils.darkTheme ? light : dark)
                 .sizeDp(24);
-        
-        /*
-
-        playStoreDrawable = new IconicsDrawable(context)
-                .icon(GoogleMaterial.Icon.gmd_case_play)
-                .color(ThemeUtils.darkTheme ? light : dark)
-                .sizeDp(24);
-                */
 
         iconsIV.setImageDrawable(iconsDrawable);
         wallsIV.setImageDrawable(wallsDrawable);
@@ -220,8 +214,28 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public class AppCard extends RecyclerView.ViewHolder {
 
-        public AppCard(View itemView) {
+        LinearLayout lly, subLly;
+        TextView cardTitle, cardDesc;
+        ImageView cardIcon;
+
+        public AppCard(View itemView, int i) {
             super(itemView);
+            view = itemView;
+            lly = (LinearLayout) itemView.findViewById(R.id.home_card);
+            cardTitle = (TextView) itemView.findViewById(R.id.home_card_text);
+            cardDesc = (TextView) itemView.findViewById(R.id.home_card_description);
+            cardIcon = (ImageView) itemView.findViewById(R.id.home_card_image);
+            subLly = (LinearLayout) itemView.findViewById(R.id.home_card_sub_layout);
+            cardTitle.setText(homeCards.get(i - cards).title);
+            String description = context.getResources().getString(
+                    R.string.tap_to_download,
+                    homeCards.get(i - cards).desc);
+            cardDesc.setText(description);
+            if (homeCards.get(i - cards).imgEnabled) {
+                cardIcon.setImageDrawable(homeCards.get(i - cards).img);
+            } else {
+                subLly.removeView(cardIcon);
+            }
         }
     }
 

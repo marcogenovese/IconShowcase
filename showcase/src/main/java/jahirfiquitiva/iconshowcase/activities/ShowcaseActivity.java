@@ -159,7 +159,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     private boolean mLastTheme, mLastNavBar;
     private static Preferences mPrefs;
 
-    public static MaterialDialog settingsDialog, loadIcons;
+    public static MaterialDialog settingsDialog, loadIcons, changelogDialog;
     public static Toolbar toolbar;
     public static AppBarLayout appbar;
     public static CollapsingToolbarLayout collapsingToolbarLayout;
@@ -174,12 +174,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     public AccountHeader drawerHeader;
 
     private static boolean themeMode;
-
-    //mainFragment stuff
-//    private Intent mainIntent; //TODO remove
-
-//    public ArrayList<HomeCard> homeCards = new ArrayList<>();
-//    public static ArrayList<HomeCard> sHomeCards = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -484,14 +478,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                         .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
                         .replace(R.id.main, donationsFragment, "donationsFragment")
                         .commit();
-//            } else if (fragment.equals("Main")) {
-//
-//                MainFragment mainFragment;
-//                mainFragment = MainFragment.newInstance(sHomeCards);
-//                context.getSupportFragmentManager().beginTransaction()
-//                        .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-//                        .replace(R.id.main, mainFragment, "mainFragment")
-//                        .commit();
             } else {
                 context.getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
@@ -586,6 +572,10 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         if (settingsDialog != null) {
             settingsDialog.dismiss();
             settingsDialog = null;
+        }
+        if (changelogDialog != null) {
+            changelogDialog.dismiss();
+            changelogDialog = null;
         }
     }
 
@@ -1196,54 +1186,35 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         return mIsPremium;
     }
 
-//    public void addHomeCard(HomeCard object) {
-//        homeCards.add(object);
-//    }
-
-//    public void sendCards() {
-//        mainIntent = new Intent(this, MainFragment.class);
-//        Log.e("asdf home", homeCards.toString());
-//        mainIntent.putParcelableArrayListExtra("homeCards", homeCards);
-//        sHomeCards = homeCards;
-//        Log.e("asdf", "cards sent");
-//        Log.e("asdf", "" + sHomeCards.toString());
-//        Bundle bundle = new Bundle();
-//        bundle.putParcelable("homeCards", (Parcelable) homeCards);
-// set Fragmentclass Arguments
-//        MainFragment mF = new MainFragment();
-//        mF.setArguments(bundle);
-//        MainFragment(mainIntent);
-//    }
-
     public void enableDonations(boolean WITH_DONATIONS_SECTION) {
-        this.WITH_DONATIONS_SECTION = WITH_DONATIONS_SECTION;
+        ShowcaseActivity.WITH_DONATIONS_SECTION = WITH_DONATIONS_SECTION;
     }
 
     public void enableGoogleDonations(boolean DONATIONS_GOOGLE) {
-        this.DONATIONS_GOOGLE = DONATIONS_GOOGLE;
+        ShowcaseActivity.DONATIONS_GOOGLE = DONATIONS_GOOGLE;
     }
 
     public void enablePaypalDonations(boolean DONATIONS_PAYPAL) {
-        this.DONATIONS_PAYPAL = DONATIONS_PAYPAL;
+        ShowcaseActivity.DONATIONS_PAYPAL = DONATIONS_PAYPAL;
     }
 
     public void enableFlattrDonations(boolean DONATIONS_FLATTR) {
-        this.DONATIONS_FLATTR = DONATIONS_FLATTR;
+        ShowcaseActivity.DONATIONS_FLATTR = DONATIONS_FLATTR;
     }
 
     public void enableBitcoinDonations(boolean DONATIONS_BITCOIN) {
-        this.DONATIONS_BITCOIN = DONATIONS_BITCOIN;
+        ShowcaseActivity.DONATIONS_BITCOIN = DONATIONS_BITCOIN;
     }
 
     public void enableLicenseCheck(boolean WITH_LICENSE_CHECKER) {
-        this.WITH_LICENSE_CHECKER = WITH_LICENSE_CHECKER;
+        ShowcaseActivity.WITH_LICENSE_CHECKER = WITH_LICENSE_CHECKER;
     }
 
     public void enableAmazonInstalls(boolean WITH_INSTALLED_FROM_AMAZON) {
-        this.WITH_INSTALLED_FROM_AMAZON = WITH_INSTALLED_FROM_AMAZON;
+        ShowcaseActivity.WITH_INSTALLED_FROM_AMAZON = WITH_INSTALLED_FROM_AMAZON;
     }
 
     public void setGooglePubkey(String GOOGLE_PUBKEY) {
-        this.GOOGLE_PUBKEY = GOOGLE_PUBKEY;
+        ShowcaseActivity.GOOGLE_PUBKEY = GOOGLE_PUBKEY;
     }
 }

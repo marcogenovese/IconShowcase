@@ -24,15 +24,14 @@
 package jahirfiquitiva.iconshowcase.fragments;
 
 import android.content.Context;
-import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.InflateException;
@@ -40,12 +39,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.mikepenz.google_material_typeface_library.GoogleMaterial;
-import com.mikepenz.iconics.IconicsDrawable;
 
 import java.util.ArrayList;
 
@@ -54,8 +49,8 @@ import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.adapters.HomeListAdapter;
 import jahirfiquitiva.iconshowcase.models.HomeCard;
 import jahirfiquitiva.iconshowcase.utilities.LauncherIntents;
-import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
+import jahirfiquitiva.iconshowcase.views.DividerItemDecoration;
 
 public class MainFragment extends Fragment {
 
@@ -89,11 +84,7 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
 
         context = getActivity();
-//        if (test) {
-//            Log.e("asdf", "read bundle");
 
-//            homeCards = getArguments().getParcelableArrayList(ARGS_HOME_CARDS);
-//        }
         if (layout != null) {
             ViewGroup parent = (ViewGroup) layout.getParent();
             if (parent != null) {
@@ -114,61 +105,7 @@ public class MainFragment extends Fragment {
                     ShowcaseActivity.icon3, ShowcaseActivity.icon4, ShowcaseActivity.icon5,
                     ShowcaseActivity.icon6, ShowcaseActivity.icon7, ShowcaseActivity.icon8,
                     ShowcaseActivity.numOfIcons);
-        }
 
-        String themedIcons = String.valueOf(getActivity().getResources().getInteger(R.integer.icons_amount));
-        String availableWallpapers = String.valueOf(getActivity().getResources().getInteger(R.integer.walls_amount));
-        String includedWidgets = String.valueOf(getActivity().getResources().getInteger(R.integer.zooper_widgets));
-
-        iconsIV = (ImageView) layout.findViewById(R.id.icon_themed_icons);
-        wallsIV = (ImageView) layout.findViewById(R.id.icon_available_wallpapers);
-        widgetsIV = (ImageView) layout.findViewById(R.id.icon_included_widgets);
-        setupIcons(getActivity());
-
-        TextView iconsT = (TextView) layout.findViewById(R.id.text_themed_icons);
-        iconsT.setText(getActivity().getResources().getString(R.string.themed_icons, themedIcons));
-
-        TextView wallsT = (TextView) layout.findViewById(R.id.text_available_wallpapers);
-        wallsT.setText(getActivity().getResources().getString(R.string.available_wallpapers, availableWallpapers));
-
-        TextView widgetsT = (TextView) layout.findViewById(R.id.text_included_widgets);
-        widgetsT.setText(getActivity().getResources().getString(R.string.included_widgets, includedWidgets));
-
-        PlayStoreListing = getActivity().getPackageName();
-
-        LinearLayout packInfo = (LinearLayout) layout.findViewById(R.id.appDetails);
-        View divider = layout.findViewById(R.id.divider);
-        packInfo.setVisibility(getActivity().getResources().getBoolean(R.bool.hide_pack_info) ?
-                View.GONE :
-                View.VISIBLE);
-        divider.setVisibility(getActivity().getResources().getBoolean(R.bool.hide_pack_info) ?
-                View.GONE :
-                View.VISIBLE);
-
-        if (!ShowcaseActivity.WITH_ZOOPER_SECTION) {
-            LinearLayout widgets = (LinearLayout) layout.findViewById(R.id.widgets);
-            widgets.setVisibility(View.GONE);
-        }
-
-        AppCompatButton ratebtn = (AppCompatButton) layout.findViewById(R.id.rate_button);
-        ratebtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent rate = new Intent(Intent.ACTION_VIEW, Uri.parse(MARKET_URL + PlayStoreListing));
-                startActivity(rate);
-            }
-        });
-
-        AppCompatButton iconsbtn = (AppCompatButton) layout.findViewById(R.id.icons_button);
-        iconsbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ShowcaseActivity.drawerItemClick(ShowcaseActivity.iconsPickerIdentifier);
-                ShowcaseActivity.drawer.setSelection(ShowcaseActivity.iconsPickerIdentifier);
-            }
-        });
-
-        if (!themeMode) {
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
@@ -187,31 +124,40 @@ public class MainFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
 
-//        Bundle bundle = getActivity().getIntent().getExtras();
-//        ArrayList<HomeCard> homeCards = bundle
-//                .getParcelableArrayList("homeCards");
+        String[] appsNames = getResources().getStringArray(R.array.apps_titles);
 
-//        Log.e("asdf to string", getActivity().getIntent().getParcelableArrayListExtra("homeCards").toString());
-//        ArrayList<HomeCard> homeCards = getActivity().getIntent().getParcelableArrayListExtra("homeCards");
-
-        homeCards.add(new HomeCard.Builder()
-                .title(getResources().getString(R.string.more_apps))
-                .description(getResources().getString(R.string.more_apps_long))
-                .icon(playStoreDrawable)
-                .onClickLink(getResources().getString(R.string.iconpack_author_playstore))
-                .build());
-
-//        Log.e("asdf size 2", "" + homeCards.size());
-//        ArrayList<HomeCard> homeCards = new ArrayList<>();
+        if (appsNames.length > 0) {
+            String[] appsDescriptions = getResources().getStringArray(R.array.apps_descriptions);
+            String[] appsIcons = getResources().getStringArray(R.array.apps_icons);
+            String[] appsPackages = getResources().getStringArray(R.array.apps_packages);
+            for (int i = 0; i < appsNames.length; i++) {
+                try {
+                    homeCards.add(new HomeCard.Builder()
+                            .title(appsNames[i])
+                            .description(appsDescriptions[i])
+                            .icon(ContextCompat.getDrawable(context,
+                                    getIconResId(getResources(), context.getPackageName(),
+                                            appsIcons[i])))
+                            .onClickLink(appsPackages[i], true)
+                            .build());
+                } catch (IndexOutOfBoundsException e) {
+                    Utils.showLog(context, "Apps Cards arrays are inconsistent. Fix them.");
+                }
+            }
+        }
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),
+                null, getResources().getDimensionPixelSize(R.dimen.dividers_height), false, true));
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.setHasFixedSize(true);
 
         HomeListAdapter mAdapter = new HomeListAdapter(homeCards, context);
         mRecyclerView.setAdapter(mAdapter);
 
-        showFAB();
+        Utils.expandToolbar(getActivity());
 
         super.onViewCreated(view, savedInstanceState);
     }
@@ -220,15 +166,14 @@ public class MainFragment extends Fragment {
     public void onResume() {
         super.onResume();
         showFAB();
-        Utils.expandToolbar(getActivity());
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (ShowcaseActivity.currentItem != 1) { //TODO figure out why I need this; without it, fab is hidden on first run
-            ShowcaseActivity.fab.setVisibility(View.GONE);
+        if (ShowcaseActivity.currentItem > 1) { //TODO figure out why I need this; without it, fab is hidden on first run
             ShowcaseActivity.fab.hide();
+            ShowcaseActivity.fab.setVisibility(View.GONE);
         }
     }
 
@@ -260,35 +205,6 @@ public class MainFragment extends Fragment {
         });
     }
 
-    private void setupIcons(Context context) {
-        final int light = ContextCompat.getColor(context, R.color.drawable_tint_dark);
-        final int dark = ContextCompat.getColor(context, R.color.drawable_tint_light);
-
-        Drawable iconsDrawable = new IconicsDrawable(context)
-                .icon(GoogleMaterial.Icon.gmd_android_alt)
-                .color(ThemeUtils.darkTheme ? light : dark)
-                .sizeDp(24);
-
-        Drawable wallsDrawable = new IconicsDrawable(context)
-                .icon(GoogleMaterial.Icon.gmd_collection_image)
-                .color(ThemeUtils.darkTheme ? light : dark)
-                .sizeDp(24);
-
-        Drawable widgetsDrawable = new IconicsDrawable(context)
-                .icon(GoogleMaterial.Icon.gmd_widgets)
-                .color(ThemeUtils.darkTheme ? light : dark)
-                .sizeDp(24);
-
-        playStoreDrawable = new IconicsDrawable(context)
-                .icon(GoogleMaterial.Icon.gmd_case_play)
-                .color(ThemeUtils.darkTheme ? light : dark)
-                .sizeDp(24);
-
-        iconsIV.setImageDrawable(iconsDrawable);
-        wallsIV.setImageDrawable(wallsDrawable);
-        widgetsIV.setImageDrawable(widgetsDrawable);
-    }
-
     private void modifyFABIcon() {
         cm = Utils.isAppInstalled(context, "org.cyanogenmod.theme.chooser");
         cyngn = Utils.isAppInstalled(context, "com.cyngn.theme.chooser");
@@ -303,6 +219,15 @@ public class MainFragment extends Fragment {
             ShowcaseActivity.fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_apply_layers));
         } else {
             ShowcaseActivity.fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_question));
+        }
+    }
+
+    private int getIconResId(Resources r, String p, String name) {
+        int res = r.getIdentifier(name, "drawable", p);
+        if (res != 0) {
+            return res;
+        } else {
+            return 0;
         }
     }
 

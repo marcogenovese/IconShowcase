@@ -28,12 +28,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -44,9 +41,9 @@ import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 
 import java.util.ArrayList;
-import java.util.concurrent.Callable;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.adapters.ChangelogAdapter;
 import jahirfiquitiva.iconshowcase.adapters.IconsAdapter;
 import jahirfiquitiva.iconshowcase.fragments.WallpapersFragment;
@@ -70,29 +67,30 @@ public final class ISDialogs {
 
     public static void showChangelogDialog(Context context) {
         if (context.getResources().getBoolean(R.bool.changelog_ripples)) {
-            new MaterialDialog.Builder(context)
+            ShowcaseActivity.changelogDialog = new MaterialDialog.Builder(context)
                     .title(R.string.changelog_dialog_title)
                     .adapter(new ChangelogAdapter(context, R.array.fullchangelog), null)
                     .positiveText(R.string.great)
-                    .show();
+                    .build();
         } else {
-            new MaterialDialog.Builder(context)
+            ShowcaseActivity.changelogDialog = new MaterialDialog.Builder(context)
                     .title(R.string.changelog_dialog_title)
                     .adapter(new ChangelogAdapter(context, R.array.fullchangelog), null)
                     .positiveText(R.string.great)
                     .listSelector(android.R.color.transparent)
-                    .show();
+                    .build();
         }
+        ShowcaseActivity.changelogDialog.show();
     }
 
     public static void showIconsChangelogDialog(final Context context) {
 
-        final MaterialDialog materialDialog = new MaterialDialog.Builder(context).title(R.string.changelog)
+        ShowcaseActivity.changelogDialog = new MaterialDialog.Builder(context).title(R.string.changelog)
                 .customView(R.layout.icons_changelog, false)
                 .positiveText(context.getResources().getString(R.string.close))
                 .build();
 
-        final View v = materialDialog.getCustomView();
+        final View v = ShowcaseActivity.changelogDialog.getCustomView();
         final RecyclerView iconsGrid = (RecyclerView) v.findViewById(R.id.changelogRV);
         final int grids = context.getResources().getInteger(R.integer.icons_grid_width);
         iconsGrid.setLayoutManager(new GridLayoutManager(context, grids));
@@ -106,47 +104,7 @@ public final class ISDialogs {
         final IconsAdapter adapter = new IconsAdapter(context, icons, true);
         iconsGrid.setAdapter(adapter);
 
-        //get total number of images
-        int images = 0;
-        if (icons != null) {
-            images = icons.size();
-        }
-
-        final int numberOfImages = images;
-
-        materialDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(final DialogInterface dialog) {
-                //calculate the total number of rows
-                final int rows = numberOfImages / grids + (numberOfImages % grids == 0 ? 0 : 1);
-                Utils.triggerMethodOnceViewIsDisplayed(iconsGrid, new Callable<Void>() {
-                    @Override
-                    public Void call() throws Exception {
-                        try {
-                            //get single image height
-                            if (iconsGrid.getChildCount() > 0) {
-                                int imageHeight = iconsGrid.getChildAt(0).getHeight();
-                                final ViewGroup.LayoutParams layoutParams = v.getLayoutParams();
-                                int calculatedHeight = imageHeight * rows + 2 * context.getResources().getDimensionPixelSize(R.dimen.dialog_margin_bottom);
-                                DisplayMetrics displaymetrics = new DisplayMetrics();
-                                ((AppCompatActivity) context).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-                                int height = displaymetrics.heightPixels - 4 * context.getResources().getDimensionPixelSize(R.dimen.dialog_margin_bottom);
-
-                                if (calculatedHeight < height) {
-                                    layoutParams.height = calculatedHeight;
-                                    v.setLayoutParams(layoutParams);
-                                }
-                            }
-                        } catch (NullPointerException e) {
-                            //do nothing
-                        }
-                        return null;
-                    }
-                });
-            }
-        });
-
-        materialDialog.show();
+        ShowcaseActivity.changelogDialog.show();
     }
 
     public static void showLicenseSuccessDialog(Context context, MaterialDialog.SingleButtonCallback singleButtonCallback) {

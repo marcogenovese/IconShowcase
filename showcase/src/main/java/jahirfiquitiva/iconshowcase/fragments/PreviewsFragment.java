@@ -99,8 +99,6 @@ public class PreviewsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ShowcaseActivity.fab.hide();
-        ShowcaseActivity.fab.setVisibility(View.GONE);
 
         setupToolbar();
 

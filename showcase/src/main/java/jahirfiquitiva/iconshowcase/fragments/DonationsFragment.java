@@ -17,17 +17,16 @@ package jahirfiquitiva.iconshowcase.fragments;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -42,6 +41,8 @@ import android.widget.FrameLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.sufficientlysecure.donations.google.util.IabHelper;
 import org.sufficientlysecure.donations.google.util.IabResult;
@@ -120,6 +121,7 @@ public class DonationsFragment extends Fragment {
      * @param flattrUrl           The Flattr URL to your thing. NOTE: Enter without http://
      * @param bitcoinEnabled      Enable bitcoin donations
      * @param bitcoinAddress      The address to receive bitcoin
+     *
      * @return DonationsFragment
      */
     public static DonationsFragment newInstance(boolean debug, boolean googleEnabled, String googlePubkey, String[] googleCatalog,
@@ -187,7 +189,6 @@ public class DonationsFragment extends Fragment {
         return inflater.inflate(R.layout.donations__fragment, container, false);
     }
 
-    @TargetApi(11)
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -322,20 +323,13 @@ public class DonationsFragment extends Fragment {
      * Open dialog
      */
     void openDialog(int icon, int title, String message) {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
-        dialog.setIcon(icon);
-        dialog.setTitle(title);
-        dialog.setMessage(message);
-        dialog.setCancelable(true);
-        dialog.setNeutralButton(R.string.donations__button_close,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }
-        );
-        dialog.show();
+        new MaterialDialog.Builder(getActivity())
+                .icon(ContextCompat.getDrawable(getActivity(), icon))
+                .title(title)
+                .content(message)
+                .cancelable(true)
+                .positiveText(R.string.donations__button_close)
+                .show();
     }
 
     /**
@@ -418,7 +412,6 @@ public class DonationsFragment extends Fragment {
         }
     }
 
-
     /**
      * Donate button with PayPal by opening browser with defined URL For possible parameters see:
      * https://developer.paypal.com/webapps/developer/docs/classic/paypal-payments-standard/integration-guide/Appx_websitestandard_htmlvariables/
@@ -432,8 +425,6 @@ public class DonationsFragment extends Fragment {
         uriBuilder.appendQueryParameter("lc", "US");
         uriBuilder.appendQueryParameter("item_name", mPaypalItemName);
         uriBuilder.appendQueryParameter("no_note", "1");
-        // uriBuilder.appendQueryParameter("no_note", "0");
-        // uriBuilder.appendQueryParameter("cn", "Note to the developer");
         uriBuilder.appendQueryParameter("no_shipping", "1");
         uriBuilder.appendQueryParameter("currency_code", mPaypalCurrencyCode);
         Uri payPalUri = uriBuilder.build();

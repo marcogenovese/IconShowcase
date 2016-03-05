@@ -176,8 +176,6 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
     @Override
     public void onResume() {
         super.onResume();
-        ShowcaseActivity.fab.hide();
-        ShowcaseActivity.fab.setVisibility(View.GONE);
         Utils.collapseToolbar(getActivity());
     }
 

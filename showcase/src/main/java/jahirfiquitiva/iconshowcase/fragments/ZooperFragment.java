@@ -50,7 +50,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import jahirfiquitiva.iconshowcase.R;
-import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.models.ZooperWidget;
 import jahirfiquitiva.iconshowcase.tasks.CopyFilesToStorage;
 import jahirfiquitiva.iconshowcase.tasks.LoadZooperWidgets;
@@ -239,8 +238,6 @@ public class ZooperFragment extends Fragment implements PermissionUtils.OnPermis
     @Override
     public void onResume() {
         super.onResume();
-        ShowcaseActivity.fab.hide();
-        ShowcaseActivity.fab.setVisibility(View.GONE);
         Utils.expandToolbar(getActivity());
         GridLayout grid = (GridLayout) getActivity().findViewById(R.id.iconsRow);
         grid.setVisibility(View.GONE);
@@ -414,8 +411,17 @@ public class ZooperFragment extends Fragment implements PermissionUtils.OnPermis
     }
 
     private void setupCoordinatorLayoutScrolling(Context context) {
-        int num = 1;
+        int num = 1, minCardsToScroll = 2;
         boolean bigCards = false, enableScroll = false;
+
+        switch (getResources().getConfiguration().orientation) {
+            case 1:
+                minCardsToScroll = 2;
+                break;
+            case 2:
+                minCardsToScroll = 1;
+                break;
+        }
 
         if (cardZooper.getVisibility() == View.VISIBLE) {
             num += 1;
@@ -444,9 +450,9 @@ public class ZooperFragment extends Fragment implements PermissionUtils.OnPermis
             num += 1;
         }
 
-        if (num > 3 && !bigCards) {
+        if (num >= minCardsToScroll + 1 && !bigCards) {
             enableScroll = true;
-        } else if (num >= 2 && bigCards) {
+        } else if (num >= minCardsToScroll && bigCards) {
             enableScroll = true;
         }
 

@@ -30,10 +30,8 @@
     <!--
     Tabs to be used as primary drawer items
     The Home section will be added automatically
-
     Other possible tabs:
     Previews, Wallpapers, Requests, Apply, FAQs, Zooper
-
     Make sure you add the tabs with the exact word as the options listed, with the proper caps as well
     Make sure you have an Apply section!
     -->
@@ -55,10 +53,16 @@
     -->
     <style name="AppTheme.LaunchScreen" parent="@style/AppTheme.Base.LightLaunchScreen"/>
 
+    <!--enables clear theme as an option in the theme dialog
+    see below-->
+    <bool name="enable_clear_theme_option">false</bool>
+
     <!-- Default theme
     1. Light
     2. Dark
-    3. Auto
+    3. Clear
+    4. Auto (Light & Dark)
+    ***If enable_clear_theme_option is false, don't use 3, as it won't be in the dialog***
     -->
     <integer name="default_theme">1</integer>
 
@@ -117,7 +121,7 @@
     True, means the icons based changelog will be used.
     False, mean the text based changelog will be used.
     -->
-    <bool name="icons_changelog">true</bool>
+    <bool name="icons_changelog">false</bool>
 
     <!--
     Do you want to have ripples when pressing an item in the text changelog?
@@ -309,7 +313,7 @@
     168 means 1 request per week.
     SET THE FIRST TO 0 IF YOU DON'T WANT TO LIMIT REQUESTS. IF THE FIRST IS 0, THE OTHER WILL BE IGNORED!!
     -->
-    <integer name="max_apps_to_request">5</integer>
-    <integer name="limit_request_to_x_hours">1</integer>
+    <integer name="max_apps_to_request">0</integer>
+    <integer name="limit_request_to_x_hours">0</integer>
 
 </resources>
