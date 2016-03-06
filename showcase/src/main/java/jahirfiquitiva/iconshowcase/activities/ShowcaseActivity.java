@@ -45,7 +45,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -311,34 +310,14 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
 
-        if (!themeMode) {
-            icon1 = (ImageView) findViewById(R.id.iconOne);
-            icon2 = (ImageView) findViewById(R.id.iconTwo);
-            icon3 = (ImageView) findViewById(R.id.iconThree);
-            icon4 = (ImageView) findViewById(R.id.iconFour);
-            icon5 = (ImageView) findViewById(R.id.iconFive);
-            icon6 = (ImageView) findViewById(R.id.iconSix);
-            icon7 = (ImageView) findViewById(R.id.iconSeven);
-            icon8 = (ImageView) findViewById(R.id.iconEight);
-
-            GridLayout iconsRow = (GridLayout) findViewById(R.id.iconsRow);
-
-            if (mPrefs.getSettingsModified()) {
-                setupIcons(icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8, numOfIcons);
-            }
-
-            iconsRow.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    if (currentItem == 1) {
-                        SHUFFLE = true;
-                        setupIcons(icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8, numOfIcons);
-                        animateIcons(icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8, numOfIcons);
-                    }
-                }
-            });
-        }
+        icon1 = (ImageView) findViewById(R.id.iconOne);
+        icon2 = (ImageView) findViewById(R.id.iconTwo);
+        icon3 = (ImageView) findViewById(R.id.iconThree);
+        icon4 = (ImageView) findViewById(R.id.iconFour);
+        icon5 = (ImageView) findViewById(R.id.iconFive);
+        icon6 = (ImageView) findViewById(R.id.iconSix);
+        icon7 = (ImageView) findViewById(R.id.iconSeven);
+        icon8 = (ImageView) findViewById(R.id.iconEight);
 
         //Setup donations
         if (DONATIONS_GOOGLE) {
@@ -1048,10 +1027,12 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                 finalIconsList.add(icons.get(i));
                 i++;
             }
+
             icon1.setImageResource(finalIconsList.get(0).getResId());
             icon2.setImageResource(finalIconsList.get(1).getResId());
             icon3.setImageResource(finalIconsList.get(2).getResId());
             icon4.setImageResource(finalIconsList.get(3).getResId());
+
             if (numOfIcons == 6) {
                 icon5.setImageResource(finalIconsList.get(4).getResId());
                 icon6.setImageResource(finalIconsList.get(5).getResId());

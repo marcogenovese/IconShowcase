@@ -38,6 +38,9 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public HomeListAdapter(ArrayList<HomeCard> homeCards, Context context) {
         this.context = context;
         this.homeCards = homeCards;
+        if (context.getResources().getBoolean(R.bool.hide_pack_info)) {
+            cards -= 1;
+        }
     }
 
     @Override
@@ -80,9 +83,6 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public int getItemCount() {
-        if (context.getResources().getBoolean(R.bool.hide_pack_info)) {
-            cards -= 1;
-        }
         return homeCards.size() + cards;
     }
 

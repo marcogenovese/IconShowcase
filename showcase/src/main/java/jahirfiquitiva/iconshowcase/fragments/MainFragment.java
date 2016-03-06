@@ -25,20 +25,19 @@ package jahirfiquitiva.iconshowcase.fragments;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -55,33 +54,16 @@ import jahirfiquitiva.iconshowcase.views.DividerItemDecoration;
 public class MainFragment extends Fragment {
 
     private Context context;
-
-    private static final String MARKET_URL = "https://play.google.com/store/apps/details?id=";
-    private String PlayStoreListing;
     private ViewGroup layout;
-    private ImageView iconsIV, wallsIV, widgetsIV;
 
     private boolean themeMode, cm, cyngn, rro; //to store theme engine installation status
 
     private RecyclerView mRecyclerView;
     private ArrayList<HomeCard> homeCards = new ArrayList<>();
-    private Drawable playStoreDrawable;
-//    private static final String ARGS_HOME_CARDS = "args_home_cards";
-
-//    public static MainFragment newInstance(ArrayList<HomeCard> homeCards2) {
-//        Log.e("asdf homecards2", "" + homeCards2.size());
-//        MainFragment mF = new MainFragment();
-//        if (homeCards2.size() > 0) {
-//            test = true;
-//            Log.e("asdf", "add bundle");
-//            Bundle args = new Bundle();
-//            args.putParcelableArrayList(ARGS_HOME_CARDS, homeCards2);
-//        }
-//        return mF;
-//    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
+                             Bundle savedInstanceState) {
 
         context = getActivity();
 
@@ -116,6 +98,25 @@ public class MainFragment extends Fragment {
                             ShowcaseActivity.numOfIcons);
                 }
             }, 500);
+
+            GridLayout iconsRow = (GridLayout) getActivity().findViewById(R.id.iconsRow);
+
+            iconsRow.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    ShowcaseActivity.SHUFFLE = true;
+                    ShowcaseActivity.setupIcons(ShowcaseActivity.icon1, ShowcaseActivity.icon2,
+                            ShowcaseActivity.icon3, ShowcaseActivity.icon4, ShowcaseActivity.icon5,
+                            ShowcaseActivity.icon6, ShowcaseActivity.icon7, ShowcaseActivity.icon8,
+                            ShowcaseActivity.numOfIcons);
+                    ShowcaseActivity.animateIcons(ShowcaseActivity.icon1, ShowcaseActivity.icon2,
+                            ShowcaseActivity.icon3, ShowcaseActivity.icon4, ShowcaseActivity.icon5,
+                            ShowcaseActivity.icon6, ShowcaseActivity.icon7, ShowcaseActivity.icon8,
+                            ShowcaseActivity.numOfIcons);
+                }
+            });
+
         }
 
         return layout;
