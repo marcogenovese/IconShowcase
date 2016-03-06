@@ -239,6 +239,7 @@ public class MainFragment extends Fragment {
         }
         ShowcaseActivity.fab.setVisibility(View.VISIBLE);
         ShowcaseActivity.fab.show();
+        Utils.showLog("fab is showing again");
         ShowcaseActivity.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
