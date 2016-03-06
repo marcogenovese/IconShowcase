@@ -412,14 +412,16 @@ public class ZooperFragment extends Fragment implements PermissionUtils.OnPermis
 
     private void setupCoordinatorLayoutScrolling(Context context) {
         int num = 1, minCardsToScroll = 2;
-        boolean bigCards = false, enableScroll = false;
+        boolean bigCards = false, enableScroll = false, portrait = true;
 
         switch (getResources().getConfiguration().orientation) {
             case 1:
                 minCardsToScroll = 2;
+                portrait = true;
                 break;
             case 2:
                 minCardsToScroll = 1;
+                portrait = false;
                 break;
         }
 
@@ -450,7 +452,9 @@ public class ZooperFragment extends Fragment implements PermissionUtils.OnPermis
             num += 1;
         }
 
-        if (num >= minCardsToScroll + 1 && !bigCards) {
+        if (num >= minCardsToScroll + 1 && !bigCards && portrait) {
+            enableScroll = true;
+        } else if (num >= minCardsToScroll && !bigCards && !portrait) {
             enableScroll = true;
         } else if (num >= minCardsToScroll && bigCards) {
             enableScroll = true;

@@ -33,7 +33,7 @@
     </string-array>
 
     <string-array name="apps_icons">
-        <item>ic_launcher</item>
+        <item>ic_na_launcher</item>
     </string-array>
 
     <string-array name="apps_packages">

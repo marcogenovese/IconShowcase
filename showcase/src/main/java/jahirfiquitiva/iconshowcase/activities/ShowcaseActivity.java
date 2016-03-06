@@ -347,8 +347,8 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                     if (!result.isSuccess()) {
                         Utils.showLog(context, "In-app Billing setup failed: " + result); //TODO move text to string?
                         new MaterialDialog.Builder(ShowcaseActivity.this)
-                                .title("Donations unavailable.")
-                                .content("Your device doesn't support In App Billing.  This could be because you need to update your Google Play Store application, or because you live in a country where In App Billing is disabled.")
+                                .title(R.string.donations_error_title)
+                                .content(R.string.donations_error_content)
                                 .positiveText(android.R.string.ok)
                                 .show();
 

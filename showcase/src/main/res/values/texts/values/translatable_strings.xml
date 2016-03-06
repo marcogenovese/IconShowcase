@@ -44,6 +44,9 @@
     <string name="muzeisets_title">Refresh wallpapers every:</string>
     <string name="minutes">Minutes</string>
     <string name="hours">Hours</string>
+    <string name="days">Days</string>
+    <string name="weeks">Weeks</string>
+    <string name="months">Months</string>
     <string name="muzei_info">Note: These settings may affect the update behavior of wallpapers.
     </string>
     <string name="share">Share</string>
@@ -111,7 +114,7 @@
     <string name="no_selected_apps_title">No selected apps</string>
     <string name="no_selected_apps_content">You did not select any app to request. Select some before pressing the FAB again.</string>
     <string name="apps_limit_dialog">Sorry, but you are only allowed to select %1$s apps to request.</string>
-    <string name="apps_limit_dialog_day">Sorry, but you are only allowed to request icons every %1$s hours.</string>
+    <string name="apps_limit_dialog_day">Sorry, but you are only allowed to request icons every %1$s.</string>
 
     <!-- Icon search -->
     <string name="search_icons">Search icons…</string>
@@ -354,5 +357,8 @@
     <string name="NTED_message">It seems like we aren\'t able to find a theme engine on your phone. If you know you have one, please open it and proceed from there. If you don\'t have one, please get a rom that supports either cyanogenmod or layers theming and follow their instructions.</string>
 
     <string name="tap_to_download">%1$s\nTap this card to download it.</string>
+
+    <string name="donations_error_title">Donations unavailable</string>
+    <string name="donations_error_content">Your device doesn\'t support In App Billing.\nThis could be because you need to update your Google Play Store application, or because you live in a country where In App Billing is disabled.</string>
 
 </resources>

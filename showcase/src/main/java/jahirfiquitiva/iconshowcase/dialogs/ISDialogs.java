@@ -40,6 +40,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import jahirfiquitiva.iconshowcase.R;
@@ -66,6 +67,10 @@ public final class ISDialogs {
      */
 
     public static void showChangelogDialog(Context context) {
+        if (ShowcaseActivity.changelogDialog != null) {
+            ShowcaseActivity.changelogDialog.dismiss();
+            ShowcaseActivity.changelogDialog = null;
+        }
         if (context.getResources().getBoolean(R.bool.changelog_ripples)) {
             ShowcaseActivity.changelogDialog = new MaterialDialog.Builder(context)
                     .title(R.string.changelog_dialog_title)
@@ -304,8 +309,31 @@ public final class ISDialogs {
                 .show();
     }
 
-    public static void showRequestLimitDayDialog(Context context, int hours) {
-        String content = context.getResources().getString(R.string.apps_limit_dialog_day, String.valueOf(hours));
+    public static void showRequestLimitDayDialog(Context context, int minutes) {
+
+        float time;
+        String text;
+
+        if (minutes > 40320) {
+            time = minutes / 40320.0f;
+            text = Utils.getStringFromResources(context, R.string.months).toLowerCase();
+        } else if (minutes > 10080) {
+            time = minutes / 10080.0f;
+            text = Utils.getStringFromResources(context, R.string.weeks).toLowerCase();
+        } else if (minutes > 1440) {
+            time = minutes / 1440.0f;
+            text = Utils.getStringFromResources(context, R.string.days).toLowerCase();
+        } else if (minutes > 60) {
+            time = minutes / 60.0f;
+            text = Utils.getStringFromResources(context, R.string.hours).toLowerCase();
+        } else {
+            time = minutes;
+            text = Utils.getStringFromResources(context, R.string.minutes).toLowerCase();
+        }
+
+        String finalText = new DecimalFormat("##.##").format(time) + " " + text;
+
+        String content = context.getResources().getString(R.string.apps_limit_dialog_day, finalText);
         new MaterialDialog.Builder(context)
                 .title(R.string.section_icon_request)
                 .content(content)

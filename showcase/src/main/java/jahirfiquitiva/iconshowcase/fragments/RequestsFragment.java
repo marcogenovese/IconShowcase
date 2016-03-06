@@ -53,7 +53,6 @@ import java.util.Calendar;
 import java.util.Date;
 
 import jahirfiquitiva.iconshowcase.R;
-import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.adapters.RequestsAdapter;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.tasks.ZipFilesToRequest;
@@ -70,7 +69,7 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
     public static RecyclerFastScroller fastScroller;
     public static RequestsAdapter requestsAdapter;
     private static FloatingActionButton fab;
-    private static int maxApps = 0, hoursLimit = 0;
+    private static int maxApps = 0, minutesLimit = 0;
 
     static int columnsNumber, gridSpacing;
     static boolean withBorders;
@@ -87,7 +86,7 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
         withBorders = true;
 
         maxApps = getResources().getInteger(R.integer.max_apps_to_request);
-        hoursLimit = getResources().getInteger(R.integer.limit_request_to_x_hours);
+        minutesLimit = getResources().getInteger(R.integer.limit_request_to_x_minutes);
 
         setHasOptionsMenu(true);
         context = getActivity();
@@ -245,10 +244,10 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
         showRequestsFilesCreationDialog(context);
     }
 
-    public boolean haveHappenedXHoursSinceLastRequest(Context context, int numOfHours) {
+    public boolean haveHappenedXHoursSinceLastRequest(int numOfMinutes) {
 
-        float hoursToDays = numOfHours / 24.0f;
-        int hoursToMins = numOfHours * 60;
+        float hours = numOfMinutes / 60.0f;
+        float hoursToDays = hours / 24.0f;
 
         boolean hasHappenedTheTime = false;
 
@@ -305,14 +304,14 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
                 difference = (dateMax.getTime() - startDate.getTime()) + (endDate.getTime() - dateMin.getTime());
             }
             int days = (int) Integer.valueOf(currentDay) - dayNum;
-            int hours = (int) ((difference - (1000 * 60 * 60 * 24 * days)) / (1000 * 60 * 60));
-            int min = (int) (difference - (1000 * 60 * 60 * 24 * days) - (1000 * 60 * 60 * hours)) / (1000 * 60);
+            int hoursHappened = (int) ((difference - (1000 * 60 * 60 * 24 * days)) / (1000 * 60 * 60));
+            int min = (int) (difference - (1000 * 60 * 60 * 24 * days) - (1000 * 60 * 60 * hoursHappened)) / (1000 * 60);
 
             if (days >= hoursToDays) {
                 hasHappenedTheTime = true;
-            } else if (hours >= numOfHours) {
+            } else if (hoursHappened >= hours) {
                 hasHappenedTheTime = true;
-            } else if (min >= hoursToMins) {
+            } else if (min >= numOfMinutes) {
                 hasHappenedTheTime = true;
             }
 
@@ -324,10 +323,10 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
 
     private void startRequestProcess() {
         if (maxApps > 0) {
-            if (haveHappenedXHoursSinceLastRequest(context, hoursLimit)) {
+            if (haveHappenedXHoursSinceLastRequest(minutesLimit) || minutesLimit <= 0) {
                 showRequestsFilesCreationDialog(context);
             } else {
-                ISDialogs.showRequestLimitDayDialog(context, hoursLimit);
+                ISDialogs.showRequestLimitDayDialog(context, minutesLimit);
             }
         } else {
             showRequestsFilesCreationDialog(context);

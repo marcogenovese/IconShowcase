@@ -306,14 +306,19 @@
 
     <!--
     1. Set the max amount of apps to request.
-    2. Limit requests to 1 ever X hours.
-    Replace X with the number of hours you want.
-    1 means 1 request every 1 hour.
-    24 means 1 request per day.
-    168 means 1 request per week.
-    SET THE FIRST TO 0 IF YOU DON'T WANT TO LIMIT REQUESTS. IF THE FIRST IS 0, THE OTHER WILL BE IGNORED!!
+    2. Limit requests to 1 every X minutes.
+    Replace X with the number of minutes you want.
+    60 means 1 request every 1 hour.
+    1440 means 1 request per day.
+    10080 means 1 request per week.
+    40320 means 1 request per month.
+
+    If the second is set to 0, users will be able to request as many times they want,
+    with the max apps limit. If the apps limit is 0, the can request as many times they want, and
+    as many apps they want.
+
     -->
-    <integer name="max_apps_to_request">0</integer>
-    <integer name="limit_request_to_x_hours">0</integer>
+    <integer name="max_apps_to_request">5</integer>
+    <integer name="limit_request_to_x_minutes">41506</integer>
 
 </resources>

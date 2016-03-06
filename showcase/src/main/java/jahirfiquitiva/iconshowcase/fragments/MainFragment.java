@@ -133,14 +133,25 @@ public class MainFragment extends Fragment {
             String[] appsPackages = getResources().getStringArray(R.array.apps_packages);
             for (int i = 0; i < appsNames.length; i++) {
                 try {
-                    homeCards.add(new HomeCard.Builder()
-                            .title(appsNames[i])
-                            .description(appsDescriptions[i])
-                            .icon(ContextCompat.getDrawable(context,
-                                    getIconResId(getResources(), context.getPackageName(),
-                                            appsIcons[i])))
-                            .onClickLink(appsPackages[i], true)
-                            .build());
+                    try{
+                        homeCards.add(new HomeCard.Builder()
+                                .title(appsNames[i])
+                                .description(appsDescriptions[i])
+                                .icon(ContextCompat.getDrawable(context,
+                                        getIconResId(getResources(), context.getPackageName(),
+                                                appsIcons[i])))
+                                .onClickLink(appsPackages[i], true)
+                                .build());
+                    } catch (Resources.NotFoundException e){
+                        homeCards.add(new HomeCard.Builder()
+                                .title(appsNames[i])
+                                .description(appsDescriptions[i])
+                                .icon(ContextCompat.getDrawable(context,
+                                        getIconResId(getResources(), context.getPackageName(),
+                                                "ic_na_launcher")))
+                                .onClickLink(appsPackages[i], true)
+                                .build());
+                    }
                 } catch (IndexOutOfBoundsException e) {
                     Utils.showLog(context, "Apps Cards arrays are inconsistent. Fix them.");
                 }
