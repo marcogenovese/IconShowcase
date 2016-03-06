@@ -236,9 +236,7 @@ public class MainFragment extends Fragment {
             modifyFABIcon();
         }
 
-//        if (fab.getVisibility() != View.VISIBLE) { //TODO you don't really need this. This will never be visible
-            fab.setVisibility(View.VISIBLE);
-//        }
+        fab.setVisibility(View.VISIBLE);
 
         fab.show();
 
