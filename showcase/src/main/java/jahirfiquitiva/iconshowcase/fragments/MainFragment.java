@@ -156,7 +156,8 @@ public class MainFragment extends Fragment {
                                         .onClickLink(appsPackages[i], true, true, intent)
                                         .build());
                             } catch (Resources.NotFoundException e) {
-                                Utils.showLog(context, "There's no icon that matches name: " + appsIcons[i]);
+                                if (ShowcaseActivity.DEBUGGING)
+                                    Utils.showLog(context, "There's no icon that matches name: " + appsIcons[i]);
                                 homeCards.add(new HomeCard.Builder()
                                         .context(getActivity())
                                         .title(appsNames[i])
@@ -180,7 +181,8 @@ public class MainFragment extends Fragment {
                                     .onClickLink(appsPackages[i], true, false, null)
                                     .build());
                         } catch (Resources.NotFoundException e) {
-                            Utils.showLog(context, "There's no icon that matches name: " + appsIcons[i]);
+                            if (ShowcaseActivity.DEBUGGING)
+                                Utils.showLog(context, "There's no icon that matches name: " + appsIcons[i]);
                             homeCards.add(new HomeCard.Builder()
                                     .context(getActivity())
                                     .title(appsNames[i])
@@ -193,7 +195,8 @@ public class MainFragment extends Fragment {
                         }
                     }
                 } catch (IndexOutOfBoundsException e) {
-                    Utils.showLog(context, "Apps Cards arrays are inconsistent. Fix them.");
+                    if (ShowcaseActivity.DEBUGGING)
+                        Utils.showLog(context, "Apps Cards arrays are inconsistent. Fix them.");
                 }
             }
         }

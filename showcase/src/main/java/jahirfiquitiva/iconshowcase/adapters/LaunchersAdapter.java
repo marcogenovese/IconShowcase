@@ -43,6 +43,7 @@ import java.util.List;
 import java.util.Locale;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.fragments.ApplyFragment;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
@@ -127,7 +128,7 @@ public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.Laun
         if (res != 0) {
             return res;
         } else {
-            Utils.showLog(context, "Missing icon: " + name);
+            if (ShowcaseActivity.DEBUGGING) Utils.showLog(context, "Missing icon: " + name);
             return 0;
         }
     }

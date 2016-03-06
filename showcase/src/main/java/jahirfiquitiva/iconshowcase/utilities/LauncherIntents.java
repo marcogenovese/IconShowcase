@@ -29,6 +29,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 
 public class LauncherIntents {
 
@@ -107,7 +108,8 @@ public class LauncherIntents {
                 Layers(context);
                 break;
             default:
-                Utils.showLog(context, "No method for: " + launcherName);
+                if (ShowcaseActivity.DEBUGGING)
+                    Utils.showLog(context, "No method for: " + launcherName);
                 break;
         }
     }

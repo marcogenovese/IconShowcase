@@ -113,7 +113,8 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             DONATIONS_PAYPAL = false,
             DONATIONS_FLATTR = false,
             DONATIONS_BITCOIN = false,
-            SHOW_LOAD_ICONS_DIALOG = true;
+            SHOW_LOAD_ICONS_DIALOG = true,
+            DEBUGGING = false;
 
     private static String[] mGoogleCatalog = new String[0],
             GOOGLE_CATALOG_VALUES = new String[0];
@@ -185,6 +186,8 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         }
 
         super.onCreate(savedInstanceState);
+
+        DEBUGGING = getResources().getBoolean(R.bool.debugging);
 
         context = this;
         mPrefs = new Preferences(ShowcaseActivity.this);
@@ -327,9 +330,10 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                 public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
                     //TODO test this
                     if (inventory != null) {
-                        Utils.showLog(context, "IAP inventory exists");
+                        if (DEBUGGING) Utils.showLog(context, "IAP inventory exists");
                         for (String aGOOGLE_CATALOG_FREE : GOOGLE_CATALOG_FREE) {
-                            Utils.showLog(context, aGOOGLE_CATALOG_FREE + " is " + inventory.hasPurchase(aGOOGLE_CATALOG_FREE));
+                            if (DEBUGGING)
+                                Utils.showLog(context, aGOOGLE_CATALOG_FREE + " is " + inventory.hasPurchase(aGOOGLE_CATALOG_FREE));
                             if (inventory.hasPurchase(aGOOGLE_CATALOG_FREE)) { //at least one donation value found, now premium
                                 mIsPremium = true;
                             }
@@ -345,7 +349,8 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
                 public void onIabSetupFinished(IabResult result) {
                     if (!result.isSuccess()) {
-                        Utils.showLog(context, "In-app Billing setup failed: " + result); //TODO move text to string?
+                        if (DEBUGGING)
+                            Utils.showLog(context, "In-app Billing setup failed: " + result); //TODO move text to string?
                         new MaterialDialog.Builder(ShowcaseActivity.this)
                                 .title(R.string.donations_error_title)
                                 .content(R.string.donations_error_content)

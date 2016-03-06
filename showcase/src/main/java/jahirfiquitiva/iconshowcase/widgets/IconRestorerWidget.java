@@ -59,7 +59,8 @@ public class IconRestorerWidget extends AppWidgetProvider {
                 appWidgetManager.updateAppWidget(appWidgetId, views);
 
             } catch (ActivityNotFoundException e) {
-                Utils.showLog(context, "App not found!");
+                if (context.getResources().getBoolean(R.bool.debugging))
+                    Utils.showLog(context, "App not found!");
             }
 
         }

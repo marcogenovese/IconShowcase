@@ -24,7 +24,7 @@
 
 <resources>
 
-    <!-- Option to enable the appfilter checker in Log-->
+    <!-- Option to enable Log messages-->
     <bool name="debugging">true</bool>
 
     <!--

@@ -44,6 +44,7 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
@@ -99,7 +100,8 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
             try {
                 wm.setBitmap(scaleToActualAspectRatio(resource));
             } catch (OutOfMemoryError ex) {
-                Utils.showLog(context, "OutOfMemoryError: " + ex.getLocalizedMessage());
+                if (ShowcaseActivity.DEBUGGING)
+                    Utils.showLog(context, "OutOfMemoryError: " + ex.getLocalizedMessage());
                 showRetrySnackbar();
             }
             worked = true;

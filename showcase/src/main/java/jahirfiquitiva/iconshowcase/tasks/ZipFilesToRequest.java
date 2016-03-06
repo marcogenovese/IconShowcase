@@ -58,6 +58,7 @@ import java.util.zip.ZipException;
 import java.util.zip.ZipOutputStream;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.models.RequestItem;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
@@ -344,9 +345,9 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
             }
             zipOutputStream.close();
         } catch (FileNotFoundException e) {
-            Utils.showLog("File not found: " + e.getMessage());
+            if (ShowcaseActivity.DEBUGGING) Utils.showLog("File not found: " + e.getMessage());
         } catch (IOException e) {
-            Utils.showLog("IOException: " + e.getMessage());
+            if (ShowcaseActivity.DEBUGGING) Utils.showLog("IOException: " + e.getMessage());
         }
     }
 

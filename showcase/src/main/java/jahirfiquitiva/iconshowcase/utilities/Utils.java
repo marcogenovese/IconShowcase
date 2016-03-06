@@ -173,13 +173,17 @@ public class Utils {
     }
 
     public static void showLog(Context context, String s) {
-        String tag = "IconShowcase + " + context.getResources().getString(R.string.app_name);
-        Log.d(tag, s);
+        if (context.getResources().getBoolean(R.bool.debugging)) {
+            String tag = "IconShowcase + " + context.getResources().getString(R.string.app_name);
+            Log.d(tag, s);
+        }
     }
 
     public static void showAppFilterLog(Context context, String s) {
-        String tag = context.getResources().getString(R.string.app_name) + " AppFilter";
-        Log.d(tag, s);
+        if (context.getResources().getBoolean(R.bool.debugging)) {
+            String tag = context.getResources().getString(R.string.app_name) + " AppFilter";
+            Log.d(tag, s);
+        }
     }
 
     public static void showLog(String s) {

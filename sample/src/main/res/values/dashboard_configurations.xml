@@ -24,8 +24,8 @@
 
 <resources>
 
-    <!-- Option to enable the appfilter checker in Log-->
-    <bool name="debugging">true</bool>
+    <!-- Option to enable Log messages-->
+    <bool name="debugging">false</bool>
 
     <!--
     Tabs to be used as primary drawer items
@@ -318,7 +318,7 @@
     as many apps they want.
 
     -->
-    <integer name="max_apps_to_request">5</integer>
-    <integer name="limit_request_to_x_minutes">41506</integer>
+    <integer name="max_apps_to_request">0</integer>
+    <integer name="limit_request_to_x_minutes">0</integer>
 
 </resources>

@@ -135,7 +135,7 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
             try {
                 bitmap = BitmapFactory.decodeResource(context.getResources(), resId);
             } catch (Exception e) {
-                Utils.showLog(context, "Icons Picker error: " + Log.getStackTraceString(e));
+                if (ShowcaseActivity.DEBUGGING) Utils.showLog(context, "Icons Picker error: " + Log.getStackTraceString(e));
             }
 
             if (bitmap != null) {

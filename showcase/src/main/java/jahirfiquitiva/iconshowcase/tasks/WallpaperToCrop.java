@@ -44,6 +44,7 @@ import java.io.FileOutputStream;
 import java.lang.ref.WeakReference;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
@@ -172,7 +173,7 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
                 inImage.compress(Bitmap.CompressFormat.PNG, 100,
                         new FileOutputStream(destFile));
             } catch (final Exception e) {
-                Utils.showLog(context, e.getLocalizedMessage());
+                if (ShowcaseActivity.DEBUGGING) Utils.showLog(context, e.getLocalizedMessage());
             }
         }
 
