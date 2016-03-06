@@ -165,7 +165,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     public static AppBarLayout appbar;
     public static CollapsingToolbarLayout collapsingToolbarLayout;
     public static CustomCoordinatorLayout coordinatorLayout;
-    public static FloatingActionButton fab;
     public static ImageView icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8;
     public static TextView titleView;
     public static ImageView toolbarHeader;
@@ -311,8 +310,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         collapsingToolbarLayout.setTitle(thaAppName);
 
         Utils.setupCollapsingToolbarTextColors(context, collapsingToolbarLayout);
-
-        fab = (FloatingActionButton) findViewById(R.id.fab);
 
         icon1 = (ImageView) findViewById(R.id.iconOne);
         icon2 = (ImageView) findViewById(R.id.iconTwo);
@@ -1057,6 +1054,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         }
 
         SHUFFLE = false;
+
     }
 
     public static void animateIcons(ImageView icon1, ImageView icon2,
@@ -1106,6 +1104,12 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         if (mPrefs.getAnimationsEnabled()) {
             Animation anim = AnimationUtils.loadAnimation(context, R.anim.bounce);
             playIconsAnimations(icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8, anim, numOfIcons);
+        }
+
+        FloatingActionButton fab = (FloatingActionButton) context.findViewById(R.id.fab);
+        if (fab.getVisibility() != View.VISIBLE) {
+            fab.setVisibility(View.VISIBLE);
+            fab.show();
         }
     }
 

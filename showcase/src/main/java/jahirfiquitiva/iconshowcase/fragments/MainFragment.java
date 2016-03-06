@@ -30,6 +30,7 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -61,6 +62,7 @@ public class MainFragment extends Fragment {
     private boolean themeMode, cm, cyngn, rro; //to store theme engine installation status
 
     private RecyclerView mRecyclerView;
+    private FloatingActionButton fab;
     private ArrayList<HomeCard> homeCards = new ArrayList<>();
 
     @Override
@@ -80,6 +82,8 @@ public class MainFragment extends Fragment {
         } catch (InflateException e) {
             //Do nothing
         }
+
+        fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
 
         themeMode = getResources().getBoolean(R.bool.theme_mode);
         mRecyclerView = (RecyclerView) layout.findViewById(R.id.home_rv);
@@ -120,12 +124,6 @@ public class MainFragment extends Fragment {
             });
 
         }
-
-        return layout;
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
 
         String[] appsNames = getResources().getStringArray(R.array.apps_titles);
 
@@ -212,34 +210,33 @@ public class MainFragment extends Fragment {
         HomeListAdapter mAdapter = new HomeListAdapter(homeCards, context);
         mRecyclerView.setAdapter(mAdapter);
 
-        showFAB();
-        Utils.expandToolbar(getActivity());
-
-        super.onViewCreated(view, savedInstanceState);
+        return layout;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        showFAB();
+        setupFAB();
+        Utils.expandToolbar(getActivity());
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (ShowcaseActivity.currentItem > 1) { //TODO figure out why I need this; without it, fab is hidden on first run
-            ShowcaseActivity.fab.hide();
-            ShowcaseActivity.fab.setVisibility(View.GONE);
+        if (fab != null && ShowcaseActivity.currentItem != 1) {
+            fab.hide();
         }
     }
 
-    private void showFAB() {
+    private void setupFAB() {
+        if (fab.getVisibility() != View.VISIBLE) {
+            fab.setVisibility(View.VISIBLE);
+            fab.show();
+        }
         if (themeMode) {
             modifyFABIcon();
         }
-        ShowcaseActivity.fab.setVisibility(View.VISIBLE);
-        ShowcaseActivity.fab.show();
-        ShowcaseActivity.fab.setOnClickListener(new View.OnClickListener() {
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (themeMode) {
@@ -259,6 +256,10 @@ public class MainFragment extends Fragment {
                 }
             }
         });
+        if (fab.getVisibility() != View.VISIBLE) {
+            fab.setVisibility(View.VISIBLE);
+            fab.show();
+        }
     }
 
     private void modifyFABIcon() {
@@ -270,11 +271,11 @@ public class MainFragment extends Fragment {
                 Utils.isAppInstalled(context, "com.lovejoy777.rroandlayersmanager");
 
         if (cm || cyngn) {
-            ShowcaseActivity.fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_apply_cm));
+            fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_apply_cm));
         } else if (rro) {
-            ShowcaseActivity.fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_apply_layers));
+            fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_apply_layers));
         } else {
-            ShowcaseActivity.fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_question));
+            fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_question));
         }
     }
 
