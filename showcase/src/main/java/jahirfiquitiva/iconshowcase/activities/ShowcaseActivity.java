@@ -165,7 +165,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     public static AppBarLayout appbar;
     public static CollapsingToolbarLayout collapsingToolbarLayout;
     public static CustomCoordinatorLayout coordinatorLayout;
-    public static FloatingActionButton fab;
     public static ImageView icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8;
     public static TextView titleView;
     public static ImageView toolbarHeader;
@@ -312,8 +311,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
         Utils.setupCollapsingToolbarTextColors(context, collapsingToolbarLayout);
 
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-
         icon1 = (ImageView) findViewById(R.id.iconOne);
         icon2 = (ImageView) findViewById(R.id.iconTwo);
         icon3 = (ImageView) findViewById(R.id.iconThree);
@@ -440,13 +437,12 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         }
         currentItem = itemId;
 
-        if (!themeMode) {
-            if (fragment.equals("Main")) {
+        if (fragment.equals("Main")) {
+            if (!themeMode) {
                 icon1.setVisibility(View.INVISIBLE);
                 icon2.setVisibility(View.INVISIBLE);
                 icon3.setVisibility(View.INVISIBLE);
                 icon4.setVisibility(View.INVISIBLE);
-                Utils.expandToolbar(context);
             }
         }
 
@@ -1057,6 +1053,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         }
 
         SHUFFLE = false;
+
     }
 
     public static void animateIcons(ImageView icon1, ImageView icon2,
