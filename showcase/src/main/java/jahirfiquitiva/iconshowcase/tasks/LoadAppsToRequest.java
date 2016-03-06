@@ -89,7 +89,7 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
                 icon = info.loadIcon(mPackageManager);
             } catch (Resources.NotFoundException e) {
                 try {
-                    icon = ContextCompat.getDrawable(context, R.drawable.ic_launcher);
+                    icon = ContextCompat.getDrawable(context, R.drawable.ic_na_launcher);
                 } catch (Resources.NotFoundException e1) {
                     icon = ThemeUtils.darkTheme ? ToolbarColorizer.getTintedIcon(
                             ContextCompat.getDrawable(context, R.drawable.abc_btn_radio_on_mtrl),
@@ -274,7 +274,7 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
                                     icon = info.loadIcon(mPackageManager);
                                 } catch (Resources.NotFoundException e) {
                                     try {
-                                        icon = ContextCompat.getDrawable(context, R.drawable.ic_launcher);
+                                        icon = ContextCompat.getDrawable(context, R.drawable.ic_na_launcher);
                                     } catch (Resources.NotFoundException e1) {
                                         icon = ThemeUtils.darkTheme ? ToolbarColorizer.getTintedIcon(
                                                 ContextCompat.getDrawable(context, R.drawable.abc_btn_radio_on_mtrl),
