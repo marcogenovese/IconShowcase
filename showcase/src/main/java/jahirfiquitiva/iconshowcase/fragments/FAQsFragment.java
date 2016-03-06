@@ -40,7 +40,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jahirfiquitiva.iconshowcase.R;
-import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.adapters.FAQsAdapter;
 import jahirfiquitiva.iconshowcase.models.FAQsItem;
 import jahirfiquitiva.iconshowcase.utilities.Utils;

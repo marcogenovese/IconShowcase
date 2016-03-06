@@ -29,8 +29,6 @@ import android.support.v7.graphics.Palette;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import jahirfiquitiva.iconshowcase.utilities.Utils;
-
 /**
  * Utility methods for working with colors.
  */
