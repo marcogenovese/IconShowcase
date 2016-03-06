@@ -24,6 +24,8 @@
 package jahirfiquitiva.iconshowcase.fragments;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
@@ -132,25 +134,63 @@ public class MainFragment extends Fragment {
             String[] appsIcons = getResources().getStringArray(R.array.apps_icons);
             String[] appsPackages = getResources().getStringArray(R.array.apps_packages);
             for (int i = 0; i < appsNames.length; i++) {
+
                 try {
-                    try{
-                        homeCards.add(new HomeCard.Builder()
-                                .title(appsNames[i])
-                                .description(appsDescriptions[i])
-                                .icon(ContextCompat.getDrawable(context,
-                                        getIconResId(getResources(), context.getPackageName(),
-                                                appsIcons[i])))
-                                .onClickLink(appsPackages[i], true)
-                                .build());
-                    } catch (Resources.NotFoundException e){
-                        homeCards.add(new HomeCard.Builder()
-                                .title(appsNames[i])
-                                .description(appsDescriptions[i])
-                                .icon(ContextCompat.getDrawable(context,
-                                        getIconResId(getResources(), context.getPackageName(),
-                                                "ic_na_launcher")))
-                                .onClickLink(appsPackages[i], true)
-                                .build());
+
+                    Intent intent = null;
+
+                    boolean isInstalled = Utils.isAppInstalled(context, appsPackages[i]);
+
+                    if (isInstalled) {
+                        PackageManager pm = this.context.getPackageManager();
+                        intent = pm.getLaunchIntentForPackage(appsPackages[i]);
+                        if (intent != null) {
+                            try {
+                                homeCards.add(new HomeCard.Builder()
+                                        .context(getActivity())
+                                        .title(appsNames[i])
+                                        .description(appsDescriptions[i])
+                                        .icon(ContextCompat.getDrawable(context,
+                                                getIconResId(getResources(), context.getPackageName(),
+                                                        appsIcons[i])))
+                                        .onClickLink(appsPackages[i], true, true, intent)
+                                        .build());
+                            } catch (Resources.NotFoundException e) {
+                                Utils.showLog(context, "There's no icon that matches name: " + appsIcons[i]);
+                                homeCards.add(new HomeCard.Builder()
+                                        .context(getActivity())
+                                        .title(appsNames[i])
+                                        .description(appsDescriptions[i])
+                                        .icon(ContextCompat.getDrawable(context,
+                                                getIconResId(getResources(), context.getPackageName(),
+                                                        "ic_na_launcher")))
+                                        .onClickLink(appsPackages[i], true, true, intent)
+                                        .build());
+                            }
+                        }
+                    } else {
+                        try {
+                            homeCards.add(new HomeCard.Builder()
+                                    .context(getActivity())
+                                    .title(appsNames[i])
+                                    .description(appsDescriptions[i])
+                                    .icon(ContextCompat.getDrawable(context,
+                                            getIconResId(getResources(), context.getPackageName(),
+                                                    appsIcons[i])))
+                                    .onClickLink(appsPackages[i], true, false, null)
+                                    .build());
+                        } catch (Resources.NotFoundException e) {
+                            Utils.showLog(context, "There's no icon that matches name: " + appsIcons[i]);
+                            homeCards.add(new HomeCard.Builder()
+                                    .context(getActivity())
+                                    .title(appsNames[i])
+                                    .description(appsDescriptions[i])
+                                    .icon(ContextCompat.getDrawable(context,
+                                            getIconResId(getResources(), context.getPackageName(),
+                                                    "ic_na_launcher")))
+                                    .onClickLink(appsPackages[i], true, false, null)
+                                    .build());
+                        }
                     }
                 } catch (IndexOutOfBoundsException e) {
                     Utils.showLog(context, "Apps Cards arrays are inconsistent. Fix them.");
@@ -169,6 +209,7 @@ public class MainFragment extends Fragment {
         HomeListAdapter mAdapter = new HomeListAdapter(homeCards, context);
         mRecyclerView.setAdapter(mAdapter);
 
+        showFAB();
         Utils.expandToolbar(getActivity());
 
         super.onViewCreated(view, savedInstanceState);

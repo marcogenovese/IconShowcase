@@ -1,5 +1,7 @@
 package jahirfiquitiva.iconshowcase.models;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -9,11 +11,11 @@ import android.os.Parcelable;
  */
 public class HomeCard implements Parcelable {
 
-    public String title;
-    public String desc;
+    public String title, desc, onClickLink, packageName;
     public Drawable img;
-    public boolean imgEnabled;
-    public String onClickLink;
+    public Context context;
+    public boolean imgEnabled, isAnApp, isInstalled;
+    public Intent intent;
 
     public HomeCard(Builder builder) {
         this.title = builder.title;
@@ -21,19 +23,30 @@ public class HomeCard implements Parcelable {
         this.img = builder.img;
         this.imgEnabled = builder.imgEnabled;
         this.onClickLink = builder.onClickLink;
+        this.packageName = builder.packageName;
+        this.isAnApp = builder.isAnApp;
+        this.isInstalled = builder.isInstalled;
+        this.context = builder.context;
+        this.intent = builder.intent;
     }
 
     public static class Builder {
 
-        private String title, desc;
-        private Drawable img;
-        private boolean imgEnabled = false;
-        private String onClickLink;
+        public String title, desc, onClickLink, packageName;
+        public Drawable img;
+        public Context context;
+        public boolean imgEnabled = false, isAnApp = false, isInstalled = false;
+        public Intent intent;
 
         public Builder() {
             this.title = "Insert title here";
             this.desc = "Insert description here";
             this.img = null;
+        }
+
+        public Builder context(Context context) {
+            this.context = context;
+            return this;
         }
 
         public Builder title(String title) {
@@ -52,13 +65,14 @@ public class HomeCard implements Parcelable {
             return this;
         }
 
-        public Builder onClickLink(String s) {
-            this.onClickLink = s;
-            return this;
-        }
-
-        public Builder onClickLink(String s, boolean isAnApp) {
+        public Builder onClickLink(String s, boolean isAnApp, boolean isInstalled, Intent intent) {
             this.onClickLink = isAnApp ? "https://play.google.com/store/apps/details?id=" + s : s;
+            this.isAnApp = isAnApp;
+            if (isAnApp) {
+                this.packageName = s;
+                this.isInstalled = isInstalled;
+                this.intent = intent;
+            }
             return this;
         }
 

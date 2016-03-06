@@ -357,6 +357,7 @@
     <string name="NTED_message">It seems like we aren\'t able to find a theme engine on your phone. If you know you have one, please open it and proceed from there. If you don\'t have one, please get a rom that supports either cyanogenmod or layers theming and follow their instructions.</string>
 
     <string name="tap_to_download">%1$s\nTap this card to download it.</string>
+    <string name="tap_to_open">%1$s\nTap this card to open the app.</string>
 
     <string name="donations_error_title">Donations unavailable</string>
     <string name="donations_error_content">Your device doesn\'t support In App Billing.\nThis could be because you need to update your Google Play Store application, or because you live in a country where In App Billing is disabled.</string>

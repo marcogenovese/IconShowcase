@@ -2,6 +2,7 @@ package jahirfiquitiva.iconshowcase.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
@@ -46,6 +47,8 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         final int pos = i;
+        PackageManager pm = context.getPackageManager();
+
         switch (i) {
             case 0:
                 View welcomeCard = LayoutInflater.from(
@@ -63,15 +66,9 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         viewGroup, false);
                 return new MoreAppsCard(moreAppsCard);
             default:
-                View appCard = LayoutInflater.from(
+                final View appCard = LayoutInflater.from(
                         viewGroup.getContext()).inflate(R.layout.item_app_card,
                         viewGroup, false);
-                appCard.setOnClickListener(new View.OnClickListener() { //TODO make clicks work for more than just links
-                    @Override
-                    public void onClick(View v) {
-                        Utils.openLink(context, homeCards.get(pos - cards).onClickLink);
-                    }
-                });
                 return new AppCard(appCard, i);
         }
     }
@@ -221,15 +218,38 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public AppCard(View itemView, int i) {
             super(itemView);
             view = itemView;
+
+            String description;
+
+            final int pos = i;
+
+            view.setOnClickListener(new View.OnClickListener() { //TODO make clicks work for more than just links
+                @Override
+                public void onClick(View v) {
+                    if (homeCards.get(pos - cards).isInstalled && homeCards.get(pos - cards).intent != null) {
+                        context.startActivity(homeCards.get(pos - cards).intent);
+                    } else if (view.getVisibility() == View.VISIBLE) {
+                        Utils.openLink(context, homeCards.get(pos - cards).onClickLink);
+                    }
+                }
+            });
+
+            if (homeCards.get(i - cards).isInstalled) {
+                description = context.getResources().getString(
+                        R.string.tap_to_open,
+                        homeCards.get(i - cards).desc);
+            } else {
+                description = context.getResources().getString(
+                        R.string.tap_to_download,
+                        homeCards.get(pos - cards).desc);
+            }
+
             lly = (LinearLayout) itemView.findViewById(R.id.home_card);
             cardTitle = (TextView) itemView.findViewById(R.id.home_card_text);
             cardDesc = (TextView) itemView.findViewById(R.id.home_card_description);
             cardIcon = (ImageView) itemView.findViewById(R.id.home_card_image);
             subLly = (LinearLayout) itemView.findViewById(R.id.home_card_sub_layout);
             cardTitle.setText(homeCards.get(i - cards).title);
-            String description = context.getResources().getString(
-                    R.string.tap_to_download,
-                    homeCards.get(i - cards).desc);
             cardDesc.setText(description);
             if (homeCards.get(i - cards).imgEnabled) {
                 cardIcon.setImageDrawable(homeCards.get(i - cards).img);

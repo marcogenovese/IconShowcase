@@ -454,10 +454,12 @@ public class ZooperFragment extends Fragment implements PermissionUtils.OnPermis
 
         if (num >= minCardsToScroll + 1 && !bigCards && portrait) {
             enableScroll = true;
-        } else if (num >= minCardsToScroll && !bigCards && !portrait) {
-            enableScroll = true;
-        } else if (num >= minCardsToScroll && bigCards) {
-            enableScroll = true;
+        } else if (num >= minCardsToScroll) {
+            if (bigCards) {
+                enableScroll = true;
+            } else if (!portrait) {
+                enableScroll = true;
+            }
         }
 
         CustomCoordinatorLayout coordinatorLayout = (CustomCoordinatorLayout) ((Activity) context).findViewById(R.id.mainCoordinatorLayout);
