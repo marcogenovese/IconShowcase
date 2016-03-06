@@ -20,16 +20,24 @@
 
 <resources>
 
-    <string-array name="apps_titles">
-    </string-array>
+    <!--
+    Do you want to allow users to change app theme?
+    True, means yes.
+    False, means no.
+    -->
+    <bool name="allow_user_theme_change">true</bool>
 
-    <string-array name="apps_descriptions">
-    </string-array>
+    <!--
+    Do you want to allow users to hide the app icon?
+    True, means yes.
+    False, means no.
+    -->
+    <bool name="allow_user_to_hide_app_icon">true</bool>
 
-    <string-array name="apps_icons">
-    </string-array>
-
-    <string-array name="apps_packages">
-    </string-array>
+    <!-- Default Navigation Bar value
+    True, means colored.
+    False, means black.
+    -->
+    <bool name="color_navbar_by_default">true</bool>
 
 </resources>
