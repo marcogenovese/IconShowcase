@@ -47,7 +47,7 @@ public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
 
     private Context context;
     public static ArrayList<ZooperWidget> widgets = new ArrayList<>();
-    long startTime, endTime;
+    private long startTime;
 
     public LoadZooperWidgets(Context context) {
         this.context = context;
@@ -97,7 +97,7 @@ public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
 
     @Override
     protected void onPostExecute(Boolean worked) {
-        endTime = System.currentTimeMillis();
+        long endTime = System.currentTimeMillis();
         if (worked) {
             Utils.showLog(context, "Load of widgets task completed successfully in: " + String.valueOf((endTime - startTime)) + " millisecs.");
         }

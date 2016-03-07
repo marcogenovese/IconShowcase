@@ -29,6 +29,8 @@ import android.support.v7.graphics.Palette;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+import jahirfiquitiva.iconshowcase.utilities.Utils;
+
 /**
  * Utility methods for working with colors.
  */
@@ -40,6 +42,7 @@ public class ColorUtils {
     public static final int IS_LIGHT = 0;
     public static final int IS_DARK = 1;
     public static final int LIGHTNESS_UNKNOWN = 2;
+    public static float S = 0.0f;
 
     /**
      * Blend {@code color1} and {@code color2} using the given ratio.
@@ -62,6 +65,19 @@ public class ColorUtils {
     }
 
     /**
+     * Changes opacity of {@code color} to the specified {@code factor}
+     *
+     * @param factor which will change the opacity of the color
+     */
+    public static int adjustAlpha(@ColorInt int color, @FloatRange(from = 0.0, to = 1.0) float factor) {
+        float a = Color.alpha(color) * factor;
+        float r = Color.red(color);
+        float g = Color.green(color);
+        float b = Color.blue(color);
+        return Color.argb((int) a, (int) r, (int) g, (int) b);
+    }
+
+    /**
      * Checks if the most populous color in the given palette is dark
      * <p/>
      * Annoyingly we have to return this Lightness 'enum' rather than a boolean as palette isn't
@@ -69,10 +85,10 @@ public class ColorUtils {
      */
     public static
     @Lightness
-    int isDark(Palette palette, boolean forViewer) {
+    int isDark(Palette palette) {
         Palette.Swatch mostPopulous = getMostPopulousSwatch(palette);
         if (mostPopulous == null) return LIGHTNESS_UNKNOWN;
-        return isDark(mostPopulous.getHsl(), forViewer) ? IS_DARK : IS_LIGHT;
+        return isDark(mostPopulous.getHsl()) ? IS_DARK : IS_LIGHT;
     }
 
     public static
@@ -89,75 +105,49 @@ public class ColorUtils {
         return mostPopulous;
     }
 
-    public static
-    @Nullable
-    Palette.Swatch getLessPopulousSwatch(Palette palette) {
-        Palette.Swatch lessPopulous = null;
-        if (palette != null) {
-            for (Palette.Swatch swatch : palette.getSwatches()) {
-                if (lessPopulous == null || swatch.getPopulation() < lessPopulous.getPopulation()) {
-                    lessPopulous = swatch;
-                }
-            }
-        }
-        return lessPopulous;
-    }
-
     /**
      * Determines if a given bitmap is dark. This extracts a palette inline so should not be called
      * with a large image!!
      * <p/>
      * Note: If palette fails then check the color of the central pixel
      */
-    /*
+
     public static boolean isDark(@NonNull Bitmap bitmap) {
         return isDark(bitmap, bitmap.getWidth() / 2, bitmap.getHeight() / 2);
-    }
-    */
-    public static boolean isDark(@NonNull Bitmap bitmap, boolean useCustomDividers,
-                                 int widthDivider, int heightDivider, boolean forViewer) {
-        if (useCustomDividers) {
-            return isDark(bitmap, bitmap.getWidth() / widthDivider, bitmap.getHeight() / heightDivider, forViewer);
-        } else {
-            return isDark(bitmap, bitmap.getWidth() / 2, bitmap.getHeight() / 2, forViewer);
-        }
     }
 
     /**
      * Determines if a given bitmap is dark. This extracts a palette inline so should not be called
      * with a large image!! If palette fails then check the color of the specified pixel
      */
-    public static boolean isDark(@NonNull Bitmap bitmap, int backupPixelX, int backupPixelY, boolean forViewer) {
+    public static boolean isDark(@NonNull Bitmap bitmap, int backupPixelX, int backupPixelY) {
         // first try palette with a small color quant size
-        Palette palette = Palette.from(bitmap).maximumColorCount(3).generate();
+        Palette palette = Palette.from(bitmap).generate();//.maximumColorCount(3).generate();
         if (palette != null && palette.getSwatches().size() > 0) {
-            return isDark(palette, forViewer) == IS_DARK;
+            return isDark(palette) == IS_DARK;
         } else {
             // if palette failed, then check the color of the specified pixel
-            return isDark(bitmap.getPixel(backupPixelX, backupPixelY), forViewer);
+            return isDark(bitmap.getPixel(backupPixelX, backupPixelY));
         }
     }
 
     /**
      * Check that the lightness value (0–1)
      */
-    public static boolean isDark(float[] hsl, boolean forViewer) { // @Size(3)
-        float min = 0;
-        if (forViewer) {
-            min = 0.3f;
-        } else {
-            min = 0.4f;
-        }
+    public static boolean isDark(float[] hsl) { // @Size(3)
+        float min = 0.55f;
+        ColorUtils.S = hsl[2];
+        Utils.showLog("HSL: " + hsl[2] + " Min: " + min);
         return hsl[2] < min;
     }
 
     /**
      * Convert to HSL & check that the lightness value
      */
-    public static boolean isDark(@ColorInt int color, boolean forViewer) {
+    public static boolean isDark(@ColorInt int color) {
         float[] hsl = new float[3];
         android.support.v4.graphics.ColorUtils.colorToHSL(color, hsl);
-        return isDark(hsl, forViewer);
+        return isDark(hsl);
     }
 
     @Retention(RetentionPolicy.SOURCE)

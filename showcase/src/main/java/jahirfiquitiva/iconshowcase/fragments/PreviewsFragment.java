@@ -25,7 +25,6 @@ package jahirfiquitiva.iconshowcase.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -33,8 +32,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.SearchView;
-import android.util.DisplayMetrics;
-import android.util.TypedValue;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -45,8 +42,6 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 
-import com.mikepenz.materialize.util.UIUtils;
-
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -56,8 +51,8 @@ import jahirfiquitiva.iconshowcase.fragments.base.FragmentStatePagerAdapter;
 import jahirfiquitiva.iconshowcase.models.IconsCategory;
 import jahirfiquitiva.iconshowcase.tasks.LoadIconsLists;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
+import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
-import jahirfiquitiva.iconshowcase.views.CustomCoordinatorLayout;
 
 public class PreviewsFragment extends Fragment {
 
@@ -65,9 +60,9 @@ public class PreviewsFragment extends Fragment {
     private ViewPager mPager;
     private String[] tabs;
     private ViewGroup layout;
-    public TabLayout mTabs;
+    private TabLayout mTabs;
     private SearchView mSearchView;
-    public ArrayList<IconsCategory> categories;
+    private ArrayList<IconsCategory> categories;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -100,7 +95,7 @@ public class PreviewsFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        setupToolbar();
+        Utils.collapseToolbar(getActivity());
 
         if (mPager == null) {
             mPager = (ViewPager) layout.findViewById(R.id.pager);
@@ -109,42 +104,6 @@ public class PreviewsFragment extends Fragment {
             createTabs();
         }
 
-    }
-
-    private void setupToolbar() {
-        // Are you ready for the ugliest fix in the history of the universe?
-        // Set custom offset for AppBar. This makes both toolbar and tabs visible
-
-        AppBarLayout appbar = (AppBarLayout) getActivity().findViewById(R.id.appbar);
-        CustomCoordinatorLayout.LayoutParams params = (CustomCoordinatorLayout.LayoutParams) appbar.getLayoutParams();
-        AppBarLayout.Behavior behavior = (AppBarLayout.Behavior) params.getBehavior();
-        CustomCoordinatorLayout coordinatorLayout = (CustomCoordinatorLayout) getActivity().findViewById(R.id.mainCoordinatorLayout);
-
-        // Calculate ActionBar height
-        TypedValue tv = new TypedValue();
-        Integer toolbarCollapsedHeight = 0;
-        if (getActivity().getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
-            toolbarCollapsedHeight = TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics());
-        }
-        Integer toolbarExpandedHeight = getActivity().getResources().getDimensionPixelOffset(R.dimen.toolbar_expanded);
-
-        DisplayMetrics metrics = getResources().getDisplayMetrics();
-        float extra = (metrics.densityDpi * 0.05f);
-
-        Integer statusbarHeight = UIUtils.getStatusBarHeight(getActivity());
-
-        // Set toolbarCollapsedHeight as offset so tabs are shown
-        if (behavior != null) {
-            behavior.setTopAndBottomOffset(-toolbarExpandedHeight + statusbarHeight + (toolbarCollapsedHeight * 2) - Math.round(extra));
-        }
-
-        TextView title = (TextView) getActivity().findViewById(R.id.title);
-        if (title != null) {
-            title.setVisibility(View.VISIBLE);
-        }
-
-        // Lock CoordinatorLayout so the toolbar can't be scrolled away
-        coordinatorLayout.setScrollAllowed(false);
     }
 
     private void createTabs() {

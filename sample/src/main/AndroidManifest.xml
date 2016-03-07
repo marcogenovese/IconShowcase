@@ -335,7 +335,7 @@
         </receiver>
 
         <meta-data
-            android:name="jahirfiquitiva.iconshowcase.utilities.glide.GlideConfiguration"
+            android:name="jahirfiquitiva.iconshowcase.utilities.GlideConfiguration"
             android:value="GlideModule"/>
 
     </application>

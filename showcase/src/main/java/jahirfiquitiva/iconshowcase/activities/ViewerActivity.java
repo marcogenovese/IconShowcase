@@ -63,7 +63,6 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
-import com.github.clans.fab.FloatingActionMenu;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 
@@ -87,18 +86,19 @@ public class ViewerActivity extends AppCompatActivity {
 
     private boolean mLastTheme, mLastNavBar;
 
-    public static final String EXTRA_CURRENT_ITEM_POSITION = "extra_current_item_position";
-
-    private String transitionName, wallUrl, wallName, wallAuthor, wallDimensions, wallCopyright;
-    private TouchImageView mPhoto;
+    private String wallUrl;
+    private String wallName;
+    private String wallAuthor;
+    private String wallDimensions;
+    private String wallCopyright;
 
     private RelativeLayout layout;
     private static Preferences mPrefs;
     private static File downloadsFolder;
-    public static MaterialDialog dialogApply;
+    private static MaterialDialog dialogApply;
     private Toolbar toolbar;
 
-    public static LinearLayout toHide1, toHide2;
+    private static LinearLayout toHide1, toHide2;
 
     private Activity context;
 
@@ -110,7 +110,6 @@ public class ViewerActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             ThemeUtils.onActivityCreateSetNavBar(this);
             Window window = getWindow();
-            //window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
 
@@ -121,7 +120,7 @@ public class ViewerActivity extends AppCompatActivity {
         mPrefs = new Preferences(context);
 
         Intent intent = getIntent();
-        transitionName = intent.getStringExtra("transitionName");
+        String transitionName = intent.getStringExtra("transitionName");
         wallUrl = intent.getStringExtra("wallUrl");
         wallName = intent.getStringExtra("wallName");
         wallAuthor = intent.getStringExtra("authorName");
@@ -206,7 +205,7 @@ public class ViewerActivity extends AppCompatActivity {
             }
         });
 
-        mPhoto = (TouchImageView) findViewById(R.id.big_wallpaper);
+        TouchImageView mPhoto = (TouchImageView) findViewById(R.id.big_wallpaper);
         ViewCompat.setTransitionName(mPhoto, transitionName);
 
         layout = (RelativeLayout) findViewById(R.id.viewerLayout);
@@ -348,11 +347,11 @@ public class ViewerActivity extends AppCompatActivity {
     private void colorizeToolbar(Bitmap picture, boolean usePalette) {
         int paletteIconsColor = 0;
         if (usePalette) {
-            paletteIconsColor = Utils.getIconsColorForViewer(picture, context);
+            paletteIconsColor = Utils.getIconsColorFromBitmap(picture, context);
             if (paletteIconsColor == 0) {
                 int light = Color.parseColor("#80000000");
                 int dark = Color.parseColor("#80ffffff");
-                if (ColorUtils.isDark(picture, 0, picture.getHeight() / 2, true)) {
+                if (ColorUtils.isDark(picture)) {
                     ToolbarColorizer.colorizeToolbar(toolbar, dark);
                 } else {
                     ToolbarColorizer.colorizeToolbar(toolbar, light);
@@ -452,7 +451,7 @@ public class ViewerActivity extends AppCompatActivity {
         }).start();
     }
 
-    public void showApplyWallpaperDialog(final Activity context, final String wallUrl) {
+    private void showApplyWallpaperDialog(final Activity context, final String wallUrl) {
         ISDialogs.showApplyWallpaperDialog(context,
                 new MaterialDialog.SingleButtonCallback() {
                     @Override
@@ -471,7 +470,7 @@ public class ViewerActivity extends AppCompatActivity {
                                         if (resource != null) {
                                             dialogApply.setContent(context.getString(R.string.setting_wall_title));
                                             new ApplyWallpaper(context, dialogApply, resource,
-                                                    false, layout, null, toHide1, toHide2).execute();
+                                                    false, layout, toHide1, toHide2).execute();
                                         }
                                     }
                                 });
@@ -495,7 +494,7 @@ public class ViewerActivity extends AppCompatActivity {
                                     public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                                         if (resource != null) {
                                             new WallpaperToCrop(context, dialogApply, resource,
-                                                    layout, null, wallName, toHide1, toHide2).execute();
+                                                    layout, wallName, toHide1, toHide2).execute();
                                         }
                                     }
                                 });
@@ -503,14 +502,7 @@ public class ViewerActivity extends AppCompatActivity {
                 });
     }
 
-    private void showNotConnectedSnackBar(final FloatingActionMenu fab) {
-        if (fab != null) {
-            if (fab.isOpened()) {
-                fab.close(mPrefs.getAnimationsEnabled());
-            }
-            fab.hideMenuButton(mPrefs.getAnimationsEnabled());
-            fab.hideMenu(mPrefs.getAnimationsEnabled());
-        }
+    private void showNotConnectedSnackBar() {
 
         Snackbar notConnectedSnackBar = Snackbar.make(layout, R.string.no_conn_title,
                 Snackbar.LENGTH_LONG);
@@ -520,20 +512,6 @@ public class ViewerActivity extends AppCompatActivity {
         ViewGroup snackbarView = (ViewGroup) notConnectedSnackBar.getView();
         snackbarView.setBackgroundColor(ThemeUtils.darkTheme ? snackbarDark : snackbarLight);
         notConnectedSnackBar.show();
-        notConnectedSnackBar.setCallback(new Snackbar.Callback() {
-            @Override
-            public void onDismissed(Snackbar snackbar, int event) {
-                super.onDismissed(snackbar, event);
-                if (fab != null) {
-                    fab.showMenuButton(mPrefs.getAnimationsEnabled());
-                }
-            }
-        });
-        if (!notConnectedSnackBar.isShown()) {
-            if (fab != null) {
-                fab.showMenuButton(mPrefs.getAnimationsEnabled());
-            }
-        }
     }
 
     private void showDialogs(String action) {
@@ -558,7 +536,7 @@ public class ViewerActivity extends AppCompatActivity {
                         break;
                 }
             } else {
-                showNotConnectedSnackBar(null);
+                showNotConnectedSnackBar();
             }
         }
     }

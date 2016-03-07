@@ -61,7 +61,6 @@ public class MainFragment extends Fragment {
 
     private boolean themeMode, cm, cyngn, rro; //to store theme engine installation status
 
-    private RecyclerView mRecyclerView;
     private FloatingActionButton fab;
     private ArrayList<HomeCard> homeCards = new ArrayList<>();
 
@@ -86,7 +85,7 @@ public class MainFragment extends Fragment {
         fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
 
         themeMode = getResources().getBoolean(R.bool.theme_mode);
-        mRecyclerView = (RecyclerView) layout.findViewById(R.id.home_rv);
+        RecyclerView mRecyclerView = (RecyclerView) layout.findViewById(R.id.home_rv);
 
         if (!themeMode) {
             ShowcaseActivity.setupIcons(ShowcaseActivity.icon1, ShowcaseActivity.icon2,
@@ -140,7 +139,7 @@ public class MainFragment extends Fragment {
                     boolean isInstalled = Utils.isAppInstalled(context, appsPackages[i]);
 
                     if (isInstalled) {
-                        PackageManager pm = this.context.getPackageManager();
+                        PackageManager pm = context.getPackageManager();
                         intent = pm.getLaunchIntentForPackage(appsPackages[i]);
                         if (intent != null) {
                             try {
@@ -217,7 +216,11 @@ public class MainFragment extends Fragment {
     public void onResume() {
         super.onResume();
         setupFAB();
-        Utils.expandToolbar(getActivity());
+        if (ShowcaseActivity.iconsPicker || ShowcaseActivity.wallsPicker) {
+            Utils.collapseToolbar(getActivity());
+        } else {
+            Utils.expandToolbar(getActivity());
+        }
     }
 
     @Override

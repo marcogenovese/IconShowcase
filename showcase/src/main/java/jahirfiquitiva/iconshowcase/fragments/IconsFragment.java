@@ -62,17 +62,6 @@ public class IconsFragment extends Fragment {
         layout = (ViewGroup) inflater.inflate(R.layout.icons_grid, container, false);
 
         RecyclerView iconsGrid = (RecyclerView) layout.findViewById(R.id.iconsGrid);
-        RelativeLayout gridParent = (RelativeLayout) layout.findViewById(R.id.gridParent);
-        gridParent.setPadding(0, 0, 0, 0);
-
-        switch (getResources().getConfiguration().orientation) {
-            case 1:
-                gridParent.setPadding(0, 0, 0, UIUtils.getNavigationBarHeight(getActivity()));
-                break;
-            case 2:
-                gridParent.setPadding(0, 0, 0, UIUtils.getNavigationBarHeight(getActivity()) - 16);
-                break;
-        }
 
         iconsGrid.setHasFixedSize(true);
         iconsGrid.setLayoutManager(new GridLayoutManager(getActivity(),

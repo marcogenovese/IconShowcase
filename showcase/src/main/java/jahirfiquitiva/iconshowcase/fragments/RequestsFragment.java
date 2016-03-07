@@ -64,16 +64,14 @@ import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 
 public class RequestsFragment extends Fragment implements PermissionUtils.OnPermissionResultListener {
 
-    public static ProgressBar progressBar;
+    private static ProgressBar progressBar;
     public static RecyclerView mRecyclerView;
-    public static RecyclerFastScroller fastScroller;
+    private static RecyclerFastScroller fastScroller;
     public static RequestsAdapter requestsAdapter;
     private static FloatingActionButton fab;
     private static int maxApps = 0, minutesLimit = 0;
 
-    static int columnsNumber, gridSpacing;
-    static boolean withBorders;
-    public static ViewGroup layout;
+    private static ViewGroup layout;
 
     private Preferences mPrefs;
     private static Activity context;
@@ -81,9 +79,8 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        gridSpacing = getResources().getDimensionPixelSize(R.dimen.lists_padding);
-        columnsNumber = getResources().getInteger(R.integer.requests_grid_width);
-        withBorders = true;
+        int gridSpacing = getResources().getDimensionPixelSize(R.dimen.lists_padding);
+        int columnsNumber = getResources().getInteger(R.integer.requests_grid_width);
 
         maxApps = getResources().getInteger(R.integer.max_apps_to_request);
         minutesLimit = getResources().getInteger(R.integer.limit_request_to_x_minutes);

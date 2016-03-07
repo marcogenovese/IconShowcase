@@ -35,7 +35,6 @@ import java.util.List;
 import java.util.Set;
 
 import jahirfiquitiva.iconshowcase.R;
-import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.models.IconsCategory;
 import jahirfiquitiva.iconshowcase.models.IconsLists;
@@ -44,9 +43,9 @@ import jahirfiquitiva.iconshowcase.utilities.Utils;
 public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
 
     private Context context;
-    public static ArrayList<IconsLists> iconsLists;
-    public static ArrayList<IconsCategory> categories;
-    long startTime, endTime;
+    private static ArrayList<IconsLists> iconsLists;
+    private static ArrayList<IconsCategory> categories;
+    private long startTime;
 
     public LoadIconsLists(Context context) {
         this.context = context;
@@ -59,8 +58,6 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
 
     @Override
     protected Boolean doInBackground(Void... params) {
-
-        boolean worked = false;
 
         Resources r = context.getResources();
         String p = context.getPackageName();
@@ -142,13 +139,14 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
 
     @Override
     protected void onPostExecute(Boolean worked) {
-        endTime = System.currentTimeMillis();
+        long endTime = System.currentTimeMillis();
         Utils.showLog(context, "Load of icons task completed successfully in: " + String.valueOf((endTime - startTime)) + " millisecs.");
         if (categories.get(categories.size() - 1).getCategoryName().equals("All")) {
+            /*
             ShowcaseActivity.SHOW_LOAD_ICONS_DIALOG = false;
             if (ShowcaseActivity.loadIcons != null) {
                 ShowcaseActivity.loadIcons.dismiss();
-            }
+            }*/
         }
     }
 

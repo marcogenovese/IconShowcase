@@ -53,7 +53,7 @@ public final class PermissionUtils {
             int res = context.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
             return res == PackageManager.PERMISSION_GRANTED;
         }
-        return true;
+        return false;
     }
 
     public static void requestStoragePermission(Activity activity) {

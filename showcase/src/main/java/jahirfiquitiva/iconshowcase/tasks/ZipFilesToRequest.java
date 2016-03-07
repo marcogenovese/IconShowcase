@@ -66,18 +66,18 @@ import jahirfiquitiva.iconshowcase.utilities.Utils;
 public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
 
     private MaterialDialog dialog;
-    public ArrayList<RequestItem> appsListFinal = new ArrayList<>();
+    private ArrayList<RequestItem> appsListFinal = new ArrayList<>();
 
     private static final int BUFFER = 2048;
     private String zipLocation, zipFilePath;
     private Context context;
 
-    public static String filesLocation;
+    private static String filesLocation;
 
-    public static ArrayList<String> appsNames = new ArrayList<>();
-    public static ArrayList<String> appsPackages = new ArrayList<>();
-    public static ArrayList<String> appsClasses = new ArrayList<>();
-    public static ArrayList<Drawable> appsIcons = new ArrayList<>();
+    private static ArrayList<String> appsNames = new ArrayList<>();
+    private static ArrayList<String> appsPackages = new ArrayList<>();
+    private static ArrayList<String> appsClasses = new ArrayList<>();
+    private static ArrayList<Drawable> appsIcons = new ArrayList<>();
 
     private StringBuilder emailContent = new StringBuilder();
 
@@ -248,7 +248,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
                     return null;
                 }
 
-                createZipFile(filesLocation, true, zipFilePath);
+                createZipFile(filesLocation, zipFilePath);
                 deleteDirectory(filesFolder);
 
             }
@@ -306,7 +306,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
 
     }
 
-    public static void deleteDirectory(File dir) {
+    private static void deleteDirectory(File dir) {
         if (dir.exists()) {
             File[] files = dir.listFiles();
             for (File file : files) {
@@ -324,7 +324,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
         }
     }
 
-    public static void createZipFile(final String path, final boolean keepDirectoryStructure, final String outputFile) {
+    private static void createZipFile(final String path, final String outputFile) {
         final File filesFolder = new File(path);
 
         if (!filesFolder.canRead() || !filesFolder.canWrite()) {
@@ -335,9 +335,9 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
             ZipOutputStream zipOutputStream = new ZipOutputStream(
                     new BufferedOutputStream(
                             new FileOutputStream(outputFile), BUFFER));
-            if (keepDirectoryStructure) {
+            try{
                 zipFile(path, zipOutputStream, "");
-            } else {
+            }catch (Exception e){
                 final File files[] = filesFolder.listFiles();
                 for (final File file : files) {
                     zipFolder(file, zipOutputStream);
@@ -351,7 +351,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
         }
     }
 
-    public static void zipFile(final String zipFilesPath, final ZipOutputStream zipOutputStream, final String zipPath) throws IOException {
+    private static void zipFile(final String zipFilesPath, final ZipOutputStream zipOutputStream, final String zipPath) throws IOException {
         final File file = new File(zipFilesPath);
 
         if (!file.exists()) {

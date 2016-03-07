@@ -27,7 +27,7 @@ import java.util.ArrayList;
 
 public class WallpapersList {
 
-    public static ArrayList<WallpaperItem> wallsList = new ArrayList<>();
+    private static ArrayList<WallpaperItem> wallsList = new ArrayList<>();
 
     public static void createWallpapersList(ArrayList<String> names, ArrayList<String> authors,
                                             ArrayList<String> urls, ArrayList<String> dimensions,

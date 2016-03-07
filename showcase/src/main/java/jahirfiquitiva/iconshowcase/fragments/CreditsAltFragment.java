@@ -48,21 +48,15 @@ public class CreditsAltFragment extends Fragment {
 
     private Context context;
     private ViewGroup layout;
-    //private CircularTransform circularTransform;
 
     private boolean YOU_HAVE_WEBSITE = false;
 
-    String[] libsLinks, contributorsLinks, uiCollaboratorsLinks, designerLinks;
-
-    Drawable collaboratorsIcon, libs, uiCollaboratorsIcon, sherryIcon, translators;
-    ImageView uiCollaboratorsIV, collaboratorsIV, libsIcon, sherryIV, translatorsIV;
+    private String[] libsLinks, contributorsLinks, uiCollaboratorsLinks, designerLinks;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         context = getActivity();
-
-        //circularTransform = new CircularTransform(context);
 
         YOU_HAVE_WEBSITE = context.getResources().getBoolean(R.bool.you_have_a_website);
 
@@ -92,7 +86,6 @@ public class CreditsAltFragment extends Fragment {
 
         Glide.with(context)
                 .load(Utils.getStringFromResources(context, R.string.dashboard_author_photo))
-                        //.transform(circularTransform)
                 .into(devPhoto);
 
         ImageView designerBanner = (ImageView) layout.findViewById(R.id.designerHeader);
@@ -104,7 +97,6 @@ public class CreditsAltFragment extends Fragment {
         ImageView designerPhoto = (ImageView) layout.findViewById(R.id.designerPhoto);
         Glide.with(context)
                 .load(Utils.getStringFromResources(context, R.string.iconpack_author_photo))
-                        //.transform(circularTransform)
                 .into(designerPhoto);
 
         CardView sherryCV = (CardView) layout.findViewById(R.id.sherryCard);
@@ -161,36 +153,36 @@ public class CreditsAltFragment extends Fragment {
         final int light = ContextCompat.getColor(context, R.color.drawable_tint_dark);
         final int dark = ContextCompat.getColor(context, R.color.drawable_tint_light);
 
-        collaboratorsIcon = new IconicsDrawable(context)
+        Drawable collaboratorsIcon = new IconicsDrawable(context)
                 .icon(GoogleMaterial.Icon.gmd_code)
                 .color(ThemeUtils.darkTheme ? light : dark)
                 .sizeDp(24);
 
-        libs = new IconicsDrawable(context)
+        Drawable libs = new IconicsDrawable(context)
                 .icon(GoogleMaterial.Icon.gmd_file_text)
                 .color(ThemeUtils.darkTheme ? light : dark)
                 .sizeDp(24);
 
-        sherryIcon = new IconicsDrawable(context)
+        Drawable sherryIcon = new IconicsDrawable(context)
                 .icon(GoogleMaterial.Icon.gmd_star)
                 .color(ThemeUtils.darkTheme ? light : dark)
                 .sizeDp(24);
 
-        uiCollaboratorsIcon = new IconicsDrawable(context)
+        Drawable uiCollaboratorsIcon = new IconicsDrawable(context)
                 .icon(GoogleMaterial.Icon.gmd_palette)
                 .color(ThemeUtils.darkTheme ? light : dark)
                 .sizeDp(24);
 
-        translators = new IconicsDrawable(context)
+        Drawable translators = new IconicsDrawable(context)
                 .icon(GoogleMaterial.Icon.gmd_translate)
                 .color(ThemeUtils.darkTheme ? light : dark)
                 .sizeDp(24);
 
-        libsIcon = (ImageView) layout.findViewById(R.id.icon_libs);
-        collaboratorsIV = (ImageView) layout.findViewById(R.id.icon_collaborators);
-        sherryIV = (ImageView) layout.findViewById(R.id.icon_sherry);
-        uiCollaboratorsIV = (ImageView) layout.findViewById(R.id.icon_ui_design);
-        translatorsIV = (ImageView) layout.findViewById(R.id.icon_translators);
+        ImageView libsIcon = (ImageView) layout.findViewById(R.id.icon_libs);
+        ImageView collaboratorsIV = (ImageView) layout.findViewById(R.id.icon_collaborators);
+        ImageView sherryIV = (ImageView) layout.findViewById(R.id.icon_sherry);
+        ImageView uiCollaboratorsIV = (ImageView) layout.findViewById(R.id.icon_ui_design);
+        ImageView translatorsIV = (ImageView) layout.findViewById(R.id.icon_translators);
 
         libsIcon.setImageDrawable(libs);
         collaboratorsIV.setImageDrawable(collaboratorsIcon);

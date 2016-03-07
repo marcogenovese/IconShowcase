@@ -34,6 +34,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
 
+@SuppressWarnings("SameParameterValue")
 public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
     private Drawable mDivider;
@@ -41,7 +42,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
     private boolean mShowLastDivider = false;
     private int height = 0;
 
-    int mOrientation = -1;
+    private int mOrientation = -1;
 
     public DividerItemDecoration(Context context, AttributeSet attrs) {
         final TypedArray a = context

@@ -57,7 +57,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
     private ArrayList<WallpaperItem> wallsList;
 
     private boolean USE_PALETTE = true, USE_PALETTE_IN_TEXTS = false;
-    public String PALETTE_STYLE = "VIBRANT";
+    private String PALETTE_STYLE = "VIBRANT";
 
     private final ClickListener mCallback;
 
@@ -175,7 +175,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
         }
     }
 
-    public void setupValues(Context context) {
+    private void setupValues(Context context) {
         this.USE_PALETTE = context.getResources().getBoolean(R.bool.use_palette_api);
         this.USE_PALETTE_IN_TEXTS = context.getResources().getBoolean(R.bool.use_palette_api_in_texts);
         switch (context.getResources().getInteger(R.integer.palette_swatch)) {

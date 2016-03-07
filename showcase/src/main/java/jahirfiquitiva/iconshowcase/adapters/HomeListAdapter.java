@@ -2,7 +2,6 @@ package jahirfiquitiva.iconshowcase.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
@@ -32,9 +31,9 @@ import jahirfiquitiva.iconshowcase.utilities.Utils;
 public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context context;
-    public View view;
-    int cards = 3;
-    ArrayList<HomeCard> homeCards;
+    private View view;
+    private int cards = 3;
+    private ArrayList<HomeCard> homeCards;
 
     public HomeListAdapter(ArrayList<HomeCard> homeCards, Context context) {
         this.context = context;
@@ -46,9 +45,6 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        final int pos = i;
-        PackageManager pm = context.getPackageManager();
-
         switch (i) {
             case 0:
                 View welcomeCard = LayoutInflater.from(

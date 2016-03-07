@@ -282,7 +282,7 @@ public class ZooperFragment extends Fragment implements PermissionUtils.OnPermis
                             String snackBarContext = getActivity().getResources().getString(
                                     R.string.assets_installed, Utils.capitalizeText(fontsFolder));
                             Utils.showSimpleSnackbar(context, layout,
-                                    snackBarContext, 1);
+                                    snackBarContext);
                             setupCards(true, false, false);
                         }
                     }
@@ -312,7 +312,7 @@ public class ZooperFragment extends Fragment implements PermissionUtils.OnPermis
                                     getActivity().getResources().getString(
                                             R.string.assets_installed, Utils.capitalizeText(iconsetsFolder));
                             Utils.showSimpleSnackbar(context, layout,
-                                    snackBarContext, 1);
+                                    snackBarContext);
                             setupCards(false, true, false);
                         }
                     }
@@ -342,7 +342,7 @@ public class ZooperFragment extends Fragment implements PermissionUtils.OnPermis
                                     getActivity().getResources().getString(
                                             R.string.assets_installed, Utils.capitalizeText(bitmapsFolder));
                             Utils.showSimpleSnackbar(context, layout,
-                                    snackBarContext, 1);
+                                    snackBarContext);
                             setupCards(false, false, true);
                         }
                     }

@@ -47,15 +47,12 @@ public class CreditsFragment extends Fragment {
 
     private Context context;
     private ViewGroup layout;
-    Drawable person, facebook, gplus, twitter, website, youtube, community, playstore, github,
-            bugs, collaboratorsIcon, libs, uiCollaboratorsIcon, sherryIcon, email, translators;
-    ImageView iconAuthor, iconDev, iconAuthorFacebook, iconAuthorGPlus, iconAuthorCommunity,
+    private ImageView iconAuthor, iconDev, iconAuthorFacebook, iconAuthorGPlus, iconAuthorCommunity,
             youtubeIcon, twitterIcon, playStoreIcon, iconAuthorWebsite, uiCollaboratorsIV,
             iconDevGitHub, iconDevCommunity, bugIcon, collaboratorsIV, libsIcon,
             sherryIV, emailIV, translatorsIV;
-    LinearLayout jahirL, authorFB, authorGPlus, authorTwitter, authorWebsite, authorYouTube,
-            authorCommunity, authorPlayStore, devGitHub, libraries, uiCollaborators,
-            thanksSherry, contributorsLayout, bugsL, communityL, emailL, translatorsL;
+    private LinearLayout authorFB, authorGPlus, authorTwitter, authorWebsite, authorYouTube,
+            authorCommunity, authorPlayStore;
     boolean withLinkToFacebook = false,
             withLinkToTwitter = false,
             withLinkToGPlus = false,
@@ -141,7 +138,7 @@ public class CreditsFragment extends Fragment {
         iconDevCommunity = (ImageView) layout.findViewById(R.id.icon_google_plus_community);
         emailIV = (ImageView) layout.findViewById(R.id.icon_email);
 
-        emailL = (LinearLayout) layout.findViewById(R.id.send_email);
+        LinearLayout emailL = (LinearLayout) layout.findViewById(R.id.send_email);
         emailL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -149,7 +146,7 @@ public class CreditsFragment extends Fragment {
             }
         });
 
-        jahirL = (LinearLayout) layout.findViewById(R.id.devName);
+        LinearLayout jahirL = (LinearLayout) layout.findViewById(R.id.devName);
         jahirL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -231,7 +228,7 @@ public class CreditsFragment extends Fragment {
             }
         });
 
-        devGitHub = (LinearLayout) layout.findViewById(R.id.dev_github);
+        LinearLayout devGitHub = (LinearLayout) layout.findViewById(R.id.dev_github);
         devGitHub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -240,7 +237,7 @@ public class CreditsFragment extends Fragment {
             }
         });
 
-        thanksSherry = (LinearLayout) layout.findViewById(R.id.collaboratorsSherry);
+        LinearLayout thanksSherry = (LinearLayout) layout.findViewById(R.id.collaboratorsSherry);
         thanksSherry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -248,7 +245,7 @@ public class CreditsFragment extends Fragment {
             }
         });
 
-        uiCollaborators = (LinearLayout) layout.findViewById(R.id.uiDesign);
+        LinearLayout uiCollaborators = (LinearLayout) layout.findViewById(R.id.uiDesign);
         uiCollaborators.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -256,7 +253,7 @@ public class CreditsFragment extends Fragment {
             }
         });
 
-        libraries = (LinearLayout) layout.findViewById(R.id.libraries);
+        LinearLayout libraries = (LinearLayout) layout.findViewById(R.id.libraries);
         libraries.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -264,7 +261,7 @@ public class CreditsFragment extends Fragment {
             }
         });
 
-        contributorsLayout = (LinearLayout) layout.findViewById(R.id.collaborators);
+        LinearLayout contributorsLayout = (LinearLayout) layout.findViewById(R.id.collaborators);
         contributorsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -272,7 +269,7 @@ public class CreditsFragment extends Fragment {
             }
         });
 
-        translatorsL = (LinearLayout) layout.findViewById(R.id.translators);
+        LinearLayout translatorsL = (LinearLayout) layout.findViewById(R.id.translators);
         translatorsL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -280,7 +277,7 @@ public class CreditsFragment extends Fragment {
             }
         });
 
-        bugsL = (LinearLayout) layout.findViewById(R.id.report_bugs);
+        LinearLayout bugsL = (LinearLayout) layout.findViewById(R.id.report_bugs);
         bugsL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -289,7 +286,7 @@ public class CreditsFragment extends Fragment {
             }
         });
 
-        communityL = (LinearLayout) layout.findViewById(R.id.join_google_plus_community);
+        LinearLayout communityL = (LinearLayout) layout.findViewById(R.id.join_google_plus_community);
         communityL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -304,82 +301,82 @@ public class CreditsFragment extends Fragment {
         int light = ContextCompat.getColor(context, R.color.drawable_tint_dark);
         int dark = ContextCompat.getColor(context, R.color.drawable_tint_light);
 
-        person = new IconicsDrawable(context)
+        Drawable person = new IconicsDrawable(context)
                 .icon(GoogleMaterial.Icon.gmd_account)
                 .color(ThemeUtils.darkTheme ? light : dark)
                 .sizeDp(24);
 
-        facebook = new IconicsDrawable(context)
+        Drawable facebook = new IconicsDrawable(context)
                 .icon(GoogleMaterial.Icon.gmd_facebook)
                 .color(ThemeUtils.darkTheme ? light : dark)
                 .sizeDp(24);
 
-        gplus = new IconicsDrawable(context)
+        Drawable gplus = new IconicsDrawable(context)
                 .icon(GoogleMaterial.Icon.gmd_google_plus)
                 .color(ThemeUtils.darkTheme ? light : dark)
                 .sizeDp(24);
 
-        community = new IconicsDrawable(context)
+        Drawable community = new IconicsDrawable(context)
                 .icon(GoogleMaterial.Icon.gmd_group_work)
                 .color(ThemeUtils.darkTheme ? light : dark)
                 .sizeDp(24);
 
-        twitter = new IconicsDrawable(context)
+        Drawable twitter = new IconicsDrawable(context)
                 .icon(GoogleMaterial.Icon.gmd_twitter)
                 .color(ThemeUtils.darkTheme ? light : dark)
                 .sizeDp(24);
 
-        github = new IconicsDrawable(context)
+        Drawable github = new IconicsDrawable(context)
                 .icon(GoogleMaterial.Icon.gmd_github)
                 .color(ThemeUtils.darkTheme ? light : dark)
                 .sizeDp(24);
 
-        youtube = new IconicsDrawable(context)
+        Drawable youtube = new IconicsDrawable(context)
                 .icon(GoogleMaterial.Icon.gmd_youtube_play)
                 .color(ThemeUtils.darkTheme ? light : dark)
                 .sizeDp(24);
 
-        playstore = new IconicsDrawable(context)
+        Drawable playstore = new IconicsDrawable(context)
                 .icon(GoogleMaterial.Icon.gmd_case_play)
                 .color(ThemeUtils.darkTheme ? light : dark)
                 .sizeDp(24);
 
-        website = new IconicsDrawable(context)
+        Drawable website = new IconicsDrawable(context)
                 .icon(GoogleMaterial.Icon.gmd_globe_alt)
                 .color(ThemeUtils.darkTheme ? light : dark)
                 .sizeDp(24);
 
-        bugs = new IconicsDrawable(context)
+        Drawable bugs = new IconicsDrawable(context)
                 .icon(GoogleMaterial.Icon.gmd_bug)
                 .color(ThemeUtils.darkTheme ? light : dark)
                 .sizeDp(24);
 
-        collaboratorsIcon = new IconicsDrawable(context)
+        Drawable collaboratorsIcon = new IconicsDrawable(context)
                 .icon(GoogleMaterial.Icon.gmd_code)
                 .color(ThemeUtils.darkTheme ? light : dark)
                 .sizeDp(24);
 
-        libs = new IconicsDrawable(context)
+        Drawable libs = new IconicsDrawable(context)
                 .icon(GoogleMaterial.Icon.gmd_file_text)
                 .color(ThemeUtils.darkTheme ? light : dark)
                 .sizeDp(24);
 
-        sherryIcon = new IconicsDrawable(context)
+        Drawable sherryIcon = new IconicsDrawable(context)
                 .icon(GoogleMaterial.Icon.gmd_star)
                 .color(ThemeUtils.darkTheme ? light : dark)
                 .sizeDp(24);
 
-        uiCollaboratorsIcon = new IconicsDrawable(context)
+        Drawable uiCollaboratorsIcon = new IconicsDrawable(context)
                 .icon(GoogleMaterial.Icon.gmd_palette)
                 .color(ThemeUtils.darkTheme ? light : dark)
                 .sizeDp(24);
 
-        translators = new IconicsDrawable(context)
+        Drawable translators = new IconicsDrawable(context)
                 .icon(GoogleMaterial.Icon.gmd_translate)
                 .color(ThemeUtils.darkTheme ? light : dark)
                 .sizeDp(24);
 
-        email = new IconicsDrawable(context)
+        Drawable email = new IconicsDrawable(context)
                 .icon(GoogleMaterial.Icon.gmd_email)
                 .color(ThemeUtils.darkTheme ? light : dark)
                 .sizeDp(24);

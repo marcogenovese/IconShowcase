@@ -27,7 +27,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -72,14 +71,11 @@ public class DonationsFragment extends Fragment {
     public static final String ARG_BITCOIN_ENABLED = "bitcoinEnabled";
     public static final String ARG_BITCOIN_ADDRESS = "bitcoinAddress";
 
-    private static final String TAG = "Donations Library";
-
     // http://developer.android.com/google/play/billing/billing_testing.html
     private static final String[] CATALOG_DEBUG = new String[]{"android.test.purchased",
             "android.test.canceled", "android.test.refunded", "android.test.item_unavailable"};
 
     private Spinner mGoogleSpinner;
-    private TextView mFlattrUrlTextView;
 
     // Google Play helper object
     private IabHelper mHelper;
@@ -102,6 +98,8 @@ public class DonationsFragment extends Fragment {
 
     protected boolean mBitcoinEnabled = false;
     protected String mBitcoinAddress = "";
+
+    private Context context;
 
     /**
      * Instantiate DonationsFragment.
@@ -157,6 +155,8 @@ public class DonationsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        context = getActivity();
 
         mDebug = getArguments().getBoolean(ARG_DEBUG);
 
@@ -236,7 +236,7 @@ public class DonationsFragment extends Fragment {
 
             // Create the helper, passing it our context and the public key to verify signatures with
             if (mDebug)
-                Log.d(TAG, "Creating IAB helper.");
+                Utils.showLog(context, "Creating IAB helper.");
             mHelper = new IabHelper(getActivity(), mGooglePubkey);
 
             // enable debug logging (for a production application, you should set this to false).
@@ -245,21 +245,18 @@ public class DonationsFragment extends Fragment {
             // Start setup. This is asynchronous and the specified listener
             // will be called once setup completes.
             if (mDebug)
-                Log.d(TAG, "Starting setup.");
+                Utils.showLog(context, "Starting setup.");
             mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
                 public void onIabSetupFinished(IabResult result) {
                     if (mDebug)
-                        Log.d(TAG, "Setup finished.");
+                        Utils.showLog(context, "Setup finished.");
 
                     if (!result.isSuccess()) {
                         // Oh noes, there was a problem.
                         openDialog(android.R.drawable.ic_dialog_alert, R.string.donations__google_android_market_not_supported_title,
                                 getString(R.string.donations__google_android_market_not_supported));
-                        return;
                     }
 
-                    // Have we been disposed of in the meantime? If so, quit.
-                    if (mHelper == null) return;
                 }
             });
         }
@@ -339,7 +336,7 @@ public class DonationsFragment extends Fragment {
         final int index;
         index = mGoogleSpinner.getSelectedItemPosition();
         if (mDebug)
-            Log.d(TAG, "selected item in spinner: " + index);
+            Utils.showLog(context, "selected item in spinner: " + index);
 
         if (mDebug) {
             // when debugging, choose android.test.x item
@@ -357,14 +354,14 @@ public class DonationsFragment extends Fragment {
     IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
         public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
             if (mDebug)
-                Log.d(TAG, "Purchase finished: " + result + ", purchase: " + purchase);
+                Utils.showLog(context, "Purchase finished: " + result + ", purchase: " + purchase);
 
             // if we were disposed of in the meantime, quit.
             if (mHelper == null) return;
 
             if (result.isSuccess()) {
                 if (mDebug)
-                    Log.d(TAG, "Purchase successful.");
+                    Utils.showLog(context, "Purchase successful.");
 
                 // directly consume in-app purchase, so that people can donate multiple times
                 mHelper.consumeAsync(purchase, mConsumeFinishedListener);
@@ -380,24 +377,24 @@ public class DonationsFragment extends Fragment {
     IabHelper.OnConsumeFinishedListener mConsumeFinishedListener = new IabHelper.OnConsumeFinishedListener() {
         public void onConsumeFinished(Purchase purchase, IabResult result) {
             if (mDebug)
-                Log.d(TAG, "Consumption finished. Purchase: " + purchase + ", result: " + result);
+                Utils.showLog(context, "Consumption finished. Purchase: " + purchase + ", result: " + result);
 
             // if we were disposed of in the meantime, quit.
             if (mHelper == null) return;
 
             if (result.isSuccess()) {
                 if (mDebug)
-                    Log.d(TAG, "Consumption successful. Provisioning.");
+                    Utils.showLog(context, "Consumption successful. Provisioning.");
             }
             if (mDebug)
-                Log.d(TAG, "End consumption flow.");
+                Utils.showLog(context, "End consumption flow.");
         }
     };
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (mDebug)
-            Log.d(TAG, "onActivityResult(" + requestCode + "," + resultCode + "," + data);
+            Utils.showLog(context, "onActivityResult(" + requestCode + "," + resultCode + "," + data);
         if (mHelper == null) return;
 
         // Pass on the fragment result to the helper for handling
@@ -408,7 +405,7 @@ public class DonationsFragment extends Fragment {
             super.onActivityResult(requestCode, resultCode, data);
         } else {
             if (mDebug)
-                Log.d(TAG, "onActivityResult handled by IABUtil.");
+                Utils.showLog(context, "onActivityResult handled by IABUtil.");
         }
     }
 
@@ -430,7 +427,7 @@ public class DonationsFragment extends Fragment {
         Uri payPalUri = uriBuilder.build();
 
         if (mDebug)
-            Log.d(TAG, "Opening the browser with the url: " + payPalUri.toString());
+            Utils.showLog(context, "Opening the browser with the url: " + payPalUri.toString());
 
         // Start your favorite browser
         try {
@@ -450,7 +447,7 @@ public class DonationsFragment extends Fragment {
         i.setData(Uri.parse("bitcoin:" + mBitcoinAddress));
 
         if (mDebug)
-            Log.d(TAG, "Attempting to donate bitcoin using URI: " + i.getDataString());
+            Utils.showLog(context, "Attempting to donate bitcoin using URI: " + i.getDataString());
 
         try {
             startActivity(i);
@@ -543,7 +540,7 @@ public class DonationsFragment extends Fragment {
         }
 
         // set url of flattr link
-        mFlattrUrlTextView = (TextView) getActivity().findViewById(R.id.donations__flattr_url);
+        TextView mFlattrUrlTextView = (TextView) getActivity().findViewById(R.id.donations__flattr_url);
         mFlattrUrlTextView.setText(flattrScheme + mFlattrUrl);
 
         String flattrJavascript = "<script type='text/javascript'>"

@@ -72,11 +72,11 @@ public class FolderChooserDialog extends DialogFragment implements MaterialDialo
         initialPath = path;
     }
 
-    public String getInitialPath() {
+    private String getInitialPath() {
         return initialPath == null ? Environment.getExternalStorageDirectory().getAbsolutePath() : initialPath;
     }
 
-    String[] getContentsArray() {
+    private String[] getContentsArray() {
         if (parentContents == null) return new String[]{};
         String[] results = new String[parentContents.length + (canGoUp ? 1 : 0)];
         if (canGoUp) results[0] = "...";
@@ -85,7 +85,7 @@ public class FolderChooserDialog extends DialogFragment implements MaterialDialo
         return results;
     }
 
-    File[] listFiles() {
+    private File[] listFiles() {
         File[] contents = parentFolder.listFiles();
         List<File> results = new ArrayList<>();
         if (contents != null) {

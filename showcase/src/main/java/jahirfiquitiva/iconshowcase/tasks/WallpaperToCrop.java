@@ -57,28 +57,25 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
     private Uri wallUri;
     private Context context;
     private View layout;
-    private FloatingActionMenu fab;
     private String wallName;
     private WeakReference<Activity> wrActivity;
     private LinearLayout toHide1, toHide2;
 
     public WallpaperToCrop(Activity activity, MaterialDialog dialog, Bitmap resource,
-                           View layout, FloatingActionMenu fab, String wallName) {
+                           View layout, String wallName) {
         this.wrActivity = new WeakReference<>(activity);
         this.dialog = dialog;
         this.resource = resource;
         this.layout = layout;
-        this.fab = fab;
         this.wallName = wallName;
     }
 
     public WallpaperToCrop(Activity activity, MaterialDialog dialog, Bitmap resource,
-                           View layout, FloatingActionMenu fab, String wallName, LinearLayout toHide1, LinearLayout toHide2) {
+                           View layout, String wallName, LinearLayout toHide1, LinearLayout toHide2) {
         this.wrActivity = new WeakReference<>(activity);
         this.dialog = dialog;
         this.resource = resource;
         this.layout = layout;
-        this.fab = fab;
         this.wallName = wallName;
         this.toHide1 = toHide1;
         this.toHide2 = toHide2;
@@ -140,15 +137,12 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
                         toHide1.setVisibility(View.VISIBLE);
                         toHide2.setVisibility(View.VISIBLE);
                     }
-                    if (fab != null) {
-                        fab.showMenuButton(mPrefs.getAnimationsEnabled());
-                    }
                 }
             });
         }
     }
 
-    public Uri getImageUri(Context inContext, Bitmap inImage) {
+    private  Uri getImageUri(Context inContext, Bitmap inImage) {
 
         Preferences mPrefs = new Preferences(inContext);
         File downloadsFolder;

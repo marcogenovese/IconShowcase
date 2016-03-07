@@ -37,7 +37,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -134,7 +133,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     private static final String MARKET_URL = "https://play.google.com/store/apps/details?id=";
     public boolean mIsPremium = false, playStore = false;
 
-    private String action = "action";
     private static final String
             adw_action = "org.adw.launcher.icons.ACTION_PICK_ICON",
             turbo_action = "com.phonemetra.turbo.launcher.icons.ACTION_PICK_ICON",
@@ -159,7 +157,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     private boolean mLastTheme, mLastNavBar;
     private static Preferences mPrefs;
 
-    public static MaterialDialog settingsDialog, loadIcons, changelogDialog;
+    public static MaterialDialog settingsDialog, changelogDialog; //loadIcons,
     public static Toolbar toolbar;
     public static AppBarLayout appbar;
     public static CollapsingToolbarLayout collapsingToolbarLayout;
@@ -365,13 +363,15 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
         if (savedInstanceState == null) {
             if (iconsPicker && iconsPickerEnabled) {
+                drawerItemClick(iconsPickerIdentifier);
+                drawer.setSelection(iconsPickerIdentifier);
+                /*
                 loadIcons = ISDialogs.showLoadingIconsDialog(context);
                 loadIcons.show();
                 loadIcons.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
-                        drawerItemClick(iconsPickerIdentifier);
-                        drawer.setSelection(iconsPickerIdentifier);
+
                     }
                 });
                 if (!SHOW_LOAD_ICONS_DIALOG) {
@@ -383,6 +383,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                         }
                     }, 500);
                 }
+                */
             } else if (wallsPicker && mPrefs.areFeaturesEnabled() && wallsEnabled) {
                 drawerItemClick(wallsIdentifier);
                 drawer.setSelection(wallsIdentifier);
@@ -404,7 +405,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             case "Main":
                 return thaAppName;
             case "Previews":
-                return " ";
+                return thaPreviews;
             case "Apply":
                 return thaApply;
             case "Wallpapers":
@@ -978,6 +979,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     }
 
     public void getAction() {
+        String action = "action";
         try {
             action = getIntent().getAction();
         } catch (Exception e) {

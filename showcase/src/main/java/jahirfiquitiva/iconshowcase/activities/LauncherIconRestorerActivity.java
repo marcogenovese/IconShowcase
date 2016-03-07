@@ -35,17 +35,13 @@ import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 public class LauncherIconRestorerActivity extends Activity {
 
-    private static Preferences mPrefs;
-    private static PackageManager p;
-    private static ComponentName componentName;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mPrefs = new Preferences(LauncherIconRestorerActivity.this);
+        Preferences mPrefs = new Preferences(LauncherIconRestorerActivity.this);
 
-        p = getPackageManager();
+        PackageManager p = getPackageManager();
 
         Class<?> className = null;
 
@@ -60,7 +56,7 @@ public class LauncherIconRestorerActivity extends Activity {
         }
 
         if (className != null) {
-            componentName = new ComponentName(packageName, componentNameString);
+            ComponentName componentName = new ComponentName(packageName, componentNameString);
 
             if (!mPrefs.getLauncherIconShown()) {
 

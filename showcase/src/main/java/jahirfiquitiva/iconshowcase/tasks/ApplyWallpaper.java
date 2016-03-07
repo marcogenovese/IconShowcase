@@ -57,28 +57,25 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
     private Bitmap resource;
     private View layout;
     private boolean isPicker;
-    private FloatingActionMenu fab;
     private WeakReference<Activity> wrActivity;
     private LinearLayout toHide1, toHide2;
 
-    public ApplyWallpaper(Activity activity, MaterialDialog dialog, Bitmap resource, Boolean isPicker,
-                          View layout, FloatingActionMenu fab) {
+    public ApplyWallpaper(Activity activity, MaterialDialog dialog, Bitmap resource, boolean isPicker,
+                          View layout) {
         this.wrActivity = new WeakReference<>(activity);
         this.dialog = dialog;
         this.resource = resource;
         this.isPicker = isPicker;
         this.layout = layout;
-        this.fab = fab;
     }
 
-    public ApplyWallpaper(Activity activity, MaterialDialog dialog, Bitmap resource, Boolean isPicker,
-                          View layout, FloatingActionMenu fab, LinearLayout toHide1, LinearLayout toHide2) {
+    public ApplyWallpaper(Activity activity, MaterialDialog dialog, Bitmap resource, boolean isPicker,
+                          View layout, LinearLayout toHide1, LinearLayout toHide2) {
         this.wrActivity = new WeakReference<>(activity);
         this.dialog = dialog;
         this.resource = resource;
         this.isPicker = isPicker;
         this.layout = layout;
-        this.fab = fab;
         this.toHide1 = toHide1;
         this.toHide2 = toHide2;
     }
@@ -134,9 +131,6 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
                     @Override
                     public void onDismissed(Snackbar snackbar, int event) {
                         super.onDismissed(snackbar, event);
-                        if (fab != null) {
-                            fab.showMenuButton(mPrefs.getAnimationsEnabled());
-                        }
                         if (toHide1 != null && toHide2 != null) {
                             toHide1.setVisibility(View.VISIBLE);
                             toHide2.setVisibility(View.VISIBLE);
@@ -153,7 +147,7 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
 
     }
 
-    public Bitmap scaleToActualAspectRatio(Bitmap bitmap) {
+    private Bitmap scaleToActualAspectRatio(Bitmap bitmap) {
         if (bitmap != null) {
             boolean flag = true;
 
@@ -203,7 +197,7 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
                 .setAction(retry.toUpperCase(), new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        new ApplyWallpaper((Activity) context, dialog, resource, isPicker, layout, fab);
+                        new ApplyWallpaper((Activity) context, dialog, resource, isPicker, layout);
                     }
                 });
         TypedValue typedValue = new TypedValue();

@@ -24,14 +24,12 @@
 package jahirfiquitiva.iconshowcase.utilities.color;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.VectorDrawable;
 import android.os.Build;
 import android.support.annotation.ColorInt;
-import android.support.annotation.FloatRange;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
@@ -135,7 +133,7 @@ public class ToolbarColorizer {
             mSearchSrcTextViewField.setAccessible(true);
             final EditText mSearchSrcTextView = (EditText) mSearchSrcTextViewField.get(searchView);
             mSearchSrcTextView.setTextColor(color);
-            mSearchSrcTextView.setHintTextColor(adjustAlpha(color, 0.5f));
+            mSearchSrcTextView.setHintTextColor(ColorUtils.adjustAlpha(color, 0.5f));
             setCursorTint(mSearchSrcTextView, color);
 
             Field field = cls.getDeclaredField("mSearchButton");
@@ -153,7 +151,7 @@ public class ToolbarColorizer {
         }
     }
 
-    public static void setCursorTint(@NonNull EditText editText, @ColorInt int color) {
+    private static void setCursorTint(@NonNull EditText editText, @ColorInt int color) {
         try {
             Field fCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");
             fCursorDrawableRes.setAccessible(true);
@@ -197,11 +195,4 @@ public class ToolbarColorizer {
         }
     }
 
-    public static int adjustAlpha(@ColorInt int color, @FloatRange(from = 0.0, to = 1.0) float factor) {
-        int alpha = Math.round(Color.alpha(color) * factor);
-        int red = Color.red(color);
-        int green = Color.green(color);
-        int blue = Color.blue(color);
-        return Color.argb(alpha, red, green, blue);
-    }
 }

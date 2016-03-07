@@ -48,10 +48,10 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
     }
 
     public ArrayList<RequestItem> appsList;
-    Context context;
+    private Context context;
     private int limit;
     private final ClickListener mCallback;
-    AppIconFetchingQueue mAppIconFetchingQueue;
+    private AppIconFetchingQueue mAppIconFetchingQueue;
 
     public RequestsAdapter(final Context context, final ArrayList<RequestItem> appsList,
                            final int limit) {
@@ -164,7 +164,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
 
     }
 
-    public void selectApp(int position) {
+    private void selectApp(int position) {
         RequestItem requestsItem = appsList.get(position);
         if (!requestsItem.isSelected()) {
             requestsItem.setSelected(true);
@@ -173,7 +173,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
         }
     }
 
-    public void deselectApp(int position) {
+    private void deselectApp(int position) {
         RequestItem requestsItem = appsList.get(position);
         if (requestsItem.isSelected()) {
             requestsItem.setSelected(false);
@@ -182,7 +182,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
         }
     }
 
-    public void changeAppSelectedState(int position) {
+    private void changeAppSelectedState(int position) {
         RequestItem requestsItem = appsList.get(position);
         requestsItem.setSelected(!requestsItem.isSelected());
         appsList.set(position, requestsItem);
@@ -199,7 +199,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
         return selected;
     }
 
-    public boolean isSelected(int i) {
+    private boolean isSelected(int i) {
         return appsList.get(i).isSelected();
     }
 

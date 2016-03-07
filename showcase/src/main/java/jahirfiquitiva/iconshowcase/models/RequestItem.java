@@ -27,11 +27,11 @@ import android.graphics.drawable.Drawable;
 
 public class RequestItem {
 
-    String appName = null;
-    String packageName = null;
-    String className = null;
-    Drawable iconDrawable;
-    boolean selected = false;
+    private String appName = null;
+    private String packageName = null;
+    private String className = null;
+    private Drawable iconDrawable;
+    private boolean selected = false;
 
     public RequestItem(String appName, String packageName, String className, Drawable iconDrawable) {
         super();

@@ -60,10 +60,10 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
     private static PackageManager mPackageManager;
     private static boolean debugging = false;
     private static ArrayList<String> components = new ArrayList<>();
-    final static ArrayList<RequestItem> appsList = new ArrayList<>();
+    private final static ArrayList<RequestItem> appsList = new ArrayList<>();
     private static ArrayList<AppFilterError> appFilterErrors = new ArrayList<>();
     private Context context;
-    long startTime, endTime;
+    private long startTime;
 
     @SuppressLint("PrivateResource")
     public LoadAppsToRequest(Context context) {
@@ -139,7 +139,7 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
     protected void onPostExecute(ArrayList<RequestItem> list) {
         ApplicationBase.allAppsToRequest = list;
         RequestsFragment.setupContent();
-        endTime = System.currentTimeMillis();
+        long endTime = System.currentTimeMillis();
         Utils.showLog(context, "Apps to Request Task completed in: " + String.valueOf((endTime - startTime) / 1000) + " secs.");
         if (debugging) {
             if (appFilterErrors != null) {
@@ -319,7 +319,6 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
     }
 
     private static void showAppFilterErrors(ArrayList<AppFilterError> errors, Context context) {
-
 
         Utils.showAppFilterLog(context, "----- START OF APPFILTER DEBUG -----");
 

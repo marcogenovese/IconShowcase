@@ -48,14 +48,7 @@ import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 
 public class FAQsFragment extends Fragment {
 
-    public static String[] questions;
-    public static String[] answers;
-
-    List<FAQsItem> faqs;
-
     private ViewGroup layout;
-
-    int cardsSpacing;
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
@@ -72,16 +65,16 @@ public class FAQsFragment extends Fragment {
             //Do nothing
         }
 
-        questions = getResources().getStringArray(R.array.questions);
-        answers = getResources().getStringArray(R.array.answers);
+        String[] questions = getResources().getStringArray(R.array.questions);
+        String[] answers = getResources().getStringArray(R.array.answers);
 
-        faqs = new ArrayList<>();
+        List<FAQsItem> faqs = new ArrayList<>();
         for (int i = 0; i < questions.length; i++) {
             FAQsItem item = new FAQsItem(questions[i], answers[i]);
             faqs.add(item);
         }
 
-        cardsSpacing = getResources().getDimensionPixelSize(R.dimen.dividers_height);
+        int cardsSpacing = getResources().getDimensionPixelSize(R.dimen.dividers_height);
 
         RecyclerView faqsList = (RecyclerView) layout.findViewById(R.id.faqs_list);
 

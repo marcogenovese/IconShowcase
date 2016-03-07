@@ -51,18 +51,14 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 
 import com.github.florent37.glidepalette.GlidePalette;
-import com.mikepenz.materialize.util.UIUtils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Locale;
-import java.util.concurrent.Callable;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.adapters.WallpapersAdapter;
@@ -106,33 +102,14 @@ public class Utils {
         return installed;
     }
 
-    public static void showSimpleSnackbar(Context context, View location, String text, int duration) {
+    public static void showSimpleSnackbar(Context context, View location, String text) {
         final int snackbarLight = ContextCompat.getColor(context, R.color.snackbar_light);
         final int snackbarDark = ContextCompat.getColor(context, R.color.snackbar_dark);
-
-        switch (duration) {
-            case 1:
-                Snackbar shortSnackbar = Snackbar.make(location, text,
-                        Snackbar.LENGTH_SHORT);
-                ViewGroup shortGroup = (ViewGroup) shortSnackbar.getView();
-                shortGroup.setBackgroundColor(ThemeUtils.darkTheme ? snackbarDark : snackbarLight);
-                shortSnackbar.show();
-                break;
-            case 2:
-                Snackbar longSnackbar = Snackbar.make(location, text,
-                        Snackbar.LENGTH_LONG);
-                ViewGroup longGroup = (ViewGroup) longSnackbar.getView();
-                longGroup.setBackgroundColor(ThemeUtils.darkTheme ? snackbarDark : snackbarLight);
-                longSnackbar.show();
-                break;
-            case 3:
-                Snackbar indefiniteSnackbar = Snackbar.make(location, text,
-                        Snackbar.LENGTH_INDEFINITE);
-                ViewGroup indefiniteGroup = (ViewGroup) indefiniteSnackbar.getView();
-                indefiniteGroup.setBackgroundColor(ThemeUtils.darkTheme ? snackbarDark : snackbarLight);
-                indefiniteSnackbar.show();
-                break;
-        }
+        Snackbar shortSnackbar = Snackbar.make(location, text,
+                Snackbar.LENGTH_SHORT);
+        ViewGroup shortGroup = (ViewGroup) shortSnackbar.getView();
+        shortGroup.setBackgroundColor(ThemeUtils.darkTheme ? snackbarDark : snackbarLight);
+        shortSnackbar.show();
     }
 
     public static void openLink(Context context, String link) {
@@ -283,32 +260,6 @@ public class Utils {
         return palette;
     }
 
-    /***
-     * Method gets executed once the view is displayed
-     *
-     * @param view   A view Object
-     * @param method A callable method implementation
-     */
-    public static void triggerMethodOnceViewIsDisplayed(final View view, final Callable<Void> method) {
-        final ViewTreeObserver observer = view.getViewTreeObserver();
-        observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @SuppressWarnings("deprecation")
-            @Override
-            public void onGlobalLayout() {
-                if (Build.VERSION.SDK_INT < 16) {
-                    view.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                } else {
-                    view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                }
-                try {
-                    method.call();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
     public static void collapseToolbar(Context context) {
         Preferences mPrefs = new Preferences(context);
         AppBarLayout appbar = (AppBarLayout) ((Activity) context).findViewById(R.id.appbar);
@@ -336,8 +287,8 @@ public class Utils {
 
         if (context.getResources().getBoolean(R.bool.use_palette_api_in_toolbar)) {
             paletteGeneratedColor = getIconsColorFromBitmap(bitmap, context);
-            if (paletteGeneratedColor == 0) {
-                if (ColorUtils.isDark(bitmap, 0, bitmap.getHeight() / 2, true)) {
+            if (paletteGeneratedColor == 0 && bitmap != null) {
+                if (ColorUtils.isDark(bitmap)) {
                     paletteGeneratedColor = Color.parseColor("#80ffffff");
                 } else {
                     paletteGeneratedColor = Color.parseColor("#80000000");
@@ -435,52 +386,52 @@ public class Utils {
 
     public static int getIconsColorFromBitmap(Bitmap bitmap, Context context) {
         int color = 0;
-
-        final int twentyFourDip = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                24, context.getResources().getDisplayMetrics());
-
-        final int pictureHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                256, context.getResources().getDisplayMetrics());
-
-        int divider = (int) (twentyFourDip) + UIUtils.getStatusBarHeight(context, true);
-
-        final int heightDivider = (int) (pictureHeight / divider);
+        boolean isDark;
 
         if (bitmap != null) {
 
+            boolean swatchNotNull = false;
+
             Palette palette = new Palette.Builder(bitmap)
-                    .clearFilters()
                     .generate();
 
-            boolean isDark;
-            @ColorUtils.Lightness int lightness = ColorUtils.isDark(palette, false);
-            if (lightness == ColorUtils.LIGHTNESS_UNKNOWN) {
-                isDark = ColorUtils.isDark(bitmap, true, 1, heightDivider, false);
-            } else {
-                isDark = lightness == ColorUtils.IS_DARK;
-            }
+            isDark = ColorUtils.isDark(bitmap);
 
-            Palette.Swatch swatch1 = null, swatch2 = null, swatch3 = null, swatch4 = null;
+            Palette.Swatch swatch1, swatch2, swatch3, swatch4;
 
             if (isDark) {
+                swatch1 = palette.getLightVibrantSwatch();
+                swatch2 = palette.getLightMutedSwatch();
+            } else {
                 swatch1 = palette.getVibrantSwatch();
                 swatch2 = palette.getMutedSwatch();
-            } else {
-                swatch1 = palette.getDarkVibrantSwatch();
-                swatch2 = palette.getDarkMutedSwatch();
             }
 
-            swatch3 = palette.getLightVibrantSwatch();
-            swatch4 = palette.getLightMutedSwatch();
+            swatch3 = palette.getDarkVibrantSwatch();
+            swatch4 = palette.getDarkMutedSwatch();
 
             if (swatch1 != null) {
+                swatchNotNull = true;
                 color = swatch1.getRgb();
             } else if (swatch2 != null) {
+                swatchNotNull = true;
                 color = swatch2.getRgb();
-            } else if (swatch3 != null && isDark) {
+            } else if (swatch3 != null) {
+                swatchNotNull = true;
                 color = swatch3.getRgb();
-            } else if (swatch4 != null && isDark) {
+            } else if (swatch4 != null) {
+                swatchNotNull = true;
                 color = swatch4.getRgb();
+            }
+
+            if (swatchNotNull) {
+                int colorToBlend =
+                        ColorUtils.adjustAlpha(
+                                ContextCompat.getColor(context,
+                                        isDark ? android.R.color.white : android.R.color.black),
+                                getActualSValue(ColorUtils.S));
+
+                color = ColorUtils.blendColors(color, colorToBlend, 0.3f);
             }
 
         }
@@ -488,56 +439,7 @@ public class Utils {
         return color;
     }
 
-    public static int getIconsColorForViewer(Bitmap bitmap, Context context) {
-        int color = 0;
-
-        final int twentyFourDip = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                24, context.getResources().getDisplayMetrics());
-
-        if (bitmap != null) {
-
-            Palette palette = new Palette.Builder(bitmap)
-                    .clearFilters()
-                    .setRegion(0, 0, twentyFourDip, bitmap.getHeight() - 1)
-                    .generate();
-
-            boolean isDark;
-            @ColorUtils.Lightness int lightness = ColorUtils.isDark(palette, true);
-            if (lightness == ColorUtils.LIGHTNESS_UNKNOWN) {
-                isDark = ColorUtils.isDark(bitmap, 0, bitmap.getHeight() / 2, true);
-            } else {
-                isDark = lightness == ColorUtils.IS_DARK;
-            }
-
-            Palette.Swatch swatch1 = null, swatch2 = null, swatch3 = null, swatch4 = null;
-
-            if (isDark) {
-                swatch1 = palette.getVibrantSwatch();
-                swatch2 = palette.getMutedSwatch();
-            } else {
-                swatch1 = palette.getDarkVibrantSwatch();
-                swatch2 = palette.getDarkMutedSwatch();
-            }
-
-            swatch3 = palette.getLightVibrantSwatch();
-            swatch4 = palette.getLightMutedSwatch();
-
-            if (swatch1 != null) {
-                color = swatch1.getRgb();
-            } else if (swatch2 != null) {
-                color = swatch2.getRgb();
-            } else if (swatch3 != null && isDark) {
-                color = swatch3.getRgb();
-            } else if (swatch4 != null && isDark) {
-                color = swatch4.getRgb();
-            }
-
-        }
-
-        return color;
-    }
-
-    public static double round(double value, int places) {
+    private static double round(double value, int places) {
         if (places < 0) throw new IllegalArgumentException();
 
         BigDecimal bd = new BigDecimal(value);
@@ -553,8 +455,25 @@ public class Utils {
         return millis / 60 / 1000;
     }
 
-    public static int convertMillisToHours(long millis) {
-        return (int) millis / 60 / 60 / 1000;
+    private static float getActualSValue(float s) {
+        if (s < 0.5f) {
+            s = (s + 1.0f) - (s * 3.0f);
+        } else {
+            float i = 1.0f, x = 0;
+            int cont = 0;
+            while (!(x >= i)) {
+                x = s + 0.1f;
+                cont += 1;
+            }
+            s = s - (cont / 10.0f);
+        }
+
+        if (s < 0.0f) {
+            s = 0.0f;
+        } else if (s > 1.0f) {
+            s = 1.0f;
+        }
+        return s;
     }
 
 }

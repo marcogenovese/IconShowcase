@@ -30,8 +30,8 @@ import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 public class ZooperWidget {
 
-    public final String name;
-    public final Bitmap preview;
+    private final String name;
+    private final Bitmap preview;
 
     public ZooperWidget(String name, Bitmap preview) {
         this.name = name;

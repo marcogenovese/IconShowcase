@@ -81,7 +81,7 @@ public class ApplicationBase extends Application {
         new LoadAppsToRequest(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
-    public void loadWallsList() {
+    private void loadWallsList() {
         if (mPrefs.getWallsListLoaded()) {
             WallpapersList.clearList();
             mPrefs.setWallsListLoaded(!mPrefs.getWallsListLoaded());

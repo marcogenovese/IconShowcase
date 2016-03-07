@@ -274,7 +274,7 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
         data.setSummary(context.getResources().getString(R.string.pref_summary_cache, cacheSize));
     }
 
-    public static void clearApplicationDataAndCache(Context context) {
+    private static void clearApplicationDataAndCache(Context context) {
         File cache = context.getCacheDir();
         File appDir = new File(cache.getParent());
         if (appDir.exists()) {
@@ -292,7 +292,7 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
         mPrefs.setWallsDialogDismissed(false);
     }
 
-    public static void clearCache(Context context) {
+    private static void clearCache(Context context) {
         try {
             File dir = context.getCacheDir();
             if (dir != null && dir.isDirectory()) {
@@ -303,7 +303,7 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
         }
     }
 
-    public static boolean deleteDir(File dir) {
+    private static boolean deleteDir(File dir) {
         if (dir != null && dir.isDirectory()) {
             String[] children = dir.list();
             for (String aChildren : children) {

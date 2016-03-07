@@ -157,7 +157,7 @@ public class MuzeiSettings extends AppCompatActivity implements View.OnClickList
                 intent.putExtra("service", "restarted");
                 startService(intent);
                 Utils.showSimpleSnackbar(context, customCoordinatorLayout,
-                        Utils.getStringFromResources(this, R.string.settings_saved), 1);
+                        Utils.getStringFromResources(this, R.string.settings_saved));
                 finish();
                 return true;
             }

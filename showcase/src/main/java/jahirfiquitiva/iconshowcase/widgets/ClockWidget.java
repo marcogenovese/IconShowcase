@@ -32,22 +32,29 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.widget.RemoteViews;
 
-import java.util.HashMap;
-
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 public class ClockWidget extends AppWidgetProvider {
 
-    public HashMap<String, String> activityMap;
-    PackageManager packageManager;
-
     @Override
     public void onReceive(Context context, Intent intent) {
-        packageManager = context.getPackageManager();
+        PackageManager packageManager = context.getPackageManager();
         boolean foundApp = false;
 
-        setupHashMap();
+        String[] packages = {
+                "com.android.alarmclock",
+                "com.android.deskclock",
+                "com.google.android.deskclock",
+                "com.asus.alarmclock",
+                "com.asus.deskclock",
+                "com.htc.android.worldclock",
+                "com.lge.clock",
+                "com.motorola.blur.alarmclock",
+                "com.sec.android.app.clockpackage",
+                "com.sonyericsson.alarm",
+                "com.sonyericsson.organizer"};
+
         String action = intent.getAction();
 
         if (AppWidgetManager.ACTION_APPWIDGET_UPDATE.equals(action)) {
@@ -56,15 +63,13 @@ public class ClockWidget extends AppWidgetProvider {
                     R.layout.clock_widget);
 
             Intent clockAppIntent = new Intent();
-            clockAppIntent.setAction(Intent.ACTION_MAIN);
-            clockAppIntent.addCategory(Intent.CATEGORY_LAUNCHER);
 
-            for (String packageName : activityMap.keySet()) {
+            for (String packageName : packages) {
                 if (Utils.isAppInstalled(context, packageName)) {
-                    ComponentName cn = new ComponentName(packageName, activityMap.get(packageName));
-                    clockAppIntent.setComponent(cn);
-                    clockAppIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    foundApp = true;
+                    clockAppIntent = packageManager.getLaunchIntentForPackage(packageName);
+                    if (clockAppIntent != null) {
+                        foundApp = true;
+                    }
                     break;
                 }
             }
@@ -74,26 +79,12 @@ public class ClockWidget extends AppWidgetProvider {
                         PendingIntent.getActivity(context, 0, clockAppIntent, 0));
             }
 
-            AppWidgetManager.getInstance(context)
-                    .updateAppWidget(intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS), views);
+            int[] ids = AppWidgetManager.getInstance(context)
+                    .getAppWidgetIds(new ComponentName(context, ClockWidget.class));
 
+            for (int id : ids) {
+                AppWidgetManager.getInstance(context).updateAppWidget(id, views);
+            }
         }
     }
-
-    private void setupHashMap() {
-        activityMap = new HashMap<>();
-        activityMap.put("com.android.alarmclock", "com.android.alarmclock.AlarmClock");
-        activityMap.put("com.android.deskclock", "com.android.deskclock.DeskClock");
-        activityMap.put("com.google.android.deskclock", "com.google.android.deskclock.DeskClock");
-        activityMap.put("com.google.android.deskclock", "com.android.deskclock.AlarmClock");
-        activityMap.put("com.sec.android.app.clockpackage", "com.sec.android.app.clockpackage.ClockPackage");
-        activityMap.put("com.sonyericsson.alarm", "com.sonyericsson.alarm.Alarm");
-        activityMap.put("com.sonyericsson.organizer", "com.sonyericsson.organizer.Organizer_WorldClock");
-        activityMap.put("com.asus.alarmclock", "com.asus.alarmclock.AlarmClock");
-        activityMap.put("com.asus.deskclock", "com.asus.deskclock.DeskClock");
-        activityMap.put("com.htc.android.worldclock", "com.htc.android.worldclock.WorldClockTabControl");
-        activityMap.put("com.motorola.blur.alarmclock", "com.motorola.blur.alarmclock.AlarmClock");
-        activityMap.put("com.lge.clock", "com.lge.clock.AlarmClockActivity");
-    }
-
 }

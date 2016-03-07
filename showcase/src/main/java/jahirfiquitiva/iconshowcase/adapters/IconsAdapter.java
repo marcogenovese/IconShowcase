@@ -55,7 +55,6 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
     private final Context context;
     private boolean inChangelog = false;
     private ArrayList<IconItem> iconsList = new ArrayList<>();
-    private Bitmap bitmap;
     private Preferences mPrefs;
 
     public IconsAdapter(Context context, ArrayList<IconItem> iconsList) {
@@ -130,7 +129,7 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
 
         if (ShowcaseActivity.iconsPicker) {
             Intent intent = new Intent();
-            bitmap = null;
+            Bitmap bitmap = null;
 
             try {
                 bitmap = BitmapFactory.decodeResource(context.getResources(), resId);

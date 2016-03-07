@@ -80,7 +80,7 @@ import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 
 public class WallpapersFragment extends Fragment {
 
-    public static ViewGroup layout;
+    private static ViewGroup layout;
     private static ProgressBar mProgress;
     public static WallpapersAdapter mAdapter;
     private static ImageView noConnection;
@@ -307,10 +307,10 @@ public class WallpapersFragment extends Fragment {
         fastScroller.setVisibility(View.GONE);
         if (Utils.hasNetwork(context)) {
             Utils.showSimpleSnackbar(context, layout,
-                    context.getResources().getString(R.string.refreshing_walls), 1);
+                    context.getResources().getString(R.string.refreshing_walls));
         } else {
             Utils.showSimpleSnackbar(context, layout,
-                    context.getResources().getString(R.string.no_conn_title), 1);
+                    context.getResources().getString(R.string.no_conn_title));
         }
         mSwipeRefreshLayout.setEnabled(true);
         mSwipeRefreshLayout.post(new Runnable() {
@@ -479,7 +479,7 @@ public class WallpapersFragment extends Fragment {
                     @Override
                     public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                         if (resource != null) {
-                            new ApplyWallpaper(context, dialog, resource, isWallsPicker, layout, null).execute();
+                            new ApplyWallpaper(context, dialog, resource, isWallsPicker, layout).execute();
                         }
                     }
                 });
@@ -511,6 +511,6 @@ public class WallpapersFragment extends Fragment {
 
     public static void showLoadPictureSnackbar(View layout) {
         Utils.showSimpleSnackbar(context, layout,
-                Utils.getStringFromResources(context, R.string.wait_for_walls), 1);
+                Utils.getStringFromResources(context, R.string.wait_for_walls));
     }
 }
