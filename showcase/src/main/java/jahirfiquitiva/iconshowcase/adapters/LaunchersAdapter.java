@@ -136,9 +136,9 @@ public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.Laun
     class LauncherHolder extends RecyclerView.ViewHolder {
 
         final View view;
-        ImageView icon;
-        TextView launcherName;
-        LinearLayout itemBG;
+        final ImageView icon;
+        final TextView launcherName;
+        final LinearLayout itemBG;
 
         LauncherHolder(View v) {
             super(v);

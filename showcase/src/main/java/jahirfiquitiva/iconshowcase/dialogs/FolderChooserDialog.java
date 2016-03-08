@@ -188,9 +188,10 @@ public class FolderChooserDialog extends DialogFragment implements MaterialDialo
                 .negativeText(android.R.string.cancel)
                 .input(R.string.new_folder_hint, 0, false, new MaterialDialog.InputCallback() {
                     @Override
-                    public void onInput(MaterialDialog dialog, CharSequence input) {
+                    public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
                         File folder = new File(folderPath + File.separator + input.toString());
                         if (!folder.exists()) {
+                            //noinspection ResultOfMethodCallIgnored
                             folder.mkdir();
                         }
                         parentContents = listFiles();

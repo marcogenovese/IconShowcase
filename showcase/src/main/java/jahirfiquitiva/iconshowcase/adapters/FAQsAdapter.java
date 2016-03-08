@@ -39,8 +39,8 @@ import jahirfiquitiva.iconshowcase.models.FAQsItem;
 
 public class FAQsAdapter extends RecyclerView.Adapter<FAQsAdapter.FAQsHolder> {
 
-    private List<FAQsItem> faqs;
-    private Context context;
+    private final List<FAQsItem> faqs;
+    private final Context context;
 
     public FAQsAdapter(List<FAQsItem> faqs, Context context) {
         this.faqs = faqs;
@@ -78,8 +78,8 @@ public class FAQsAdapter extends RecyclerView.Adapter<FAQsAdapter.FAQsHolder> {
         final View view;
         LinearLayout layout;
         CardView card;
-        TextView txtQuestion;
-        TextView txtAnswer;
+        final TextView txtQuestion;
+        final TextView txtAnswer;
 
         FAQsHolder(View v) {
             super(v);

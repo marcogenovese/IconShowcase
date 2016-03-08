@@ -53,14 +53,14 @@ public class CreditsFragment extends Fragment {
             sherryIV, emailIV, translatorsIV;
     private LinearLayout authorFB, authorGPlus, authorTwitter, authorWebsite, authorYouTube,
             authorCommunity, authorPlayStore;
-    boolean withLinkToFacebook = false,
+    private boolean withLinkToFacebook = false,
             withLinkToTwitter = false,
             withLinkToGPlus = false,
             withLinkToYouTube = false,
             withLinkToCommunity = false,
             withLinkToPlayStore = false,
             withLinkToWebsite = false;
-    String[] libsLinks, contributorsLinks, uiCollaboratorsLinks;
+    private String[] libsLinks, contributorsLinks, uiCollaboratorsLinks;
 
     private void setupBooleans(Context context) {
         Resources res = context.getResources();

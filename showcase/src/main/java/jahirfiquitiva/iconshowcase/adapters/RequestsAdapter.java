@@ -47,9 +47,9 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
         void onClick(int index);
     }
 
-    public ArrayList<RequestItem> appsList;
-    private Context context;
-    private int limit;
+    public final ArrayList<RequestItem> appsList;
+    private final Context context;
+    private final int limit;
     private final ClickListener mCallback;
     private AppIconFetchingQueue mAppIconFetchingQueue;
 
@@ -131,8 +131,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
         public void onClick(View v) {
             if (v.getTag() != null) {
                 int index = (Integer) v.getTag();
-                if (mCallback != null)
-                    mCallback.onClick(index);
+                mCallback.onClick(index);
             }
         }
 
@@ -216,7 +215,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
     public class AppIconFetchingQueue {
 
         int mIconsRemaining;
-        RecyclerView mRecyclerView;
+        final RecyclerView mRecyclerView;
 
         AppIconFetchingQueue(RecyclerView recyclerView) {
             mRecyclerView = recyclerView;

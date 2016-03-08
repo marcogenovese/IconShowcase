@@ -34,6 +34,7 @@ import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
@@ -111,7 +112,7 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
                     mPrefs.setWallpaperAsToolbarHeaderEnabled(newValue.toString().equals("true"));
                     ShowcaseActivity.setupToolbarHeader(getActivity(), ShowcaseActivity.toolbarHeader);
                     Utils.setupToolbarIconsAndTextsColors(getActivity(), ShowcaseActivity.appbar,
-                            ShowcaseActivity.toolbar, ShowcaseActivity.toolbarHeaderImage);
+                            ShowcaseActivity.toolbar, ShowcaseActivity.toolbarHeaderImage, false);
                     return true;
                 }
             });
@@ -171,7 +172,7 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
             public boolean onPreferenceClick(Preference preference) {
                 MaterialDialog.SingleButtonCallback positiveCallback = new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
+                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
                         clearApplicationDataAndCache(getActivity());
                         changeValues(getActivity());
                     }
@@ -208,7 +209,7 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
                         if (newValue.toString().equals("true")) {
                             MaterialDialog.SingleButtonCallback positive = new MaterialDialog.SingleButtonCallback() {
                                 @Override
-                                public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
+                                public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
                                     if (mPrefs.getLauncherIconShown()) {
                                         mPrefs.setIconShown(false);
                                         p.setComponentEnabledSetting(componentName,
@@ -222,7 +223,7 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
 
                             MaterialDialog.SingleButtonCallback negative = new MaterialDialog.SingleButtonCallback() {
                                 @Override
-                                public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
+                                public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
                                     hideIcon.setChecked(false);
                                 }
                             };

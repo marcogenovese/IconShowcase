@@ -37,7 +37,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.github.clans.fab.FloatingActionMenu;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -52,13 +51,13 @@ import jahirfiquitiva.iconshowcase.utilities.Utils;
 public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
 
     private Activity activity;
-    private MaterialDialog dialog;
-    private Bitmap resource;
+    private final MaterialDialog dialog;
+    private final Bitmap resource;
     private Uri wallUri;
     private Context context;
-    private View layout;
-    private String wallName;
-    private WeakReference<Activity> wrActivity;
+    private final View layout;
+    private final String wallName;
+    private final WeakReference<Activity> wrActivity;
     private LinearLayout toHide1, toHide2;
 
     public WallpaperToCrop(Activity activity, MaterialDialog dialog, Bitmap resource,
@@ -108,7 +107,6 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
 
     @Override
     protected void onPostExecute(Boolean worked) {
-        final Preferences mPrefs = new Preferences(context);
         if (toHide1 != null && toHide2 != null) {
             toHide1.setVisibility(View.GONE);
             toHide2.setVisibility(View.GONE);
@@ -142,7 +140,7 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
         }
     }
 
-    private  Uri getImageUri(Context inContext, Bitmap inImage) {
+    private Uri getImageUri(Context inContext, Bitmap inImage) {
 
         Preferences mPrefs = new Preferences(inContext);
         File downloadsFolder;
@@ -158,6 +156,7 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
                     Environment.getExternalStorageDirectory().getAbsolutePath()));
         }
 
+        //noinspection ResultOfMethodCallIgnored
         downloadsFolder.mkdirs();
 
         File destFile = new File(downloadsFolder, wallName + ".png");

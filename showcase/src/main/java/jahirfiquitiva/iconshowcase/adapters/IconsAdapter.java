@@ -55,7 +55,7 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
     private final Context context;
     private boolean inChangelog = false;
     private ArrayList<IconItem> iconsList = new ArrayList<>();
-    private Preferences mPrefs;
+    private final Preferences mPrefs;
 
     public IconsAdapter(Context context, ArrayList<IconItem> iconsList) {
         this.context = context;
@@ -134,7 +134,8 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
             try {
                 bitmap = BitmapFactory.decodeResource(context.getResources(), resId);
             } catch (Exception e) {
-                if (ShowcaseActivity.DEBUGGING) Utils.showLog(context, "Icons Picker error: " + Log.getStackTraceString(e));
+                if (ShowcaseActivity.DEBUGGING)
+                    Utils.showLog(context, "Icons Picker error: " + Log.getStackTraceString(e));
             }
 
             if (bitmap != null) {

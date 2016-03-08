@@ -28,7 +28,6 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -37,7 +36,7 @@ import android.view.View;
 @SuppressWarnings("SameParameterValue")
 public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
-    private Drawable mDivider;
+    private final Drawable mDivider;
     private boolean mShowFirstDivider = false;
     private boolean mShowLastDivider = false;
     private int height = 0;
@@ -49,35 +48,6 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
                 .obtainStyledAttributes(attrs, new int[]{android.R.attr.listDivider});
         mDivider = a.getDrawable(0);
         a.recycle();
-    }
-
-    public DividerItemDecoration(Context context, AttributeSet attrs, boolean showFirstDivider,
-                                 boolean showLastDivider) {
-        this(context, attrs);
-        mShowFirstDivider = showFirstDivider;
-        mShowLastDivider = showLastDivider;
-    }
-
-    public DividerItemDecoration(Context context, int resId) {
-        mDivider = ContextCompat.getDrawable(context, resId);
-    }
-
-    public DividerItemDecoration(Context context, int resId, boolean showFirstDivider,
-                                 boolean showLastDivider) {
-        this(context, resId);
-        mShowFirstDivider = showFirstDivider;
-        mShowLastDivider = showLastDivider;
-    }
-
-    public DividerItemDecoration(Drawable divider) {
-        mDivider = divider;
-    }
-
-    public DividerItemDecoration(Drawable divider, boolean showFirstDivider,
-                                 boolean showLastDivider) {
-        this(divider);
-        mShowFirstDivider = showFirstDivider;
-        mShowLastDivider = showLastDivider;
     }
 
     public DividerItemDecoration(Context context, AttributeSet attrs, int height, boolean showFirstDivider,

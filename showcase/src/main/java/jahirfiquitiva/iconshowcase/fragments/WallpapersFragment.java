@@ -29,6 +29,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -163,7 +164,7 @@ public class WallpapersFragment extends Fragment {
         inflater.inflate(R.menu.wallpapers, menu);
     }
 
-    public static void setupLayout(final boolean fromTask) {
+    private static void setupLayout(final boolean fromTask) {
 
         if (WallpapersList.getWallpapersList() != null && WallpapersList.getWallpapersList().size() > 0) {
             context.runOnUiThread(new Runnable() {
@@ -321,8 +322,8 @@ public class WallpapersFragment extends Fragment {
         });
     }
 
-    public static void openViewer(Context context, WallpapersAdapter.WallsHolder wallsHolder,
-                                  int index, final ArrayList<WallpaperItem> list) {
+    private static void openViewer(Context context, WallpapersAdapter.WallsHolder wallsHolder,
+                                   int index, final ArrayList<WallpaperItem> list) {
 
         final Intent intent = new Intent(context, ViewerActivity.class);
 
@@ -359,12 +360,12 @@ public class WallpapersFragment extends Fragment {
     // DownloadJSON AsyncTask
     public static class DownloadJSON extends AsyncTask<Void, Void, Void> {
 
-        ShowcaseActivity.WallsListInterface wi;
-        private static ArrayList<String> names = new ArrayList<>();
-        private static ArrayList<String> authors = new ArrayList<>();
-        private static ArrayList<String> urls = new ArrayList<>();
-        private static ArrayList<String> dimensions = new ArrayList<>();
-        private static ArrayList<String> copyrights = new ArrayList<>();
+        final ShowcaseActivity.WallsListInterface wi;
+        private final static ArrayList<String> names = new ArrayList<>();
+        private final static ArrayList<String> authors = new ArrayList<>();
+        private final static ArrayList<String> urls = new ArrayList<>();
+        private final static ArrayList<String> dimensions = new ArrayList<>();
+        private final static ArrayList<String> copyrights = new ArrayList<>();
 
         private Context taskContext;
 
@@ -495,13 +496,13 @@ public class WallpapersFragment extends Fragment {
                     .neutralText(R.string.dontshow)
                     .onPositive(new MaterialDialog.SingleButtonCallback() {
                         @Override
-                        public void onClick(MaterialDialog dialog, DialogAction which) {
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             mPrefs.setWallsDialogDismissed(false);
                         }
                     })
                     .onNeutral(new MaterialDialog.SingleButtonCallback() {
                         @Override
-                        public void onClick(MaterialDialog dialog, DialogAction which) {
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             mPrefs.setWallsDialogDismissed(true);
                         }
                     })
@@ -509,7 +510,7 @@ public class WallpapersFragment extends Fragment {
         }
     }
 
-    public static void showLoadPictureSnackbar(View layout) {
+    private static void showLoadPictureSnackbar(View layout) {
         Utils.showSimpleSnackbar(context, layout,
                 Utils.getStringFromResources(context, R.string.wait_for_walls));
     }

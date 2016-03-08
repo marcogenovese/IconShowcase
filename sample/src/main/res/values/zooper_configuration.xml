@@ -31,7 +31,7 @@
     <!-- This is the icon that will be shown in Zooper -->
     <drawable name="zooper_pack_icon">@drawable/ic_na_launcher</drawable>
 
-	<!--
+    <!--
     If you include Zooper widgets, do any of them need MediaUtilities to work properly?
     True, means yes.
     False, means no.
@@ -44,7 +44,7 @@
     False, means such section will show the list.
     -->
     <bool name="cards_credits">true</bool>
-	
+
     <!--
     Do you want the Zooper widgets previews background to be removed?
     This may result in showing some incorrect previews.

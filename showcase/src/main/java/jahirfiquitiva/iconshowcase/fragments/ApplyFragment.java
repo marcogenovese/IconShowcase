@@ -27,6 +27,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -161,7 +162,7 @@ public class ApplyFragment extends Fragment {
         }
         ISDialogs.showOpenInPlayStoreDialog(getContext(), launcher.name, dialogContent, new MaterialDialog.SingleButtonCallback() {
             @Override
-            public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
+            public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(intentString));
                 startActivity(intent);
@@ -204,7 +205,7 @@ public class ApplyFragment extends Fragment {
         final String appLink = MARKET_URL + getResources().getString(R.string.extraapp);
         ISDialogs.showGoogleNowLauncherDialog(getContext(), new MaterialDialog.SingleButtonCallback() {
             @Override
-            public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
+            public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(appLink));
                 startActivity(intent);
@@ -216,7 +217,7 @@ public class ApplyFragment extends Fragment {
         if (!mPrefs.getApplyDialogDismissed()) {
             MaterialDialog.SingleButtonCallback singleButtonCallback = new MaterialDialog.SingleButtonCallback() {
                 @Override
-                public void onClick(MaterialDialog dialog, DialogAction which) {
+                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                     if (which.equals(DialogAction.POSITIVE)) {
                         mPrefs.setApplyDialogDismissed(false);
                     } else if (which.equals(DialogAction.NEUTRAL)) {

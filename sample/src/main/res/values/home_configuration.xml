@@ -63,10 +63,9 @@
     (Don't worry, it will be ignored if your app doesn't include Zooper).
     -->
     <integer name="zooper_widgets">0</integer>
-	
-	
-	
-	<!--
+
+
+    <!--
     Be sure to check that all arrays have the same amount of items.
     -->
 

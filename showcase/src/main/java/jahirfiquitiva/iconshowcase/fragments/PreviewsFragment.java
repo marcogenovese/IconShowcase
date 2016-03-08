@@ -40,7 +40,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -139,8 +138,6 @@ public class PreviewsFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        TextView title = (TextView) getActivity().findViewById(R.id.title);
-        if (title != null) title.setVisibility(View.GONE);
         if (mTabs != null) mTabs.setVisibility(View.GONE);
     }
 

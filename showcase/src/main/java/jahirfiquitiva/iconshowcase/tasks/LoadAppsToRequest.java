@@ -59,11 +59,11 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
 
     private static PackageManager mPackageManager;
     private static boolean debugging = false;
-    private static ArrayList<String> components = new ArrayList<>();
+    private final static ArrayList<String> components = new ArrayList<>();
     private final static ArrayList<RequestItem> appsList = new ArrayList<>();
-    private static ArrayList<AppFilterError> appFilterErrors = new ArrayList<>();
-    private Context context;
-    private long startTime;
+    private final static ArrayList<AppFilterError> appFilterErrors = new ArrayList<>();
+    private final Context context;
+    private final long startTime;
 
     @SuppressLint("PrivateResource")
     public LoadAppsToRequest(Context context) {
@@ -151,8 +151,7 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
         }
     }
 
-    private static ResolveInfo getResolveInfo(String componentString, Context context,
-                                              String iconName) {
+    private static ResolveInfo getResolveInfo(String componentString) {
         Intent intent = new Intent();
 
         // Example format:
@@ -228,11 +227,11 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
 
     }
 
-    public static String getIconName(XmlPullParser xmlParser) {
+    private static String getIconName(XmlPullParser xmlParser) {
         return xmlParser.getAttributeValue(null, "drawable");
     }
 
-    public Intent getAllActivitiesIntent() {
+    private Intent getAllActivitiesIntent() {
         Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
         mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
         return mainIntent;
@@ -263,10 +262,7 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
 
                         if (name.equals("item")) {
 
-                            ResolveInfo info = getResolveInfo(
-                                    gComponentString(xmlParser, context),
-                                    context,
-                                    getIconName(xmlParser));
+                            ResolveInfo info = getResolveInfo(gComponentString(xmlParser, context));
 
                             if (info != null) {
                                 Drawable icon;

@@ -189,10 +189,6 @@ public class Utils {
         return text.substring(0, 1).toUpperCase(Locale.getDefault()) + text.substring(1);
     }
 
-    public static void forceCrash() {
-        throw new RuntimeException("This is a crash");
-    }
-
     public static void sendEmailWithDeviceInfo(Context context) {
         StringBuilder emailBuilder = new StringBuilder();
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:" + context.getResources().getString(R.string.email_id)));
@@ -277,16 +273,17 @@ public class Utils {
     }
 
     public static void setupToolbarIconsAndTextsColors(Context context, AppBarLayout appbar,
-                                                       final Toolbar toolbar, final Bitmap bitmap) {
+                                                       final Toolbar toolbar, final Bitmap bitmap,
+                                                       boolean forViewer) {
 
         final int iconsColor = ThemeUtils.darkTheme ?
                 ContextCompat.getColor(context, R.color.toolbar_text_dark) :
                 ContextCompat.getColor(context, R.color.toolbar_text_light);
 
-        int paletteGeneratedColor = 0;
+        int paletteGeneratedColor;
 
         if (context.getResources().getBoolean(R.bool.use_palette_api_in_toolbar)) {
-            paletteGeneratedColor = getIconsColorFromBitmap(bitmap, context);
+            paletteGeneratedColor = getIconsColorFromBitmap(bitmap, context, forViewer);
             if (paletteGeneratedColor == 0 && bitmap != null) {
                 if (ColorUtils.isDark(bitmap)) {
                     paletteGeneratedColor = Color.parseColor("#80ffffff");
@@ -384,7 +381,7 @@ public class Utils {
         return Bitmap.createBitmap(newBitmap, minX, minY, (maxX - minX) + 1, (maxY - minY) + 1);
     }
 
-    public static int getIconsColorFromBitmap(Bitmap bitmap, Context context) {
+    public static int getIconsColorFromBitmap(Bitmap bitmap, Context context, boolean forViewer) {
         int color = 0;
         boolean isDark;
 
@@ -425,13 +422,14 @@ public class Utils {
             }
 
             if (swatchNotNull) {
+                float[] values = getActualSValues(ColorUtils.S, forViewer);
+                float colorAlpha = values[0], tintFactor = values[1];
                 int colorToBlend =
                         ColorUtils.adjustAlpha(
                                 ContextCompat.getColor(context,
                                         isDark ? android.R.color.white : android.R.color.black),
-                                getActualSValue(ColorUtils.S));
-
-                color = ColorUtils.blendColors(color, colorToBlend, 0.3f);
+                                colorAlpha);
+                color = ColorUtils.blendColors(color, colorToBlend, tintFactor);
             }
 
         }
@@ -441,7 +439,6 @@ public class Utils {
 
     private static double round(double value, int places) {
         if (places < 0) throw new IllegalArgumentException();
-
         BigDecimal bd = new BigDecimal(value);
         bd = bd.setScale(places, RoundingMode.HALF_UP);
         return bd.doubleValue();
@@ -455,25 +452,34 @@ public class Utils {
         return millis / 60 / 1000;
     }
 
-    private static float getActualSValue(float s) {
-        if (s < 0.5f) {
-            s = (s + 1.0f) - (s * 3.0f);
-        } else {
-            float i = 1.0f, x = 0;
-            int cont = 0;
-            while (!(x >= i)) {
-                x = s + 0.1f;
-                cont += 1;
+    private static float[] getActualSValues(float s, boolean forViewer) {
+        float[] values = new float[2];
+        float alpha, factor;
+        if (s < 0.51f) {
+            alpha = (s + 1.0f) - (s * 3.0f);
+            if (!forViewer) {
+                alpha = alpha + 0.2f;
             }
-            s = s - (cont / 10.0f);
+        } else {
+            alpha = ((s * 2.0f) - 1.0f) + 0.1f;
+        }
+
+        if (forViewer) {
+            factor = 0.8f;
+        } else {
+            factor = 0.5f;
         }
 
         if (s < 0.0f) {
-            s = 0.0f;
+            alpha = 0.0f;
         } else if (s > 1.0f) {
-            s = 1.0f;
+            alpha = 1.0f;
         }
-        return s;
+
+        values[0] = alpha;
+        values[1] = factor;
+
+        return values;
     }
 
 }

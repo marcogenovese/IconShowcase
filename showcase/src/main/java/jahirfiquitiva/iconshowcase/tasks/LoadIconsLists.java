@@ -42,7 +42,7 @@ import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
 
-    private Context context;
+    private final Context context;
     private static ArrayList<IconsLists> iconsLists;
     private static ArrayList<IconsCategory> categories;
     private long startTime;
@@ -74,7 +74,7 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
                 changelogIconsArray.add(new IconItem(icon, iconResId));
             }
         }
-        iconsLists.add(new IconsLists("Changelog", changelogIconsArray));
+        iconsLists.add(new IconsLists(changelogIconsArray));
 
         String[] prev = r.getStringArray(R.array.preview);
         List<String> previewIconsL = sortList(prev);
@@ -85,7 +85,7 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
                 previewIconsArray.add(new IconItem(icon, iconResId));
             }
         }
-        iconsLists.add(new IconsLists("Previews", previewIconsArray));
+        iconsLists.add(new IconsLists(previewIconsArray));
 
         String[] tabsNames = r.getStringArray(R.array.tabs);
         categories = new ArrayList<>();
@@ -142,7 +142,7 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
         long endTime = System.currentTimeMillis();
         Utils.showLog(context, "Load of icons task completed successfully in: " + String.valueOf((endTime - startTime)) + " millisecs.");
         if (categories.get(categories.size() - 1).getCategoryName().equals("All")) {
-            /*
+            /* TODO Check if it's secure enough
             ShowcaseActivity.SHOW_LOAD_ICONS_DIALOG = false;
             if (ShowcaseActivity.loadIcons != null) {
                 ShowcaseActivity.loadIcons.dismiss();

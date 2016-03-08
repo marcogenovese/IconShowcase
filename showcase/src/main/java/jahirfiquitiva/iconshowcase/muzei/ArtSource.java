@@ -47,9 +47,9 @@ public class ArtSource extends RemoteMuzeiArtSource {
 
     private Preferences mPrefs;
 
-    private ArrayList<String> names = new ArrayList<>();
-    private ArrayList<String> authors = new ArrayList<>();
-    private ArrayList<String> urls = new ArrayList<>();
+    private final ArrayList<String> names = new ArrayList<>();
+    private final ArrayList<String> authors = new ArrayList<>();
+    private final ArrayList<String> urls = new ArrayList<>();
 
     private static final String ARTSOURCE_NAME = "IconShowcase";
     private static final String MARKET_URL = "https://play.google.com/store/apps/details?id=";

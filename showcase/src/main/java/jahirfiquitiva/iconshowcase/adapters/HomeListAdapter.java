@@ -25,15 +25,12 @@ import jahirfiquitiva.iconshowcase.models.HomeCard;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
-/**
- * Created by 7681 on 2016-02-24.
- */
 public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private Context context;
+    private final Context context;
     private View view;
     private int cards = 3;
-    private ArrayList<HomeCard> homeCards;
+    private final ArrayList<HomeCard> homeCards;
 
     public HomeListAdapter(ArrayList<HomeCard> homeCards, Context context) {
         this.context = context;
@@ -86,7 +83,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public class WelcomeCard extends RecyclerView.ViewHolder {
 
-        AppCompatButton ratebtn, iconsbtn;
+        final AppCompatButton ratebtn, iconsbtn;
 
         public WelcomeCard(View itemView) {
             super(itemView);
@@ -112,12 +109,12 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public class AppInfoCard extends RecyclerView.ViewHolder {
 
-        String themedIcons = String.valueOf(context.getResources().getInteger(R.integer.icons_amount));
-        String availableWallpapers = String.valueOf(context.getResources().getInteger(R.integer.walls_amount));
-        String includedWidgets = String.valueOf(context.getResources().getInteger(R.integer.zooper_widgets));
+        final String themedIcons = String.valueOf(context.getResources().getInteger(R.integer.icons_amount));
+        final String availableWallpapers = String.valueOf(context.getResources().getInteger(R.integer.walls_amount));
+        final String includedWidgets = String.valueOf(context.getResources().getInteger(R.integer.zooper_widgets));
 
-        ImageView iconsIV, wallsIV, widgetsIV;
-        TextView iconsT, wallsT, widgetsT;
+        final ImageView iconsIV, wallsIV, widgetsIV;
+        final TextView iconsT, wallsT, widgetsT;
         LinearLayout packInfo, widgets;
 
         public AppInfoCard(View itemView) {
@@ -180,18 +177,14 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         final int light = ContextCompat.getColor(context, R.color.drawable_tint_dark);
         final int dark = ContextCompat.getColor(context, R.color.drawable_tint_light);
 
-        LinearLayout lly, subLly;
-        TextView title, desc;
-        ImageView icon;
+        final LinearLayout lly;
+        final ImageView icon;
 
         public MoreAppsCard(View itemView) {
             super(itemView);
             view = itemView;
             lly = (LinearLayout) itemView.findViewById(R.id.more_apps);
-            title = (TextView) itemView.findViewById(R.id.more_apps_text);
-            desc = (TextView) itemView.findViewById(R.id.more_apps_description);
             icon = (ImageView) itemView.findViewById(R.id.more_apps_icon);
-            subLly = (LinearLayout) itemView.findViewById(R.id.more_apps_sub_layout);
             icon.setImageDrawable(new IconicsDrawable(context)
                     .icon(GoogleMaterial.Icon.gmd_case_play)
                     .color(ThemeUtils.darkTheme ? light : dark)
@@ -207,9 +200,9 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public class AppCard extends RecyclerView.ViewHolder {
 
-        LinearLayout lly, subLly;
-        TextView cardTitle, cardDesc;
-        ImageView cardIcon;
+        final LinearLayout subLly;
+        final TextView cardTitle, cardDesc;
+        final ImageView cardIcon;
 
         public AppCard(View itemView, int i) {
             super(itemView);
@@ -240,7 +233,6 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         homeCards.get(pos - cards).desc);
             }
 
-            lly = (LinearLayout) itemView.findViewById(R.id.home_card);
             cardTitle = (TextView) itemView.findViewById(R.id.home_card_text);
             cardDesc = (TextView) itemView.findViewById(R.id.home_card_description);
             cardIcon = (ImageView) itemView.findViewById(R.id.home_card_image);

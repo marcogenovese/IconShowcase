@@ -122,8 +122,8 @@ public class ColorUtils {
      */
     public static boolean isDark(@NonNull Bitmap bitmap, int backupPixelX, int backupPixelY) {
         // first try palette with a small color quant size
-        Palette palette = Palette.from(bitmap).generate();//.maximumColorCount(3).generate();
-        if (palette != null && palette.getSwatches().size() > 0) {
+        Palette palette = Palette.from(bitmap).generate();
+        if (palette.getSwatches().size() > 0) {
             return isDark(palette) == IS_DARK;
         } else {
             // if palette failed, then check the color of the specified pixel
@@ -135,10 +135,8 @@ public class ColorUtils {
      * Check that the lightness value (0–1)
      */
     public static boolean isDark(float[] hsl) { // @Size(3)
-        float min = 0.55f;
         ColorUtils.S = hsl[2];
-        Utils.showLog("HSL: " + hsl[2] + " Min: " + min);
-        return hsl[2] < min;
+        return hsl[2] < 0.51f;
     }
 
     /**

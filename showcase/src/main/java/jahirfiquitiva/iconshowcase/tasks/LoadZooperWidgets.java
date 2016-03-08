@@ -45,8 +45,8 @@ import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
 
-    private Context context;
-    public static ArrayList<ZooperWidget> widgets = new ArrayList<>();
+    private final Context context;
+    public final static ArrayList<ZooperWidget> widgets = new ArrayList<>();
     private long startTime;
 
     public LoadZooperWidgets(Context context) {
@@ -73,6 +73,7 @@ public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
                     //noinspection ResultOfMethodCallIgnored
                     previewsFolder.delete();
                 }
+                //noinspection ResultOfMethodCallIgnored
                 previewsFolder.mkdirs();
                 for (String template : templates) {
                     File widgetFile = new File(previewsFolder, template);
@@ -80,7 +81,7 @@ public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
                     Bitmap preview = getWidgetPreviewFromZip(widgetName,
                             assetManager.open("templates/" + template), previewsFolder, widgetFile);
                     if (preview != null) {
-                        widgets.add(new ZooperWidget(widgetName, preview));
+                        widgets.add(new ZooperWidget(preview));
                     }
                 }
                 if (widgets.size() == templates.length) {
@@ -120,7 +121,7 @@ public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
      * This code was created by Aidan Follestad. Complete credits to him.
      */
     private Bitmap getWidgetPreviewFromZip(String name, InputStream in, File previewsFolder, File widgetFile) {
-        OutputStream out = null;
+        OutputStream out;
         File preview = new File(previewsFolder, name + ".png");
 
         try {
@@ -137,8 +138,8 @@ public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
                     ZipEntry entry;
                     while ((entry = entryEnum.nextElement()) != null) {
                         if (entry.getName().endsWith("screen.png")) {
-                            InputStream zipIn = null;
-                            OutputStream zipOut = null;
+                            InputStream zipIn;
+                            OutputStream zipOut;
                             zipIn = zipFile.getInputStream(entry);
                             zipOut = new FileOutputStream(preview);
                             copyFiles(zipIn, zipOut);

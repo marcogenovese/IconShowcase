@@ -21,9 +21,9 @@ package jahirfiquitiva.iconshowcase.models;
 
 public class AppFilterError {
 
-    private boolean emptyComponent, halfEmptyPackage, halfEmptyComponent;
-    private String iconName, completeComponent;
-    private int iconID;
+    private final boolean emptyComponent, halfEmptyPackage, halfEmptyComponent;
+    private final String iconName, completeComponent;
+    private final int iconID;
 
     public AppFilterError(boolean emptyComponent, boolean halfEmptyPackage,
                           boolean halfEmptyComponent, String iconName, String completeComponent,

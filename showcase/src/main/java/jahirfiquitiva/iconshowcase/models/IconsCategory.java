@@ -30,7 +30,7 @@ import java.util.ArrayList;
 
 public class IconsCategory implements Parcelable {
 
-    private String name;
+    private final String name;
     private ArrayList<IconItem> iconsArray = new ArrayList<>();
 
     public IconsCategory(String name, ArrayList<IconItem> iconsArray) {

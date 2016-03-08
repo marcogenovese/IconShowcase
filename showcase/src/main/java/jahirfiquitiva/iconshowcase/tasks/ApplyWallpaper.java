@@ -38,14 +38,12 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.github.clans.fab.FloatingActionMenu;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
-import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
@@ -53,11 +51,11 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
 
     private Context context;
     private Activity activity;
-    private MaterialDialog dialog;
-    private Bitmap resource;
-    private View layout;
-    private boolean isPicker;
-    private WeakReference<Activity> wrActivity;
+    private final MaterialDialog dialog;
+    private final Bitmap resource;
+    private final View layout;
+    private final boolean isPicker;
+    private final WeakReference<Activity> wrActivity;
     private LinearLayout toHide1, toHide2;
 
     public ApplyWallpaper(Activity activity, MaterialDialog dialog, Bitmap resource, boolean isPicker,
@@ -110,7 +108,6 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
 
     @Override
     protected void onPostExecute(Boolean worked) {
-        final Preferences mPrefs = new Preferences(context);
         if (worked) {
             dialog.dismiss();
             if (!isPicker) {

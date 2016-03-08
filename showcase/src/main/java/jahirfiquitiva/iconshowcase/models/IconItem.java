@@ -28,8 +28,8 @@ import android.os.Parcelable;
 
 public class IconItem implements Parcelable {
 
-    private String name;
-    private int resId;
+    private final String name;
+    private final int resId;
 
     public IconItem(String name, int resId) {
         this.name = name;

@@ -122,5 +122,5 @@
     <bool name="light_statusbar_in_light_theme">true</bool>
     <bool name="light_statusbar_in_dark_theme">false</bool>
     <bool name="light_statusbar_in_clear_theme">false</bool>
-	
+
 </resources>

@@ -62,7 +62,7 @@ public class MainFragment extends Fragment {
     private boolean themeMode, cm, cyngn, rro; //to store theme engine installation status
 
     private FloatingActionButton fab;
-    private ArrayList<HomeCard> homeCards = new ArrayList<>();
+    private final ArrayList<HomeCard> homeCards = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,

@@ -345,9 +345,9 @@ public class ViewerActivity extends AppCompatActivity {
     }
 
     private void colorizeToolbar(Bitmap picture, boolean usePalette) {
-        int paletteIconsColor = 0;
+        int paletteIconsColor;
         if (usePalette) {
-            paletteIconsColor = Utils.getIconsColorFromBitmap(picture, context);
+            paletteIconsColor = Utils.getIconsColorFromBitmap(picture, context, true);
             if (paletteIconsColor == 0) {
                 int light = Color.parseColor("#80000000");
                 int dark = Color.parseColor("#80ffffff");
@@ -401,6 +401,7 @@ public class ViewerActivity extends AppCompatActivity {
                     downloadsFolder = new File(context.getString(R.string.walls_save_location,
                             Environment.getExternalStorageDirectory().getAbsolutePath()));
                 }
+                //noinspection ResultOfMethodCallIgnored
                 downloadsFolder.mkdirs();
                 final File destFile = new File(downloadsFolder, wallName + ".png");
                 String snackbarText;
@@ -455,7 +456,7 @@ public class ViewerActivity extends AppCompatActivity {
         ISDialogs.showApplyWallpaperDialog(context,
                 new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
+                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
                         dialogApply = new MaterialDialog.Builder(context)
                                 .content(R.string.downloading_wallpaper)
                                 .progress(true, 0)
@@ -477,7 +478,7 @@ public class ViewerActivity extends AppCompatActivity {
                     }
                 }, new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
+                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
                         if (dialogApply != null) {
                             dialogApply.dismiss();
                         }

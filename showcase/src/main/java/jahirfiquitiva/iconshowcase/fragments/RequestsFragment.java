@@ -213,7 +213,7 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
         fastScroller.setVisibility(View.GONE);
     }
 
-    public static void showRequestsFilesCreationDialog(Context context) {
+    private static void showRequestsFilesCreationDialog(Context context) {
 
         if (requestsAdapter.getSelectedApps() > 0) {
 
@@ -241,7 +241,7 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
         showRequestsFilesCreationDialog(context);
     }
 
-    public boolean haveHappenedXHoursSinceLastRequest(int numOfMinutes) {
+    private boolean haveHappenedXHoursSinceLastRequest(int numOfMinutes) {
 
         float hours = numOfMinutes / 60.0f;
         float hoursToDays = hours / 24.0f;
@@ -250,8 +250,8 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
 
         Calendar c = Calendar.getInstance();
 
-        String time = "";
-        int dayNum = 0;
+        String time;
+        int dayNum;
 
         if (!mPrefs.getRequestsCreated()) {
             time = String.format("%02d", c.get(Calendar.HOUR_OF_DAY)) + ":" +
@@ -300,7 +300,7 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
                 }
                 difference = (dateMax.getTime() - startDate.getTime()) + (endDate.getTime() - dateMin.getTime());
             }
-            int days = (int) Integer.valueOf(currentDay) - dayNum;
+            int days = Integer.valueOf(currentDay) - dayNum;
             int hoursHappened = (int) ((difference - (1000 * 60 * 60 * 24 * days)) / (1000 * 60 * 60));
             int min = (int) (difference - (1000 * 60 * 60 * 24 * days) - (1000 * 60 * 60 * hoursHappened)) / (1000 * 60);
 

@@ -156,5 +156,5 @@
 
     <!--paypal currency code (ie CAD); make sure this is a valid code-->
     <string name="paypal_currency_code"></string>
-	
+
 </resources>

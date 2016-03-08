@@ -98,13 +98,6 @@ public class ToolbarColorizer {
         }
     }
 
-    public static void tintChangelogIcon(MenuItem item, Context context, int color) {
-        item.setIcon(
-                getTintedIcon(
-                        ContextCompat.getDrawable(context, R.drawable.ic_changelog),
-                        color));
-    }
-
     public static void tintSaveIcon(MenuItem item, Context context, int color) {
         item.setIcon(
                 getTintedIcon(

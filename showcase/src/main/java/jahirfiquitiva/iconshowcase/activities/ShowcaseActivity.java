@@ -93,25 +93,23 @@ import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.utilities.ZooperIconFontsHelper;
-import jahirfiquitiva.iconshowcase.views.CustomCoordinatorLayout;
 
 public class ShowcaseActivity extends AppCompatActivity implements FolderChooserDialog.FolderSelectionCallback, PermissionUtils.OnPermissionResultListener {
 
-    public static boolean WITH_LICENSE_CHECKER = false,
+    private static boolean WITH_LICENSE_CHECKER = false,
             WITH_INSTALLED_FROM_AMAZON = false,
-            WITH_ZOOPER_SECTION = false,
             WITH_DONATIONS_SECTION = false,
             WITH_ICONS_BASED_CHANGELOG = true,
-            WITH_USER_WALLPAPER_AS_TOOLBAR_HEADER = true,
-            WITH_ALTERNATIVE_ABOUT_SECTION = true,
             WITH_SECONDARY_DRAWER_ITEMS_ICONS = false,
 
     //Donations stuff
     DONATIONS_GOOGLE = false,
             DONATIONS_PAYPAL = false,
             DONATIONS_FLATTR = false,
-            DONATIONS_BITCOIN = false,
-            SHOW_LOAD_ICONS_DIALOG = true,
+            DONATIONS_BITCOIN = false;
+    //SHOW_LOAD_ICONS_DIALOG = true;
+
+    public static boolean WITH_USER_WALLPAPER_AS_TOOLBAR_HEADER = true, WITH_ZOOPER_SECTION = false,
             DEBUGGING = false;
 
     private static String[] mGoogleCatalog = new String[0],
@@ -126,33 +124,31 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             PAYPAL_CURRENCY_CODE = "",
             installer;
 
-    IabHelper mHelper;
+    private IabHelper mHelper;
 
-    public static DrawerHeaderStyle drawerHeaderStyle = DrawerHeaderStyle.NORMAL_HEADER;
+    private static DrawerHeaderStyle drawerHeaderStyle = DrawerHeaderStyle.NORMAL_HEADER;
 
     private static final String MARKET_URL = "https://play.google.com/store/apps/details?id=";
-    public boolean mIsPremium = false, playStore = false;
+    private boolean mIsPremium = false, playStore = false;
 
     private static final String
             adw_action = "org.adw.launcher.icons.ACTION_PICK_ICON",
             turbo_action = "com.phonemetra.turbo.launcher.icons.ACTION_PICK_ICON",
             nova_action = "com.novalauncher.THEME";
 
-    public static boolean iconsPicker, wallsPicker, iconsPickerEnabled = false, wallsEnabled = false,
-            applyEnabled = false, SHUFFLE = true, shuffleIcons = true, selectAll = true;
+    public static boolean iconsPicker, wallsPicker, SHUFFLE = true;
+    private static boolean iconsPickerEnabled = false, wallsEnabled = false, shuffleIcons = true, selectAll = true;
 
     private static String thaAppName, thaHome, thaPreviews, thaApply, thaWalls, thaRequest, thaDonate, thaFAQs,
             thaZooper, thaCredits, thaSettings;
 
     private static AppCompatActivity context;
 
-    public String version;
+    public static long currentItem = -1, iconsPickerIdentifier = 0, applyIdentifier = 0;
+    private static long wallsIdentifier = 0, settingsIdentifier = 0, secondaryStart = 0;
 
-    public static long currentItem = -1, wallsIdentifier = 0,
-            iconsPickerIdentifier = 0, applyIdentifier = 0, settingsIdentifier = 0,
-            secondaryStart = 0;
-
-    public static int numOfIcons = 4, wallpaper = -1;
+    public static int numOfIcons = 4;
+    private static int wallpaper = -1;
 
     private boolean mLastTheme, mLastNavBar;
     private static Preferences mPrefs;
@@ -160,15 +156,13 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     public static MaterialDialog settingsDialog, changelogDialog; //loadIcons,
     public static Toolbar toolbar;
     public static AppBarLayout appbar;
-    public static CollapsingToolbarLayout collapsingToolbarLayout;
-    public static CustomCoordinatorLayout coordinatorLayout;
+    private static CollapsingToolbarLayout collapsingToolbarLayout;
     public static ImageView icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8;
-    public static TextView titleView;
     public static ImageView toolbarHeader;
     public static Bitmap toolbarHeaderImage;
 
     public static Drawer drawer;
-    public AccountHeader drawerHeader;
+    private AccountHeader drawerHeader;
 
     private static boolean themeMode;
 
@@ -191,9 +185,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         String[] configurePrimaryDrawerItems = getResources().getStringArray(R.array.primary_drawer_items);
         primaryDrawerItems = new String[configurePrimaryDrawerItems.length + 1];
         primaryDrawerItems[0] = "Main";
-        for (int i = 0; i < configurePrimaryDrawerItems.length; i++) {
-            primaryDrawerItems[i + 1] = configurePrimaryDrawerItems[i];
-        }
+        System.arraycopy(configurePrimaryDrawerItems, 0, primaryDrawerItems, 1, configurePrimaryDrawerItems.length);
 
         themeMode = getResources().getBoolean(R.bool.theme_mode);
 
@@ -201,7 +193,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
         WITH_USER_WALLPAPER_AS_TOOLBAR_HEADER = getResources().getBoolean(R.bool.user_wallpaper_in_home);
         WITH_ICONS_BASED_CHANGELOG = getResources().getBoolean(R.bool.icons_changelog);
-        WITH_ALTERNATIVE_ABOUT_SECTION = getResources().getBoolean(R.bool.cards_credits);
+        boolean WITH_ALTERNATIVE_ABOUT_SECTION = getResources().getBoolean(R.bool.cards_credits);
         WITH_SECONDARY_DRAWER_ITEMS_ICONS = getResources().getBoolean(R.bool.secondary_drawer_items_icons);
 
         shuffleIcons = getResources().getBoolean(R.bool.shuffle_toolbar_icons);
@@ -283,10 +275,8 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
         runLicenseChecker();
 
-        coordinatorLayout = (CustomCoordinatorLayout) findViewById(R.id.mainCoordinatorLayout);
         appbar = (AppBarLayout) findViewById(R.id.appbar);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        titleView = (TextView) findViewById(R.id.title);
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbar);
         toolbarHeader = (ImageView) findViewById(R.id.toolbarHeader);
 
@@ -365,7 +355,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             if (iconsPicker && iconsPickerEnabled) {
                 drawerItemClick(iconsPickerIdentifier);
                 drawer.setSelection(iconsPickerIdentifier);
-                /*
+                /* TODO Double check if this is secure enough to be deleted.
                 loadIcons = ISDialogs.showLoadingIconsDialog(context);
                 loadIcons.show();
                 loadIcons.setOnDismissListener(new DialogInterface.OnDismissListener() {
@@ -400,7 +390,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         }
     }
 
-    public static String fragment2title(String fragment) {
+    private static String fragment2title(String fragment) {
         switch (fragment) {
             case "Main":
                 return thaAppName;
@@ -505,7 +495,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         if (!iconsPicker && !wallsPicker) {
             setupToolbarHeader(this, toolbarHeader);
         }
-        Utils.setupToolbarIconsAndTextsColors(context, appbar, toolbar, toolbarHeaderImage);
+        Utils.setupToolbarIconsAndTextsColors(context, appbar, toolbar, toolbarHeaderImage, false);
         if (mLastTheme != ThemeUtils.darkTheme
                 || mLastNavBar != ThemeUtils.coloredNavBar) {
             ThemeUtils.restartActivity(this);
@@ -648,7 +638,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
     private void showChangelogDialog() {
         String launchinfo = getSharedPreferences("PrefsFile", MODE_PRIVATE).getString("version", "0");
         storeSharedPrefs();
-        if (launchinfo != null && !launchinfo.equals(Utils.getAppVersion(this))) {
+        if (!launchinfo.equals(Utils.getAppVersion(this))) {
             if (WITH_ZOOPER_SECTION) {
                 if (!PermissionUtils.canAccessStorage(this)) {
                     PermissionUtils.requestStoragePermission(this, this);
@@ -727,7 +717,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                 });
     }
 
-    public void loadWallsList() {
+    private void loadWallsList() {
         if (mPrefs.getWallsListLoaded()) {
             WallpapersList.clearList();
             mPrefs.setWallsListLoaded(!mPrefs.getWallsListLoaded());
@@ -763,7 +753,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         SettingsFragment.changeValues(getApplicationContext());
     }
 
-    public void setupDrawer(final Toolbar toolbar, Bundle savedInstanceState) {
+    private void setupDrawer(final Toolbar toolbar, Bundle savedInstanceState) {
 
         //Initialize PrimaryDrawerItem
         PrimaryDrawerItem home, previews, walls, requests, apply, faqs, zooper;
@@ -845,7 +835,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                     break;
 
                 case "Apply":
-                    applyEnabled = true;
                     applyIdentifier = i + 1;
                     apply = new PrimaryDrawerItem().withName(thaApply).withIcon(GoogleMaterial.Icon.gmd_open_in_browser).withIdentifier(applyIdentifier);
                     drawerBuilder.addDrawerItems(apply);
@@ -978,8 +967,8 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         }
     }
 
-    public void getAction() {
-        String action = "action";
+    private void getAction() {
+        String action;
         try {
             action = getIntent().getAction();
         } catch (Exception e) {
@@ -1173,7 +1162,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         toolbarHeader.setVisibility(View.VISIBLE);
     }
 
-    public boolean isPremium() {
+    private boolean isPremium() {
         return mIsPremium;
     }
 

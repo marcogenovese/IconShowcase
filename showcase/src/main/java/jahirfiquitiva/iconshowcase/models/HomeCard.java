@@ -6,15 +6,16 @@ import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-/**
- * Created by 7681 on 2016-02-24.
- */
 public class HomeCard implements Parcelable {
 
-    public String title, desc, onClickLink, packageName;
-    public Drawable img;
-    public Context context;
-    public boolean imgEnabled, isAnApp, isInstalled;
+    public final String title, desc;
+    public String onClickLink;
+    private String packageName;
+    public final Drawable img;
+    private Context context;
+    public final boolean imgEnabled;
+    private boolean isAnApp;
+    public boolean isInstalled;
     public Intent intent;
 
     public HomeCard(Builder builder) {

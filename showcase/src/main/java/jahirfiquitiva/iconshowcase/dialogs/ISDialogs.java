@@ -27,6 +27,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -96,18 +97,20 @@ public final class ISDialogs {
                 .build();
 
         final View v = ShowcaseActivity.changelogDialog.getCustomView();
-        final RecyclerView iconsGrid = (RecyclerView) v.findViewById(R.id.changelogRV);
-        final int grids = context.getResources().getInteger(R.integer.icons_grid_width);
-        iconsGrid.setLayoutManager(new GridLayoutManager(context, grids));
+        if (v != null) {
+            final RecyclerView iconsGrid = (RecyclerView) v.findViewById(R.id.changelogRV);
+            final int grids = context.getResources().getInteger(R.integer.icons_grid_width);
+            iconsGrid.setLayoutManager(new GridLayoutManager(context, grids));
 
-        ArrayList<IconItem> icons = null;
+            ArrayList<IconItem> icons = null;
 
-        if (LoadIconsLists.getIconsLists() != null) {
-            icons = LoadIconsLists.getIconsLists().get(0).getIconsArray();
+            if (LoadIconsLists.getIconsLists() != null) {
+                icons = LoadIconsLists.getIconsLists().get(0).getIconsArray();
+            }
+
+            final IconsAdapter adapter = new IconsAdapter(context, icons, true);
+            iconsGrid.setAdapter(adapter);
         }
-
-        final IconsAdapter adapter = new IconsAdapter(context, icons, true);
-        iconsGrid.setAdapter(adapter);
 
         ShowcaseActivity.changelogDialog.show();
     }
@@ -186,27 +189,29 @@ public final class ISDialogs {
 
         ImageView authorIcon, dimensIcon, copyrightIcon;
 
-        authorIcon = (ImageView) v.findViewById(R.id.icon_author);
-        dimensIcon = (ImageView) v.findViewById(R.id.icon_dimensions);
-        copyrightIcon = (ImageView) v.findViewById(R.id.icon_copyright);
+        if (v != null) {
+            authorIcon = (ImageView) v.findViewById(R.id.icon_author);
+            dimensIcon = (ImageView) v.findViewById(R.id.icon_dimensions);
+            copyrightIcon = (ImageView) v.findViewById(R.id.icon_copyright);
 
-        int light = ContextCompat.getColor(context, R.color.drawable_tint_dark);
-        int dark = ContextCompat.getColor(context, R.color.drawable_tint_light);
+            int light = ContextCompat.getColor(context, R.color.drawable_tint_dark);
+            int dark = ContextCompat.getColor(context, R.color.drawable_tint_light);
 
-        authorIcon.setImageDrawable(new IconicsDrawable(context)
-                .icon(GoogleMaterial.Icon.gmd_account)
-                .color(ThemeUtils.darkTheme ? light : dark)
-                .sizeDp(24));
+            authorIcon.setImageDrawable(new IconicsDrawable(context)
+                    .icon(GoogleMaterial.Icon.gmd_account)
+                    .color(ThemeUtils.darkTheme ? light : dark)
+                    .sizeDp(24));
 
-        dimensIcon.setImageDrawable(new IconicsDrawable(context)
-                .icon(GoogleMaterial.Icon.gmd_aspect_ratio_alt)
-                .color(ThemeUtils.darkTheme ? light : dark)
-                .sizeDp(24));
+            dimensIcon.setImageDrawable(new IconicsDrawable(context)
+                    .icon(GoogleMaterial.Icon.gmd_aspect_ratio_alt)
+                    .color(ThemeUtils.darkTheme ? light : dark)
+                    .sizeDp(24));
 
-        copyrightIcon.setImageDrawable(new IconicsDrawable(context)
-                .icon(GoogleMaterial.Icon.gmd_info)
-                .color(ThemeUtils.darkTheme ? light : dark)
-                .sizeDp(24));
+            copyrightIcon.setImageDrawable(new IconicsDrawable(context)
+                    .icon(GoogleMaterial.Icon.gmd_info)
+                    .color(ThemeUtils.darkTheme ? light : dark)
+                    .sizeDp(24));
+        }
 
         LinearLayout author = (LinearLayout) v.findViewById(R.id.authorName);
         LinearLayout dimensions = (LinearLayout) v.findViewById(R.id.wallDimensions);
@@ -443,7 +448,7 @@ public final class ISDialogs {
                 .positiveText(R.string.close)
                 .onNeutral(new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onClick(MaterialDialog dialog, DialogAction which) {
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         Utils.openLinkInChromeCustomTab(context,
                                 context.getResources().getString(R.string.sherry_link));
                     }

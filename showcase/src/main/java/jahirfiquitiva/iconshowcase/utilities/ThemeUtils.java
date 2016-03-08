@@ -25,14 +25,11 @@ package jahirfiquitiva.iconshowcase.utilities;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
-
-import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.util.Calendar;
 
@@ -139,15 +136,6 @@ public class ThemeUtils {
 
     public static void restartActivity(Activity activity) {
         activity.recreate();
-    }
-
-    public static void restartActivity(final Activity activity, MaterialDialog dialog) {
-        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                activity.recreate();
-            }
-        });
     }
 
 }

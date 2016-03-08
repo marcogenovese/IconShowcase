@@ -29,10 +29,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -52,7 +50,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
     }
 
     private final Context context;
-    private Preferences mPrefs;
+    private final Preferences mPrefs;
 
     private ArrayList<WallpaperItem> wallsList;
 
@@ -142,9 +140,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
         public final View view;
         public final ImageView wall;
         public final TextView name, authorName;
-        public final ProgressBar progressBar;
         public final LinearLayout titleBg;
-        public FrameLayout layout;
 
         WallsHolder(View v) {
             super(v);
@@ -152,9 +148,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
             wall = (ImageView) view.findViewById(R.id.wall);
             name = (TextView) view.findViewById(R.id.name);
             authorName = (TextView) view.findViewById(R.id.author);
-            progressBar = (ProgressBar) view.findViewById(R.id.progress);
             titleBg = (LinearLayout) view.findViewById(R.id.titleBg);
-            layout = (FrameLayout) view.findViewById(R.id.wall_frame_layout);
             view.setOnClickListener(this);
             view.setOnLongClickListener(this);
         }

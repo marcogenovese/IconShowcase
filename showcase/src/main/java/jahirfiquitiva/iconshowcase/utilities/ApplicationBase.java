@@ -48,8 +48,6 @@ public class ApplicationBase extends Application {
     // Main list off all apps to request.
     public static ArrayList<RequestItem> allAppsToRequest;
 
-    public static int wallpaper;
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -68,10 +66,6 @@ public class ApplicationBase extends Application {
             }
         }).start();
 
-    }
-
-    public Context getAppContext() {
-        return this.context;
     }
 
     private void loadAppsForRequest() {

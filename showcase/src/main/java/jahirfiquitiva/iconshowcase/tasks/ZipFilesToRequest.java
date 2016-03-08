@@ -65,7 +65,7 @@ import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
 
-    private MaterialDialog dialog;
+    private final MaterialDialog dialog;
     private ArrayList<RequestItem> appsListFinal = new ArrayList<>();
 
     private static final int BUFFER = 2048;
@@ -74,14 +74,14 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
 
     private static String filesLocation;
 
-    private static ArrayList<String> appsNames = new ArrayList<>();
-    private static ArrayList<String> appsPackages = new ArrayList<>();
-    private static ArrayList<String> appsClasses = new ArrayList<>();
-    private static ArrayList<Drawable> appsIcons = new ArrayList<>();
+    private final static ArrayList<String> appsNames = new ArrayList<>();
+    private final static ArrayList<String> appsPackages = new ArrayList<>();
+    private final static ArrayList<String> appsClasses = new ArrayList<>();
+    private final static ArrayList<Drawable> appsIcons = new ArrayList<>();
 
     private StringBuilder emailContent = new StringBuilder();
 
-    private WeakReference<Activity> wrActivity;
+    private final WeakReference<Activity> wrActivity;
 
     private Activity activity;
 
@@ -91,7 +91,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
         this.appsListFinal = appsListFinal;
     }
 
-    private SimpleDateFormat date = new SimpleDateFormat("yyyyMMdd_hhmmss", Locale.getDefault());
+    private final SimpleDateFormat date = new SimpleDateFormat("yyyyMMdd_hhmmss", Locale.getDefault());
 
     @Override
     protected void onPreExecute() {
@@ -128,6 +128,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
 
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     @Override
     protected Boolean doInBackground(Void... params) {
         boolean worked;
@@ -306,6 +307,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
 
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     private static void deleteDirectory(File dir) {
         if (dir.exists()) {
             File[] files = dir.listFiles();
@@ -335,9 +337,9 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
             ZipOutputStream zipOutputStream = new ZipOutputStream(
                     new BufferedOutputStream(
                             new FileOutputStream(outputFile), BUFFER));
-            try{
+            try {
                 zipFile(path, zipOutputStream, "");
-            }catch (Exception e){
+            } catch (Exception e) {
                 final File files[] = filesFolder.listFiles();
                 for (final File file : files) {
                     zipFolder(file, zipOutputStream);
@@ -362,8 +364,8 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
         final String[] files = file.list();
 
         if (file.isFile()) {
-            FileInputStream in = new FileInputStream(file.getAbsolutePath());
             try {
+                FileInputStream in = new FileInputStream(file.getAbsolutePath());
                 zipOutputStream.putNextEntry(new ZipEntry(zipPath + file.getName()));
                 int len;
                 while ((len = in.read(buf)) > 0) {
@@ -375,7 +377,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
                 //Do nothing
             } finally {
                 if (zipOutputStream != null) zipOutputStream.closeEntry();
-                in.close();
+
             }
         } else if (files.length > 0) {
             for (String file1 : files) {
