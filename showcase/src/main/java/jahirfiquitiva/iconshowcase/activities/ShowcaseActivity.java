@@ -252,10 +252,6 @@ public class ShowcaseActivity extends AppCompatActivity implements
             secondaryDrawerItems = new String[]{"Credits", "Settings"};
         }
 
-        if (WITH_ALTERNATIVE_ABOUT_SECTION) { //use alternative credits layout if selected
-            secondaryDrawerItems[0] = "CreditsAlt";
-        }
-
         drawerHeaderStyle = getResources().getInteger(R.integer.nav_drawer_header_style);
 
         if (drawerHeaderStyle < 1 || drawerHeaderStyle > 3) {
@@ -404,8 +400,6 @@ public class ShowcaseActivity extends AppCompatActivity implements
             case "FAQs":
                 return thaFAQs;
             case "Credits":
-                return thaCredits;
-            case "CreditsAlt":
                 return thaCredits;
             case "Settings":
                 return thaSettings;
@@ -863,10 +857,6 @@ public class ShowcaseActivity extends AppCompatActivity implements
                         creditsItem = new SecondaryDrawerItem().withName(thaCredits).withIcon(GoogleMaterial.Icon.gmd_info).withIdentifier(i + secondaryStart);
                         drawerBuilder.addDrawerItems(creditsItem);
                         break;
-                    case "CreditsAlt":
-                        creditsItem = new SecondaryDrawerItem().withName(thaCredits).withIcon(GoogleMaterial.Icon.gmd_info).withIdentifier(i + secondaryStart);
-                        drawerBuilder.addDrawerItems(creditsItem);
-                        break;
                     case "Settings":
                         settingsIdentifier = i + secondaryStart;
                         settingsItem = new SecondaryDrawerItem().withName(thaSettings).withIcon(GoogleMaterial.Icon.gmd_settings).withIdentifier(i + secondaryStart);
@@ -882,10 +872,6 @@ public class ShowcaseActivity extends AppCompatActivity implements
             for (int i = 0; i < secondaryDrawerItems.length; i++) {
                 switch (secondaryDrawerItems[i]) {
                     case "Credits":
-                        creditsItem = new SecondaryDrawerItem().withName(thaCredits).withIdentifier(i + secondaryStart);
-                        drawerBuilder.addDrawerItems(creditsItem);
-                        break;
-                    case "CreditsAlt":
                         creditsItem = new SecondaryDrawerItem().withName(thaCredits).withIdentifier(i + secondaryStart);
                         drawerBuilder.addDrawerItems(creditsItem);
                         break;

@@ -61,7 +61,7 @@ public class FAQsAdapter extends RecyclerView.Adapter<FAQsAdapter.FAQsHolder> {
 
         FAQsItem faq = faqs.get(position);
 
-        holder.txtQuestion.setText(faq.getQuestion());
+        holder.txtQuestion.setText(String.valueOf(position + 1) + ". " + faq.getQuestion());
         holder.txtAnswer.setText(faq.getAnswer());
 
         holder.view.setTag(position);

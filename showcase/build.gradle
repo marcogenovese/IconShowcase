@@ -98,7 +98,7 @@ dependencies {
     }
 
     //Material Drawer
-    compile('com.mikepenz:materialdrawer:5.0.9@aar') {
+    compile('com.mikepenz:materialdrawer:5.1.3@aar') {
         transitive = true
     }
 
@@ -111,9 +111,6 @@ dependencies {
     //Muzei API
     //noinspection GradleDynamicVersion
     compile 'com.google.android.apps.muzei:muzei-api:2.+'
-
-    //Floating Action Menu
-    compile 'com.github.clans:fab:1.6.2'
 
     //Circular Image View
     compile 'de.hdodenhof:circleimageview:2.0.0'

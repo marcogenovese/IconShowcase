@@ -101,7 +101,7 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
                 if (mPrefs.getAnimationsEnabled()) {
                     //TODO: pick an animation
 
-                    if (!inChangelog) setAnimation(holder.icon, holder.getAdapterPosition());
+                    //if (!inChangelog) setAnimation(holder.icon, holder.getAdapterPosition());
 
                     TransitionDrawable td = new TransitionDrawable(new Drawable[]{new ColorDrawable(Color.TRANSPARENT), new BitmapDrawable(context.getResources(), resource)});
                     holder.icon.setImageDrawable(td);
