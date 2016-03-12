@@ -86,6 +86,7 @@ import jahirfiquitiva.iconshowcase.fragments.SettingsFragment;
 import jahirfiquitiva.iconshowcase.fragments.WallpapersFragment;
 import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.models.WallpapersList;
+import jahirfiquitiva.iconshowcase.tasks.LoadAppsToRequest;
 import jahirfiquitiva.iconshowcase.tasks.LoadIconsLists;
 import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
@@ -93,7 +94,8 @@ import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.utilities.ZooperIconFontsHelper;
 
-public class ShowcaseActivity extends AppCompatActivity implements FolderChooserDialog.FolderSelectionCallback, PermissionUtils.OnPermissionResultListener {
+public class ShowcaseActivity extends AppCompatActivity implements
+        FolderChooserDialog.FolderSelectionCallback, PermissionUtils.OnPermissionResultListener {
 
     private static boolean WITH_LICENSE_CHECKER = false,
             WITH_INSTALLED_FROM_AMAZON = false,
@@ -710,13 +712,19 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                 });
     }
 
+    private void loadAppsForRequest() {
+        if (mPrefs.getAppsToRequestLoaded()) {
+            mPrefs.setAppsToRequestLoaded(!mPrefs.getAppsToRequestLoaded());
+        }
+        new LoadAppsToRequest(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
     private void loadWallsList() {
         if (mPrefs.getWallsListLoaded()) {
             WallpapersList.clearList();
             mPrefs.setWallsListLoaded(!mPrefs.getWallsListLoaded());
         }
         new WallpapersFragment.DownloadJSON(new WallsListInterface() {
-
             @Override
             public void checkWallsListCreation(boolean result) {
                 mPrefs.setWallsListLoaded(result);
@@ -728,7 +736,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
                     WallpapersFragment.mAdapter.notifyDataSetChanged();
                 }
             }
-        }, this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }, context).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     @Override

@@ -209,7 +209,8 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
                         halfEmptyComp,
                         iconName,
                         completeComponent,
-                        getIconResId(context, iconName)
+                        Utils.getIconResId(context, context.getResources(),
+                                context.getPackageName(), iconName)
                 ));
             }
 
@@ -301,17 +302,6 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
         }
 
         return activitiesToRemove;
-    }
-
-    private static int getIconResId(Context context, String name) {
-        Resources r = context.getResources();
-        String p = context.getPackageName();
-        int res = r.getIdentifier(name, "drawable", p);
-        if (res != 0) {
-            return res;
-        } else {
-            return 0;
-        }
     }
 
     private static void showAppFilterErrors(ArrayList<AppFilterError> errors, Context context) {

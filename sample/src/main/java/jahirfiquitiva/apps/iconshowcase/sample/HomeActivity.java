@@ -23,15 +23,10 @@
 
 package jahirfiquitiva.apps.iconshowcase.sample;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import java.util.ArrayList;
-
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
-import jahirfiquitiva.iconshowcase.models.RequestItem;
-import jahirfiquitiva.iconshowcase.utilities.Preferences;
 
 public class HomeActivity extends ShowcaseActivity {
 

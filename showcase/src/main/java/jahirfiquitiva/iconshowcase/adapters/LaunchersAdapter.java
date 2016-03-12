@@ -75,7 +75,7 @@ public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.Laun
     public void onBindViewHolder(LauncherHolder holder, int position) {
         // Turns Launcher name "Something Pro" to "l_something_pro"
         String iconName = "ic_" + launchers.get(position).name.toLowerCase().replace(" ", "_");
-        int iconResource = getIconResId(context.getResources(), context.getPackageName(), iconName);
+        int iconResource = Utils.getIconResId(context, context.getResources(), context.getPackageName(), iconName);
 
         final int dark = ContextCompat.getColor(context, R.color.launcher_tint_dark);
         final int light = ContextCompat.getColor(context, R.color.launcher_tint_light);
@@ -120,16 +120,6 @@ public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.Laun
             int index = (int) v.getTag();
             if (mCallback != null)
                 mCallback.onClick(index);
-        }
-    }
-
-    private int getIconResId(Resources r, String p, String name) {
-        int res = r.getIdentifier(name, "drawable", p);
-        if (res != 0) {
-            return res;
-        } else {
-            if (ShowcaseActivity.DEBUGGING) Utils.showLog(context, "Missing icon: " + name);
-            return 0;
         }
     }
 

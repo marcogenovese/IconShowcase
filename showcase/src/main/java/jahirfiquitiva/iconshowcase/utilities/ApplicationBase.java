@@ -75,7 +75,7 @@ public class ApplicationBase extends Application {
             WallpapersList.clearList();
             mPrefs.setWallsListLoaded(!mPrefs.getWallsListLoaded());
         }
-        WallpapersFragment.DownloadJSON downloadJSON = new WallpapersFragment.DownloadJSON(new ShowcaseActivity.WallsListInterface() {
+        new WallpapersFragment.DownloadJSON(new ShowcaseActivity.WallsListInterface() {
             @Override
             public void checkWallsListCreation(boolean result) {
                 mPrefs.setWallsListLoaded(result);
@@ -87,8 +87,7 @@ public class ApplicationBase extends Application {
                     WallpapersFragment.mAdapter.notifyDataSetChanged();
                 }
             }
-        }, context);
-        downloadJSON.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }, context).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
 }

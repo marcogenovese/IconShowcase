@@ -148,20 +148,21 @@ public class MainFragment extends Fragment {
                                         .title(appsNames[i])
                                         .description(appsDescriptions[i])
                                         .icon(ContextCompat.getDrawable(context,
-                                                getIconResId(getResources(), context.getPackageName(),
-                                                        appsIcons[i])))
+                                                Utils.getIconResId(context, getResources(),
+                                                        context.getPackageName(), appsIcons[i])))
                                         .onClickLink(appsPackages[i], true, true, intent)
                                         .build());
                             } catch (Resources.NotFoundException e) {
                                 if (ShowcaseActivity.DEBUGGING)
-                                    Utils.showLog(context, "There's no icon that matches name: " + appsIcons[i]);
+                                    Utils.showLog(context, "There's no icon that matches name: "
+                                            + appsIcons[i]);
                                 homeCards.add(new HomeCard.Builder()
                                         .context(getActivity())
                                         .title(appsNames[i])
                                         .description(appsDescriptions[i])
                                         .icon(ContextCompat.getDrawable(context,
-                                                getIconResId(getResources(), context.getPackageName(),
-                                                        "ic_na_launcher")))
+                                                Utils.getIconResId(context, getResources(),
+                                                        context.getPackageName(), "ic_na_launcher")))
                                         .onClickLink(appsPackages[i], true, true, intent)
                                         .build());
                             }
@@ -173,8 +174,8 @@ public class MainFragment extends Fragment {
                                     .title(appsNames[i])
                                     .description(appsDescriptions[i])
                                     .icon(ContextCompat.getDrawable(context,
-                                            getIconResId(getResources(), context.getPackageName(),
-                                                    appsIcons[i])))
+                                            Utils.getIconResId(context, getResources(),
+                                                    context.getPackageName(), appsIcons[i])))
                                     .onClickLink(appsPackages[i], true, false, null)
                                     .build());
                         } catch (Resources.NotFoundException e) {
@@ -185,8 +186,8 @@ public class MainFragment extends Fragment {
                                     .title(appsNames[i])
                                     .description(appsDescriptions[i])
                                     .icon(ContextCompat.getDrawable(context,
-                                            getIconResId(getResources(), context.getPackageName(),
-                                                    "ic_na_launcher")))
+                                            Utils.getIconResId(context, getResources(),
+                                                    context.getPackageName(), "ic_na_launcher")))
                                     .onClickLink(appsPackages[i], true, false, null)
                                     .build());
                         }
@@ -280,15 +281,6 @@ public class MainFragment extends Fragment {
             fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_apply_layers));
         } else {
             fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_question));
-        }
-    }
-
-    private int getIconResId(Resources r, String p, String name) {
-        int res = r.getIdentifier(name, "drawable", p);
-        if (res != 0) {
-            return res;
-        } else {
-            return 0;
         }
     }
 
