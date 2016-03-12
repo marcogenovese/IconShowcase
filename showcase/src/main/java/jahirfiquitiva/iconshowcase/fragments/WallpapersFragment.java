@@ -130,7 +130,7 @@ public class WallpapersFragment extends Fragment {
 
         mRecyclerView = (RecyclerView) layout.findViewById(R.id.wallsGrid);
 
-        fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
+        //fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) layout.findViewById(R.id.swipeRefreshLayout);
 
@@ -187,12 +187,17 @@ public class WallpapersFragment extends Fragment {
 
                     mRecyclerView.setAdapter(mAdapter);
 
-                    if (fastScroller.getVisibility() != View.VISIBLE) {
-                        fastScroller.setVisibility(View.VISIBLE);
-                    }
+                    //if (fastScroller.getVisibility() != View.VISIBLE) {
+                        //fastScroller.setVisibility(View.VISIBLE);
+                    //}
 
                     if (Utils.hasNetwork(context)) {
-                        showStuff();
+                        hideProgressBar();
+                        noConnection.setVisibility(View.GONE);
+                        mRecyclerView.setVisibility(View.VISIBLE);
+                        //fastScroller.setVisibility(View.VISIBLE);
+                        mSwipeRefreshLayout.setEnabled(false);
+                        mSwipeRefreshLayout.setRefreshing(false);
                     } else {
                         hideStuff();
                     }
@@ -228,20 +233,11 @@ public class WallpapersFragment extends Fragment {
         }
     }
 
-    private static void showStuff() {
-        hideProgressBar();
-        noConnection.setVisibility(View.GONE);
-        mRecyclerView.setVisibility(View.VISIBLE);
-        fastScroller.setVisibility(View.VISIBLE);
-        mSwipeRefreshLayout.setEnabled(false);
-        mSwipeRefreshLayout.setRefreshing(false);
-    }
-
     private static void hideStuff() {
         hideProgressBar();
         noConnection.setVisibility(View.VISIBLE);
         mRecyclerView.setVisibility(View.GONE);
-        fastScroller.setVisibility(View.GONE);
+        //fastScroller.setVisibility(View.GONE);
         mSwipeRefreshLayout.setEnabled(false);
         mSwipeRefreshLayout.setRefreshing(false);
     }
@@ -287,16 +283,16 @@ public class WallpapersFragment extends Fragment {
             mRecyclerView.setVisibility(View.VISIBLE);
         }
 
-        fastScroller.attachRecyclerView(mRecyclerView);
+        //fastScroller.attachRecyclerView(mRecyclerView);
 
-        if (fastScroller.getVisibility() != View.VISIBLE) {
-            fastScroller.setVisibility(View.VISIBLE);
-        }
+        //if (fastScroller.getVisibility() != View.VISIBLE) {
+            //fastScroller.setVisibility(View.VISIBLE);
+        //}
     }
 
     public static void updateRecyclerView(int newColumns) {
         mRecyclerView.setVisibility(View.GONE);
-        fastScroller.setVisibility(View.GONE);
+        //fastScroller.setVisibility(View.GONE);
         showProgressBar();
         setupRecyclerView(true, newColumns);
         hideProgressBar();
@@ -305,7 +301,7 @@ public class WallpapersFragment extends Fragment {
     public static void refreshWalls(Activity context) {
         hideProgressBar();
         mRecyclerView.setVisibility(View.GONE);
-        fastScroller.setVisibility(View.GONE);
+        //fastScroller.setVisibility(View.GONE);
         if (Utils.hasNetwork(context)) {
             Utils.showSimpleSnackbar(context, layout,
                     context.getResources().getString(R.string.refreshing_walls));
@@ -322,17 +318,11 @@ public class WallpapersFragment extends Fragment {
         });
     }
 
-    private static void openViewer(Context context, WallpapersAdapter.WallsHolder wallsHolder,
-                                   int index, final ArrayList<WallpaperItem> list) {
+    private static void openViewer(Context context, WallpapersAdapter.WallsHolder wallsHolder, int index, final ArrayList<WallpaperItem> list) {
 
         final Intent intent = new Intent(context, ViewerActivity.class);
 
-        WallpaperItem wallItem = list.get(index);
-        intent.putExtra("wallName", wallItem.getWallName());
-        intent.putExtra("authorName", wallItem.getWallAuthor());
-        intent.putExtra("wallUrl", wallItem.getWallURL());
-        intent.putExtra("wallDimensions", wallItem.getWallDimensions());
-        intent.putExtra("wallCopyright", wallItem.getWallCopyright());
+        intent.putExtra("item", list.get(index));
         intent.putExtra("transitionName", ViewCompat.getTransitionName(wallsHolder.wall));
 
         Bitmap bitmap;

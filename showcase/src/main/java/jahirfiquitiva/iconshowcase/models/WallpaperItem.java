@@ -23,12 +23,26 @@
 
 package jahirfiquitiva.iconshowcase.models;
 
-public class WallpaperItem {
+import android.os.Parcel;
+import android.os.Parcelable;
 
-    private final String wallName, wallAuthor, wallUrl, wallDimensions, wallCopyright;
+public class WallpaperItem implements Parcelable {
 
-    public WallpaperItem(String wallName, String wallAuthor, String wallUrl,
-                         String wallDimensions, String wallCopyright) {
+    public static final Creator<WallpaperItem> CREATOR = new Creator<WallpaperItem>() {
+        @Override
+        public WallpaperItem createFromParcel(Parcel in) {
+            return new WallpaperItem(in);
+        }
+
+        @Override
+        public WallpaperItem[] newArray(int size) {
+            return new WallpaperItem[size];
+        }
+    };
+
+    private String wallName, wallAuthor, wallUrl, wallDimensions, wallCopyright;
+
+    public WallpaperItem(String wallName, String wallAuthor, String wallUrl, String wallDimensions, String wallCopyright) {
         this.wallName = wallName;
         this.wallAuthor = wallAuthor;
         this.wallUrl = wallUrl;
@@ -56,4 +70,25 @@ public class WallpaperItem {
         return wallCopyright;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    protected WallpaperItem(Parcel in) {
+        wallName = in.readString();
+        wallAuthor = in.readString();
+        wallUrl = in.readString();
+        wallDimensions = in.readString();
+        wallCopyright = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(wallName);
+        dest.writeString(wallAuthor);
+        dest.writeString(wallUrl);
+        dest.writeString(wallDimensions);
+        dest.writeString(wallCopyright);
+    }
 }

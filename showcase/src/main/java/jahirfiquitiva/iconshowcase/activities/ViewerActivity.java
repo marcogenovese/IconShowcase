@@ -72,6 +72,7 @@ import java.io.FileOutputStream;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
+import jahirfiquitiva.iconshowcase.models.WallpaperItem;
 import jahirfiquitiva.iconshowcase.tasks.ApplyWallpaper;
 import jahirfiquitiva.iconshowcase.tasks.WallpaperToCrop;
 import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
@@ -86,11 +87,7 @@ public class ViewerActivity extends AppCompatActivity {
 
     private boolean mLastTheme, mLastNavBar;
 
-    private String wallUrl;
-    private String wallName;
-    private String wallAuthor;
-    private String wallDimensions;
-    private String wallCopyright;
+    private WallpaperItem item;
 
     private RelativeLayout layout;
     private static Preferences mPrefs;
@@ -121,11 +118,8 @@ public class ViewerActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String transitionName = intent.getStringExtra("transitionName");
-        wallUrl = intent.getStringExtra("wallUrl");
-        wallName = intent.getStringExtra("wallName");
-        wallAuthor = intent.getStringExtra("authorName");
-        wallDimensions = intent.getStringExtra("wallDimensions");
-        wallCopyright = intent.getStringExtra("wallCopyright");
+
+        item = intent.getParcelableExtra("item");
 
         setContentView(R.layout.wall_viewer_activity);
 
@@ -200,8 +194,7 @@ public class ViewerActivity extends AppCompatActivity {
         infoIV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ISDialogs.showWallpaperDetailsDialog(context, wallName, wallAuthor,
-                        wallDimensions, wallCopyright);
+                ISDialogs.showWallpaperDetailsDialog(context, item.getWallName(), item.getWallAuthor(), item.getWallDimensions(), item.getWallCopyright());
             }
         });
 
@@ -211,7 +204,7 @@ public class ViewerActivity extends AppCompatActivity {
         layout = (RelativeLayout) findViewById(R.id.viewerLayout);
 
         TextView wallNameText = (TextView) findViewById(R.id.wallName);
-        wallNameText.setText(wallName);
+        wallNameText.setText(item.getWallName());
 
         Bitmap bmp = null;
         String filename = getIntent().getStringExtra("image");
@@ -235,7 +228,7 @@ public class ViewerActivity extends AppCompatActivity {
 
         if (mPrefs.getAnimationsEnabled()) {
             Glide.with(context)
-                    .load(wallUrl)
+                    .load(item.getWallURL())
                     .placeholder(d)
                     .error(errorIcon)
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
@@ -257,7 +250,7 @@ public class ViewerActivity extends AppCompatActivity {
                     .into(mPhoto);
         } else {
             Glide.with(context)
-                    .load(wallUrl)
+                    .load(item.getWallURL())
                     .placeholder(d)
                     .error(errorIcon)
                     .dontAnimate()
@@ -495,7 +488,7 @@ public class ViewerActivity extends AppCompatActivity {
                                     public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                                         if (resource != null) {
                                             new WallpaperToCrop(context, dialogApply, resource,
-                                                    layout, wallName, toHide1, toHide2).execute();
+                                                    layout, item.getWallName(), toHide1, toHide2).execute();
                                         }
                                     }
                                 });
@@ -529,11 +522,11 @@ public class ViewerActivity extends AppCompatActivity {
             if (Utils.hasNetwork(context)) {
                 switch (action) {
                     case "save":
-                        saveWallpaperAction(wallName, wallUrl);
+                        saveWallpaperAction(item.getWallName(), item.getWallURL());
                         break;
 
                     case "apply":
-                        showApplyWallpaperDialog(context, wallUrl);
+                        showApplyWallpaperDialog(context, item.getWallURL());
                         break;
                 }
             } else {

@@ -31,7 +31,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -56,14 +55,11 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.github.florent37.glidepalette.GlidePalette;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Locale;
 
 import jahirfiquitiva.iconshowcase.R;
-import jahirfiquitiva.iconshowcase.adapters.WallpapersAdapter;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.views.CustomCoordinatorLayout;
@@ -211,51 +207,6 @@ public class Utils {
         emailBuilder.append("\nApp Version Code: ").append(appInfo.versionCode);
         intent.putExtra(Intent.EXTRA_TEXT, emailBuilder.toString());
         context.startActivity(Intent.createChooser(intent, (context.getResources().getString(R.string.send_title))));
-    }
-
-    public static GlidePalette getGlidePalette(String profile, boolean withTintedTexts, Preferences mPrefs,
-                                               String wallUrl, WallpapersAdapter.WallsHolder holder) {
-
-        GlidePalette palette;
-
-        int colorSwatch = GlidePalette.Profile.VIBRANT;
-
-        switch (profile) {
-            case "VIBRANT":
-                colorSwatch = GlidePalette.Profile.VIBRANT;
-                break;
-            case "VIBRANT_LIGHT":
-                colorSwatch = GlidePalette.Profile.VIBRANT_LIGHT;
-                break;
-            case "VIBRANT_DARK":
-                colorSwatch = GlidePalette.Profile.VIBRANT_LIGHT;
-                break;
-            case "MUTED":
-                colorSwatch = GlidePalette.Profile.MUTED;
-                break;
-            case "MUTED_LIGHT":
-                colorSwatch = GlidePalette.Profile.MUTED_LIGHT;
-                break;
-            case "MUTED_DARK":
-                colorSwatch = GlidePalette.Profile.MUTED_LIGHT;
-                break;
-        }
-
-        if (withTintedTexts) {
-            palette = GlidePalette.with(wallUrl)
-                    .use(colorSwatch)
-                    .intoBackground(holder.titleBg, GlidePalette.Swatch.RGB)
-                    .intoTextColor(holder.name, GlidePalette.Swatch.TITLE_TEXT_COLOR)
-                    .intoTextColor(holder.authorName, GlidePalette.Swatch.BODY_TEXT_COLOR)
-                    .crossfade(mPrefs.getAnimationsEnabled());
-        } else {
-            palette = GlidePalette.with(wallUrl)
-                    .use(colorSwatch)
-                    .intoBackground(holder.titleBg, GlidePalette.Swatch.RGB)
-                    .crossfade(mPrefs.getAnimationsEnabled());
-        }
-
-        return palette;
     }
 
     public static void collapseToolbar(Context context) {

@@ -89,7 +89,7 @@ public final class ISDialogs {
         ShowcaseActivity.changelogDialog.show();
     }
 
-    public static void showIconsChangelogDialog(final Context context) {
+    public static void showIconsChangelogDialog(final Activity context) {
 
         ShowcaseActivity.changelogDialog = new MaterialDialog.Builder(context).title(R.string.changelog)
                 .customView(R.layout.icons_changelog, false)

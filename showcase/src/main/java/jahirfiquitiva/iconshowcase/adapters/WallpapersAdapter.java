@@ -23,8 +23,15 @@
 
 package jahirfiquitiva.iconshowcase.adapters;
 
-import android.content.Context;
+import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.TransitionDrawable;
 import android.support.v4.view.ViewCompat;
+import android.support.v7.graphics.Palette;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,13 +41,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
 import java.util.ArrayList;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.models.WallpaperItem;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
-import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.WallsHolder> {
 
@@ -49,7 +56,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
         void onClick(WallsHolder view, int index, boolean longClick);
     }
 
-    private final Context context;
+    private final Activity context;
     private final Preferences mPrefs;
 
     private ArrayList<WallpaperItem> wallsList;
@@ -59,11 +66,33 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
 
     private final ClickListener mCallback;
 
-    public WallpapersAdapter(Context context, ClickListener callback) {
+    public WallpapersAdapter(Activity context, ClickListener callback) {
         this.context = context;
         this.mCallback = callback;
         this.mPrefs = new Preferences(context);
-        setupValues(context);
+
+        USE_PALETTE = context.getResources().getBoolean(R.bool.use_palette_api);
+        USE_PALETTE_IN_TEXTS = context.getResources().getBoolean(R.bool.use_palette_api_in_texts);
+        switch (context.getResources().getInteger(R.integer.palette_swatch)) {
+            case 1:
+                PALETTE_STYLE = "VIBRANT";
+                break;
+            case 2:
+                PALETTE_STYLE = "VIBRANT_LIGHT";
+                break;
+            case 3:
+                PALETTE_STYLE = "VIBRANT_DARK";
+                break;
+            case 4:
+                PALETTE_STYLE = "MUTED";
+                break;
+            case 5:
+                PALETTE_STYLE = "MUTED_LIGHT";
+                break;
+            case 6:
+                PALETTE_STYLE = "MUTED_DARK";
+                break;
+        }
     }
 
     public void setData(ArrayList<WallpaperItem> wallsList) {
@@ -78,9 +107,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
     }
 
     @Override
-    @SuppressWarnings("Unchecked assignment")
     public void onBindViewHolder(final WallsHolder holder, int position) {
-
         WallpaperItem wallItem = wallsList.get(position);
 
         ViewCompat.setTransitionName(holder.wall, "transition" + position);
@@ -90,44 +117,65 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
 
         final String wallUrl = wallItem.getWallURL();
 
-        if (mPrefs.getAnimationsEnabled()) {
+        Glide.with(context).load(wallUrl).asBitmap().into(new BitmapImageViewTarget(holder.wall) {
+            @Override
+            protected void setResource(Bitmap resource) {
+                if (mPrefs.getAnimationsEnabled()) {
+                    TransitionDrawable td = new TransitionDrawable(new Drawable[]{new ColorDrawable(Color.TRANSPARENT), new BitmapDrawable(context.getResources(), resource)});
+                    holder.wall.setImageDrawable(td);
+                    td.startTransition(250);
+                } else {
+                    holder.wall.setImageBitmap(resource);
+                }
 
-            if (USE_PALETTE) {
-                //noinspection unchecked
-                Glide.with(context)
-                        .load(wallUrl)
-                        .centerCrop()
-                        .listener(Utils.getGlidePalette(PALETTE_STYLE, USE_PALETTE_IN_TEXTS,
-                                mPrefs, wallUrl, holder))
-                        .into(holder.wall);
-            } else {
-                Glide.with(context)
-                        .load(wallUrl)
-                        .centerCrop()
-                        .into(holder.wall);
+                if (USE_PALETTE) {
+                    Palette.from(resource).generate(new Palette.PaletteAsyncListener() {
+                        @Override
+                        public void onGenerated(Palette palette) {
+                            Palette.Swatch swatch;
+                            switch (PALETTE_STYLE) {
+                                case "VIBRANT":
+                                    swatch = palette.getVibrantSwatch();
+                                    break;
+                                case "VIBRANT_LIGHT":
+                                    swatch = palette.getLightVibrantSwatch();
+                                    break;
+                                case "VIBRANT_DARK":
+                                    swatch = palette.getDarkVibrantSwatch();
+                                    break;
+                                case "MUTED":
+                                    swatch = palette.getMutedSwatch();
+                                    break;
+                                case "MUTED_LIGHT":
+                                    swatch = palette.getLightMutedSwatch();
+                                    break;
+                                case "MUTED_DARK":
+                                    swatch = palette.getDarkMutedSwatch();
+                                    break;
+                                default:
+                                    swatch = palette.getVibrantSwatch();
+                                    break;
+                            }
+
+                            if (swatch == null) return;
+
+                            if (mPrefs.getAnimationsEnabled() && false) {
+                                TransitionDrawable td = new TransitionDrawable(new Drawable[]{holder.titleBg.getBackground(), new ColorDrawable(swatch.getRgb())});
+                                holder.titleBg.setBackground(td);
+                                td.startTransition(250);
+                            } else {
+                                holder.titleBg.setBackgroundColor(swatch.getRgb());
+                            }
+
+                            if (USE_PALETTE_IN_TEXTS) {
+                                holder.name.setTextColor(swatch.getTitleTextColor());
+                                holder.authorName.setTextColor(swatch.getBodyTextColor());
+                            }
+                        }
+                    });
+                }
             }
-
-        } else {
-
-            if (USE_PALETTE) {
-                //noinspection unchecked
-                Glide.with(context)
-                        .load(wallUrl)
-                        .centerCrop()
-                        .dontAnimate()
-                        .listener(Utils.getGlidePalette(PALETTE_STYLE, USE_PALETTE_IN_TEXTS,
-                                mPrefs, wallUrl, holder))
-                        .into(holder.wall);
-            } else {
-                Glide.with(context)
-                        .load(wallUrl)
-                        .centerCrop()
-                        .dontAnimate()
-                        .into(holder.wall);
-            }
-
-        }
-
+        });
     }
 
     @Override
@@ -168,30 +216,4 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
             return false;
         }
     }
-
-    private void setupValues(Context context) {
-        this.USE_PALETTE = context.getResources().getBoolean(R.bool.use_palette_api);
-        this.USE_PALETTE_IN_TEXTS = context.getResources().getBoolean(R.bool.use_palette_api_in_texts);
-        switch (context.getResources().getInteger(R.integer.palette_swatch)) {
-            case 1:
-                this.PALETTE_STYLE = "VIBRANT";
-                break;
-            case 2:
-                this.PALETTE_STYLE = "VIBRANT_LIGHT";
-                break;
-            case 3:
-                this.PALETTE_STYLE = "VIBRANT_DARK";
-                break;
-            case 4:
-                this.PALETTE_STYLE = "MUTED";
-                break;
-            case 5:
-                this.PALETTE_STYLE = "MUTED_LIGHT";
-                break;
-            case 6:
-                this.PALETTE_STYLE = "MUTED_DARK";
-                break;
-        }
-    }
-
 }
