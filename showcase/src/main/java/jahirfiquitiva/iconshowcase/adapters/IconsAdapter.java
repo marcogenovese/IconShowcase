@@ -38,6 +38,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -97,6 +99,10 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
             @Override
             protected void setResource(Bitmap resource) {
                 if (mPrefs.getAnimationsEnabled()) {
+                    //TODO: pick an animation
+
+                    if (!inChangelog) setAnimation(holder.icon, holder.getAdapterPosition());
+
                     TransitionDrawable td = new TransitionDrawable(new Drawable[]{new ColorDrawable(Color.TRANSPARENT), new BitmapDrawable(context.getResources(), resource)});
                     holder.icon.setImageDrawable(td);
                     td.startTransition(250);
@@ -151,6 +157,17 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
                 }
             }
         });
+    }
+
+    private int lastPosition = -1;
+
+    private void setAnimation(View viewToAnimate, int position) {
+        Animation anim = AnimationUtils.loadAnimation(context, R.anim.scale_slide);
+        if (position > lastPosition) {
+            viewToAnimate.setHasTransientState(true);
+            viewToAnimate.startAnimation(anim);
+            lastPosition = position;
+        }
     }
 
     @Override

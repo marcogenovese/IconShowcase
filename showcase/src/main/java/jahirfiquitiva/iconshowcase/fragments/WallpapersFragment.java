@@ -130,7 +130,7 @@ public class WallpapersFragment extends Fragment {
 
         mRecyclerView = (RecyclerView) layout.findViewById(R.id.wallsGrid);
 
-        //fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
+        fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) layout.findViewById(R.id.swipeRefreshLayout);
 
@@ -176,9 +176,50 @@ public class WallpapersFragment extends Fragment {
                                 public void onClick(WallpapersAdapter.WallsHolder view,
                                                     int position, boolean longClick) {
                                     if ((longClick && !ShowcaseActivity.wallsPicker) || ShowcaseActivity.wallsPicker) {
-                                        pickWallpaper(position, WallpapersList.getWallpapersList(), ShowcaseActivity.wallsPicker);
+                                        final MaterialDialog dialog = new MaterialDialog.Builder(context)
+                                                .content(R.string.downloading_wallpaper)
+                                                .progress(true, 0)
+                                                .cancelable(false)
+                                                .show();
+
+                                        WallpaperItem wallItem = WallpapersList.getWallpapersList().get(position);
+
+                                        Glide.with(context)
+                                                .load(wallItem.getWallURL())
+                                                .asBitmap()
+                                                .into(new SimpleTarget<Bitmap>() {
+                                                    @Override
+                                                    public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                                                        if (resource != null) {
+                                                            new ApplyWallpaper(context, dialog, resource, ShowcaseActivity.wallsPicker, layout).execute();
+                                                        }
+                                                    }
+                                                });
                                     } else {
-                                        openViewer(context, view, position, WallpapersList.getWallpapersList());
+                                        final Intent intent = new Intent(context, ViewerActivity.class);
+
+                                        intent.putExtra("item", WallpapersList.getWallpapersList().get(position));
+                                        intent.putExtra("transitionName", ViewCompat.getTransitionName(view.wall));
+
+                                        Bitmap bitmap;
+
+                                        if (view.wall.getDrawable() != null) {
+                                            bitmap = Utils.drawableToBitmap(view.wall.getDrawable());
+                                            try {
+                                                String filename = "temp.png";
+                                                FileOutputStream stream = context.openFileOutput(filename, Context.MODE_PRIVATE);
+                                                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                                                stream.close();
+                                                intent.putExtra("image", filename);
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
+
+                                            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(context, view.wall, ViewCompat.getTransitionName(view.wall));
+                                            context.startActivity(intent, options.toBundle());
+                                        } else {
+                                            showLoadPictureSnackbar(layout);
+                                        }
                                     }
                                 }
                             });
@@ -187,15 +228,15 @@ public class WallpapersFragment extends Fragment {
 
                     mRecyclerView.setAdapter(mAdapter);
 
-                    //if (fastScroller.getVisibility() != View.VISIBLE) {
-                        //fastScroller.setVisibility(View.VISIBLE);
-                    //}
+                    if (fastScroller.getVisibility() != View.VISIBLE) {
+                        fastScroller.setVisibility(View.VISIBLE);
+                    }
 
                     if (Utils.hasNetwork(context)) {
                         hideProgressBar();
                         noConnection.setVisibility(View.GONE);
                         mRecyclerView.setVisibility(View.VISIBLE);
-                        //fastScroller.setVisibility(View.VISIBLE);
+                        fastScroller.setVisibility(View.VISIBLE);
                         mSwipeRefreshLayout.setEnabled(false);
                         mSwipeRefreshLayout.setRefreshing(false);
                     } else {
@@ -237,7 +278,7 @@ public class WallpapersFragment extends Fragment {
         hideProgressBar();
         noConnection.setVisibility(View.VISIBLE);
         mRecyclerView.setVisibility(View.GONE);
-        //fastScroller.setVisibility(View.GONE);
+        fastScroller.setVisibility(View.GONE);
         mSwipeRefreshLayout.setEnabled(false);
         mSwipeRefreshLayout.setRefreshing(false);
     }
@@ -283,16 +324,16 @@ public class WallpapersFragment extends Fragment {
             mRecyclerView.setVisibility(View.VISIBLE);
         }
 
-        //fastScroller.attachRecyclerView(mRecyclerView);
+        fastScroller.attachRecyclerView(mRecyclerView);
 
-        //if (fastScroller.getVisibility() != View.VISIBLE) {
-            //fastScroller.setVisibility(View.VISIBLE);
-        //}
+        if (fastScroller.getVisibility() != View.VISIBLE) {
+            fastScroller.setVisibility(View.VISIBLE);
+        }
     }
 
     public static void updateRecyclerView(int newColumns) {
         mRecyclerView.setVisibility(View.GONE);
-        //fastScroller.setVisibility(View.GONE);
+        fastScroller.setVisibility(View.GONE);
         showProgressBar();
         setupRecyclerView(true, newColumns);
         hideProgressBar();
@@ -301,7 +342,7 @@ public class WallpapersFragment extends Fragment {
     public static void refreshWalls(Activity context) {
         hideProgressBar();
         mRecyclerView.setVisibility(View.GONE);
-        //fastScroller.setVisibility(View.GONE);
+        fastScroller.setVisibility(View.GONE);
         if (Utils.hasNetwork(context)) {
             Utils.showSimpleSnackbar(context, layout,
                     context.getResources().getString(R.string.refreshing_walls));
@@ -316,35 +357,6 @@ public class WallpapersFragment extends Fragment {
                 mSwipeRefreshLayout.setRefreshing(true);
             }
         });
-    }
-
-    private static void openViewer(Context context, WallpapersAdapter.WallsHolder wallsHolder, int index, final ArrayList<WallpaperItem> list) {
-
-        final Intent intent = new Intent(context, ViewerActivity.class);
-
-        intent.putExtra("item", list.get(index));
-        intent.putExtra("transitionName", ViewCompat.getTransitionName(wallsHolder.wall));
-
-        Bitmap bitmap;
-
-        if (wallsHolder.wall.getDrawable() != null) {
-            bitmap = Utils.drawableToBitmap(wallsHolder.wall.getDrawable());
-            try {
-                String filename = "temp.png";
-                FileOutputStream stream = context.openFileOutput(filename, Context.MODE_PRIVATE);
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                stream.close();
-                intent.putExtra("image", filename);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                    (Activity) context, wallsHolder.wall, ViewCompat.getTransitionName(wallsHolder.wall));
-            context.startActivity(intent, options.toBundle());
-        } else {
-            showLoadPictureSnackbar(layout);
-        }
     }
 
     // DownloadJSON AsyncTask
@@ -447,29 +459,6 @@ public class WallpapersFragment extends Fragment {
             if (wi != null)
                 wi.checkWallsListCreation(worked);
         }
-    }
-
-    private static void pickWallpaper(int position, final ArrayList<WallpaperItem> list,
-                                      final boolean isWallsPicker) {
-        final MaterialDialog dialog = new MaterialDialog.Builder(context)
-                .content(R.string.downloading_wallpaper)
-                .progress(true, 0)
-                .cancelable(false)
-                .show();
-
-        WallpaperItem wallItem = list.get(position);
-
-        Glide.with(context)
-                .load(wallItem.getWallURL())
-                .asBitmap()
-                .into(new SimpleTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                        if (resource != null) {
-                            new ApplyWallpaper(context, dialog, resource, isWallsPicker, layout).execute();
-                        }
-                    }
-                });
     }
 
     private void showWallsAdviceDialog(Context context) {
