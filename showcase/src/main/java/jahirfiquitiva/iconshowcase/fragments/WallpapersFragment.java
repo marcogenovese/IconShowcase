@@ -361,11 +361,7 @@ public class WallpapersFragment extends Fragment {
     public static class DownloadJSON extends AsyncTask<Void, Void, Void> {
 
         final ShowcaseActivity.WallsListInterface wi;
-        private final static ArrayList<String> names = new ArrayList<>();
-        private final static ArrayList<String> authors = new ArrayList<>();
-        private final static ArrayList<String> urls = new ArrayList<>();
-        private final static ArrayList<String> dimensions = new ArrayList<>();
-        private final static ArrayList<String> copyrights = new ArrayList<>();
+        private final static ArrayList<WallpaperItem> walls = new ArrayList<>();
 
         private Context taskContext;
 
@@ -393,18 +389,14 @@ public class WallpapersFragment extends Fragment {
                     this.taskContext = a.getApplicationContext();
                 }
             }
-
-            names.clear();
-            authors.clear();
-            urls.clear();
-            dimensions.clear();
-            copyrights.clear();
         }
 
         @Override
         protected Void doInBackground(Void... params) {
 
-            JSONObject json = JSONParser.getJSONFromURL(Utils.getStringFromResources(taskContext, R.string.json_file_url));
+            JSONObject json = JSONParser.getJSONFromURL(
+                    Utils.getStringFromResources(taskContext,
+                            R.string.json_file_url));
 
             if (json != null) {
                 try {
@@ -414,32 +406,35 @@ public class WallpapersFragment extends Fragment {
                     for (int i = 0; i < jsonarray.length(); i++) {
                         json = jsonarray.getJSONObject(i);
                         // Retrieve JSON Objects
-                        names.add(json.getString("name"));
-                        authors.add(json.getString("author"));
-                        urls.add(json.getString("url"));
+
+                        String dimens, copyright;
+
                         try {
-                            if (json.getString("dimensions") != null) {
-                                dimensions.add(json.getString("dimensions"));
-                            }
+                            dimens = json.getString("dimensions");
                         } catch (JSONException e) {
-                            dimensions.add("null");
+                            dimens = "null";
                         }
 
                         try {
-                            if (json.getString("copyright") != null) {
-                                copyrights.add(json.getString("copyright"));
-                            }
-                        } catch (JSONException e) {
-                            copyrights.add("null");
+                            copyright = json.getString("copyright");
+                        } catch (JSONException e1) {
+                            copyright = "null";
                         }
+
+                        walls.add(new WallpaperItem(
+                                json.getString("name"),
+                                json.getString("author"),
+                                json.getString("url"),
+                                dimens,
+                                copyright));
+
                     }
 
-                    WallpapersList.createWallpapersList(names, authors, urls, dimensions, copyrights);
+                    WallpapersList.createWallpapersList(walls);
 
                     worked = true;
                 } catch (JSONException e) {
                     worked = false;
-                    e.printStackTrace();
                 }
             } else {
                 worked = false;
@@ -452,7 +447,8 @@ public class WallpapersFragment extends Fragment {
         protected void onPostExecute(Void args) {
 
             endTime = System.currentTimeMillis();
-            Utils.showLog("Walls Task completed in: " + String.valueOf((endTime - startTime) / 1000) + " secs.");
+            Utils.showLog("Walls Task completed in: " +
+                    String.valueOf((endTime - startTime) / 1000) + " secs.");
 
             if (layout != null) {
                 setupLayout(true);

@@ -92,10 +92,10 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
                     icon = ContextCompat.getDrawable(context, R.drawable.ic_na_launcher);
                 } catch (Resources.NotFoundException e1) {
                     icon = ThemeUtils.darkTheme ? ToolbarColorizer.getTintedIcon(
-                            ContextCompat.getDrawable(context, R.drawable.abc_btn_radio_on_mtrl),
+                            ContextCompat.getDrawable(context, R.drawable.abc_btn_radio_material),
                             ContextCompat.getColor(context, R.color.drawable_tint_dark))
                             : ToolbarColorizer.getTintedIcon(
-                            ContextCompat.getDrawable(context, R.drawable.abc_btn_radio_on_mtrl),
+                            ContextCompat.getDrawable(context, R.drawable.abc_btn_radio_material),
                             ContextCompat.getColor(context, R.color.drawable_tint_light));
                 }
             }
@@ -273,10 +273,10 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
                                         icon = ContextCompat.getDrawable(context, R.drawable.ic_na_launcher);
                                     } catch (Resources.NotFoundException e1) {
                                         icon = ThemeUtils.darkTheme ? ToolbarColorizer.getTintedIcon(
-                                                ContextCompat.getDrawable(context, R.drawable.abc_btn_radio_on_mtrl),
+                                                ContextCompat.getDrawable(context, R.drawable.abc_btn_radio_material),
                                                 ContextCompat.getColor(context, R.color.drawable_tint_dark))
                                                 : ToolbarColorizer.getTintedIcon(
-                                                ContextCompat.getDrawable(context, R.drawable.abc_btn_radio_on_mtrl),
+                                                ContextCompat.getDrawable(context, R.drawable.abc_btn_radio_material),
                                                 ContextCompat.getColor(context, R.color.drawable_tint_light));
                                     }
                                 }
@@ -345,13 +345,10 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
 
         Map<String, Integer> occurrences = new HashMap<>();
 
-        Integer count = 0;
+        int count = 0;
 
         for (String word : componentsArray) {
-            count = occurrences.get(word);
-            if (count == null) {
-                count = 0;
-            }
+            count = occurrences.get(word) == null ? 0 : occurrences.get(word);
             occurrences.put(word, count + 1);
         }
 

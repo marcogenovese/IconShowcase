@@ -62,6 +62,8 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
         Resources r = context.getResources();
         String p = context.getPackageName();
 
+        int iconResId = 0;
+
         iconsLists = new ArrayList<>();
 
         String[] newIcons = r.getStringArray(R.array.changelog_icons);
@@ -69,7 +71,7 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
 
         ArrayList<IconItem> changelogIconsArray = new ArrayList<>();
         for (String icon : newIconsL) {
-            int iconResId = getIconResId(r, p, icon);
+            iconResId = Utils.getIconResId(context, r, p, icon);
             if (iconResId != 0) {
                 changelogIconsArray.add(new IconItem(icon, iconResId));
             }
@@ -78,9 +80,10 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
 
         String[] prev = r.getStringArray(R.array.preview);
         List<String> previewIconsL = sortList(prev);
+
         ArrayList<IconItem> previewIconsArray = new ArrayList<>();
         for (String icon : previewIconsL) {
-            int iconResId = getIconResId(r, p, icon);
+            iconResId = Utils.getIconResId(context, r, p, icon);
             if (iconResId != 0) {
                 previewIconsArray.add(new IconItem(icon, iconResId));
             }
@@ -109,7 +112,7 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
                 ArrayList<IconItem> iconsArray = new ArrayList<>();
 
                 for (int j = 0; j < iconsList.size(); j++) {
-                    int iconResId = getIconResId(r, p, iconsList.get(j));
+                    iconResId = Utils.getIconResId(context, r, p, iconsList.get(j));
                     if (iconResId != 0) {
                         iconsArray.add(new IconItem(iconsList.get(j), iconResId));
                         if (context.getResources().getBoolean(R.bool.auto_generate_all_icons)) {
@@ -141,13 +144,14 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
     protected void onPostExecute(Boolean worked) {
         long endTime = System.currentTimeMillis();
         Utils.showLog(context, "Load of icons task completed successfully in: " + String.valueOf((endTime - startTime)) + " millisecs.");
+        /* TODO Check if it's secure enough
         if (categories.get(categories.size() - 1).getCategoryName().equals("All")) {
-            /* TODO Check if it's secure enough
             ShowcaseActivity.SHOW_LOAD_ICONS_DIALOG = false;
             if (ShowcaseActivity.loadIcons != null) {
                 ShowcaseActivity.loadIcons.dismiss();
-            }*/
+            }
         }
+        */
     }
 
     private List<String> sortList(String[] array) {
@@ -169,8 +173,10 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
 
         ArrayList<IconItem> sortedListArray = new ArrayList<>();
 
+        int resId;
+
         for (int j = 0; j < list.size(); j++) {
-            int resId = getIconResId(r, p, list.get(j));
+            resId = Utils.getIconResId(context, r, p, list.get(j));
             if (resId != 0) {
                 sortedListArray.add(new IconItem(list.get(j), resId));
             }
@@ -199,24 +205,16 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
 
         ArrayList<IconItem> sortedListArray = new ArrayList<>();
 
+        int resId;
+
         for (int j = 0; j < list.size(); j++) {
-            int resId = getIconResId(r, p, list.get(j));
+            resId = Utils.getIconResId(context, r, p, list.get(j));
             if (resId != 0) {
                 sortedListArray.add(new IconItem(list.get(j), resId));
             }
         }
 
         return sortedListArray;
-    }
-
-    private int getIconResId(Resources r, String p, String name) {
-        int res = r.getIdentifier(name, "drawable", p);
-        if (res != 0) {
-            return res;
-        } else {
-            Utils.showLog(context, "Missing icon: " + name);
-            return 0;
-        }
     }
 
     public static ArrayList<IconsLists> getIconsLists() {

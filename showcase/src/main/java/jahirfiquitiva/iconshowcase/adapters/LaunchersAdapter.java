@@ -117,7 +117,7 @@ public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.Laun
     @Override
     public void onClick(View v) {
         if (v.getTag() != null) {
-            int index = (Integer) v.getTag();
+            int index = (int) v.getTag();
             if (mCallback != null)
                 mCallback.onClick(index);
         }

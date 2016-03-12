@@ -84,7 +84,6 @@ import jahirfiquitiva.iconshowcase.fragments.DonationsFragment;
 import jahirfiquitiva.iconshowcase.fragments.RequestsFragment;
 import jahirfiquitiva.iconshowcase.fragments.SettingsFragment;
 import jahirfiquitiva.iconshowcase.fragments.WallpapersFragment;
-import jahirfiquitiva.iconshowcase.models.DrawerHeaderStyle;
 import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.models.WallpapersList;
 import jahirfiquitiva.iconshowcase.tasks.LoadIconsLists;
@@ -126,7 +125,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
     private IabHelper mHelper;
 
-    private static DrawerHeaderStyle drawerHeaderStyle = DrawerHeaderStyle.NORMAL_HEADER;
+    private static int drawerHeaderStyle = 1;
 
     private static final String MARKET_URL = "https://play.google.com/store/apps/details?id=";
     private boolean mIsPremium = false, playStore = false;
@@ -255,16 +254,10 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             secondaryDrawerItems[0] = "CreditsAlt";
         }
 
-        switch (getResources().getInteger(R.integer.nav_drawer_header_style)) {
-            case 1:
-                drawerHeaderStyle = DrawerHeaderStyle.NORMAL_HEADER;
-                break;
-            case 2:
-                drawerHeaderStyle = DrawerHeaderStyle.MINI_HEADER;
-                break;
-            case 3:
-                drawerHeaderStyle = DrawerHeaderStyle.NO_HEADER;
-                break;
+        drawerHeaderStyle = getResources().getInteger(R.integer.nav_drawer_header_style);
+
+        if (drawerHeaderStyle < 1 || drawerHeaderStyle > 3) {
+            drawerHeaderStyle = 1;
         }
 
         if (!themeMode) {
@@ -910,7 +903,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
         }
 
         switch (drawerHeaderStyle) {
-            case NORMAL_HEADER:
+            case 1:
                 drawerHeader = new AccountHeaderBuilder()
                         .withActivity(this)
                         .withHeaderBackground(R.drawable.drawer_header)
@@ -925,16 +918,16 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
 
                 drawerBuilder.withAccountHeader(drawerHeader);
                 break;
-            case MINI_HEADER:
+            case 2:
                 drawerBuilder.withHeader(R.layout.mini_drawer_header);
                 break;
-            case NO_HEADER:
+            case 3:
                 break;
         }
 
         drawer = drawerBuilder.build();
 
-        if (drawerHeaderStyle.equals(DrawerHeaderStyle.MINI_HEADER)) {
+        if (drawerHeaderStyle == 2) {
             ImageView miniHeader = (ImageView) drawer.getHeader().findViewById(R.id.mini_drawer_header);
             miniHeader.getLayoutParams().height = UIUtils.getActionBarHeight(this) + UIUtils.getStatusBarHeight(this);
             TextView appVersion = (TextView) drawer.getHeader().findViewById(R.id.text_app_version);
@@ -1094,6 +1087,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             Animation anim = AnimationUtils.loadAnimation(context, R.anim.bounce);
             playIconsAnimations(icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8, anim, numOfIcons);
         }
+
     }
 
     private static void playIconsAnimations(ImageView icon1, ImageView icon2,
@@ -1138,8 +1132,10 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderChooser
             ArrayList<Integer> wallpapersArray = new ArrayList<>();
             String[] wallpapers = context.getResources().getStringArray(R.array.wallpapers);
 
+            int res;
+
             for (String wallpaper : wallpapers) {
-                int res = context.getResources().getIdentifier(wallpaper, "drawable", context.getPackageName());
+                res = context.getResources().getIdentifier(wallpaper, "drawable", context.getPackageName());
                 if (res != 0) {
                     final int thumbRes = context.getResources().getIdentifier(wallpaper, "drawable", context.getPackageName());
                     if (thumbRes != 0) {

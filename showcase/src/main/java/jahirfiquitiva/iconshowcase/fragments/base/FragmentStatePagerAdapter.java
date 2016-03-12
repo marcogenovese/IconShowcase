@@ -30,7 +30,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -41,9 +40,6 @@ import java.util.ArrayList;
  */
 
 public abstract class FragmentStatePagerAdapter extends PagerAdapter {
-
-    private static final String TAG = "FSPA";
-    private static final boolean DEBUG = false;
 
     private final FragmentManager mFragmentManager;
     private FragmentTransaction mCurTransaction = null;
@@ -82,7 +78,6 @@ public abstract class FragmentStatePagerAdapter extends PagerAdapter {
             mCurTransaction = mFragmentManager.beginTransaction();
         }
         Fragment fragment = getItem(position);
-        if (DEBUG) Log.v(TAG, "Adding item #" + position + ": f=" + fragment);
         if (mSavedState.size() > position) {
             Fragment.SavedState fss = mSavedState.get(position);
             if (fss != null) {
@@ -106,8 +101,6 @@ public abstract class FragmentStatePagerAdapter extends PagerAdapter {
         if (mCurTransaction == null) {
             mCurTransaction = mFragmentManager.beginTransaction();
         }
-        if (DEBUG) Log.v(TAG, "Removing item #" + position + ": f=" + object
-                + " v=" + ((Fragment) object).getView());
         while (mSavedState.size() <= position) {
             mSavedState.add(null);
         }
@@ -185,15 +178,11 @@ public abstract class FragmentStatePagerAdapter extends PagerAdapter {
                     int index = Integer.parseInt(key.substring(1));
                     Fragment f = mFragmentManager.getFragment(bundle, key);
                     if (f != null) {
-                        if (mFragments != null) {
-                            while (mFragments.size() <= index) {
-                                mFragments.add(null);
-                            }
+                        while (mFragments.size() <= index) {
+                            mFragments.add(null);
                         }
                         f.setMenuVisibility(false);
                         mFragments.set(index, f);
-                    } else {
-                        Log.w(TAG, "Bad fragment at key " + key);
                     }
                 }
             }

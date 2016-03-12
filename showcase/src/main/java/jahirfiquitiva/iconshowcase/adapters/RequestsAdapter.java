@@ -130,7 +130,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
         @Override
         public void onClick(View v) {
             if (v.getTag() != null) {
-                int index = (Integer) v.getTag();
+                int index = (int) v.getTag();
                 mCallback.onClick(index);
             }
         }

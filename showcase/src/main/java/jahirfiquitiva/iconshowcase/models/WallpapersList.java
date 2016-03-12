@@ -27,7 +27,7 @@ import java.util.ArrayList;
 
 public class WallpapersList {
 
-    private final static ArrayList<WallpaperItem> wallsList = new ArrayList<>();
+    private static ArrayList<WallpaperItem> wallsList = new ArrayList<>();
 
     public static void createWallpapersList(ArrayList<String> names, ArrayList<String> authors,
                                             ArrayList<String> urls, ArrayList<String> dimensions,
@@ -42,6 +42,10 @@ public class WallpapersList {
         } catch (IndexOutOfBoundsException e) {
             //Do nothing
         }
+    }
+
+    public static void createWallpapersList(ArrayList<WallpaperItem> wallsList) {
+        WallpapersList.wallsList = wallsList;
     }
 
     public static ArrayList<WallpaperItem> getWallpapersList() {
