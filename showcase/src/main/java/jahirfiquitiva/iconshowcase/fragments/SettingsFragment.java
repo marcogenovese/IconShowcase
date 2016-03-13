@@ -84,14 +84,20 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
 
         Class<?> className = null;
 
-        final String packageName = Utils.getAppPackageName(getActivity().getApplicationContext());
-        String activityName = getResources().getString(R.string.main_activity_name);
-        final String componentNameString = packageName + "." + activityName;
+        String componentNameString = Utils.getAppPackageName(
+                getActivity().getApplicationContext()) + "." + Utils.getStringFromResources(
+                getActivity(), R.string.main_activity_name);
 
         try {
             className = Class.forName(componentNameString);
         } catch (ClassNotFoundException e) {
-            //Do nothing
+            try {
+                componentNameString = Utils.getStringFromResources(getActivity(),
+                        R.string.main_activity_fullname);
+                className = Class.forName(componentNameString);
+            } catch (ClassNotFoundException e1) {
+                //Do nothing
+            }
         }
 
         final PreferenceScreen preferences = (PreferenceScreen) findPreference("preferences");
@@ -201,11 +207,14 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
             }
 
             final Class<?> finalClassName = className;
+            final String finalComponentName = componentNameString;
 
             hideIcon.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     if (finalClassName != null) {
-                        componentName = new ComponentName(packageName, componentNameString);
+                        componentName = new ComponentName(
+                                Utils.getAppPackageName(getActivity().getApplicationContext()),
+                                finalComponentName);
                         if (newValue.toString().equals("true")) {
                             MaterialDialog.SingleButtonCallback positive = new MaterialDialog.SingleButtonCallback() {
                                 @Override
@@ -248,6 +257,7 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
                         }
                         return true;
                     } else {
+                        ISDialogs.showHideIconErrorDialog(getActivity());
                         return false;
                     }
                 }

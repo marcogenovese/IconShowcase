@@ -34,10 +34,10 @@
     <!-- PHONES - PORTRAIT MODE -->
     <integer name="icons_columns_normal_portrait">4</integer>
     <!-- PHONES - LANDSCAPE MODE -->
-    <integer name="icons_columns_normal_landscape">6</integer>
+    <integer name="icons_columns_normal_landscape">7</integer>
     <!-- TABLETS - PORTRAIT MODE -->
     <integer name="icons_columns_tablet_portrait">8</integer>
     <!-- TABLETS - LANDSCAPE MODE -->
-    <integer name="icons_columns_tablet_landscape">10</integer>
+    <integer name="icons_columns_tablet_landscape">12</integer>
 
 </resources>

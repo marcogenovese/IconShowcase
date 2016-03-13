@@ -101,7 +101,6 @@ public class ShowcaseActivity extends AppCompatActivity implements
             WITH_INSTALLED_FROM_AMAZON = false,
             WITH_DONATIONS_SECTION = false,
             WITH_ICONS_BASED_CHANGELOG = true,
-            WITH_SECONDARY_DRAWER_ITEMS_ICONS = false,
 
     //Donations stuff
     DONATIONS_GOOGLE = false,
@@ -163,7 +162,6 @@ public class ShowcaseActivity extends AppCompatActivity implements
     public static Bitmap toolbarHeaderImage;
 
     public static Drawer drawer;
-    private AccountHeader drawerHeader;
 
     private static boolean themeMode;
 
@@ -194,8 +192,6 @@ public class ShowcaseActivity extends AppCompatActivity implements
 
         WITH_USER_WALLPAPER_AS_TOOLBAR_HEADER = getResources().getBoolean(R.bool.user_wallpaper_in_home);
         WITH_ICONS_BASED_CHANGELOG = getResources().getBoolean(R.bool.icons_changelog);
-        boolean WITH_ALTERNATIVE_ABOUT_SECTION = getResources().getBoolean(R.bool.cards_credits);
-        WITH_SECONDARY_DRAWER_ITEMS_ICONS = getResources().getBoolean(R.bool.secondary_drawer_items_icons);
 
         shuffleIcons = getResources().getBoolean(R.bool.shuffle_toolbar_icons);
 
@@ -850,40 +846,20 @@ public class ShowcaseActivity extends AppCompatActivity implements
 
         drawerBuilder.addDrawerItems(new DividerDrawerItem()); //divider between primary and secondary
 
-        if (WITH_SECONDARY_DRAWER_ITEMS_ICONS) {
-            for (int i = 0; i < secondaryDrawerItems.length; i++) {
-                switch (secondaryDrawerItems[i]) {
-                    case "Credits":
-                        creditsItem = new SecondaryDrawerItem().withName(thaCredits).withIcon(GoogleMaterial.Icon.gmd_info).withIdentifier(i + secondaryStart);
-                        drawerBuilder.addDrawerItems(creditsItem);
-                        break;
-                    case "Settings":
-                        settingsIdentifier = i + secondaryStart;
-                        settingsItem = new SecondaryDrawerItem().withName(thaSettings).withIcon(GoogleMaterial.Icon.gmd_settings).withIdentifier(i + secondaryStart);
-                        drawerBuilder.addDrawerItems(settingsItem);
-                        break;
-                    case "Donations":
-                        donationsItem = new SecondaryDrawerItem().withName(thaDonate).withIcon(GoogleMaterial.Icon.gmd_money_box).withIdentifier(i + secondaryStart);
-                        drawerBuilder.addDrawerItems(donationsItem);
-                        break;
-                }
-            }
-        } else {
-            for (int i = 0; i < secondaryDrawerItems.length; i++) {
-                switch (secondaryDrawerItems[i]) {
-                    case "Credits":
-                        creditsItem = new SecondaryDrawerItem().withName(thaCredits).withIdentifier(i + secondaryStart);
-                        drawerBuilder.addDrawerItems(creditsItem);
-                        break;
-                    case "Settings":
-                        settingsItem = new SecondaryDrawerItem().withName(thaSettings).withIdentifier(i + secondaryStart);
-                        drawerBuilder.addDrawerItems(settingsItem);
-                        break;
-                    case "Donations":
-                        donationsItem = new SecondaryDrawerItem().withName(thaDonate).withIdentifier(i + secondaryStart);
-                        drawerBuilder.addDrawerItems(donationsItem);
-                        break;
-                }
+        for (int i = 0; i < secondaryDrawerItems.length; i++) {
+            switch (secondaryDrawerItems[i]) {
+                case "Credits":
+                    creditsItem = new SecondaryDrawerItem().withName(thaCredits).withIdentifier(i + secondaryStart);
+                    drawerBuilder.addDrawerItems(creditsItem);
+                    break;
+                case "Settings":
+                    settingsItem = new SecondaryDrawerItem().withName(thaSettings).withIdentifier(i + secondaryStart);
+                    drawerBuilder.addDrawerItems(settingsItem);
+                    break;
+                case "Donations":
+                    donationsItem = new SecondaryDrawerItem().withName(thaDonate).withIdentifier(i + secondaryStart);
+                    drawerBuilder.addDrawerItems(donationsItem);
+                    break;
             }
         }
 
@@ -898,7 +874,7 @@ public class ShowcaseActivity extends AppCompatActivity implements
 
         switch (drawerHeaderStyle) {
             case 1:
-                drawerHeader = new AccountHeaderBuilder()
+                AccountHeader drawerHeader = new AccountHeaderBuilder()
                         .withActivity(this)
                         .withHeaderBackground(R.drawable.drawer_header)
                         .withSelectionFirstLine(headerAppName)

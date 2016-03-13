@@ -18,26 +18,23 @@
   ~
   -->
 
+<!--
+  ~
+  -->
+
 <resources>
+    <!--
+    Private configurations that should not be opened to sample.
+    They are currently for the theme flavour that I'm testing
+
+    - Allan
+    -->
+
+    <!--universal toggle for theme mode-->
+    <bool name="theme_mode">false</bool>
 
     <!--
-    Do you want the "ALL ICONS" tab to be generated automatically?
-    If you are sure you have put all the icons in categories.
-    True, means yes.
-    False, means no.
+    Do you want the request tool to show info for theme engines (cm, cyngn, rro)
     -->
-    <bool name="auto_generate_all_icons">false</bool>
-
-    <!--
-    Setup the columns amount you want in different sections
-    -->
-    <!-- PHONES - PORTRAIT MODE -->
-    <integer name="icons_columns_normal_portrait">4</integer>
-    <!-- PHONES - LANDSCAPE MODE -->
-    <integer name="icons_columns_normal_landscape">7</integer>
-    <!-- TABLETS - PORTRAIT MODE -->
-    <integer name="icons_columns_tablet_portrait">8</integer>
-    <!-- TABLETS - LANDSCAPE MODE -->
-    <integer name="icons_columns_tablet_landscape">12</integer>
-
+    <bool name="theme_engine_info">false</bool>
 </resources>

@@ -72,20 +72,12 @@ public final class ISDialogs {
             ShowcaseActivity.changelogDialog.dismiss();
             ShowcaseActivity.changelogDialog = null;
         }
-        if (context.getResources().getBoolean(R.bool.changelog_ripples)) {
-            ShowcaseActivity.changelogDialog = new MaterialDialog.Builder(context)
-                    .title(R.string.changelog_dialog_title)
-                    .adapter(new ChangelogAdapter(context, R.array.fullchangelog), null)
-                    .positiveText(R.string.great)
-                    .build();
-        } else {
-            ShowcaseActivity.changelogDialog = new MaterialDialog.Builder(context)
-                    .title(R.string.changelog_dialog_title)
-                    .adapter(new ChangelogAdapter(context, R.array.fullchangelog), null)
-                    .positiveText(R.string.great)
-                    .listSelector(android.R.color.transparent)
-                    .build();
-        }
+        ShowcaseActivity.changelogDialog = new MaterialDialog.Builder(context)
+                .title(R.string.changelog_dialog_title)
+                .adapter(new ChangelogAdapter(context, R.array.fullchangelog), null)
+                .positiveText(R.string.great)
+                .listSelector(android.R.color.transparent)
+                .build();
         ShowcaseActivity.changelogDialog.show();
     }
 
@@ -341,6 +333,16 @@ public final class ISDialogs {
         String content = context.getResources().getString(R.string.apps_limit_dialog_day, finalText);
         new MaterialDialog.Builder(context)
                 .title(R.string.section_icon_request)
+                .content(content)
+                .positiveText(android.R.string.ok)
+                .show();
+    }
+
+    public static void showHideIconErrorDialog(final Activity context) {
+        String content = context.getResources().getString(R.string.launcher_icon_restorer_error,
+                Utils.getStringFromResources(context, R.string.app_name));
+        new MaterialDialog.Builder(context)
+                .title(R.string.pref_title_launcher_icon)
                 .content(content)
                 .positiveText(android.R.string.ok)
                 .show();
