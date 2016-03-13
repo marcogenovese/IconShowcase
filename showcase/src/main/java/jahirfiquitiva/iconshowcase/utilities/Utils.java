@@ -173,14 +173,104 @@ public class Utils {
         String partialConvertedText = name.replaceAll("_", " ");
         String[] text = partialConvertedText.split("\\s+");
         StringBuilder sb = new StringBuilder();
+        String texts;
         if (text[0].length() > 0) {
-            sb.append(Character.toUpperCase(text[0].charAt(0))).append(text[0].subSequence(1, text[0].length()).toString().toLowerCase());
+            sb.append(convertTextWithSymbols(text[0], true));
             for (int i = 1; i < text.length; i++) {
-                sb.append(" ");
-                sb.append(Character.toUpperCase(text[i].charAt(0))).append(text[i].subSequence(1, text[i].length()).toString().toLowerCase());
+                texts = convertTextWithSymbols(text[i], false);
+                if (removePreviousSpace(texts)) {
+                    texts = texts.replace("-", "");
+                } else {
+                    sb.append(" ");
+                }
+                sb.append(texts);
             }
         }
         return sb.toString();
+    }
+
+    public static String convertTextWithSymbols(String text, boolean isFirst) {
+
+        StringBuilder sb = new StringBuilder();
+
+        /** TODO --- Change method code because Android only allows resources that:
+         *  TODO --- a) starts with a letter
+         *  TODO --- b) only contains letters from a to z, numbers from 0 to 9, or underscores.
+         *  TODO --- all other characters in resources, will result in errors.
+         */
+
+
+        boolean restoreSign = false;
+
+        if (text.toCharArray()[0] == '#') {
+            //Converts string to number
+            switch (text.replace("#", "")) {
+                case "one":
+                    text = "1";
+                    break;
+                case "two":
+                    text = "2";
+                    break;
+                case "three":
+                    text = "3";
+                    break;
+                case "four":
+                    text = "4";
+                    break;
+                case "five":
+                    text = "5";
+                    break;
+                case "six":
+                    text = "6";
+                    break;
+                case "seven":
+                    text = "7";
+                    break;
+                case "eight":
+                    text = "8";
+                    break;
+                case "nine":
+                    text = "9";
+                    break;
+                case "zero":
+                    text = "0";
+                    break;
+            }
+        }
+
+        if (text.toCharArray()[0] == '!') {
+            //Capitalize first letter only
+            text = text.replace("!", "");
+            if (text.toCharArray()[0] == '-') {
+                text = text.replace("-", "");
+                restoreSign = true;
+            }
+            text = capitalizeText(text);
+        }
+
+        if (text.toCharArray()[0] == '$') {
+            //Capitalize the whole word
+            text = text.replace("$", "");
+            if (text.toCharArray()[0] == '-') {
+                text = text.replace("-", "");
+                restoreSign = true;
+            }
+            text = text.toUpperCase();
+        }
+
+        if (restoreSign && !isFirst) {
+            sb.append("-");
+        }
+
+        sb.append(text);
+
+        return sb.toString();
+
+    }
+
+    public static boolean removePreviousSpace(String text) {
+        char[] charArray = text.toCharArray();
+        return charArray[0] == '-';
     }
 
     public static String capitalizeText(String text) {
