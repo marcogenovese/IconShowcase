@@ -176,7 +176,9 @@ public class PreviewsFragment extends Fragment {
                 ContextCompat.getColor(getActivity(), R.color.toolbar_text_light);
 
         if (getActivity() != null) {
-            ToolbarColorizer.tintSearchView(getActivity(), ShowcaseActivity.toolbar, mSearchItem,
+            ToolbarColorizer.tintSearchView(getActivity(),
+                    ((ShowcaseActivity) getActivity()).getToolbar(),
+                    mSearchItem,
                     mSearchView, iconsColor);
         }
     }

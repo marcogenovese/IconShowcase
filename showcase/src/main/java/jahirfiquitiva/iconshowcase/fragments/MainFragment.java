@@ -29,7 +29,6 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -88,21 +87,7 @@ public class MainFragment extends Fragment {
         RecyclerView mRecyclerView = (RecyclerView) layout.findViewById(R.id.home_rv);
 
         if (!themeMode) {
-            ShowcaseActivity.setupIcons(ShowcaseActivity.icon1, ShowcaseActivity.icon2,
-                    ShowcaseActivity.icon3, ShowcaseActivity.icon4, ShowcaseActivity.icon5,
-                    ShowcaseActivity.icon6, ShowcaseActivity.icon7, ShowcaseActivity.icon8,
-                    ShowcaseActivity.numOfIcons);
-
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    ShowcaseActivity.animateIcons(ShowcaseActivity.icon1, ShowcaseActivity.icon2,
-                            ShowcaseActivity.icon3, ShowcaseActivity.icon4, ShowcaseActivity.icon5,
-                            ShowcaseActivity.icon6, ShowcaseActivity.icon7, ShowcaseActivity.icon8,
-                            ShowcaseActivity.numOfIcons);
-                }
-            }, 500);
+            setupAndAnimateIcons(true, true, 600);
 
             GridLayout iconsRow = (GridLayout) getActivity().findViewById(R.id.iconsRow);
 
@@ -111,14 +96,7 @@ public class MainFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     ShowcaseActivity.SHUFFLE = true;
-                    ShowcaseActivity.setupIcons(ShowcaseActivity.icon1, ShowcaseActivity.icon2,
-                            ShowcaseActivity.icon3, ShowcaseActivity.icon4, ShowcaseActivity.icon5,
-                            ShowcaseActivity.icon6, ShowcaseActivity.icon7, ShowcaseActivity.icon8,
-                            ShowcaseActivity.numOfIcons);
-                    ShowcaseActivity.animateIcons(ShowcaseActivity.icon1, ShowcaseActivity.icon2,
-                            ShowcaseActivity.icon3, ShowcaseActivity.icon4, ShowcaseActivity.icon5,
-                            ShowcaseActivity.icon6, ShowcaseActivity.icon7, ShowcaseActivity.icon8,
-                            ShowcaseActivity.numOfIcons);
+                    setupAndAnimateIcons(true, true, 0);
                 }
             });
 
@@ -259,8 +237,8 @@ public class MainFragment extends Fragment {
                                 .show();
                     }
                 } else {
-                    ShowcaseActivity.drawerItemClick(ShowcaseActivity.applyIdentifier);
-                    ShowcaseActivity.drawer.setSelection(ShowcaseActivity.applyIdentifier);
+                    ((ShowcaseActivity) getActivity()).drawerItemClick(ShowcaseActivity.applyIdentifier);
+                    ((ShowcaseActivity) getActivity()).getDrawer().setSelection(ShowcaseActivity.applyIdentifier);
                 }
             }
         });
@@ -281,6 +259,15 @@ public class MainFragment extends Fragment {
             fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_apply_layers));
         } else {
             fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_question));
+        }
+    }
+
+    private void setupAndAnimateIcons(boolean justSetup, boolean animate, int delay) {
+        if (justSetup) {
+            ((ShowcaseActivity) getActivity()).setupIcons();
+        }
+        if (animate) {
+            ((ShowcaseActivity) getActivity()).animateIcons(delay);
         }
     }
 

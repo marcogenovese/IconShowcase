@@ -83,11 +83,11 @@ public class WallpapersFragment extends Fragment {
 
     private static ViewGroup layout;
     private static ProgressBar mProgress;
-    public static WallpapersAdapter mAdapter;
-    private static ImageView noConnection;
     private static RecyclerView mRecyclerView;
     private static RecyclerFastScroller fastScroller;
     public static SwipeRefreshLayout mSwipeRefreshLayout;
+    public static WallpapersAdapter mAdapter;
+    public static ImageView noConnection;
     private static Activity context;
     private static GridSpacingItemDecoration gridSpacing;
 
@@ -147,7 +147,7 @@ public class WallpapersFragment extends Fragment {
 
         mSwipeRefreshLayout.setEnabled(false);
 
-        setupLayout(false);
+        setupLayout(false, getActivity(), noConnection);
 
         return layout;
     }
@@ -164,7 +164,8 @@ public class WallpapersFragment extends Fragment {
         inflater.inflate(R.menu.wallpapers, menu);
     }
 
-    private static void setupLayout(final boolean fromTask) {
+    private static void setupLayout(final boolean fromTask, final Activity context,
+                                    final ImageView noConnection) {
 
         if (WallpapersList.getWallpapersList() != null && WallpapersList.getWallpapersList().size() > 0) {
             context.runOnUiThread(new Runnable() {
@@ -218,7 +219,7 @@ public class WallpapersFragment extends Fragment {
                                             ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(context, view.wall, ViewCompat.getTransitionName(view.wall));
                                             context.startActivity(intent, options.toBundle());
                                         } else {
-                                            showLoadPictureSnackbar(layout);
+                                            showLoadPictureSnackbar(layout, context);
                                         }
                                     }
                                 }
@@ -240,7 +241,7 @@ public class WallpapersFragment extends Fragment {
                         mSwipeRefreshLayout.setEnabled(false);
                         mSwipeRefreshLayout.setRefreshing(false);
                     } else {
-                        hideStuff();
+                        hideStuff(noConnection);
                     }
                 }
             });
@@ -249,7 +250,7 @@ public class WallpapersFragment extends Fragment {
                 @Override
                 public void run() {
                     if (mAdapter != null) {
-                        hideStuff();
+                        hideStuff(noConnection);
                     }
                     if (layout != null) {
                         noConnection.setVisibility(View.GONE);
@@ -262,7 +263,7 @@ public class WallpapersFragment extends Fragment {
                                     context.runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            hideStuff();
+                                            hideStuff(noConnection);
                                         }
                                     });
                                 }
@@ -274,9 +275,11 @@ public class WallpapersFragment extends Fragment {
         }
     }
 
-    private static void hideStuff() {
+    private static void hideStuff(ImageView noConnection) {
         hideProgressBar();
-        noConnection.setVisibility(View.VISIBLE);
+        if (noConnection != null) {
+            noConnection.setVisibility(View.VISIBLE);
+        }
         mRecyclerView.setVisibility(View.GONE);
         fastScroller.setVisibility(View.GONE);
         mSwipeRefreshLayout.setEnabled(false);
@@ -363,22 +366,25 @@ public class WallpapersFragment extends Fragment {
     public static class DownloadJSON extends AsyncTask<Void, Void, Void> {
 
         final ShowcaseActivity.WallsListInterface wi;
-        private final static ArrayList<WallpaperItem> walls = new ArrayList<>();
-
-        private Context taskContext;
-
+        private final ImageView noConnection;
+        private final ArrayList<WallpaperItem> walls = new ArrayList<>();
+        private WeakReference<Context> taskContext;
         private WeakReference<Activity> wrActivity;
 
-        static long startTime, endTime;
+        long startTime, endTime;
 
-        public DownloadJSON(ShowcaseActivity.WallsListInterface wi, AppCompatActivity activity) {
+        public DownloadJSON(ShowcaseActivity.WallsListInterface wi, AppCompatActivity activity,
+                            ImageView noConnection) {
             this.wi = wi;
             this.wrActivity = new WeakReference<Activity>(activity);
+            this.noConnection = noConnection;
         }
 
-        public DownloadJSON(ShowcaseActivity.WallsListInterface wi, Context context) {
+        public DownloadJSON(ShowcaseActivity.WallsListInterface wi, Context context,
+                            ImageView noConnection) {
             this.wi = wi;
-            this.taskContext = context;
+            this.taskContext = new WeakReference<Context>(context);
+            this.noConnection = noConnection;
         }
 
         @Override
@@ -388,7 +394,7 @@ public class WallpapersFragment extends Fragment {
             if (wrActivity != null) {
                 final Activity a = wrActivity.get();
                 if (a != null) {
-                    this.taskContext = a.getApplicationContext();
+                    this.taskContext = new WeakReference<Context>(a.getApplicationContext());
                 }
             }
         }
@@ -397,7 +403,7 @@ public class WallpapersFragment extends Fragment {
         protected Void doInBackground(Void... params) {
 
             JSONObject json = JSONParser.getJSONFromURL(
-                    Utils.getStringFromResources(taskContext,
+                    Utils.getStringFromResources(taskContext.get(),
                             R.string.json_file_url));
 
             if (json != null) {
@@ -453,7 +459,7 @@ public class WallpapersFragment extends Fragment {
                     String.valueOf((endTime - startTime) / 1000) + " secs.");
 
             if (layout != null) {
-                setupLayout(true);
+                setupLayout(true, (Activity) taskContext.get(), noConnection);
             }
 
             if (wi != null)
@@ -485,7 +491,7 @@ public class WallpapersFragment extends Fragment {
         }
     }
 
-    private static void showLoadPictureSnackbar(View layout) {
+    private static void showLoadPictureSnackbar(View layout, Context context) {
         Utils.showSimpleSnackbar(context, layout,
                 Utils.getStringFromResources(context, R.string.wait_for_walls));
     }

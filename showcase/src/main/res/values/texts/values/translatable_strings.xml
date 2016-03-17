@@ -263,7 +263,7 @@
     <string name="icon_pack_in_numbers">Icon Pack in numbers</string>
     <string name="themed_icons">Over %1$s themed icons.</string>
     <string name="available_wallpapers">About %1$s available wallpapers.</string>
-    <string name="included_widgets">Over %1$s included widgets for Zooper.</string>
+    <string name="included_widgets">More than %1$s included widgets for Zooper.</string>
     <string name="icons">Icons</string>
 
     <string name="md_storage_perm_error">You have not granted the \"Read External Storage\" permission to %1$s, which is needed to complete this action.</string>

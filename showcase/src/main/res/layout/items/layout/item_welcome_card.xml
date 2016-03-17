@@ -44,13 +44,10 @@
 
             <TextView
                 android:id="@+id/welcomeTitle"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center_horizontal"
                 android:text="@string/welcome_title"
-                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                android:textStyle="italic"/>
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
 
             <TextView
                 android:id="@+id/welcomeContent"

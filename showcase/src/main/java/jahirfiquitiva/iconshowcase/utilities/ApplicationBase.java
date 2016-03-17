@@ -57,9 +57,9 @@ public class ApplicationBase extends Application {
         mPrefs = new Preferences(context);
 
         new LoadIconsLists(context).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        loadWallsList();
         new LoadZooperWidgets(context).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         loadAppsForRequest();
+        loadWallsList();
 
     }
 
@@ -87,7 +87,7 @@ public class ApplicationBase extends Application {
                     WallpapersFragment.mAdapter.notifyDataSetChanged();
                 }
             }
-        }, context).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }, context, null).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
 }

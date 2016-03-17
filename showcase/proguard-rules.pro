@@ -15,3 +15,24 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+-keep class butterknife.** {*;}
+-dontwarn butterknife.internal.**
+-keep class **$$ViewBinder {*;}
+-keep class **$$VieInjector {*;}
+
+-keepclasseswithmembernames class * {
+    @butterknife.* <fields>;
+}
+
+-keepclasseswithmembernames class * {
+    @butterknife.* <methods>;
+}
+
+-keep class !android.support.v7.internal.view.menu**,** {*;}
+-keep class android.support.v7.graphics.** {*;}
+
+-keep public class * implements com.bumptech.glide.module.GlideModule;
+
+-dontwarn
+-ignorewarnings

@@ -100,8 +100,8 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             iconsbtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ShowcaseActivity.drawerItemClick(ShowcaseActivity.iconsPickerIdentifier);
-                    ShowcaseActivity.drawer.setSelection(ShowcaseActivity.iconsPickerIdentifier);
+                    ((ShowcaseActivity) context).drawerItemClick(ShowcaseActivity.iconsPickerIdentifier);
+                    ((ShowcaseActivity) context).getDrawer().setSelection(ShowcaseActivity.iconsPickerIdentifier);
                 }
             });
         }

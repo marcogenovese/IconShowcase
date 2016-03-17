@@ -34,15 +34,16 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.ref.WeakReference;
 
 public class CopyFilesToStorage extends AsyncTask<Void, String, Boolean> {
 
-    private final Context context;
+    private final WeakReference<Context> context;
     private final MaterialDialog dialog;
     private final String folder;
 
     public CopyFilesToStorage(Context context, MaterialDialog dialog, String folder) {
-        this.context = context;
+        this.context = new WeakReference<Context>(context);
         this.dialog = dialog;
         this.folder = folder;
     }
@@ -51,7 +52,7 @@ public class CopyFilesToStorage extends AsyncTask<Void, String, Boolean> {
     protected Boolean doInBackground(Void... params) {
         Boolean worked;
         try {
-            AssetManager assetManager = context.getAssets();
+            AssetManager assetManager = context.get().getAssets();
             String[] files = assetManager.list(folder);
 
             if (files != null) {

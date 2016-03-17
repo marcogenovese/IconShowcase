@@ -66,18 +66,13 @@ import jahirfiquitiva.iconshowcase.utilities.Utils;
 public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
 
     private final MaterialDialog dialog;
-    private ArrayList<RequestItem> appsListFinal = new ArrayList<>();
+    private ArrayList<RequestItem> appsListFinal;
 
     private static final int BUFFER = 2048;
     private String zipLocation, zipFilePath;
-    private Context context;
+    private WeakReference<Context> context;
 
     private static String filesLocation;
-
-    private final static ArrayList<String> appsNames = new ArrayList<>();
-    private final static ArrayList<String> appsPackages = new ArrayList<>();
-    private final static ArrayList<String> appsClasses = new ArrayList<>();
-    private final static ArrayList<Drawable> appsIcons = new ArrayList<>();
 
     private StringBuilder emailContent = new StringBuilder();
 
@@ -98,33 +93,18 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
 
         final Activity act = wrActivity.get();
         if (act != null) {
-            this.context = act.getApplicationContext();
+            this.context = new WeakReference<Context>(act.getApplicationContext());
             this.activity = act;
         }
 
-        zipLocation = context.getString(R.string.request_save_location,
+        zipLocation = context.get().getString(R.string.request_save_location,
                 Environment.getExternalStorageDirectory().getAbsolutePath());
         filesLocation = zipLocation + "Files/";
 
-        String appNameCorrected = context.getResources().getString(R.string.app_name).replace(" ", "");
+        String appNameCorrected = context.get().getResources().getString(R.string.app_name).replace(" ", "");
 
         zipFilePath = zipLocation + appNameCorrected
                 + "_" + date.format(new Date()) + ".zip";
-
-        appsNames.clear();
-        appsPackages.clear();
-        appsClasses.clear();
-        appsIcons.clear();
-
-        for (int i = 0; i < appsListFinal.size(); i++) {
-            RequestItem icon = appsListFinal.get(i);
-            if (icon.isSelected()) {
-                appsNames.add(icon.getAppName());
-                appsPackages.add(icon.getPackageName());
-                appsClasses.add(icon.getClassName());
-                appsIcons.add(icon.getIcon());
-            }
-        }
 
     }
 
@@ -150,49 +130,53 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
             int appsCount = 0;
             sb.append("These apps have no icons, please add some for them. Thanks in advance.\n\n");
 
-            for (int i = 0; i < appsNames.size(); i++) {
+            for (int i = 0; i < appsListFinal.size(); i++) {
 
-                if (context.getResources().getBoolean(R.bool.request_tool_comments)) {
-                    appFilterBuilder.append("<!-- " + appsNames.get(i) +
-                            " -->\n");
+                if(appsListFinal.get(i).isSelected()){
 
-                    appMapBuilder.append("<!-- " + appsNames.get(i) +
-                            " -->\n");
+                    if (context.get().getResources().getBoolean(R.bool.request_tool_comments)) {
+                        appFilterBuilder.append("<!-- " + appsListFinal.get(i).getAppName() +
+                                " -->\n");
 
-                    themeResourcesBuilder.append("<!-- " + appsNames.get(i) +
-                            " -->\n");
+                        appMapBuilder.append("<!-- " + appsListFinal.get(i).getAppName() +
+                                " -->\n");
+
+                        themeResourcesBuilder.append("<!-- " + appsListFinal.get(i).getAppName() +
+                                " -->\n");
+                    }
+
+                    appFilterBuilder.append("<item component=\"ComponentInfo{" +
+                            appsListFinal.get(i).getAppName() + "/" + appsListFinal.get(i).getClassName() + "}\"" +
+                            " drawable=\"" + appsListFinal.get(i).getAppName().replace(" ", "_").toLowerCase() + "\"/>" + "\n");
+
+                    appMapBuilder.append("<item name=\"" + appsListFinal.get(i).getAppName().replace(" ", "_").toLowerCase() +
+                            "\" class=\"" + appsListFinal.get(i).getClassName() + "\" />" + "\n");
+
+                    themeResourcesBuilder.append("<AppIcon name=\"" +
+                            appsListFinal.get(i).getAppName() + "/" + appsListFinal.get(i).getClassName() +
+                            "\" image=\"" + appsListFinal.get(i).getAppName().replace(" ", "_").toLowerCase() + "\"/>" + "\n");
+
+                    sb.append("App Name: " + appsListFinal.get(i).getAppName() + "\n");
+                    sb.append("App Info: " + appsListFinal.get(i).getAppName() + "/" + appsListFinal.get(i).getClassName() + "\n");
+                    sb.append("App Link: " + "https://play.google.com/store/apps/details?id=" + appsListFinal.get(i).getAppName() + "\n");
+                    sb.append("\n");
+                    sb.append("\n");
+
+                    Bitmap bitmap = ((BitmapDrawable) (appsListFinal.get(i).getIcon())).getBitmap();
+
+                    FileOutputStream fileOutputStream;
+                    try {
+                        fileOutputStream = new FileOutputStream(filesLocation + "/" + appsListFinal.get(i).getAppName().replace(" ", "_").toLowerCase() + ".png");
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
+                        fileOutputStream.flush();
+                        fileOutputStream.close();
+                    } catch (IOException e) {
+                        //Do nothing
+                    }
+
+                    appsCount++;
                 }
 
-                appFilterBuilder.append("<item component=\"ComponentInfo{" +
-                        appsPackages.get(i) + "/" + appsClasses.get(i) + "}\"" +
-                        " drawable=\"" + appsNames.get(i).replace(" ", "_").toLowerCase() + "\"/>" + "\n");
-
-                appMapBuilder.append("<item name=\"" + appsNames.get(i).replace(" ", "_").toLowerCase() +
-                        "\" class=\"" + appsClasses.get(i) + "\" />" + "\n");
-
-                themeResourcesBuilder.append("<AppIcon name=\"" +
-                        appsPackages.get(i) + "/" + appsClasses.get(i) +
-                        "\" image=\"" + appsNames.get(i).replace(" ", "_").toLowerCase() + "\"/>" + "\n");
-
-                sb.append("App Name: " + appsNames.get(i) + "\n");
-                sb.append("App Info: " + appsPackages.get(i) + "/" + appsClasses.get(i) + "\n");
-                sb.append("App Link: " + "https://play.google.com/store/apps/details?id=" + appsPackages.get(i) + "\n");
-                sb.append("\n");
-                sb.append("\n");
-
-                Bitmap bitmap = ((BitmapDrawable) (appsIcons.get(i))).getBitmap();
-
-                FileOutputStream fileOutputStream;
-                try {
-                    fileOutputStream = new FileOutputStream(filesLocation + "/" + appsNames.get(i).replace(" ", "_").toLowerCase() + ".png");
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
-                    fileOutputStream.flush();
-                    fileOutputStream.close();
-                } catch (IOException e) {
-                    //Do nothing
-                }
-
-                appsCount++;
             }
 
             sb.append("\nOS Version: " + System.getProperty("os.version") + "(" + Build.VERSION.INCREMENTAL + ")");
@@ -200,20 +184,20 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
             sb.append("\nDevice: " + Build.DEVICE);
             sb.append("\nManufacturer: " + Build.MANUFACTURER);
             sb.append("\nModel (and Product): " + Build.MODEL + " (" + Build.PRODUCT + ")");
-            if (context.getResources().getBoolean(R.bool.theme_engine_info)) {
-                if (Utils.isAppInstalled(context, "org.cyanogenmod.theme.chooser")) {
+            if (context.get().getResources().getBoolean(R.bool.theme_engine_info)) {
+                if (Utils.isAppInstalled(context.get(), "org.cyanogenmod.theme.chooser")) {
                     sb.append("\nCMTE is installed");
                 }
-                if (Utils.isAppInstalled(context, "com.cyngn.theme.chooser")) {
+                if (Utils.isAppInstalled(context.get(), "com.cyngn.theme.chooser")) {
                     sb.append("\nCyngn theme engine is installed");
                 }
-                if (Utils.isAppInstalled(context, "com.lovejoy777.rroandlayersmanager")) {
+                if (Utils.isAppInstalled(context.get(), "com.lovejoy777.rroandlayersmanager")) {
                     sb.append("\nLayers Manager is installed");
                 }
             }
 
             try {
-                PackageInfo appInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+                PackageInfo appInfo = context.get().getPackageManager().getPackageInfo(context.get().getPackageName(), 0);
                 sb.append("\nApp Version Name: " + appInfo.versionName);
                 sb.append("\nApp Version Code: " + appInfo.versionCode);
             } catch (Exception e) {
@@ -275,21 +259,21 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
                 dialog.dismiss();
                 final Uri uri = Uri.parse("file://" + zipFilePath);
 
-                String[] recipients = new String[]{context.getString(R.string.email_id)};
+                String[] recipients = new String[]{context.get().getString(R.string.email_id)};
 
                 Intent sendIntent = new Intent(Intent.ACTION_SEND);
                 sendIntent.setType("application/zip");
                 sendIntent.putExtra(Intent.EXTRA_STREAM, uri);
                 sendIntent.putExtra("android.intent.extra.EMAIL", recipients);
                 sendIntent.putExtra("android.intent.extra.SUBJECT",
-                        context.getString(R.string.request_title));
+                        context.get().getString(R.string.request_title));
                 sendIntent.putExtra("android.intent.extra.TEXT", emailContent.toString());
                 sendIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
                 try {
                     activity.startActivityForResult(Intent.createChooser(sendIntent, "Send mail..."), 2);
                     Calendar c = Calendar.getInstance();
-                    Preferences mPrefs = new Preferences(context);
+                    Preferences mPrefs = new Preferences(context.get());
                     String time = String.format("%02d", c.get(Calendar.HOUR_OF_DAY)) + ":" +
                             String.format("%02d", c.get(Calendar.MINUTE));
                     String day = String.format("%02d", c.get(Calendar.DAY_OF_YEAR));

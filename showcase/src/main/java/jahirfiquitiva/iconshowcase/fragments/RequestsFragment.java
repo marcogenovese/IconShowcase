@@ -71,10 +71,10 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
     private static FloatingActionButton fab;
     private static int maxApps = 0, minutesLimit = 0;
 
-    private static ViewGroup layout;
+    private ViewGroup layout;
 
     private Preferences mPrefs;
-    private static Activity context;
+    private Activity context;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -154,7 +154,7 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setupContent();
+        setupContent(view, getActivity());
     }
 
     @Override
@@ -184,7 +184,7 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
         }
     }
 
-    public static void setupContent() {
+    public static void setupContent(View layout, Context context) {
         if (layout != null) {
             if (ApplicationBase.allAppsToRequest != null && ApplicationBase.allAppsToRequest.size() > 0) {
                 requestsAdapter = new RequestsAdapter(context, ApplicationBase.allAppsToRequest, maxApps);
@@ -213,7 +213,7 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
         fastScroller.setVisibility(View.GONE);
     }
 
-    private static void showRequestsFilesCreationDialog(Context context) {
+    private void showRequestsFilesCreationDialog(Context context) {
 
         if (requestsAdapter.getSelectedApps() > 0) {
 

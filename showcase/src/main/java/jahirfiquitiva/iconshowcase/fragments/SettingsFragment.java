@@ -53,13 +53,14 @@ import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
-public class SettingsFragment extends PreferenceFragment implements PermissionUtils.OnPermissionResultListener {
+public class SettingsFragment extends PreferenceFragment implements
+        PermissionUtils.OnPermissionResultListener {
 
-    private static Preferences mPrefs;
-    private static PackageManager p;
-    private static ComponentName componentName;
+    private Preferences mPrefs;
+    private PackageManager p;
+    private ComponentName componentName;
     private static Preference WSL, data;
-    private static String location, cacheSize;
+    private String location, cacheSize;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -116,9 +117,15 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
             wallHeaderCheck.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     mPrefs.setWallpaperAsToolbarHeaderEnabled(newValue.toString().equals("true"));
-                    ShowcaseActivity.setupToolbarHeader(getActivity(), ShowcaseActivity.toolbarHeader);
-                    Utils.setupToolbarIconsAndTextsColors(getActivity(), ShowcaseActivity.appbar,
-                            ShowcaseActivity.toolbar, ShowcaseActivity.toolbarHeaderImage, false);
+                    ((ShowcaseActivity) getActivity()).setupToolbarHeader(
+                            getActivity(),
+                            ((ShowcaseActivity) getActivity()).getToolbarHeader());
+                    Utils.setupToolbarIconsAndTextsColors(
+                            getActivity(),
+                            ((ShowcaseActivity) getActivity()).getAppbar(),
+                            ((ShowcaseActivity) getActivity()).getToolbar(),
+                            ((ShowcaseActivity) getActivity()).getToolbarHeaderImage(),
+                            false);
                     return true;
                 }
             });
@@ -135,8 +142,9 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
             themesSetting.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    ShowcaseActivity.settingsDialog = ISDialogs.showThemeChooserDialog(getActivity());
-                    ShowcaseActivity.settingsDialog.show();
+                    ((ShowcaseActivity) getActivity()).setSettingsDialog(
+                            ISDialogs.showThemeChooserDialog(getActivity()));
+                    ((ShowcaseActivity) getActivity()).getSettingsDialog().show();
                     return true;
                 }
             });
@@ -246,7 +254,9 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
                                 }
                             };
 
-                            ShowcaseActivity.settingsDialog = ISDialogs.showHideIconDialog(getActivity(), positive, negative, dismissListener);
+                            ((ShowcaseActivity) getActivity()).setSettingsDialog(
+                                    ISDialogs.showHideIconDialog(getActivity(),
+                                            positive, negative, dismissListener));
                         } else {
                             if (!mPrefs.getLauncherIconShown()) {
                                 mPrefs.setIconShown(true);
@@ -273,7 +283,7 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
         Utils.collapseToolbar(getActivity());
     }
 
-    public static void changeValues(Context context) {
+    public void changeValues(Context context) {
         if (mPrefs.getDownloadsFolder() != null) {
             location = mPrefs.getDownloadsFolder();
         } else {
@@ -285,7 +295,18 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
         data.setSummary(context.getResources().getString(R.string.pref_summary_cache, cacheSize));
     }
 
-    private static void clearApplicationDataAndCache(Context context) {
+    public static void changeWallsFolderValue(Context context, Preferences mPrefs) {
+        String location;
+        if (mPrefs.getDownloadsFolder() != null) {
+            location = mPrefs.getDownloadsFolder();
+        } else {
+            location = context.getString(R.string.walls_save_location,
+                    Environment.getExternalStorageDirectory().getAbsolutePath());
+        }
+        WSL.setSummary(context.getResources().getString(R.string.pref_summary_wsl, location));
+    }
+
+    private void clearApplicationDataAndCache(Context context) {
         File cache = context.getCacheDir();
         File appDir = new File(cache.getParent());
         if (appDir.exists()) {
@@ -399,4 +420,5 @@ public class SettingsFragment extends PreferenceFragment implements PermissionUt
     public void onStoragePermissionGranted() {
         //TODO Show Folder Chooser dialog
     }
+
 }

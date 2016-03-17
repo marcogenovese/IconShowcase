@@ -40,6 +40,7 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -62,13 +63,13 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
     private final static ArrayList<String> components = new ArrayList<>();
     private final static ArrayList<RequestItem> appsList = new ArrayList<>();
     private final static ArrayList<AppFilterError> appFilterErrors = new ArrayList<>();
-    private final Context context;
+    private final WeakReference<Context> context;
     private final long startTime;
 
     @SuppressLint("PrivateResource")
     public LoadAppsToRequest(Context context) {
         startTime = System.currentTimeMillis();
-        this.context = context;
+        this.context = new WeakReference<Context>(context);
 
         debugging = context.getResources().getBoolean(R.bool.debugging);
 
@@ -123,7 +124,7 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
 
         final ArrayList<RequestItem> list = ApplicationBase.allApps;
 
-        list.removeAll(createListFromXML(context));
+        list.removeAll(createListFromXML(context.get()));
 
         Collections.sort(list, new Comparator<RequestItem>() {
             @Override
@@ -138,15 +139,15 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
     @Override
     protected void onPostExecute(ArrayList<RequestItem> list) {
         ApplicationBase.allAppsToRequest = list;
-        RequestsFragment.setupContent();
+        RequestsFragment.setupContent(null, context.get());
         long endTime = System.currentTimeMillis();
-        Utils.showLog(context, "Apps to Request Task completed in: " + String.valueOf((endTime - startTime) / 1000) + " secs.");
+        Utils.showLog(context.get(), "Apps to Request Task completed in: " + String.valueOf((endTime - startTime) / 1000) + " secs.");
         if (debugging) {
             if (appFilterErrors != null) {
-                showAppFilterErrors(appFilterErrors, context);
+                showAppFilterErrors(appFilterErrors, context.get());
             }
             if (components != null) {
-                showDuplicatedComponentsInLog(components, context);
+                showDuplicatedComponentsInLog(components, context.get());
             }
         }
     }

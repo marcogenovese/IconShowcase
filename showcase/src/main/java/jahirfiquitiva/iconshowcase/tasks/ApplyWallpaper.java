@@ -49,7 +49,7 @@ import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
 
-    private Context context;
+    private WeakReference<Context> context;
     private Activity activity;
     private final MaterialDialog dialog;
     private final Bitmap resource;
@@ -82,21 +82,21 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
     protected void onPreExecute() {
         final Activity a = wrActivity.get();
         if (a != null) {
-            this.context = a.getApplicationContext();
+            this.context = new WeakReference<Context>(a.getApplicationContext());
             this.activity = a;
         }
     }
 
     @Override
     protected Boolean doInBackground(Void... params) {
-        WallpaperManager wm = WallpaperManager.getInstance(context);
+        WallpaperManager wm = WallpaperManager.getInstance(context.get());
         Boolean worked;
         try {
             try {
                 wm.setBitmap(scaleToActualAspectRatio(resource));
             } catch (OutOfMemoryError ex) {
                 if (ShowcaseActivity.DEBUGGING)
-                    Utils.showLog(context, "OutOfMemoryError: " + ex.getLocalizedMessage());
+                    Utils.showLog(context.get(), "OutOfMemoryError: " + ex.getLocalizedMessage());
                 showRetrySnackbar();
             }
             worked = true;
@@ -118,9 +118,9 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
                 }
 
                 Snackbar longSnackbar = Snackbar.make(layout,
-                        context.getString(R.string.set_as_wall_done), Snackbar.LENGTH_LONG);
-                final int snackbarLight = ContextCompat.getColor(context, R.color.snackbar_light);
-                final int snackbarDark = ContextCompat.getColor(context, R.color.snackbar_dark);
+                        context.get().getString(R.string.set_as_wall_done), Snackbar.LENGTH_LONG);
+                final int snackbarLight = ContextCompat.getColor(context.get(), R.color.snackbar_light);
+                final int snackbarDark = ContextCompat.getColor(context.get(), R.color.snackbar_dark);
                 ViewGroup snackbarView = (ViewGroup) longSnackbar.getView();
                 snackbarView.setBackgroundColor(ThemeUtils.darkTheme ? snackbarDark : snackbarLight);
                 longSnackbar.show();
@@ -188,17 +188,17 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
     }
 
     private void showRetrySnackbar() {
-        String retry = context.getResources().getString(R.string.retry);
+        String retry = context.get().getResources().getString(R.string.retry);
         Snackbar snackbar = Snackbar
                 .make(layout, R.string.error, Snackbar.LENGTH_INDEFINITE)
                 .setAction(retry.toUpperCase(), new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        new ApplyWallpaper((Activity) context, dialog, resource, isPicker, layout);
+                        new ApplyWallpaper((Activity) context.get(), dialog, resource, isPicker, layout);
                     }
                 });
         TypedValue typedValue = new TypedValue();
-        Resources.Theme theme = context.getTheme();
+        Resources.Theme theme = context.get().getTheme();
         theme.resolveAttribute(R.attr.accentColor, typedValue, true);
         int actionTextColor = typedValue.data;
         snackbar.setActionTextColor(actionTextColor);

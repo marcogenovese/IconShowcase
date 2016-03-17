@@ -23,24 +23,36 @@
 
 package jahirfiquitiva.iconshowcase.utilities;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
-@SuppressWarnings("deprecation")
+import java.io.IOException;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 public class JSONParser {
 
     public static JSONObject getJSONFromURL(String url) {
         try {
-            HttpClient cl = new DefaultHttpClient();
-            HttpResponse response = cl.execute(new HttpGet(url));
-            if (response.getStatusLine().getStatusCode() == 200) {
-                final String data = EntityUtils.toString(response.getEntity());
-                return new JSONObject(data);
+
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder()
+                    .url(url)
+                    .build();
+
+            Response response = null;
+
+            try {
+                response = client.newCall(request).execute();
+            } catch (IOException e) {
+                //Do nothing
             }
+
+            if (response != null) {
+                return new JSONObject(response.body().string());
+            }
+
         } catch (Exception e) {
             //Do nothing
         }

@@ -68,27 +68,32 @@ public final class ISDialogs {
      */
 
     public static void showChangelogDialog(Context context) {
-        if (ShowcaseActivity.changelogDialog != null) {
-            ShowcaseActivity.changelogDialog.dismiss();
-            ShowcaseActivity.changelogDialog = null;
+        if (((ShowcaseActivity) context).getChangelogDialog() != null) {
+            ((ShowcaseActivity) context).getChangelogDialog().dismiss();
+            ((ShowcaseActivity) context).setChangelogDialog(null);
         }
-        ShowcaseActivity.changelogDialog = new MaterialDialog.Builder(context)
+        ((ShowcaseActivity) context).setChangelogDialog(new MaterialDialog.Builder(context)
                 .title(R.string.changelog_dialog_title)
                 .adapter(new ChangelogAdapter(context, R.array.fullchangelog), null)
                 .positiveText(R.string.great)
                 .listSelector(android.R.color.transparent)
-                .build();
-        ShowcaseActivity.changelogDialog.show();
+                .build());
+        ((ShowcaseActivity) context).getChangelogDialog().show();
     }
 
     public static void showIconsChangelogDialog(final Activity context) {
 
-        ShowcaseActivity.changelogDialog = new MaterialDialog.Builder(context).title(R.string.changelog)
+        if (((ShowcaseActivity) context).getChangelogDialog() != null) {
+            ((ShowcaseActivity) context).getChangelogDialog().dismiss();
+            ((ShowcaseActivity) context).setChangelogDialog(null);
+        }
+
+        ((ShowcaseActivity) context).setChangelogDialog(new MaterialDialog.Builder(context).title(R.string.changelog)
                 .customView(R.layout.icons_changelog, false)
                 .positiveText(context.getResources().getString(R.string.close))
-                .build();
+                .build());
 
-        final View v = ShowcaseActivity.changelogDialog.getCustomView();
+        final View v = ((ShowcaseActivity) context).getChangelogDialog().getCustomView();
         if (v != null) {
             final RecyclerView iconsGrid = (RecyclerView) v.findViewById(R.id.changelogRV);
             final int grids = context.getResources().getInteger(R.integer.icons_grid_width);
@@ -104,7 +109,7 @@ public final class ISDialogs {
             iconsGrid.setAdapter(adapter);
         }
 
-        ShowcaseActivity.changelogDialog.show();
+        ((ShowcaseActivity) context).getChangelogDialog().show();
     }
 
     public static void showLicenseSuccessDialog(Context context, MaterialDialog.SingleButtonCallback singleButtonCallback) {
@@ -134,7 +139,6 @@ public final class ISDialogs {
                 .negativeText(R.string.exit)
                 .onPositive(onPositive)
                 .onNegative(onNegative)
-                .cancelable(false)
                 .autoDismiss(false)
                 .build();
 

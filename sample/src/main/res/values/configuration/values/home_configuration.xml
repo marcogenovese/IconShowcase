@@ -51,30 +51,34 @@
     <!--
     How many icons does your app include?
     -->
-    <integer name="icons_amount">600</integer>
+    <integer name="icons_amount">5</integer>
 
     <!--
     How many wallpapers does your app include?
     -->
-    <integer name="walls_amount">100</integer>
+    <integer name="walls_amount">10</integer>
 
     <!--
     How many Zooper widget does your app include?
     (Don't worry, it will be ignored if your app doesn't include Zooper).
     -->
-    <integer name="zooper_widgets">0</integer>
+    <integer name="zooper_widgets">5</integer>
 
 
     <string-array name="apps_titles">
+        <item>Something</item>
     </string-array>
 
     <string-array name="apps_descriptions">
+        <item>Something</item>
     </string-array>
 
     <string-array name="apps_icons">
+        <item>ic_na_launcher</item>
     </string-array>
 
     <string-array name="apps_packages">
+        <item>com.google.android.apps.inbox</item>
     </string-array>
 
 </resources>

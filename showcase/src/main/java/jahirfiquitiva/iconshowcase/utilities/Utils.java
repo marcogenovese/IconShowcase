@@ -57,7 +57,7 @@ import android.view.ViewGroup;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Locale;
+import java.util.regex.Matcher;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
@@ -170,82 +170,60 @@ public class Utils {
     }
 
     public static String makeTextReadable(String name) {
-        String partialConvertedText = name.replaceAll("_", " ");
+        boolean convertNum = true;
+
+        if (name.endsWith("_")) {
+            name = name.substring(0, name.length() - 1);
+            convertNum = false;
+        }
+
+        String partialConvertedText = name.replaceAll("______", "_____?");
+        partialConvertedText = partialConvertedText.replaceAll("_____", "____-");
+        partialConvertedText = partialConvertedText.replaceAll("____", "___#");
+        partialConvertedText = partialConvertedText.replaceAll("___", Matcher.quoteReplacement("__$"));
+        partialConvertedText = partialConvertedText.replaceAll("__", "_!");
+        partialConvertedText = partialConvertedText.replaceAll("_", " ");
+        partialConvertedText = partialConvertedText.trim();
+
         String[] text = partialConvertedText.split("\\s+");
         StringBuilder sb = new StringBuilder();
-        String texts;
+        String newText;
+
         if (text[0].length() > 0) {
-            sb.append(convertTextWithSymbols(text[0], true));
+            sb.append(convertTextWithSymbols(text[0], true, convertNum));
             for (int i = 1; i < text.length; i++) {
-                texts = convertTextWithSymbols(text[i], false);
-                if (removePreviousSpace(texts)) {
-                    texts = texts.replace("-", "");
+                newText = convertTextWithSymbols(text[i], false, convertNum);
+                if (removePreviousSpace(newText)) {
+                    newText = newText.replace("-", "");
                 } else {
                     sb.append(" ");
                 }
-                sb.append(texts);
+                sb.append(newText);
             }
         }
+
         return sb.toString();
     }
 
-    public static String convertTextWithSymbols(String text, boolean isFirst) {
+    public static String convertTextWithSymbols(String text, boolean isFirst, boolean convertNum) {
+
+        text = text.replaceAll(" ", "");
 
         StringBuilder sb = new StringBuilder();
 
-        /** TODO --- Change method code because Android only allows resources that:
-         *  TODO --- a) starts with a letter
-         *  TODO --- b) only contains letters from a to z, numbers from 0 to 9, or underscores.
-         *  TODO --- all other characters in resources, will result in errors.
-         */
-
-
         boolean restoreSign = false;
 
-        if (text.toCharArray()[0] == '#') {
-            //Converts string to number
-            switch (text.replace("#", "")) {
-                case "one":
-                    text = "1";
-                    break;
-                case "two":
-                    text = "2";
-                    break;
-                case "three":
-                    text = "3";
-                    break;
-                case "four":
-                    text = "4";
-                    break;
-                case "five":
-                    text = "5";
-                    break;
-                case "six":
-                    text = "6";
-                    break;
-                case "seven":
-                    text = "7";
-                    break;
-                case "eight":
-                    text = "8";
-                    break;
-                case "nine":
-                    text = "9";
-                    break;
-                case "zero":
-                    text = "0";
-                    break;
-            }
-        }
+        //Capitalize first letter only
+        text = capitalizeText(text);
 
         if (text.toCharArray()[0] == '!') {
-            //Capitalize first letter only
+            //Make text lower case;
             text = text.replace("!", "");
             if (text.toCharArray()[0] == '-') {
                 text = text.replace("-", "");
                 restoreSign = true;
             }
-            text = capitalizeText(text);
+            text = text.toLowerCase();
         }
 
         if (text.toCharArray()[0] == '$') {
@@ -258,8 +236,63 @@ public class Utils {
             text = text.toUpperCase();
         }
 
+        if (text.toCharArray()[0] == '#') {
+
+            //Converts text to number
+
+            if (text.toCharArray()[1] == '-') {
+                text = text.replace("-", "");
+                restoreSign = true;
+            }
+
+            text = text.replace("#", "");
+
+            if (convertNum) {
+                switch (text.toLowerCase()) {
+                    case "one":
+                        text = "1";
+                        break;
+                    case "two":
+                        text = "2";
+                        break;
+                    case "three":
+                        text = "3";
+                        break;
+                    case "four":
+                        text = "4";
+                        break;
+                    case "five":
+                        text = "5";
+                        break;
+                    case "six":
+                        text = "6";
+                        break;
+                    case "seven":
+                        text = "7";
+                        break;
+                    case "eight":
+                        text = "8";
+                        break;
+                    case "nine":
+                        text = "9";
+                        break;
+                    case "zero":
+                        text = "0";
+                        break;
+                }
+            }
+
+        }
+
         if (restoreSign && !isFirst) {
             sb.append("-");
+        }
+
+        text = text.replaceAll("#", "");
+
+        if (text.toCharArray()[0] == '?') {
+            text = text.toLowerCase();
+            text = text.replaceAll("\\?", "");
         }
 
         sb.append(text);
@@ -274,7 +307,7 @@ public class Utils {
     }
 
     public static String capitalizeText(String text) {
-        return text.substring(0, 1).toUpperCase(Locale.getDefault()) + text.substring(1);
+        return text.substring(0, 1).toUpperCase() + text.substring(1).toLowerCase();
     }
 
     public static void sendEmailWithDeviceInfo(Context context) {

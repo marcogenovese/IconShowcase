@@ -92,10 +92,10 @@ public class ViewerActivity extends AppCompatActivity {
     private RelativeLayout layout;
     private static Preferences mPrefs;
     private static File downloadsFolder;
-    private static MaterialDialog dialogApply;
+    private MaterialDialog dialogApply;
     private Toolbar toolbar;
 
-    private static LinearLayout toHide1, toHide2;
+    private LinearLayout toHide1, toHide2;
 
     private Activity context;
 

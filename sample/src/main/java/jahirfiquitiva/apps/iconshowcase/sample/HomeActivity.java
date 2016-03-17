@@ -45,10 +45,15 @@ public class HomeActivity extends ShowcaseActivity {
         setGooglePubkey("insert key here");
 
         Intent intent = new Intent(HomeActivity.this, jahirfiquitiva.iconshowcase.activities.ShowcaseActivity.class);
+        intent.putExtra("installer", getAppInstaller());
         startActivity(intent);
 
         finish();
 
+    }
+
+    private String getAppInstaller() {
+        return getPackageManager().getInstallerPackageName(getPackageName());
     }
 
 }

@@ -50,7 +50,6 @@ import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
 
-    private Activity activity;
     private final MaterialDialog dialog;
     private final Bitmap resource;
     private Uri wallUri;
@@ -85,7 +84,6 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
         final Activity a = wrActivity.get();
         if (a != null) {
             this.context = a.getApplicationContext();
-            this.activity = a;
         }
 
     }
@@ -116,7 +114,7 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
             Intent setWall = new Intent(Intent.ACTION_ATTACH_DATA);
             setWall.setDataAndType(wallUri, "image/*");
             setWall.putExtra("png", "image/*");
-            activity.startActivityForResult(Intent.createChooser(setWall,
+            wrActivity.get().startActivityForResult(Intent.createChooser(setWall,
                     context.getResources().getString(R.string.set_as)), 1);
         } else {
             dialog.dismiss();

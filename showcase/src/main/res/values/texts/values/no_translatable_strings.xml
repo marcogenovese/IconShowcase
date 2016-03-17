@@ -44,14 +44,8 @@
     <string name="iconics_web">https://github.com/mikepenz/Android-Iconics</string>
     <string name="iconics_name">Android Iconics</string>
 
-    <string name="fab_name">FloatingActionMenu</string>
-    <string name="fab_web">https://github.com/Clans/FloatingActionButton/</string>
-
     <string name="glide_name">Glide</string>
     <string name="glide_web">https://github.com/bumptech/glide</string>
-
-    <string name="glide_palette_name">Glide Palette</string>
-    <string name="glide_palette_web">https://github.com/florent37/GlidePalette</string>
 
     <string name="rv_fast_scroller_web">https://github.com/plusCubed/recycler-fast-scroll</string>
     <string name="rv_fast_scroller_name">RecyclerView FastScroller</string>
@@ -152,10 +146,8 @@
     <string-array name="libs_names">
         <item>@string/materialdialogs_name</item>
         <item>@string/materialdrawer_name</item>
-        <item>@string/fab_name</item>
         <item>@string/iconics_name</item>
         <item>@string/glide_name</item>
-        <item>@string/glide_palette_name</item>
         <item>@string/rv_fast_scroller_name</item>
         <item>@string/circleiv_name</item>
         <item>@string/muzei_api_name</item>
@@ -164,10 +156,8 @@
     <string-array name="libs_links">
         <item>@string/materialdialogs_web</item>
         <item>@string/materialdrawer_web</item>
-        <item>@string/fab_web</item>
         <item>@string/iconics_web</item>
         <item>@string/glide_web</item>
-        <item>@string/glide_palette_web</item>
         <item>@string/rv_fast_scroller_web</item>
         <item>@string/circleiv_web</item>
         <item>@string/muzei_api_web</item>

@@ -37,6 +37,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -121,15 +122,14 @@ public class ShowcaseActivity extends AppCompatActivity implements
 
     private static String GOOGLE_PUBKEY = "",
             PAYPAL_USER = "",
-            PAYPAL_CURRENCY_CODE = "",
-            installer;
+            PAYPAL_CURRENCY_CODE = "";
 
     private IabHelper mHelper;
 
     private static int drawerHeaderStyle = 1;
 
     private static final String MARKET_URL = "https://play.google.com/store/apps/details?id=";
-    private boolean mIsPremium = false, playStore = false;
+    private boolean mIsPremium = false, installedFromPlayStore = false;
 
     private static final String
             adw_action = "org.adw.launcher.icons.ACTION_PICK_ICON",
@@ -139,8 +139,8 @@ public class ShowcaseActivity extends AppCompatActivity implements
     public static boolean iconsPicker, wallsPicker, SHUFFLE = true;
     private static boolean iconsPickerEnabled = false, wallsEnabled = false, shuffleIcons = true, selectAll = true;
 
-    private static String thaAppName, thaHome, thaPreviews, thaApply, thaWalls, thaRequest, thaDonate, thaFAQs,
-            thaZooper, thaCredits, thaSettings;
+    private static String thaAppName, thaHome, thaPreviews, thaApply, thaWalls, thaRequest,
+            thaDonate, thaFAQs, thaZooper, thaCredits, thaSettings;
 
     private static AppCompatActivity context;
 
@@ -153,17 +153,18 @@ public class ShowcaseActivity extends AppCompatActivity implements
     private boolean mLastTheme, mLastNavBar;
     private static Preferences mPrefs;
 
-    public static MaterialDialog settingsDialog, changelogDialog; //loadIcons,
-    public static Toolbar toolbar;
-    public static AppBarLayout appbar;
-    private static CollapsingToolbarLayout collapsingToolbarLayout;
-    public static ImageView icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8;
-    public static ImageView toolbarHeader;
-    public static Bitmap toolbarHeaderImage;
+    public MaterialDialog settingsDialog, changelogDialog; //loadIcons,
+    public Toolbar toolbar;
+    public AppBarLayout appbar;
+    private CollapsingToolbarLayout collapsingToolbarLayout;
+    public ImageView icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8;
+    public ImageView toolbarHeader;
+    public Bitmap toolbarHeaderImage;
 
-    public static Drawer drawer;
+    public Drawer drawer;
 
     private static boolean themeMode;
+    private String installer = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -190,55 +191,28 @@ public class ShowcaseActivity extends AppCompatActivity implements
 
         getAction();
 
+        installer = getIntent().getStringExtra("installer");
+
+        try {
+            if (installer.equals("com.google.android.feedback") || installer.equals("com.android.vending")) {
+                installedFromPlayStore = true;
+            }
+        } catch (Exception e) {
+            //Do nothing
+        }
+
         WITH_USER_WALLPAPER_AS_TOOLBAR_HEADER = getResources().getBoolean(R.bool.user_wallpaper_in_home);
         WITH_ICONS_BASED_CHANGELOG = getResources().getBoolean(R.bool.icons_changelog);
 
         shuffleIcons = getResources().getBoolean(R.bool.shuffle_toolbar_icons);
 
-        installer = getPackageManager().getInstallerPackageName(getPackageName());
-        try {
-            playStore = (installer.equals("com.google.android.feedback") ||
-                    installer.equals("com.android.vending"));
-        } catch (Exception e) {
-            //Do nothing
-        }
+        setupDonations();
 
-        if (playStore) {
-            DONATIONS_PAYPAL = false; ///disable paypal as you can't use it in the play store.
-        } else {
-            DONATIONS_GOOGLE = false; //TODO check boolean stuff
-        }
-
-        //donations stuff
-        //google
-        if (DONATIONS_GOOGLE) {
-            GOOGLE_CATALOG_FREE = getResources().getStringArray(R.array.nonconsumable_google_donation_items);
-            GOOGLE_CATALOG_PRO = getResources().getStringArray(R.array.consumable_google_donation_items);
-            mGoogleCatalog = GOOGLE_CATALOG_FREE;
-            GOOGLE_CATALOG_VALUES = getResources().getStringArray(R.array.google_donations_catalog);
-
-            //TODO check if 50 is a good reference value
-            try {
-                if (!(GOOGLE_PUBKEY.length() > 50) || !(GOOGLE_CATALOG_VALUES.length > 0) || !(GOOGLE_CATALOG_FREE.length == GOOGLE_CATALOG_PRO.length) || !(GOOGLE_CATALOG_FREE.length == GOOGLE_CATALOG_VALUES.length)) {
-                    DONATIONS_GOOGLE = false; //google donations setup is incorrect
-                }
-            } catch (Exception e) {
-                DONATIONS_GOOGLE = false;
-            }
-
-        }
-
-        //paypal
-        if (DONATIONS_PAYPAL) {
-            PAYPAL_USER = getResources().getString(R.string.paypal_user);
-            PAYPAL_CURRENCY_CODE = getResources().getString(R.string.paypal_currency_code);
-            if (!(PAYPAL_USER.length() > 5) || !(PAYPAL_CURRENCY_CODE.length() > 1)) {
-                DONATIONS_PAYPAL = false; //paypal content incorrect
-            }
-        }
-
-        if (WITH_DONATIONS_SECTION) {
-            WITH_DONATIONS_SECTION = DONATIONS_GOOGLE || DONATIONS_PAYPAL || DONATIONS_FLATTR || DONATIONS_BITCOIN; //if one of the donations are enabled, then the section is enabled
+        if (installedFromPlayStore) {
+            // Disable donation methods not allowed by Google
+            DONATIONS_PAYPAL = false;
+            DONATIONS_FLATTR = false;
+            DONATIONS_BITCOIN = false;
         }
 
         //Initialize SecondaryDrawerItems
@@ -259,6 +233,15 @@ public class ShowcaseActivity extends AppCompatActivity implements
         }
 
         setContentView(R.layout.showcase_activity);
+
+        icon1 = (ImageView) findViewById(R.id.iconOne);
+        icon2 = (ImageView) findViewById(R.id.iconTwo);
+        icon3 = (ImageView) findViewById(R.id.iconThree);
+        icon4 = (ImageView) findViewById(R.id.iconFour);
+        icon5 = (ImageView) findViewById(R.id.iconFive);
+        icon6 = (ImageView) findViewById(R.id.iconSix);
+        icon7 = (ImageView) findViewById(R.id.iconSeven);
+        icon8 = (ImageView) findViewById(R.id.iconEight);
 
         runLicenseChecker();
 
@@ -284,15 +267,6 @@ public class ShowcaseActivity extends AppCompatActivity implements
         collapsingToolbarLayout.setTitle(thaAppName);
 
         Utils.setupCollapsingToolbarTextColors(context, collapsingToolbarLayout);
-
-        icon1 = (ImageView) findViewById(R.id.iconOne);
-        icon2 = (ImageView) findViewById(R.id.iconTwo);
-        icon3 = (ImageView) findViewById(R.id.iconThree);
-        icon4 = (ImageView) findViewById(R.id.iconFour);
-        icon5 = (ImageView) findViewById(R.id.iconFive);
-        icon6 = (ImageView) findViewById(R.id.iconSix);
-        icon7 = (ImageView) findViewById(R.id.iconSeven);
-        icon8 = (ImageView) findViewById(R.id.iconEight);
 
         //Setup donations
         if (DONATIONS_GOOGLE) {
@@ -403,8 +377,8 @@ public class ShowcaseActivity extends AppCompatActivity implements
         return ":(";
     }
 
-    public static void switchFragment(long itemId, String fragment,
-                                      AppCompatActivity context) {
+    public void switchFragment(long itemId, String fragment,
+                               AppCompatActivity context) {
 
         if (currentItem == itemId) {
             // Don't allow re-selection of the currently active item
@@ -609,11 +583,7 @@ public class ShowcaseActivity extends AppCompatActivity implements
                     .putBoolean("first_run", false).commit();
         } else {
             if (WITH_LICENSE_CHECKER) {
-                if (!mPrefs.areFeaturesEnabled()) {
-                    showNotLicensedDialog();
-                } else {
-                    showChangelogDialog();
-                }
+                checkLicense();
             } else {
                 showChangelogDialog();
             }
@@ -647,24 +617,25 @@ public class ShowcaseActivity extends AppCompatActivity implements
 
     private void checkLicense() {
         try {
-            if (playStore) {
-                ISDialogs.showLicenseSuccessDialog(this, new MaterialDialog.SingleButtonCallback() {
+            if (installer != null) {
+                if (installedFromPlayStore) {
+                    ISDialogs.showLicenseSuccessDialog(this, new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+                            mPrefs.setFeaturesEnabled(true);
+                            showChangelogDialog();
+                        }
+                    });
+                } else if (installer.equals("com.amazon.venezia") && WITH_INSTALLED_FROM_AMAZON) {
+                    ISDialogs.showLicenseSuccessDialog(this, new MaterialDialog.SingleButtonCallback() {
 
-                    @Override
-                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
-                        mPrefs.setFeaturesEnabled(true);
-                        showChangelogDialog();
-                    }
-                });
-            } else if (installer.equals("com.amazon.venezia") && WITH_INSTALLED_FROM_AMAZON) {
-                ISDialogs.showLicenseSuccessDialog(this, new MaterialDialog.SingleButtonCallback() {
-
-                    @Override
-                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
-                        mPrefs.setFeaturesEnabled(true);
-                        showChangelogDialog();
-                    }
-                });
+                        @Override
+                        public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+                            mPrefs.setFeaturesEnabled(true);
+                            showChangelogDialog();
+                        }
+                    });
+                }
             } else {
                 showNotLicensedDialog();
             }
@@ -726,7 +697,7 @@ public class ShowcaseActivity extends AppCompatActivity implements
                     WallpapersFragment.mAdapter.notifyDataSetChanged();
                 }
             }
-        }, context).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }, context, WallpapersFragment.noConnection).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     @Override
@@ -737,11 +708,6 @@ public class ShowcaseActivity extends AppCompatActivity implements
     public interface WallsListInterface {
 
         void checkWallsListCreation(boolean result);
-    }
-
-    public void onFolderSelection(@NonNull File folder) {
-        mPrefs.setDownloadsFolder(folder.getAbsolutePath());
-        SettingsFragment.changeValues(getApplicationContext());
     }
 
     private void setupDrawer(final Toolbar toolbar, Bundle savedInstanceState) {
@@ -922,7 +888,7 @@ public class ShowcaseActivity extends AppCompatActivity implements
         }
     }
 
-    public static void drawerItemClick(long id) {
+    public void drawerItemClick(long id) {
         if (id <= primaryDrawerItems.length) {
             switchFragment(id, primaryDrawerItems[(int) id - 1], context);
         } else {
@@ -963,11 +929,7 @@ public class ShowcaseActivity extends AppCompatActivity implements
         }
     }
 
-    public static void setupIcons(final ImageView icon1, final ImageView icon2,
-                                  final ImageView icon3, final ImageView icon4,
-                                  final ImageView icon5, final ImageView icon6,
-                                  final ImageView icon7, final ImageView icon8,
-                                  int numOfIcons) {
+    public void setupIcons() {
 
         ArrayList<IconItem> icons = null;
 
@@ -1009,62 +971,51 @@ public class ShowcaseActivity extends AppCompatActivity implements
 
     }
 
-    public static void animateIcons(ImageView icon1, ImageView icon2,
-                                    ImageView icon3, ImageView icon4,
-                                    ImageView icon5, ImageView icon6,
-                                    ImageView icon7, ImageView icon8,
-                                    int numOfIcons) {
-
-        icon1.setVisibility(View.GONE);
-        icon2.setVisibility(View.GONE);
-        icon3.setVisibility(View.GONE);
-        icon4.setVisibility(View.GONE);
-        icon5.setVisibility(View.GONE);
-        icon6.setVisibility(View.GONE);
-        icon7.setVisibility(View.GONE);
-        icon8.setVisibility(View.GONE);
+    public void animateIcons(int delay) {
 
         if (!iconsPicker && !wallsPicker) {
             switch (numOfIcons) {
                 case 4:
-                    icon1.setVisibility(View.VISIBLE);
-                    icon2.setVisibility(View.VISIBLE);
-                    icon3.setVisibility(View.VISIBLE);
-                    icon4.setVisibility(View.VISIBLE);
+                    if (icon1 != null) icon1.setVisibility(View.VISIBLE);
+                    if (icon2 != null) icon2.setVisibility(View.VISIBLE);
+                    if (icon3 != null) icon3.setVisibility(View.VISIBLE);
+                    if (icon4 != null) icon4.setVisibility(View.VISIBLE);
                     break;
                 case 6:
-                    icon1.setVisibility(View.VISIBLE);
-                    icon2.setVisibility(View.VISIBLE);
-                    icon3.setVisibility(View.VISIBLE);
-                    icon4.setVisibility(View.VISIBLE);
-                    icon5.setVisibility(View.VISIBLE);
-                    icon6.setVisibility(View.VISIBLE);
+                    if (icon1 != null) icon1.setVisibility(View.VISIBLE);
+                    if (icon2 != null) icon2.setVisibility(View.VISIBLE);
+                    if (icon3 != null) icon3.setVisibility(View.VISIBLE);
+                    if (icon4 != null) icon4.setVisibility(View.VISIBLE);
+                    if (icon5 != null) icon5.setVisibility(View.VISIBLE);
+                    if (icon6 != null) icon6.setVisibility(View.VISIBLE);
                     break;
                 case 8:
-                    icon1.setVisibility(View.VISIBLE);
-                    icon2.setVisibility(View.VISIBLE);
-                    icon3.setVisibility(View.VISIBLE);
-                    icon4.setVisibility(View.VISIBLE);
-                    icon5.setVisibility(View.VISIBLE);
-                    icon6.setVisibility(View.VISIBLE);
-                    icon7.setVisibility(View.VISIBLE);
-                    icon8.setVisibility(View.VISIBLE);
+                    if (icon1 != null) icon1.setVisibility(View.VISIBLE);
+                    if (icon2 != null) icon2.setVisibility(View.VISIBLE);
+                    if (icon3 != null) icon3.setVisibility(View.VISIBLE);
+                    if (icon4 != null) icon4.setVisibility(View.VISIBLE);
+                    if (icon5 != null) icon5.setVisibility(View.VISIBLE);
+                    if (icon6 != null) icon6.setVisibility(View.VISIBLE);
+                    if (icon7 != null) icon7.setVisibility(View.VISIBLE);
+                    if (icon8 != null) icon8.setVisibility(View.VISIBLE);
                     break;
             }
         }
 
         if (mPrefs.getAnimationsEnabled()) {
-            Animation anim = AnimationUtils.loadAnimation(context, R.anim.bounce);
-            playIconsAnimations(icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8, anim, numOfIcons);
+            final Animation anim = AnimationUtils.loadAnimation(context, R.anim.bounce);
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    playIconsAnimations(anim);
+                }
+            }, delay);
         }
 
     }
 
-    private static void playIconsAnimations(ImageView icon1, ImageView icon2,
-                                            ImageView icon3, ImageView icon4,
-                                            ImageView icon5, ImageView icon6,
-                                            ImageView icon7, ImageView icon8,
-                                            Animation anim, int numOfIcons) {
+    private void playIconsAnimations(Animation anim) {
 
         icon1.startAnimation(anim);
         icon2.startAnimation(anim);
@@ -1085,18 +1036,20 @@ public class ShowcaseActivity extends AppCompatActivity implements
         }
     }
 
-    public static void setupToolbarHeader(Context context, ImageView toolbarHeader) {
+    public void setupToolbarHeader(Context context, ImageView toolbarHeader) {
 
         if (WITH_USER_WALLPAPER_AS_TOOLBAR_HEADER && mPrefs.getWallpaperAsToolbarHeaderEnabled()) {
             WallpaperManager wm = WallpaperManager.getInstance(context);
+
             if (wm != null) {
                 Drawable currentWallpaper = wm.getFastDrawable();
                 if (currentWallpaper != null) {
                     toolbarHeader.setAlpha(0.9f);
                     toolbarHeader.setImageDrawable(currentWallpaper);
-                    ShowcaseActivity.toolbarHeaderImage = Utils.drawableToBitmap(currentWallpaper);
+                    toolbarHeaderImage = Utils.drawableToBitmap(currentWallpaper);
                 }
             }
+
         } else {
 
             ArrayList<Integer> wallpapersArray = new ArrayList<>();
@@ -1121,7 +1074,7 @@ public class ShowcaseActivity extends AppCompatActivity implements
             }
 
             toolbarHeader.setImageResource(wallpapersArray.get(wallpaper));
-            ShowcaseActivity.toolbarHeaderImage = Utils.drawableToBitmap(
+            toolbarHeaderImage = Utils.drawableToBitmap(
                     ContextCompat.getDrawable(context, wallpapersArray.get(wallpaper)));
         }
 
@@ -1163,4 +1116,113 @@ public class ShowcaseActivity extends AppCompatActivity implements
     public void setGooglePubkey(String GOOGLE_PUBKEY) {
         ShowcaseActivity.GOOGLE_PUBKEY = GOOGLE_PUBKEY;
     }
+
+    public MaterialDialog getSettingsDialog() {
+        return this.settingsDialog;
+    }
+
+    public void setSettingsDialog(MaterialDialog settingsDialog) {
+        this.settingsDialog = settingsDialog;
+    }
+
+    public MaterialDialog getChangelogDialog() {
+        return this.changelogDialog;
+    }
+
+    public void setChangelogDialog(MaterialDialog changelogDialog) {
+        this.changelogDialog = changelogDialog;
+    }
+
+    public Toolbar getToolbar() {
+        return this.toolbar;
+    }
+
+    public AppBarLayout getAppbar() {
+        return this.appbar;
+    }
+
+    public ImageView getIcon1() {
+        return this.icon1;
+    }
+
+    public ImageView getIcon2() {
+        return this.icon2;
+    }
+
+    public ImageView getIcon3() {
+        return this.icon3;
+    }
+
+    public ImageView getIcon4() {
+        return this.icon4;
+    }
+
+    public ImageView getIcon5() {
+        return this.icon5;
+    }
+
+    public ImageView getIcon6() {
+        return this.icon6;
+    }
+
+    public ImageView getIcon7() {
+        return this.icon7;
+    }
+
+    public ImageView getIcon8() {
+        return this.icon8;
+    }
+
+    public ImageView getToolbarHeader() {
+        return this.toolbarHeader;
+    }
+
+    public Bitmap getToolbarHeaderImage() {
+        return this.toolbarHeaderImage;
+    }
+
+    public Drawer getDrawer() {
+        return this.drawer;
+    }
+
+    @Override
+    public void onFolderSelection(File folder) {
+        mPrefs.setDownloadsFolder(folder.getAbsolutePath());
+        SettingsFragment.changeWallsFolderValue(this, mPrefs);
+    }
+
+    private void setupDonations() {
+        //donations stuff
+        //google
+        if (DONATIONS_GOOGLE) {
+            GOOGLE_CATALOG_FREE = getResources().getStringArray(R.array.nonconsumable_google_donation_items);
+            GOOGLE_CATALOG_PRO = getResources().getStringArray(R.array.consumable_google_donation_items);
+            mGoogleCatalog = GOOGLE_CATALOG_FREE;
+            GOOGLE_CATALOG_VALUES = getResources().getStringArray(R.array.google_donations_catalog);
+
+            //TODO check if 50 is a good reference value
+            try {
+                if (!(GOOGLE_PUBKEY.length() > 50) || !(GOOGLE_CATALOG_VALUES.length > 0) || !(GOOGLE_CATALOG_FREE.length == GOOGLE_CATALOG_PRO.length) || !(GOOGLE_CATALOG_FREE.length == GOOGLE_CATALOG_VALUES.length)) {
+                    DONATIONS_GOOGLE = false; //google donations setup is incorrect
+                }
+            } catch (Exception e) {
+                DONATIONS_GOOGLE = false;
+            }
+
+        }
+
+        //paypal
+        if (DONATIONS_PAYPAL) {
+            PAYPAL_USER = getResources().getString(R.string.paypal_user);
+            PAYPAL_CURRENCY_CODE = getResources().getString(R.string.paypal_currency_code);
+            if (!(PAYPAL_USER.length() > 5) || !(PAYPAL_CURRENCY_CODE.length() > 1)) {
+                DONATIONS_PAYPAL = false; //paypal content incorrect
+            }
+        }
+
+        if (WITH_DONATIONS_SECTION) {
+            WITH_DONATIONS_SECTION = DONATIONS_GOOGLE || DONATIONS_PAYPAL || DONATIONS_FLATTR || DONATIONS_BITCOIN; //if one of the donations are enabled, then the section is enabled
+        }
+    }
+
 }

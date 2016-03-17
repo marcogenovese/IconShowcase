@@ -35,6 +35,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
@@ -45,12 +46,12 @@ import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
 
-    private final Context context;
+    private final WeakReference<Context> context;
     public final static ArrayList<ZooperWidget> widgets = new ArrayList<>();
     private long startTime;
 
     public LoadZooperWidgets(Context context) {
-        this.context = context;
+        this.context = new WeakReference<Context>(context);
     }
 
     @Override
@@ -64,9 +65,9 @@ public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
         boolean worked = false;
 
         try {
-            AssetManager assetManager = context.getAssets();
+            AssetManager assetManager = context.get().getAssets();
             String[] templates = assetManager.list("templates");
-            File previewsFolder = new File(context.getExternalCacheDir(), "WidgetsPreviews");
+            File previewsFolder = new File(context.get().getExternalCacheDir(), "WidgetsPreviews");
 
             if (templates != null && templates.length > 0) {
                 if (previewsFolder.exists()) {
@@ -100,7 +101,7 @@ public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
     protected void onPostExecute(Boolean worked) {
         long endTime = System.currentTimeMillis();
         if (worked) {
-            Utils.showLog(context, "Load of widgets task completed successfully in: " + String.valueOf((endTime - startTime)) + " millisecs.");
+            Utils.showLog(context.get(), "Load of widgets task completed successfully in: " + String.valueOf((endTime - startTime)) + " millisecs.");
         }
     }
 

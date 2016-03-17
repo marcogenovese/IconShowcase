@@ -27,6 +27,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.AsyncTask;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -42,13 +43,13 @@ import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
 
-    private final Context context;
+    private final WeakReference<Context> context;
     private static ArrayList<IconsLists> iconsLists;
     private static ArrayList<IconsCategory> categories;
     private long startTime;
 
     public LoadIconsLists(Context context) {
-        this.context = context;
+        this.context = new WeakReference<Context>(context);
     }
 
     @Override
@@ -59,8 +60,8 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
     @Override
     protected Boolean doInBackground(Void... params) {
 
-        Resources r = context.getResources();
-        String p = context.getPackageName();
+        Resources r = context.get().getResources();
+        String p = context.get().getPackageName();
 
         int iconResId = 0;
 
@@ -71,7 +72,7 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
 
         ArrayList<IconItem> changelogIconsArray = new ArrayList<>();
         for (String icon : newIconsL) {
-            iconResId = Utils.getIconResId(context, r, p, icon);
+            iconResId = Utils.getIconResId(context.get(), r, p, icon);
             if (iconResId != 0) {
                 changelogIconsArray.add(new IconItem(icon, iconResId));
             }
@@ -83,7 +84,7 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
 
         ArrayList<IconItem> previewIconsArray = new ArrayList<>();
         for (String icon : previewIconsL) {
-            iconResId = Utils.getIconResId(context, r, p, icon);
+            iconResId = Utils.getIconResId(context.get(), r, p, icon);
             if (iconResId != 0) {
                 previewIconsArray.add(new IconItem(icon, iconResId));
             }
@@ -102,7 +103,7 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
             try {
                 icons = r.getStringArray(arrayId);
             } catch (Resources.NotFoundException e) {
-                Utils.showLog(context, "Couldn't find array: " + tabName);
+                Utils.showLog(context.get(), "Couldn't find array: " + tabName);
             }
 
             if (icons != null && icons.length > 0) {
@@ -112,10 +113,10 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
                 ArrayList<IconItem> iconsArray = new ArrayList<>();
 
                 for (int j = 0; j < iconsList.size(); j++) {
-                    iconResId = Utils.getIconResId(context, r, p, iconsList.get(j));
+                    iconResId = Utils.getIconResId(context.get(), r, p, iconsList.get(j));
                     if (iconResId != 0) {
                         iconsArray.add(new IconItem(iconsList.get(j), iconResId));
-                        if (context.getResources().getBoolean(R.bool.auto_generate_all_icons)) {
+                        if (context.get().getResources().getBoolean(R.bool.auto_generate_all_icons)) {
                             allIcons.add(new IconItem(iconsList.get(j), iconResId));
                         }
                     }
@@ -125,7 +126,7 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
             }
         }
 
-        if (context.getResources().getBoolean(R.bool.auto_generate_all_icons)) {
+        if (context.get().getResources().getBoolean(R.bool.auto_generate_all_icons)) {
             ArrayList<IconItem> allTheIcons = getAllIconsList(r, p, allIcons);
             if (allTheIcons.size() > 0) {
                 categories.add(new IconsCategory("All", allTheIcons));
@@ -143,7 +144,7 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
     @Override
     protected void onPostExecute(Boolean worked) {
         long endTime = System.currentTimeMillis();
-        Utils.showLog(context, "Load of icons task completed successfully in: " + String.valueOf((endTime - startTime)) + " millisecs.");
+        Utils.showLog(context.get(), "Load of icons task completed successfully in: " + String.valueOf((endTime - startTime)) + " millisecs.");
         /* TODO Check if it's secure enough
         if (categories.get(categories.size() - 1).getCategoryName().equals("All")) {
             ShowcaseActivity.SHOW_LOAD_ICONS_DIALOG = false;
@@ -176,7 +177,7 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
         int resId;
 
         for (int j = 0; j < list.size(); j++) {
-            resId = Utils.getIconResId(context, r, p, list.get(j));
+            resId = Utils.getIconResId(context.get(), r, p, list.get(j));
             if (resId != 0) {
                 sortedListArray.add(new IconItem(list.get(j), resId));
             }
@@ -208,7 +209,7 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
         int resId;
 
         for (int j = 0; j < list.size(); j++) {
-            resId = Utils.getIconResId(context, r, p, list.get(j));
+            resId = Utils.getIconResId(context.get(), r, p, list.get(j));
             if (resId != 0) {
                 sortedListArray.add(new IconItem(list.get(j), resId));
             }
