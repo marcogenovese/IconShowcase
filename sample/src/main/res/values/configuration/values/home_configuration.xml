@@ -66,19 +66,15 @@
 
 
     <string-array name="apps_titles">
-        <item>Something</item>
     </string-array>
 
     <string-array name="apps_descriptions">
-        <item>Something</item>
     </string-array>
 
     <string-array name="apps_icons">
-        <item>ic_na_launcher</item>
     </string-array>
 
     <string-array name="apps_packages">
-        <item>com.google.android.apps.inbox</item>
     </string-array>
 
 </resources>

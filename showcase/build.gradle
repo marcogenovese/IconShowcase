@@ -17,10 +17,6 @@
  *
  */
 
-/*
- *
- */
-
 buildscript {
     repositories {
         mavenCentral()
@@ -39,12 +35,7 @@ android {
     buildToolsVersion "23.0.2"
 
     lintOptions{
-        disable 'InvalidPackage'
         abortOnError false
-    }
-
-    packagingOptions{
-        exclude 'META-INF/services/javax.annotation.processing.Processor'
     }
 
     defaultConfig {
