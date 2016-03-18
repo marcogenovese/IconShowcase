@@ -23,47 +23,33 @@
 
 package jahirfiquitiva.iconshowcase.fragments;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.content.res.AssetManager;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.AppCompatButton;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.GridLayout;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.mikepenz.google_material_typeface_library.GoogleMaterial;
-import com.mikepenz.iconics.IconicsDrawable;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
+import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 
 import jahirfiquitiva.iconshowcase.R;
-import jahirfiquitiva.iconshowcase.models.ZooperWidget;
-import jahirfiquitiva.iconshowcase.tasks.CopyFilesToStorage;
+import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
+import jahirfiquitiva.iconshowcase.adapters.ZooperAdapter;
 import jahirfiquitiva.iconshowcase.tasks.LoadZooperWidgets;
-import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
-import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
-import jahirfiquitiva.iconshowcase.views.CustomCoordinatorLayout;
+import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 
-public class ZooperFragment extends Fragment implements PermissionUtils.OnPermissionResultListener {
+public class ZooperFragment extends Fragment {
 
-    private MaterialDialog dialog;
-    private ViewGroup layout;
-    private Context context;
-    private CardView cardZooper, cardMU, cardMUInfo, installFonts, installIconsets, installBitmaps;
+    private static ViewGroup layout;
+    private static Context context;
+
+    public RecyclerView mRecyclerView;
+    private RecyclerFastScroller fastScroller;
+    public ZooperAdapter zooperAdapter;
     private int i = 0;
 
     @Override
@@ -71,7 +57,8 @@ public class ZooperFragment extends Fragment implements PermissionUtils.OnPermis
 
         context = getActivity();
 
-        boolean WITH_MEDIA_UTILITIES_WIDGETS = context.getResources().getBoolean(R.bool.mu_needed);
+        int gridSpacing = getResources().getDimensionPixelSize(R.dimen.lists_padding);
+        int columnsNumber = getResources().getInteger(R.integer.launchers_grid_width) - 1;
 
         if (layout != null) {
             ViewGroup parent = (ViewGroup) layout.getParent();
@@ -85,152 +72,24 @@ public class ZooperFragment extends Fragment implements PermissionUtils.OnPermis
             //Do nothing
         }
 
-        final int light = ContextCompat.getColor(context, R.color.drawable_tint_dark);
-        final int dark = ContextCompat.getColor(context, R.color.drawable_tint_light);
+        if (layout != null) {
 
-        Drawable alert = new IconicsDrawable(context)
-                .icon(GoogleMaterial.Icon.gmd_alert_triangle)
-                .color(ThemeUtils.darkTheme ? light : dark)
-                .sizeDp(24);
+            mRecyclerView = (RecyclerView) layout.findViewById(R.id.zooper_rv);
+            mRecyclerView.setLayoutManager(new GridLayoutManager(context, columnsNumber));
+            mRecyclerView.addItemDecoration(
+                    new GridSpacingItemDecoration(columnsNumber,
+                            gridSpacing,
+                            true));
 
-        Drawable fonts = new IconicsDrawable(context)
-                .icon(GoogleMaterial.Icon.gmd_text_format)
-                .color(ThemeUtils.darkTheme ? light : dark)
-                .sizeDp(24);
+            fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
+            fastScroller.attachRecyclerView(mRecyclerView);
 
-        Drawable iconsets = new IconicsDrawable(context)
-                .icon(GoogleMaterial.Icon.gmd_toys)
-                .color(ThemeUtils.darkTheme ? light : dark)
-                .sizeDp(24);
+            zooperAdapter = new ZooperAdapter(context, LoadZooperWidgets.widgets,
+                    ShowcaseActivity.wallpaperDrawable);
+            mRecyclerView.setHasFixedSize(true);
+            mRecyclerView.setAdapter(zooperAdapter);
 
-        Drawable fire = new IconicsDrawable(context)
-                .icon(GoogleMaterial.Icon.gmd_fire)
-                .color(ThemeUtils.darkTheme ? light : dark)
-                .sizeDp(24);
-
-        Drawable bitmaps = new IconicsDrawable(context)
-                .icon(GoogleMaterial.Icon.gmd_image_alt)
-                .color(ThemeUtils.darkTheme ? light : dark)
-                .sizeDp(24);
-
-        ImageView fireIV = (ImageView) layout.findViewById(R.id.icon_preview);
-        fireIV.setImageDrawable(fire);
-
-        final ImageView preview = (ImageView) getActivity().findViewById(R.id.zooperWidget);
-
-        final ArrayList<ZooperWidget> widgets = LoadZooperWidgets.widgets;
-
-        if (context.getResources().getBoolean(R.bool.remove_zooper_previews_background)) {
-            preview.setImageBitmap(widgets.get(i).getTransparentBackgroundPreview());
-        } else {
-            preview.setImageBitmap(widgets.get(i).getPreview());
         }
-
-        preview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                i += 1;
-                if (widgets.size() > 0) {
-                    if (context.getResources().getBoolean(R.bool.remove_zooper_previews_background)) {
-                        preview.setImageBitmap(widgets.get(i).getTransparentBackgroundPreview());
-                    } else {
-                        preview.setImageBitmap(widgets.get(i).getPreview());
-                    }
-                    if (i == widgets.size() - 1) {
-                        i = -1;
-                    }
-                }
-            }
-        });
-
-        ImageView zooperIV = (ImageView) layout.findViewById(R.id.icon_zooper);
-        zooperIV.setImageDrawable(alert);
-
-        ImageView muIV = (ImageView) layout.findViewById(R.id.icon_mu);
-        muIV.setImageDrawable(alert);
-
-        ImageView fontsIV = (ImageView) layout.findViewById(R.id.icon_fonts);
-        fontsIV.setImageDrawable(fonts);
-
-        ImageView iconsetsIV = (ImageView) layout.findViewById(R.id.icon_iconsets);
-        iconsetsIV.setImageDrawable(iconsets);
-
-        ImageView bitmapsIV = (ImageView) layout.findViewById(R.id.icon_bitmaps);
-        bitmapsIV.setImageDrawable(bitmaps);
-
-        cardZooper = (CardView) layout.findViewById(R.id.zooper_card);
-
-        if (Utils.isAppInstalled(context, "org.zooper.zwpro")) {
-            cardZooper.setVisibility(View.GONE);
-        } else {
-            cardZooper.setVisibility(View.VISIBLE);
-        }
-
-        AppCompatButton downloadZooper = (AppCompatButton) layout.findViewById(R.id.download_button);
-        downloadZooper.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog = new MaterialDialog.Builder(context)
-                        .title(R.string.zooper_download_dialog_title)
-                        .items(R.array.zooper_download_dialog_options)
-                        .itemsCallback(new MaterialDialog.ListCallback() {
-                            @Override
-                            public void onSelection(MaterialDialog dialog, View view, int selection, CharSequence text) {
-                                switch (selection) {
-                                    case 0:
-                                        Utils.openLinkInChromeCustomTab(context,
-                                                "https://play.google.com/store/apps/details?id=org.zooper.zwpro");
-                                        break;
-                                    case 1:
-                                        if (Utils.isAppInstalled(context, "com.amazon.venezia")) {
-                                            Utils.openLinkInChromeCustomTab(context,
-                                                    "amzn://apps/android?p=org.zooper.zwpro");
-                                        } else {
-                                            Utils.openLinkInChromeCustomTab(context,
-                                                    "http://www.amazon.com/gp/mas/dl/android?p=org.zooper.zwpro");
-                                        }
-                                        break;
-                                }
-                            }
-                        })
-                        .show();
-            }
-        });
-
-        cardMU = (CardView) layout.findViewById(R.id.mu_card);
-        cardMUInfo = (CardView) layout.findViewById(R.id.mediautilities_info_card);
-
-        if (WITH_MEDIA_UTILITIES_WIDGETS) {
-            if (!Utils.isAppInstalled(context, "com.batescorp.notificationmediacontrols.alpha")) {
-                cardMU.setVisibility(View.VISIBLE);
-                cardMUInfo.setVisibility(View.GONE);
-            } else {
-                cardMU.setVisibility(View.GONE);
-                cardMUInfo.setVisibility(View.VISIBLE);
-            }
-        } else {
-            cardMU.setVisibility(View.GONE);
-            cardMUInfo.setVisibility(View.GONE);
-        }
-
-        AppCompatButton downloadMU = (AppCompatButton) layout.findViewById(R.id.mu_download_button);
-        downloadMU.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Utils.openLinkInChromeCustomTab(context,
-                        "https://play.google.com/store/apps/details?id=com.batescorp.notificationmediacontrols.alpha");
-            }
-        });
-
-        AppCompatButton openMU = (AppCompatButton) layout.findViewById(R.id.mu_open_button);
-        openMU.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent muIntent = context.getPackageManager().getLaunchIntentForPackage(
-                        "com.batescorp.notificationmediacontrols.alpha");
-                startActivity(muIntent);
-            }
-        });
 
         return layout;
     }
@@ -238,236 +97,26 @@ public class ZooperFragment extends Fragment implements PermissionUtils.OnPermis
     @Override
     public void onResume() {
         super.onResume();
-        Utils.expandToolbar(getActivity());
-        GridLayout grid = (GridLayout) getActivity().findViewById(R.id.iconsRow);
-        grid.setVisibility(View.GONE);
-        ImageView preview = (ImageView) getActivity().findViewById(R.id.zooperWidget);
-        preview.setVisibility(View.VISIBLE);
-        if (layout != null) {
-            setupCards(true, true, true);
-        }
+        Utils.collapseToolbar(getActivity());
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        GridLayout grid = (GridLayout) getActivity().findViewById(R.id.iconsRow);
-        grid.setVisibility(View.VISIBLE);
-        ImageView preview = (ImageView) getActivity().findViewById(R.id.zooperWidget);
-        preview.setVisibility(View.INVISIBLE);
     }
 
-    private void setupCards(boolean fonts, boolean iconsets, boolean bitmaps) {
-
-        final String fontsFolder = "fonts", iconsetsFolder = "iconsets", bitmapsFolder = "bitmaps";
-
-        installFonts = (CardView) layout.findViewById(R.id.fonts_card);
-        if (fonts) {
-            if (checkAssetsInstalled(fontsFolder)) {
-                installFonts.setVisibility(View.GONE);
-            } else {
-                installFonts.setVisibility(View.VISIBLE);
-                installFonts.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (!checkAssetsInstalled(fontsFolder)) {
-                            if (!PermissionUtils.canAccessStorage(getContext())) {
-                                PermissionUtils.requestStoragePermission(getActivity(),
-                                        ZooperFragment.this,
-                                        fontsFolder);
-                            } else {
-                                installFonts(fontsFolder);
-                            }
-                        } else {
-                            String snackBarContext = getActivity().getResources().getString(
-                                    R.string.assets_installed, Utils.capitalizeText(fontsFolder));
-                            Utils.showSimpleSnackbar(context, layout,
-                                    snackBarContext);
-                            setupCards(true, false, false);
-                        }
-                    }
-                });
-            }
-        }
-
-        installIconsets = (CardView) layout.findViewById(R.id.iconsets_card);
-        if (iconsets) {
-            if (checkAssetsInstalled(iconsetsFolder)) {
-                installIconsets.setVisibility(View.GONE);
-            } else {
-                installIconsets.setVisibility(View.VISIBLE);
-                installIconsets.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (!checkAssetsInstalled(iconsetsFolder)) {
-                            if (!PermissionUtils.canAccessStorage(getContext())) {
-                                PermissionUtils.requestStoragePermission(getActivity(),
-                                        ZooperFragment.this,
-                                        iconsetsFolder);
-                            } else {
-                                installFonts(iconsetsFolder);
-                            }
-                        } else {
-                            String snackBarContext =
-                                    getActivity().getResources().getString(
-                                            R.string.assets_installed, Utils.capitalizeText(iconsetsFolder));
-                            Utils.showSimpleSnackbar(context, layout,
-                                    snackBarContext);
-                            setupCards(false, true, false);
-                        }
-                    }
-                });
-            }
-        }
-
-        installBitmaps = (CardView) layout.findViewById(R.id.bitmaps_card);
-        if (bitmaps) {
-            if (checkAssetsInstalled(bitmapsFolder)) {
-                installBitmaps.setVisibility(View.GONE);
-            } else {
-                installBitmaps.setVisibility(View.VISIBLE);
-                installBitmaps.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (!checkAssetsInstalled(bitmapsFolder)) {
-                            if (!PermissionUtils.canAccessStorage(getContext())) {
-                                PermissionUtils.requestStoragePermission(getActivity(),
-                                        ZooperFragment.this,
-                                        bitmapsFolder);
-                            } else {
-                                installFonts(bitmapsFolder);
-                            }
-                        } else {
-                            String snackBarContext =
-                                    getActivity().getResources().getString(
-                                            R.string.assets_installed, Utils.capitalizeText(bitmapsFolder));
-                            Utils.showSimpleSnackbar(context, layout,
-                                    snackBarContext);
-                            setupCards(false, false, true);
-                        }
-                    }
-                });
-            }
-        }
-
-        setupCoordinatorLayoutScrolling(getActivity());
-    }
-
-    private boolean checkAssetsInstalled(String folder) {
-        boolean assetsInstalled = true;
-
-        String fileToIgnore1 = "material-design-iconic-font-v2.2.0.ttf",
-                fileToIgnore2 = "materialdrawerfont.ttf",
-                fileToIgnore3 = "materialdrawerfont-font-v5.0.0.ttf";
-
-        AssetManager assetManager = context.getAssets();
-        String[] files = null;
-        try {
-            files = assetManager.list(folder);
-        } catch (IOException e) {
-            //Do nothing
-        }
-
-        if (files != null && files.length > 0) {
-            for (String filename : files) {
-                //Utils.showLog(filename);
-                if (!filename.equals(fileToIgnore1) && !filename.equals(fileToIgnore2)
-                        && !filename.equals(fileToIgnore3)) {
-                    File file = new File(Environment.getExternalStorageDirectory()
-                            + "/ZooperWidget/" + getFolderName(folder) + "/" + filename);
-                    if (!file.exists()) {
-                        assetsInstalled = false;
-                    }
-                }
-            }
-        }
-
-        return assetsInstalled;
-    }
-
-    private String getFolderName(String folder) {
-        switch (folder) {
-            case "fonts":
-                return "Fonts";
-            case "iconsets":
-                return "IconSets";
-            case "bitmaps":
-                return "Bitmaps";
-            default:
-                return folder;
+    public static void showInstalledAppsSnackbar() {
+        if (layout != null && context != null) {
+            Utils.showSimpleSnackbar(context, layout,
+                    Utils.getStringFromResources(context, R.string.apps_installed));
         }
     }
 
-    private void installFonts(String folderName) {
-        String dialogContent =
-                getActivity().getResources().getString(
-                        R.string.copying_assets, getFolderName(folderName));
-        dialog = new MaterialDialog.Builder(context)
-                .content(dialogContent)
-                .progress(true, 0)
-                .cancelable(false)
-                .show();
-        new CopyFilesToStorage(context, dialog, folderName).execute();
+    public static void showInstalledAssetsSnackbar() {
+        if (layout != null && context != null) {
+            Utils.showSimpleSnackbar(context, layout,
+                    Utils.getStringFromResources(context, R.string.assets_installed));
+        }
     }
 
-    private void setupCoordinatorLayoutScrolling(Context context) {
-        int num = 1, minCardsToScroll = 2;
-        boolean bigCards = false, enableScroll = false, portrait = true;
-
-        switch (getResources().getConfiguration().orientation) {
-            case 1:
-                minCardsToScroll = 2;
-                portrait = true;
-                break;
-            case 2:
-                minCardsToScroll = 1;
-                portrait = false;
-                break;
-        }
-
-        if (cardZooper.getVisibility() == View.VISIBLE) {
-            num += 1;
-            bigCards = true;
-        }
-
-        if (cardMU.getVisibility() == View.VISIBLE) {
-            num += 1;
-            bigCards = true;
-        }
-
-        if (cardMUInfo.getVisibility() == View.VISIBLE) {
-            num += 1;
-            bigCards = true;
-        }
-
-        if (installFonts.getVisibility() == View.VISIBLE) {
-            num += 1;
-        }
-
-        if (installIconsets.getVisibility() == View.VISIBLE) {
-            num += 1;
-        }
-
-        if (installBitmaps.getVisibility() == View.VISIBLE) {
-            num += 1;
-        }
-
-        if (num >= minCardsToScroll + 1 && !bigCards && portrait) {
-            enableScroll = true;
-        } else if (num >= minCardsToScroll) {
-            if (bigCards) {
-                enableScroll = true;
-            } else if (!portrait) {
-                enableScroll = true;
-            }
-        }
-
-        CustomCoordinatorLayout coordinatorLayout = (CustomCoordinatorLayout) ((Activity) context).findViewById(R.id.mainCoordinatorLayout);
-        coordinatorLayout.setScrollAllowed(enableScroll);
-    }
-
-    @Override
-    public void onStoragePermissionGranted() {
-        installFonts(PermissionUtils.folderName);
-    }
 }

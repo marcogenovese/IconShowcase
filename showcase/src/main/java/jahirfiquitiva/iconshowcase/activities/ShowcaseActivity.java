@@ -160,6 +160,7 @@ public class ShowcaseActivity extends AppCompatActivity implements
     public ImageView icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8;
     public ImageView toolbarHeader;
     public Bitmap toolbarHeaderImage;
+    public static Drawable wallpaperDrawable;
 
     public Drawer drawer;
 
@@ -1046,6 +1047,7 @@ public class ShowcaseActivity extends AppCompatActivity implements
                 if (currentWallpaper != null) {
                     toolbarHeader.setAlpha(0.9f);
                     toolbarHeader.setImageDrawable(currentWallpaper);
+                    wallpaperDrawable = currentWallpaper;
                     toolbarHeaderImage = Utils.drawableToBitmap(currentWallpaper);
                 }
             }
@@ -1073,7 +1075,8 @@ public class ShowcaseActivity extends AppCompatActivity implements
                 wallpaper = random.nextInt(wallpapersArray.size());
             }
 
-            toolbarHeader.setImageResource(wallpapersArray.get(wallpaper));
+            wallpaperDrawable = ContextCompat.getDrawable(context, wallpapersArray.get(wallpaper));
+            toolbarHeader.setImageDrawable(wallpaperDrawable);
             toolbarHeaderImage = Utils.drawableToBitmap(
                     ContextCompat.getDrawable(context, wallpapersArray.get(wallpaper)));
         }

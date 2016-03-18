@@ -52,7 +52,6 @@ import jahirfiquitiva.iconshowcase.utilities.Preferences;
 public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.WallsHolder> {
 
     public interface ClickListener {
-
         void onClick(WallsHolder view, int index, boolean longClick);
     }
 

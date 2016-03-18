@@ -95,7 +95,11 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
     public void onBindViewHolder(final IconsHolder holder, int position) {
         if (position < 0) return;
 
-        Glide.with(context).load(iconsList.get(holder.getAdapterPosition()).getResId()).asBitmap().into(new BitmapImageViewTarget(holder.icon) {
+        Glide.with(context)
+                .load(
+                iconsList.get(holder.getAdapterPosition()).getResId())
+                .asBitmap()
+                .into(new BitmapImageViewTarget(holder.icon) {
             @Override
             protected void setResource(Bitmap resource) {
                 if (mPrefs.getAnimationsEnabled()) {

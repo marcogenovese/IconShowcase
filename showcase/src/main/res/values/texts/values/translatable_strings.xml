@@ -229,35 +229,17 @@
     <string name="walls_advice">Simple press a wallpaper to view it in FullScreen.\nLong press to apply it directly to your homescreen.</string>
 
     <string name="zooper_section_title">Zooper Setup</string>
-
-    <string name="zooper_preview_title">Preview widgets</string>
-    <string name="zooper_preview_content">Tap the picture above to load another widget.</string>
-
-    <string name="zooper_download_title">Install Zooper Widget Pro</string>
-    <string name="zooper_download_content">You need Zooper Widget Pro to be able to use the included skins.</string>
-
     <string name="zooper_download_dialog_title">Download from</string>
 
-    <string name="mu_download_title">Install Media Utilities</string>
-    <string name="mu_download_content">You need Media Utilities to be able to use the music widgets with Zooper.</string>
+    <string name="install_apps">Install apps</string>
+    <string name="install_apps_content">You need to install these apps for Zooper widgets to work properly. Press one to install it.</string>
 
-    <string name="mu_info_title">MediaUtilities setup</string>
-    <string name="mu_info_content">Use this to make the music widgets work. Open the MU, go to settings and make sure the following options are checked:\n\n
-	    &#10003; Zooper\n
-	    &#10003; Make Coverart available\n
-	    &#10003; Send Song Progress</string>
+    <string name="install_assets">Install assets</string>
+
     <string name="open">Open</string>
 
-    <string name="zooper_install_fonts_title">Install Fonts</string>
-    <string name="zooper_install_fonts_content">This will fix issues with widgets fonts.</string>
-
-    <string name="zooper_install_iconsets_title">Install Iconsets</string>
-    <string name="zooper_install_iconsets_content">This will fix issues with widgets iconsets.</string>
-
-    <string name="zooper_install_bitmaps_title">Install Bitmaps</string>
-    <string name="zooper_install_bitmaps_content">This will fix issues with widgets bitmaps.</string>
-
-    <string name="assets_installed">%1$s already installed</string>
+    <string name="assets_installed">Assets already installed</string>
+    <string name="apps_installed">Apps already installed</string>
     <string name="copying_assets">Copying files to ZooperWidget/%1$s</string>
 
     <string name="icon_pack_in_numbers">Icon Pack in numbers</string>

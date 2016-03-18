@@ -33,6 +33,10 @@
     <string name="dashboard_bugs_report">https://github.com/jahirfiquitiva/IconShowcase/issues</string>
     <string name="app_version">v %1$s</string>
 
+    <string name="zooper_app">Zooper Widget Pro</string>
+    <string name="mu_app">Media Utilities</string>
+    <string name="kolorette_app">Kolorette</string>
+
     <string name="materialdialogs_author">Aidan Follestad</string>
     <string name="materialdialogs_web">https://github.com/afollestad/material-dialogs</string>
     <string name="materialdialogs_name">Material Dialogs</string>
