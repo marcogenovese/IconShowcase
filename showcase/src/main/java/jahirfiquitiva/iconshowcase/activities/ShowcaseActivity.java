@@ -843,7 +843,11 @@ public class ShowcaseActivity extends AppCompatActivity implements
             case 1:
                 AccountHeader drawerHeader = new AccountHeaderBuilder()
                         .withActivity(this)
-                        .withHeaderBackground(R.drawable.drawer_header)
+                        .withHeaderBackground(ThemeUtils.darkTheme ?
+                                ThemeUtils.transparent ?
+                                        R.drawable.drawer_header_clear :
+                                        R.drawable.drawer_header_dark :
+                                R.drawable.drawer_header_light)
                         .withSelectionFirstLine(headerAppName)
                         .withSelectionSecondLine(headerAppVersion)
                         .withProfileImagesClickable(false)
@@ -880,7 +884,11 @@ public class ShowcaseActivity extends AppCompatActivity implements
                 appVersion.setTextColor(iconsColor);
                 appName.setTextColor(iconsColor);
             } else {
-                miniHeader.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawer_header));
+                miniHeader.setImageDrawable(ThemeUtils.darkTheme ?
+                        ContextCompat.getDrawable(context, R.drawable.drawer_header_dark) :
+                        ThemeUtils.transparent ?
+                                ContextCompat.getDrawable(context, R.drawable.drawer_header_clear) :
+                                ContextCompat.getDrawable(context, R.drawable.drawer_header_light));
                 appVersion.setTextColor(ContextCompat.getColor(context, android.R.color.white));
                 appName.setTextColor(ContextCompat.getColor(context, android.R.color.white));
             }

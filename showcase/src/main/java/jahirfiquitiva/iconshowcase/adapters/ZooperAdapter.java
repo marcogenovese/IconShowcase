@@ -42,11 +42,17 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private Drawable[] icons = new Drawable[2];
     private Context context;
     private Drawable wallpaper;
+    private int extraCards = 0;
+    private boolean everythingInstalled;
 
-    public ZooperAdapter(Context context, ArrayList<ZooperWidget> widgets, Drawable wallpaper) {
+    public ZooperAdapter(Context context, ArrayList<ZooperWidget> widgets, Drawable wallpaper, boolean
+                         appsInstalled) {
         this.context = context;
         this.widgets = widgets;
         this.wallpaper = wallpaper;
+
+        this.everythingInstalled = (appsInstalled && areAssetsInstalled());
+        this.extraCards = this.everythingInstalled ? 0 : 2;
 
         final int light = ContextCompat.getColor(context, R.color.drawable_tint_dark);
         final int dark = ContextCompat.getColor(context, R.color.drawable_tint_light);
@@ -66,14 +72,19 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int i) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        switch (i) {
-            case 0:
-            case 1:
-                return new ZooperButtonHolder(
-                        inflater.inflate(R.layout.item_zooper_button, parent, false), i);
-            default:
-                return new ZooperHolder(
-                        inflater.inflate(R.layout.item_widget_preview, parent, false));
+        if (!everythingInstalled) {
+            switch (i) {
+                case 0:
+                case 1:
+                    return new ZooperButtonHolder(
+                            inflater.inflate(R.layout.item_zooper_button, parent, false), i);
+                default:
+                    return new ZooperHolder(
+                            inflater.inflate(R.layout.item_widget_preview, parent, false));
+            }
+        } else {
+            return new ZooperHolder(
+                    inflater.inflate(R.layout.item_widget_preview, parent, false));
         }
     }
 
@@ -85,30 +96,39 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 Utils.getStringFromResources(context, R.string.install_assets)
         };
 
-        switch (position) {
-            //TODO Hide first 2 cards if not needed to be clicked
-            case 0:
-            case 1:
-                ZooperButtonHolder zooperButtonHolder = (ZooperButtonHolder) holder;
-                zooperButtonHolder.icon.setImageDrawable(icons[position]);
-                zooperButtonHolder.text.setText(texts[position]);
-                break;
-            default:
-                ZooperWidget widget = widgets.get(position - 2);
-                ZooperHolder zooperHolder = (ZooperHolder) holder;
-                zooperHolder.background.setImageDrawable(wallpaper);
-                zooperHolder.widget.setImageBitmap(
-                        context.getResources().getBoolean(R.bool.remove_zooper_previews_background) ?
-                                widget.getTransparentBackgroundPreview() :
-                                widget.getPreview());
-                break;
+        if (!everythingInstalled) {
+            switch (position) {
+                case 0:
+                case 1:
+                    ZooperButtonHolder zooperButtonHolder = (ZooperButtonHolder) holder;
+                    zooperButtonHolder.icon.setImageDrawable(icons[position]);
+                    zooperButtonHolder.text.setText(texts[position]);
+                    break;
+                default:
+                    ZooperWidget widget = widgets.get(position - 2);
+                    ZooperHolder zooperHolder = (ZooperHolder) holder;
+                    zooperHolder.background.setImageDrawable(wallpaper);
+                    zooperHolder.widget.setImageBitmap(
+                            context.getResources().getBoolean(R.bool.remove_zooper_previews_background) ?
+                                    widget.getTransparentBackgroundPreview() :
+                                    widget.getPreview());
+                    break;
+            }
+        } else {
+            ZooperWidget widget = widgets.get(position);
+            ZooperHolder zooperHolder = (ZooperHolder) holder;
+            zooperHolder.background.setImageDrawable(wallpaper);
+            zooperHolder.widget.setImageBitmap(
+                    context.getResources().getBoolean(R.bool.remove_zooper_previews_background) ?
+                            widget.getTransparentBackgroundPreview() :
+                            widget.getPreview());
         }
 
     }
 
     @Override
     public int getItemCount() {
-        return widgets != null ? widgets.size() + 2 : 2;
+        return widgets != null ? widgets.size() + extraCards : extraCards;
     }
 
     @Override
@@ -186,68 +206,68 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             });
         }
 
-        private boolean areAssetsInstalled() {
-            boolean assetsInstalled = false;
+    }
 
-            String fileToIgnore1 = "material-design-iconic-font-v2.2.0.ttf",
-                    fileToIgnore2 = "materialdrawerfont.ttf",
-                    fileToIgnore3 = "materialdrawerfont-font-v5.0.0.ttf";
+    private boolean areAssetsInstalled() {
+        boolean assetsInstalled = false;
 
-            AssetManager assetManager = context.getAssets();
-            String[] files = null;
-            String[] folders = new String[]{"fonts", "iconsets", "bitmaps"};
+        String fileToIgnore1 = "material-design-iconic-font-v2.2.0.ttf",
+                fileToIgnore2 = "materialdrawerfont.ttf",
+                fileToIgnore3 = "materialdrawerfont-font-v5.0.0.ttf";
 
-            for (String folder : folders) {
-                try {
-                    files = assetManager.list(folder);
-                } catch (IOException e) {
-                    //Do nothing
-                }
+        AssetManager assetManager = context.getAssets();
+        String[] files = null;
+        String[] folders = new String[]{"fonts", "iconsets", "bitmaps"};
 
-                if (files != null && files.length > 0) {
-                    for (String filename : files) {
-                        if (!filename.equals(fileToIgnore1) && !filename.equals(fileToIgnore2)
-                                && !filename.equals(fileToIgnore3)) {
-                            File file = new File(Environment.getExternalStorageDirectory()
-                                    + "/ZooperWidget/" + getFolderName(folder) + "/" + filename);
-                            assetsInstalled = file.exists();
-                        }
+        for (String folder : folders) {
+            try {
+                files = assetManager.list(folder);
+            } catch (IOException e) {
+                //Do nothing
+            }
+
+            if (files != null && files.length > 0) {
+                for (String filename : files) {
+                    if (!filename.equals(fileToIgnore1) && !filename.equals(fileToIgnore2)
+                            && !filename.equals(fileToIgnore3)) {
+                        File file = new File(Environment.getExternalStorageDirectory()
+                                + "/ZooperWidget/" + getFolderName(folder) + "/" + filename);
+                        assetsInstalled = file.exists();
                     }
                 }
             }
-
-            return assetsInstalled;
         }
 
-        private String getFolderName(String folder) {
-            switch (folder) {
-                case "fonts":
-                    return "Fonts";
-                case "iconsets":
-                    return "IconSets";
-                case "bitmaps":
-                    return "Bitmaps";
-                default:
-                    return folder;
-            }
+        return assetsInstalled;
+    }
+
+    private String getFolderName(String folder) {
+        switch (folder) {
+            case "fonts":
+                return "Fonts";
+            case "iconsets":
+                return "IconSets";
+            case "bitmaps":
+                return "Bitmaps";
+            default:
+                return folder;
         }
+    }
 
-        private void installAssets() {
-            String[] folders = new String[]{"fonts", "iconsets", "bitmaps"};
+    private void installAssets() {
+        String[] folders = new String[]{"fonts", "iconsets", "bitmaps"};
 
-            for (String folderName : folders) {
-                String dialogContent =
-                        context.getResources().getString(
-                                R.string.copying_assets, getFolderName(folderName));
-                MaterialDialog dialog = new MaterialDialog.Builder(context)
-                        .content(dialogContent)
-                        .progress(true, 0)
-                        .cancelable(false)
-                        .show();
-                new CopyFilesToStorage(context, dialog, folderName).execute();
-            }
+        for (String folderName : folders) {
+            String dialogContent =
+                    context.getResources().getString(
+                            R.string.copying_assets, getFolderName(folderName));
+            MaterialDialog dialog = new MaterialDialog.Builder(context)
+                    .content(dialogContent)
+                    .progress(true, 0)
+                    .cancelable(false)
+                    .show();
+            new CopyFilesToStorage(context, dialog, folderName).execute();
         }
-
     }
 
 }

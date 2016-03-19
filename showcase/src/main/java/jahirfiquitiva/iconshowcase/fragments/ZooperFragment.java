@@ -24,7 +24,9 @@
 package jahirfiquitiva.iconshowcase.fragments;
 
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -33,11 +35,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
+
+import java.io.File;
+import java.io.IOException;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.adapters.ZooperAdapter;
+import jahirfiquitiva.iconshowcase.tasks.CopyFilesToStorage;
 import jahirfiquitiva.iconshowcase.tasks.LoadZooperWidgets;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
@@ -50,15 +57,13 @@ public class ZooperFragment extends Fragment {
     public RecyclerView mRecyclerView;
     private RecyclerFastScroller fastScroller;
     public ZooperAdapter zooperAdapter;
+    private GridSpacingItemDecoration space;
     private int i = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
 
         context = getActivity();
-
-        int gridSpacing = getResources().getDimensionPixelSize(R.dimen.lists_padding);
-        int columnsNumber = getResources().getInteger(R.integer.launchers_grid_width) - 1;
 
         if (layout != null) {
             ViewGroup parent = (ViewGroup) layout.getParent();
@@ -72,25 +77,6 @@ public class ZooperFragment extends Fragment {
             //Do nothing
         }
 
-        if (layout != null) {
-
-            mRecyclerView = (RecyclerView) layout.findViewById(R.id.zooper_rv);
-            mRecyclerView.setLayoutManager(new GridLayoutManager(context, columnsNumber));
-            mRecyclerView.addItemDecoration(
-                    new GridSpacingItemDecoration(columnsNumber,
-                            gridSpacing,
-                            true));
-
-            fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
-            fastScroller.attachRecyclerView(mRecyclerView);
-
-            zooperAdapter = new ZooperAdapter(context, LoadZooperWidgets.widgets,
-                    ShowcaseActivity.wallpaperDrawable);
-            mRecyclerView.setHasFixedSize(true);
-            mRecyclerView.setAdapter(zooperAdapter);
-
-        }
-
         return layout;
     }
 
@@ -98,11 +84,43 @@ public class ZooperFragment extends Fragment {
     public void onResume() {
         super.onResume();
         Utils.collapseToolbar(getActivity());
+        setupRV();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+    }
+
+    private void setupRV() {
+        if (layout != null) {
+
+            int gridSpacing = getResources().getDimensionPixelSize(R.dimen.lists_padding);
+            int columnsNumber = getResources().getInteger(R.integer.launchers_grid_width) - 1;
+
+            mRecyclerView = (RecyclerView) layout.findViewById(R.id.zooper_rv);
+
+            if (space != null) {
+                mRecyclerView.removeItemDecoration(space);
+            }
+
+            mRecyclerView.setLayoutManager(new GridLayoutManager(context, columnsNumber));
+
+            space = new GridSpacingItemDecoration(columnsNumber,
+                    gridSpacing, true);
+
+            mRecyclerView.addItemDecoration(space);
+            mRecyclerView.setHasFixedSize(true);
+
+            fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
+            fastScroller.attachRecyclerView(mRecyclerView);
+
+            zooperAdapter = new ZooperAdapter(context, LoadZooperWidgets.widgets,
+                    ShowcaseActivity.wallpaperDrawable, areAppsInstalled());
+
+            mRecyclerView.setAdapter(zooperAdapter);
+
+        }
     }
 
     public static void showInstalledAppsSnackbar() {
@@ -117,6 +135,21 @@ public class ZooperFragment extends Fragment {
             Utils.showSimpleSnackbar(context, layout,
                     Utils.getStringFromResources(context, R.string.assets_installed));
         }
+    }
+
+    private boolean areAppsInstalled() {
+
+        boolean installed = Utils.isAppInstalled(context, "org.zooper.zwpro");
+
+        if (context.getResources().getBoolean(R.bool.mu_needed) && installed) {
+            installed = Utils.isAppInstalled(context, "com.batescorp.notificationmediacontrols.alpha");
+        }
+
+        if (context.getResources().getBoolean(R.bool.kolorette_needed) && installed) {
+            installed = Utils.isAppInstalled(context, "com.arun.themeutil.kolorette");
+        }
+
+        return installed;
     }
 
 }

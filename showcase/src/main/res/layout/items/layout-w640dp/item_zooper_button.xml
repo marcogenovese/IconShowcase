@@ -17,8 +17,8 @@
         style="@style/ZooperCardContent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:layout_gravity="center"
+        android:gravity="center"
         android:minHeight="@dimen/md_listitem_height"
         android:orientation="vertical"
         android:paddingLeft="16dp"
@@ -37,6 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:gravity="center_horizontal"
+            android:paddingTop="@dimen/cards_padding"
             android:singleLine="true"/>
 
     </LinearLayout>

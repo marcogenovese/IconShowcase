@@ -23,9 +23,9 @@
   -->
 
 <theme>
-    <version>0.1</version>
-    <themeName>Ertz - Icon Pack</themeName>
-    <themeInfo>Ertz is a new icon pack with a 3d-ish style and unique colors.</themeInfo>
+    <version>1.0</version>
+    <themeName>IconShowcase Dashboard</themeName>
+    <themeInfo>IconShowcase is a Material Design based Icon Pack dashboard template. Free and open source.</themeInfo>
     <preview img1="preview1"/>
     <preview img2="preview2"/>
 </theme>

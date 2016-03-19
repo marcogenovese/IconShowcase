@@ -26,4 +26,5 @@
     <dimen name="toolbar_contentInset">72dp</dimen>
     <integer name="toolbar_elevation">4</integer>
     <dimen name="tabs_contentInset">68dp</dimen>
+  <dimen name="dialog_icon_size">144dp</dimen>
 </resources>
