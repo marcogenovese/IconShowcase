@@ -26,16 +26,14 @@
 
     <!-- Make sure to put at least 8 icons -->
     <string-array name="preview">
-        <item>a_better_camera</item>
-        <item>aa</item>
-        <item>acdisplay</item>
-        <item>action_launcher</item>
-        <item>adaway</item>
-        <item>adobe_creative_cloud</item>
-        <item>afterfocus</item>
-        <item>afterlight</item>
-        <item>airdroid</item>
-        <item>alarmpad</item>
+        <item>an_icon</item>
+        <item>andy</item>
+        <item>another_icon</item>
+        <item>icon_one</item>
+        <item>icon_with_a_long_name</item>
+        <item>icons_everywhere</item>
+        <item>second_icon</item>
+        <item>this_is_an_icon</item>
     </string-array>
 
     <!-- These sections below are for your "Previews" section -->
@@ -54,13 +52,14 @@
     <!-- LATEST ICONS -->
     <!-- All of your Latest icons listed here -->
     <string-array name="latest">
-        <item>a_better_camera</item>
-        <item>aa</item>
-        <item>acdisplay</item>
-        <item>action_launcher</item>
-        <item>adaway</item>
-        <item>adobe_creative_cloud</item>
-        <item>afterfocus</item>
+        <item>an_icon</item>
+        <item>andy</item>
+        <item>another_icon</item>
+        <item>icon_one</item>
+        <item>icon_with_a_long_name</item>
+        <item>icons_everywhere</item>
+        <item>second_icon</item>
+        <item>this_is_an_icon</item>
     </string-array>
 
     <!-- SYSTEM ICONS -->
@@ -76,12 +75,14 @@
     <!-- GOOGLE APPS ICONS -->
     <!-- Google Apps icons are listed here -->
     <string-array name="google_apps">
-        <item>a_better_camera</item>
-        <item>adobe_creative_cloud</item>
-        <item>afterfocus</item>
-        <item>afterlight</item>
-        <item>airdroid</item>
-        <item>alarmpad</item>
+        <item>an_icon</item>
+        <item>andy</item>
+        <item>another_icon</item>
+        <item>icon_one</item>
+        <item>icon_with_a_long_name</item>
+        <item>icons_everywhere</item>
+        <item>second_icon</item>
+        <item>this_is_an_icon</item>
     </string-array>
 
     <!-- GAMES ICONS -->
@@ -94,12 +95,14 @@
     </string-array>
 
     <string-array name="drawers">
-        <item>a_better_camera</item>
-        <item>aa</item>
-        <item>acdisplay</item>
-        <item>afterlight</item>
-        <item>airdroid</item>
-        <item>alarmpad</item>
+        <item>an_icon</item>
+        <item>andy</item>
+        <item>another_icon</item>
+        <item>icon_one</item>
+        <item>icon_with_a_long_name</item>
+        <item>icons_everywhere</item>
+        <item>second_icon</item>
+        <item>this_is_an_icon</item>
     </string-array>
 
     <string-array name="icon_pack">

@@ -538,7 +538,7 @@ public class ShowcaseActivity extends AppCompatActivity implements
             }
         } else if (i == R.id.refresh) {
             WallpapersFragment.refreshWalls(context);
-            loadWallsList();
+            loadWallsList(this);
         } else if (i == R.id.columns) {
             ISDialogs.showColumnsSelectorDialog(context);
         } else if (i == R.id.select_all) {
@@ -674,14 +674,7 @@ public class ShowcaseActivity extends AppCompatActivity implements
                 });
     }
 
-    private void loadAppsForRequest() {
-        if (mPrefs.getAppsToRequestLoaded()) {
-            mPrefs.setAppsToRequestLoaded(!mPrefs.getAppsToRequestLoaded());
-        }
-        new LoadAppsToRequest(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-    }
-
-    private void loadWallsList() {
+    private void loadWallsList(Context context) {
         if (mPrefs.getWallsListLoaded()) {
             WallpapersList.clearList();
             mPrefs.setWallsListLoaded(!mPrefs.getWallsListLoaded());
@@ -845,9 +838,9 @@ public class ShowcaseActivity extends AppCompatActivity implements
                         .withActivity(this)
                         .withHeaderBackground(ThemeUtils.darkTheme ?
                                 ThemeUtils.transparent ?
-                                        R.drawable.drawer_header_clear :
-                                        R.drawable.drawer_header_dark :
-                                R.drawable.drawer_header_light)
+                                        R.drawable.drawer_header_clear
+                                        : R.drawable.drawer_header_dark
+                                : R.drawable.drawer_header_light)
                         .withSelectionFirstLine(headerAppName)
                         .withSelectionSecondLine(headerAppVersion)
                         .withProfileImagesClickable(false)
@@ -885,10 +878,10 @@ public class ShowcaseActivity extends AppCompatActivity implements
                 appName.setTextColor(iconsColor);
             } else {
                 miniHeader.setImageDrawable(ThemeUtils.darkTheme ?
-                        ContextCompat.getDrawable(context, R.drawable.drawer_header_dark) :
                         ThemeUtils.transparent ?
-                                ContextCompat.getDrawable(context, R.drawable.drawer_header_clear) :
-                                ContextCompat.getDrawable(context, R.drawable.drawer_header_light));
+                                ContextCompat.getDrawable(context, R.drawable.drawer_header_clear)
+                                : ContextCompat.getDrawable(context, R.drawable.drawer_header_dark)
+                        : ContextCompat.getDrawable(context, R.drawable.drawer_header_light));
                 appVersion.setTextColor(ContextCompat.getColor(context, android.R.color.white));
                 appName.setTextColor(ContextCompat.getColor(context, android.R.color.white));
             }

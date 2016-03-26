@@ -39,7 +39,7 @@
         <item>Go|com.gau.go.launcherex</item>
         <item>Google Now|com.google.android.launcher</item>
         <item>Holo|com.mobint.hololauncher</item>
-        <item>Holo HD|com.mobint.hololauncher.hd</item>
+        <item>Holo ICS|com.mobint.hololauncher.hd</item>
         <item>KK|com.kk.launcher</item>
         <item>L|com.l.launcher</item>
         <item>LG Home|com.lge.launcher2</item>
@@ -55,31 +55,30 @@
         <item>Unicon Pro|sg.ruqqq.IconThemer</item>
     </string-array>
 
-    <array name="launcher_colors">
-        <item>@color/action_launcher_color</item>
-        <item>@color/adw_launcher_color</item>
-        <item>@color/adw_ex_launcher_color</item>
-        <item>@color/apex_launcher_color</item>
-        <item>@color/atom_launcher_color</item>
-        <item>@color/aviate_launcher_color</item>
-        <item>@color/cm_theme_engine_color</item>
-        <item>@color/go_launcher_color</item>
-        <item>@color/google_now_launcher_color</item>
-        <item>@color/holo_launcher_color</item>
-        <item>@color/holo_hd_launcher_color</item>
-        <item>@color/kk_launcher_color</item>
-        <item>@color/l_launcher_color</item>
-        <item>@color/lg_home_color</item>
-        <item>@color/lucid_launcher_color</item>
-        <item>@color/mini_launcher_color</item>
-        <item>@color/next_launcher_color</item>
-        <item>@color/nova_launcher_color</item>
-        <item>@color/s_launcher_color</item>
-        <item>@color/smart_launcher_color</item>
-        <item>@color/smart_pro_launcher_color</item>
-        <item>@color/solo_launcher_color</item>
-        <item>@color/tsf_launcher_color</item>
-        <item>@color/unicon_pro_color</item>
-    </array>
+    <!-- COLORS FOR INSTALLED LAUNCHERS -->
+    <color name="action_launcher_color">#f44336</color>
+    <color name="adw_launcher_color">#2196f3</color>
+    <color name="adw_ex_launcher_color">#ffc107</color>
+    <color name="apex_launcher_color">#2196f3</color>
+    <color name="atom_launcher_color">#3f51b5</color>
+    <color name="aviate_launcher_color">#673ab7</color>
+    <color name="cm_theme_engine_color">#2196f3</color>
+    <color name="go_launcher_color">#8bc34a</color>
+    <color name="google_now_launcher_color">#2196f3</color>
+    <color name="holo_launcher_color">#03a9f4</color>
+    <color name="holo_ics_launcher_color">#78c257</color>
+    <color name="kk_launcher_color">#e91e63</color>
+    <color name="l_launcher_color">#ff5722</color>
+    <color name="lg_home_color">#00bcd4</color>
+    <color name="lucid_launcher_color">#2196f3</color>
+    <color name="mini_launcher_color">#c0ca33</color>
+    <color name="next_launcher_color">#3f51b5</color>
+    <color name="nova_launcher_color">#e53935</color>
+    <color name="s_launcher_color">#2196f3</color>
+    <color name="smart_launcher_color">#03a9f4</color>
+    <color name="smart_pro_launcher_color">#03a9f4</color>
+    <color name="solo_launcher_color">#9c27b0</color>
+    <color name="tsf_launcher_color">#03a9f4</color>
+    <color name="unicon_pro_color">#78c257</color>
 
 </resources>

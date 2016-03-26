@@ -125,6 +125,15 @@ public class ApplyFragment extends Fragment {
                     public void onClick(int position) {
                         if (launchers.get(position).name.equals("Google Now")) {
                             gnlDialog();
+                        } else if (launchers.get(position).name.equals("LG Home")) {
+                            if (Utils.isAppInstalled(getActivity(), launchers.get(position).packageName)) {
+                                openLauncher(launchers.get(position).name);
+                            } else {
+                                new MaterialDialog.Builder(getActivity())
+                                        .content(R.string.lg_dialog_content)
+                                        .positiveText(android.R.string.ok)
+                                        .show();
+                            }
                         } else if (launchers.get(position).name.equals("CM Theme Engine")) {
                             if (Utils.isAppInstalled(getActivity(), "com.cyngn.theme.chooser")) {
                                 openLauncher("CM Theme Engine");

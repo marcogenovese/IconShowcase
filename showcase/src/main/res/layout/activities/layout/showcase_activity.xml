@@ -92,8 +92,10 @@
                 android:layout_height="?actionBarSize"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                 android:transitionName="actionBar"
-                app:contentInsetStart="@dimen/toolbar_contentInset"
+                app:contentInsetStart="@dimen/second_keyline"
                 app:layout_collapseMode="pin"
+                app:popupTheme="@style/Toolbar.Popup.AppCompat"
+                app:theme="@style/Toolbar.AppCompat.Responsive.Light"
                 tools:ignore="UnusedAttribute"/>
 
         </android.support.design.widget.CollapsingToolbarLayout>

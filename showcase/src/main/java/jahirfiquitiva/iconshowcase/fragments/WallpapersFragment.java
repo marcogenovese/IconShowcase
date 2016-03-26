@@ -192,7 +192,11 @@ public class WallpapersFragment extends Fragment {
                                                     @Override
                                                     public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                                                         if (resource != null) {
-                                                            new ApplyWallpaper(context, dialog, resource, ShowcaseActivity.wallsPicker, layout).execute();
+                                                            new ApplyWallpaper(
+                                                                    context,
+                                                                    dialog, resource,
+                                                                    ShowcaseActivity.wallsPicker,
+                                                                    layout).execute();
                                                         }
                                                     }
                                                 });

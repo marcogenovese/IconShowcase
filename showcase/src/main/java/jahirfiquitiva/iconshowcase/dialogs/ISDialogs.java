@@ -278,9 +278,10 @@ public final class ISDialogs {
      */
 
     public static void showPermissionNotGrantedDialog(Context context) {
+        String appName = Utils.getStringFromResources(context, R.string.app_name);
         new MaterialDialog.Builder(context)
                 .title(R.string.md_error_label)
-                .content(context.getResources().getString(R.string.md_storage_perm_error, R.string.app_name))
+                .content(context.getResources().getString(R.string.md_storage_perm_error, appName))
                 .positiveText(android.R.string.ok)
                 .show();
     }

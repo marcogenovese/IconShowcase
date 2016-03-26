@@ -56,7 +56,9 @@
                 android:transitionName="actionBar"
                 android:minHeight="?actionBarSize"
                 app:layout_collapseMode="pin"
-                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:contentInsetStart="@dimen/second_keyline"
+                app:theme="@style/Toolbar.AppCompat.Responsive.Light"
+                app:popupTheme="@style/Toolbar.Popup.AppCompat"
                 tools:ignore="UnusedAttribute"/>
 
         </android.support.design.widget.CollapsingToolbarLayout>

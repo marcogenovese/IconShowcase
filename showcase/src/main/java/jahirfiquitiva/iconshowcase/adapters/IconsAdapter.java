@@ -77,8 +77,13 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
     }
 
     public void setIcons(ArrayList<IconItem> iconsList) {
-        this.iconsList.addAll(iconsList);
-        this.notifyItemRangeInserted(0, iconsList.size() - 1);
+        if (iconsList != null) {
+            this.iconsList.addAll(iconsList);
+            this.notifyItemRangeInserted(0, iconsList.size() - 1);
+        } else {
+            this.iconsList = new ArrayList<>();
+            this.notifyItemRangeInserted(0, 0);
+        }
     }
 
     public void clearIconsList() {
@@ -97,24 +102,24 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
 
         Glide.with(context)
                 .load(
-                iconsList.get(holder.getAdapterPosition()).getResId())
+                        iconsList.get(holder.getAdapterPosition()).getResId())
                 .asBitmap()
                 .into(new BitmapImageViewTarget(holder.icon) {
-            @Override
-            protected void setResource(Bitmap resource) {
-                if (mPrefs.getAnimationsEnabled()) {
-                    //TODO: pick an animation
+                    @Override
+                    protected void setResource(Bitmap resource) {
+                        if (mPrefs.getAnimationsEnabled()) {
+                            //TODO: pick an animation
 
-                    //if (!inChangelog) setAnimation(holder.icon, holder.getAdapterPosition());
+                            //if (!inChangelog) setAnimation(holder.icon, holder.getAdapterPosition());
 
-                    TransitionDrawable td = new TransitionDrawable(new Drawable[]{new ColorDrawable(Color.TRANSPARENT), new BitmapDrawable(context.getResources(), resource)});
-                    holder.icon.setImageDrawable(td);
-                    td.startTransition(250);
-                } else {
-                    holder.icon.setImageBitmap(resource);
-                }
-            }
-        });
+                            TransitionDrawable td = new TransitionDrawable(new Drawable[]{new ColorDrawable(Color.TRANSPARENT), new BitmapDrawable(context.getResources(), resource)});
+                            holder.icon.setImageDrawable(td);
+                            td.startTransition(250);
+                        } else {
+                            holder.icon.setImageBitmap(resource);
+                        }
+                    }
+                });
 
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override

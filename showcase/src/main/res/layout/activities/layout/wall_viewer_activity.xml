@@ -24,6 +24,7 @@
 <RelativeLayout
     android:id="@+id/viewerLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -54,7 +55,9 @@
             android:layout_height="?actionBarSize"
             android:layout_marginTop="@dimen/materialize_statusbar"
             android:background="@android:color/transparent"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+            app:contentInsetStart="@dimen/second_keyline"
+            app:popupTheme="@style/Toolbar.Popup.AppCompat"
+            app:theme="@style/Toolbar.AppCompat.Responsive.Light"/>
     
     </FrameLayout>
     

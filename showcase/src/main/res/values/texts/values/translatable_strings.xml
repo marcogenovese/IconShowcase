@@ -71,6 +71,10 @@
         yourself, but it requires the use of an external app. Would you like to download it?
     </string>
 
+    <string name="lg_dialog_content">We are sorry, but LG Home app is exclusive of LG devices, and
+        therefore it can not be downloaded from Google Play Store.
+    </string>
+
     <!-- Changelog Dialog Content -->
     <string name="changelog_dialog_title">Changelog</string>
     <string name="great">Great</string>

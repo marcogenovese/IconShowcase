@@ -41,7 +41,7 @@
         <item>Go|com.gau.go.launcherex</item>
         <item>Google Now|com.google.android.launcher</item>
         <item>Holo|com.mobint.hololauncher</item>
-        <item>Holo HD|com.mobint.hololauncher.hd</item>
+        <item>Holo ICS|com.mobint.hololauncher.hd</item>
         <item>KK|com.kk.launcher</item>
         <item>L|com.l.launcher</item>
         <item>LG Home|com.lge.launcher2</item>
@@ -68,7 +68,7 @@
         <item>@color/go_launcher_color</item>
         <item>@color/google_now_launcher_color</item>
         <item>@color/holo_launcher_color</item>
-        <item>@color/holo_hd_launcher_color</item>
+        <item>@color/holo_ics_launcher_color</item>
         <item>@color/kk_launcher_color</item>
         <item>@color/l_launcher_color</item>
         <item>@color/lg_home_color</item>

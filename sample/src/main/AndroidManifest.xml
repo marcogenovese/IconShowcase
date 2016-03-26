@@ -73,7 +73,8 @@
             android:name=".HomeActivity"
             android:label="@string/app_name"
             android:noHistory="true"
-            android:theme="@style/AppTheme.LaunchScreen">
+            android:theme="@style/AppTheme.LaunchScreen"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -88,6 +89,7 @@
         <!-- Icons -->
         <activity
             android:name="jahirfiquitiva.iconshowcase.activities.ShowcaseActivity"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:label="@string/app_name">
 
             <intent-filter tools:ignore="GoogleAppIndexingDeepLinkError,GoogleAppIndexingWarning">
@@ -262,6 +264,7 @@
         <!-- Wallpapers Activity -->
         <activity
             android:name="jahirfiquitiva.iconshowcase.activities.ViewerActivity"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:label="@string/title_activity_detailed_wallpaper"
             android:theme="@style/AppTheme"/>
 
@@ -285,6 +288,7 @@
 
         <activity
             android:name="jahirfiquitiva.iconshowcase.muzei.MuzeiSettings"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:exported="true"
             android:label="@string/muzei_settings"
             android:theme="@style/AppTheme"/>
@@ -308,6 +312,7 @@
 
         <activity
             android:name="jahirfiquitiva.iconshowcase.activities.LauncherIconRestorerActivity"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:label="@string/app_name"
             android:noHistory="true"
             android:theme="@style/EmptyActivity">

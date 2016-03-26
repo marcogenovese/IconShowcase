@@ -21,13 +21,6 @@
 <resources>
 
     <!--
-    Do you want to use black and white filter in launchers icons?
-    True, the app will use bnw filter.
-    False, the app will simply tint the icons.
-    -->
-    <bool name="enable_bnw_filter">false</bool>
-
-    <!--
     Setup the columns amount you want in different sections
     -->
     <!-- PHONES - PORTRAIT MODE -->
