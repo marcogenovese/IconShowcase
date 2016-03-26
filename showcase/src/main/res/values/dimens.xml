@@ -58,10 +58,12 @@
     <dimen name="credits_photo_margin">48dp</dimen>
     <dimen name="credits_photo_size">96dp</dimen>
 
+    <dimen name="app_card_icon_size">48dp</dimen>
+
     <!-- Dimensions for some dialogs -->
     <dimen name="dialog_margin">24dp</dimen>
     <dimen name="dialog_margin_bottom">16dp</dimen>
-    <dimen name="dialog_icon_size">72dp</dimen>
+    <dimen name="dialog_icon_size">120dp</dimen>
 
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>

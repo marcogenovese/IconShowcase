@@ -102,6 +102,7 @@
         <item name="tabsNormalTextColor">@color/tabs_normal_text_dark</item>
         <item name="tabsSelectedTextColor">@color/tabs_selected_text_dark</item>
 
+
         <item name="actionModeStyle">@style/Responsive.ActionMode</item>
         <item name="actionModeCloseButtonStyle">@style/Responsive.ActionButton.CloseMode</item>
 

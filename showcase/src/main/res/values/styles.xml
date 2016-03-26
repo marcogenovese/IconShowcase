@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <!--
   ~ Copyright (c) 2016.  Jahir Fiquitiva
   ~
@@ -23,15 +24,15 @@
     <style name="Toolbar.Popup.AppCompat" parent="Theme.AppCompat.Light"/>
     
     <style name="Toolbar.AppCompat.Responsive.Light" parent="AppTheme.Base">
-        <item name="android:textColorPrimary">@android:color/white</item>
-        <item name="android:textColorSecondary">@android:color/white</item>
-        <item name="colorControlHighlight">@color/white_highlight</item>
+        <item name="android:textColorPrimary">@color/toolbar_text_light</item>
+        <item name="android:textColorSecondary">@color/toolbar_text_light</item>
+        <item name="colorControlHighlight">@color/toolbar_text_light</item>
     </style>
     
     <style name="Toolbar.AppCompat.Responsive.Dark" parent="AppTheme.Base.Dark">
-        <item name="android:textColorPrimary">@android:color/white</item>
-        <item name="android:textColorSecondary">@android:color/white</item>
-        <item name="colorControlHighlight">@color/white_highlight</item>
+        <item name="android:textColorPrimary">@color/toolbar_text_dark</item>
+        <item name="android:textColorSecondary">@color/toolbar_text_dark</item>
+        <item name="colorControlHighlight">@color/toolbar_text_dark</item>
     </style>
     
     <style name="Responsive.Toolbar" parent="Widget.AppCompat.Toolbar">
@@ -49,9 +50,12 @@
         <item name="android:paddingLeft">0dp</item>
         <item name="android:paddingRight">0dp</item>
     </style>
-    
+
     <style name="Responsive.ActionMode" parent="Widget.AppCompat.ActionMode">
+        <!--
         <item name="android:paddingLeft">@dimen/toolbar_horizontal_padding</item>
+        -->
+        <item name="android:paddingLeft">0dp</item>
         <item name="android:paddingRight">@dimen/toolbar_horizontal_padding</item>
     </style>
     
