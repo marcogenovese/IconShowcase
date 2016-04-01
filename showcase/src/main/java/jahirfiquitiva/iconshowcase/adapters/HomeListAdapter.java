@@ -85,15 +85,6 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 @Override
                 public void onClick(View v) {
                     Utils.openLink(context, context.getResources().getString(R.string.iconpack_author_playstore));
-
-                    /*
-                    Rate App Code:
-
-                    Intent rate = new Intent(Intent.ACTION_VIEW,
-                            Uri.parse("https://play.google.com/store/apps/details?id=" + context.getPackageName()));
-                    context.startActivity(rate);
-
-                     */
                 }
             });
             iconsbtn = (AppCompatButton) itemView.findViewById(R.id.icons_button);

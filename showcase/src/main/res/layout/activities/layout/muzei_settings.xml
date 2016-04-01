@@ -53,12 +53,11 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
-                android:transitionName="actionBar"
                 android:minHeight="?actionBarSize"
+                android:transitionName="actionBar"
                 app:layout_collapseMode="pin"
-                app:contentInsetStart="@dimen/second_keyline"
-                app:theme="@style/Toolbar.AppCompat.Responsive.Light"
                 app:popupTheme="@style/Toolbar.Popup.AppCompat"
+                app:theme="@style/Toolbar.AppCompat.Responsive.Light"
                 tools:ignore="UnusedAttribute"/>
 
         </android.support.design.widget.CollapsingToolbarLayout>
@@ -120,6 +119,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_margin="@dimen/cards_margin"
                 android:lineSpacingMultiplier="1.2"
                 android:text="@string/muzei_info"
                 android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>

@@ -27,6 +27,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -237,8 +238,10 @@ public class MainFragment extends Fragment {
                                 .show();
                     }
                 } else {
-                    ((ShowcaseActivity) getActivity()).drawerItemClick(ShowcaseActivity.applyIdentifier);
-                    ((ShowcaseActivity) getActivity()).getDrawer().setSelection(ShowcaseActivity.applyIdentifier);
+                    Intent rate = new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("https://play.google.com/store/apps/details?id=" +
+                                    context.getPackageName()));
+                    context.startActivity(rate);
                 }
             }
         });
@@ -258,7 +261,7 @@ public class MainFragment extends Fragment {
         } else if (rro) {
             fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_apply_layers));
         } else {
-            fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_question));
+            fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_apply_icons));
         }
     }
 
