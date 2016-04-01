@@ -52,6 +52,7 @@ import jahirfiquitiva.iconshowcase.utilities.Preferences;
 public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.WallsHolder> {
 
     public interface ClickListener {
+
         void onClick(WallsHolder view, int index, boolean longClick);
     }
 
@@ -116,65 +117,69 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
 
         final String wallUrl = wallItem.getWallURL();
 
-        Glide.with(context).load(wallUrl).asBitmap().into(new BitmapImageViewTarget(holder.wall) {
-            @Override
-            protected void setResource(Bitmap resource) {
-                if (mPrefs.getAnimationsEnabled()) {
-                    TransitionDrawable td = new TransitionDrawable(new Drawable[]{new ColorDrawable(Color.TRANSPARENT), new BitmapDrawable(context.getResources(), resource)});
-                    holder.wall.setImageDrawable(td);
-                    td.startTransition(250);
-                } else {
-                    holder.wall.setImageBitmap(resource);
-                }
-
-                if (USE_PALETTE) {
-                    Palette.from(resource).generate(new Palette.PaletteAsyncListener() {
-                        @Override
-                        public void onGenerated(Palette palette) {
-                            Palette.Swatch swatch;
-                            switch (PALETTE_STYLE) {
-                                case "VIBRANT":
-                                    swatch = palette.getVibrantSwatch();
-                                    break;
-                                case "VIBRANT_LIGHT":
-                                    swatch = palette.getLightVibrantSwatch();
-                                    break;
-                                case "VIBRANT_DARK":
-                                    swatch = palette.getDarkVibrantSwatch();
-                                    break;
-                                case "MUTED":
-                                    swatch = palette.getMutedSwatch();
-                                    break;
-                                case "MUTED_LIGHT":
-                                    swatch = palette.getLightMutedSwatch();
-                                    break;
-                                case "MUTED_DARK":
-                                    swatch = palette.getDarkMutedSwatch();
-                                    break;
-                                default:
-                                    swatch = palette.getVibrantSwatch();
-                                    break;
-                            }
-
-                            if (swatch == null) return;
-
-                            if (mPrefs.getAnimationsEnabled() && false) {
-                                TransitionDrawable td = new TransitionDrawable(new Drawable[]{holder.titleBg.getBackground(), new ColorDrawable(swatch.getRgb())});
-                                holder.titleBg.setBackground(td);
-                                td.startTransition(250);
-                            } else {
-                                holder.titleBg.setBackgroundColor(swatch.getRgb());
-                            }
-
-                            if (USE_PALETTE_IN_TEXTS) {
-                                holder.name.setTextColor(swatch.getTitleTextColor());
-                                holder.authorName.setTextColor(swatch.getBodyTextColor());
-                            }
+        Glide.with(context)
+                .load(wallUrl)
+                .asBitmap()
+                .thumbnail(0.5f)
+                .into(new BitmapImageViewTarget(holder.wall) {
+                    @Override
+                    protected void setResource(Bitmap resource) {
+                        if (mPrefs.getAnimationsEnabled()) {
+                            TransitionDrawable td = new TransitionDrawable(new Drawable[]{new ColorDrawable(Color.TRANSPARENT), new BitmapDrawable(context.getResources(), resource)});
+                            holder.wall.setImageDrawable(td);
+                            td.startTransition(250);
+                        } else {
+                            holder.wall.setImageBitmap(resource);
                         }
-                    });
-                }
-            }
-        });
+
+                        if (USE_PALETTE) {
+                            Palette.from(resource).generate(new Palette.PaletteAsyncListener() {
+                                @Override
+                                public void onGenerated(Palette palette) {
+                                    Palette.Swatch swatch;
+                                    switch (PALETTE_STYLE) {
+                                        case "VIBRANT":
+                                            swatch = palette.getVibrantSwatch();
+                                            break;
+                                        case "VIBRANT_LIGHT":
+                                            swatch = palette.getLightVibrantSwatch();
+                                            break;
+                                        case "VIBRANT_DARK":
+                                            swatch = palette.getDarkVibrantSwatch();
+                                            break;
+                                        case "MUTED":
+                                            swatch = palette.getMutedSwatch();
+                                            break;
+                                        case "MUTED_LIGHT":
+                                            swatch = palette.getLightMutedSwatch();
+                                            break;
+                                        case "MUTED_DARK":
+                                            swatch = palette.getDarkMutedSwatch();
+                                            break;
+                                        default:
+                                            swatch = palette.getVibrantSwatch();
+                                            break;
+                                    }
+
+                                    if (swatch == null) return;
+
+                                    if (mPrefs.getAnimationsEnabled()) {
+                                        TransitionDrawable td = new TransitionDrawable(new Drawable[]{holder.titleBg.getBackground(), new ColorDrawable(swatch.getRgb())});
+                                        holder.titleBg.setBackground(td);
+                                        td.startTransition(250);
+                                    } else {
+                                        holder.titleBg.setBackgroundColor(swatch.getRgb());
+                                    }
+
+                                    if (USE_PALETTE_IN_TEXTS) {
+                                        holder.name.setTextColor(swatch.getTitleTextColor());
+                                        holder.authorName.setTextColor(swatch.getBodyTextColor());
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
     }
 
     @Override

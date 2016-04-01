@@ -51,6 +51,7 @@ import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.fragments.RequestsFragment;
 import jahirfiquitiva.iconshowcase.models.AppFilterError;
 import jahirfiquitiva.iconshowcase.models.RequestItem;
+import jahirfiquitiva.iconshowcase.models.RequestList;
 import jahirfiquitiva.iconshowcase.utilities.ApplicationBase;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
@@ -110,8 +111,6 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
             appsList.add(appInfo);
         }
 
-        ApplicationBase.allApps = appsList;
-
     }
 
     @Override
@@ -122,23 +121,21 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
     @Override
     protected ArrayList<RequestItem> doInBackground(Void... params) {
 
-        final ArrayList<RequestItem> list = ApplicationBase.allApps;
+        appsList.removeAll(createListFromXML(context.get()));
 
-        list.removeAll(createListFromXML(context.get()));
-
-        Collections.sort(list, new Comparator<RequestItem>() {
+        Collections.sort(appsList, new Comparator<RequestItem>() {
             @Override
             public int compare(RequestItem a, RequestItem b) {
                 return a.getAppName().compareToIgnoreCase(b.getAppName());
             }
         });
 
-        return list;
+        return appsList;
     }
 
     @Override
     protected void onPostExecute(ArrayList<RequestItem> list) {
-        ApplicationBase.allAppsToRequest = list;
+        RequestList.setRequestList(list);
         RequestsFragment.setupContent(null, context.get());
         long endTime = System.currentTimeMillis();
         Utils.showLog(context.get(), "Apps to Request Task completed in: " + String.valueOf((endTime - startTime) / 1000) + " secs.");

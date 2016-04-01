@@ -31,6 +31,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -85,7 +86,7 @@ import jahirfiquitiva.iconshowcase.views.TouchImageView;
 
 public class ViewerActivity extends AppCompatActivity {
 
-    private boolean mLastTheme, mLastNavBar;
+    private boolean mLastTheme, mLastNavBar, usePalette;
 
     private WallpaperItem item;
 
@@ -113,6 +114,8 @@ public class ViewerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         context = this;
+
+        usePalette = getResources().getBoolean(R.bool.use_palette_api_in_viewer);
 
         mPrefs = new Preferences(context);
 
@@ -209,28 +212,35 @@ public class ViewerActivity extends AppCompatActivity {
         Bitmap bmp = null;
         String filename = getIntent().getStringExtra("image");
         try {
-            FileInputStream is = context.openFileInput(filename);
-            bmp = BitmapFactory.decodeStream(is);
-            is.close();
+            if (filename != null) {
+                FileInputStream is = context.openFileInput(filename);
+                bmp = BitmapFactory.decodeStream(is);
+                is.close();
+            } else {
+                bmp = null;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         final ProgressBar spinner = (ProgressBar) findViewById(R.id.progress);
-        spinner.getIndeterminateDrawable().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
+        spinner.getIndeterminateDrawable()
+                .setColorFilter(bmp != null ?
+                                getSpinnerColor(bmp, usePalette) :
+                                ThemeUtils.darkTheme ? tintDark : tintLightLighter,
+                        PorterDuff.Mode.SRC_IN);
 
-        Drawable d = new GlideBitmapDrawable(getResources(), bmp);
-
-        Drawable errorIcon = new IconicsDrawable(context)
-                .icon(GoogleMaterial.Icon.gmd_alert_triangle)
-                .color(ThemeUtils.darkTheme ? tintDark : tintLight)
-                .sizeDp(192);
+        Drawable d;
+        if (bmp != null) {
+            d = new GlideBitmapDrawable(getResources(), bmp);
+        } else {
+            d = new ColorDrawable(ContextCompat.getColor(context, android.R.color.transparent));
+        }
 
         if (mPrefs.getAnimationsEnabled()) {
             Glide.with(context)
                     .load(item.getWallURL())
                     .placeholder(d)
-                    .error(errorIcon)
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .fitCenter()
                     .listener(new RequestListener<String, GlideDrawable>() {
@@ -242,7 +252,7 @@ public class ViewerActivity extends AppCompatActivity {
                         @Override
                         public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
                             Bitmap picture = ((GlideBitmapDrawable) resource).getBitmap();
-                            colorizeToolbar(picture, context.getResources().getBoolean(R.bool.use_palette_api_in_viewer));
+                            colorizeToolbar(picture, usePalette);
                             spinner.setVisibility(View.GONE);
                             return false;
                         }
@@ -252,7 +262,6 @@ public class ViewerActivity extends AppCompatActivity {
             Glide.with(context)
                     .load(item.getWallURL())
                     .placeholder(d)
-                    .error(errorIcon)
                     .dontAnimate()
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .fitCenter()
@@ -265,7 +274,7 @@ public class ViewerActivity extends AppCompatActivity {
                         @Override
                         public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
                             Bitmap picture = ((GlideBitmapDrawable) resource).getBitmap();
-                            colorizeToolbar(picture, context.getResources().getBoolean(R.bool.use_palette_api_in_viewer));
+                            colorizeToolbar(picture, usePalette);
                             spinner.setVisibility(View.GONE);
                             return false;
                         }
@@ -356,6 +365,28 @@ public class ViewerActivity extends AppCompatActivity {
             paletteIconsColor = Color.parseColor("b3ffffff");
             ToolbarColorizer.colorizeToolbar(toolbar, paletteIconsColor);
         }
+    }
+
+    private int getSpinnerColor(Bitmap picture, boolean usePalette) {
+        int paletteIconsColor, finalColor;
+        if (usePalette) {
+            paletteIconsColor = Utils.getIconsColorFromBitmap(picture, context, true);
+            if (paletteIconsColor == 0) {
+                int light = Color.parseColor("#80000000");
+                int dark = Color.parseColor("#80ffffff");
+                if (ColorUtils.isDark(picture)) {
+                    finalColor = dark;
+                } else {
+                    finalColor = light;
+                }
+            } else {
+                finalColor = paletteIconsColor;
+            }
+        } else {
+            paletteIconsColor = Color.parseColor("b3ffffff");
+            finalColor = paletteIconsColor;
+        }
+        return finalColor;
     }
 
     private void closeViewer() {

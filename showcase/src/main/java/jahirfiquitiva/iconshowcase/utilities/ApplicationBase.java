@@ -27,11 +27,8 @@ import android.app.Application;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import java.util.ArrayList;
-
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.fragments.WallpapersFragment;
-import jahirfiquitiva.iconshowcase.models.RequestItem;
 import jahirfiquitiva.iconshowcase.models.WallpapersList;
 import jahirfiquitiva.iconshowcase.tasks.LoadAppsToRequest;
 import jahirfiquitiva.iconshowcase.tasks.LoadIconsLists;
@@ -41,12 +38,6 @@ public class ApplicationBase extends Application {
 
     private Context context;
     private Preferences mPrefs;
-
-    // Main list off all apps.
-    public static ArrayList<RequestItem> allApps;
-
-    // Main list off all apps to request.
-    public static ArrayList<RequestItem> allAppsToRequest;
 
     @Override
     public void onCreate() {

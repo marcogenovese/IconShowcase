@@ -24,7 +24,6 @@
 package jahirfiquitiva.iconshowcase.adapters;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.ColorFilter;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
@@ -43,7 +42,6 @@ import java.util.List;
 import java.util.Locale;
 
 import jahirfiquitiva.iconshowcase.R;
-import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.fragments.ApplyFragment;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;

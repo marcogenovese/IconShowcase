@@ -26,7 +26,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:clickable="true"
-    app:cardBackgroundColor="?attr/colorCardBackground">
+    android:foreground="?selectableItemBackground"
+    android:stateListAnimator="@anim/card_lift"
+    app:cardBackgroundColor="?attr/colorCardBackground"
+    app:cardPreventCornerOverlap="false"
+    >
 
     <LinearLayout
         style="@style/ZooperCardContent"

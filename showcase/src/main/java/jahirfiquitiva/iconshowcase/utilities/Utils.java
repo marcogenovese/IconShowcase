@@ -57,7 +57,6 @@ import android.view.ViewGroup;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.regex.Matcher;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
@@ -139,8 +138,8 @@ public class Utils {
         CustomTabsClient.bindCustomTabsService(context, "com.android.chrome", mCustomTabsServiceConnection);
         customTabsIntent = new CustomTabsIntent.Builder(mCustomTabsSession[0])
                 .setToolbarColor(ThemeUtils.darkTheme ?
-                        ContextCompat.getColor(context, R.color.dark_theme_primary_dark) :
-                        ContextCompat.getColor(context, R.color.light_theme_primary_dark))
+                        ContextCompat.getColor(context, R.color.dark_theme_primary) :
+                        ContextCompat.getColor(context, R.color.light_theme_primary))
                 .setShowTitle(true)
                 .build();
 
@@ -170,140 +169,19 @@ public class Utils {
     }
 
     public static String makeTextReadable(String name) {
-        boolean convertNum = true;
 
-        if (name.endsWith("_")) {
-            name = name.substring(0, name.length() - 1);
-            convertNum = false;
-        }
-
-        String partialConvertedText = name.replaceAll("______", "_____?");
-        partialConvertedText = partialConvertedText.replaceAll("_____", "____-");
-        partialConvertedText = partialConvertedText.replaceAll("____", "___#");
-        partialConvertedText = partialConvertedText.replaceAll("___", Matcher.quoteReplacement("__$"));
-        partialConvertedText = partialConvertedText.replaceAll("__", "_!");
-        partialConvertedText = partialConvertedText.replaceAll("_", " ");
-        partialConvertedText = partialConvertedText.trim();
-
+        String partialConvertedText = name.replaceAll("_", " ");
         String[] text = partialConvertedText.split("\\s+");
         StringBuilder sb = new StringBuilder();
-        String newText;
-
         if (text[0].length() > 0) {
-            sb.append(convertTextWithSymbols(text[0], true, convertNum));
+            sb.append(Character.toUpperCase(text[0].charAt(0))).append(text[0].subSequence(1, text[0].length()).toString().toLowerCase());
             for (int i = 1; i < text.length; i++) {
-                newText = convertTextWithSymbols(text[i], false, convertNum);
-                if (removePreviousSpace(newText)) {
-                    newText = newText.replace("-", "");
-                } else {
-                    sb.append(" ");
-                }
-                sb.append(newText);
+                sb.append(" ");
+                sb.append(capitalizeText(text[i]));
             }
         }
-
-        return sb.toString();
-    }
-
-    public static String convertTextWithSymbols(String text, boolean isFirst, boolean convertNum) {
-
-        text = text.replaceAll(" ", "");
-
-        StringBuilder sb = new StringBuilder();
-
-        boolean restoreSign = false;
-
-        //Capitalize first letter only
-        text = capitalizeText(text);
-
-        if (text.toCharArray()[0] == '!') {
-            //Make text lower case;
-            text = text.replace("!", "");
-            if (text.toCharArray()[0] == '-') {
-                text = text.replace("-", "");
-                restoreSign = true;
-            }
-            text = text.toLowerCase();
-        }
-
-        if (text.toCharArray()[0] == '$') {
-            //Capitalize the whole word
-            text = text.replace("$", "");
-            if (text.toCharArray()[0] == '-') {
-                text = text.replace("-", "");
-                restoreSign = true;
-            }
-            text = text.toUpperCase();
-        }
-
-        if (text.toCharArray()[0] == '#') {
-
-            //Converts text to number
-
-            if (text.toCharArray()[1] == '-') {
-                text = text.replace("-", "");
-                restoreSign = true;
-            }
-
-            text = text.replace("#", "");
-
-            if (convertNum) {
-                switch (text.toLowerCase()) {
-                    case "one":
-                        text = "1";
-                        break;
-                    case "two":
-                        text = "2";
-                        break;
-                    case "three":
-                        text = "3";
-                        break;
-                    case "four":
-                        text = "4";
-                        break;
-                    case "five":
-                        text = "5";
-                        break;
-                    case "six":
-                        text = "6";
-                        break;
-                    case "seven":
-                        text = "7";
-                        break;
-                    case "eight":
-                        text = "8";
-                        break;
-                    case "nine":
-                        text = "9";
-                        break;
-                    case "zero":
-                        text = "0";
-                        break;
-                }
-            }
-
-        }
-
-        if (restoreSign && !isFirst) {
-            sb.append("-");
-        }
-
-        text = text.replaceAll("#", "");
-
-        if (text.toCharArray()[0] == '?') {
-            text = text.toLowerCase();
-            text = text.replaceAll("\\?", "");
-        }
-
-        sb.append(text);
-
         return sb.toString();
 
-    }
-
-    public static boolean removePreviousSpace(String text) {
-        char[] charArray = text.toCharArray();
-        return charArray[0] == '-';
     }
 
     public static String capitalizeText(String text) {

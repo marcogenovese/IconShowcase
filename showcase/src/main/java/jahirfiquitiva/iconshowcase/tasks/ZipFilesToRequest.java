@@ -30,7 +30,6 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -69,10 +68,8 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
     private ArrayList<RequestItem> appsListFinal;
 
     private static final int BUFFER = 2048;
-    private String zipLocation, zipFilePath;
+    private String zipFilePath;
     private WeakReference<Context> context;
-
-    private static String filesLocation;
 
     private StringBuilder emailContent = new StringBuilder();
 
@@ -86,8 +83,6 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
         this.appsListFinal = appsListFinal;
     }
 
-    private final SimpleDateFormat date = new SimpleDateFormat("yyyyMMdd_hhmmss", Locale.getDefault());
-
     @Override
     protected void onPreExecute() {
 
@@ -96,22 +91,22 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
             this.context = new WeakReference<Context>(act.getApplicationContext());
             this.activity = act;
         }
-
-        zipLocation = context.get().getString(R.string.request_save_location,
-                Environment.getExternalStorageDirectory().getAbsolutePath());
-        filesLocation = zipLocation + "Files/";
-
-        String appNameCorrected = context.get().getResources().getString(R.string.app_name).replace(" ", "");
-
-        zipFilePath = zipLocation + appNameCorrected
-                + "_" + date.format(new Date()) + ".zip";
-
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @Override
     protected Boolean doInBackground(Void... params) {
         boolean worked;
+
+        String zipLocation = context.get().getString(R.string.request_save_location,
+                Environment.getExternalStorageDirectory().getAbsolutePath());
+        String filesLocation = zipLocation + "Files/";
+
+        String appNameCorrected = context.get().getResources().getString(R.string.app_name).replace(" ", "");
+
+        SimpleDateFormat date = new SimpleDateFormat("yyyyMMdd_hhmmss", Locale.getDefault());
+        zipFilePath = zipLocation + appNameCorrected + "_" + date.format(new Date()) + ".zip";
+
         try {
             final File zipFolder = new File(zipLocation);
             final File filesFolder = new File(filesLocation + "/");
@@ -132,7 +127,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
 
             for (int i = 0; i < appsListFinal.size(); i++) {
 
-                if(appsListFinal.get(i).isSelected()){
+                if (appsListFinal.get(i).isSelected()) {
 
                     if (context.get().getResources().getBoolean(R.bool.request_tool_comments)) {
                         appFilterBuilder.append("<!-- " + appsListFinal.get(i).getAppName() +

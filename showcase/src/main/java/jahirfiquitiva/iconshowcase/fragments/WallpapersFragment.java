@@ -210,6 +210,7 @@ public class WallpapersFragment extends Fragment {
 
                                         if (view.wall.getDrawable() != null) {
                                             bitmap = Utils.drawableToBitmap(view.wall.getDrawable());
+
                                             try {
                                                 String filename = "temp.png";
                                                 FileOutputStream stream = context.openFileOutput(filename, Context.MODE_PRIVATE);
@@ -223,7 +224,8 @@ public class WallpapersFragment extends Fragment {
                                             ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(context, view.wall, ViewCompat.getTransitionName(view.wall));
                                             context.startActivity(intent, options.toBundle());
                                         } else {
-                                            showLoadPictureSnackbar(layout, context);
+                                            context.startActivity(intent);
+                                            //showLoadPictureSnackbar(layout, context);
                                         }
                                     }
                                 }

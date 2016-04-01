@@ -49,12 +49,15 @@ import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.adapters.RequestsAdapter;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
+import jahirfiquitiva.iconshowcase.models.RequestItem;
+import jahirfiquitiva.iconshowcase.models.RequestList;
 import jahirfiquitiva.iconshowcase.tasks.ZipFilesToRequest;
 import jahirfiquitiva.iconshowcase.utilities.ApplicationBase;
 import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
@@ -75,6 +78,7 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
 
     private Preferences mPrefs;
     private Activity context;
+    private static ArrayList<RequestItem> requestList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -105,7 +109,9 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
 
         fab = (FloatingActionButton) layout.findViewById(R.id.requests_fab);
 
-        if (ApplicationBase.allAppsToRequest == null || ApplicationBase.allAppsToRequest.size() <= 0) {
+        requestList = RequestList.getRequestList();
+
+        if (requestList == null || requestList.size() <= 0) {
             fab.hide();
         } else {
             fab.show();
@@ -186,8 +192,9 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
 
     public static void setupContent(View layout, Context context) {
         if (layout != null) {
-            if (ApplicationBase.allAppsToRequest != null && ApplicationBase.allAppsToRequest.size() > 0) {
-                requestsAdapter = new RequestsAdapter(context, ApplicationBase.allAppsToRequest, maxApps);
+            requestList = RequestList.getRequestList();
+            if (requestList != null && requestList.size() > 0) {
+                requestsAdapter = new RequestsAdapter(context, requestList, maxApps);
                 mRecyclerView.setHasFixedSize(true);
                 mRecyclerView.setAdapter(requestsAdapter);
                 requestsAdapter.startIconFetching(mRecyclerView);

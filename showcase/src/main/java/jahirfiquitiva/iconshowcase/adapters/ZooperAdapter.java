@@ -46,7 +46,7 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private boolean everythingInstalled;
 
     public ZooperAdapter(Context context, ArrayList<ZooperWidget> widgets, Drawable wallpaper, boolean
-                         appsInstalled) {
+            appsInstalled) {
         this.context = context;
         this.widgets = widgets;
         this.wallpaper = wallpaper;

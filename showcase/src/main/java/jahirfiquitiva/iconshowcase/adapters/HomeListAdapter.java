@@ -1,9 +1,7 @@
 package jahirfiquitiva.iconshowcase.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.RecyclerView;
@@ -29,7 +27,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private final Context context;
     private View view;
-    private int cards = 3;
+    private int cards = 2;
     private final ArrayList<HomeCard> homeCards;
 
     public HomeListAdapter(ArrayList<HomeCard> homeCards, Context context) {
@@ -53,11 +51,6 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         viewGroup.getContext()).inflate(R.layout.item_packinfo_card,
                         viewGroup, false);
                 return new AppInfoCard(infoCard);
-            case 2:
-                View moreAppsCard = LayoutInflater.from(
-                        viewGroup.getContext()).inflate(R.layout.item_moreapps_card,
-                        viewGroup, false);
-                return new MoreAppsCard(moreAppsCard);
             default:
                 final View appCard = LayoutInflater.from(
                         viewGroup.getContext()).inflate(R.layout.item_app_card,
@@ -83,17 +76,24 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public class WelcomeCard extends RecyclerView.ViewHolder {
 
-        final AppCompatButton ratebtn, iconsbtn;
+        final AppCompatButton moreappsbtn, iconsbtn;
 
         public WelcomeCard(View itemView) {
             super(itemView);
-            ratebtn = (AppCompatButton) itemView.findViewById(R.id.rate_button);
-            ratebtn.setOnClickListener(new View.OnClickListener() {
+            moreappsbtn = (AppCompatButton) itemView.findViewById(R.id.more_apps_button);
+            moreappsbtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Utils.openLink(context, context.getResources().getString(R.string.iconpack_author_playstore));
+
+                    /*
+                    Rate App Code:
+
                     Intent rate = new Intent(Intent.ACTION_VIEW,
                             Uri.parse("https://play.google.com/store/apps/details?id=" + context.getPackageName()));
                     context.startActivity(rate);
+
+                     */
                 }
             });
             iconsbtn = (AppCompatButton) itemView.findViewById(R.id.icons_button);
@@ -170,32 +170,6 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         iconsIV.setImageDrawable(iconsDrawable);
         wallsIV.setImageDrawable(wallsDrawable);
         widgetsIV.setImageDrawable(widgetsDrawable);
-    }
-
-    public class MoreAppsCard extends RecyclerView.ViewHolder {
-
-        final int light = ContextCompat.getColor(context, R.color.drawable_tint_dark);
-        final int dark = ContextCompat.getColor(context, R.color.drawable_tint_light);
-
-        final LinearLayout lly;
-        final ImageView icon;
-
-        public MoreAppsCard(View itemView) {
-            super(itemView);
-            view = itemView;
-            lly = (LinearLayout) itemView.findViewById(R.id.more_apps);
-            icon = (ImageView) itemView.findViewById(R.id.more_apps_icon);
-            icon.setImageDrawable(new IconicsDrawable(context)
-                    .icon(GoogleMaterial.Icon.gmd_case_play)
-                    .color(ThemeUtils.darkTheme ? light : dark)
-                    .sizeDp(24));
-            lly.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Utils.openLink(context, context.getResources().getString(R.string.iconpack_author_playstore));
-                }
-            });
-        }
     }
 
     public class AppCard extends RecyclerView.ViewHolder {

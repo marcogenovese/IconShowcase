@@ -28,8 +28,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="8dp"
     android:clipToPadding="false"
+    android:paddingBottom="8dp"
     app:alignmentMode="alignBounds">
 
     <LinearLayout
@@ -149,9 +149,13 @@
             android:layout_marginLeft="@dimen/cards_margin"
             android:layout_marginRight="@dimen/cards_margin"
             android:layout_marginTop="@dimen/cards_margin"
+            android:foreground="?selectableItemBackground"
+            android:stateListAnimator="@anim/card_lift"
             app:cardBackgroundColor="?attr/colorCardBackground"
             app:cardCornerRadius="@dimen/card_corner_radius"
-            app:cardElevation="@dimen/cards_elevation">
+            app:cardElevation="@dimen/cards_elevation"
+            app:cardPreventCornerOverlap="false"
+            >
 
             <LinearLayout
                 android:id="@+id/collaboratorsSherry"
@@ -189,9 +193,13 @@
             android:layout_marginLeft="@dimen/cards_margin"
             android:layout_marginRight="@dimen/cards_margin"
             android:layout_marginTop="@dimen/cards_margin"
+            android:foreground="?selectableItemBackground"
+            android:stateListAnimator="@anim/card_lift"
             app:cardBackgroundColor="?attr/colorCardBackground"
             app:cardCornerRadius="@dimen/card_corner_radius"
-            app:cardElevation="@dimen/cards_elevation">
+            app:cardElevation="@dimen/cards_elevation"
+            app:cardPreventCornerOverlap="false"
+            >
 
             <LinearLayout
                 android:id="@+id/collaborators"
@@ -227,9 +235,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/cards_margin"
+            android:foreground="?selectableItemBackground"
+            android:stateListAnimator="@anim/card_lift"
             app:cardBackgroundColor="?attr/colorCardBackground"
             app:cardCornerRadius="@dimen/card_corner_radius"
-            app:cardElevation="@dimen/cards_elevation">
+            app:cardElevation="@dimen/cards_elevation"
+            app:cardPreventCornerOverlap="false"
+            >
 
             <LinearLayout
                 android:id="@+id/uiDesign"
@@ -276,7 +288,6 @@
             android:id="@+id/devCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:layout_marginLeft="@dimen/cards_margin"
             android:layout_marginRight="@dimen/cards_margin"
             android:layout_marginTop="@dimen/cards_margin"
@@ -381,9 +392,13 @@
             android:layout_marginLeft="@dimen/cards_margin"
             android:layout_marginRight="@dimen/cards_margin"
             android:layout_marginTop="@dimen/cards_margin"
+            android:foreground="?selectableItemBackground"
+            android:stateListAnimator="@anim/card_lift"
             app:cardBackgroundColor="?attr/colorCardBackground"
             app:cardCornerRadius="@dimen/card_corner_radius"
-            app:cardElevation="@dimen/cards_elevation">
+            app:cardElevation="@dimen/cards_elevation"
+            app:cardPreventCornerOverlap="false"
+            >
 
             <LinearLayout
                 android:id="@+id/translators"
@@ -419,9 +434,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/cards_margin"
+            android:foreground="?selectableItemBackground"
+            android:stateListAnimator="@anim/card_lift"
             app:cardBackgroundColor="?attr/colorCardBackground"
             app:cardCornerRadius="@dimen/card_corner_radius"
-            app:cardElevation="@dimen/cards_elevation">
+            app:cardElevation="@dimen/cards_elevation"
+            app:cardPreventCornerOverlap="false"
+            >
 
             <LinearLayout
                 android:id="@+id/libraries"

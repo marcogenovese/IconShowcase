@@ -29,21 +29,6 @@ public class WallpapersList {
 
     private static ArrayList<WallpaperItem> wallsList = new ArrayList<>();
 
-    public static void createWallpapersList(ArrayList<String> names, ArrayList<String> authors,
-                                            ArrayList<String> urls, ArrayList<String> dimensions,
-                                            ArrayList<String> copyrights) {
-        try {
-            for (int i = 0; i < names.size(); i++) {
-                WallpaperItem wallItem =
-                        new WallpaperItem(names.get(i), authors.get(i), urls.get(i),
-                                dimensions.get(i), copyrights.get(i));
-                wallsList.add(wallItem);
-            }
-        } catch (IndexOutOfBoundsException e) {
-            //Do nothing
-        }
-    }
-
     public static void createWallpapersList(ArrayList<WallpaperItem> wallsList) {
         WallpapersList.wallsList = wallsList;
     }
