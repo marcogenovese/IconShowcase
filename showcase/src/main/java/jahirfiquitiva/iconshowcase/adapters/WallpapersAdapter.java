@@ -164,7 +164,9 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
                                     if (swatch == null) return;
 
                                     if (mPrefs.getAnimationsEnabled()) {
-                                        TransitionDrawable td = new TransitionDrawable(new Drawable[]{holder.titleBg.getBackground(), new ColorDrawable(swatch.getRgb())});
+                                        TransitionDrawable td = new TransitionDrawable(
+                                                new Drawable[]{holder.titleBg.getBackground(),
+                                                        new ColorDrawable(swatch.getRgb())});
                                         holder.titleBg.setBackground(td);
                                         td.startTransition(250);
                                     } else {

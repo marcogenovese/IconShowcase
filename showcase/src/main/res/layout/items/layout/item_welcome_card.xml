@@ -60,32 +60,6 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@id/content"
-            android:orientation="horizontal">
-
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/icons_button"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/icons"
-                android:textColor="?attr/accentColor"/>
-
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/more_apps_button"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/more_apps"
-                android:textColor="?attr/accentColor"/>
-
-        </LinearLayout>
-
     </RelativeLayout>
 
 </LinearLayout>

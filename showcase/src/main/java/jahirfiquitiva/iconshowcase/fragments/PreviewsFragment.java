@@ -163,7 +163,9 @@ public class PreviewsFragment extends Fragment {
             }
 
             private void search(String s) {
-                IconsFragment frag = (IconsFragment) getChildFragmentManager().findFragmentByTag("page:" + mPager.getCurrentItem());
+                IconsFragment frag =
+                        (IconsFragment) getChildFragmentManager().findFragmentByTag("page:" +
+                                mPager.getCurrentItem());
                 if (frag != null)
                     frag.performSearch(s);
             }
@@ -177,9 +179,8 @@ public class PreviewsFragment extends Fragment {
 
         if (getActivity() != null) {
             ToolbarColorizer.tintSearchView(getActivity(),
-                    ((ShowcaseActivity) getActivity()).getToolbar(),
-                    mSearchItem,
-                    mSearchView, iconsColor);
+                    ((ShowcaseActivity) getActivity()).getToolbar(), mSearchItem, mSearchView,
+                    iconsColor);
         }
     }
 

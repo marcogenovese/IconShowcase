@@ -88,6 +88,7 @@ import jahirfiquitiva.iconshowcase.fragments.WallpapersFragment;
 import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.models.WallpapersList;
 import jahirfiquitiva.iconshowcase.tasks.LoadIconsLists;
+import jahirfiquitiva.iconshowcase.tasks.TasksExecutor;
 import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
@@ -176,10 +177,11 @@ public class ShowcaseActivity extends AppCompatActivity implements
         }
 
         super.onCreate(savedInstanceState);
+        context = this;
+
+        TasksExecutor.with(this);
 
         DEBUGGING = getResources().getBoolean(R.bool.debugging);
-
-        context = this;
         mPrefs = new Preferences(ShowcaseActivity.this);
 
         String[] configurePrimaryDrawerItems = getResources().getStringArray(R.array.primary_drawer_items);

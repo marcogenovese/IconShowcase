@@ -98,7 +98,7 @@
     <string name="wallpaper_dimensions_title">Dimensions</string>
     <string name="wallpaper_copyright_title">Copyright</string>
 
-    <string name="settings_saved">Settings saved</string>
+    <string name="settings_saved">Settings saved. Wallpapers will change every $1$s.</string>
 
     <!-- License Check Dialog -->
     <string name="license_failed_title">License Check Failed</string>

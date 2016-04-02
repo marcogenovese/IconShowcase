@@ -35,7 +35,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.InflateException;
@@ -369,7 +368,7 @@ public class WallpapersFragment extends Fragment {
     }
 
     // DownloadJSON AsyncTask
-    public static class DownloadJSON extends AsyncTask<Void, Void, Void> {
+    public static class DownloadJSON extends AsyncTask<Void, Void, Boolean> {
 
         final ShowcaseActivity.WallsListInterface wi;
         private final ImageView noConnection;
@@ -379,17 +378,10 @@ public class WallpapersFragment extends Fragment {
 
         long startTime, endTime;
 
-        public DownloadJSON(ShowcaseActivity.WallsListInterface wi, AppCompatActivity activity,
-                            ImageView noConnection) {
-            this.wi = wi;
-            this.wrActivity = new WeakReference<Activity>(activity);
-            this.noConnection = noConnection;
-        }
-
         public DownloadJSON(ShowcaseActivity.WallsListInterface wi, Context context,
                             ImageView noConnection) {
             this.wi = wi;
-            this.taskContext = new WeakReference<Context>(context);
+            this.taskContext = new WeakReference<>(context);
             this.noConnection = noConnection;
         }
 
@@ -400,13 +392,15 @@ public class WallpapersFragment extends Fragment {
             if (wrActivity != null) {
                 final Activity a = wrActivity.get();
                 if (a != null) {
-                    this.taskContext = new WeakReference<Context>(a.getApplicationContext());
+                    this.taskContext = new WeakReference<>(a.getApplicationContext());
                 }
             }
         }
 
         @Override
-        protected Void doInBackground(Void... params) {
+        protected Boolean doInBackground(Void... params) {
+
+            boolean worked = false;
 
             JSONObject json = JSONParser.getJSONFromURL(
                     Utils.getStringFromResources(taskContext.get(),
@@ -454,11 +448,11 @@ public class WallpapersFragment extends Fragment {
                 worked = false;
             }
 
-            return null;
+            return worked;
         }
 
         @Override
-        protected void onPostExecute(Void args) {
+        protected void onPostExecute(Boolean worked) {
 
             endTime = System.currentTimeMillis();
             Utils.showLog("Walls Task completed in: " +

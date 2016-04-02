@@ -30,7 +30,6 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -60,6 +59,7 @@ public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
     }
 
     @Override
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     protected Boolean doInBackground(Void... params) {
 
         boolean worked = false;
@@ -67,27 +67,23 @@ public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
         try {
             AssetManager assetManager = context.get().getAssets();
             String[] templates = assetManager.list("templates");
+
             File previewsFolder = new File(context.get().getExternalCacheDir(), "WidgetsPreviews");
 
             if (templates != null && templates.length > 0) {
-                if (previewsFolder.exists()) {
-                    //noinspection ResultOfMethodCallIgnored
-                    previewsFolder.delete();
-                }
-                //noinspection ResultOfMethodCallIgnored
+                clean(previewsFolder);
                 previewsFolder.mkdirs();
                 for (String template : templates) {
-                    File widgetFile = new File(previewsFolder, template);
+                    File widgetPreviewFile = new File(previewsFolder, template);
                     String widgetName = getFilenameWithoutExtension(template);
                     Bitmap preview = getWidgetPreviewFromZip(widgetName,
-                            assetManager.open("templates/" + template), previewsFolder, widgetFile);
+                            assetManager.open("templates/" + template), previewsFolder, widgetPreviewFile);
                     if (preview != null) {
                         widgets.add(new ZooperWidget(preview));
                     }
+                    widgetPreviewFile.delete();
                 }
-                if (widgets.size() == templates.length) {
-                    worked = true;
-                }
+                worked = widgets.size() == templates.length;
             }
         } catch (Exception e) {
             //Do nothing
@@ -101,7 +97,9 @@ public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
     protected void onPostExecute(Boolean worked) {
         long endTime = System.currentTimeMillis();
         if (worked) {
-            Utils.showLog(context.get(), "Load of widgets task completed successfully in: " + String.valueOf((endTime - startTime)) + " millisecs.");
+            Utils.showLog(context.get(),
+                    "Load of widgets task completed successfully in: " +
+                            String.valueOf((endTime - startTime)) + " millisecs.");
         }
     }
 
@@ -121,44 +119,57 @@ public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
     /**
      * This code was created by Aidan Follestad. Complete credits to him.
      */
-    private Bitmap getWidgetPreviewFromZip(String name, InputStream in, File previewsFolder, File widgetFile) {
+    private Bitmap getWidgetPreviewFromZip(String name, InputStream in, File previewsFolder, File widgetPreviewFile) {
         OutputStream out;
         File preview = new File(previewsFolder, name + ".png");
 
         try {
-            out = new FileOutputStream(widgetFile);
+            out = new FileOutputStream(widgetPreviewFile);
+            copyFiles(in, out);
+            in.close();
+            out.close();
 
-            try {
-                copyFiles(in, out);
-                in.close();
-                out.close();
-
-                if (widgetFile.exists()) {
-                    ZipFile zipFile = new ZipFile(widgetFile);
-                    Enumeration<? extends ZipEntry> entryEnum = zipFile.entries();
-                    ZipEntry entry;
-                    while ((entry = entryEnum.nextElement()) != null) {
-                        if (entry.getName().endsWith("screen.png")) {
-                            InputStream zipIn;
-                            OutputStream zipOut;
+            if (widgetPreviewFile.exists()) {
+                ZipFile zipFile = new ZipFile(widgetPreviewFile);
+                Enumeration<? extends ZipEntry> entryEnum = zipFile.entries();
+                ZipEntry entry;
+                while ((entry = entryEnum.nextElement()) != null) {
+                    if (entry.getName().endsWith("screen.png")) {
+                        InputStream zipIn = null;
+                        OutputStream zipOut = null;
+                        try {
                             zipIn = zipFile.getInputStream(entry);
                             zipOut = new FileOutputStream(preview);
                             copyFiles(zipIn, zipOut);
-                            zipIn.close();
-                            zipOut.close();
-                            break;
+                        } finally {
+                            if (zipIn != null) zipIn.close();
+                            if (zipOut != null) zipOut.close();
                         }
+                        break;
                     }
                 }
-
-            } catch (IOException e) {
-                //Do nothing
             }
-        } catch (FileNotFoundException e) {
+        } catch (Exception e) {
             //Do nothing
         }
 
         return BitmapFactory.decodeFile(preview.getAbsolutePath());
+    }
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    private static int clean(File file) {
+        if (!file.exists()) return 0;
+        int count = 0;
+        if (file.isDirectory()) {
+            File[] folderContent = file.listFiles();
+            if (folderContent != null && folderContent.length > 0) {
+                for (File fileInFolder : folderContent) {
+                    count += clean(fileInFolder);
+                }
+            }
+        }
+        file.delete();
+        return count;
     }
 
 }

@@ -59,7 +59,6 @@ import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.models.RequestItem;
 import jahirfiquitiva.iconshowcase.models.RequestList;
 import jahirfiquitiva.iconshowcase.tasks.ZipFilesToRequest;
-import jahirfiquitiva.iconshowcase.utilities.ApplicationBase;
 import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.Utils;

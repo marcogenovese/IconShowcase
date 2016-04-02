@@ -128,7 +128,8 @@ public class MainFragment extends Fragment {
                                         .description(appsDescriptions[i])
                                         .icon(ContextCompat.getDrawable(context,
                                                 Utils.getIconResId(context, getResources(),
-                                                        context.getPackageName(), appsIcons[i])))
+                                                        context.getPackageName(), appsIcons[i],
+                                                        null)))
                                         .onClickLink(appsPackages[i], true, true, intent)
                                         .build());
                             } catch (Resources.NotFoundException e) {
@@ -141,7 +142,8 @@ public class MainFragment extends Fragment {
                                         .description(appsDescriptions[i])
                                         .icon(ContextCompat.getDrawable(context,
                                                 Utils.getIconResId(context, getResources(),
-                                                        context.getPackageName(), "ic_na_launcher")))
+                                                        context.getPackageName(), "ic_na_launcher",
+                                                        null)))
                                         .onClickLink(appsPackages[i], true, true, intent)
                                         .build());
                             }
@@ -154,7 +156,8 @@ public class MainFragment extends Fragment {
                                     .description(appsDescriptions[i])
                                     .icon(ContextCompat.getDrawable(context,
                                             Utils.getIconResId(context, getResources(),
-                                                    context.getPackageName(), appsIcons[i])))
+                                                    context.getPackageName(), appsIcons[i],
+                                                    null)))
                                     .onClickLink(appsPackages[i], true, false, null)
                                     .build());
                         } catch (Resources.NotFoundException e) {
@@ -166,7 +169,8 @@ public class MainFragment extends Fragment {
                                     .description(appsDescriptions[i])
                                     .icon(ContextCompat.getDrawable(context,
                                             Utils.getIconResId(context, getResources(),
-                                                    context.getPackageName(), "ic_na_launcher")))
+                                                    context.getPackageName(), "ic_na_launcher",
+                                                    null)))
                                     .onClickLink(appsPackages[i], true, false, null)
                                     .build());
                         }

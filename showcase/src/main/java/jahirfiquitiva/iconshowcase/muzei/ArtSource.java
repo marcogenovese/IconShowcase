@@ -51,7 +51,7 @@ public class ArtSource extends RemoteMuzeiArtSource {
     private final ArrayList<String> authors = new ArrayList<>();
     private final ArrayList<String> urls = new ArrayList<>();
 
-    private static final String ARTSOURCE_NAME = "IconShowcase";
+    private static final String ARTSOURCE_NAME = "IconShowcase Sample";
     private static final String MARKET_URL = "https://play.google.com/store/apps/details?id=";
     private static final int COMMAND_ID_SHARE = 1337;
 
@@ -66,7 +66,7 @@ public class ArtSource extends RemoteMuzeiArtSource {
             try {
                 onTryUpdate(UPDATE_REASON_USER_NEXT);
             } catch (RetryException e) {
-                //Do nothing
+                Utils.showLog("Error updating Muzei: " + e.getLocalizedMessage());
             }
         }
         return super.onStartCommand(intent, flags, startId);
@@ -108,6 +108,7 @@ public class ArtSource extends RemoteMuzeiArtSource {
             try {
                 new DownloadJSONAndSetWall().execute();
             } catch (Exception e) {
+                Utils.showLog("Error updating Muzei: " + e.getLocalizedMessage());
                 throw new RetryException();
             }
         }
@@ -122,7 +123,6 @@ public class ArtSource extends RemoteMuzeiArtSource {
                 .viewIntent(new Intent(Intent.ACTION_VIEW, Uri.parse(url)))
                 .build());
         scheduleUpdate(System.currentTimeMillis() + mPrefs.getRotateTime());
-        Utils.showLog(ArtSource.this, "Muzei Update scheduled to: " + String.valueOf((System.currentTimeMillis() + mPrefs.getRotateTime()) / 1000));
     }
 
     public class DownloadJSONAndSetWall extends AsyncTask<Void, String, Boolean> {
@@ -142,7 +142,7 @@ public class ArtSource extends RemoteMuzeiArtSource {
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            Boolean worked;
+            boolean worked = false;
             try {
                 mainObject = JSONParser.getJSONFromURL(getResources().getString(R.string.json_file_url));
                 if (mainObject != null) {
@@ -154,16 +154,17 @@ public class ArtSource extends RemoteMuzeiArtSource {
                             authors.add(wallItem.getString("author"));
                             urls.add(wallItem.getString("url"));
                         }
-
+                        worked = true;
                     } catch (JSONException e) {
-                        e.printStackTrace();
+                        worked = false;
+                        Utils.showLog("Error downloading JSON for Muzei: " + e.getLocalizedMessage());
                     }
-
+                } else {
+                    worked = false;
                 }
-                worked = true;
             } catch (Exception e) {
                 worked = false;
-                //Do nothing
+                Utils.showLog("Error in Muzei: " + e.getLocalizedMessage());
             }
             return worked;
         }
@@ -175,9 +176,9 @@ public class ArtSource extends RemoteMuzeiArtSource {
                 try {
                     i = new Random().nextInt(names.size());
                     setImageForMuzei(names.get(i), authors.get(i), urls.get(i));
-                    Utils.showLog(ArtSource.this, "Setting picture: " + names.get(i));
+                    Utils.showLog(ArtSource.this, true, "Setting picture: " + names.get(i));
                 } catch (IllegalArgumentException e) {
-                    Utils.showLog(ArtSource.this, "Muzei error: " + e.getLocalizedMessage());
+                    Utils.showLog(ArtSource.this, true, "Muzei error: " + e.getLocalizedMessage());
                 }
 
             }

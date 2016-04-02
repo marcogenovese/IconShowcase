@@ -73,7 +73,8 @@ public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.Laun
     public void onBindViewHolder(LauncherHolder holder, int position) {
         // Turns Launcher name "Something Pro" to "ic_something_pro"
         String iconName = "ic_" + launchers.get(position).name.toLowerCase().replace(" ", "_");
-        int iconResource = Utils.getIconResId(context, context.getResources(), context.getPackageName(), iconName);
+        int iconResource = Utils.getIconResId(context, context.getResources(),
+                context.getPackageName(), iconName, "Launchers");
 
         final int dark = ContextCompat.getColor(context, R.color.launcher_tint_dark);
         final int light = ContextCompat.getColor(context, R.color.launcher_tint_light);

@@ -29,6 +29,6 @@
     <dimen name="dialog_icon_size">120dp</dimen>
 
     <!-- Size of icon in app cards in main/home section -->
-    <dimen name="app_card_icon_size">64dp</dimen>
+    <dimen name="app_card_icon_size">48dp</dimen>
 
 </resources>

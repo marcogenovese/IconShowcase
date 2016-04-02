@@ -153,15 +153,27 @@ public class Utils {
         }
     }
 
-    public static void showAppFilterLog(Context context, String s) {
+    public static void showLog(Context context, String tag, String s) {
         if (context.getResources().getBoolean(R.bool.debugging)) {
-            String tag = context.getResources().getString(R.string.app_name) + " AppFilter";
-            Log.d(tag, s);
+            Log.d(context.getResources().getString(R.string.app_name) + " " + tag, s);
+        }
+    }
+
+    public static void showLog(Context context, boolean muzei, String s) {
+        if (context.getResources().getBoolean(R.bool.debugging) && muzei) {
+            Log.d(context.getResources().getString(R.string.app_name) + " Muzei", s);
         }
     }
 
     public static void showLog(String s) {
         Log.d("IconShowcase ", s);
+    }
+
+    public static void showAppFilterLog(Context context, String s) {
+        if (context.getResources().getBoolean(R.bool.debugging)) {
+            String tag = context.getResources().getString(R.string.app_name) + " AppFilter";
+            Log.d(tag, s);
+        }
     }
 
     public static String getStringFromResources(Context context, int id) {
@@ -436,12 +448,16 @@ public class Utils {
         return values;
     }
 
-    public static int getIconResId(Context context, Resources r, String p, String name) {
+    public static int getIconResId(Context context, Resources r, String p, String name, String task) {
         int res = r.getIdentifier(name, "drawable", p);
         if (res != 0) {
             return res;
         } else {
-            Utils.showLog(context, "Missing icon: " + name);
+            if (task != null) {
+                showLog(context, task, "Missing icon: " + name);
+            } else {
+                showLog(context, "Missing icon: " + name);
+            }
             return 0;
         }
     }

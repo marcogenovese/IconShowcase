@@ -68,7 +68,7 @@
     2. Mini
     3. No header
     -->
-    <integer name="nav_drawer_header_style">2</integer>
+    <integer name="nav_drawer_header_style">1</integer>
 
     <!--
     Do you want the app name and version in the drawer header?

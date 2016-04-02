@@ -33,6 +33,7 @@ import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.util.SimpleArrayMap;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -44,15 +45,12 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.fragments.RequestsFragment;
 import jahirfiquitiva.iconshowcase.models.AppFilterError;
 import jahirfiquitiva.iconshowcase.models.RequestItem;
 import jahirfiquitiva.iconshowcase.models.RequestList;
-import jahirfiquitiva.iconshowcase.utilities.ApplicationBase;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
@@ -66,11 +64,12 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
     private final static ArrayList<AppFilterError> appFilterErrors = new ArrayList<>();
     private final WeakReference<Context> context;
     private final long startTime;
+    private static final String TASK = "AppsToRequest";
 
     @SuppressLint("PrivateResource")
     public LoadAppsToRequest(Context context) {
         startTime = System.currentTimeMillis();
-        this.context = new WeakReference<Context>(context);
+        this.context = new WeakReference<>(context);
 
         debugging = context.getResources().getBoolean(R.bool.debugging);
 
@@ -137,8 +136,12 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
     protected void onPostExecute(ArrayList<RequestItem> list) {
         RequestList.setRequestList(list);
         RequestsFragment.setupContent(null, context.get());
-        long endTime = System.currentTimeMillis();
-        Utils.showLog(context.get(), "Apps to Request Task completed in: " + String.valueOf((endTime - startTime) / 1000) + " secs.");
+        if (list != null) {
+            long endTime = System.currentTimeMillis();
+            Utils.showLog(context.get(),
+                    "Apps to Request Task completed in: " +
+                            String.valueOf((endTime - startTime) / 1000) + " secs.");
+        }
         if (debugging) {
             if (appFilterErrors != null) {
                 showAppFilterErrors(appFilterErrors, context.get());
@@ -208,7 +211,7 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
                         iconName,
                         completeComponent,
                         Utils.getIconResId(context, context.getResources(),
-                                context.getPackageName(), iconName)
+                                context.getPackageName(), iconName, TASK)
                 ));
             }
 
@@ -331,7 +334,7 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
         String[] componentsArray = new String[components.size()];
         componentsArray = components.toArray(componentsArray);
 
-        Map<String, Integer> occurrences = new HashMap<>();
+        SimpleArrayMap<String, Integer> occurrences = new SimpleArrayMap<>();
 
         int count = 0;
 
@@ -340,7 +343,8 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
             occurrences.put(word, count + 1);
         }
 
-        for (String word : occurrences.keySet()) {
+        for (int i = 0; i < occurrences.size(); i++) {
+            String word = occurrences.keyAt(i);
             if (count > 0) {
                 Utils.showAppFilterLog(context, "Duplicated component: \'" + word + "\' - " + String.valueOf(count) + " times.");
             }

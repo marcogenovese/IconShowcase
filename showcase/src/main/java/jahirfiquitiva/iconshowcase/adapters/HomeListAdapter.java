@@ -3,7 +3,6 @@ package jahirfiquitiva.iconshowcase.adapters;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +26,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private final Context context;
     private View view;
-    private int cards = 2;
+    private int cards = 3;
     private final ArrayList<HomeCard> homeCards;
 
     public HomeListAdapter(ArrayList<HomeCard> homeCards, Context context) {
@@ -51,6 +50,11 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         viewGroup.getContext()).inflate(R.layout.item_packinfo_card,
                         viewGroup, false);
                 return new AppInfoCard(infoCard);
+            case 2:
+                View moreAppsCard = LayoutInflater.from(
+                        viewGroup.getContext()).inflate(R.layout.item_moreapps_card,
+                        viewGroup, false);
+                return new MoreAppsCard(moreAppsCard);
             default:
                 final View appCard = LayoutInflater.from(
                         viewGroup.getContext()).inflate(R.layout.item_app_card,
@@ -76,25 +80,8 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public class WelcomeCard extends RecyclerView.ViewHolder {
 
-        final AppCompatButton moreappsbtn, iconsbtn;
-
         public WelcomeCard(View itemView) {
             super(itemView);
-            moreappsbtn = (AppCompatButton) itemView.findViewById(R.id.more_apps_button);
-            moreappsbtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Utils.openLink(context, context.getResources().getString(R.string.iconpack_author_playstore));
-                }
-            });
-            iconsbtn = (AppCompatButton) itemView.findViewById(R.id.icons_button);
-            iconsbtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ((ShowcaseActivity) context).drawerItemClick(ShowcaseActivity.iconsPickerIdentifier);
-                    ((ShowcaseActivity) context).getDrawer().setSelection(ShowcaseActivity.iconsPickerIdentifier);
-                }
-            });
         }
     }
 
@@ -161,6 +148,36 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         iconsIV.setImageDrawable(iconsDrawable);
         wallsIV.setImageDrawable(wallsDrawable);
         widgetsIV.setImageDrawable(widgetsDrawable);
+    }
+
+    public class MoreAppsCard extends RecyclerView.ViewHolder {
+
+        final int light = ContextCompat.getColor(context, R.color.drawable_tint_dark);
+        final int dark = ContextCompat.getColor(context, R.color.drawable_tint_light);
+
+        LinearLayout lly, subLly;
+        TextView title, desc;
+        ImageView icon;
+
+        public MoreAppsCard(View itemView) {
+            super(itemView);
+            view = itemView;
+            lly = (LinearLayout) itemView.findViewById(R.id.more_apps);
+            title = (TextView) itemView.findViewById(R.id.more_apps_text);
+            desc = (TextView) itemView.findViewById(R.id.more_apps_description);
+            icon = (ImageView) itemView.findViewById(R.id.more_apps_icon);
+            subLly = (LinearLayout) itemView.findViewById(R.id.more_apps_sub_layout);
+            icon.setImageDrawable(new IconicsDrawable(context)
+                    .icon(GoogleMaterial.Icon.gmd_case_play)
+                    .color(ThemeUtils.darkTheme ? light : dark)
+                    .sizeDp(24));
+            lly.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Utils.openLink(context, context.getResources().getString(R.string.iconpack_author_playstore));
+                }
+            });
+        }
     }
 
     public class AppCard extends RecyclerView.ViewHolder {

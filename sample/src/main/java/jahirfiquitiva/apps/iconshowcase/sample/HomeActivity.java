@@ -27,6 +27,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
+import jahirfiquitiva.iconshowcase.tasks.TasksExecutor;
 
 public class HomeActivity extends ShowcaseActivity {
 

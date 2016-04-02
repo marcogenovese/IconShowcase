@@ -32,12 +32,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.NumberPicker;
 import android.widget.RadioButton;
 
@@ -143,22 +145,26 @@ public class MuzeiSettings extends AppCompatActivity implements View.OnClickList
         int i = item.getItemId();
         if (mPrefs.areFeaturesEnabled()) {
             if (i == R.id.save) {
+                String timeText = "unknown time";
                 int rotate_time;
                 if (minute.isChecked()) {
                     rotate_time = Utils.convertMinutesToMillis(numberpicker.getValue());
                     mPrefs.setRotateMinute(true);
                     mPrefs.setRotateTime(rotate_time);
+                    timeText = String.valueOf(rotate_time) + " " +
+                            Utils.getStringFromResources(context, R.string.minutes).toLowerCase();
                 } else {
                     rotate_time = Utils.convertMinutesToMillis(numberpicker.getValue()) * 60;
                     mPrefs.setRotateMinute(false);
                     mPrefs.setRotateTime(rotate_time);
+                    timeText = String.valueOf(rotate_time) + " " +
+                            Utils.getStringFromResources(context, R.string.hours).toLowerCase();
                 }
                 Intent intent = new Intent(MuzeiSettings.this, ArtSource.class);
                 intent.putExtra("service", "restarted");
                 startService(intent);
-                Utils.showSimpleSnackbar(context, customCoordinatorLayout,
-                        Utils.getStringFromResources(this, R.string.settings_saved));
-                finish();
+                showSnackBarAndFinish(customCoordinatorLayout,
+                        getResources().getString(R.string.settings_saved, timeText));
                 return true;
             }
         } else {
@@ -248,4 +254,22 @@ public class MuzeiSettings extends AppCompatActivity implements View.OnClickList
                     }
                 });
     }
+
+    private void showSnackBarAndFinish(View location, String text) {
+        final int snackbarLight = ContextCompat.getColor(context, R.color.snackbar_light);
+        final int snackbarDark = ContextCompat.getColor(context, R.color.snackbar_dark);
+        Snackbar shortSnackbar = Snackbar.make(location, text,
+                Snackbar.LENGTH_LONG);
+        ViewGroup shortGroup = (ViewGroup) shortSnackbar.getView();
+        shortGroup.setBackgroundColor(ThemeUtils.darkTheme ? snackbarDark : snackbarLight);
+        shortSnackbar.setCallback(new Snackbar.Callback() {
+            @Override
+            public void onDismissed(Snackbar snackbar, int event) {
+                super.onDismissed(snackbar, event);
+                finish();
+            }
+        });
+        shortSnackbar.show();
+    }
+
 }
