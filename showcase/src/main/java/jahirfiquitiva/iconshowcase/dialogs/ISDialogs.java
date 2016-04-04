@@ -303,7 +303,12 @@ public final class ISDialogs {
     }
 
     public static void showRequestLimitDialog(Context context, int maxApps) {
-        String content = context.getResources().getString(R.string.apps_limit_dialog, String.valueOf(maxApps));
+        String content;
+        if (maxApps == context.getResources().getInteger(R.integer.max_apps_to_request)) {
+            content = context.getResources().getString(R.string.apps_limit_dialog, String.valueOf(maxApps));
+        } else {
+            content = context.getResources().getString(R.string.apps_limit_dialog_more, String.valueOf(maxApps));
+        }
         new MaterialDialog.Builder(context)
                 .title(R.string.section_icon_request)
                 .content(content)
@@ -311,34 +316,32 @@ public final class ISDialogs {
                 .show();
     }
 
-    public static void showRequestLimitDayDialog(Context context, int minutes) {
+    public static void showRequestTimeLimitDialog(Context context, int minutes) {
+        String minutesText =
+                new DecimalFormat("##.##").format(Utils.getExactMinutes(minutes)) +
+                        " " + Utils.getTimeName(context, minutes);
 
-        float time;
-        String text;
+        int secs = Utils.getSecondsLeftToEnableRequest(context, minutes, new Preferences(context));
 
-        if (minutes > 40320) {
-            time = minutes / 40320.0f;
-            text = Utils.getStringFromResources(context, R.string.months).toLowerCase();
-        } else if (minutes > 10080) {
-            time = minutes / 10080.0f;
-            text = Utils.getStringFromResources(context, R.string.weeks).toLowerCase();
-        } else if (minutes > 1440) {
-            time = minutes / 1440.0f;
-            text = Utils.getStringFromResources(context, R.string.days).toLowerCase();
-        } else if (minutes > 60) {
-            time = minutes / 60.0f;
-            text = Utils.getStringFromResources(context, R.string.hours).toLowerCase();
+        String content = context.getResources().getString(R.string.apps_limit_dialog_day, minutesText);
+
+        String contentExtra;
+
+        if (secs > 60) {
+            String leftText = (secs / 60) +
+                    " " + Utils.getTimeNameInSeconds(context, secs);
+            contentExtra = context.getResources().getString(
+                    R.string.apps_limit_dialog_day_extra, leftText);
         } else {
-            time = minutes;
-            text = Utils.getStringFromResources(context, R.string.minutes).toLowerCase();
+            contentExtra = Utils.getStringFromResources(context,
+                    R.string.apps_limit_dialog_day_extra_sec);
         }
 
-        String finalText = new DecimalFormat("##.##").format(time) + " " + text;
+        String finalContent = content + " " + contentExtra;
 
-        String content = context.getResources().getString(R.string.apps_limit_dialog_day, finalText);
         new MaterialDialog.Builder(context)
                 .title(R.string.section_icon_request)
-                .content(content)
+                .content(finalContent)
                 .positiveText(android.R.string.ok)
                 .show();
     }

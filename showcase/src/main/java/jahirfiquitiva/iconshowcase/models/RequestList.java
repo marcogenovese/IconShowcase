@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class RequestList {
 
-    public static ArrayList<RequestItem> appsToRequest;
+    private static ArrayList<RequestItem> appsToRequest;
 
     public RequestList(ArrayList<RequestItem> appsToRequest) {
         RequestList.appsToRequest = appsToRequest;
@@ -19,7 +19,9 @@ public class RequestList {
     }
 
     public static ArrayList<RequestItem> getRequestList() {
-        return RequestList.appsToRequest.size() > 0 ? RequestList.appsToRequest : null;
+        return RequestList.appsToRequest != null ?
+                RequestList.appsToRequest.size() > 0 ? RequestList.appsToRequest : null
+                : null;
     }
 
 }

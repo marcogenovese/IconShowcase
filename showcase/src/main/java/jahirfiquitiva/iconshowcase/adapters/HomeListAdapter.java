@@ -1,8 +1,11 @@
 package jahirfiquitiva.iconshowcase.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,11 +31,16 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private View view;
     private int cards = 3;
     private final ArrayList<HomeCard> homeCards;
+    private boolean hasAppsList = false;
 
-    public HomeListAdapter(ArrayList<HomeCard> homeCards, Context context) {
+    public HomeListAdapter(ArrayList<HomeCard> homeCards, Context context, boolean hasAppsList) {
         this.context = context;
         this.homeCards = homeCards;
+        this.hasAppsList = hasAppsList;
         if (context.getResources().getBoolean(R.bool.hide_pack_info)) {
+            cards -= 1;
+        }
+        if (hasAppsList) {
             cards -= 1;
         }
     }
@@ -51,10 +59,12 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         viewGroup, false);
                 return new AppInfoCard(infoCard);
             case 2:
-                View moreAppsCard = LayoutInflater.from(
-                        viewGroup.getContext()).inflate(R.layout.item_moreapps_card,
-                        viewGroup, false);
-                return new MoreAppsCard(moreAppsCard);
+                if (!hasAppsList) {
+                    View moreAppsCard = LayoutInflater.from(
+                            viewGroup.getContext()).inflate(R.layout.item_moreapps_card,
+                            viewGroup, false);
+                    return new MoreAppsCard(moreAppsCard);
+                }
             default:
                 final View appCard = LayoutInflater.from(
                         viewGroup.getContext()).inflate(R.layout.item_app_card,
@@ -80,8 +90,33 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public class WelcomeCard extends RecyclerView.ViewHolder {
 
+        final LinearLayout buttons;
+        AppCompatButton ratebtn, moreappsbtn;
+
         public WelcomeCard(View itemView) {
             super(itemView);
+            buttons = (LinearLayout) itemView.findViewById(R.id.buttons);
+            if (hasAppsList) {
+                buttons.setVisibility(View.VISIBLE);
+            } else {
+                buttons.setVisibility(View.GONE);
+            }
+            ratebtn = (AppCompatButton) itemView.findViewById(R.id.rate_button);
+            ratebtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent rate = new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("https://play.google.com/store/apps/details?id=" + context.getPackageName()));
+                    context.startActivity(rate);
+                }
+            });
+            moreappsbtn = (AppCompatButton) itemView.findViewById(R.id.more_apps_button);
+            moreappsbtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Utils.openLink(context, context.getResources().getString(R.string.iconpack_author_playstore));
+                }
+            });
         }
     }
 

@@ -24,7 +24,6 @@
 package jahirfiquitiva.iconshowcase.fragments;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -47,11 +46,7 @@ import android.widget.ProgressBar;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.adapters.RequestsAdapter;
@@ -72,10 +67,8 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
     public static RequestsAdapter requestsAdapter;
     private static FloatingActionButton fab;
     private static int maxApps = 0, minutesLimit = 0;
-
     private ViewGroup layout;
-
-    private Preferences mPrefs;
+    private static Preferences mPrefs;
     private Activity context;
     private static ArrayList<RequestItem> requestList;
 
@@ -85,11 +78,14 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
         int gridSpacing = getResources().getDimensionPixelSize(R.dimen.lists_padding);
         int columnsNumber = getResources().getInteger(R.integer.requests_grid_width);
 
-        maxApps = getResources().getInteger(R.integer.max_apps_to_request);
         minutesLimit = getResources().getInteger(R.integer.limit_request_to_x_minutes);
 
         setHasOptionsMenu(true);
         context = getActivity();
+
+        mPrefs = new Preferences(context);
+
+        setupMaxApps();
 
         if (layout != null) {
             ViewGroup parent = (ViewGroup) layout.getParent();
@@ -103,8 +99,6 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
         } catch (InflateException e) {
             // Do nothing
         }
-
-        mPrefs = new Preferences(getActivity());
 
         fab = (FloatingActionButton) layout.findViewById(R.id.requests_fab);
 
@@ -178,6 +172,7 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
     public void onResume() {
         super.onResume();
         Utils.collapseToolbar(getActivity());
+        setupMaxApps();
     }
 
     @Override
@@ -193,7 +188,7 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
         if (layout != null) {
             requestList = RequestList.getRequestList();
             if (requestList != null && requestList.size() > 0) {
-                requestsAdapter = new RequestsAdapter(context, requestList, maxApps);
+                requestsAdapter = new RequestsAdapter(context, requestList, mPrefs);
                 mRecyclerView.setHasFixedSize(true);
                 mRecyclerView.setAdapter(requestsAdapter);
                 requestsAdapter.startIconFetching(mRecyclerView);
@@ -230,11 +225,15 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
                 ISDialogs.showPermissionNotGrantedDialog(context);
 
             } else {
-                final MaterialDialog dialog = ISDialogs.showBuildingRequestDialog(context);
-                dialog.show();
+                if (requestsAdapter.getSelectedApps() <= mPrefs.getRequestsLeft()) {
+                    final MaterialDialog dialog = ISDialogs.showBuildingRequestDialog(context);
+                    dialog.show();
 
-                new ZipFilesToRequest((Activity) context, dialog,
-                        ((RequestsAdapter) mRecyclerView.getAdapter()).appsList).execute();
+                    new ZipFilesToRequest((Activity) context, dialog,
+                            ((RequestsAdapter) mRecyclerView.getAdapter()).appsList).execute();
+                } else {
+                    ISDialogs.showRequestLimitDialog(context, maxApps);
+                }
             }
         } else {
             ISDialogs.showNoSelectedAppsDialog(context);
@@ -247,93 +246,26 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
         showRequestsFilesCreationDialog(context);
     }
 
-    private boolean haveHappenedXHoursSinceLastRequest(int numOfMinutes) {
-
-        float hours = numOfMinutes / 60.0f;
-        float hoursToDays = hours / 24.0f;
-
-        boolean hasHappenedTheTime = false;
-
-        Calendar c = Calendar.getInstance();
-
-        String time;
-        int dayNum;
-
-        if (!mPrefs.getRequestsCreated()) {
-            time = String.format("%02d", c.get(Calendar.HOUR_OF_DAY)) + ":" +
-                    String.format("%02d", c.get(Calendar.MINUTE));
-            String day = String.format("%02d", c.get(Calendar.DAY_OF_YEAR));
-            mPrefs.setRequestHour(time);
-            mPrefs.setRequestDay(Integer.valueOf(day));
-            mPrefs.setRequestsCreated(true);
-            hasHappenedTheTime = true;
-        } else {
-            time = mPrefs.getRequestHour();
-            dayNum = mPrefs.getRequestDay();
-
-            String currentTime = String.format("%02d", c.get(Calendar.HOUR_OF_DAY)) + ":" +
-                    String.format("%02d", c.get(Calendar.MINUTE));
-            String currentDay = String.format("%02d", c.get(Calendar.DAY_OF_YEAR));
-
-            @SuppressLint("SimpleDateFormat")
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
-            Date startDate = null;
-            try {
-                startDate = simpleDateFormat.parse(time);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            Date endDate = null;
-            try {
-                endDate = simpleDateFormat.parse(currentTime);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-            long difference = endDate.getTime() - startDate.getTime();
-            if (difference < 0) {
-                Date dateMax = null;
-                try {
-                    dateMax = simpleDateFormat.parse("24:00");
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                Date dateMin = null;
-                try {
-                    dateMin = simpleDateFormat.parse("00:00");
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                difference = (dateMax.getTime() - startDate.getTime()) + (endDate.getTime() - dateMin.getTime());
-            }
-            int days = Integer.valueOf(currentDay) - dayNum;
-            int hoursHappened = (int) ((difference - (1000 * 60 * 60 * 24 * days)) / (1000 * 60 * 60));
-            int min = (int) (difference - (1000 * 60 * 60 * 24 * days) - (1000 * 60 * 60 * hoursHappened)) / (1000 * 60);
-
-            if (days >= hoursToDays) {
-                hasHappenedTheTime = true;
-            } else if (hoursHappened >= hours) {
-                hasHappenedTheTime = true;
-            } else if (min >= numOfMinutes) {
-                hasHappenedTheTime = true;
-            }
-
-        }
-
-        return hasHappenedTheTime;
-
-    }
-
     private void startRequestProcess() {
-        if (maxApps > 0) {
-            if (haveHappenedXHoursSinceLastRequest(minutesLimit) || minutesLimit <= 0) {
+        if (mPrefs.getRequestsLeft() <= 0) {
+            if (requestsAdapter.getSelectedApps() < mPrefs.getRequestsLeft()) {
+                showRequestsFilesCreationDialog(context);
+            } else if (Utils.hasHappenedTimeSinceLastRequest(context, minutesLimit, mPrefs, false)
+                    || minutesLimit <= 0) {
                 showRequestsFilesCreationDialog(context);
             } else {
-                ISDialogs.showRequestLimitDayDialog(context, minutesLimit);
+                ISDialogs.showRequestTimeLimitDialog(context, minutesLimit);
             }
         } else {
             showRequestsFilesCreationDialog(context);
         }
+    }
+
+    private void setupMaxApps() {
+        if (!mPrefs.getRequestsCreated()) {
+            mPrefs.setRequestsLeft(context.getResources().getInteger(R.integer.max_apps_to_request));
+        }
+        maxApps = mPrefs.getRequestsLeft();
     }
 
 }

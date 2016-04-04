@@ -63,12 +63,25 @@ public class MainFragment extends Fragment {
 
     private FloatingActionButton fab;
     private final ArrayList<HomeCard> homeCards = new ArrayList<>();
+    private boolean hasAppsList = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
 
         context = getActivity();
+
+        String[] appsNames = getResources().getStringArray(R.array.apps_titles);
+        String[] appsDescriptions = getResources().getStringArray(R.array.apps_descriptions);
+        String[] appsIcons = getResources().getStringArray(R.array.apps_icons);
+        String[] appsPackages = getResources().getStringArray(R.array.apps_packages);
+
+        int names = appsNames.length, descs = appsDescriptions.length, icons = appsIcons.length,
+                packs = appsPackages.length;
+
+        if (names > 0 && names == descs && names == icons && names == packs) {
+            hasAppsList = true;
+        }
 
         if (layout != null) {
             ViewGroup parent = (ViewGroup) layout.getParent();
@@ -103,20 +116,11 @@ public class MainFragment extends Fragment {
 
         }
 
-        String[] appsNames = getResources().getStringArray(R.array.apps_titles);
-
-        if (appsNames.length > 0) {
-            String[] appsDescriptions = getResources().getStringArray(R.array.apps_descriptions);
-            String[] appsIcons = getResources().getStringArray(R.array.apps_icons);
-            String[] appsPackages = getResources().getStringArray(R.array.apps_packages);
+        if (hasAppsList) {
             for (int i = 0; i < appsNames.length; i++) {
-
                 try {
-
                     Intent intent;
-
                     boolean isInstalled = Utils.isAppInstalled(context, appsPackages[i]);
-
                     if (isInstalled) {
                         PackageManager pm = context.getPackageManager();
                         intent = pm.getLaunchIntentForPackage(appsPackages[i]);
@@ -175,7 +179,9 @@ public class MainFragment extends Fragment {
                                     .build());
                         }
                     }
+                    hasAppsList = true;
                 } catch (IndexOutOfBoundsException e) {
+                    hasAppsList = false;
                     if (ShowcaseActivity.DEBUGGING)
                         Utils.showLog(context, "Apps Cards arrays are inconsistent. Fix them.");
                 }
@@ -190,7 +196,7 @@ public class MainFragment extends Fragment {
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setHasFixedSize(true);
 
-        HomeListAdapter mAdapter = new HomeListAdapter(homeCards, context);
+        HomeListAdapter mAdapter = new HomeListAdapter(homeCards, context, hasAppsList);
         mRecyclerView.setAdapter(mAdapter);
 
         return layout;
@@ -211,8 +217,8 @@ public class MainFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         if (fab != null && ShowcaseActivity.currentItem != 1) {
-            fab.setVisibility(View.GONE);
             fab.hide();
+            fab.setVisibility(View.GONE);
         }
     }
 
@@ -221,11 +227,17 @@ public class MainFragment extends Fragment {
 
         if (themeMode) {
             modifyFABIcon();
+            fab.setVisibility(View.VISIBLE);
+            fab.show();
+        } else {
+            if (hasAppsList) {
+                fab.hide();
+                fab.setVisibility(View.GONE);
+            } else {
+                fab.setVisibility(View.VISIBLE);
+                fab.show();
+            }
         }
-
-        fab.setVisibility(View.VISIBLE);
-
-        fab.show();
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

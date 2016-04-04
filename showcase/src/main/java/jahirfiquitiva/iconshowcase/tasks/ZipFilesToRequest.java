@@ -66,29 +66,27 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
 
     private final MaterialDialog dialog;
     private ArrayList<RequestItem> appsListFinal;
-
     private static final int BUFFER = 2048;
     private String zipFilePath;
     private WeakReference<Context> context;
-
     private StringBuilder emailContent = new StringBuilder();
-
     private final WeakReference<Activity> wrActivity;
-
     private Activity activity;
+    private Preferences mPrefs;
 
-    public ZipFilesToRequest(Activity activity, MaterialDialog dialog, ArrayList<RequestItem> appsListFinal) {
+    public ZipFilesToRequest(Activity activity, MaterialDialog dialog,
+                             ArrayList<RequestItem> appsListFinal) {
         this.wrActivity = new WeakReference<>(activity);
         this.dialog = dialog;
         this.appsListFinal = appsListFinal;
+        this.mPrefs = new Preferences(activity);
     }
 
     @Override
     protected void onPreExecute() {
-
         final Activity act = wrActivity.get();
         if (act != null) {
-            this.context = new WeakReference<Context>(act.getApplicationContext());
+            this.context = new WeakReference<>(act.getApplicationContext());
             this.activity = act;
         }
     }
@@ -105,7 +103,8 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
         String appNameCorrected = context.get().getResources().getString(R.string.app_name).replace(" ", "");
 
         SimpleDateFormat date = new SimpleDateFormat("yyyyMMdd_hhmmss", Locale.getDefault());
-        zipFilePath = zipLocation + appNameCorrected + "_" + date.format(new Date()) + ".zip";
+        String momentOfCreation = date.format(new Date());
+        zipFilePath = zipLocation + appNameCorrected + "_" + momentOfCreation + ".zip";
 
         try {
             final File zipFolder = new File(zipLocation);
@@ -122,9 +121,9 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
             StringBuilder appMapBuilder = new StringBuilder();
             StringBuilder themeResourcesBuilder = new StringBuilder();
 
-            int appsCount = 0;
             sb.append("These apps have no icons, please add some for them. Thanks in advance.\n\n");
 
+            int appsCount = 0;
             for (int i = 0; i < appsListFinal.size(); i++) {
 
                 if (appsListFinal.get(i).isSelected()) {
@@ -141,20 +140,19 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
                     }
 
                     appFilterBuilder.append("<item component=\"ComponentInfo{" +
-                            appsListFinal.get(i).getAppName() + "/" + appsListFinal.get(i).getClassName() + "}\"" +
-                            " drawable=\"" + appsListFinal.get(i).getAppName().replace(" ", "_").toLowerCase() + "\"/>" + "\n");
+                            appsListFinal.get(i).getPackageName() + "/" + appsListFinal.get(i).getClassName() + "}\"" +
+                            " drawable=\"" + appsListFinal.get(i).getAppName().replace(" ", "_").toLowerCase() + "\"/>" + "\n\n");
 
-                    appMapBuilder.append("<item name=\"" + appsListFinal.get(i).getAppName().replace(" ", "_").toLowerCase() +
-                            "\" class=\"" + appsListFinal.get(i).getClassName() + "\" />" + "\n");
+                    appMapBuilder.append("<item class=\"" + appsListFinal.get(i).getClassName() +
+                            "\" name=\"" + appsListFinal.get(i).getAppName().replace(" ", "_").toLowerCase() + "\" />" + "\n\n");
 
                     themeResourcesBuilder.append("<AppIcon name=\"" +
-                            appsListFinal.get(i).getAppName() + "/" + appsListFinal.get(i).getClassName() +
-                            "\" image=\"" + appsListFinal.get(i).getAppName().replace(" ", "_").toLowerCase() + "\"/>" + "\n");
+                            appsListFinal.get(i).getPackageName() + "/" + appsListFinal.get(i).getClassName() +
+                            "\" image=\"" + appsListFinal.get(i).getAppName().replace(" ", "_").toLowerCase() + "\"/>" + "\n\n");
 
                     sb.append("App Name: " + appsListFinal.get(i).getAppName() + "\n");
-                    sb.append("App Info: " + appsListFinal.get(i).getAppName() + "/" + appsListFinal.get(i).getClassName() + "\n");
-                    sb.append("App Link: " + "https://play.google.com/store/apps/details?id=" + appsListFinal.get(i).getAppName() + "\n");
-                    sb.append("\n");
+                    sb.append("App ComponentInfo: " + appsListFinal.get(i).getPackageName() + "/" + appsListFinal.get(i).getClassName() + "\n");
+                    sb.append("App Link: " + "https://play.google.com/store/apps/details?id=" + appsListFinal.get(i).getPackageName() + "\n");
                     sb.append("\n");
 
                     Bitmap bitmap = ((BitmapDrawable) (appsListFinal.get(i).getIcon())).getBitmap();
@@ -169,16 +167,29 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
                         //Do nothing
                     }
 
-                    appsCount++;
+                    appsCount += 1;
                 }
 
             }
 
+            int left = mPrefs.getRequestsLeft() - appsCount;
+            mPrefs.setRequestsLeft(left >= 0 ? left : 0);
+
+            sb.append("\nAndroid Version: " + Build.VERSION.RELEASE);
             sb.append("\nOS Version: " + System.getProperty("os.version") + "(" + Build.VERSION.INCREMENTAL + ")");
             sb.append("\nOS API Level: " + Build.VERSION.SDK_INT);
-            sb.append("\nDevice: " + Build.DEVICE);
+
+            try {
+                PackageInfo appInfo = context.get().getPackageManager().getPackageInfo(context.get().getPackageName(), 0);
+                sb.append("\nApp Version Name: " + appInfo.versionName);
+                sb.append("\nApp Version Code: " + appInfo.versionCode);
+            } catch (Exception e) {
+                //Do nothing
+            }
+
+            sb.append("\nDevice: " + Build.MODEL);
             sb.append("\nManufacturer: " + Build.MANUFACTURER);
-            sb.append("\nModel (and Product): " + Build.MODEL + " (" + Build.PRODUCT + ")");
+            sb.append("\nModel (and Product): " + Build.DEVICE + " (" + Build.PRODUCT + ")");
             if (context.get().getResources().getBoolean(R.bool.theme_engine_info)) {
                 if (Utils.isAppInstalled(context.get(), "org.cyanogenmod.theme.chooser")) {
                     sb.append("\nCMTE is installed");
@@ -191,41 +202,33 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
                 }
             }
 
-            try {
-                PackageInfo appInfo = context.get().getPackageManager().getPackageInfo(context.get().getPackageName(), 0);
-                sb.append("\nApp Version Name: " + appInfo.versionName);
-                sb.append("\nApp Version Code: " + appInfo.versionCode);
-            } catch (Exception e) {
-                //Do nothing
-            }
-
             if (appsCount != 0) {
 
                 try {
-                    FileWriter fileWriter1 = new FileWriter(filesLocation + "/" + date + "_appfilter.xml");
+                    FileWriter fileWriter1 = new FileWriter(filesLocation + "/" + "appfilter" + "_" + momentOfCreation + ".xml");
                     BufferedWriter bufferedWriter1 = new BufferedWriter(fileWriter1);
                     bufferedWriter1.write(appFilterBuilder.toString());
                     bufferedWriter1.close();
                 } catch (Exception e) {
-                    return null;
+                    worked = false;
                 }
 
                 try {
-                    FileWriter fileWriter2 = new FileWriter(filesLocation + "/" + date + "_appmap.xml");
+                    FileWriter fileWriter2 = new FileWriter(filesLocation + "/" + "appmap" + "_" + momentOfCreation + ".xml");
                     BufferedWriter bufferedWriter2 = new BufferedWriter(fileWriter2);
                     bufferedWriter2.write(appMapBuilder.toString());
                     bufferedWriter2.close();
                 } catch (Exception e) {
-                    return null;
+                    worked = false;
                 }
 
                 try {
-                    FileWriter fileWriter3 = new FileWriter(filesLocation + "/" + date + "_theme_resources.xml");
+                    FileWriter fileWriter3 = new FileWriter(filesLocation + "/" + "theme_resources" + "_" + momentOfCreation + ".xml");
                     BufferedWriter bufferedWriter3 = new BufferedWriter(fileWriter3);
                     bufferedWriter3.write(themeResourcesBuilder.toString());
                     bufferedWriter3.close();
                 } catch (Exception e) {
-                    return null;
+                    worked = false;
                 }
 
                 createZipFile(filesLocation, zipFilePath);
@@ -241,6 +244,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
             emailContent = null;
             e.getLocalizedMessage();
         }
+
         return worked;
 
     }
@@ -268,10 +272,10 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
                 try {
                     activity.startActivityForResult(Intent.createChooser(sendIntent, "Send mail..."), 2);
                     Calendar c = Calendar.getInstance();
-                    Preferences mPrefs = new Preferences(context.get());
                     String time = String.format("%02d", c.get(Calendar.HOUR_OF_DAY)) + ":" +
                             String.format("%02d", c.get(Calendar.MINUTE));
                     String day = String.format("%02d", c.get(Calendar.DAY_OF_YEAR));
+
                     mPrefs.setRequestHour(time);
                     mPrefs.setRequestDay(Integer.valueOf(day));
                     mPrefs.setRequestsCreated(true);
@@ -293,9 +297,9 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
             for (File file : files) {
                 if (file.isDirectory()) {
                     deleteDirectory(file);
-                    String[] children = dir.list();
-                    for (String aChildren : children) {
-                        new File(dir, aChildren).delete();
+                    String[] folderFiles = dir.list();
+                    for (String folderFile : folderFiles) {
+                        new File(dir, folderFile).delete();
                     }
                 } else {
                     file.delete();
@@ -339,7 +343,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
             return;
         }
 
-        final byte[] buf = new byte[1024];
+        final byte[] buf = new byte[BUFFER];
         final String[] files = file.list();
 
         if (file.isFile()) {

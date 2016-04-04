@@ -39,6 +39,8 @@ import java.util.ArrayList;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.models.RequestItem;
+import jahirfiquitiva.iconshowcase.utilities.Preferences;
+import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.RequestsHolder> {
 
@@ -49,19 +51,18 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
 
     public final ArrayList<RequestItem> appsList;
     private final Context context;
-    private final int limit;
     private final ClickListener mCallback;
     private AppIconFetchingQueue mAppIconFetchingQueue;
 
     public RequestsAdapter(final Context context, final ArrayList<RequestItem> appsList,
-                           final int limit) {
+                           final Preferences mPrefs) {
         this.context = context;
         this.appsList = appsList;
-        this.limit = limit;
         this.mCallback = new ClickListener() {
             @Override
             public void onClick(int position) {
-                if (limit <= 0) {
+                int limit = mPrefs.getRequestsLeft();
+                if (limit < 0) {
                     changeAppSelectedState(position);
                 } else {
                     if (getSelectedApps() < limit) {
@@ -137,19 +138,29 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
 
     }
 
-    public void selectOrDeselectAll(boolean select) {
-        boolean showDialog = false;
+    public void selectOrDeselectAll(boolean select, Preferences mPrefs) {
+
+        boolean showDialog = false, showTimeLimitDialog = false,
+                timeHappened = Utils.hasHappenedTimeSinceLastRequest(context,
+                        context.getResources().getInteger(R.integer.limit_request_to_x_minutes),
+                        mPrefs, false);
+
+        int limit = mPrefs.getRequestsLeft();
 
         for (int i = 0; i < appsList.size(); i++) {
             if (select) {
-                if (limit <= 0) {
+                if (limit < 0) {
                     selectApp(i);
                 } else {
-                    if (getSelectedApps() < limit) {
-                        selectApp(i);
+                    if (limit > 0) {
+                        if (getSelectedApps() < limit) {
+                            selectApp(i);
+                        } else {
+                            showDialog = true;
+                            break;
+                        }
                     } else {
-                        showDialog = true;
-                        break;
+                        showTimeLimitDialog = !timeHappened;
                     }
                 }
             } else {
@@ -157,8 +168,11 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
             }
         }
 
-        if (showDialog) {
-            ISDialogs.showRequestLimitDialog(context, limit);
+        if (showDialog) ISDialogs.showRequestLimitDialog(context, limit);
+
+        if (showTimeLimitDialog) {
+            ISDialogs.showRequestTimeLimitDialog(context,
+                    context.getResources().getInteger(R.integer.limit_request_to_x_minutes));
         }
 
     }
@@ -178,6 +192,17 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
             requestsItem.setSelected(false);
             appsList.set(position, requestsItem);
             notifyItemChanged(position);
+        }
+    }
+
+    public void deselectAllApps() {
+        for (int i = 0; i < appsList.size(); i++) {
+            RequestItem requestsItem = appsList.get(i);
+            if (requestsItem.isSelected()) {
+                requestsItem.setSelected(false);
+                appsList.set(i, requestsItem);
+                notifyItemChanged(i);
+            }
         }
     }
 

@@ -48,7 +48,8 @@ public class Preferences {
             WALLS_COLUMNS_NUMBER = "walls_columns_number",
             REQUEST_HOUR = "request_hour",
             REQUEST_DAY = "request_day",
-            REQUESTS_CREATED = "requests_created";
+            REQUESTS_CREATED = "requests_created",
+            REQUESTS_LEFT = "requests_left";
 
     private final Context context;
 
@@ -195,6 +196,24 @@ public class Preferences {
 
     public boolean getRequestsCreated() {
         return getSharedPreferences().getBoolean(REQUESTS_CREATED, false);
+    }
+
+    public int getRequestsLeft() {
+        return getSharedPreferences().getInt(REQUESTS_LEFT, 0);
+    }
+
+    public int getRequestsLeft(Context context) {
+        return getSharedPreferences().getInt(REQUESTS_LEFT,
+                context.getResources().getInteger(R.integer.max_apps_to_request));
+    }
+
+    public void setRequestsLeft(int requestsLeft) {
+        getSharedPreferences().edit().putInt(REQUESTS_LEFT, requestsLeft).apply();
+    }
+
+    public void resetRequestsLeft(Context context) {
+        getSharedPreferences().edit().putInt(REQUESTS_LEFT,
+                context.getResources().getInteger(R.integer.max_apps_to_request)).apply();
     }
 
 }

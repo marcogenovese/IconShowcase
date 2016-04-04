@@ -42,6 +42,7 @@
 
     <!-- Muzei Stuff -->
     <string name="muzeisets_title">Refresh wallpapers every:</string>
+    <string name="seconds">Seconds</string>
     <string name="minutes">Minutes</string>
     <string name="hours">Hours</string>
     <string name="days">Days</string>
@@ -98,7 +99,7 @@
     <string name="wallpaper_dimensions_title">Dimensions</string>
     <string name="wallpaper_copyright_title">Copyright</string>
 
-    <string name="settings_saved">Settings saved. Wallpapers will change every $1$s.</string>
+    <string name="settings_saved">Settings saved. Wallpapers will change every %1$s.</string>
 
     <!-- License Check Dialog -->
     <string name="license_failed_title">License Check Failed</string>
@@ -118,7 +119,10 @@
     <string name="no_selected_apps_title">No selected apps</string>
     <string name="no_selected_apps_content">You did not select any app to request. Select some before pressing the FAB again.</string>
     <string name="apps_limit_dialog">Sorry, but you are only allowed to select %1$s apps to request.</string>
+    <string name="apps_limit_dialog_more">Sorry, but you are only allowed to request %1$s more apps for now.</string>
     <string name="apps_limit_dialog_day">Sorry, but you are only allowed to request icons every %1$s.</string>
+    <string name="apps_limit_dialog_day_extra">You will be able to request icons again, in %1$s.</string>
+    <string name="apps_limit_dialog_day_extra_sec">You will be able to request icons again, in less than a minute.</string>
 
     <!-- Icon search -->
     <string name="search_icons">Search icons…</string>

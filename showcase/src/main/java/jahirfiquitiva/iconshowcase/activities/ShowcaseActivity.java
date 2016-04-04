@@ -113,6 +113,8 @@ public class ShowcaseActivity extends AppCompatActivity implements
     public static boolean WITH_USER_WALLPAPER_AS_TOOLBAR_HEADER = true, WITH_ZOOPER_SECTION = false,
             DEBUGGING = false;
 
+    public boolean SELECT_ALL_APPS = true, TIME_LIMIT_DIALOG_SHOWN = false;
+
     private static String[] mGoogleCatalog = new String[0],
             GOOGLE_CATALOG_VALUES = new String[0];
 
@@ -137,7 +139,7 @@ public class ShowcaseActivity extends AppCompatActivity implements
             nova_action = "com.novalauncher.THEME";
 
     public static boolean iconsPicker, wallsPicker, SHUFFLE = true;
-    private static boolean iconsPickerEnabled = false, wallsEnabled = false, shuffleIcons = true, selectAll = true;
+    private static boolean iconsPickerEnabled = false, wallsEnabled = false, shuffleIcons = true;
 
     private static String thaAppName, thaHome, thaPreviews, thaApply, thaWalls, thaRequest,
             thaDonate, thaFAQs, thaZooper, thaCredits, thaSettings;
@@ -543,9 +545,26 @@ public class ShowcaseActivity extends AppCompatActivity implements
         } else if (i == R.id.columns) {
             ISDialogs.showColumnsSelectorDialog(context);
         } else if (i == R.id.select_all) {
-            if (RequestsFragment.requestsAdapter != null && RequestsFragment.requestsAdapter.appsList.size() > 0) {
-                RequestsFragment.requestsAdapter.selectOrDeselectAll(selectAll);
-                selectAll = !selectAll;
+            RequestsAdapter requestsAdapter = RequestsFragment.requestsAdapter;
+            if (requestsAdapter != null && RequestsFragment.requestsAdapter.appsList.size() > 0) {
+                if (requestsAdapter.getSelectedApps() > mPrefs.getRequestsLeft()) {
+                    RequestsFragment.requestsAdapter.deselectAllApps();
+                    SELECT_ALL_APPS = true;
+                }
+                if (requestsAdapter.getSelectedApps() <= mPrefs.getRequestsLeft() && SELECT_ALL_APPS) {
+                    RequestsFragment.requestsAdapter.selectOrDeselectAll(true, mPrefs);
+                    SELECT_ALL_APPS = !SELECT_ALL_APPS;
+                } else if (mPrefs.getRequestsLeft() == 0 && !Utils.hasHappenedTimeSinceLastRequest(context,
+                        context.getResources().getInteger(R.integer.limit_request_to_x_minutes),
+                        mPrefs, false)) {
+                    ISDialogs.showRequestTimeLimitDialog(context,
+                            getResources().getInteger(R.integer.limit_request_to_x_minutes));
+                    //TIME_LIMIT_DIALOG_SHOWN = true;
+                } else {
+                    RequestsFragment.requestsAdapter.deselectAllApps();
+                    SELECT_ALL_APPS = false;
+                }
+
             } else {
                 ISDialogs.showLoadingRequestAppsDialog(this);
             }
@@ -559,7 +578,7 @@ public class ShowcaseActivity extends AppCompatActivity implements
         if (resultCode == RESULT_OK && requestCode == 2) {
             RequestsAdapter adapter = ((RequestsAdapter) RequestsFragment.mRecyclerView.getAdapter());
             if (adapter != null) {
-                adapter.selectOrDeselectAll(false);
+                adapter.selectOrDeselectAll(false, mPrefs);
             }
         }
 

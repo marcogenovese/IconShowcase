@@ -23,6 +23,7 @@
 
 package jahirfiquitiva.iconshowcase.utilities;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
@@ -57,6 +58,10 @@ import android.view.ViewGroup;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
@@ -460,6 +465,211 @@ public class Utils {
             }
             return 0;
         }
+    }
+
+    public static boolean hasHappenedTimeSinceLastRequest(Context context, int numOfMinutes,
+                                                          Preferences mPrefs, boolean override) {
+
+        float hours = (numOfMinutes + 1) / 60.0f;
+        float hoursToDays = hours / 24.0f;
+
+        boolean hasHappenedTheTime = false;
+
+        Calendar c = Calendar.getInstance();
+
+        String time;
+        int dayNum;
+
+        if (!mPrefs.getRequestsCreated()) {
+            time = String.format("%02d", c.get(Calendar.HOUR_OF_DAY)) + ":" +
+                    String.format("%02d", c.get(Calendar.MINUTE));
+            String day = String.format("%02d", c.get(Calendar.DAY_OF_YEAR));
+            mPrefs.setRequestHour(time);
+            mPrefs.setRequestDay(Integer.valueOf(day));
+            mPrefs.setRequestsCreated(true);
+            hasHappenedTheTime = true;
+        } else {
+            time = mPrefs.getRequestHour();
+            dayNum = mPrefs.getRequestDay();
+
+            String currentTime = String.format("%02d", c.get(Calendar.HOUR_OF_DAY)) + ":" +
+                    String.format("%02d", c.get(Calendar.MINUTE));
+            String currentDay = String.format("%02d", c.get(Calendar.DAY_OF_YEAR));
+
+            @SuppressLint("SimpleDateFormat")
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+            Date startDate = null;
+            try {
+                startDate = simpleDateFormat.parse(time);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            Date endDate = null;
+            try {
+                endDate = simpleDateFormat.parse(currentTime);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            long difference = endDate.getTime() - startDate.getTime();
+            if (difference < 0) {
+                Date dateMax = null;
+                try {
+                    dateMax = simpleDateFormat.parse("24:00");
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                Date dateMin = null;
+                try {
+                    dateMin = simpleDateFormat.parse("00:00");
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                difference = (dateMax.getTime() - startDate.getTime()) + (endDate.getTime() - dateMin.getTime());
+            }
+            int days = Integer.valueOf(currentDay) - dayNum;
+            int hoursHappened = (int) ((difference - (1000 * 60 * 60 * 24 * days)) / (1000 * 60 * 60));
+            int min = (int) (difference - (1000 * 60 * 60 * 24 * days) - (1000 * 60 * 60 * hoursHappened)) / (1000 * 60);
+
+            if (days >= hoursToDays) {
+                hasHappenedTheTime = true;
+            } else if (hoursHappened >= hours) {
+                hasHappenedTheTime = true;
+            } else if (min >= numOfMinutes) {
+                hasHappenedTheTime = true;
+            }
+        }
+
+        if (hasHappenedTheTime || numOfMinutes <= 0) {
+            mPrefs.resetRequestsLeft(context);
+        }
+
+        if (override) {
+            hasHappenedTheTime = true;
+        }
+
+        return hasHappenedTheTime;
+
+    }
+
+    public static int getSecondsLeftToEnableRequest(Context context,
+                                                    int numOfMinutes, Preferences mPrefs) {
+
+        int secondsHappened = 0;
+
+        Calendar c = Calendar.getInstance();
+
+        String time;
+        int dayNum;
+
+        if (mPrefs.getRequestsCreated()) {
+            time = mPrefs.getRequestHour();
+            dayNum = mPrefs.getRequestDay();
+
+            String currentTime = String.format("%02d", c.get(Calendar.HOUR_OF_DAY)) + ":" +
+                    String.format("%02d", c.get(Calendar.MINUTE));
+            String currentDay = String.format("%02d", c.get(Calendar.DAY_OF_YEAR));
+
+            @SuppressLint("SimpleDateFormat")
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+            Date startDate = null;
+            try {
+                startDate = simpleDateFormat.parse(time);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            Date endDate = null;
+            try {
+                endDate = simpleDateFormat.parse(currentTime);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            long difference = endDate.getTime() - startDate.getTime();
+            if (difference < 0) {
+                Date dateMax = null;
+                try {
+                    dateMax = simpleDateFormat.parse("24:00");
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                Date dateMin = null;
+                try {
+                    dateMin = simpleDateFormat.parse("00:00");
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                difference = (dateMax.getTime() - startDate.getTime()) + (endDate.getTime() - dateMin.getTime());
+            }
+            int days = Integer.valueOf(currentDay) - dayNum;
+            int hoursHappened = (int) ((difference - (1000 * 60 * 60 * 24 * days)) / (1000 * 60 * 60));
+
+            int minutes = (int) (difference - (1000 * 60 * 60 * 24 * days) -
+                    (1000 * 60 * 60 * hoursHappened)) / (1000 * 60);
+
+            secondsHappened = (int) (minutes * 60.0f);
+
+        }
+
+        int secondsLeft = (numOfMinutes * 60) - secondsHappened;
+
+        if (secondsHappened < 0 || numOfMinutes <= 0) {
+            mPrefs.resetRequestsLeft(context);
+            secondsLeft = 0;
+        }
+
+        return secondsLeft;
+
+    }
+
+    public static String getTimeName(Context context, int minutes) {
+        String text;
+        if (minutes > 40320) {
+            text = Utils.getStringFromResources(context, R.string.months).toLowerCase();
+        } else if (minutes > 10080) {
+            text = Utils.getStringFromResources(context, R.string.weeks).toLowerCase();
+        } else if (minutes > 1440) {
+            text = Utils.getStringFromResources(context, R.string.days).toLowerCase();
+        } else if (minutes > 60) {
+            text = Utils.getStringFromResources(context, R.string.hours).toLowerCase();
+        } else {
+            text = Utils.getStringFromResources(context, R.string.minutes).toLowerCase();
+        }
+        return text;
+    }
+
+    public static String getTimeNameInSeconds(Context context, int secs) {
+        String text;
+        if (secs > (40320 * 60)) {
+            text = Utils.getStringFromResources(context, R.string.months).toLowerCase();
+        } else if (secs > (10080 * 60)) {
+            text = Utils.getStringFromResources(context, R.string.weeks).toLowerCase();
+        } else if (secs > (1440 * 60)) {
+            text = Utils.getStringFromResources(context, R.string.days).toLowerCase();
+        } else if (secs > (60 * 60)) {
+            text = Utils.getStringFromResources(context, R.string.hours).toLowerCase();
+        } else if (secs > 60) {
+            text = Utils.getStringFromResources(context, R.string.minutes).toLowerCase();
+        } else {
+            text = Utils.getStringFromResources(context, R.string.seconds).toLowerCase();
+        }
+        return text;
+    }
+
+    public static float getExactMinutes(int minutes) {
+        float time;
+        if (minutes > 40320) {
+            time = minutes / 40320.0f;
+        } else if (minutes > 10080) {
+            time = minutes / 10080.0f;
+        } else if (minutes > 1440) {
+            time = minutes / 1440.0f;
+        } else if (minutes > 60) {
+            time = minutes / 60.0f;
+        } else {
+            time = minutes;
+        }
+        return time;
     }
 
 }

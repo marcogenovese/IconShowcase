@@ -66,19 +66,15 @@
 
 
     <string-array name="apps_titles">
-        <item>Melior UI Theme</item>
     </string-array>
 
     <string-array name="apps_descriptions">
-        <item></item>
     </string-array>
 
     <string-array name="apps_icons">
-        <item>ic_na_launcher</item>
     </string-array>
 
     <string-array name="apps_packages">
-        <item>jahirfiquitiva.themes.meliorui</item>
     </string-array>
 
 </resources>
