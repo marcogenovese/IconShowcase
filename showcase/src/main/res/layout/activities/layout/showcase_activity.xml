@@ -129,10 +129,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="@dimen/cards_padding"
-        app:srcCompat="@drawable/ic_rate"
-        android:visibility="gone"
+        android:visibility="visible"
         app:backgroundTint="?attr/fabTintColor"
         app:fabSize="normal"
-        app:rippleColor="@color/semitransparent_white"/>
+        app:rippleColor="@color/semitransparent_white"
+        app:srcCompat="@drawable/ic_rate"/>
 
 </jahirfiquitiva.iconshowcase.views.CustomCoordinatorLayout>

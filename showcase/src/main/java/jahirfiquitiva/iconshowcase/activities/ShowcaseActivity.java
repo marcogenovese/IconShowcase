@@ -41,6 +41,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
@@ -198,7 +199,7 @@ public class ShowcaseActivity extends AppCompatActivity implements
         installer = getIntent().getStringExtra("installer");
 
         try {
-            if (installer.equals("com.google.android.feedback") || installer.equals("com.android.vending")) {
+            if (installer.matches("com.google.android.feedback") || installer.matches("com.android.vending")) {
                 installedFromPlayStore = true;
             }
         } catch (Exception e) {
@@ -630,7 +631,7 @@ public class ShowcaseActivity extends AppCompatActivity implements
                             showChangelogDialog();
                         }
                     });
-                } else if (installer.equals("com.amazon.venezia") && WITH_INSTALLED_FROM_AMAZON) {
+                } else if (installer.matches("com.amazon.venezia") && WITH_INSTALLED_FROM_AMAZON) {
                     ISDialogs.showLicenseSuccessDialog(this, new MaterialDialog.SingleButtonCallback() {
 
                         @Override
@@ -644,6 +645,7 @@ public class ShowcaseActivity extends AppCompatActivity implements
                 showNotLicensedDialog();
             }
         } catch (Exception e) {
+            Utils.showLog(context,"Error checking license: " + e.getLocalizedMessage());
             showNotLicensedDialog();
         }
     }

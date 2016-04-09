@@ -27,7 +27,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
-import jahirfiquitiva.iconshowcase.tasks.TasksExecutor;
 
 public class HomeActivity extends ShowcaseActivity {
 
@@ -35,13 +34,15 @@ public class HomeActivity extends ShowcaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        boolean ENABLE_LICENSE_CHECK = true;
+
         //the ones below are the defaults; you may remove them if you don't need them or modify them accordingly
         enableDonations(false);
         enableGoogleDonations(false);
         enablePaypalDonations(false);
         enableFlattrDonations(false);
         enableBitcoinDonations(false);
-        enableLicenseCheck(false);
+        enableLicenseCheck(ENABLE_LICENSE_CHECK && !BuildConfig.DEBUG);
         enableAmazonInstalls(false);
         setGooglePubkey("insert key here");
 

@@ -69,8 +69,6 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
 
-        context = getActivity();
-
         String[] appsNames = getResources().getStringArray(R.array.apps_titles);
         String[] appsDescriptions = getResources().getStringArray(R.array.apps_descriptions);
         String[] appsIcons = getResources().getStringArray(R.array.apps_icons);
@@ -82,6 +80,8 @@ public class MainFragment extends Fragment {
         if (names > 0 && names == descs && names == icons && names == packs) {
             hasAppsList = true;
         }
+
+        context = getActivity();
 
         if (layout != null) {
             ViewGroup parent = (ViewGroup) layout.getParent();
@@ -179,7 +179,6 @@ public class MainFragment extends Fragment {
                                     .build());
                         }
                     }
-                    hasAppsList = true;
                 } catch (IndexOutOfBoundsException e) {
                     hasAppsList = false;
                     if (ShowcaseActivity.DEBUGGING)
@@ -218,6 +217,7 @@ public class MainFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
         if (fab != null && ShowcaseActivity.currentItem != 1) {
             fab.hide();
             fab.setVisibility(View.GONE);
@@ -232,12 +232,12 @@ public class MainFragment extends Fragment {
             fab.setVisibility(View.VISIBLE);
             fab.show();
         } else {
-            if (hasAppsList) {
-                fab.hide();
-                fab.setVisibility(View.GONE);
-            } else {
+            if (!hasAppsList) {
                 fab.setVisibility(View.VISIBLE);
                 fab.show();
+            } else {
+                fab.setVisibility(View.GONE);
+                fab.hide();
             }
         }
 
