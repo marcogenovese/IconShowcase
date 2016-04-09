@@ -37,6 +37,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.models.RequestItem;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
@@ -71,7 +72,14 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
                         if (isSelected(position)) {
                             changeAppSelectedState(position);
                         } else {
-                            ISDialogs.showRequestLimitDialog(context, limit);
+                            if (Utils.canRequestXApps(context,
+                                    context.getResources().getInteger(R.integer.limit_request_to_x_minutes),
+                                    mPrefs) == -2) {
+                                ISDialogs.showRequestTimeLimitDialog(context,
+                                        context.getResources().getInteger(R.integer.limit_request_to_x_minutes));
+                            } else {
+                                ISDialogs.showRequestLimitDialog(context, limit);
+                            }
                         }
                     }
                 }
@@ -140,32 +148,33 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
 
     public void selectOrDeselectAll(boolean select, Preferences mPrefs) {
 
-        boolean showDialog = false, showTimeLimitDialog = false,
-                timeHappened = Utils.hasHappenedTimeSinceLastRequest(context,
-                        context.getResources().getInteger(R.integer.limit_request_to_x_minutes),
-                        mPrefs, false);
+        boolean showDialog = false, showTimeLimitDialog = false;
 
-        int limit = mPrefs.getRequestsLeft();
+        int limit = Utils.canRequestXApps(context,
+                context.getResources().getInteger(R.integer.limit_request_to_x_minutes),
+                mPrefs);
 
-        for (int i = 0; i < appsList.size(); i++) {
-            if (select) {
-                if (limit < 0) {
-                    selectApp(i);
-                } else {
-                    if (limit > 0) {
-                        if (getSelectedApps() < limit) {
-                            selectApp(i);
-                        } else {
-                            showDialog = true;
-                            break;
-                        }
+        if (limit >= -1) {
+            for (int i = 0; i < appsList.size(); i++) {
+                if (select) {
+                    if (limit < 0) {
+                        selectApp(i);
                     } else {
-                        showTimeLimitDialog = !timeHappened;
+                        if (limit > 0) {
+                            if (getSelectedApps() < limit) {
+                                selectApp(i);
+                            } else {
+                                showDialog = true;
+                                break;
+                            }
+                        }
                     }
+                } else {
+                    deselectApp(i);
                 }
-            } else {
-                deselectApp(i);
             }
+        } else {
+            showTimeLimitDialog = limit == -2;
         }
 
         if (showDialog) ISDialogs.showRequestLimitDialog(context, limit);
@@ -173,6 +182,8 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
         if (showTimeLimitDialog) {
             ISDialogs.showRequestTimeLimitDialog(context,
                     context.getResources().getInteger(R.integer.limit_request_to_x_minutes));
+            deselectAllApps();
+            ShowcaseActivity.SELECT_ALL_APPS = false;
         }
 
     }

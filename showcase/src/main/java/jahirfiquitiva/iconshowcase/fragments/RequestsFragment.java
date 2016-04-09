@@ -250,8 +250,8 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
         if (mPrefs.getRequestsLeft() <= 0) {
             if (requestsAdapter.getSelectedApps() < mPrefs.getRequestsLeft()) {
                 showRequestsFilesCreationDialog(context);
-            } else if (Utils.hasHappenedTimeSinceLastRequest(context, minutesLimit, mPrefs, false)
-                    || minutesLimit <= 0) {
+            } else if ((Utils.canRequestXApps(context, minutesLimit, mPrefs) != -2)
+                    || (minutesLimit <= 0)) {
                 showRequestsFilesCreationDialog(context);
             } else {
                 ISDialogs.showRequestTimeLimitDialog(context, minutesLimit);

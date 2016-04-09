@@ -120,7 +120,6 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
         Glide.with(context)
                 .load(wallUrl)
                 .asBitmap()
-                .thumbnail(0.5f)
                 .into(new BitmapImageViewTarget(holder.wall) {
                     @Override
                     protected void setResource(Bitmap resource) {

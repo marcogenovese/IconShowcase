@@ -113,7 +113,7 @@ public class ShowcaseActivity extends AppCompatActivity implements
     public static boolean WITH_USER_WALLPAPER_AS_TOOLBAR_HEADER = true, WITH_ZOOPER_SECTION = false,
             DEBUGGING = false;
 
-    public boolean SELECT_ALL_APPS = true, TIME_LIMIT_DIALOG_SHOWN = false;
+    public static boolean SELECT_ALL_APPS = true;
 
     private static String[] mGoogleCatalog = new String[0],
             GOOGLE_CATALOG_VALUES = new String[0];
@@ -547,26 +547,8 @@ public class ShowcaseActivity extends AppCompatActivity implements
         } else if (i == R.id.select_all) {
             RequestsAdapter requestsAdapter = RequestsFragment.requestsAdapter;
             if (requestsAdapter != null && RequestsFragment.requestsAdapter.appsList.size() > 0) {
-                if (requestsAdapter.getSelectedApps() > mPrefs.getRequestsLeft()) {
-                    RequestsFragment.requestsAdapter.deselectAllApps();
-                    SELECT_ALL_APPS = true;
-                }
-                if (requestsAdapter.getSelectedApps() <= mPrefs.getRequestsLeft() && SELECT_ALL_APPS) {
-                    RequestsFragment.requestsAdapter.selectOrDeselectAll(true, mPrefs);
-                    SELECT_ALL_APPS = !SELECT_ALL_APPS;
-                } else if (mPrefs.getRequestsLeft() == 0 && !Utils.hasHappenedTimeSinceLastRequest(context,
-                        context.getResources().getInteger(R.integer.limit_request_to_x_minutes),
-                        mPrefs, false)) {
-                    ISDialogs.showRequestTimeLimitDialog(context,
-                            getResources().getInteger(R.integer.limit_request_to_x_minutes));
-                    //TIME_LIMIT_DIALOG_SHOWN = true;
-                } else {
-                    RequestsFragment.requestsAdapter.deselectAllApps();
-                    SELECT_ALL_APPS = false;
-                }
-
-            } else {
-                ISDialogs.showLoadingRequestAppsDialog(this);
+                RequestsFragment.requestsAdapter.selectOrDeselectAll(SELECT_ALL_APPS, mPrefs);
+                SELECT_ALL_APPS = !SELECT_ALL_APPS;
             }
         }
         return true;
@@ -575,10 +557,11 @@ public class ShowcaseActivity extends AppCompatActivity implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (resultCode == RESULT_OK && requestCode == 2) {
             RequestsAdapter adapter = ((RequestsAdapter) RequestsFragment.mRecyclerView.getAdapter());
             if (adapter != null) {
-                adapter.selectOrDeselectAll(false, mPrefs);
+                adapter.deselectAllApps();
             }
         }
 
@@ -724,6 +707,7 @@ public class ShowcaseActivity extends AppCompatActivity implements
         void checkWallsListCreation(boolean result);
     }
 
+    @SuppressWarnings("ResourceAsColor")
     private void setupDrawer(final Toolbar toolbar, Bundle savedInstanceState) {
 
         //Initialize PrimaryDrawerItem

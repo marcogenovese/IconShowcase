@@ -120,6 +120,7 @@ public class Utils {
         context.startActivity(intent);
     }
 
+    @SuppressWarnings("ResourceAsColor")
     public static void openLinkInChromeCustomTab(Context context, String link) {
         final CustomTabsClient[] mClient = new CustomTabsClient[1];
         final CustomTabsSession[] mCustomTabsSession = new CustomTabsSession[1];
@@ -270,6 +271,7 @@ public class Utils {
 
         if (appbar != null) {
             appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+                @SuppressWarnings("ResourceAsColor")
                 @Override
                 public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
                     double alpha = round(((double) (verticalOffset * -1) / 288.0), 1);
@@ -284,6 +286,7 @@ public class Utils {
         }
     }
 
+    @SuppressWarnings("ResourceAsColor")
     public static void setupCollapsingToolbarTextColors(Context context,
                                                         CollapsingToolbarLayout collapsingToolbarLayout) {
         int iconsColor = ThemeUtils.darkTheme ?
@@ -467,85 +470,102 @@ public class Utils {
         }
     }
 
-    public static boolean hasHappenedTimeSinceLastRequest(Context context, int numOfMinutes,
-                                                          Preferences mPrefs, boolean override) {
-
-        float hours = (numOfMinutes + 1) / 60.0f;
-        float hoursToDays = hours / 24.0f;
-
-        boolean hasHappenedTheTime = false;
+    @SuppressLint("DefaultLocale")
+    public static int canRequestXApps(Context context, int numOfMinutes, Preferences mPrefs) {
 
         Calendar c = Calendar.getInstance();
 
-        String time;
-        int dayNum;
+        int requestsLeft = mPrefs.getRequestsLeft(context);
 
-        if (!mPrefs.getRequestsCreated()) {
-            time = String.format("%02d", c.get(Calendar.HOUR_OF_DAY)) + ":" +
-                    String.format("%02d", c.get(Calendar.MINUTE));
-            String day = String.format("%02d", c.get(Calendar.DAY_OF_YEAR));
-            mPrefs.setRequestHour(time);
-            mPrefs.setRequestDay(Integer.valueOf(day));
-            mPrefs.setRequestsCreated(true);
+        if (requestsLeft != -1) {
+            if (requestsLeft > 0) {
+                return requestsLeft;
+            } else {
+                boolean hasHappenedTheTime = timeHappened(numOfMinutes, mPrefs, c);
+                if (!hasHappenedTheTime) {
+                    return -2;
+                } else {
+                    mPrefs.resetRequestsLeft(context);
+                    return mPrefs.getRequestsLeft(context);
+                }
+            }
+        }
+
+        return requestsLeft;
+    }
+
+    @SuppressLint("DefaultLocale")
+    public static void saveCurrentTimeOfRequest(Preferences mPrefs, Calendar c) {
+        String time = String.format("%02d", c.get(Calendar.HOUR_OF_DAY)) + ":" +
+                String.format("%02d", c.get(Calendar.MINUTE));
+        String day = String.format("%02d", c.get(Calendar.DAY_OF_YEAR));
+        mPrefs.setRequestHour(time);
+        mPrefs.setRequestDay(Integer.valueOf(day));
+        mPrefs.setRequestsCreated(true);
+    }
+
+    public static boolean timeHappened(int numOfMinutes, Preferences mPrefs, Calendar c) {
+        float hours = (numOfMinutes + 1) / 60.0f;
+        float hoursToDays = hours / 24.0f;
+        boolean hasHappenedTheTime = false;
+
+        String time = mPrefs.getRequestHour();
+        int dayNum = mPrefs.getRequestDay();
+
+        if (numOfMinutes <= 0) {
             hasHappenedTheTime = true;
         } else {
-            time = mPrefs.getRequestHour();
-            dayNum = mPrefs.getRequestDay();
+            if (!(time.equals("null"))) {
 
-            String currentTime = String.format("%02d", c.get(Calendar.HOUR_OF_DAY)) + ":" +
-                    String.format("%02d", c.get(Calendar.MINUTE));
-            String currentDay = String.format("%02d", c.get(Calendar.DAY_OF_YEAR));
+                String currentTime = String.format("%02d", c.get(Calendar.HOUR_OF_DAY)) + ":" +
+                        String.format("%02d", c.get(Calendar.MINUTE));
+                String currentDay = String.format("%02d", c.get(Calendar.DAY_OF_YEAR));
 
-            @SuppressLint("SimpleDateFormat")
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
-            Date startDate = null;
-            try {
-                startDate = simpleDateFormat.parse(time);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            Date endDate = null;
-            try {
-                endDate = simpleDateFormat.parse(currentTime);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-            long difference = endDate.getTime() - startDate.getTime();
-            if (difference < 0) {
-                Date dateMax = null;
+                @SuppressLint("SimpleDateFormat")
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+                Date startDate = null;
                 try {
-                    dateMax = simpleDateFormat.parse("24:00");
+                    startDate = simpleDateFormat.parse(time);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                Date dateMin = null;
+                Date endDate = null;
                 try {
-                    dateMin = simpleDateFormat.parse("00:00");
+                    endDate = simpleDateFormat.parse(currentTime);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                difference = (dateMax.getTime() - startDate.getTime()) + (endDate.getTime() - dateMin.getTime());
+
+                long difference = endDate.getTime() - startDate.getTime();
+                if (difference < 0) {
+                    Date dateMax = null;
+                    try {
+                        dateMax = simpleDateFormat.parse("24:00");
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    Date dateMin = null;
+                    try {
+                        dateMin = simpleDateFormat.parse("00:00");
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    difference = (dateMax.getTime() - startDate.getTime()) + (endDate.getTime() - dateMin.getTime());
+                }
+                int days = Integer.valueOf(currentDay) - dayNum;
+                int hoursHappened = (int) ((difference - (1000 * 60 * 60 * 24 * days)) / (1000 * 60 * 60));
+                int min = (int) (difference - (1000 * 60 * 60 * 24 * days) - (1000 * 60 * 60 * hoursHappened)) / (1000 * 60);
+
+                if (days >= hoursToDays) {
+                    hasHappenedTheTime = true;
+                } else if (hoursHappened >= hours) {
+                    hasHappenedTheTime = true;
+                } else if (min >= numOfMinutes) {
+                    hasHappenedTheTime = true;
+                }
+            } else {
+                hasHappenedTheTime = true;
             }
-            int days = Integer.valueOf(currentDay) - dayNum;
-            int hoursHappened = (int) ((difference - (1000 * 60 * 60 * 24 * days)) / (1000 * 60 * 60));
-            int min = (int) (difference - (1000 * 60 * 60 * 24 * days) - (1000 * 60 * 60 * hoursHappened)) / (1000 * 60);
-
-            if (days >= hoursToDays) {
-                hasHappenedTheTime = true;
-            } else if (hoursHappened >= hours) {
-                hasHappenedTheTime = true;
-            } else if (min >= numOfMinutes) {
-                hasHappenedTheTime = true;
-            }
-        }
-
-        if (hasHappenedTheTime || numOfMinutes <= 0) {
-            mPrefs.resetRequestsLeft(context);
-        }
-
-        if (override) {
-            hasHappenedTheTime = true;
         }
 
         return hasHappenedTheTime;

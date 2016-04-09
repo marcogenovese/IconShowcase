@@ -188,6 +188,8 @@ public class MainFragment extends Fragment {
             }
         }
 
+        setupFAB();
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(layoutManager);

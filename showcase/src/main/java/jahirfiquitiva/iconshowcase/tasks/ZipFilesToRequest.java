@@ -272,13 +272,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
                 try {
                     activity.startActivityForResult(Intent.createChooser(sendIntent, "Send mail..."), 2);
                     Calendar c = Calendar.getInstance();
-                    String time = String.format("%02d", c.get(Calendar.HOUR_OF_DAY)) + ":" +
-                            String.format("%02d", c.get(Calendar.MINUTE));
-                    String day = String.format("%02d", c.get(Calendar.DAY_OF_YEAR));
-
-                    mPrefs.setRequestHour(time);
-                    mPrefs.setRequestDay(Integer.valueOf(day));
-                    mPrefs.setRequestsCreated(true);
+                    Utils.saveCurrentTimeOfRequest(mPrefs, c);
                 } catch (ActivityNotFoundException e) {
                     //Do nothing
                 }

@@ -179,7 +179,7 @@ public class Preferences {
     }
 
     public String getRequestHour() {
-        return getSharedPreferences().getString(REQUEST_HOUR, "00:00");
+        return getSharedPreferences().getString(REQUEST_HOUR, "null");
     }
 
     public void setRequestDay(int day) {

@@ -57,7 +57,7 @@ android {
                     'src/main/res/drawable/icon_pack',
                     'src/main/res/drawable/launchers_icons',
                     'src/main/res/drawable/widgets',
-                    'src/main/res/layout',
+                    'src/main/res/values/',
                     'src/main/res/values/icon_pack',
                     'src/main/res/values/configuration'
             ]
@@ -82,5 +82,5 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile project(':showcase')
-    compile 'com.android.support:appcompat-v7:23.2.1'
+    compile 'com.android.support:appcompat-v7:23.3.0'
 }
