@@ -26,6 +26,7 @@ package jahirfiquitiva.iconshowcase.fragments;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -37,6 +38,7 @@ import android.preference.SwitchPreference;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -48,6 +50,7 @@ import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.dialogs.FolderChooserDialog;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.fragments.base.PreferenceFragment;
+import jahirfiquitiva.iconshowcase.services.NotificationsService;
 import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
@@ -208,15 +211,70 @@ public class SettingsFragment extends PreferenceFragment implements
             }
         });
 
-        /**
-         * TODO ADD CODE TO CONFIGURE NOTIFICATIONS HERE
-         */
+        final Intent notifIntent = new Intent(getActivity(), NotificationsService.class);
 
-        
+        SwitchPreference enableNotifs = (SwitchPreference) findPreference("enableNotifs");
+        enableNotifs.setChecked(mPrefs.getNotifsEnabled());
+        enableNotifs.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                boolean enable = newValue.toString().equals("true");
+                mPrefs.setNotifsEnabled(enable);
+                getActivity().stopService(notifIntent);
+                if (enable) {
+                    getActivity().startService(notifIntent);
+                }
+                return true;
+            }
+        });
 
-        /**
-         * TODO ADD CODE TO CONFIGURE NOTIFICATIONS ABOVE HERE
-         */
+        SwitchPreference enableNotifsLED = (SwitchPreference) findPreference("enableNotifsLED");
+        enableNotifsLED.setChecked(mPrefs.getNotifsLedEnabled());
+        enableNotifsLED.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                mPrefs.setNotifsLedEnabled(newValue.toString().equals("true"));
+                return true;
+            }
+        });
+
+        SwitchPreference enableNotifsVibration = (SwitchPreference) findPreference("enableNotifsVibration");
+        enableNotifsVibration.setChecked(mPrefs.getNotifsVibrationEnabled());
+        enableNotifsVibration.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                mPrefs.setNotifsVibrationEnabled(newValue.toString().equals("true"));
+                return true;
+            }
+        });
+
+        Preference notifsUpdateInterval = findPreference("notifsUpdateInterval");
+        final int currentInterval = mPrefs.getNotifsUpdateInterval();
+        notifsUpdateInterval.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                new MaterialDialog.Builder(getActivity())
+                        .title(R.string.pref_title_notifs_interval)
+                        .content(R.string.pref_summary_notifs_interval)
+                        .items(R.array.update_intervals)
+                        .itemsCallbackSingleChoice(currentInterval - 1,
+                                new MaterialDialog.ListCallbackSingleChoice() {
+                                    @Override
+                                    public boolean onSelection(MaterialDialog dialog, View itemView,
+                                                               int which, CharSequence text) {
+                                        int newInterval = which + 1;
+                                        if (newInterval != currentInterval) {
+                                            mPrefs.setNotifsUpdateInterval(newInterval);
+                                        }
+                                        return true;
+                                    }
+                                })
+                        .positiveText(android.R.string.ok)
+                        .negativeText(android.R.string.cancel)
+                        .show();
+                return true;
+            }
+        });
 
         if (getResources().getBoolean(R.bool.allow_user_to_hide_app_icon)) {
             final SwitchPreference hideIcon = (SwitchPreference) findPreference("launcherIcon");

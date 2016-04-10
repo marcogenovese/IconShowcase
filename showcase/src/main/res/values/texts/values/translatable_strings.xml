@@ -367,4 +367,14 @@
     <string name="new_walls_notif_content">There are %1$s new wallpapers available. Press the notification to open the app and check them.</string>
     <string name="news">News</string>
 
+    <string-array name="update_intervals">
+        <item>Every hour.</item>
+        <item>Every 6 hours.</item>
+        <item>Every 12 hours.</item>
+        <item>Every 24 hours.</item>
+        <item>Every 2 days.</item>
+        <item>Every 4 days.</item>
+        <item>Every 7 days.</item>
+    </string-array>
+
 </resources>

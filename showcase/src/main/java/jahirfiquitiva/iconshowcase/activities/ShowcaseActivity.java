@@ -87,6 +87,7 @@ import jahirfiquitiva.iconshowcase.fragments.SettingsFragment;
 import jahirfiquitiva.iconshowcase.fragments.WallpapersFragment;
 import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.models.WallpapersList;
+import jahirfiquitiva.iconshowcase.services.NotificationsService;
 import jahirfiquitiva.iconshowcase.tasks.LoadIconsLists;
 import jahirfiquitiva.iconshowcase.tasks.TasksExecutor;
 import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
@@ -186,6 +187,9 @@ public class ShowcaseActivity extends AppCompatActivity implements
         DEBUGGING = getResources().getBoolean(R.bool.debugging);
         mPrefs = new Preferences(ShowcaseActivity.this);
         mPrefs.setActivityVisible(true);
+
+        NotificationsService.clearNotification(context, 97);
+        NotificationsService.clearNotification(context, 19);
 
         String[] configurePrimaryDrawerItems = getResources().getStringArray(R.array.primary_drawer_items);
         primaryDrawerItems = new String[configurePrimaryDrawerItems.length + 1];

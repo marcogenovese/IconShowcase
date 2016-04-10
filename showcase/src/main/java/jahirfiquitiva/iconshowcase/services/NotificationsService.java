@@ -27,6 +27,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -43,7 +44,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import jahirfiquitiva.iconshowcase.R;
-import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.models.NotificationItem;
 import jahirfiquitiva.iconshowcase.utilities.JSONParser;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
@@ -53,7 +53,6 @@ import jahirfiquitiva.iconshowcase.utilities.Utils;
 public class NotificationsService extends Service {
 
     final static String ACTION = "NotifyServiceAction";
-    //final static int RQS_STOP_SERVICE = 1;
 
     private Handler handler = null;
     private static Runnable runnable = null;
@@ -68,9 +67,12 @@ public class NotificationsService extends Service {
             @Override
             public void run() {
                 if (Utils.hasNetwork(getApplicationContext())) {
-                    new CheckForNotifications(mPrefs.getActivityVisible()).execute();
+                    if (mPrefs.getNotifsEnabled()) {
+                        new CheckForNotifications(mPrefs.getActivityVisible()).execute();
+                    }
                 }
-                handler.postDelayed(runnable, 120000);
+                handler.postDelayed(runnable,
+                        Utils.getNotifsUpdateIntervalInMillis(mPrefs.getNotifsUpdateInterval()));
             }
         };
 
@@ -83,26 +85,12 @@ public class NotificationsService extends Service {
         return null;
     }
 
-    /*
-    public class NotifyServiceReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context arg0, Intent arg1) {
-            int rqs = arg1.getIntExtra("RQS", 0);
-            if (rqs == RQS_STOP_SERVICE) {
-                stopSelf();
-            }
-        }
-    }
-    */
-
     private void Notify(String content, int type, int ID) {
 
         Preferences mPrefs = new Preferences(this);
 
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ACTION);
-        //registerReceiver(new NotifyServiceReceiver(), intentFilter);
 
         String appName = Utils.getStringFromResources(this, R.string.app_name);
 
@@ -126,11 +114,12 @@ public class NotificationsService extends Service {
         notifBuilder.setAutoCancel(true);
         notifBuilder.setContentTitle(title);
         if (notifContent != null) {
+            notifBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(notifContent));
             notifBuilder.setContentText(notifContent);
         }
         notifBuilder.setTicker(title);
 
-        Uri ringtoneUri = Uri.parse("content://settings/system/notif_sound");
+        Uri ringtoneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         notifBuilder.setSound(ringtoneUri);
 
         if (mPrefs.getNotifsVibrationEnabled()) notifBuilder.setVibrate(new long[]{500, 500});
@@ -148,14 +137,18 @@ public class NotificationsService extends Service {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
             notifBuilder.setPriority(Notification.PRIORITY_HIGH);
 
-        Intent resultIntent = new Intent(this, ShowcaseActivity.class);
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(ShowcaseActivity.class);
+        Class appLauncherActivity = getLauncherClass(getApplicationContext());
 
-        // Adds the Intent that starts the Activity to the top of the stack
-        stackBuilder.addNextIntent(resultIntent);
-        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-        notifBuilder.setContentIntent(resultPendingIntent);
+        if (appLauncherActivity != null) {
+            Intent resultIntent = new Intent(this, appLauncherActivity);
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+            stackBuilder.addParentStack(appLauncherActivity);
+
+            // Adds the Intent that starts the Activity to the top of the stack
+            stackBuilder.addNextIntent(resultIntent);
+            PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+            notifBuilder.setContentIntent(resultPendingIntent);
+        }
 
         notifBuilder.setOngoing(false);
 
@@ -185,12 +178,11 @@ public class NotificationsService extends Service {
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            boolean worked = false;
             try {
                 mainObject = JSONParser.getJSONFromURL(getResources().getString(R.string.notifications_file_url));
                 if (mainObject != null) {
                     try {
-                        notifs = mainObject.getJSONArray("notifs");
+                        notifs = mainObject.getJSONArray("notifications");
                         for (int i = 0; i < notifs.length(); i++) {
                             tag = notifs.getJSONObject(i);
                             String newWalls = tag.getString("new_walls");
@@ -202,51 +194,66 @@ public class NotificationsService extends Service {
                                 notifsList.add(new NotificationItem(info, 2, 19));
                             }
                         }
-                        worked = true;
                     } catch (JSONException e) {
-                        worked = false;
-                        Utils.showLog("Error downloading notifs JSON: " + e.getLocalizedMessage());
+                        Utils.showLog("Error downloading notifs - JSONException: " + e.getLocalizedMessage());
                     }
-                } else {
-                    worked = false;
                 }
             } catch (Exception e) {
-                worked = false;
-                Utils.showLog("Error downloading notifs JSON: " + e.getLocalizedMessage());
+                Utils.showLog("Error downloading notifs - Exception: " + e.getLocalizedMessage());
             }
-            return worked;
+            return true;
         }
 
         @Override
         protected void onPostExecute(Boolean worked) {
-            if (worked) {
-                for (int i = 0; i < notifsList.size(); i++) {
-                    NotificationItem notif = notifsList.get(i);
+            for (int i = 0; i < notifsList.size(); i++) {
+                NotificationItem notif = notifsList.get(i);
+                if (notif.getType() == 1) {
+                    int number = 0;
                     String notifText = notif.getText();
-                    if (notif.getType() == 1) {
-                        int number = 0;
-                        try {
-                            number = Integer.valueOf(notifText);
-                        } catch (NumberFormatException numEx) {
-                            number = 0;
-                        }
-                        if (number > 0 && !hideNotifs) {
-                            Notify(notif.getText(), notif.getType(), notif.getID());
-                        }
-                    } else {
-                        if (!(notifText.equals("null")) && !hideNotifs) {
-                            Notify(notif.getText(), notif.getType(), notif.getID());
-                        }
+                    try {
+                        number = Integer.valueOf(notifText);
+                    } catch (NumberFormatException numEx) {
+                        number = 0;
+                    }
+                    if (number > 0 && !hideNotifs) {
+                        Notify(notif.getText(), notif.getType(), notif.getID());
+                    }
+                } else {
+                    if (!(notif.getText().equals("null")) && !hideNotifs) {
+                        Notify(notif.getText(), notif.getType(), notif.getID());
                     }
                 }
             }
         }
     }
 
-    public void clearNotification(int ID) {
+    public static void clearNotification(Context context, int ID) {
         NotificationManager notifManager = (NotificationManager)
-                getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                context.getSystemService(Context.NOTIFICATION_SERVICE);
         notifManager.cancel(ID);
+    }
+
+    private Class getLauncherClass(Context context) {
+        Class<?> className = null;
+
+        String componentNameString = Utils.getAppPackageName(
+                context.getApplicationContext()) + "." + Utils.getStringFromResources(
+                context, R.string.main_activity_name);
+
+        try {
+            className = Class.forName(componentNameString);
+        } catch (ClassNotFoundException e) {
+            try {
+                componentNameString = Utils.getStringFromResources(context,
+                        R.string.main_activity_fullname);
+                className = Class.forName(componentNameString);
+            } catch (ClassNotFoundException e1) {
+                //Do nothing
+            }
+        }
+
+        return className;
     }
 
 }

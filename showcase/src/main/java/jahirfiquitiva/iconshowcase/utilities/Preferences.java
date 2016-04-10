@@ -252,7 +252,7 @@ public class Preferences {
     }
 
     public int getNotifsUpdateInterval() {
-        return getSharedPreferences().getInt(NOTIFS_UPDATE_INTERVAL, 3600000);
+        return getSharedPreferences().getInt(NOTIFS_UPDATE_INTERVAL, 4);
     }
 
     public void setActivityVisible(boolean visible) {

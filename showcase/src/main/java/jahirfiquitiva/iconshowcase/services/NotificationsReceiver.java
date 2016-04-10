@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
+import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 public class NotificationsReceiver extends BroadcastReceiver {
 
@@ -23,7 +24,8 @@ public class NotificationsReceiver extends BroadcastReceiver {
 
         if (mPrefs.getNotifsEnabled()) {
             alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME, 5000,
-                    mPrefs.getNotifsUpdateInterval(), pendingIntent);
+                    Utils.getNotifsUpdateIntervalInMillis(mPrefs.getNotifsUpdateInterval()),
+                    pendingIntent);
         } else {
             alarmManager.cancel(pendingIntent);
         }
@@ -33,4 +35,5 @@ public class NotificationsReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent i) {
         scheduleAlarms(context, false);
     }
+
 }
