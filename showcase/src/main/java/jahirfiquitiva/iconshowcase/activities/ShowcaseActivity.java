@@ -41,7 +41,6 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
@@ -186,6 +185,7 @@ public class ShowcaseActivity extends AppCompatActivity implements
 
         DEBUGGING = getResources().getBoolean(R.bool.debugging);
         mPrefs = new Preferences(ShowcaseActivity.this);
+        mPrefs.setActivityVisible(true);
 
         String[] configurePrimaryDrawerItems = getResources().getStringArray(R.array.primary_drawer_items);
         primaryDrawerItems = new String[configurePrimaryDrawerItems.length + 1];
@@ -512,6 +512,10 @@ public class ShowcaseActivity extends AppCompatActivity implements
             changelogDialog.dismiss();
             changelogDialog = null;
         }
+        if (mPrefs == null) {
+            mPrefs = new Preferences(this);
+        }
+        mPrefs.setActivityVisible(false);
     }
 
     @Override
@@ -645,7 +649,7 @@ public class ShowcaseActivity extends AppCompatActivity implements
                 showNotLicensedDialog();
             }
         } catch (Exception e) {
-            Utils.showLog(context,"Error checking license: " + e.getLocalizedMessage());
+            Utils.showLog(context, "Error checking license: " + e.getLocalizedMessage());
             showNotLicensedDialog();
         }
     }

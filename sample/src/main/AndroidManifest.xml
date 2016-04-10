@@ -34,6 +34,8 @@
     <uses-permission android:name="android.permission.SET_WALLPAPER"/>
     <uses-permission android:name="android.permission.SET_WALLPAPER_HINTS"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <supports-screens
         android:anyDensity="true"
@@ -278,7 +280,7 @@
             android:theme="@style/AppTheme"/>
 
         <service
-            android:name="jahirfiquitiva.iconshowcase.muzei.ArtSource"
+            android:name="jahirfiquitiva.iconshowcase.services.MuzeiArtSourceService"
             android:description="@string/artsource_desc"
             android:icon="@drawable/ic_muzei_logo"
             android:label="@string/artsource_name"
@@ -296,7 +298,7 @@
         </service>
 
         <activity
-            android:name="jahirfiquitiva.iconshowcase.muzei.MuzeiSettings"
+            android:name="jahirfiquitiva.iconshowcase.activities.MuzeiSettings"
             android:exported="true"
             android:label="@string/muzei_settings"
             android:theme="@style/AppTheme.LaunchScreen"/>
@@ -348,6 +350,22 @@
         <meta-data
             android:name="jahirfiquitiva.iconshowcase.utilities.GlideConfiguration"
             android:value="GlideModule"/>
+
+        <!-- Notifications service -->
+        <service
+            android:name="jahirfiquitiva.iconshowcase.services.NotificationsService"
+            android:enabled="true"
+            android:exported="false"
+            android:icon="@mipmap/ic_launcher"/>
+        <receiver
+            android:name="jahirfiquitiva.iconshowcase.services.NotificationsReceiver"
+            android:enabled="true"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.QUICKBOOT_POWERON"/>
+            </intent-filter>
+        </receiver>
 
     </application>
 

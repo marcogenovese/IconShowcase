@@ -26,6 +26,34 @@
                   android:key="preferences">
 
     <PreferenceCategory
+        android:key="notifications"
+        android:title="@string/prefs_notifs_title">
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="enableNotifs"
+            android:summary="@string/pref_summary_enable_notifs"
+            android:title="@string/pref_title_enable_notifs"/>
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="enableNotifsLED"
+            android:title="@string/pref_title_enable_notifs_led"/>
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="enableNotifsVibration"
+            android:title="@string/pref_title_enable_notifs_vibration"/>
+
+        <Preference
+            android:key="notifsUpdateInterval"
+            android:persistent="true"
+            android:summary="@string/pref_summary_notifs_interval"
+            android:title="@string/pref_title_notifs_interval"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:key="uiPreferences"
         android:title="@string/pref_header_ui">
 
@@ -35,20 +63,20 @@
             android:summary="@string/pref_summary_themes_no_clear"
             android:title="@string/pref_title_themes"/>
 
-        <CheckBoxPreference
+        <SwitchPreference
             android:defaultValue="true"
             android:key="coloredNavBar"
             android:summary="@string/pref_summary_navbar"
             android:title="@string/pref_title_navbar"/>
 
-        <CheckBoxPreference
+        <SwitchPreference
             android:defaultValue="true"
             android:key="animations"
             android:persistent="true"
             android:summary="@string/pref_summary_anims"
             android:title="@string/pref_title_anims"/>
 
-        <CheckBoxPreference
+        <SwitchPreference
             android:defaultValue="true"
             android:key="wallHeader"
             android:persistent="true"
@@ -77,7 +105,7 @@
         android:key="launcherIconPreference"
         android:title="@string/pref_header_launcher_icon">
 
-        <CheckBoxPreference
+        <SwitchPreference
             android:defaultValue="false"
             android:key="launcherIcon"
             android:summary="@string/pref_summary_launcher_icon"

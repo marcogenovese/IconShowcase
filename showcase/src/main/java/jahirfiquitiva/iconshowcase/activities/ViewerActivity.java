@@ -100,6 +100,7 @@ public class ViewerActivity extends AppCompatActivity {
 
     private Activity context;
 
+    @SuppressWarnings("ResourceAsColor")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -118,6 +119,7 @@ public class ViewerActivity extends AppCompatActivity {
         usePalette = getResources().getBoolean(R.bool.use_palette_api_in_viewer);
 
         mPrefs = new Preferences(context);
+        mPrefs.setActivityVisible(true);
 
         Intent intent = getIntent();
         String transitionName = intent.getStringExtra("transitionName");
@@ -306,6 +308,10 @@ public class ViewerActivity extends AppCompatActivity {
             dialogApply.dismiss();
             dialogApply = null;
         }
+        if (mPrefs == null) {
+            mPrefs = new Preferences(this);
+        }
+        mPrefs.setActivityVisible(false);
     }
 
     @Override

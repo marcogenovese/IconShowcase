@@ -17,10 +17,6 @@
  *
  */
 
-/*
- *
- */
-
 package jahirfiquitiva.iconshowcase.activities;
 
 import android.app.Activity;
@@ -40,6 +36,7 @@ public class LauncherIconRestorerActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         Preferences mPrefs = new Preferences(LauncherIconRestorerActivity.this);
+        mPrefs.setActivityVisible(true);
 
         PackageManager p = getPackageManager();
 
@@ -55,8 +52,16 @@ public class LauncherIconRestorerActivity extends Activity {
             //Do nothing
         }
 
+        Utils.showLog(this, "Launcher intent for this app is: " +
+                p.getLaunchIntentForPackage(packageName).getComponent().toString());
+
         if (className != null) {
             ComponentName componentName = new ComponentName(packageName, componentNameString);
+
+            /*
+            ComponentName componentName1 = new ComponentName(packageName,
+                    p.getLaunchIntentForPackage(packageName).getComponent().toString());
+                    */
 
             if (!mPrefs.getLauncherIconShown()) {
 
@@ -85,6 +90,7 @@ public class LauncherIconRestorerActivity extends Activity {
                     .show();
         }
 
+        mPrefs.setActivityVisible(false);
         finish();
 
     }

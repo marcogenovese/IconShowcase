@@ -49,7 +49,12 @@ public class Preferences {
             REQUEST_HOUR = "request_hour",
             REQUEST_DAY = "request_day",
             REQUESTS_CREATED = "requests_created",
-            REQUESTS_LEFT = "requests_left";
+            REQUESTS_LEFT = "requests_left",
+            NOTIFS_ENABLED = "notifs_enabled",
+            NOTIFS_LED_ENABLED = "notifs_led_enabled",
+            NOTIFS_VIBRATION_ENABLED = "notifs_vibration_enabled",
+            NOTIFS_UPDATE_INTERVAL = "notifs_update_interval",
+            ACTIVITY_VISIBLE = "activity_visible";
 
     private final Context context;
 
@@ -214,6 +219,48 @@ public class Preferences {
     public void resetRequestsLeft(Context context) {
         getSharedPreferences().edit().putInt(REQUESTS_LEFT,
                 context.getResources().getInteger(R.integer.max_apps_to_request)).apply();
+    }
+
+    //NOTIFICATIONS:
+
+    public void setNotifsEnabled(boolean enabled) {
+        getSharedPreferences().edit().putBoolean(NOTIFS_ENABLED, enabled).apply();
+    }
+
+    public boolean getNotifsEnabled() {
+        return getSharedPreferences().getBoolean(NOTIFS_ENABLED, false);
+    }
+
+    public void setNotifsLedEnabled(boolean enableLed) {
+        getSharedPreferences().edit().putBoolean(NOTIFS_LED_ENABLED, enableLed).apply();
+    }
+
+    public boolean getNotifsLedEnabled() {
+        return getSharedPreferences().getBoolean(NOTIFS_LED_ENABLED, true);
+    }
+
+    public void setNotifsVibrationEnabled(boolean vibrate) {
+        getSharedPreferences().edit().putBoolean(NOTIFS_VIBRATION_ENABLED, vibrate).apply();
+    }
+
+    public boolean getNotifsVibrationEnabled() {
+        return getSharedPreferences().getBoolean(NOTIFS_VIBRATION_ENABLED, true);
+    }
+
+    public void setNotifsUpdateInterval(int interval) {
+        getSharedPreferences().edit().putInt(NOTIFS_UPDATE_INTERVAL, interval).apply();
+    }
+
+    public int getNotifsUpdateInterval() {
+        return getSharedPreferences().getInt(NOTIFS_UPDATE_INTERVAL, 3600000);
+    }
+
+    public void setActivityVisible(boolean visible) {
+        getSharedPreferences().edit().putBoolean(ACTIVITY_VISIBLE, visible).apply();
+    }
+
+    public boolean getActivityVisible() {
+        return getSharedPreferences().getBoolean(ACTIVITY_VISIBLE, true);
     }
 
 }

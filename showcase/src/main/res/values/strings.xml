@@ -34,6 +34,7 @@
     <string name="artsource_desc">Some cool wallpapers</string>
 
     <string name="json_file_url">http://www.jahirfiquitiva.net/wallpapers/iconshowcase.json</string>
+    <string name="notifications_file_url">http://www.jahirfiquitiva.net/iconshowcase/notifs.json</string>
 
     <!-- Icon Pack designer/owner e-mail -->
     <string name="email_id">someone@email.com</string>

@@ -30,10 +30,10 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
+import android.preference.SwitchPreference;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -105,7 +105,7 @@ public class SettingsFragment extends PreferenceFragment implements
         final PreferenceCategory launcherIcon = (PreferenceCategory) findPreference("launcherIconPreference");
 
         PreferenceCategory uiCategory = (PreferenceCategory) findPreference("uiPreferences");
-        CheckBoxPreference wallHeaderCheck = (CheckBoxPreference) findPreference("wallHeader");
+        SwitchPreference wallHeaderCheck = (SwitchPreference) findPreference("wallHeader");
         Preference theme = findPreference("themes");
         if (getResources().getBoolean(R.bool.enable_clear_theme_option)) {
             theme.setSummary(getResources().getString(R.string.pref_summary_themes));
@@ -153,7 +153,7 @@ public class SettingsFragment extends PreferenceFragment implements
         }
 
         // Set the preference for colored nav bar on Lollipop
-        final CheckBoxPreference coloredNavBar = (CheckBoxPreference) findPreference("coloredNavBar");
+        final SwitchPreference coloredNavBar = (SwitchPreference) findPreference("coloredNavBar");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             coloredNavBar.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -170,7 +170,7 @@ public class SettingsFragment extends PreferenceFragment implements
             uiCategory.removePreference(coloredNavBar);
         }
 
-        CheckBoxPreference animations = (CheckBoxPreference) findPreference("animations");
+        SwitchPreference animations = (SwitchPreference) findPreference("animations");
         animations.setChecked(mPrefs.getAnimationsEnabled());
         animations.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -208,8 +208,17 @@ public class SettingsFragment extends PreferenceFragment implements
             }
         });
 
+        /**
+         * TODO ADD CODE TO CONFIGURE NOTIFICATIONS HERE
+         */
+
+
+        /**
+         * TODO ADD CODE TO CONFIGURE NOTIFICATIONS ABOVE HERE
+         */
+
         if (getResources().getBoolean(R.bool.allow_user_to_hide_app_icon)) {
-            final CheckBoxPreference hideIcon = (CheckBoxPreference) findPreference("launcherIcon");
+            final SwitchPreference hideIcon = (SwitchPreference) findPreference("launcherIcon");
             if (mPrefs.getLauncherIconShown()) {
                 hideIcon.setChecked(false);
             }
