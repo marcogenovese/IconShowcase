@@ -9,6 +9,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.SystemClock;
 
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
@@ -23,7 +24,8 @@ public class NotificationsReceiver extends BroadcastReceiver {
         Preferences mPrefs = new Preferences(context);
 
         if (mPrefs.getNotifsEnabled()) {
-            alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME, 5000,
+            alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME,
+                    SystemClock.elapsedRealtime(),
                     Utils.getNotifsUpdateIntervalInMillis(mPrefs.getNotifsUpdateInterval()),
                     pendingIntent);
         } else {

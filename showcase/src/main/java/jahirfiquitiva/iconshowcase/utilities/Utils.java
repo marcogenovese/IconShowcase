@@ -692,24 +692,25 @@ public class Utils {
         return time;
     }
 
-    public static int getNotifsUpdateIntervalInMillis(int interval) {
+    public static long getNotifsUpdateIntervalInMillis(int interval) {
+        long millisInAnHour = 3600000;
         switch (interval) {
             case 1:
-                return 60 * 1000;
+                return millisInAnHour;
             case 2:
-                return 6 * 60 * 1000;
+                return 6 * millisInAnHour;
             case 3:
-                return 12 * 60 * 1000;
+                return 12 * millisInAnHour;
             case 4:
-                return 24 * 60 * 1000;
+                return 24 * millisInAnHour;
             case 5:
-                return 48 * 60 * 1000;
+                return 48 * millisInAnHour;
             case 6:
-                return 96 * 60 * 1000;
+                return 96 * millisInAnHour;
             case 7:
-                return 168 * 60 * 1000;
+                return 168 * millisInAnHour;
             default:
-                return 24 * 60 * 1000;
+                return 24 * millisInAnHour;
         }
     }
 

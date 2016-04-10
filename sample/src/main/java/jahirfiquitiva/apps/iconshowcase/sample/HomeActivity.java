@@ -46,8 +46,11 @@ public class HomeActivity extends ShowcaseActivity {
         enableAmazonInstalls(false);
         setGooglePubkey("insert key here");
 
+        int notifType = getIntent().getIntExtra("notifType", 3);
+
         Intent intent = new Intent(HomeActivity.this, jahirfiquitiva.iconshowcase.activities.ShowcaseActivity.class);
         intent.putExtra("installer", getAppInstaller());
+        intent.putExtra("launchNotifType", notifType);
         startActivity(intent);
 
         finish();

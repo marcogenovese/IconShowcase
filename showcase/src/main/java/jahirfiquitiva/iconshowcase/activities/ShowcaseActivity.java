@@ -188,9 +188,6 @@ public class ShowcaseActivity extends AppCompatActivity implements
         mPrefs = new Preferences(ShowcaseActivity.this);
         mPrefs.setActivityVisible(true);
 
-        NotificationsService.clearNotification(context, 97);
-        NotificationsService.clearNotification(context, 19);
-
         String[] configurePrimaryDrawerItems = getResources().getStringArray(R.array.primary_drawer_items);
         primaryDrawerItems = new String[configurePrimaryDrawerItems.length + 1];
         primaryDrawerItems[0] = "Main";
@@ -201,6 +198,12 @@ public class ShowcaseActivity extends AppCompatActivity implements
         getAction();
 
         installer = getIntent().getStringExtra("installer");
+        int notifType = getIntent().getIntExtra("launchNotifType", 3);
+
+        if (notifType == 1 || notifType == 2) {
+            NotificationsService.clearNotification(context, 97);
+            NotificationsService.clearNotification(context, 19);
+        }
 
         try {
             if (installer.matches("com.google.android.feedback") || installer.matches("com.android.vending")) {
@@ -322,7 +325,10 @@ public class ShowcaseActivity extends AppCompatActivity implements
         setupDrawer(toolbar, savedInstanceState);
 
         if (savedInstanceState == null) {
-            if (iconsPicker && iconsPickerEnabled) {
+            if (notifType == 1) {
+                drawerItemClick(wallsIdentifier);
+                drawer.setSelection(wallsIdentifier);
+            } else if (iconsPicker && iconsPickerEnabled) {
                 drawerItemClick(iconsPickerIdentifier);
                 drawer.setSelection(iconsPickerIdentifier);
                 /* TODO Double check if this is secure enough to be deleted.

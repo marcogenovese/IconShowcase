@@ -249,10 +249,10 @@ public class SettingsFragment extends PreferenceFragment implements
         });
 
         Preference notifsUpdateInterval = findPreference("notifsUpdateInterval");
-        final int currentInterval = mPrefs.getNotifsUpdateInterval();
         notifsUpdateInterval.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
+                final int currentInterval = mPrefs.getNotifsUpdateInterval();
                 new MaterialDialog.Builder(getActivity())
                         .title(R.string.pref_title_notifs_interval)
                         .content(R.string.pref_summary_notifs_interval)

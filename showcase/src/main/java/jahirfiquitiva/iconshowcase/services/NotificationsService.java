@@ -76,7 +76,7 @@ public class NotificationsService extends Service {
             }
         };
 
-        handler.postDelayed(runnable, 3000);
+        if (!mPrefs.getActivityVisible()) handler.postDelayed(runnable, 3000);
 
     }
 
@@ -85,6 +85,7 @@ public class NotificationsService extends Service {
         return null;
     }
 
+    @SuppressWarnings("ResourceAsColor")
     private void Notify(String content, int type, int ID) {
 
         Preferences mPrefs = new Preferences(this);
@@ -118,7 +119,6 @@ public class NotificationsService extends Service {
             notifBuilder.setContentText(notifContent);
         }
         notifBuilder.setTicker(title);
-
         Uri ringtoneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         notifBuilder.setSound(ringtoneUri);
 
@@ -127,6 +127,8 @@ public class NotificationsService extends Service {
         int ledColor = ThemeUtils.darkTheme ?
                 ContextCompat.getColor(this, R.color.dark_theme_accent) :
                 ContextCompat.getColor(this, R.color.light_theme_accent);
+
+        notifBuilder.setColor(ledColor);
 
         if (mPrefs.getNotifsLedEnabled()) {
             notifBuilder.setLights(
@@ -140,19 +142,20 @@ public class NotificationsService extends Service {
         Class appLauncherActivity = getLauncherClass(getApplicationContext());
 
         if (appLauncherActivity != null) {
-            Intent resultIntent = new Intent(this, appLauncherActivity);
+            Intent appIntent = new Intent(this, appLauncherActivity);
+            appIntent.putExtra("notifType", type);
             TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
             stackBuilder.addParentStack(appLauncherActivity);
 
             // Adds the Intent that starts the Activity to the top of the stack
-            stackBuilder.addNextIntent(resultIntent);
+            stackBuilder.addNextIntent(appIntent);
             PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
             notifBuilder.setContentIntent(resultPendingIntent);
         }
 
         notifBuilder.setOngoing(false);
 
-        notifBuilder.setSmallIcon(R.drawable.ic_muzei_logo);
+        notifBuilder.setSmallIcon(R.drawable.ic_notifications);
 
         notifManager.notify(ID, notifBuilder.build());
     }
