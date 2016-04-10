@@ -212,6 +212,7 @@ public class SettingsFragment extends PreferenceFragment implements
          * TODO ADD CODE TO CONFIGURE NOTIFICATIONS HERE
          */
 
+        
 
         /**
          * TODO ADD CODE TO CONFIGURE NOTIFICATIONS ABOVE HERE
