@@ -194,7 +194,7 @@
 
     <string name="prefs_notifs_title">Notifications</string>
     <string name="pref_title_enable_notifs">Enable notifications</string>
-    <string name="pref_summary_enable_notifs">Receive notifications for new walls and development news.</string>
+    <string name="pref_summary_enable_notifs">Receive notifications for new wallpapers and development news.</string>
 
     <string name="pref_title_enable_notifs_led">Enable notifications LED</string>
     <string name="pref_title_enable_notifs_vibration">Enable notifications vibration</string>
@@ -363,7 +363,7 @@
     <string name="donations_error_title">Donations unavailable</string>
     <string name="donations_error_content">Your device doesn\'t support In App Billing.\nThis could be because you need to update your Google Play Store application, or because you live in a country where In App Billing is disabled.</string>
 
-    <string name="new_walls_notif_title">New Wallpapers available in %1$s.</string>
+    <string name="new_walls_notif_title">New wallpapers available in %1$s.</string>
     <string name="new_walls_notif_content">There are %1$s new wallpapers available. Press the notification to open the app and check them.</string>
     <string name="news">News</string>
 

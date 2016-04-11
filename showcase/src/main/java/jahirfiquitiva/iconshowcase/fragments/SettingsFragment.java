@@ -26,7 +26,6 @@ package jahirfiquitiva.iconshowcase.fragments;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -50,7 +49,7 @@ import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.dialogs.FolderChooserDialog;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.fragments.base.PreferenceFragment;
-import jahirfiquitiva.iconshowcase.services.NotificationsService;
+import jahirfiquitiva.iconshowcase.services.NotificationsReceiver;
 import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
@@ -62,7 +61,7 @@ public class SettingsFragment extends PreferenceFragment implements
     private Preferences mPrefs;
     private PackageManager p;
     private ComponentName componentName;
-    private static Preference WSL, data;
+    private static Preference WSL, data, notifsUpdateInterval;
     private String location, cacheSize;
 
     @Override
@@ -211,19 +210,13 @@ public class SettingsFragment extends PreferenceFragment implements
             }
         });
 
-        final Intent notifIntent = new Intent(getActivity(), NotificationsService.class);
-
         SwitchPreference enableNotifs = (SwitchPreference) findPreference("enableNotifs");
         enableNotifs.setChecked(mPrefs.getNotifsEnabled());
         enableNotifs.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                boolean enable = newValue.toString().equals("true");
-                mPrefs.setNotifsEnabled(enable);
-                getActivity().stopService(notifIntent);
-                if (enable) {
-                    getActivity().startService(notifIntent);
-                }
+                mPrefs.setNotifsEnabled(newValue.toString().equals("true"));
+                NotificationsReceiver.scheduleAlarms(getActivity());
                 return true;
             }
         });
@@ -248,7 +241,8 @@ public class SettingsFragment extends PreferenceFragment implements
             }
         });
 
-        Preference notifsUpdateInterval = findPreference("notifsUpdateInterval");
+        notifsUpdateInterval = findPreference("notifsUpdateInterval");
+        changeNotifsUpdate(getActivity());
         notifsUpdateInterval.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -266,6 +260,8 @@ public class SettingsFragment extends PreferenceFragment implements
                                         if (newInterval != currentInterval) {
                                             mPrefs.setNotifsUpdateInterval(newInterval);
                                         }
+                                        NotificationsReceiver.scheduleAlarms(getActivity());
+                                        changeNotifsUpdate(getActivity());
                                         return true;
                                     }
                                 })
@@ -478,6 +474,42 @@ public class SettingsFragment extends PreferenceFragment implements
             return result;
         }
         return 0;
+    }
+
+    private void changeNotifsUpdate(Context context) {
+
+        String num;
+
+        switch (mPrefs.getNotifsUpdateInterval()) {
+            case 1:
+                num = "1 " + context.getResources().getString(R.string.hours);
+                break;
+            case 2:
+                num = "6 " + context.getResources().getString(R.string.hours);
+                break;
+            case 3:
+                num = "12 " + context.getResources().getString(R.string.hours);
+                break;
+            case 4:
+                num = "1 " + context.getResources().getString(R.string.days);
+                break;
+            case 5:
+                num = "2 " + context.getResources().getString(R.string.days);
+                break;
+            case 6:
+                num = "4 " + context.getResources().getString(R.string.days);
+                break;
+            case 7:
+                num = "7 " + context.getResources().getString(R.string.days);
+                break;
+            default:
+                num = "1 " + context.getResources().getString(R.string.days);
+                break;
+        }
+
+        String part1 = context.getResources().getString(R.string.pref_summary_notifs_interval);
+        String part2 = "\n" + context.getResources().getString(R.string.pref_summary_notifs_interval_more, num.toLowerCase());
+        notifsUpdateInterval.setSummary(part1 + part2);
     }
 
     private void showFolderChooserDialog() {

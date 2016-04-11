@@ -357,8 +357,8 @@ public class ViewerActivity extends AppCompatActivity {
         if (usePalette) {
             paletteIconsColor = Utils.getIconsColorFromBitmap(picture, context, true);
             if (paletteIconsColor == 0) {
-                int light = Color.parseColor("#80000000");
-                int dark = Color.parseColor("#80ffffff");
+                int light = Color.parseColor("#59000000");
+                int dark = Color.parseColor("#59ffffff");
                 if (ColorUtils.isDark(picture)) {
                     ToolbarColorizer.colorizeToolbar(toolbar, dark);
                 } else {
@@ -368,7 +368,7 @@ public class ViewerActivity extends AppCompatActivity {
                 ToolbarColorizer.colorizeToolbar(toolbar, paletteIconsColor);
             }
         } else {
-            paletteIconsColor = Color.parseColor("b3ffffff");
+            paletteIconsColor = Color.parseColor("8cffffff");
             ToolbarColorizer.colorizeToolbar(toolbar, paletteIconsColor);
         }
     }
@@ -378,8 +378,8 @@ public class ViewerActivity extends AppCompatActivity {
         if (usePalette) {
             paletteIconsColor = Utils.getIconsColorFromBitmap(picture, context, true);
             if (paletteIconsColor == 0) {
-                int light = Color.parseColor("#80000000");
-                int dark = Color.parseColor("#80ffffff");
+                int light = Color.parseColor("#59000000");
+                int dark = Color.parseColor("#59ffffff");
                 if (ColorUtils.isDark(picture)) {
                     finalColor = dark;
                 } else {
@@ -389,7 +389,7 @@ public class ViewerActivity extends AppCompatActivity {
                 finalColor = paletteIconsColor;
             }
         } else {
-            paletteIconsColor = Color.parseColor("b3ffffff");
+            paletteIconsColor = Color.parseColor("8cffffff");
             finalColor = paletteIconsColor;
         }
         return finalColor;

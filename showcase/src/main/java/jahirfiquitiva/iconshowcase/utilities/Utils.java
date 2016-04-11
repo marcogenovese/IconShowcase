@@ -258,13 +258,13 @@ public class Utils {
             paletteGeneratedColor = getIconsColorFromBitmap(bitmap, context, forViewer);
             if (paletteGeneratedColor == 0 && bitmap != null) {
                 if (ColorUtils.isDark(bitmap)) {
-                    paletteGeneratedColor = Color.parseColor("#80ffffff");
+                    paletteGeneratedColor = Color.parseColor("#59ffffff");
                 } else {
-                    paletteGeneratedColor = Color.parseColor("#80000000");
+                    paletteGeneratedColor = Color.parseColor("#59000000");
                 }
             }
         } else {
-            paletteGeneratedColor = Color.parseColor("#b3ffffff");
+            paletteGeneratedColor = Color.parseColor("#8cffffff");
         }
 
         final int finalPaletteGeneratedColor = paletteGeneratedColor;
@@ -693,25 +693,37 @@ public class Utils {
     }
 
     public static long getNotifsUpdateIntervalInMillis(int interval) {
-        long millisInAnHour = 3600000;
+        long millisInAnHour = 60 * 60 * 1000;
+        int hours;
         switch (interval) {
             case 1:
-                return millisInAnHour;
+                hours = 1;
+                break;
             case 2:
-                return 6 * millisInAnHour;
+                hours = 6;
+                break;
             case 3:
-                return 12 * millisInAnHour;
+                hours = 12;
+                break;
             case 4:
-                return 24 * millisInAnHour;
+                hours = 24;
+                break;
             case 5:
-                return 48 * millisInAnHour;
+                hours = 48;
+                break;
             case 6:
-                return 96 * millisInAnHour;
+                hours = 96;
+                break;
             case 7:
-                return 168 * millisInAnHour;
+                hours = 168;
+                break;
             default:
-                return 24 * millisInAnHour;
+                hours = 24;
+                break;
         }
+
+        return hours * millisInAnHour;
+
     }
 
 }

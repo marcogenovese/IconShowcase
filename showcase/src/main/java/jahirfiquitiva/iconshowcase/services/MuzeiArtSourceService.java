@@ -47,7 +47,7 @@ public class MuzeiArtSourceService extends RemoteMuzeiArtSource {
     private final ArrayList<String> authors = new ArrayList<>();
     private final ArrayList<String> urls = new ArrayList<>();
 
-    private static final String ARTSOURCE_NAME = "IconShowcase Sample";
+    private static final String ARTSOURCE_NAME = "IconShowcase - MuzeiExtension";
     private static final String MARKET_URL = "https://play.google.com/store/apps/details?id=";
     private static final int COMMAND_ID_SHARE = 1337;
 
@@ -76,7 +76,6 @@ public class MuzeiArtSourceService extends RemoteMuzeiArtSource {
         commands.add(new UserCommand(BUILTIN_COMMAND_ID_NEXT_ARTWORK));
         commands.add(new UserCommand(COMMAND_ID_SHARE, getString(R.string.share)));
         setUserCommands(commands);
-
     }
 
     @Override

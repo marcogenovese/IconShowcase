@@ -294,7 +294,7 @@
                 android:value="@color/primary"/>
             <meta-data
                 android:name="settingsActivity"
-                android:value="jahirfiquitiva.iconshowcase.muzei.MuzeiSettings"/>
+                android:value="jahirfiquitiva.iconshowcase.activities.MuzeiSettings"/>
         </service>
 
         <activity

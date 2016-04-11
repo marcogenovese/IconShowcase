@@ -24,23 +24,25 @@
 package jahirfiquitiva.iconshowcase.models;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 public class ZooperWidget {
 
-    private final Bitmap preview;
+    private String previewPath;
 
-    public ZooperWidget(Bitmap preview) {
-        this.preview = preview;
+    public ZooperWidget(String previewPath) {
+        this.previewPath = previewPath;
     }
 
-    public Bitmap getPreview() {
-        return this.preview;
+    public String getPreviewPath() {
+        return this.previewPath;
     }
 
-    public Bitmap getTransparentBackgroundPreview() {
-        return Utils.getBitmapWithReplacedColor(this.preview, Color.parseColor("#555555"), Color.TRANSPARENT);
+    public static Bitmap getTransparentBackgroundPreview(Bitmap original) {
+        return Utils.getBitmapWithReplacedColor(original, Color.parseColor("#555555"), Color.TRANSPARENT);
     }
+
 }

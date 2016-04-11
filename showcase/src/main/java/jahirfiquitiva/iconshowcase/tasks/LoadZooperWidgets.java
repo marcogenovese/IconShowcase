@@ -40,6 +40,7 @@ import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.models.ZooperWidget;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
@@ -76,7 +77,7 @@ public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
                 for (String template : templates) {
                     File widgetPreviewFile = new File(previewsFolder, template);
                     String widgetName = getFilenameWithoutExtension(template);
-                    Bitmap preview = getWidgetPreviewFromZip(widgetName,
+                    String preview = getWidgetPreviewPathFromZip(context, widgetName,
                             assetManager.open("templates/" + template), previewsFolder, widgetPreviewFile);
                     if (preview != null) {
                         widgets.add(new ZooperWidget(preview));
@@ -119,7 +120,8 @@ public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
     /**
      * This code was created by Aidan Follestad. Complete credits to him.
      */
-    private Bitmap getWidgetPreviewFromZip(String name, InputStream in, File previewsFolder, File widgetPreviewFile) {
+    private String getWidgetPreviewPathFromZip(WeakReference<Context> context, String name, InputStream in,
+                                               File previewsFolder, File widgetPreviewFile) {
         OutputStream out;
         File preview = new File(previewsFolder, name + ".png");
 
@@ -153,7 +155,25 @@ public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
             //Do nothing
         }
 
-        return BitmapFactory.decodeFile(preview.getAbsolutePath());
+        if (context.get().getResources().getBoolean(R.bool.remove_zooper_previews_background)) {
+            out = null;
+            try {
+                Bitmap bmp = ZooperWidget.getTransparentBackgroundPreview(
+                        BitmapFactory.decodeFile(preview.getAbsolutePath()));
+                out = new FileOutputStream(preview);
+                bmp.compress(Bitmap.CompressFormat.PNG, 100, out);
+            } catch (IOException e) {
+                Utils.showLog(context.get(), "IOExcption: " + e.getLocalizedMessage());
+            } finally {
+                try {
+                    if (out != null) out.close();
+                } catch (IOException e1) {
+                    Utils.showLog(context.get(), "IOExcption: " + e1.getLocalizedMessage());
+                }
+            }
+        }
+
+        return preview.getAbsolutePath();
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")

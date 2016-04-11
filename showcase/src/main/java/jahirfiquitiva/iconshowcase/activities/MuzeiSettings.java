@@ -52,6 +52,7 @@ import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.views.CustomCoordinatorLayout;
 import jahirfiquitiva.iconshowcase.views.FixedElevationAppBarLayout;
 
+@SuppressWarnings("ResourceAsColor")
 public class MuzeiSettings extends AppCompatActivity implements View.OnClickListener {
 
     private RadioButton minute, hour;
@@ -82,7 +83,7 @@ public class MuzeiSettings extends AppCompatActivity implements View.OnClickList
 
         setContentView(R.layout.muzei_settings);
 
-        mPrefs = new Preferences(MuzeiSettings.this);
+        mPrefs = new Preferences(this);
         mPrefs.setActivityVisible(true);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -149,13 +150,13 @@ public class MuzeiSettings extends AppCompatActivity implements View.OnClickList
                     rotate_time = Utils.convertMinutesToMillis(numberpicker.getValue());
                     mPrefs.setRotateMinute(true);
                     mPrefs.setRotateTime(rotate_time);
-                    timeText = String.valueOf(rotate_time) + " " +
+                    timeText = String.valueOf(Utils.convertMillisToMinutes(rotate_time)) + " " +
                             Utils.getStringFromResources(context, R.string.minutes).toLowerCase();
                 } else {
                     rotate_time = Utils.convertMinutesToMillis(numberpicker.getValue()) * 60;
                     mPrefs.setRotateMinute(false);
                     mPrefs.setRotateTime(rotate_time);
-                    timeText = String.valueOf(rotate_time) + " " +
+                    timeText = String.valueOf(Utils.convertMillisToMinutes(rotate_time) / 60) + " " +
                             Utils.getStringFromResources(context, R.string.hours).toLowerCase();
                 }
                 Intent intent = new Intent(MuzeiSettings.this, MuzeiArtSourceService.class);

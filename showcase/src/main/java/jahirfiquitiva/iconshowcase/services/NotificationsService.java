@@ -19,20 +19,16 @@
 
 package jahirfiquitiva.iconshowcase.services;
 
+import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.os.Handler;
-import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
@@ -50,126 +46,37 @@ import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
-public class NotificationsService extends Service {
+public class NotificationsService extends IntentService {
 
-    final static String ACTION = "NotifyServiceAction";
+    private Preferences mPrefs;
 
-    private Handler handler = null;
-    private static Runnable runnable = null;
+    public NotificationsService() {
+        super("IconShowcase - Notifs Service");
+    }
 
     @Override
     public void onCreate() {
-
-        final Preferences mPrefs = new Preferences(getApplicationContext());
-
-        handler = new Handler();
-        runnable = new Runnable() {
-            @Override
-            public void run() {
-                if (Utils.hasNetwork(getApplicationContext())) {
-                    if (mPrefs.getNotifsEnabled()) {
-                        new CheckForNotifications(mPrefs.getActivityVisible()).execute();
-                    }
-                }
-                handler.postDelayed(runnable,
-                        Utils.getNotifsUpdateIntervalInMillis(mPrefs.getNotifsUpdateInterval()));
-            }
-        };
-
-        if (!mPrefs.getActivityVisible()) handler.postDelayed(runnable, 3000);
-
+        super.onCreate();
+        mPrefs = new Preferences(this);
+        if (Utils.hasNetwork(getApplicationContext()) && mPrefs.getNotifsEnabled()
+                && !mPrefs.getActivityVisible()) {
+            new CheckForNotifications().execute();
+        }
     }
 
     @Override
-    public IBinder onBind(Intent arg0) {
-        return null;
-    }
-
-    @SuppressWarnings("ResourceAsColor")
-    private void Notify(String content, int type, int ID) {
-
-        Preferences mPrefs = new Preferences(this);
-
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(ACTION);
-
-        String appName = Utils.getStringFromResources(this, R.string.app_name);
-
-        String title = appName, notifContent = null;
-
-        switch (type) {
-            case 1:
-                title = getResources().getString(R.string.new_walls_notif_title, appName);
-                notifContent = getResources().getString(R.string.new_walls_notif_content, content);
-                break;
-            case 2:
-                title = appName + " " + getResources().getString(R.string.news).toLowerCase();
-                notifContent = content;
-                break;
-        }
-
-        // Send Notification
-        NotificationManager notifManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(this);
-        notifBuilder.setAutoCancel(true);
-        notifBuilder.setContentTitle(title);
-        if (notifContent != null) {
-            notifBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(notifContent));
-            notifBuilder.setContentText(notifContent);
-        }
-        notifBuilder.setTicker(title);
-        Uri ringtoneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        notifBuilder.setSound(ringtoneUri);
-
-        if (mPrefs.getNotifsVibrationEnabled()) notifBuilder.setVibrate(new long[]{500, 500});
-
-        int ledColor = ThemeUtils.darkTheme ?
-                ContextCompat.getColor(this, R.color.dark_theme_accent) :
-                ContextCompat.getColor(this, R.color.light_theme_accent);
-
-        notifBuilder.setColor(ledColor);
-
-        if (mPrefs.getNotifsLedEnabled()) {
-            notifBuilder.setLights(
-                    Color.argb(1, Color.red(ledColor), Color.green(ledColor), Color.blue(ledColor)),
-                    1, 1);
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-            notifBuilder.setPriority(Notification.PRIORITY_HIGH);
-
-        Class appLauncherActivity = getLauncherClass(getApplicationContext());
-
-        if (appLauncherActivity != null) {
-            Intent appIntent = new Intent(this, appLauncherActivity);
-            appIntent.putExtra("notifType", type);
-            TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-            stackBuilder.addParentStack(appLauncherActivity);
-
-            // Adds the Intent that starts the Activity to the top of the stack
-            stackBuilder.addNextIntent(appIntent);
-            PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-            notifBuilder.setContentIntent(resultPendingIntent);
-        }
-
-        notifBuilder.setOngoing(false);
-
-        notifBuilder.setSmallIcon(R.drawable.ic_notifications);
-
-        notifManager.notify(ID, notifBuilder.build());
+    protected void onHandleIntent(Intent intent) {
+        onCreate();
     }
 
     public class CheckForNotifications extends AsyncTask<Void, String, Boolean> {
 
         public JSONObject mainObject, tag;
         public JSONArray notifs;
-        private boolean hideNotifs = true;
 
         private ArrayList<NotificationItem> notifsList = new ArrayList<>();
 
-        public CheckForNotifications(boolean hideNotifs) {
-            this.hideNotifs = hideNotifs;
+        public CheckForNotifications() {
         }
 
         @Override
@@ -219,16 +126,96 @@ public class NotificationsService extends Service {
                     } catch (NumberFormatException numEx) {
                         number = 0;
                     }
-                    if (number > 0 && !hideNotifs) {
-                        Notify(notif.getText(), notif.getType(), notif.getID());
+                    if (number > 0) {
+                        pushNotification(notif.getText(), notif.getType(), notif.getID());
                     }
                 } else {
-                    if (!(notif.getText().equals("null")) && !hideNotifs) {
-                        Notify(notif.getText(), notif.getType(), notif.getID());
+                    if (!(notif.getText().equals("null"))) {
+                        pushNotification(notif.getText(), notif.getType(), notif.getID());
                     }
                 }
             }
         }
+    }
+
+    @SuppressWarnings("ResourceAsColor")
+    private void pushNotification(String content, int type, int ID) {
+
+        Preferences mPrefs = new Preferences(this);
+
+        String appName = Utils.getStringFromResources(this, R.string.app_name);
+
+        String title = appName, notifContent = null;
+
+        switch (type) {
+            case 1:
+                title = getResources().getString(R.string.new_walls_notif_title, appName);
+                notifContent = getResources().getString(R.string.new_walls_notif_content, content);
+                break;
+            case 2:
+                title = appName + " " + getResources().getString(R.string.news).toLowerCase();
+                notifContent = content;
+                break;
+        }
+
+        // Send Notification
+        NotificationManager notifManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(this);
+        notifBuilder.setAutoCancel(true);
+        notifBuilder.setContentTitle(title);
+        if (notifContent != null) {
+            notifBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(notifContent));
+            notifBuilder.setContentText(notifContent);
+        }
+        notifBuilder.setTicker(title);
+        Uri ringtoneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        notifBuilder.setSound(ringtoneUri);
+
+        if (mPrefs.getNotifsVibrationEnabled()) {
+            notifBuilder.setVibrate(new long[]{500, 500});
+        } else {
+            notifBuilder.setVibrate(null);
+        }
+
+        int ledColor = ThemeUtils.darkTheme ?
+                ContextCompat.getColor(this, R.color.dark_theme_accent) :
+                ContextCompat.getColor(this, R.color.light_theme_accent);
+
+        notifBuilder.setColor(ledColor);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            notifBuilder.setPriority(Notification.PRIORITY_HIGH);
+        }
+
+        Class appLauncherActivity = getLauncherClass(getApplicationContext());
+
+        if (appLauncherActivity != null) {
+            Intent appIntent = new Intent(this, appLauncherActivity);
+            appIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            appIntent.putExtra("notifType", type);
+
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+            stackBuilder.addParentStack(appLauncherActivity);
+
+            // Adds the Intent that starts the Activity to the top of the stack
+            stackBuilder.addNextIntent(appIntent);
+            PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+            notifBuilder.setContentIntent(resultPendingIntent);
+        }
+
+        notifBuilder.setOngoing(false);
+
+        notifBuilder.setSmallIcon(R.drawable.ic_notifications);
+
+        Notification notif = notifBuilder.build();
+
+        if (mPrefs.getNotifsLedEnabled()) {
+            notif.ledARGB = ledColor;
+        }
+
+        notifManager.notify(ID, notif);
     }
 
     public static void clearNotification(Context context, int ID) {

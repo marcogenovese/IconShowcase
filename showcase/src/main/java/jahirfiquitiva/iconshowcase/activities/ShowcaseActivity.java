@@ -198,10 +198,13 @@ public class ShowcaseActivity extends AppCompatActivity implements
         getAction();
 
         installer = getIntent().getStringExtra("installer");
-        int notifType = getIntent().getIntExtra("launchNotifType", 3);
+        int notifType = getIntent().getIntExtra("launchNotifType", 2);
 
-        if (notifType == 1 || notifType == 2) {
+        if (notifType == 1) {
             NotificationsService.clearNotification(context, 97);
+        }
+
+        if (notifType == 2) {
             NotificationsService.clearNotification(context, 19);
         }
 

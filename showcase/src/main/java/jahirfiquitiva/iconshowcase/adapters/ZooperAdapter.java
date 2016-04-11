@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.bumptech.glide.Glide;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 
@@ -108,20 +109,18 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     ZooperWidget widget = widgets.get(position - 2);
                     ZooperHolder zooperHolder = (ZooperHolder) holder;
                     zooperHolder.background.setImageDrawable(wallpaper);
-                    zooperHolder.widget.setImageBitmap(
-                            context.getResources().getBoolean(R.bool.remove_zooper_previews_background) ?
-                                    widget.getTransparentBackgroundPreview() :
-                                    widget.getPreview());
+                    Glide.with(context)
+                            .load(new File(widget.getPreviewPath()))
+                            .into(zooperHolder.widget);
                     break;
             }
         } else {
             ZooperWidget widget = widgets.get(position);
             ZooperHolder zooperHolder = (ZooperHolder) holder;
             zooperHolder.background.setImageDrawable(wallpaper);
-            zooperHolder.widget.setImageBitmap(
-                    context.getResources().getBoolean(R.bool.remove_zooper_previews_background) ?
-                            widget.getTransparentBackgroundPreview() :
-                            widget.getPreview());
+            Glide.with(context)
+                    .load(new File(widget.getPreviewPath()))
+                    .into(zooperHolder.widget);
         }
 
     }

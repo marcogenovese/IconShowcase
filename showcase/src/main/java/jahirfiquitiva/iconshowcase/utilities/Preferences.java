@@ -26,6 +26,8 @@ package jahirfiquitiva.iconshowcase.utilities;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.util.Set;
+
 import jahirfiquitiva.iconshowcase.R;
 
 public class Preferences {
@@ -54,7 +56,9 @@ public class Preferences {
             NOTIFS_LED_ENABLED = "notifs_led_enabled",
             NOTIFS_VIBRATION_ENABLED = "notifs_vibration_enabled",
             NOTIFS_UPDATE_INTERVAL = "notifs_update_interval",
-            ACTIVITY_VISIBLE = "activity_visible";
+            NOTIFS_SUBSCRIPTIONS = "notifs_subscriptions",
+            ACTIVITY_VISIBLE = "activity_visible",
+            PREF_RETRY = "pref_retry";
 
     private final Context context;
 
