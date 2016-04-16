@@ -182,7 +182,16 @@ public class ShowcaseActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         context = this;
 
-        TasksExecutor.with(this);
+        installer = getIntent().getStringExtra("installer");
+        int notifType = getIntent().getIntExtra("launchNotifType", 2);
+
+        getAction();
+
+        TasksExecutor.with(this)
+                .loadJust(
+                        (iconsPicker && iconsPickerEnabled),
+                        ((notifType == 1) ||
+                                (wallsPicker && mPrefs.areFeaturesEnabled() && wallsEnabled)));
 
         DEBUGGING = getResources().getBoolean(R.bool.debugging);
         mPrefs = new Preferences(ShowcaseActivity.this);
@@ -194,11 +203,6 @@ public class ShowcaseActivity extends AppCompatActivity implements
         System.arraycopy(configurePrimaryDrawerItems, 0, primaryDrawerItems, 1, configurePrimaryDrawerItems.length);
 
         themeMode = getResources().getBoolean(R.bool.theme_mode);
-
-        getAction();
-
-        installer = getIntent().getStringExtra("installer");
-        int notifType = getIntent().getIntExtra("launchNotifType", 2);
 
         if (notifType == 1) {
             NotificationsService.clearNotification(context, 97);

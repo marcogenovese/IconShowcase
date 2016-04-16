@@ -36,14 +36,14 @@
     True, means yes.
     False, means no.
     -->
-    <bool name="mu_needed">true</bool>
+    <bool name="mu_needed">false</bool>
 
     <!--
     If you include Zooper widgets, do any of them need Kolorette to work properly?
     True, means yes.
     False, means no.
     -->
-    <bool name="kolorette_needed">true</bool>
+    <bool name="kolorette_needed">false</bool>
 
     <!--
     Do you want the Zooper widgets previews background to be removed?
