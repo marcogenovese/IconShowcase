@@ -97,12 +97,12 @@ dependencies {
     compile 'com.android.support:customtabs:23.3.0'
 
     //Material Dialogs
-    compile('com.github.afollestad.material-dialogs:core:0.8.5.7@aar') {
+    compile('com.github.afollestad.material-dialogs:core:0.8.5.8@aar') {
         transitive = true
     }
 
     //Material Drawer
-    compile('com.mikepenz:materialdrawer:5.1.9@aar') {
+    compile('com.mikepenz:materialdrawer:5.2.0@aar') {
         transitive = true
     }
 
@@ -123,7 +123,7 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.0.0'
 
     //RecyclerView Fast Scroller
-    compile 'com.github.pluscubed:recycler-fast-scroll:0.3.0@aar'
+    compile 'com.github.pluscubed:recycler-fast-scroll:fe7bd7a@aar'
 
     //Donations Lib
     compile 'org.sufficientlysecure:donations:2.4'
