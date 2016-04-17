@@ -94,9 +94,6 @@ public class ApplyFragment extends Fragment {
                         getResources().getDimensionPixelSize(R.dimen.lists_padding),
                         true));
 
-        RecyclerFastScroller fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
-        fastScroller.attachRecyclerView(recyclerView);
-
         return layout;
     }
 
@@ -149,6 +146,9 @@ public class ApplyFragment extends Fragment {
                 });
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
+
+        RecyclerFastScroller fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
+        fastScroller.attachRecyclerView(recyclerView);
     }
 
     private void openLauncher(String name) {

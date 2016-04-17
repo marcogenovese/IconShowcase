@@ -132,7 +132,6 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
                         gridSpacing,
                         true));
         fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
-        fastScroller.attachRecyclerView(mRecyclerView);
         hideStuff();
 
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -192,6 +191,7 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
                 mRecyclerView.setHasFixedSize(true);
                 mRecyclerView.setAdapter(requestsAdapter);
                 requestsAdapter.startIconFetching(mRecyclerView);
+                fastScroller.attachRecyclerView(mRecyclerView);
                 showStuff();
             }
         }

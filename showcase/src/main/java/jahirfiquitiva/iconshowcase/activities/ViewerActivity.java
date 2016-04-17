@@ -76,6 +76,7 @@ import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.models.WallpaperItem;
 import jahirfiquitiva.iconshowcase.tasks.ApplyWallpaper;
 import jahirfiquitiva.iconshowcase.tasks.WallpaperToCrop;
+import jahirfiquitiva.iconshowcase.utilities.LicenseUtils;
 import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
@@ -119,6 +120,9 @@ public class ViewerActivity extends AppCompatActivity {
         usePalette = getResources().getBoolean(R.bool.use_palette_api_in_viewer);
 
         mPrefs = new Preferences(context);
+
+        LicenseUtils.checkLicense(context, mPrefs);
+
         mPrefs.setActivityVisible(true);
 
         Intent intent = getIntent();

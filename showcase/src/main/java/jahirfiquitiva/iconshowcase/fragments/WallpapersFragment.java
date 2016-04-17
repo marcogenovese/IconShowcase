@@ -234,6 +234,8 @@ public class WallpapersFragment extends Fragment {
 
                     mRecyclerView.setAdapter(mAdapter);
 
+                    fastScroller.attachRecyclerView(mRecyclerView);
+
                     if (fastScroller.getVisibility() != View.VISIBLE) {
                         fastScroller.setVisibility(View.VISIBLE);
                     }
@@ -332,7 +334,6 @@ public class WallpapersFragment extends Fragment {
             mRecyclerView.setVisibility(View.VISIBLE);
         }
 
-        fastScroller.attachRecyclerView(mRecyclerView);
 
         if (fastScroller.getVisibility() != View.VISIBLE) {
             fastScroller.setVisibility(View.VISIBLE);

@@ -78,7 +78,7 @@ ikke rangere ikon pakken negativt på grunn av dette. Det er en midlertidig løs
     <string name="wallpaper_author_title">"Forfatter "</string>
     <string name="wallpaper_dimensions_title">Dimensjoner</string>
     <string name="wallpaper_copyright_title">Opphavsrett</string>
-    <string name="settings_saved">Innstillingene lagret. Bakgrunn vil endres hver %1$.</string>
+    <string name="settings_saved">Innstillingene lagret. Bakgrunn vil endres hver %1$s.</string>
     <!-- License Check Dialog -->
     <string name="license_failed_title">Lisenskontroll Mislyktes</string>
     <string name="license_success_title">Lisens kontroll Suksess</string>

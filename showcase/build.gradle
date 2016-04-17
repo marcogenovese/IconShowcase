@@ -123,7 +123,7 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.0.0'
 
     //RecyclerView Fast Scroller
-    compile 'com.github.pluscubed:recycler-fast-scroll:fe7bd7a@aar'
+    compile 'com.github.pluscubed:recycler-fast-scroll:0.3.1@aar'
 
     //Donations Lib
     compile 'org.sufficientlysecure:donations:2.4'

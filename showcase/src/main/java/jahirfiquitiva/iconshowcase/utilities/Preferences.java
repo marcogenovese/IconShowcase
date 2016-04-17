@@ -26,8 +26,6 @@ package jahirfiquitiva.iconshowcase.utilities;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import java.util.Set;
-
 import jahirfiquitiva.iconshowcase.R;
 
 public class Preferences {
@@ -36,6 +34,7 @@ public class Preferences {
             PREFERENCES_NAME = "DASHBOARD_PREFERENCES",
             FEATURES_ENABLED = "features_enabled",
             FIRST_RUN = "first_run",
+            VERSION_CODE = "version_code",
             ROTATE_MINUTE = "rotate_time_minute",
             ROTATE_TIME = "muzei_rotate_time",
             LAUNCHER_ICON = "launcher_icon_shown",
@@ -56,9 +55,9 @@ public class Preferences {
             NOTIFS_LED_ENABLED = "notifs_led_enabled",
             NOTIFS_VIBRATION_ENABLED = "notifs_vibration_enabled",
             NOTIFS_UPDATE_INTERVAL = "notifs_update_interval",
-            NOTIFS_SUBSCRIPTIONS = "notifs_subscriptions",
             ACTIVITY_VISIBLE = "activity_visible",
-            PREF_RETRY = "pref_retry";
+            INSTALLER = "installer",
+            AMAZON_INSTALLS = "amazon_installs";
 
     private final Context context;
 
@@ -83,7 +82,7 @@ public class Preferences {
     }
 
     public boolean areFeaturesEnabled() {
-        return getSharedPreferences().getBoolean(FEATURES_ENABLED, true);
+        return getSharedPreferences().getBoolean(FEATURES_ENABLED, false);
     }
 
     public void setRotateTime(int time) {
@@ -265,6 +264,30 @@ public class Preferences {
 
     public boolean getActivityVisible() {
         return getSharedPreferences().getBoolean(ACTIVITY_VISIBLE, true);
+    }
+
+    public void setInstaller(String installer) {
+        getSharedPreferences().edit().putString(INSTALLER, installer).apply();
+    }
+
+    public String getInstaller() {
+        return getSharedPreferences().getString(INSTALLER, null);
+    }
+
+    public void setAmazonInstalls(boolean amazonInstalls) {
+        getSharedPreferences().edit().putBoolean(AMAZON_INSTALLS, amazonInstalls).apply();
+    }
+
+    public boolean getAmazonInstalls() {
+        return getSharedPreferences().getBoolean(AMAZON_INSTALLS, false);
+    }
+
+    public void setVersionCode(int versionCode) {
+        getSharedPreferences().edit().putInt(VERSION_CODE, versionCode).apply();
+    }
+
+    public int getVersionCode() {
+        return getSharedPreferences().getInt(VERSION_CODE, 0);
     }
 
 }

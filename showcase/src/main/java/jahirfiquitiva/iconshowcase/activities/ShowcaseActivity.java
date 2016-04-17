@@ -23,17 +23,14 @@
 
 package jahirfiquitiva.iconshowcase.activities;
 
-import android.annotation.SuppressLint;
 import android.app.WallpaperManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -54,7 +51,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -90,6 +86,7 @@ import jahirfiquitiva.iconshowcase.models.WallpapersList;
 import jahirfiquitiva.iconshowcase.services.NotificationsService;
 import jahirfiquitiva.iconshowcase.tasks.LoadIconsLists;
 import jahirfiquitiva.iconshowcase.tasks.TasksExecutor;
+import jahirfiquitiva.iconshowcase.utilities.LicenseUtils;
 import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
@@ -181,8 +178,14 @@ public class ShowcaseActivity extends AppCompatActivity implements
 
         super.onCreate(savedInstanceState);
         context = this;
+        mPrefs = new Preferences(ShowcaseActivity.this);
 
         installer = getIntent().getStringExtra("installer");
+        if (mPrefs.isFirstRun()) {
+            mPrefs.setInstaller(installer);
+            mPrefs.setAmazonInstalls(WITH_INSTALLED_FROM_AMAZON);
+        }
+
         int notifType = getIntent().getIntExtra("launchNotifType", 2);
 
         getAction();
@@ -194,7 +197,7 @@ public class ShowcaseActivity extends AppCompatActivity implements
                                 (wallsPicker && mPrefs.areFeaturesEnabled() && wallsEnabled)));
 
         DEBUGGING = getResources().getBoolean(R.bool.debugging);
-        mPrefs = new Preferences(ShowcaseActivity.this);
+
         mPrefs.setActivityVisible(true);
 
         String[] configurePrimaryDrawerItems = getResources().getStringArray(R.array.primary_drawer_items);
@@ -213,7 +216,7 @@ public class ShowcaseActivity extends AppCompatActivity implements
         }
 
         try {
-            if (installer.matches("com.google.android.feedback") || installer.matches("com.android.vending")) {
+            if (mPrefs.getInstaller().matches("com.google.android.feedback") || installer.matches("com.android.vending")) {
                 installedFromPlayStore = true;
             }
         } catch (Exception e) {
@@ -596,20 +599,17 @@ public class ShowcaseActivity extends AppCompatActivity implements
 
     private void runLicenseChecker() {
         mPrefs.setSettingsModified(false);
-        mPrefs.setFirstRun(getSharedPreferences("PrefsFile", MODE_PRIVATE).getBoolean("first_run", true));
         if (mPrefs.isFirstRun()) {
             if (WITH_LICENSE_CHECKER) {
-                checkLicense();
+                LicenseUtils.checkLicense(context, mPrefs);
             } else {
                 mPrefs.setFeaturesEnabled(true);
                 showChangelogDialog();
             }
             mPrefs.setFirstRun(false);
-            getSharedPreferences("PrefsFile", MODE_PRIVATE).edit()
-                    .putBoolean("first_run", false).commit();
         } else {
             if (WITH_LICENSE_CHECKER) {
-                checkLicense();
+                LicenseUtils.checkLicense(context, mPrefs);
             } else {
                 showChangelogDialog();
             }
@@ -617,87 +617,31 @@ public class ShowcaseActivity extends AppCompatActivity implements
     }
 
     private void showChangelogDialog() {
-        String launchinfo = getSharedPreferences("PrefsFile", MODE_PRIVATE).getString("version", "0");
-        storeSharedPrefs();
-        if (!launchinfo.equals(Utils.getAppVersion(this))) {
-            if (WITH_ZOOPER_SECTION) {
-                if (!PermissionUtils.canAccessStorage(this)) {
-                    PermissionUtils.requestStoragePermission(this, this);
-                } else {
-                    new ZooperIconFontsHelper(context).check(true);
-                }
-            }
-            if (WITH_ICONS_BASED_CHANGELOG) {
-                ISDialogs.showIconsChangelogDialog(this);
-            } else {
-                ISDialogs.showChangelogDialog(this);
-            }
-        }
-    }
 
-    @SuppressLint("CommitPrefEdits")
-    private void storeSharedPrefs() {
-        SharedPreferences sharedPreferences = getSharedPreferences("PrefsFile", MODE_PRIVATE);
-        sharedPreferences.edit().putString("version", Utils.getAppVersion(this)).commit();
-    }
-
-    private void checkLicense() {
         try {
-            if (installer != null) {
-                if (installedFromPlayStore) {
-                    ISDialogs.showLicenseSuccessDialog(this, new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
-                            mPrefs.setFeaturesEnabled(true);
-                            showChangelogDialog();
-                        }
-                    });
-                } else if (installer.matches("com.amazon.venezia") && WITH_INSTALLED_FROM_AMAZON) {
-                    ISDialogs.showLicenseSuccessDialog(this, new MaterialDialog.SingleButtonCallback() {
+            PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            int versionCode = packageInfo.versionCode;
+            int prevVersionCode = mPrefs.getVersionCode();
 
-                        @Override
-                        public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
-                            mPrefs.setFeaturesEnabled(true);
-                            showChangelogDialog();
-                        }
-                    });
+            if (prevVersionCode < versionCode) {
+                if (WITH_ZOOPER_SECTION) {
+                    if (!PermissionUtils.canAccessStorage(this)) {
+                        PermissionUtils.requestStoragePermission(this, this);
+                    } else {
+                        new ZooperIconFontsHelper(context).check(true);
+                    }
                 }
-            } else {
-                showNotLicensedDialog();
+                if (WITH_ICONS_BASED_CHANGELOG) {
+                    ISDialogs.showIconsChangelogDialog(this);
+                } else {
+                    ISDialogs.showChangelogDialog(this);
+                }
+                mPrefs.setVersionCode(versionCode);
             }
-        } catch (Exception e) {
-            Utils.showLog(context, "Error checking license: " + e.getLocalizedMessage());
-            showNotLicensedDialog();
+        } catch (PackageManager.NameNotFoundException e) {
+            Utils.showLog("Unable to get version code. Changelog won't be shown " + e.getLocalizedMessage());
         }
-    }
 
-    private void showNotLicensedDialog() {
-        mPrefs.setFeaturesEnabled(false);
-        ISDialogs.showLicenseFailDialog(this,
-                new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
-                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(MARKET_URL + getPackageName()));
-                        startActivity(browserIntent);
-                    }
-                }, new MaterialDialog.SingleButtonCallback() {
-
-                    @Override
-                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
-                        finish();
-                    }
-                }, new MaterialDialog.OnCancelListener() {
-
-                    @Override
-                    public void onCancel(DialogInterface dialog) {
-                        finish();
-                    }
-                }, new MaterialDialog.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        finish();
-                    }
-                });
     }
 
     private void loadWallsList(Context context) {
@@ -1170,38 +1114,6 @@ public class ShowcaseActivity extends AppCompatActivity implements
 
     public AppBarLayout getAppbar() {
         return this.appbar;
-    }
-
-    public ImageView getIcon1() {
-        return this.icon1;
-    }
-
-    public ImageView getIcon2() {
-        return this.icon2;
-    }
-
-    public ImageView getIcon3() {
-        return this.icon3;
-    }
-
-    public ImageView getIcon4() {
-        return this.icon4;
-    }
-
-    public ImageView getIcon5() {
-        return this.icon5;
-    }
-
-    public ImageView getIcon6() {
-        return this.icon6;
-    }
-
-    public ImageView getIcon7() {
-        return this.icon7;
-    }
-
-    public ImageView getIcon8() {
-        return this.icon8;
     }
 
     public ImageView getToolbarHeader() {

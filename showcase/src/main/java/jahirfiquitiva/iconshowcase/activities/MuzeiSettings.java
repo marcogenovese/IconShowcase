@@ -45,6 +45,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.services.MuzeiArtSourceService;
+import jahirfiquitiva.iconshowcase.utilities.LicenseUtils;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
@@ -77,13 +78,15 @@ public class MuzeiSettings extends AppCompatActivity implements View.OnClickList
 
         context = this;
 
+        mPrefs = new Preferences(this);
+
+        LicenseUtils.checkLicense(context, mPrefs);
+
         int iconsColor = ThemeUtils.darkTheme ?
                 ContextCompat.getColor(this, R.color.toolbar_text_dark) :
                 ContextCompat.getColor(this, R.color.toolbar_text_light);
 
         setContentView(R.layout.muzei_settings);
-
-        mPrefs = new Preferences(this);
         mPrefs.setActivityVisible(true);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
