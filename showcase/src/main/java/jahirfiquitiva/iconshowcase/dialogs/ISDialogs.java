@@ -120,6 +120,7 @@ public final class ISDialogs {
                 .content(message)
                 .positiveText(R.string.close)
                 .onPositive(singleButtonCallback)
+                .autoDismiss(false)
                 .show();
     }
 

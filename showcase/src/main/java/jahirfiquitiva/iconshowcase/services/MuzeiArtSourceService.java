@@ -19,6 +19,7 @@
 
 package jahirfiquitiva.iconshowcase.services;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -31,8 +32,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.WeakHashMap;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.utilities.JSONParser;
@@ -101,7 +104,7 @@ public class MuzeiArtSourceService extends RemoteMuzeiArtSource {
     protected void onTryUpdate(int reason) throws RetryException {
         if (mPrefs.areFeaturesEnabled()) {
             try {
-                new DownloadJSONAndSetWall().execute();
+                new DownloadJSONAndSetWall(getApplicationContext()).execute();
             } catch (Exception e) {
                 Utils.showLog("Error updating Muzei: " + e.getLocalizedMessage());
                 throw new RetryException();
@@ -124,8 +127,10 @@ public class MuzeiArtSourceService extends RemoteMuzeiArtSource {
 
         public JSONObject mainObject, wallItem;
         public JSONArray wallInfo;
+        private WeakReference<Context> context;
 
-        public DownloadJSONAndSetWall() {
+        public DownloadJSONAndSetWall(Context context) {
+            this.context = new WeakReference<Context>(context);
         }
 
         @Override
@@ -139,7 +144,8 @@ public class MuzeiArtSourceService extends RemoteMuzeiArtSource {
         protected Boolean doInBackground(Void... params) {
             boolean worked = false;
             try {
-                mainObject = JSONParser.getJSONFromURL(getResources().getString(R.string.json_file_url));
+                mainObject = JSONParser.getJSONFromURL(getApplicationContext(),
+                        getResources().getString(R.string.json_file_url));
                 if (mainObject != null) {
                     try {
                         wallInfo = mainObject.getJSONArray("wallpapers");

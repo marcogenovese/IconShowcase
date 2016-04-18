@@ -121,8 +121,6 @@ public class ViewerActivity extends AppCompatActivity {
 
         mPrefs = new Preferences(context);
 
-        LicenseUtils.checkLicense(context, mPrefs);
-
         mPrefs.setActivityVisible(true);
 
         Intent intent = getIntent();

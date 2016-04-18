@@ -110,28 +110,26 @@ public class WallpapersFragment extends Fragment {
             // Do nothing
         }
 
-        if (!ShowcaseActivity.wallsPicker) {
-            showWallsAdviceDialog(getActivity());
-        }
-
         int light = ContextCompat.getColor(context, R.color.drawable_tint_dark);
         int dark = ContextCompat.getColor(context, R.color.drawable_tint_light);
 
         noConnection = (ImageView) layout.findViewById(R.id.no_connected_icon);
+        mProgress = (ProgressBar) layout.findViewById(R.id.progress);
+        mRecyclerView = (RecyclerView) layout.findViewById(R.id.wallsGrid);
+        fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) layout.findViewById(R.id.swipeRefreshLayout);
+
+        if (!ShowcaseActivity.wallsPicker) {
+            showWallsAdviceDialog(getActivity());
+        }
+
         noConnection.setImageDrawable(new IconicsDrawable(context)
                 .icon(GoogleMaterial.Icon.gmd_cloud_off)
                 .color(ThemeUtils.darkTheme ? light : dark)
                 .sizeDp(144));
         noConnection.setVisibility(View.GONE);
 
-        mProgress = (ProgressBar) layout.findViewById(R.id.progress);
         showProgressBar();
-
-        mRecyclerView = (RecyclerView) layout.findViewById(R.id.wallsGrid);
-
-        fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
-
-        mSwipeRefreshLayout = (SwipeRefreshLayout) layout.findViewById(R.id.swipeRefreshLayout);
 
         setupRecyclerView(false, 0);
 
@@ -149,6 +147,7 @@ public class WallpapersFragment extends Fragment {
         setupLayout(false, getActivity(), noConnection);
 
         return layout;
+
     }
 
     @Override
@@ -217,14 +216,13 @@ public class WallpapersFragment extends Fragment {
                                                 stream.close();
                                                 intent.putExtra("image", filename);
                                             } catch (Exception e) {
-                                                e.printStackTrace();
+                                                Utils.showLog(context, "Error getting drawable " + e.getLocalizedMessage());
                                             }
 
                                             ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(context, view.wall, ViewCompat.getTransitionName(view.wall));
                                             context.startActivity(intent, options.toBundle());
                                         } else {
                                             context.startActivity(intent);
-                                            //showLoadPictureSnackbar(layout, context);
                                         }
                                     }
                                 }
@@ -233,6 +231,8 @@ public class WallpapersFragment extends Fragment {
                     mAdapter.setData(WallpapersList.getWallpapersList());
 
                     mRecyclerView.setAdapter(mAdapter);
+
+                    fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
 
                     fastScroller.attachRecyclerView(mRecyclerView);
 
@@ -256,26 +256,21 @@ public class WallpapersFragment extends Fragment {
             context.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    if (mAdapter != null) {
-                        hideStuff(noConnection);
-                    }
                     if (layout != null) {
                         noConnection.setVisibility(View.GONE);
                         showProgressBar();
-                        if (fromTask) {
-                            Timer timer = new Timer();
-                            timer.schedule(new TimerTask() {
-                                @Override
-                                public void run() {
-                                    context.runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            hideStuff(noConnection);
-                                        }
-                                    });
-                                }
-                            }, 10000);
-                        }
+                        Timer timer = new Timer();
+                        timer.schedule(new TimerTask() {
+                            @Override
+                            public void run() {
+                                context.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        hideStuff(noConnection);
+                                    }
+                                });
+                            }
+                        }, 7500);
                     }
                 }
             });
@@ -283,6 +278,10 @@ public class WallpapersFragment extends Fragment {
     }
 
     private static void hideStuff(ImageView noConnection) {
+        if (mRecyclerView.getAdapter() != null) {
+            fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
+            fastScroller.attachRecyclerView(mRecyclerView);
+        }
         hideProgressBar();
         if (noConnection != null) {
             noConnection.setVisibility(View.VISIBLE);
@@ -334,9 +333,11 @@ public class WallpapersFragment extends Fragment {
             mRecyclerView.setVisibility(View.VISIBLE);
         }
 
-
-        if (fastScroller.getVisibility() != View.VISIBLE) {
-            fastScroller.setVisibility(View.VISIBLE);
+        if (mRecyclerView.getAdapter() != null) {
+            fastScroller.attachRecyclerView(mRecyclerView);
+            if (fastScroller.getVisibility() != View.VISIBLE) {
+                fastScroller.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -403,7 +404,7 @@ public class WallpapersFragment extends Fragment {
 
             boolean worked = false;
 
-            JSONObject json = JSONParser.getJSONFromURL(
+            JSONObject json = JSONParser.getJSONFromURL(taskContext.get(),
                     Utils.getStringFromResources(taskContext.get(),
                             R.string.json_file_url));
 

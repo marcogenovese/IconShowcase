@@ -80,8 +80,6 @@ public class MuzeiSettings extends AppCompatActivity implements View.OnClickList
 
         mPrefs = new Preferences(this);
 
-        LicenseUtils.checkLicense(context, mPrefs);
-
         int iconsColor = ThemeUtils.darkTheme ?
                 ContextCompat.getColor(this, R.color.toolbar_text_dark) :
                 ContextCompat.getColor(this, R.color.toolbar_text_light);

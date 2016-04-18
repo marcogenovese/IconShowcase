@@ -265,8 +265,6 @@ public class ShowcaseActivity extends AppCompatActivity implements
         icon7 = (ImageView) findViewById(R.id.iconSeven);
         icon8 = (ImageView) findViewById(R.id.iconEight);
 
-        runLicenseChecker();
-
         appbar = (AppBarLayout) findViewById(R.id.appbar);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbar);
@@ -476,6 +474,14 @@ public class ShowcaseActivity extends AppCompatActivity implements
     @Override
     protected void onResume() {
         super.onResume();
+        if (mPrefs == null) {
+            mPrefs = new Preferences(this);
+        }
+        if(WITH_LICENSE_CHECKER) {
+            runLicenseChecker();
+        }else{
+            mPrefs.setFeaturesEnabled(true);
+        }
         if (!iconsPicker && !wallsPicker) {
             setupToolbarHeader(this, toolbarHeader);
         }
@@ -611,6 +617,7 @@ public class ShowcaseActivity extends AppCompatActivity implements
             if (WITH_LICENSE_CHECKER) {
                 LicenseUtils.checkLicense(context, mPrefs);
             } else {
+                mPrefs.setFeaturesEnabled(true);
                 showChangelogDialog();
             }
         }

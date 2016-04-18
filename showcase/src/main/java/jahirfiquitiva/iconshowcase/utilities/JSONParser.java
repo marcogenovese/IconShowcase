@@ -17,11 +17,9 @@
  *
  */
 
-/*
- *
- */
-
 package jahirfiquitiva.iconshowcase.utilities;
+
+import android.content.Context;
 
 import org.json.JSONObject;
 
@@ -33,24 +31,28 @@ import okhttp3.Response;
 
 public class JSONParser {
 
-    public static JSONObject getJSONFromURL(String url) {
+    public static JSONObject getJSONFromURL(Context context, String url) {
         try {
 
-            OkHttpClient client = new OkHttpClient();
-            Request request = new Request.Builder()
-                    .url(url)
-                    .build();
+            if (Utils.hasNetwork(context)) {
+                OkHttpClient client = new OkHttpClient();
+                Request request = new Request.Builder()
+                        .url(url)
+                        .build();
 
-            Response response = null;
+                Response response = null;
 
-            try {
-                response = client.newCall(request).execute();
-            } catch (IOException e) {
-                //Do nothing
-            }
+                try {
+                    response = client.newCall(request).execute();
+                } catch (IOException e) {
+                    //Do nothing
+                }
 
-            if (response != null) {
-                return new JSONObject(response.body().string());
+                if (response != null) {
+                    return new JSONObject(response.body().string());
+                }
+            } else {
+                return null;
             }
 
         } catch (Exception e) {
@@ -58,4 +60,5 @@ public class JSONParser {
         }
         return null;
     }
+
 }
