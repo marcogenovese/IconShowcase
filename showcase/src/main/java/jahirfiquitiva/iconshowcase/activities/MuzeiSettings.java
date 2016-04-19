@@ -45,7 +45,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.services.MuzeiArtSourceService;
-import jahirfiquitiva.iconshowcase.utilities.LicenseUtils;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;

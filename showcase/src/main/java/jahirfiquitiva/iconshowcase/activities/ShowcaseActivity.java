@@ -23,14 +23,17 @@
 
 package jahirfiquitiva.iconshowcase.activities;
 
+import android.app.Activity;
 import android.app.WallpaperManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -51,6 +54,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -86,7 +90,6 @@ import jahirfiquitiva.iconshowcase.models.WallpapersList;
 import jahirfiquitiva.iconshowcase.services.NotificationsService;
 import jahirfiquitiva.iconshowcase.tasks.LoadIconsLists;
 import jahirfiquitiva.iconshowcase.tasks.TasksExecutor;
-import jahirfiquitiva.iconshowcase.utilities.LicenseUtils;
 import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
@@ -177,16 +180,23 @@ public class ShowcaseActivity extends AppCompatActivity implements
         }
 
         super.onCreate(savedInstanceState);
+
         context = this;
-        mPrefs = new Preferences(ShowcaseActivity.this);
+        mPrefs = new Preferences(this);
 
         installer = getIntent().getStringExtra("installer");
-        if (mPrefs.isFirstRun()) {
-            mPrefs.setInstaller(installer);
-            mPrefs.setAmazonInstalls(WITH_INSTALLED_FROM_AMAZON);
-        }
-
         int notifType = getIntent().getIntExtra("launchNotifType", 2);
+
+        WITH_DONATIONS_SECTION = getIntent().getBooleanExtra("enableDonations", false);
+        DONATIONS_GOOGLE = getIntent().getBooleanExtra("enableGoogleDonations", false);
+        DONATIONS_PAYPAL = getIntent().getBooleanExtra("enablePayPalDonations", false);
+        DONATIONS_FLATTR = getIntent().getBooleanExtra("enableFlattrDonations", false);
+        DONATIONS_BITCOIN = getIntent().getBooleanExtra("enableBitcoinDonations", false);
+
+        WITH_LICENSE_CHECKER = getIntent().getBooleanExtra("enableLicenseCheck", false);
+        WITH_INSTALLED_FROM_AMAZON = getIntent().getBooleanExtra("enableAmazonInstalls", false);
+
+        GOOGLE_PUBKEY = getIntent().getStringExtra("googlePubKey");
 
         getAction();
 
@@ -216,7 +226,7 @@ public class ShowcaseActivity extends AppCompatActivity implements
         }
 
         try {
-            if (mPrefs.getInstaller().matches("com.google.android.feedback") || installer.matches("com.android.vending")) {
+            if (installer.matches("com.google.android.feedback") || installer.matches("com.android.vending")) {
                 installedFromPlayStore = true;
             }
         } catch (Exception e) {
@@ -477,11 +487,7 @@ public class ShowcaseActivity extends AppCompatActivity implements
         if (mPrefs == null) {
             mPrefs = new Preferences(this);
         }
-        if(WITH_LICENSE_CHECKER) {
-            runLicenseChecker();
-        }else{
-            mPrefs.setFeaturesEnabled(true);
-        }
+        runLicenseChecker();
         if (!iconsPicker && !wallsPicker) {
             setupToolbarHeader(this, toolbarHeader);
         }
@@ -607,7 +613,7 @@ public class ShowcaseActivity extends AppCompatActivity implements
         mPrefs.setSettingsModified(false);
         if (mPrefs.isFirstRun()) {
             if (WITH_LICENSE_CHECKER) {
-                LicenseUtils.checkLicense(context, mPrefs);
+                checkLicense(context, mPrefs);
             } else {
                 mPrefs.setFeaturesEnabled(true);
                 showChangelogDialog();
@@ -615,7 +621,7 @@ public class ShowcaseActivity extends AppCompatActivity implements
             mPrefs.setFirstRun(false);
         } else {
             if (WITH_LICENSE_CHECKER) {
-                LicenseUtils.checkLicense(context, mPrefs);
+                checkLicense(context, mPrefs);
             } else {
                 mPrefs.setFeaturesEnabled(true);
                 showChangelogDialog();
@@ -627,10 +633,11 @@ public class ShowcaseActivity extends AppCompatActivity implements
 
         try {
             PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-            int versionCode = packageInfo.versionCode;
+            int curVersionCode = packageInfo.versionCode;
             int prevVersionCode = mPrefs.getVersionCode();
 
-            if (prevVersionCode < versionCode) {
+            if (curVersionCode > prevVersionCode) {
+                mPrefs.setVersionCode(curVersionCode);
                 if (WITH_ZOOPER_SECTION) {
                     if (!PermissionUtils.canAccessStorage(this)) {
                         PermissionUtils.requestStoragePermission(this, this);
@@ -643,12 +650,76 @@ public class ShowcaseActivity extends AppCompatActivity implements
                 } else {
                     ISDialogs.showChangelogDialog(this);
                 }
-                mPrefs.setVersionCode(versionCode);
             }
         } catch (PackageManager.NameNotFoundException e) {
-            Utils.showLog("Unable to get version code. Changelog won't be shown " + e.getLocalizedMessage());
+            Utils.showLog(context, "Unable to get version code. Changelog won't be shown " + e.getLocalizedMessage());
         }
 
+    }
+
+    private void checkLicense(Context context, final Preferences mPrefs) {
+
+        boolean installedFromPlayStore = false;
+
+        try {
+            if (installer != null) {
+                if (installer.matches("com.google.android.feedback") || installer.matches("com.android.vending")) {
+                    installedFromPlayStore = true;
+                }
+                if (installedFromPlayStore) {
+                    ISDialogs.showLicenseSuccessDialog(context, new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+                            mPrefs.setFeaturesEnabled(true);
+                            showChangelogDialog();
+                        }
+                    });
+                } else if (installer.matches("com.amazon.venezia") && WITH_INSTALLED_FROM_AMAZON) {
+                    ISDialogs.showLicenseSuccessDialog(context, new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+                            mPrefs.setFeaturesEnabled(true);
+                            showChangelogDialog();
+                        }
+                    });
+                }
+            } else {
+                showNotLicensedDialog((Activity) context, mPrefs, MARKET_URL);
+            }
+        } catch (Exception e) {
+            Utils.showLog(context, "Error checking license: " + e.getLocalizedMessage());
+            showNotLicensedDialog((Activity) context, mPrefs, MARKET_URL);
+        }
+
+    }
+
+    private void showNotLicensedDialog(final Activity act, Preferences mPrefs, final String MARKET_URL) {
+        mPrefs.setFeaturesEnabled(false);
+        ISDialogs.showLicenseFailDialog(act,
+                new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(MARKET_URL + act.getPackageName()));
+                        act.startActivity(browserIntent);
+                    }
+                }, new MaterialDialog.SingleButtonCallback() {
+
+                    @Override
+                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+                        act.finish();
+                    }
+                }, new MaterialDialog.OnCancelListener() {
+
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        act.finish();
+                    }
+                }, new MaterialDialog.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        act.finish();
+                    }
+                });
     }
 
     private void loadWallsList(Context context) {
@@ -1065,38 +1136,6 @@ public class ShowcaseActivity extends AppCompatActivity implements
 
     private boolean isPremium() {
         return mIsPremium;
-    }
-
-    public void enableDonations(boolean WITH_DONATIONS_SECTION) {
-        ShowcaseActivity.WITH_DONATIONS_SECTION = WITH_DONATIONS_SECTION;
-    }
-
-    public void enableGoogleDonations(boolean DONATIONS_GOOGLE) {
-        ShowcaseActivity.DONATIONS_GOOGLE = DONATIONS_GOOGLE;
-    }
-
-    public void enablePaypalDonations(boolean DONATIONS_PAYPAL) {
-        ShowcaseActivity.DONATIONS_PAYPAL = DONATIONS_PAYPAL;
-    }
-
-    public void enableFlattrDonations(boolean DONATIONS_FLATTR) {
-        ShowcaseActivity.DONATIONS_FLATTR = DONATIONS_FLATTR;
-    }
-
-    public void enableBitcoinDonations(boolean DONATIONS_BITCOIN) {
-        ShowcaseActivity.DONATIONS_BITCOIN = DONATIONS_BITCOIN;
-    }
-
-    public void enableLicenseCheck(boolean WITH_LICENSE_CHECKER) {
-        ShowcaseActivity.WITH_LICENSE_CHECKER = WITH_LICENSE_CHECKER;
-    }
-
-    public void enableAmazonInstalls(boolean WITH_INSTALLED_FROM_AMAZON) {
-        ShowcaseActivity.WITH_INSTALLED_FROM_AMAZON = WITH_INSTALLED_FROM_AMAZON;
-    }
-
-    public void setGooglePubkey(String GOOGLE_PUBKEY) {
-        ShowcaseActivity.GOOGLE_PUBKEY = GOOGLE_PUBKEY;
     }
 
     public MaterialDialog getSettingsDialog() {

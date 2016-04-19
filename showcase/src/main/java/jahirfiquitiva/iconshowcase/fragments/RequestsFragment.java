@@ -26,9 +26,13 @@ package jahirfiquitiva.iconshowcase.fragments;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
@@ -43,6 +47,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 
@@ -225,14 +230,22 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
                 ISDialogs.showPermissionNotGrantedDialog(context);
 
             } else {
-                if (requestsAdapter.getSelectedApps() <= mPrefs.getRequestsLeft()) {
+                if (maxApps > -1) {
+                    if (requestsAdapter.getSelectedApps() <= mPrefs.getRequestsLeft()) {
+                        final MaterialDialog dialog = ISDialogs.showBuildingRequestDialog(context);
+                        dialog.show();
+
+                        new ZipFilesToRequest((Activity) context, dialog,
+                                ((RequestsAdapter) mRecyclerView.getAdapter()).appsList).execute();
+                    } else {
+                        ISDialogs.showRequestLimitDialog(context, maxApps);
+                    }
+                } else {
                     final MaterialDialog dialog = ISDialogs.showBuildingRequestDialog(context);
                     dialog.show();
 
                     new ZipFilesToRequest((Activity) context, dialog,
                             ((RequestsAdapter) mRecyclerView.getAdapter()).appsList).execute();
-                } else {
-                    ISDialogs.showRequestLimitDialog(context, maxApps);
                 }
             }
         } else {

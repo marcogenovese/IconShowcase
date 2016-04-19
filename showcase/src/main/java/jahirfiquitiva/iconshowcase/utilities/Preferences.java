@@ -55,9 +55,7 @@ public class Preferences {
             NOTIFS_LED_ENABLED = "notifs_led_enabled",
             NOTIFS_VIBRATION_ENABLED = "notifs_vibration_enabled",
             NOTIFS_UPDATE_INTERVAL = "notifs_update_interval",
-            ACTIVITY_VISIBLE = "activity_visible",
-            INSTALLER = "installer",
-            AMAZON_INSTALLS = "amazon_installs";
+            ACTIVITY_VISIBLE = "activity_visible";
 
     private final Context context;
 
@@ -265,23 +263,6 @@ public class Preferences {
     public boolean getActivityVisible() {
         return getSharedPreferences().getBoolean(ACTIVITY_VISIBLE, true);
     }
-
-    public void setInstaller(String installer) {
-        getSharedPreferences().edit().putString(INSTALLER, installer).apply();
-    }
-
-    public String getInstaller() {
-        return getSharedPreferences().getString(INSTALLER, null);
-    }
-
-    public void setAmazonInstalls(boolean amazonInstalls) {
-        getSharedPreferences().edit().putBoolean(AMAZON_INSTALLS, amazonInstalls).apply();
-    }
-
-    public boolean getAmazonInstalls() {
-        return getSharedPreferences().getBoolean(AMAZON_INSTALLS, false);
-    }
-
     public void setVersionCode(int versionCode) {
         getSharedPreferences().edit().putInt(VERSION_CODE, versionCode).apply();
     }

@@ -25,32 +25,46 @@ package jahirfiquitiva.apps.iconshowcase.sample;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
-import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
+public class HomeActivity extends AppCompatActivity {
 
-public class HomeActivity extends ShowcaseActivity {
+    private static final boolean
+            ENABLE_DONATIONS = false,
+
+    ENABLE_GOOGLE_DONATIONS = false,
+            ENABLE_PAYPAL_DONATIONS = false,
+            ENABLE_FLATTR_DONATIONS = false,
+            ENABLE_BITCOIN_DONATIONS = false,
+
+    ENABLE_LICENSE_CHECK = true,
+            ENABLE_AMAZON_INSTALLS = false;
+
+    private static final String GOOGLE_PUBLISHER_KEY = "Insert key here";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        boolean ENABLE_LICENSE_CHECK = true;
-
-        //the ones below are the defaults; you may remove them if you don't need them or modify them accordingly
-        enableDonations(false);
-        enableGoogleDonations(false);
-        enablePaypalDonations(false);
-        enableFlattrDonations(false);
-        enableBitcoinDonations(false);
-        enableLicenseCheck(ENABLE_LICENSE_CHECK && !BuildConfig.DEBUG);
-        enableAmazonInstalls(false);
-        setGooglePubkey("insert key here");
-
         int notifType = getIntent().getIntExtra("notifType", 2);
 
         Intent intent = new Intent(HomeActivity.this, jahirfiquitiva.iconshowcase.activities.ShowcaseActivity.class);
+
         intent.putExtra("installer", getAppInstaller());
+
         intent.putExtra("launchNotifType", notifType);
+
+        intent.putExtra("enableDonations", ENABLE_DONATIONS);
+        intent.putExtra("enableGoogleDonations", ENABLE_GOOGLE_DONATIONS);
+        intent.putExtra("enablePayPalDonations", ENABLE_PAYPAL_DONATIONS);
+        intent.putExtra("enableFlattrDonations", ENABLE_FLATTR_DONATIONS);
+        intent.putExtra("enableBitcoinDonations", ENABLE_BITCOIN_DONATIONS);
+
+        intent.putExtra("enableLicenseCheck", (ENABLE_LICENSE_CHECK && !BuildConfig.DEBUG));
+        intent.putExtra("enableAmazonInstalls", ENABLE_AMAZON_INSTALLS);
+
+        intent.putExtra("googlePubKey", GOOGLE_PUBLISHER_KEY);
+
         startActivity(intent);
 
         finish();
