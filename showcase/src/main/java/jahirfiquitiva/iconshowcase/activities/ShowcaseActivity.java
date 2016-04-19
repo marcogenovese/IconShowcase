@@ -29,7 +29,6 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -129,7 +128,7 @@ public class ShowcaseActivity extends AppCompatActivity implements
 
     private IabHelper mHelper;
 
-    private static int drawerHeaderStyle = 1;
+    private static int drawerHeaderStyle = 1, curVersionCode = 0;
 
     private static final String MARKET_URL = "https://play.google.com/store/apps/details?id=";
     private boolean mIsPremium = false, installedFromPlayStore = false;
@@ -186,6 +185,8 @@ public class ShowcaseActivity extends AppCompatActivity implements
 
         installer = getIntent().getStringExtra("installer");
         int notifType = getIntent().getIntExtra("launchNotifType", 2);
+
+        curVersionCode = getIntent().getIntExtra("curVersionCode", -1);
 
         WITH_DONATIONS_SECTION = getIntent().getBooleanExtra("enableDonations", false);
         DONATIONS_GOOGLE = getIntent().getBooleanExtra("enableGoogleDonations", false);
@@ -631,28 +632,22 @@ public class ShowcaseActivity extends AppCompatActivity implements
 
     private void showChangelogDialog() {
 
-        try {
-            PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-            int curVersionCode = packageInfo.versionCode;
-            int prevVersionCode = mPrefs.getVersionCode();
+        int prevVersionCode = mPrefs.getVersionCode();
 
-            if (curVersionCode > prevVersionCode) {
-                mPrefs.setVersionCode(curVersionCode);
-                if (WITH_ZOOPER_SECTION) {
-                    if (!PermissionUtils.canAccessStorage(this)) {
-                        PermissionUtils.requestStoragePermission(this, this);
-                    } else {
-                        new ZooperIconFontsHelper(context).check(true);
-                    }
-                }
-                if (WITH_ICONS_BASED_CHANGELOG) {
-                    ISDialogs.showIconsChangelogDialog(this);
+        if ((curVersionCode > prevVersionCode) && (curVersionCode > -1)) {
+            mPrefs.setVersionCode(curVersionCode);
+            if (WITH_ZOOPER_SECTION) {
+                if (!PermissionUtils.canAccessStorage(this)) {
+                    PermissionUtils.requestStoragePermission(this, this);
                 } else {
-                    ISDialogs.showChangelogDialog(this);
+                    new ZooperIconFontsHelper(context).check(true);
                 }
             }
-        } catch (PackageManager.NameNotFoundException e) {
-            Utils.showLog(context, "Unable to get version code. Changelog won't be shown " + e.getLocalizedMessage());
+            if (WITH_ICONS_BASED_CHANGELOG) {
+                ISDialogs.showIconsChangelogDialog(this);
+            } else {
+                ISDialogs.showChangelogDialog(this);
+            }
         }
 
     }

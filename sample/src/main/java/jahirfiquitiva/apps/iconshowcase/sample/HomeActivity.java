@@ -24,8 +24,12 @@
 package jahirfiquitiva.apps.iconshowcase.sample;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+
+import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -54,6 +58,8 @@ public class HomeActivity extends AppCompatActivity {
 
         intent.putExtra("launchNotifType", notifType);
 
+        intent.putExtra("curVersionCode", getAppCurrentVersionCode());
+
         intent.putExtra("enableDonations", ENABLE_DONATIONS);
         intent.putExtra("enableGoogleDonations", ENABLE_GOOGLE_DONATIONS);
         intent.putExtra("enablePayPalDonations", ENABLE_PAYPAL_DONATIONS);
@@ -73,6 +79,16 @@ public class HomeActivity extends AppCompatActivity {
 
     private String getAppInstaller() {
         return getPackageManager().getInstallerPackageName(getPackageName());
+    }
+
+    private int getAppCurrentVersionCode() {
+        try {
+            PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            return packageInfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            Utils.showLog(this, "Unable to get version code. Reason: " + e.getLocalizedMessage());
+            return -1;
+        }
     }
 
 }
