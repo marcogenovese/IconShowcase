@@ -72,13 +72,15 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
                         if (isSelected(position)) {
                             changeAppSelectedState(position);
                         } else {
-                            if (Utils.canRequestXApps(context,
-                                    context.getResources().getInteger(R.integer.limit_request_to_x_minutes),
-                                    mPrefs) == -2) {
-                                ISDialogs.showRequestTimeLimitDialog(context,
-                                        context.getResources().getInteger(R.integer.limit_request_to_x_minutes));
-                            } else {
-                                ISDialogs.showRequestLimitDialog(context, limit);
+                            if (context.getResources().getInteger(R.integer.max_apps_to_request) > -1) {
+                                if (Utils.canRequestXApps(context,
+                                        context.getResources().getInteger(R.integer.limit_request_to_x_minutes),
+                                        mPrefs) > -1) {
+                                    ISDialogs.showRequestTimeLimitDialog(context,
+                                            context.getResources().getInteger(R.integer.limit_request_to_x_minutes));
+                                } else {
+                                    ISDialogs.showRequestLimitDialog(context, limit);
+                                }
                             }
                         }
                     }
