@@ -477,7 +477,7 @@ public class Utils {
 
         int requestsLeft = mPrefs.getRequestsLeft(context);
 
-        if (requestsLeft != -1) {
+        if (requestsLeft > -1) {
             if (requestsLeft > 0) {
                 return requestsLeft;
             } else {

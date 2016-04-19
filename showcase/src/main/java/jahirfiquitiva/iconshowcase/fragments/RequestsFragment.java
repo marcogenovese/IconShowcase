@@ -214,7 +214,6 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
     private void showRequestsFilesCreationDialog(Context context) {
 
         if (requestsAdapter.getSelectedApps() > 0) {
-
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
                     ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) !=
                             PackageManager.PERMISSION_GRANTED) {
@@ -222,10 +221,7 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
                 ISDialogs.showPermissionNotGrantedDialog(context);
 
             } else {
-                if (maxApps > -1) {
-                    if (maxApps < 0) {
-                        maxApps = 0;
-                    }
+                if (mPrefs.getRequestsLeft() > -1) {
                     if (requestsAdapter.getSelectedApps() <= mPrefs.getRequestsLeft()) {
                         final MaterialDialog dialog = ISDialogs.showBuildingRequestDialog(context);
                         dialog.show();
@@ -233,6 +229,9 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
                         new ZipFilesToRequest((Activity) context, dialog,
                                 ((RequestsAdapter) mRecyclerView.getAdapter()).appsList).execute();
                     } else {
+                        if (maxApps < 0) {
+                            maxApps = 0;
+                        }
                         ISDialogs.showRequestLimitDialog(context, maxApps);
                     }
                 } else {
@@ -255,14 +254,18 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
     }
 
     private void startRequestProcess() {
-        if (mPrefs.getRequestsLeft() <= 0) {
-            if (requestsAdapter.getSelectedApps() < mPrefs.getRequestsLeft()) {
-                showRequestsFilesCreationDialog(context);
-            } else if ((Utils.canRequestXApps(context, minutesLimit, mPrefs) != -2)
-                    || (minutesLimit <= 0)) {
-                showRequestsFilesCreationDialog(context);
+        if (context.getResources().getInteger(R.integer.max_apps_to_request) > -1) {
+            if (mPrefs.getRequestsLeft() <= 0) {
+                if (requestsAdapter.getSelectedApps() < mPrefs.getRequestsLeft()) {
+                    showRequestsFilesCreationDialog(context);
+                } else if ((Utils.canRequestXApps(context, minutesLimit, mPrefs) > -1)
+                        || (minutesLimit <= 0)) {
+                    showRequestsFilesCreationDialog(context);
+                } else {
+                    ISDialogs.showRequestTimeLimitDialog(context, minutesLimit);
+                }
             } else {
-                ISDialogs.showRequestTimeLimitDialog(context, minutesLimit);
+                showRequestsFilesCreationDialog(context);
             }
         } else {
             showRequestsFilesCreationDialog(context);
