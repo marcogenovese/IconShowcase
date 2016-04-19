@@ -305,18 +305,16 @@ public final class ISDialogs {
 
     public static void showRequestLimitDialog(Context context, int maxApps) {
         String content;
-        if (maxApps > -1) {
-            if (maxApps == context.getResources().getInteger(R.integer.max_apps_to_request)) {
-                content = context.getResources().getString(R.string.apps_limit_dialog, String.valueOf(maxApps));
-            } else {
-                content = context.getResources().getString(R.string.apps_limit_dialog_more, String.valueOf(maxApps));
-            }
-            new MaterialDialog.Builder(context)
-                    .title(R.string.section_icon_request)
-                    .content(content)
-                    .positiveText(android.R.string.ok)
-                    .show();
+        if (maxApps == context.getResources().getInteger(R.integer.max_apps_to_request)) {
+            content = context.getResources().getString(R.string.apps_limit_dialog, String.valueOf(maxApps));
+        } else {
+            content = context.getResources().getString(R.string.apps_limit_dialog_more, String.valueOf(maxApps));
         }
+        new MaterialDialog.Builder(context)
+                .title(R.string.section_icon_request)
+                .content(content)
+                .positiveText(android.R.string.ok)
+                .show();
     }
 
     public static void showRequestTimeLimitDialog(Context context, int minutes) {

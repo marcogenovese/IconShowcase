@@ -475,23 +475,20 @@ public class Utils {
 
         Calendar c = Calendar.getInstance();
 
-        int requestsLeft = mPrefs.getRequestsLeft(context);
+        int requestsLeft = mPrefs.getRequestsLeft();
 
-        if (requestsLeft > -1) {
-            if (requestsLeft > 0) {
-                return requestsLeft;
+        if (requestsLeft > 0) {
+            return requestsLeft;
+        } else {
+            boolean hasHappenedTheTime = timeHappened(numOfMinutes, mPrefs, c);
+            if (!hasHappenedTheTime) {
+                return -2;
             } else {
-                boolean hasHappenedTheTime = timeHappened(numOfMinutes, mPrefs, c);
-                if (!hasHappenedTheTime) {
-                    return -2;
-                } else {
-                    mPrefs.resetRequestsLeft(context);
-                    return mPrefs.getRequestsLeft(context);
-                }
+                mPrefs.resetRequestsLeft(context);
+                return mPrefs.getRequestsLeft(context);
             }
         }
 
-        return requestsLeft;
     }
 
     @SuppressLint("DefaultLocale")

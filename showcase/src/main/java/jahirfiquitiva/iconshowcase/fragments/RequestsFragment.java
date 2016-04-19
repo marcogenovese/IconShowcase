@@ -66,7 +66,7 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
     private static RecyclerFastScroller fastScroller;
     public static RequestsAdapter requestsAdapter;
     private static FloatingActionButton fab;
-    private static int maxApps = 0, minutesLimit = 0;
+    private static int maxApps = 0, minutesLimit = 0, maxAppsFromRes = 0;
     private ViewGroup layout;
     private static Preferences mPrefs;
     private Activity context;
@@ -79,6 +79,7 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
         int columnsNumber = getResources().getInteger(R.integer.requests_grid_width);
 
         minutesLimit = getResources().getInteger(R.integer.limit_request_to_x_minutes);
+        maxAppsFromRes = context.getResources().getInteger(R.integer.max_apps_to_request);
 
         setHasOptionsMenu(true);
         context = getActivity();
@@ -221,7 +222,7 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
                 ISDialogs.showPermissionNotGrantedDialog(context);
 
             } else {
-                if (mPrefs.getRequestsLeft() > -1) {
+                if (maxAppsFromRes > -1) {
                     if (requestsAdapter.getSelectedApps() <= mPrefs.getRequestsLeft()) {
                         final MaterialDialog dialog = ISDialogs.showBuildingRequestDialog(context);
                         dialog.show();
@@ -229,10 +230,9 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
                         new ZipFilesToRequest((Activity) context, dialog,
                                 ((RequestsAdapter) mRecyclerView.getAdapter()).appsList).execute();
                     } else {
-                        if (maxApps < 0) {
-                            maxApps = 0;
-                        }
-                        ISDialogs.showRequestLimitDialog(context, maxApps);
+                        int newMaxApps = 0;
+                        newMaxApps = maxApps < 0 ? 0 : maxApps;
+                        ISDialogs.showRequestLimitDialog(context, newMaxApps);
                     }
                 } else {
                     final MaterialDialog dialog = ISDialogs.showBuildingRequestDialog(context);
@@ -254,7 +254,7 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
     }
 
     private void startRequestProcess() {
-        if (context.getResources().getInteger(R.integer.max_apps_to_request) > -1) {
+        if (maxAppsFromRes > -1) {
             if (mPrefs.getRequestsLeft() <= 0) {
                 if (requestsAdapter.getSelectedApps() < mPrefs.getRequestsLeft()) {
                     showRequestsFilesCreationDialog(context);
@@ -274,7 +274,7 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
 
     private void setupMaxApps() {
         if (!mPrefs.getRequestsCreated()) {
-            mPrefs.setRequestsLeft(context.getResources().getInteger(R.integer.max_apps_to_request));
+            mPrefs.setRequestsLeft(maxAppsFromRes);
         }
         maxApps = mPrefs.getRequestsLeft();
     }
