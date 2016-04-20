@@ -75,15 +75,15 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        context = getActivity();
         int gridSpacing = getResources().getDimensionPixelSize(R.dimen.lists_padding);
         int columnsNumber = getResources().getInteger(R.integer.requests_grid_width);
 
         minutesLimit = getResources().getInteger(R.integer.limit_request_to_x_minutes);
-        maxAppsFromRes = context.getResources().getInteger(R.integer.max_apps_to_request);
+        maxAppsFromRes = getResources().getInteger(R.integer.max_apps_to_request);
 
         setHasOptionsMenu(true);
 
+        context = getActivity();
         mPrefs = new Preferences(context);
 
         setupMaxApps();
