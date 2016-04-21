@@ -251,14 +251,18 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
     }
 
     private void startRequestProcess() {
-        if (mPrefs.getRequestsLeft() <= 0) {
-            if (requestsAdapter.getSelectedApps() < mPrefs.getRequestsLeft()) {
-                showRequestsFilesCreationDialog(context);
-            } else if ((Utils.canRequestXApps(context, minutesLimit, mPrefs) != -2)
-                    || (minutesLimit <= 0)) {
-                showRequestsFilesCreationDialog(context);
+        if (getResources().getInteger(R.integer.max_apps_to_request) > -1) {
+            if (mPrefs.getRequestsLeft() <= 0) {
+                if (requestsAdapter.getSelectedApps() < mPrefs.getRequestsLeft()) {
+                    showRequestsFilesCreationDialog(context);
+                } else if ((Utils.canRequestXApps(context, minutesLimit, mPrefs) != -2)
+                        || (minutesLimit <= 0)) {
+                    showRequestsFilesCreationDialog(context);
+                } else {
+                    ISDialogs.showRequestTimeLimitDialog(context, minutesLimit);
+                }
             } else {
-                ISDialogs.showRequestTimeLimitDialog(context, minutesLimit);
+                showRequestsFilesCreationDialog(context);
             }
         } else {
             showRequestsFilesCreationDialog(context);
