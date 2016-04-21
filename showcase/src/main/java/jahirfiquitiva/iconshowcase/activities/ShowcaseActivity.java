@@ -585,7 +585,7 @@ public class ShowcaseActivity extends AppCompatActivity implements
         } else if (i == R.id.select_all) {
             RequestsAdapter requestsAdapter = RequestsFragment.requestsAdapter;
             if (requestsAdapter != null && RequestsFragment.requestsAdapter.appsList.size() > 0) {
-                RequestsFragment.requestsAdapter.selectOrDeselectAll(SELECT_ALL_APPS, mPrefs);
+                RequestsFragment.requestsAdapter.selectOrDeselectAll(SELECT_ALL_APPS);
                 SELECT_ALL_APPS = !SELECT_ALL_APPS;
             }
         }
