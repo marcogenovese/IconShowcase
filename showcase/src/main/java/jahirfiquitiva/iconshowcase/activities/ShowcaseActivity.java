@@ -356,7 +356,6 @@ public class ShowcaseActivity extends AppCompatActivity implements
                 loadIcons.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
-
                     }
                 });
                 if (!SHOW_LOAD_ICONS_DIALOG) {
@@ -585,7 +584,7 @@ public class ShowcaseActivity extends AppCompatActivity implements
         } else if (i == R.id.select_all) {
             RequestsAdapter requestsAdapter = RequestsFragment.requestsAdapter;
             if (requestsAdapter != null && RequestsFragment.requestsAdapter.appsList.size() > 0) {
-                RequestsFragment.requestsAdapter.selectOrDeselectAll(SELECT_ALL_APPS);
+                RequestsFragment.requestsAdapter.selectOrDeselectAll(SELECT_ALL_APPS, mPrefs);
                 SELECT_ALL_APPS = !SELECT_ALL_APPS;
             }
         }
