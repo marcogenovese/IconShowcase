@@ -218,7 +218,7 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
                 ISDialogs.showPermissionNotGrantedDialog(context);
 
             } else {
-                if (maxApps > -1) {
+                if (getResources().getInteger(R.integer.max_apps_to_request) > -1) {
                     if (maxApps < 0) {
                         maxApps = 0;
                     }

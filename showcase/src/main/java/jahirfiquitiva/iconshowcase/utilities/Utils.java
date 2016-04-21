@@ -501,16 +501,16 @@ public class Utils {
         mPrefs.setRequestsCreated(true);
     }
 
+    @SuppressLint("DefaultLocale")
     public static boolean timeHappened(int numOfMinutes, Preferences mPrefs, Calendar c) {
         float hours = (numOfMinutes + 1) / 60.0f;
         float hoursToDays = hours / 24.0f;
-        boolean hasHappenedTheTime = false;
 
         String time = mPrefs.getRequestHour();
         int dayNum = mPrefs.getRequestDay();
 
         if (numOfMinutes <= 0) {
-            hasHappenedTheTime = true;
+            return true;
         } else {
             if (!(time.equals("null"))) {
 
@@ -554,19 +554,18 @@ public class Utils {
                 int min = (int) (difference - (1000 * 60 * 60 * 24 * days) - (1000 * 60 * 60 * hoursHappened)) / (1000 * 60);
 
                 if (days >= hoursToDays) {
-                    hasHappenedTheTime = true;
+                    return true;
                 } else if (hoursHappened >= hours) {
-                    hasHappenedTheTime = true;
+                    return true;
                 } else if (min >= numOfMinutes) {
-                    hasHappenedTheTime = true;
+                    return true;
+                } else {
+                    return false;
                 }
             } else {
-                hasHappenedTheTime = true;
+                return true;
             }
         }
-
-        return hasHappenedTheTime;
-
     }
 
     public static int getSecondsLeftToEnableRequest(Context context,
