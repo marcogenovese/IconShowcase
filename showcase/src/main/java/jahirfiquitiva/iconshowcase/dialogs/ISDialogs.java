@@ -112,16 +112,17 @@ public final class ISDialogs {
         ((ShowcaseActivity) context).getChangelogDialog().show();
     }
 
-    public static void showLicenseSuccessDialog(Context context, MaterialDialog.SingleButtonCallback singleButtonCallback) {
+    public static MaterialDialog showLicenseSuccessDialog(Context context,
+                                                          MaterialDialog.SingleButtonCallback
+                                                                  singleButtonCallback) {
         String message = context.getResources().getString(R.string.license_success,
                 context.getResources().getString(R.string.app_name));
-        new MaterialDialog.Builder(context)
+        return new MaterialDialog.Builder(context)
                 .title(R.string.license_success_title)
                 .content(message)
                 .positiveText(R.string.close)
                 .onPositive(singleButtonCallback)
-                .autoDismiss(false)
-                .show();
+                .build();
     }
 
     public static void showLicenseFailDialog(Context context,

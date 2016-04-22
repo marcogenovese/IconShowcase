@@ -227,11 +227,13 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
             if (files != null && files.length > 0) {
                 for (String filename : files) {
-                    if (!filename.equals(fileToIgnore1) && !filename.equals(fileToIgnore2)
-                            && !filename.equals(fileToIgnore3)) {
-                        File file = new File(Environment.getExternalStorageDirectory()
-                                + "/ZooperWidget/" + getFolderName(folder) + "/" + filename);
-                        assetsInstalled = file.exists();
+                    if (filename.contains(".")) {
+                        if (!filename.equals(fileToIgnore1) && !filename.equals(fileToIgnore2)
+                                && !filename.equals(fileToIgnore3)) {
+                            File file = new File(Environment.getExternalStorageDirectory()
+                                    + "/ZooperWidget/" + getFolderName(folder) + "/" + filename);
+                            assetsInstalled = file.exists();
+                        }
                     }
                 }
             }

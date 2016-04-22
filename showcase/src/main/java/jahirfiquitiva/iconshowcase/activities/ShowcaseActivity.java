@@ -234,6 +234,8 @@ public class ShowcaseActivity extends AppCompatActivity implements
             //Do nothing
         }
 
+        runLicenseChecker();
+
         WITH_USER_WALLPAPER_AS_TOOLBAR_HEADER = getResources().getBoolean(R.bool.user_wallpaper_in_home);
         WITH_ICONS_BASED_CHANGELOG = getResources().getBoolean(R.bool.icons_changelog);
 
@@ -487,7 +489,6 @@ public class ShowcaseActivity extends AppCompatActivity implements
         if (mPrefs == null) {
             mPrefs = new Preferences(this);
         }
-        runLicenseChecker();
         if (!iconsPicker && !wallsPicker) {
             setupToolbarHeader(this, toolbarHeader);
         }
@@ -661,21 +662,9 @@ public class ShowcaseActivity extends AppCompatActivity implements
                     installedFromPlayStore = true;
                 }
                 if (installedFromPlayStore) {
-                    ISDialogs.showLicenseSuccessDialog(context, new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
-                            mPrefs.setFeaturesEnabled(true);
-                            showChangelogDialog();
-                        }
-                    });
+                    licenseSuccessDialog().show();
                 } else if (installer.matches("com.amazon.venezia") && WITH_INSTALLED_FROM_AMAZON) {
-                    ISDialogs.showLicenseSuccessDialog(context, new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
-                            mPrefs.setFeaturesEnabled(true);
-                            showChangelogDialog();
-                        }
-                    });
+                    licenseSuccessDialog().show();
                 }
             } else {
                 showNotLicensedDialog((Activity) context, mPrefs, MARKET_URL);
@@ -685,6 +674,35 @@ public class ShowcaseActivity extends AppCompatActivity implements
             showNotLicensedDialog((Activity) context, mPrefs, MARKET_URL);
         }
 
+    }
+
+    private MaterialDialog licenseSuccessDialog() {
+        MaterialDialog successDialog = ISDialogs.showLicenseSuccessDialog(context,
+                new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+                        mPrefs.setFeaturesEnabled(true);
+                        showChangelogDialog();
+                    }
+                });
+
+        successDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                mPrefs.setFeaturesEnabled(true);
+                showChangelogDialog();
+            }
+        });
+
+        successDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                mPrefs.setFeaturesEnabled(true);
+                showChangelogDialog();
+            }
+        });
+
+        return successDialog;
     }
 
     private void showNotLicensedDialog(final Activity act, Preferences mPrefs, final String MARKET_URL) {

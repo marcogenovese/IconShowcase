@@ -59,14 +59,18 @@ public class CopyFilesToStorage extends AsyncTask<Void, String, Boolean> {
                 for (String filename : files) {
                     InputStream in;
                     OutputStream out;
-                    try {
-                        in = assetManager.open(folder + "/" + filename);
-                        out = new FileOutputStream(Environment.getExternalStorageDirectory().toString() + "/ZooperWidget/" + getFolderName(folder) + "/" + filename);
-                        copyFiles(in, out);
-                        in.close();
-                        out.close();
-                    } catch (Exception e) {
-                        //Do nothing
+                    if (filename.contains(".")) {
+                        try {
+                            in = assetManager.open(folder + "/" + filename);
+                            out = new FileOutputStream(
+                                    Environment.getExternalStorageDirectory().toString() +
+                                            "/ZooperWidget/" + getFolderName(folder) + "/" + filename);
+                            copyFiles(in, out);
+                            in.close();
+                            out.close();
+                        } catch (Exception e) {
+                            //Do nothing
+                        }
                     }
                 }
             }
@@ -97,6 +101,8 @@ public class CopyFilesToStorage extends AsyncTask<Void, String, Boolean> {
                 return "Fonts";
             case "iconsets":
                 return "IconSets";
+            case "bitmaps":
+                return "Bitmaps";
             default:
                 return folder;
         }
