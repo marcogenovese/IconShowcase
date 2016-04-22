@@ -54,6 +54,33 @@
         <item>TSF|com.tsf.shell</item>
         <item>Unicon Pro|sg.ruqqq.IconThemer</item>
     </string-array>
+	
+	<array name="launcher_colors">
+        <item>@color/action_launcher_color</item>
+        <item>@color/adw_launcher_color</item>
+        <item>@color/adw_ex_launcher_color</item>
+        <item>@color/apex_launcher_color</item>
+        <item>@color/atom_launcher_color</item>
+        <item>@color/aviate_launcher_color</item>
+        <item>@color/cm_theme_engine_color</item>
+        <item>@color/go_launcher_color</item>
+        <item>@color/google_now_launcher_color</item>
+        <item>@color/holo_launcher_color</item>
+        <item>@color/holo_ics_launcher_color</item>
+        <item>@color/kk_launcher_color</item>
+        <item>@color/l_launcher_color</item>
+        <item>@color/lg_home_color</item>
+        <item>@color/lucid_launcher_color</item>
+        <item>@color/mini_launcher_color</item>
+        <item>@color/next_launcher_color</item>
+        <item>@color/nova_launcher_color</item>
+        <item>@color/s_launcher_color</item>
+        <item>@color/smart_launcher_color</item>
+        <item>@color/smart_pro_launcher_color</item>
+        <item>@color/solo_launcher_color</item>
+        <item>@color/tsf_launcher_color</item>
+        <item>@color/unicon_pro_color</item>
+    </array>
 
     <!-- COLORS FOR INSTALLED LAUNCHERS -->
     <color name="action_launcher_color">#f44336</color>
