@@ -54,10 +54,12 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         viewGroup, false);
                 return new WelcomeCard(welcomeCard);
             case 1:
-                View infoCard = LayoutInflater.from(
-                        viewGroup.getContext()).inflate(R.layout.item_packinfo_card,
-                        viewGroup, false);
-                return new AppInfoCard(infoCard);
+                if (!(context.getResources().getBoolean(R.bool.hide_pack_info))) {
+                    View infoCard = LayoutInflater.from(
+                            viewGroup.getContext()).inflate(R.layout.item_packinfo_card,
+                            viewGroup, false);
+                    return new AppInfoCard(infoCard);
+                }
             case 2:
                 if (!hasAppsList) {
                     View moreAppsCard = LayoutInflater.from(
@@ -146,11 +148,6 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             widgetsT = (TextView) itemView.findViewById(R.id.text_included_widgets);
             widgetsT.setText(context.getResources().getString(R.string.included_widgets, includedWidgets));
-
-            packInfo = (LinearLayout) itemView.findViewById(R.id.appDetails);
-            packInfo.setVisibility(context.getResources().getBoolean(R.bool.hide_pack_info) ?
-                    View.GONE :
-                    View.VISIBLE);
 
             if (!ShowcaseActivity.WITH_ZOOPER_SECTION) {
                 widgets = (LinearLayout) itemView.findViewById(R.id.widgets);
