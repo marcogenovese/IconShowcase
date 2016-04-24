@@ -101,7 +101,7 @@ public class ShowcaseActivity extends AppCompatActivity implements
     private static boolean WITH_LICENSE_CHECKER = false,
             WITH_INSTALLED_FROM_AMAZON = false,
             WITH_DONATIONS_SECTION = false,
-            WITH_ICONS_BASED_CHANGELOG = true,
+            WITH_ICONS_BASED_CHANGELOG = false,
 
     //Donations stuff
     DONATIONS_GOOGLE = false,
@@ -209,6 +209,11 @@ public class ShowcaseActivity extends AppCompatActivity implements
 
         DEBUGGING = getResources().getBoolean(R.bool.debugging);
 
+        WITH_USER_WALLPAPER_AS_TOOLBAR_HEADER = getResources().getBoolean(R.bool.user_wallpaper_in_home);
+        WITH_ICONS_BASED_CHANGELOG = getResources().getBoolean(R.bool.icons_changelog);
+
+        shuffleIcons = getResources().getBoolean(R.bool.shuffle_toolbar_icons);
+
         mPrefs.setActivityVisible(true);
 
         String[] configurePrimaryDrawerItems = getResources().getStringArray(R.array.primary_drawer_items);
@@ -235,11 +240,6 @@ public class ShowcaseActivity extends AppCompatActivity implements
         }
 
         runLicenseChecker();
-
-        WITH_USER_WALLPAPER_AS_TOOLBAR_HEADER = getResources().getBoolean(R.bool.user_wallpaper_in_home);
-        WITH_ICONS_BASED_CHANGELOG = getResources().getBoolean(R.bool.icons_changelog);
-
-        shuffleIcons = getResources().getBoolean(R.bool.shuffle_toolbar_icons);
 
         setupDonations();
 
