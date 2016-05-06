@@ -119,6 +119,19 @@ public class MainFragment extends Fragment {
         if (hasAppsList) {
             for (int i = 0; i < appsNames.length; i++) {
                 try {
+                    if (appsPackages[i].indexOf("http") != -1) { //checks if package is a site
+                        homeCards.add(new HomeCard.Builder()
+                                .context(getActivity())
+                                .title(appsNames[i])
+                                .description(appsDescriptions[i])
+                                .icon(ContextCompat.getDrawable(context,
+                                        Utils.getIconResId(context, getResources(),
+                                                context.getPackageName(), appsIcons[i],
+                                                null)))
+                                .onClickLink(appsPackages[i], false, false, null)
+                                .build());
+                        continue;
+                    }
                     Intent intent;
                     boolean isInstalled = Utils.isAppInstalled(context, appsPackages[i]);
                     if (isInstalled) {
