@@ -1101,7 +1101,11 @@ public class ShowcaseActivity extends AppCompatActivity implements
 
     public void setupToolbarHeader(Context context, ImageView toolbarHeader) {
 
-        if (WITH_USER_WALLPAPER_AS_TOOLBAR_HEADER && mPrefs.getWallpaperAsToolbarHeaderEnabled()) {
+        if (themeMode) {
+            wallpaperDrawable = ContextCompat.getDrawable(context, R.drawable.heroimage);
+            toolbarHeader.setImageDrawable(wallpaperDrawable);
+            toolbarHeaderImage = Utils.drawableToBitmap(wallpaperDrawable);
+        } else if (WITH_USER_WALLPAPER_AS_TOOLBAR_HEADER && mPrefs.getWallpaperAsToolbarHeaderEnabled()) {
             WallpaperManager wm = WallpaperManager.getInstance(context);
 
             if (wm != null) {
