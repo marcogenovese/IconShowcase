@@ -64,6 +64,7 @@
     <color name="home_clear_background">#aa000000</color>
     <color name="material_drawer_clear_background">#bb000000</color>
     <color name="md_background_color_clear">@color/dark_bg</color>
+    <color name="fab_background_tint_clear_theme">#33ffffff</color>
 
     <!-- COLORS FOR INSTALLED LAUNCHERS -->
     <color name="action_launcher_color">#f44336</color>
