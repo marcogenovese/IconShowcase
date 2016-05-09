@@ -242,15 +242,15 @@ public class MainFragment extends Fragment {
 
         if (themeMode) {
             modifyFABIcon();
-            fab.setVisibility(View.VISIBLE);
             fab.show();
+            fab.setVisibility(View.VISIBLE);
         } else {
             if (!hasAppsList) {
-                fab.setVisibility(View.VISIBLE);
                 fab.show();
+                fab.setVisibility(View.VISIBLE);
             } else {
-                fab.setVisibility(View.GONE);
                 fab.hide();
+                fab.setVisibility(View.GONE);
             }
         }
 
