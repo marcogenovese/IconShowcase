@@ -50,6 +50,7 @@ import jahirfiquitiva.iconshowcase.dialogs.FolderChooserDialog;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.fragments.base.PreferenceFragment;
 import jahirfiquitiva.iconshowcase.services.NotificationsReceiver;
+import jahirfiquitiva.iconshowcase.utilities.color.ColorExtractor;
 import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
@@ -122,7 +123,7 @@ public class SettingsFragment extends PreferenceFragment implements
                     ((ShowcaseActivity) getActivity()).setupToolbarHeader(
                             getActivity(),
                             ((ShowcaseActivity) getActivity()).getToolbarHeader());
-                    Utils.setupToolbarIconsAndTextsColors(
+                    ColorExtractor.setupToolbarIconsAndTextsColors(
                             getActivity(),
                             ((ShowcaseActivity) getActivity()).getAppbar(),
                             ((ShowcaseActivity) getActivity()).getToolbar(),

@@ -21,31 +21,6 @@
 <resources>
 
     <!--
-    Do you want the app to use palette api in wallpapers section?
-    True, means yes.
-    False, means no.
-    -->
-    <bool name="use_palette_api">true</bool>
-
-    <!--
-    Do you want the app to use palette api in texts in wallpapers section?
-    True, means yes.
-    False, means no.
-    -->
-    <bool name="use_palette_api_in_texts">false</bool>
-
-    <!--
-    Choose one of the palette styles: (use only the numbers here (1~6))
-    1. VIBRANT
-    2. VIBRANT_LIGHT
-    3. VIBRANT_DARK
-    4. MUTED
-    5. MUTED_LIGHT
-    6. MUTED_DARK
-    -->
-    <integer name="palette_swatch">1</integer>
-
-    <!--
        Do you want the app to use palette api in wallpapers viewer?
        True, means yes.
        False, means no.

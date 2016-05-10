@@ -89,6 +89,7 @@ import jahirfiquitiva.iconshowcase.models.WallpapersList;
 import jahirfiquitiva.iconshowcase.services.NotificationsService;
 import jahirfiquitiva.iconshowcase.tasks.LoadIconsLists;
 import jahirfiquitiva.iconshowcase.tasks.TasksExecutor;
+import jahirfiquitiva.iconshowcase.utilities.color.ColorExtractor;
 import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
@@ -492,7 +493,7 @@ public class ShowcaseActivity extends AppCompatActivity implements
         if (!iconsPicker && !wallsPicker) {
             setupToolbarHeader(this, toolbarHeader);
         }
-        Utils.setupToolbarIconsAndTextsColors(context, appbar, toolbar, toolbarHeaderImage, false);
+        ColorExtractor.setupToolbarIconsAndTextsColors(context, appbar, toolbar, toolbarHeaderImage, false);
         if (mLastTheme != ThemeUtils.darkTheme
                 || mLastNavBar != ThemeUtils.coloredNavBar) {
             ThemeUtils.restartActivity(this);
@@ -661,10 +662,12 @@ public class ShowcaseActivity extends AppCompatActivity implements
                 if (installer.matches("com.google.android.feedback") || installer.matches("com.android.vending")) {
                     installedFromPlayStore = true;
                 }
-                if (installedFromPlayStore) {
-                    licenseSuccessDialog().show();
-                } else if (installer.matches("com.amazon.venezia") && WITH_INSTALLED_FROM_AMAZON) {
-                    licenseSuccessDialog().show();
+                if (mPrefs.isFirstRun()) {
+                    if (installedFromPlayStore) {
+                        licenseSuccessDialog().show();
+                    } else if (installer.matches("com.amazon.venezia") && WITH_INSTALLED_FROM_AMAZON) {
+                        licenseSuccessDialog().show();
+                    }
                 }
             } else {
                 showNotLicensedDialog((Activity) context, mPrefs, MARKET_URL);

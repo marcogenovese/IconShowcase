@@ -244,48 +244,6 @@ public class Utils {
         coordinatorLayout.setScrollAllowed(true);
     }
 
-    public static void setupToolbarIconsAndTextsColors(Context context, AppBarLayout appbar,
-                                                       final Toolbar toolbar, final Bitmap bitmap,
-                                                       boolean forViewer) {
-
-        final int iconsColor = ThemeUtils.darkTheme ?
-                ContextCompat.getColor(context, R.color.toolbar_text_dark) :
-                ContextCompat.getColor(context, R.color.toolbar_text_light);
-
-        int paletteGeneratedColor;
-
-        if (context.getResources().getBoolean(R.bool.use_palette_api_in_toolbar)) {
-            paletteGeneratedColor = getIconsColorFromBitmap(bitmap, context, forViewer);
-            if (paletteGeneratedColor == 0 && bitmap != null) {
-                if (ColorUtils.isDark(bitmap)) {
-                    paletteGeneratedColor = Color.parseColor("#59ffffff");
-                } else {
-                    paletteGeneratedColor = Color.parseColor("#59000000");
-                }
-            }
-        } else {
-            paletteGeneratedColor = Color.parseColor("#8cffffff");
-        }
-
-        final int finalPaletteGeneratedColor = paletteGeneratedColor;
-
-        if (appbar != null) {
-            appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-                @SuppressWarnings("ResourceAsColor")
-                @Override
-                public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                    double alpha = round(((double) (verticalOffset * -1) / 288.0), 1);
-                    int paletteColor = ColorUtils.blendColors(
-                            finalPaletteGeneratedColor != 0 ? finalPaletteGeneratedColor : iconsColor,
-                            iconsColor, alpha > 1.0 ? 1.0f : (float) alpha);
-                    if (toolbar != null) {
-                        ToolbarColorizer.colorizeToolbar(toolbar, paletteColor);
-                    }
-                }
-            });
-        }
-    }
-
     @SuppressWarnings("ResourceAsColor")
     public static void setupCollapsingToolbarTextColors(Context context,
                                                         CollapsingToolbarLayout collapsingToolbarLayout) {
@@ -355,68 +313,7 @@ public class Utils {
         return Bitmap.createBitmap(newBitmap, minX, minY, (maxX - minX) + 1, (maxY - minY) + 1);
     }
 
-    public static int getIconsColorFromBitmap(Bitmap bitmap, Context context, boolean forViewer) {
-        int color = 0;
-        boolean isDark;
 
-        if (bitmap != null) {
-
-            boolean swatchNotNull = false;
-
-            Palette palette = new Palette.Builder(bitmap)
-                    .generate();
-
-            isDark = ColorUtils.isDark(bitmap);
-
-            Palette.Swatch swatch1, swatch2, swatch3, swatch4;
-
-            if (isDark) {
-                swatch1 = palette.getLightVibrantSwatch();
-                swatch2 = palette.getLightMutedSwatch();
-            } else {
-                swatch1 = palette.getVibrantSwatch();
-                swatch2 = palette.getMutedSwatch();
-            }
-
-            swatch3 = palette.getDarkVibrantSwatch();
-            swatch4 = palette.getDarkMutedSwatch();
-
-            if (swatch1 != null) {
-                swatchNotNull = true;
-                color = swatch1.getRgb();
-            } else if (swatch2 != null) {
-                swatchNotNull = true;
-                color = swatch2.getRgb();
-            } else if (swatch3 != null) {
-                swatchNotNull = true;
-                color = swatch3.getRgb();
-            } else if (swatch4 != null) {
-                swatchNotNull = true;
-                color = swatch4.getRgb();
-            }
-
-            if (swatchNotNull) {
-                float[] values = getActualSValues(ColorUtils.S, forViewer);
-                float colorAlpha = values[0], tintFactor = values[1];
-                int colorToBlend =
-                        ColorUtils.adjustAlpha(
-                                ContextCompat.getColor(context,
-                                        isDark ? android.R.color.white : android.R.color.black),
-                                colorAlpha);
-                color = ColorUtils.blendColors(color, colorToBlend, tintFactor);
-            }
-
-        }
-
-        return color;
-    }
-
-    private static double round(double value, int places) {
-        if (places < 0) throw new IllegalArgumentException();
-        BigDecimal bd = new BigDecimal(value);
-        bd = bd.setScale(places, RoundingMode.HALF_UP);
-        return bd.doubleValue();
-    }
 
     public static int convertMinutesToMillis(int minute) {
         return minute * 60 * 1000;
@@ -424,36 +321,6 @@ public class Utils {
 
     public static int convertMillisToMinutes(int millis) {
         return millis / 60 / 1000;
-    }
-
-    private static float[] getActualSValues(float s, boolean forViewer) {
-        float[] values = new float[2];
-        float alpha, factor;
-        if (s < 0.51f) {
-            alpha = (s + 1.0f) - (s * 3.0f);
-            if (!forViewer) {
-                alpha = alpha + 0.2f;
-            }
-        } else {
-            alpha = ((s * 2.0f) - 1.0f) + 0.1f;
-        }
-
-        if (forViewer) {
-            factor = 0.8f;
-        } else {
-            factor = 0.5f;
-        }
-
-        if (s < 0.0f) {
-            alpha = 0.0f;
-        } else if (s > 1.0f) {
-            alpha = 1.0f;
-        }
-
-        values[0] = alpha;
-        values[1] = factor;
-
-        return values;
     }
 
     public static int getIconResId(Context context, Resources r, String p, String name, String task) {

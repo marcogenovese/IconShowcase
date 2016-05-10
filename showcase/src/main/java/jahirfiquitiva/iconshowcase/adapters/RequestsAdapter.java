@@ -42,7 +42,6 @@ import jahirfiquitiva.iconshowcase.utilities.Utils;
 public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.RequestsHolder> {
 
     public interface ClickListener {
-
         void onClick(int index);
     }
 

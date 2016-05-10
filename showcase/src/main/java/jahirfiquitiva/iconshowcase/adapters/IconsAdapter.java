@@ -33,6 +33,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -52,6 +53,7 @@ import java.util.Locale;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.models.IconItem;
+import jahirfiquitiva.iconshowcase.utilities.color.ColorExtractor;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
@@ -101,8 +103,7 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
         if (position < 0) return;
 
         Glide.with(context)
-                .load(
-                        iconsList.get(holder.getAdapterPosition()).getResId())
+                .load(iconsList.get(holder.getAdapterPosition()).getResId())
                 .asBitmap()
                 .into(new BitmapImageViewTarget(holder.icon) {
                     @Override
@@ -125,6 +126,7 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
             @Override
             public void onClick(View v) {
                 int resId = iconsList.get(holder.getAdapterPosition()).getResId();
+                Drawable icon = ContextCompat.getDrawable(context, resId);
                 String name = iconsList.get(holder.getAdapterPosition()).getName().toLowerCase(Locale.getDefault());
 
                 if (ShowcaseActivity.iconsPicker) {
@@ -156,6 +158,7 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
                                 .customView(R.layout.dialog_icon, false)
                                 .title(Utils.makeTextReadable(name))
                                 .positiveText(R.string.close)
+                                .positiveColor(ColorExtractor.getPreferredColorFromDrawable(icon, context, true))
                                 .show();
 
                         if (dialog.getCustomView() != null) {

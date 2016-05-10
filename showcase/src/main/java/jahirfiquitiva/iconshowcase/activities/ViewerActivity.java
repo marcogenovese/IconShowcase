@@ -76,6 +76,7 @@ import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.models.WallpaperItem;
 import jahirfiquitiva.iconshowcase.tasks.ApplyWallpaper;
 import jahirfiquitiva.iconshowcase.tasks.WallpaperToCrop;
+import jahirfiquitiva.iconshowcase.utilities.color.ColorExtractor;
 import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
@@ -356,7 +357,7 @@ public class ViewerActivity extends AppCompatActivity {
     private void colorizeToolbar(Bitmap picture, boolean usePalette) {
         int paletteIconsColor;
         if (usePalette) {
-            paletteIconsColor = Utils.getIconsColorFromBitmap(picture, context, true);
+            paletteIconsColor = ColorExtractor.getIconsColorFromBitmap(picture, context, true);
             if (paletteIconsColor == 0) {
                 int light = Color.parseColor("#59000000");
                 int dark = Color.parseColor("#59ffffff");
@@ -377,7 +378,7 @@ public class ViewerActivity extends AppCompatActivity {
     private int getSpinnerColor(Bitmap picture, boolean usePalette) {
         int paletteIconsColor, finalColor;
         if (usePalette) {
-            paletteIconsColor = Utils.getIconsColorFromBitmap(picture, context, true);
+            paletteIconsColor = ColorExtractor.getIconsColorFromBitmap(picture, context, true);
             if (paletteIconsColor == 0) {
                 int light = Color.parseColor("#59000000");
                 int dark = Color.parseColor("#59ffffff");

@@ -23,7 +23,6 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.FloatRange;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.graphics.Palette;
 
 import java.lang.annotation.Retention;
@@ -84,23 +83,9 @@ public class ColorUtils {
     public static
     @Lightness
     int isDark(Palette palette) {
-        Palette.Swatch mostPopulous = getMostPopulousSwatch(palette);
+        Palette.Swatch mostPopulous = ColorExtractor.getProminentColor(palette);
         if (mostPopulous == null) return LIGHTNESS_UNKNOWN;
         return isDark(mostPopulous.getHsl()) ? IS_DARK : IS_LIGHT;
-    }
-
-    public static
-    @Nullable
-    Palette.Swatch getMostPopulousSwatch(Palette palette) {
-        Palette.Swatch mostPopulous = null;
-        if (palette != null) {
-            for (Palette.Swatch swatch : palette.getSwatches()) {
-                if (mostPopulous == null || swatch.getPopulation() > mostPopulous.getPopulation()) {
-                    mostPopulous = swatch;
-                }
-            }
-        }
-        return mostPopulous;
     }
 
     /**

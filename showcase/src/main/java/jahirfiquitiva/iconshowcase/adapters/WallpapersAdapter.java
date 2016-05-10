@@ -47,6 +47,7 @@ import java.util.ArrayList;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.models.WallpaperItem;
+import jahirfiquitiva.iconshowcase.utilities.color.ColorExtractor;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 
 public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.WallsHolder> {
@@ -61,38 +62,12 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
 
     private ArrayList<WallpaperItem> wallsList;
 
-    private boolean USE_PALETTE = true, USE_PALETTE_IN_TEXTS = false;
-    private String PALETTE_STYLE = "VIBRANT";
-
     private final ClickListener mCallback;
 
     public WallpapersAdapter(Activity context, ClickListener callback) {
         this.context = context;
         this.mCallback = callback;
         this.mPrefs = new Preferences(context);
-
-        USE_PALETTE = context.getResources().getBoolean(R.bool.use_palette_api);
-        USE_PALETTE_IN_TEXTS = context.getResources().getBoolean(R.bool.use_palette_api_in_texts);
-        switch (context.getResources().getInteger(R.integer.palette_swatch)) {
-            case 1:
-                PALETTE_STYLE = "VIBRANT";
-                break;
-            case 2:
-                PALETTE_STYLE = "VIBRANT_LIGHT";
-                break;
-            case 3:
-                PALETTE_STYLE = "VIBRANT_DARK";
-                break;
-            case 4:
-                PALETTE_STYLE = "MUTED";
-                break;
-            case 5:
-                PALETTE_STYLE = "MUTED_LIGHT";
-                break;
-            case 6:
-                PALETTE_STYLE = "MUTED_DARK";
-                break;
-        }
     }
 
     public void setData(ArrayList<WallpaperItem> wallsList) {
@@ -108,7 +83,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
 
     @Override
     public void onBindViewHolder(final WallsHolder holder, int position) {
-        WallpaperItem wallItem = wallsList.get(position);
+        final WallpaperItem wallItem = wallsList.get(position);
 
         ViewCompat.setTransitionName(holder.wall, "transition" + position);
 
@@ -123,6 +98,9 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
                 .into(new BitmapImageViewTarget(holder.wall) {
                     @Override
                     protected void setResource(Bitmap resource) {
+
+                        Palette.Swatch wallSwatch = ColorExtractor.getProminentColor(resource);
+
                         if (mPrefs.getAnimationsEnabled()) {
                             TransitionDrawable td = new TransitionDrawable(new Drawable[]{new ColorDrawable(Color.TRANSPARENT), new BitmapDrawable(context.getResources(), resource)});
                             holder.wall.setImageDrawable(td);
@@ -131,54 +109,21 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
                             holder.wall.setImageBitmap(resource);
                         }
 
-                        if (USE_PALETTE) {
-                            Palette.from(resource).generate(new Palette.PaletteAsyncListener() {
-                                @Override
-                                public void onGenerated(Palette palette) {
-                                    Palette.Swatch swatch;
-                                    switch (PALETTE_STYLE) {
-                                        case "VIBRANT":
-                                            swatch = palette.getVibrantSwatch();
-                                            break;
-                                        case "VIBRANT_LIGHT":
-                                            swatch = palette.getLightVibrantSwatch();
-                                            break;
-                                        case "VIBRANT_DARK":
-                                            swatch = palette.getDarkVibrantSwatch();
-                                            break;
-                                        case "MUTED":
-                                            swatch = palette.getMutedSwatch();
-                                            break;
-                                        case "MUTED_LIGHT":
-                                            swatch = palette.getLightMutedSwatch();
-                                            break;
-                                        case "MUTED_DARK":
-                                            swatch = palette.getDarkMutedSwatch();
-                                            break;
-                                        default:
-                                            swatch = palette.getVibrantSwatch();
-                                            break;
-                                    }
+                        if (wallSwatch != null) {
+                            if (mPrefs.getAnimationsEnabled()) {
+                                TransitionDrawable td = new TransitionDrawable(
+                                        new Drawable[]{holder.titleBg.getBackground(),
+                                                new ColorDrawable(wallSwatch.getRgb())});
+                                holder.titleBg.setBackground(td);
+                                td.startTransition(250);
+                            } else {
+                                holder.titleBg.setBackgroundColor(wallSwatch.getRgb());
+                            }
 
-                                    if (swatch == null) return;
-
-                                    if (mPrefs.getAnimationsEnabled()) {
-                                        TransitionDrawable td = new TransitionDrawable(
-                                                new Drawable[]{holder.titleBg.getBackground(),
-                                                        new ColorDrawable(swatch.getRgb())});
-                                        holder.titleBg.setBackground(td);
-                                        td.startTransition(250);
-                                    } else {
-                                        holder.titleBg.setBackgroundColor(swatch.getRgb());
-                                    }
-
-                                    if (USE_PALETTE_IN_TEXTS) {
-                                        holder.name.setTextColor(swatch.getTitleTextColor());
-                                        holder.authorName.setTextColor(swatch.getBodyTextColor());
-                                    }
-                                }
-                            });
+                            holder.name.setTextColor(wallSwatch.getBodyTextColor());
+                            holder.authorName.setTextColor(wallSwatch.getTitleTextColor());
                         }
+
                     }
                 });
     }

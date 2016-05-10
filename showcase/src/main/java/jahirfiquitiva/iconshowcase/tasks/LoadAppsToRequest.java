@@ -24,14 +24,17 @@
 package jahirfiquitiva.iconshowcase.tasks;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.SimpleArrayMap;
 
@@ -85,27 +88,11 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
                 continue;
             }
 
-            Drawable icon;
-            try {
-                icon = info.loadIcon(mPackageManager);
-            } catch (Resources.NotFoundException e) {
-                try {
-                    icon = ContextCompat.getDrawable(context, R.drawable.ic_na_launcher);
-                } catch (Resources.NotFoundException e1) {
-                    icon = ThemeUtils.darkTheme ? ToolbarColorizer.getTintedIcon(
-                            ContextCompat.getDrawable(context, R.drawable.abc_btn_radio_material),
-                            ContextCompat.getColor(context, R.color.drawable_tint_dark))
-                            : ToolbarColorizer.getTintedIcon(
-                            ContextCompat.getDrawable(context, R.drawable.abc_btn_radio_material),
-                            ContextCompat.getColor(context, R.color.drawable_tint_light));
-                }
-            }
-
             RequestItem appInfo = new RequestItem(
                     info.loadLabel(mPackageManager).toString(),
                     info.activityInfo.packageName,
                     info.activityInfo.name,
-                    icon);
+                    getAppIcon(info));
 
             appsList.add(appInfo);
         }
@@ -267,26 +254,12 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
                             ResolveInfo info = getResolveInfo(gComponentString(xmlParser, context));
 
                             if (info != null) {
-                                Drawable icon;
-                                try {
-                                    icon = info.loadIcon(mPackageManager);
-                                } catch (Resources.NotFoundException e) {
-                                    try {
-                                        icon = ContextCompat.getDrawable(context, R.drawable.ic_na_launcher);
-                                    } catch (Resources.NotFoundException e1) {
-                                        icon = ThemeUtils.darkTheme ? ToolbarColorizer.getTintedIcon(
-                                                ContextCompat.getDrawable(context, R.drawable.abc_btn_radio_material),
-                                                ContextCompat.getColor(context, R.color.drawable_tint_dark))
-                                                : ToolbarColorizer.getTintedIcon(
-                                                ContextCompat.getDrawable(context, R.drawable.abc_btn_radio_material),
-                                                ContextCompat.getColor(context, R.color.drawable_tint_light));
-                                    }
-                                }
+
                                 RequestItem appInfo = new RequestItem(
                                         info.loadLabel(mPackageManager).toString(),
                                         info.activityInfo.packageName,
                                         info.activityInfo.name,
-                                        icon);
+                                        getAppIcon(info));
 
                                 activitiesToRemove.add(appInfo);
                             }
@@ -352,6 +325,73 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
 
         Utils.showAppFilterLog(context, "----- END OF APPFILTER DEBUG -----");
 
+    }
+
+    public Drawable getAppDefaultActivityIcon() {
+        return getAppIcon(Resources.getSystem(), android.R.mipmap.sym_def_app_icon);
+    }
+
+    @SuppressWarnings("deprecation")
+    public Drawable getAppIcon(Resources resources, int iconId) {
+        Drawable d;
+        try {
+            ActivityManager activityManager = (ActivityManager)
+                    context.get().getSystemService(Context.ACTIVITY_SERVICE);
+            int iconDpi = activityManager.getLauncherLargeIconDensity();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                d = resources.getDrawableForDensity(iconId, iconDpi, null);
+            } else {
+                d = resources.getDrawableForDensity(iconId, iconDpi);
+            }
+        } catch (Resources.NotFoundException e) {
+            try {
+                d = ContextCompat.getDrawable(context.get(), R.drawable.ic_na_launcher);
+            } catch (Resources.NotFoundException e1) {
+                d = ThemeUtils.darkTheme ? ToolbarColorizer.getTintedIcon(
+                        ContextCompat.getDrawable(context.get(), R.drawable.abc_btn_radio_material),
+                        ContextCompat.getColor(context.get(), R.color.drawable_tint_dark))
+                        : ToolbarColorizer.getTintedIcon(
+                        ContextCompat.getDrawable(context.get(), R.drawable.abc_btn_radio_material),
+                        ContextCompat.getColor(context.get(), R.color.drawable_tint_light));
+            }
+        }
+
+        return (d != null) ? d : getAppDefaultActivityIcon();
+    }
+
+    public Drawable getAppIcon(String packageName, int iconId) {
+        Resources resources;
+        try {
+            resources = context.get().getPackageManager().getResourcesForApplication(packageName);
+        } catch (PackageManager.NameNotFoundException e) {
+            resources = null;
+        }
+        if (resources != null) {
+            if (iconId != 0) {
+                return getAppIcon(resources, iconId);
+            }
+        }
+        return getAppDefaultActivityIcon();
+    }
+
+    public Drawable getAppIcon(ResolveInfo info) {
+        return getAppIcon(info.activityInfo);
+    }
+
+    public Drawable getAppIcon(ActivityInfo info) {
+        Resources resources;
+        try {
+            resources = context.get().getPackageManager().getResourcesForApplication(info.applicationInfo);
+        } catch (PackageManager.NameNotFoundException e) {
+            resources = null;
+        }
+        if (resources != null) {
+            int iconId = info.getIconResource();
+            if (iconId != 0) {
+                return getAppIcon(resources, iconId);
+            }
+        }
+        return getAppDefaultActivityIcon();
     }
 
 }

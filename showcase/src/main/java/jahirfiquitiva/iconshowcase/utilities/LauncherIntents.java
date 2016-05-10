@@ -27,6 +27,7 @@ import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.widget.Toast;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
@@ -62,8 +63,8 @@ public class LauncherIntents {
             case "Holo":
                 HoloLauncher(context);
                 break;
-            case "Holohd":
-                HoloLauncherHD(context);
+            case "Holoics":
+                HoloLauncherICS(context);
                 break;
             case "KK":
                 KkLauncher(context);
@@ -158,17 +159,30 @@ public class LauncherIntents {
     }
 
     private void CMThemeEngine(Context context) {
+        boolean themesAppInstalled = true;
         Intent intent = new Intent("android.intent.action.MAIN");
-        intent.setComponent(new ComponentName("org.cyanogenmod.theme.chooser",
-                "org.cyanogenmod.theme.chooser.ChooserActivity"));
-        intent.putExtra("pkgName", context.getPackageName());
-        try {
-            context.startActivity(intent);
-        } catch (ActivityNotFoundException e) {
+
+        if (Utils.isAppInstalled(context, "org.cyanogenmod.theme.chooser")) {
+            intent.setComponent(new ComponentName("org.cyanogenmod.theme.chooser",
+                    "org.cyanogenmod.theme.chooser.ChooserActivity"));
+        } else if (Utils.isAppInstalled(context, "com.cyngn.theme.chooser")) {
             intent.setComponent(new ComponentName("com.cyngn.theme.chooser",
                     "com.cyngn.theme.chooser.ChooserActivity"));
+        } else {
+            themesAppInstalled = false;
+        }
+
+        if (themesAppInstalled) {
             intent.putExtra("pkgName", context.getPackageName());
-            context.startActivity(intent);
+            try {
+                context.startActivity(intent);
+            } catch (ActivityNotFoundException e) {
+                Toast.makeText(context, "Impossible to open themes app.",
+                        Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(context, "Themes app is not installed in this device.",
+                    Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -183,11 +197,11 @@ public class LauncherIntents {
 
     private void HoloLauncher(Context context) {
         Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.setComponent(new ComponentName("com.mobint.hololauncher", "com.mobint.hololauncher.SettingsActivity"));
+        intent.setComponent(new ComponentName("com.mobint.hololauncher", "com.mobint.hololauncher.Settings"));
         context.startActivity(intent);
     }
 
-    private void HoloLauncherHD(Context context) {
+    private void HoloLauncherICS(Context context) {
         Intent holohdApply = new Intent(Intent.ACTION_MAIN);
         holohdApply.setComponent(new ComponentName("com.mobint.hololauncher.hd", "com.mobint.hololauncher.SettingsActivity"));
         context.startActivity(holohdApply);

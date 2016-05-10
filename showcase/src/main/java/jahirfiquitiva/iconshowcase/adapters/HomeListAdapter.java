@@ -130,7 +130,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         final ImageView iconsIV, wallsIV, widgetsIV;
         final TextView iconsT, wallsT, widgetsT;
-        LinearLayout packInfo, widgets;
+        LinearLayout widgets;
 
         public AppInfoCard(View itemView) {
             super(itemView);

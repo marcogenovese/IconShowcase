@@ -376,7 +376,6 @@ public class WallpapersFragment extends Fragment {
         private final ImageView noConnection;
         private final ArrayList<WallpaperItem> walls = new ArrayList<>();
         private WeakReference<Context> taskContext;
-        private WeakReference<Activity> wrActivity;
 
         long startTime, endTime;
 
@@ -390,13 +389,6 @@ public class WallpapersFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             startTime = System.currentTimeMillis();
-
-            if (wrActivity != null) {
-                final Activity a = wrActivity.get();
-                if (a != null) {
-                    this.taskContext = new WeakReference<>(a.getApplicationContext());
-                }
-            }
         }
 
         @Override
