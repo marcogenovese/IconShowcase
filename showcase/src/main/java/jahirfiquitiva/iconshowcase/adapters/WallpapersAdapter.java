@@ -99,7 +99,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
                     @Override
                     protected void setResource(Bitmap resource) {
 
-                        Palette.Swatch wallSwatch = ColorExtractor.getProminentColor(resource);
+                        Palette.Swatch wallSwatch = ColorExtractor.getProminentSwatch(resource);
 
                         if (mPrefs.getAnimationsEnabled()) {
                             TransitionDrawable td = new TransitionDrawable(new Drawable[]{new ColorDrawable(Color.TRANSPARENT), new BitmapDrawable(context.getResources(), resource)});

@@ -205,7 +205,7 @@ public class Preferences {
     }
 
     public int getRequestsLeft() {
-        return getSharedPreferences().getInt(REQUESTS_LEFT, 0);
+        return getSharedPreferences().getInt(REQUESTS_LEFT, -1);
     }
 
     public int getRequestsLeft(Context context) {

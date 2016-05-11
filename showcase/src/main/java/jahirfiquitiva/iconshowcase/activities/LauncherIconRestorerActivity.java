@@ -43,12 +43,17 @@ public class LauncherIconRestorerActivity extends Activity {
         Class<?> className = null;
 
         final String packageName = Utils.getAppPackageName(getApplicationContext());
-        final String componentNameString = getResources().getString(R.string.main_activity_fullname);
+        String componentNameString = packageName + "." + getResources().getString(R.string.main_activity_name);
 
         try {
             className = Class.forName(componentNameString);
         } catch (ClassNotFoundException e) {
-            //Do nothing
+            componentNameString = getResources().getString(R.string.main_activity_fullname);
+            try{
+                className = Class.forName(componentNameString);
+            }catch (ClassNotFoundException ex){
+                //Do nothing
+            }
         }
 
         if (className != null) {

@@ -76,11 +76,11 @@ import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.models.WallpaperItem;
 import jahirfiquitiva.iconshowcase.tasks.ApplyWallpaper;
 import jahirfiquitiva.iconshowcase.tasks.WallpaperToCrop;
-import jahirfiquitiva.iconshowcase.utilities.color.ColorExtractor;
 import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
+import jahirfiquitiva.iconshowcase.utilities.color.ColorExtractor;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.views.TouchImageView;
@@ -359,8 +359,8 @@ public class ViewerActivity extends AppCompatActivity {
         if (usePalette) {
             paletteIconsColor = ColorExtractor.getIconsColorFromBitmap(picture, context, true);
             if (paletteIconsColor == 0) {
-                int light = Color.parseColor("#59000000");
-                int dark = Color.parseColor("#59ffffff");
+                int light = Color.parseColor("#80000000");
+                int dark = Color.parseColor("#66ffffff");
                 if (ColorUtils.isDark(picture)) {
                     ToolbarColorizer.colorizeToolbar(toolbar, dark);
                 } else {
@@ -370,7 +370,7 @@ public class ViewerActivity extends AppCompatActivity {
                 ToolbarColorizer.colorizeToolbar(toolbar, paletteIconsColor);
             }
         } else {
-            paletteIconsColor = Color.parseColor("8cffffff");
+            paletteIconsColor = Color.parseColor("99ffffff");
             ToolbarColorizer.colorizeToolbar(toolbar, paletteIconsColor);
         }
     }
@@ -380,8 +380,8 @@ public class ViewerActivity extends AppCompatActivity {
         if (usePalette) {
             paletteIconsColor = ColorExtractor.getIconsColorFromBitmap(picture, context, true);
             if (paletteIconsColor == 0) {
-                int light = Color.parseColor("#59000000");
-                int dark = Color.parseColor("#59ffffff");
+                int light = Color.parseColor("#80000000");
+                int dark = Color.parseColor("#66ffffff");
                 if (ColorUtils.isDark(picture)) {
                     finalColor = dark;
                 } else {
@@ -391,7 +391,7 @@ public class ViewerActivity extends AppCompatActivity {
                 finalColor = paletteIconsColor;
             }
         } else {
-            paletteIconsColor = Color.parseColor("8cffffff");
+            paletteIconsColor = Color.parseColor("99ffffff");
             finalColor = paletteIconsColor;
         }
         return finalColor;

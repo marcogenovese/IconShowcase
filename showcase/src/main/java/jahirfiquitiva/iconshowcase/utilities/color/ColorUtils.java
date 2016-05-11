@@ -83,7 +83,7 @@ public class ColorUtils {
     public static
     @Lightness
     int isDark(Palette palette) {
-        Palette.Swatch mostPopulous = ColorExtractor.getProminentColor(palette);
+        Palette.Swatch mostPopulous = ColorExtractor.getProminentSwatch(palette);
         if (mostPopulous == null) return LIGHTNESS_UNKNOWN;
         return isDark(mostPopulous.getHsl()) ? IS_DARK : IS_LIGHT;
     }

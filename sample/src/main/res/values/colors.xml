@@ -18,10 +18,6 @@
   ~
   -->
 
-<!--
-  ~
-  -->
-
 <resources>
 
     <!-- LIGHT THEME COLORS -->
@@ -31,6 +27,7 @@
     <color name="light_theme_navbar">@color/light_theme_primary_dark</color>
     <color name="fab_background_tint_light_theme">@color/light_theme_accent</color>
     <color name="md_button_text_light">@color/light_theme_accent</color>
+    <color name="md_background_color_light">@color/light_bg</color>
     <color name="material_drawer_selected_text">@color/light_theme_accent</color>
     <color name="material_drawer_background">@color/light_bg</color>
     <color name="toolbar_text_light">#656565</color>
@@ -41,12 +38,13 @@
     <color name="splash_light_statusbar">#e0e0e0</color>
 
     <!-- DARK THEME COLORS -->
-    <color name="dark_theme_primary">#455a64</color>
-    <color name="dark_theme_primary_dark">#263238</color>
+    <color name="dark_theme_primary">#212121</color>
+    <color name="dark_theme_primary_dark">#000000</color>
     <color name="dark_theme_accent">#00b0ff</color>
     <color name="dark_theme_navbar">@color/dark_theme_primary_dark</color>
     <color name="fab_background_tint_dark_theme">@color/dark_theme_accent</color>
     <color name="md_button_text_dark">@color/dark_theme_accent</color>
+    <color name="md_background_color_dark">@color/dark_bg</color>
     <color name="material_drawer_dark_selected_text">@color/dark_theme_accent</color>
     <color name="material_drawer_dark_background">@color/dark_bg</color>
     <color name="toolbar_text_dark">#ffffff</color>
@@ -55,6 +53,17 @@
     <color name="tabs_selected_text_dark">#ffffff</color>
     <color name="splash_dark_background">@color/dark_bg</color>
     <color name="splash_dark_statusbar">#000000</color>
+
+    <!--CLEAR THEME COLORS-->
+    <color name="card_clear_background">#30000000</color>
+    <color name="clear_bg">#70000000</color>
+    <color name="home_clear_background">#aa000000</color>
+    <color name="material_drawer_clear_background">#bb000000</color>
+    <color name="md_background_color_clear">@color/dark_bg</color>
+    <color name="fab_background_tint_clear_theme">#33ffffff</color>
+
+
+
 
     <!-- ADDITIONAL COLORS -->
     <!--You likely don't need to modify the colors below, but they're here if you need them-->
@@ -102,6 +111,7 @@
 
     <!-- THEME INDEPENDENT COLORS -->
     <color name="semitransparent_white">#80ffffff</color>
+    <color name="white_highlight">#66ffffff</color>
     <color name="semitransparent_black">#66000000</color>
     <color name="drawable_base_tint">#616161</color>
     <color name="divider">#757575</color>

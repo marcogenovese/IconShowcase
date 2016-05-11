@@ -18,15 +18,11 @@
   ~
   -->
 
-<!--
-  ~
-  -->
-
 <resources>
 
     <!-- LIGHT THEME COLORS -->
-    <color name="light_theme_primary">#455a64</color>
-    <color name="light_theme_primary_dark">#263238</color>
+    <color name="light_theme_primary">#f5f5f5</color>
+    <color name="light_theme_primary_dark">#e0e0e0</color>
     <color name="light_theme_accent">#00b0ff</color>
     <color name="light_theme_navbar">@color/light_theme_primary_dark</color>
     <color name="fab_background_tint_light_theme">@color/light_theme_accent</color>
@@ -34,16 +30,16 @@
     <color name="md_background_color_light">@color/light_bg</color>
     <color name="material_drawer_selected_text">@color/light_theme_accent</color>
     <color name="material_drawer_background">@color/light_bg</color>
-    <color name="toolbar_text_light">#ffffff</color>
-    <color name="tabs_indicator_light">#ffffff</color>
-    <color name="tabs_normal_text_light">#80ffffff</color>
-    <color name="tabs_selected_text_light">#ffffff</color>
+    <color name="toolbar_text_light">#656565</color>
+    <color name="tabs_indicator_light">#656565</color>
+    <color name="tabs_normal_text_light">#80656565</color>
+    <color name="tabs_selected_text_light">#656565</color>
     <color name="splash_light_background">@color/light_bg</color>
     <color name="splash_light_statusbar">#e0e0e0</color>
 
     <!-- DARK THEME COLORS -->
-    <color name="dark_theme_primary">#455a64</color>
-    <color name="dark_theme_primary_dark">#263238</color>
+    <color name="dark_theme_primary">#212121</color>
+    <color name="dark_theme_primary_dark">#000000</color>
     <color name="dark_theme_accent">#00b0ff</color>
     <color name="dark_theme_navbar">@color/dark_theme_primary_dark</color>
     <color name="fab_background_tint_dark_theme">@color/dark_theme_accent</color>

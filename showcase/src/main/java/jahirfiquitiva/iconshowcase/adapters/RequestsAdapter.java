@@ -42,6 +42,7 @@ import jahirfiquitiva.iconshowcase.utilities.Utils;
 public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.RequestsHolder> {
 
     public interface ClickListener {
+
         void onClick(int index);
     }
 
@@ -61,7 +62,9 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
                 if (limit < 0) {
                     changeAppSelectedState(position);
                 } else {
-                    if (getSelectedApps() < limit) {
+                    if (context.getResources().getInteger(R.integer.limit_request_to_x_minutes) <= 0) {
+                        changeAppSelectedState(position);
+                    } else if (getSelectedApps() < limit) {
                         changeAppSelectedState(position);
                     } else {
                         if (isSelected(position)) {

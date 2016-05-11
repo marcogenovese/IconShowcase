@@ -53,9 +53,9 @@ import java.util.Locale;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.models.IconItem;
-import jahirfiquitiva.iconshowcase.utilities.color.ColorExtractor;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
+import jahirfiquitiva.iconshowcase.utilities.color.ColorExtractor;
 
 public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder> {
 
@@ -158,7 +158,7 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
                                 .customView(R.layout.dialog_icon, false)
                                 .title(Utils.makeTextReadable(name))
                                 .positiveText(R.string.close)
-                                .positiveColor(ColorExtractor.getPreferredColorFromDrawable(icon, context, true))
+                                .positiveColor(ColorExtractor.getPreferredColor(icon, context, true))
                                 .show();
 
                         if (dialog.getCustomView() != null) {

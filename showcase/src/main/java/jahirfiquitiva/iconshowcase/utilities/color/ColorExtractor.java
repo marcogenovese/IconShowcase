@@ -23,8 +23,6 @@ import java.util.List;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
-import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
-import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
 
 public class ColorExtractor {
 
@@ -42,13 +40,13 @@ public class ColorExtractor {
             paletteGeneratedColor = getIconsColorFromBitmap(bitmap, context, forViewer);
             if (paletteGeneratedColor == 0 && bitmap != null) {
                 if (ColorUtils.isDark(bitmap)) {
-                    paletteGeneratedColor = Color.parseColor("#59ffffff");
+                    paletteGeneratedColor = Color.parseColor("#80ffffff");
                 } else {
-                    paletteGeneratedColor = Color.parseColor("#59000000");
+                    paletteGeneratedColor = Color.parseColor("#66000000");
                 }
             }
         } else {
-            paletteGeneratedColor = Color.parseColor("#8cffffff");
+            paletteGeneratedColor = Color.parseColor("#99ffffff");
         }
 
         final int finalPaletteGeneratedColor = paletteGeneratedColor;
@@ -76,41 +74,11 @@ public class ColorExtractor {
 
         if (bitmap != null) {
 
-            boolean swatchNotNull = false;
-
-            Palette palette = new Palette.Builder(bitmap)
-                    .generate();
-
             isDark = ColorUtils.isDark(bitmap);
 
-            Palette.Swatch swatch1, swatch2, swatch3, swatch4;
+            Palette.Swatch swatch = getProminentSwatch(bitmap);
 
-            if (isDark) {
-                swatch1 = palette.getLightVibrantSwatch();
-                swatch2 = palette.getLightMutedSwatch();
-            } else {
-                swatch1 = palette.getVibrantSwatch();
-                swatch2 = palette.getMutedSwatch();
-            }
-
-            swatch3 = palette.getDarkVibrantSwatch();
-            swatch4 = palette.getDarkMutedSwatch();
-
-            if (swatch1 != null) {
-                swatchNotNull = true;
-                color = swatch1.getRgb();
-            } else if (swatch2 != null) {
-                swatchNotNull = true;
-                color = swatch2.getRgb();
-            } else if (swatch3 != null) {
-                swatchNotNull = true;
-                color = swatch3.getRgb();
-            } else if (swatch4 != null) {
-                swatchNotNull = true;
-                color = swatch4.getRgb();
-            }
-
-            if (swatchNotNull) {
+            if (swatch != null) {
                 float[] values = getActualSValues(ColorUtils.S, forViewer);
                 float colorAlpha = values[0], tintFactor = values[1];
                 int colorToBlend =
@@ -120,17 +88,9 @@ public class ColorExtractor {
                                 colorAlpha);
                 color = ColorUtils.blendColors(color, colorToBlend, tintFactor);
             }
-
         }
 
         return color;
-    }
-
-    private static double round(double value, int places) {
-        if (places < 0) throw new IllegalArgumentException();
-        BigDecimal bd = new BigDecimal(value);
-        bd = bd.setScale(places, RoundingMode.HALF_UP);
-        return bd.doubleValue();
     }
 
     private static float[] getActualSValues(float s, boolean forViewer) {
@@ -146,7 +106,7 @@ public class ColorExtractor {
         if (forViewer) {
             factor = 0.8f;
         } else {
-            factor = 0.5f;
+            factor = 0.65f;
         }
 
         if (s < 0.0f) {
@@ -161,18 +121,34 @@ public class ColorExtractor {
         return values;
     }
 
-    public static int getPreferredColorFromDrawable(Drawable drawable, Context context, boolean allowAccent) {
-        return getPreferredColorFromBitmap(Utils.drawableToBitmap(drawable), context, allowAccent);
+    private static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 
-    public static int getPreferredColorFromBitmap(Bitmap bitmap, Context context, boolean allowAccent) {
-        Palette.Swatch prominentColor = getProminentColor(bitmap);
-        int accent = ContextCompat.getColor(context, ThemeUtils.darkTheme ? R.color.dark_theme_accent : R.color.light_theme_accent);
-        return prominentColor != null ? prominentColor.getRgb() : allowAccent ? accent : -1;
+    public static int getPreferredColor(Drawable drawable, Context context, boolean allowAccent) {
+        return getPreferredColor(Utils.drawableToBitmap(drawable), context, allowAccent);
     }
 
-    public static Palette.Swatch getProminentColor(Bitmap bitmap) {
+    public static int getPreferredColor(Bitmap bitmap, Context context, boolean allowAccent) {
+        Palette.Swatch prominentColor = getProminentSwatch(bitmap);
+        int accent = ContextCompat.getColor(context, ThemeUtils.darkTheme ?
+                R.color.dark_theme_accent : R.color.light_theme_accent);
+        return prominentColor != null ? prominentColor.getRgb() : allowAccent ? accent : 0;
+    }
+
+    public static Palette.Swatch getProminentSwatch(Drawable drawable) {
+        return getProminentSwatch(Utils.drawableToBitmap(drawable));
+    }
+
+    public static Palette.Swatch getProminentSwatch(Bitmap bitmap) {
         Palette palette = Palette.from(bitmap).generate();
+        return getProminentSwatch(palette);
+    }
+
+    public static Palette.Swatch getProminentSwatch(Palette palette) {
         if (palette == null) return null;
         List<Palette.Swatch> swatches = getSwatchesList(palette);
         return Collections.max(swatches,
@@ -186,7 +162,16 @@ public class ColorExtractor {
                 });
     }
 
-    public static Palette.Swatch getProminentColor(Palette palette) {
+    public static Palette.Swatch getLessProminentSwatch(Drawable drawable) {
+        return getLessProminentSwatch(Utils.drawableToBitmap(drawable));
+    }
+
+    public static Palette.Swatch getLessProminentSwatch(Bitmap bitmap) {
+        Palette palette = Palette.from(bitmap).generate();
+        return getLessProminentSwatch(palette);
+    }
+
+    public static Palette.Swatch getLessProminentSwatch(Palette palette) {
         if (palette == null) return null;
         List<Palette.Swatch> swatches = getSwatchesList(palette);
         return Collections.max(swatches,
@@ -195,7 +180,7 @@ public class ColorExtractor {
                     public int compare(Palette.Swatch opt1, Palette.Swatch opt2) {
                         int a = opt1 == null ? 0 : opt1.getPopulation();
                         int b = opt2 == null ? 0 : opt2.getPopulation();
-                        return a - b;
+                        return b - a;
                     }
                 });
     }
@@ -218,7 +203,6 @@ public class ColorExtractor {
         swatches.add(mutedDark);
 
         return swatches;
-
     }
 
 }

@@ -24,7 +24,6 @@
 package jahirfiquitiva.iconshowcase.tasks;
 
 import android.annotation.SuppressLint;
-import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -37,6 +36,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.SimpleArrayMap;
+import android.util.DisplayMetrics;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -54,9 +54,7 @@ import jahirfiquitiva.iconshowcase.fragments.RequestsFragment;
 import jahirfiquitiva.iconshowcase.models.AppFilterError;
 import jahirfiquitiva.iconshowcase.models.RequestItem;
 import jahirfiquitiva.iconshowcase.models.RequestList;
-import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
-import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
 
 public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<RequestItem>> {
 
@@ -335,43 +333,29 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
     public Drawable getAppIcon(Resources resources, int iconId) {
         Drawable d;
         try {
-            ActivityManager activityManager = (ActivityManager)
-                    context.get().getSystemService(Context.ACTIVITY_SERVICE);
-            int iconDpi = activityManager.getLauncherLargeIconDensity();
+            int iconDpi;
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                iconDpi = DisplayMetrics.DENSITY_XXXHIGH;
+            } else {
+                iconDpi = DisplayMetrics.DENSITY_XXHIGH;
+            }
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 d = resources.getDrawableForDensity(iconId, iconDpi, null);
             } else {
                 d = resources.getDrawableForDensity(iconId, iconDpi);
             }
+
         } catch (Resources.NotFoundException e) {
             try {
                 d = ContextCompat.getDrawable(context.get(), R.drawable.ic_na_launcher);
             } catch (Resources.NotFoundException e1) {
-                d = ThemeUtils.darkTheme ? ToolbarColorizer.getTintedIcon(
-                        ContextCompat.getDrawable(context.get(), R.drawable.abc_btn_radio_material),
-                        ContextCompat.getColor(context.get(), R.color.drawable_tint_dark))
-                        : ToolbarColorizer.getTintedIcon(
-                        ContextCompat.getDrawable(context.get(), R.drawable.abc_btn_radio_material),
-                        ContextCompat.getColor(context.get(), R.color.drawable_tint_light));
+                d = null;
             }
         }
 
         return (d != null) ? d : getAppDefaultActivityIcon();
-    }
-
-    public Drawable getAppIcon(String packageName, int iconId) {
-        Resources resources;
-        try {
-            resources = context.get().getPackageManager().getResourcesForApplication(packageName);
-        } catch (PackageManager.NameNotFoundException e) {
-            resources = null;
-        }
-        if (resources != null) {
-            if (iconId != 0) {
-                return getAppIcon(resources, iconId);
-            }
-        }
-        return getAppDefaultActivityIcon();
     }
 
     public Drawable getAppIcon(ResolveInfo info) {
