@@ -111,8 +111,7 @@ public class ShowcaseActivity extends AppCompatActivity implements
             DONATIONS_BITCOIN = false;
     //SHOW_LOAD_ICONS_DIALOG = true;
 
-    public static boolean WITH_USER_WALLPAPER_AS_TOOLBAR_HEADER = true, WITH_ZOOPER_SECTION = false,
-            DEBUGGING = false;
+    public static boolean WITH_ZOOPER_SECTION = false, DEBUGGING = false;
 
     public static boolean SELECT_ALL_APPS = true;
 
@@ -210,7 +209,6 @@ public class ShowcaseActivity extends AppCompatActivity implements
 
         DEBUGGING = getResources().getBoolean(R.bool.debugging);
 
-        WITH_USER_WALLPAPER_AS_TOOLBAR_HEADER = getResources().getBoolean(R.bool.user_wallpaper_in_home);
         WITH_ICONS_BASED_CHANGELOG = getResources().getBoolean(R.bool.icons_changelog);
 
         shuffleIcons = getResources().getBoolean(R.bool.shuffle_toolbar_icons);
@@ -493,7 +491,7 @@ public class ShowcaseActivity extends AppCompatActivity implements
         if (!iconsPicker && !wallsPicker) {
             setupToolbarHeader(this, toolbarHeader);
         }
-        ColorExtractor.setupToolbarIconsAndTextsColors(context, appbar, toolbar, toolbarHeaderImage, false);
+        ColorExtractor.setupToolbarIconsAndTextsColors(context, appbar, toolbar, toolbarHeaderImage);
         if (mLastTheme != ThemeUtils.darkTheme
                 || mLastNavBar != ThemeUtils.coloredNavBar) {
             ThemeUtils.restartActivity(this);
@@ -1108,7 +1106,7 @@ public class ShowcaseActivity extends AppCompatActivity implements
             wallpaperDrawable = ContextCompat.getDrawable(context, R.drawable.heroimage);
             toolbarHeader.setImageDrawable(wallpaperDrawable);
             toolbarHeaderImage = Utils.drawableToBitmap(wallpaperDrawable);
-        } else if (WITH_USER_WALLPAPER_AS_TOOLBAR_HEADER && mPrefs.getWallpaperAsToolbarHeaderEnabled()) {
+        } else if (mPrefs.getWallpaperAsToolbarHeaderEnabled()) {
             WallpaperManager wm = WallpaperManager.getInstance(context);
 
             if (wm != null) {

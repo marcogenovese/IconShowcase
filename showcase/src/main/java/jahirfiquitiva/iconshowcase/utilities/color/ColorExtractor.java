@@ -27,29 +27,14 @@ import jahirfiquitiva.iconshowcase.utilities.Utils;
 public class ColorExtractor {
 
     public static void setupToolbarIconsAndTextsColors(Context context, AppBarLayout appbar,
-                                                       final Toolbar toolbar, final Bitmap bitmap,
-                                                       boolean forViewer) {
+                                                       final Toolbar toolbar, final Bitmap bitmap) {
 
         final int iconsColor = ThemeUtils.darkTheme ?
                 ContextCompat.getColor(context, R.color.toolbar_text_dark) :
                 ContextCompat.getColor(context, R.color.toolbar_text_light);
 
-        int paletteGeneratedColor;
-
-        if (context.getResources().getBoolean(R.bool.use_palette_api_in_toolbar)) {
-            paletteGeneratedColor = getIconsColorFromBitmap(bitmap, context, forViewer);
-            if (paletteGeneratedColor == 0 && bitmap != null) {
-                if (ColorUtils.isDark(bitmap)) {
-                    paletteGeneratedColor = Color.parseColor("#59ffffff");
-                } else {
-                    paletteGeneratedColor = Color.parseColor("#59000000");
-                }
-            }
-        } else {
-            paletteGeneratedColor = Color.parseColor("#8cffffff");
-        }
-
-        final int finalPaletteGeneratedColor = paletteGeneratedColor;
+        final int finalPaletteGeneratedColor = getFinalGeneratedIconsColorFromPalette(bitmap,
+                context.getResources().getBoolean(R.bool.use_palette_api_in_toolbar));
 
         if (appbar != null) {
             appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
@@ -68,86 +53,32 @@ public class ColorExtractor {
         }
     }
 
-    public static int getIconsColorFromBitmap(Bitmap bitmap, Context context, boolean forViewer) {
+    public static int getIconsColorFromBitmap(Bitmap bitmap) {
         int color = 0;
-        boolean isDark;
-
         if (bitmap != null) {
-
-            boolean swatchNotNull = true;
-
-            Palette palette = new Palette.Builder(bitmap)
-                    .generate();
-
-            isDark = ColorUtils.isDark(bitmap);
-
-            Palette.Swatch swatch1, swatch2, swatch3, swatch4;
-
-            if (isDark) {
-                swatch1 = palette.getLightVibrantSwatch();
-                swatch2 = palette.getLightMutedSwatch();
-            } else {
-                swatch1 = palette.getVibrantSwatch();
-                swatch2 = palette.getMutedSwatch();
+            Palette.Swatch swatch = getLessProminentSwatch(bitmap);
+            if (swatch != null) {
+                color = swatch.getBodyTextColor();
             }
-
-            swatch3 = palette.getDarkVibrantSwatch();
-            swatch4 = palette.getDarkMutedSwatch();
-
-            if (swatch1 != null) {
-                color = swatch1.getRgb();
-            } else if (swatch2 != null) {
-                color = swatch2.getRgb();
-            } else if (swatch3 != null) {
-                color = swatch3.getRgb();
-            } else if (swatch4 != null) {
-                color = swatch4.getRgb();
-            } else {
-                swatchNotNull = false;
-            }
-
-            if (swatchNotNull) {
-                float[] values = getActualSValues(ColorUtils.S, forViewer);
-                float colorAlpha = values[0], tintFactor = values[1];
-                int colorToBlend =
-                        ColorUtils.adjustAlpha(
-                                ContextCompat.getColor(context,
-                                        isDark ? android.R.color.white : android.R.color.black),
-                                colorAlpha);
-                color = ColorUtils.blendColors(color, colorToBlend, tintFactor);
-            }
-
         }
-
         return color;
     }
 
-    private static float[] getActualSValues(float s, boolean forViewer) {
-        float[] values = new float[2];
-        float alpha, factor;
-        if (s < 0.51f) {
-            alpha = (s + 1.0f) - (s * 3.0f);
-            alpha += 0.2f;
+    public static int getFinalGeneratedIconsColorFromPalette(Bitmap bitmap, boolean usePalette) {
+        int generatedIconsColorFromPalette;
+        if (usePalette) {
+            generatedIconsColorFromPalette = getIconsColorFromBitmap(bitmap);
+            if ((generatedIconsColorFromPalette == 0) && (bitmap != null)) {
+                if (ColorUtils.isDark(bitmap)) {
+                    generatedIconsColorFromPalette = Color.parseColor("#80ffffff");
+                } else {
+                    generatedIconsColorFromPalette = Color.parseColor("#66000000");
+                }
+            }
         } else {
-            alpha = ((s * 2.0f) - 1.0f) + 0.1f;
+            generatedIconsColorFromPalette = Color.parseColor("#99ffffff");
         }
-
-        if (forViewer) {
-            factor = 0.8f;
-        } else {
-            factor = 0.5f;
-        }
-
-        if (s < 0.0f) {
-            alpha = 0.0f;
-        } else if (s > 1.0f) {
-            alpha = 1.0f;
-        }
-
-        values[0] = alpha;
-        values[1] = factor;
-
-        return values;
+        return generatedIconsColorFromPalette;
     }
 
     private static double round(double value, int places) {
@@ -203,13 +134,13 @@ public class ColorExtractor {
     public static Palette.Swatch getLessProminentSwatch(Palette palette) {
         if (palette == null) return null;
         List<Palette.Swatch> swatches = getSwatchesList(palette);
-        return Collections.max(swatches,
+        return Collections.min(swatches,
                 new Comparator<Palette.Swatch>() {
                     @Override
                     public int compare(Palette.Swatch opt1, Palette.Swatch opt2) {
                         int a = opt1 == null ? 0 : opt1.getPopulation();
                         int b = opt2 == null ? 0 : opt2.getPopulation();
-                        return b - a;
+                        return a - b;
                     }
                 });
     }

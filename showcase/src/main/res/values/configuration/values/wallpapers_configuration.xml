@@ -21,19 +21,10 @@
 <resources>
 
     <!--
-       Do you want the app to use palette api in wallpapers viewer?
-       True, means yes.
-       False, means no.
-       -->
-    <bool name="use_palette_api_in_viewer">true</bool>
-
-    <!--
-    Do you want to use high definition wallpapers?
-    (the difference between -medium- and -high- definition is pretty minimal.
-    use high definition if your wallpapers have transparency stuff.
-    medium definition will make pictures load faster.
-    high definition will make pictures load slower, and increase cache size, and memory (ram) usage.
+    Do you want the app to use palette api in wallpapers viewer?
+    True, means yes.
+    False, means no.
     -->
-    <bool name="high_definition_walls">true</bool>
+    <bool name="use_palette_api_in_viewer">true</bool>
 
 </resources>

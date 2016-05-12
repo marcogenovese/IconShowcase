@@ -128,16 +128,14 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
 
                 if (appsListFinal.get(i).isSelected()) {
 
-                    if (context.get().getResources().getBoolean(R.bool.request_tool_comments)) {
-                        appFilterBuilder.append("<!-- " + appsListFinal.get(i).getAppName() +
-                                " -->\n");
+                    appFilterBuilder.append("<!-- " + appsListFinal.get(i).getAppName() +
+                            " -->\n");
 
-                        appMapBuilder.append("<!-- " + appsListFinal.get(i).getAppName() +
-                                " -->\n");
+                    appMapBuilder.append("<!-- " + appsListFinal.get(i).getAppName() +
+                            " -->\n");
 
-                        themeResourcesBuilder.append("<!-- " + appsListFinal.get(i).getAppName() +
-                                " -->\n");
-                    }
+                    themeResourcesBuilder.append("<!-- " + appsListFinal.get(i).getAppName() +
+                            " -->\n");
 
                     appFilterBuilder.append("<item component=\"ComponentInfo{" +
                             appsListFinal.get(i).getPackageName() + "/" + appsListFinal.get(i).getClassName() + "}\"" +

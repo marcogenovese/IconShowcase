@@ -29,7 +29,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -81,7 +80,6 @@ import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorExtractor;
-import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.views.TouchImageView;
 
@@ -230,7 +228,7 @@ public class ViewerActivity extends AppCompatActivity {
         final ProgressBar spinner = (ProgressBar) findViewById(R.id.progress);
         spinner.getIndeterminateDrawable()
                 .setColorFilter(bmp != null ?
-                                getSpinnerColor(bmp, usePalette) :
+                                ColorExtractor.getFinalGeneratedIconsColorFromPalette(bmp, usePalette) :
                                 ThemeUtils.darkTheme ? tintDark : tintLightLighter,
                         PorterDuff.Mode.SRC_IN);
 
@@ -256,7 +254,8 @@ public class ViewerActivity extends AppCompatActivity {
                         @Override
                         public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
                             Bitmap picture = ((GlideBitmapDrawable) resource).getBitmap();
-                            colorizeToolbar(picture, usePalette);
+                            ToolbarColorizer.colorizeToolbar(toolbar,
+                                    ColorExtractor.getFinalGeneratedIconsColorFromPalette(picture, usePalette));
                             spinner.setVisibility(View.GONE);
                             return false;
                         }
@@ -278,7 +277,8 @@ public class ViewerActivity extends AppCompatActivity {
                         @Override
                         public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
                             Bitmap picture = ((GlideBitmapDrawable) resource).getBitmap();
-                            colorizeToolbar(picture, usePalette);
+                            ToolbarColorizer.colorizeToolbar(toolbar,
+                                    ColorExtractor.getFinalGeneratedIconsColorFromPalette(picture, usePalette));
                             spinner.setVisibility(View.GONE);
                             return false;
                         }
@@ -352,49 +352,6 @@ public class ViewerActivity extends AppCompatActivity {
                 toHide2.setVisibility(View.VISIBLE);
             }
         }
-    }
-
-    private void colorizeToolbar(Bitmap picture, boolean usePalette) {
-        int paletteIconsColor;
-        if (usePalette) {
-            paletteIconsColor = ColorExtractor.getIconsColorFromBitmap(picture, context, true);
-            if (paletteIconsColor == 0) {
-                int light = Color.parseColor("#66000000");
-                int dark = Color.parseColor("#80ffffff");
-                if (ColorUtils.isDark(picture)) {
-                    ToolbarColorizer.colorizeToolbar(toolbar, dark);
-                } else {
-                    ToolbarColorizer.colorizeToolbar(toolbar, light);
-                }
-            } else {
-                ToolbarColorizer.colorizeToolbar(toolbar, paletteIconsColor);
-            }
-        } else {
-            paletteIconsColor = Color.parseColor("99ffffff");
-            ToolbarColorizer.colorizeToolbar(toolbar, paletteIconsColor);
-        }
-    }
-
-    private int getSpinnerColor(Bitmap picture, boolean usePalette) {
-        int paletteIconsColor, finalColor;
-        if (usePalette) {
-            paletteIconsColor = ColorExtractor.getIconsColorFromBitmap(picture, context, true);
-            if (paletteIconsColor == 0) {
-                int light = Color.parseColor("#66000000");
-                int dark = Color.parseColor("#80ffffff");
-                if (ColorUtils.isDark(picture)) {
-                    finalColor = dark;
-                } else {
-                    finalColor = light;
-                }
-            } else {
-                finalColor = paletteIconsColor;
-            }
-        } else {
-            paletteIconsColor = Color.parseColor("99ffffff");
-            finalColor = paletteIconsColor;
-        }
-        return finalColor;
     }
 
     private void closeViewer() {

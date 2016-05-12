@@ -21,13 +21,6 @@
 <resources>
 
     <!--
-    Do you want to enable the use of user's wallpapers in home section?
-    True, means yes.
-    False, means no.
-    -->
-    <bool name="user_wallpaper_in_home">true</bool>
-
-    <!--
     Do you want the icons in toolbar to be randomized?
     True, means yes.
     False, means no.

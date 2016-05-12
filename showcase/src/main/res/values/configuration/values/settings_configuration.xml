@@ -34,10 +34,11 @@
     -->
     <bool name="allow_user_to_hide_app_icon">true</bool>
 
-    <!-- Default Navigation Bar value
-    True, means colored.
-    False, means black.
+    <!--
+    Do you plan to notify users about new wallpapers or other news?
+    True, means yes.
+    False, means no.
     -->
-    <bool name="color_navbar_by_default">true</bool>
+    <bool name="enable_notifications_service">true</bool>
 
 </resources>

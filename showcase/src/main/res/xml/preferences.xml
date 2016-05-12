@@ -32,7 +32,7 @@
         <Preference
             android:key="themes"
             android:persistent="true"
-            android:summary="@string/pref_summary_themes_no_clear"
+            android:summary="@string/pref_summary_themes"
             android:title="@string/pref_title_themes"/>
 
         <SwitchPreference

@@ -35,6 +35,7 @@ import java.util.Calendar;
 
 import jahirfiquitiva.iconshowcase.R;
 
+@SuppressWarnings("ResourceAsColor")
 public class ThemeUtils {
 
     public final static int NAV_BAR_DEFAULT = 0;
@@ -52,7 +53,6 @@ public class ThemeUtils {
     public static void onActivityCreateSetTheme(Activity activity) {
         final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
         int mTheme = sp.getInt("theme", (activity.getResources().getInteger(R.integer.default_theme) - 1));
-        boolean enableClear = activity.getResources().getBoolean(R.bool.enable_clear_theme_option);
         switch (mTheme) {
             default:
             case LIGHT:
@@ -66,22 +66,9 @@ public class ThemeUtils {
                 transparent = false;
                 break;
             case CLEAR:
-                if (enableClear) {
-                    activity.setTheme(R.style.AppThemeClear);
-                    darkTheme = true;
-                    transparent = true;
-                    break;
-                }
-                Calendar c2 = Calendar.getInstance();
-                transparent = false;
-                int timeOfDay2 = c2.get(Calendar.HOUR_OF_DAY);
-                if (timeOfDay2 >= 7 && timeOfDay2 < 20) {
-                    activity.setTheme(R.style.AppTheme);
-                    darkTheme = false;
-                } else {
-                    activity.setTheme(R.style.AppThemeDark);
-                    darkTheme = true;
-                }
+                activity.setTheme(R.style.AppThemeClear);
+                darkTheme = true;
+                transparent = true;
                 break;
             case AUTO:
                 Calendar c = Calendar.getInstance();
@@ -101,8 +88,7 @@ public class ThemeUtils {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public static void onActivityCreateSetNavBar(Activity activity) {
         final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
-        int navBarState;
-        navBarState = activity.getResources().getBoolean(R.bool.color_navbar_by_default) ? 0 : 1;
+        int navBarState = 0;
         int mNavBar = sp.getInt("navBar", navBarState);
         switch (mNavBar) {
             default:

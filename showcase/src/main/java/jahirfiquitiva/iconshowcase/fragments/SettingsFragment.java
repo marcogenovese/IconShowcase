@@ -50,11 +50,11 @@ import jahirfiquitiva.iconshowcase.dialogs.FolderChooserDialog;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.fragments.base.PreferenceFragment;
 import jahirfiquitiva.iconshowcase.services.NotificationsReceiver;
-import jahirfiquitiva.iconshowcase.utilities.color.ColorExtractor;
 import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
+import jahirfiquitiva.iconshowcase.utilities.color.ColorExtractor;
 
 public class SettingsFragment extends PreferenceFragment implements
         PermissionUtils.OnPermissionResultListener {
@@ -108,34 +108,27 @@ public class SettingsFragment extends PreferenceFragment implements
         final PreferenceCategory launcherIcon = (PreferenceCategory) findPreference("launcherIconPreference");
 
         PreferenceCategory uiCategory = (PreferenceCategory) findPreference("uiPreferences");
-        SwitchPreference wallHeaderCheck = (SwitchPreference) findPreference("wallHeader");
-        Preference theme = findPreference("themes");
-        if (getResources().getBoolean(R.bool.enable_clear_theme_option)) {
-            theme.setSummary(getResources().getString(R.string.pref_summary_themes));
-        }
-        if (!ShowcaseActivity.WITH_USER_WALLPAPER_AS_TOOLBAR_HEADER) {
-            uiCategory.removePreference(wallHeaderCheck);
-        } else {
-            wallHeaderCheck.setChecked(mPrefs.getWallpaperAsToolbarHeaderEnabled());
-            wallHeaderCheck.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    mPrefs.setWallpaperAsToolbarHeaderEnabled(newValue.toString().equals("true"));
-                    ((ShowcaseActivity) getActivity()).setupToolbarHeader(
-                            getActivity(),
-                            ((ShowcaseActivity) getActivity()).getToolbarHeader());
-                    ColorExtractor.setupToolbarIconsAndTextsColors(
-                            getActivity(),
-                            ((ShowcaseActivity) getActivity()).getAppbar(),
-                            ((ShowcaseActivity) getActivity()).getToolbar(),
-                            ((ShowcaseActivity) getActivity()).getToolbarHeaderImage(),
-                            false);
-                    return true;
-                }
-            });
-        }
 
         WSL = findPreference("wallsSaveLocation");
         WSL.setSummary(getResources().getString(R.string.pref_summary_wsl, location));
+
+        SwitchPreference wallHeaderCheck = (SwitchPreference) findPreference("wallHeader");
+
+        wallHeaderCheck.setChecked(mPrefs.getWallpaperAsToolbarHeaderEnabled());
+        wallHeaderCheck.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                mPrefs.setWallpaperAsToolbarHeaderEnabled(newValue.toString().equals("true"));
+                ((ShowcaseActivity) getActivity()).setupToolbarHeader(
+                        getActivity(),
+                        ((ShowcaseActivity) getActivity()).getToolbarHeader());
+                ColorExtractor.setupToolbarIconsAndTextsColors(
+                        getActivity(),
+                        ((ShowcaseActivity) getActivity()).getAppbar(),
+                        ((ShowcaseActivity) getActivity()).getToolbar(),
+                        ((ShowcaseActivity) getActivity()).getToolbarHeaderImage());
+                return true;
+            }
+        });
 
         // Set the preference for current selected theme
 

@@ -53,6 +53,7 @@ import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
 
+@SuppressWarnings("ResourceAsColor")
 public class PreviewsFragment extends Fragment {
 
     private int mLastSelected = 0;
@@ -62,6 +63,7 @@ public class PreviewsFragment extends Fragment {
     private TabLayout mTabs;
     private SearchView mSearchView;
     private ArrayList<IconsCategory> categories;
+    private MenuItem mSearchItem;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -96,13 +98,34 @@ public class PreviewsFragment extends Fragment {
 
         Utils.collapseToolbar(getActivity());
 
+        int iconsColor = ThemeUtils.darkTheme ?
+                ContextCompat.getColor(getActivity(), R.color.toolbar_text_dark) :
+                ContextCompat.getColor(getActivity(), R.color.toolbar_text_light);
+
+        if (getActivity() != null && mSearchItem != null) {
+            ToolbarColorizer.tintSearchView(getActivity(),
+                    ((ShowcaseActivity) getActivity()).getToolbar(), mSearchItem, mSearchView,
+                    iconsColor);
+        }
+
         if (mPager == null) {
             mPager = (ViewPager) layout.findViewById(R.id.pager);
-            mPager.setOffscreenPageLimit(6);
+            mPager.setOffscreenPageLimit(getPageLimit());
             mPager.setAdapter(new IconsPagerAdapter(getChildFragmentManager()));
             createTabs();
         }
 
+    }
+
+    private int getPageLimit() {
+        if (categories != null) {
+            int categoriesNum = categories.size();
+            int halfCategories = categoriesNum / 2;
+            int limit = categoriesNum - halfCategories;
+            return limit < 1 ? 1 : limit;
+        } else {
+            return 2;
+        }
     }
 
     private void createTabs() {
@@ -145,7 +168,7 @@ public class PreviewsFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.search, menu);
-        MenuItem mSearchItem = menu.findItem(R.id.search);
+        mSearchItem = menu.findItem(R.id.search);
         mSearchView = (SearchView) MenuItemCompat.getActionView(mSearchItem);
         mSearchView.setQueryHint(getString(R.string.search_x, tabs[mLastSelected]));
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -173,15 +196,6 @@ public class PreviewsFragment extends Fragment {
 
         mSearchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
-        int iconsColor = ThemeUtils.darkTheme ?
-                ContextCompat.getColor(getActivity(), R.color.toolbar_text_dark) :
-                ContextCompat.getColor(getActivity(), R.color.toolbar_text_light);
-
-        if (getActivity() != null) {
-            ToolbarColorizer.tintSearchView(getActivity(),
-                    ((ShowcaseActivity) getActivity()).getToolbar(), mSearchItem, mSearchView,
-                    iconsColor);
-        }
     }
 
     class IconsPagerAdapter extends FragmentStatePagerAdapter {

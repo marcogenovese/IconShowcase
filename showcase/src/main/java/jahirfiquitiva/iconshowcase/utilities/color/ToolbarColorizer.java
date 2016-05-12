@@ -126,7 +126,7 @@ public class ToolbarColorizer {
             mSearchSrcTextViewField.setAccessible(true);
             final EditText mSearchSrcTextView = (EditText) mSearchSrcTextViewField.get(searchView);
             mSearchSrcTextView.setTextColor(color);
-            mSearchSrcTextView.setHintTextColor(ColorUtils.adjustAlpha(color, 0.5f));
+            mSearchSrcTextView.setHintTextColor(ColorUtils.adjustAlpha(color, 0.6f));
             setCursorTint(mSearchSrcTextView, color);
 
             Field field = cls.getDeclaredField("mSearchButton");

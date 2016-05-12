@@ -365,71 +365,38 @@ public final class ISDialogs {
         final int[] selectedTheme = {PreferenceManager.getDefaultSharedPreferences(context).getInt("theme", defaultTheme)};
         final int[] newSelectedTheme = new int[1];
         final Preferences mPrefs = new Preferences(context);
-        final boolean enableClear = context.getResources().getBoolean(R.bool.enable_clear_theme_option);
-        if (enableClear) {
-            return new MaterialDialog.Builder(context)
-                    .title(R.string.pref_title_themes)
-                    .items(R.array.themes)
-                    .itemsCallbackSingleChoice(selectedTheme[0], new MaterialDialog.ListCallbackSingleChoice() {
-                        @Override
-                        public boolean onSelection(MaterialDialog dialog, View view, int position, CharSequence text) {
-                            switch (position) {
-                                case 0:
-                                    ThemeUtils.changeToTheme(context, ThemeUtils.LIGHT);
-                                    break;
-                                case 1:
-                                    ThemeUtils.changeToTheme(context, ThemeUtils.DARK);
-                                    break;
-                                case 2:
-                                    ThemeUtils.changeToTheme(context, ThemeUtils.CLEAR);
-                                    break;
-                                case 3:
-                                    ThemeUtils.changeToTheme(context, ThemeUtils.AUTO);
-                                    break;
-                            }
-                            PreferenceManager.getDefaultSharedPreferences(context).edit().putInt("theme", position).apply();
-                            newSelectedTheme[0] = position;
-                            if (newSelectedTheme[0] != selectedTheme[0]) {
-                                mPrefs.setSettingsModified(true);
-                                ThemeUtils.restartActivity(context);
-                            }
-                            return true;
+        return new MaterialDialog.Builder(context)
+                .title(R.string.pref_title_themes)
+                .items(R.array.themes)
+                .itemsCallbackSingleChoice(selectedTheme[0], new MaterialDialog.ListCallbackSingleChoice() {
+                    @Override
+                    public boolean onSelection(MaterialDialog dialog, View view, int position, CharSequence text) {
+                        switch (position) {
+                            case 0:
+                                ThemeUtils.changeToTheme(context, ThemeUtils.LIGHT);
+                                break;
+                            case 1:
+                                ThemeUtils.changeToTheme(context, ThemeUtils.DARK);
+                                break;
+                            case 2:
+                                ThemeUtils.changeToTheme(context, ThemeUtils.CLEAR);
+                                break;
+                            case 3:
+                                ThemeUtils.changeToTheme(context, ThemeUtils.AUTO);
+                                break;
                         }
-                    })
-                    .positiveText(android.R.string.ok)
-                    .negativeText(android.R.string.cancel)
-                    .build();
-        } else {
-            return new MaterialDialog.Builder(context)
-                    .title(R.string.pref_title_themes)
-                    .items(R.array.themes_no_clear)
-                    .itemsCallbackSingleChoice(selectedTheme[0], new MaterialDialog.ListCallbackSingleChoice() {
-                        @Override
-                        public boolean onSelection(MaterialDialog dialog, View view, int position, CharSequence text) {
-                            switch (position) {
-                                case 0:
-                                    ThemeUtils.changeToTheme(context, ThemeUtils.LIGHT);
-                                    break;
-                                case 1:
-                                    ThemeUtils.changeToTheme(context, ThemeUtils.DARK);
-                                    break;
-                                case 2:
-                                    ThemeUtils.changeToTheme(context, ThemeUtils.AUTO);
-                                    break;
-                            }
-                            PreferenceManager.getDefaultSharedPreferences(context).edit().putInt("theme", position).apply();
-                            newSelectedTheme[0] = position;
-                            if (newSelectedTheme[0] != selectedTheme[0]) {
-                                mPrefs.setSettingsModified(true);
-                                ThemeUtils.restartActivity(context);
-                            }
-                            return true;
+                        PreferenceManager.getDefaultSharedPreferences(context).edit().putInt("theme", position).apply();
+                        newSelectedTheme[0] = position;
+                        if (newSelectedTheme[0] != selectedTheme[0]) {
+                            mPrefs.setSettingsModified(true);
+                            ThemeUtils.restartActivity(context);
                         }
-                    })
-                    .positiveText(android.R.string.ok)
-                    .negativeText(android.R.string.cancel)
-                    .build();
-        }
+                        return true;
+                    }
+                })
+                .positiveText(android.R.string.ok)
+                .negativeText(android.R.string.cancel)
+                .build();
     }
 
     public static void showColumnsSelectorDialog(final Context context) {

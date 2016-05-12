@@ -32,30 +32,28 @@ import com.bumptech.glide.GlideBuilder;
 import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.module.GlideModule;
 
-import jahirfiquitiva.iconshowcase.R;
-
 public class GlideConfiguration implements GlideModule {
 
     @Override
     public void applyOptions(Context context, GlideBuilder builder) {
         boolean runsMinSDK = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
-        boolean enableHDWalls = context.getResources().getBoolean(R.bool.high_definition_walls);
 
         ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         boolean lowRAMDevice = false;
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             lowRAMDevice = activityManager.isLowRamDevice();
+        } else {
+            ActivityManager.MemoryInfo memInfo = new ActivityManager.MemoryInfo();
+            activityManager.getMemoryInfo(memInfo);
+            lowRAMDevice = memInfo.lowMemory;
         }
 
         if (runsMinSDK) {
             if (lowRAMDevice) {
                 builder.setDecodeFormat(DecodeFormat.PREFER_RGB_565);
             } else {
-                if (enableHDWalls) {
-                    builder.setDecodeFormat(DecodeFormat.PREFER_ARGB_8888);
-                } else {
-                    builder.setDecodeFormat(DecodeFormat.PREFER_RGB_565);
-                }
+                builder.setDecodeFormat(DecodeFormat.PREFER_ARGB_8888);
             }
         } else {
             builder.setDecodeFormat(DecodeFormat.PREFER_RGB_565);
