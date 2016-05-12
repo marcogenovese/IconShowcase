@@ -40,13 +40,13 @@ public class ColorExtractor {
             paletteGeneratedColor = getIconsColorFromBitmap(bitmap, context, forViewer);
             if (paletteGeneratedColor == 0 && bitmap != null) {
                 if (ColorUtils.isDark(bitmap)) {
-                    paletteGeneratedColor = Color.parseColor("#80ffffff");
+                    paletteGeneratedColor = Color.parseColor("#59ffffff");
                 } else {
-                    paletteGeneratedColor = Color.parseColor("#66000000");
+                    paletteGeneratedColor = Color.parseColor("#59000000");
                 }
             }
         } else {
-            paletteGeneratedColor = Color.parseColor("#99ffffff");
+            paletteGeneratedColor = Color.parseColor("#8cffffff");
         }
 
         final int finalPaletteGeneratedColor = paletteGeneratedColor;
@@ -74,11 +74,39 @@ public class ColorExtractor {
 
         if (bitmap != null) {
 
+            boolean swatchNotNull = true;
+
+            Palette palette = new Palette.Builder(bitmap)
+                    .generate();
+
             isDark = ColorUtils.isDark(bitmap);
 
-            Palette.Swatch swatch = getProminentSwatch(bitmap);
+            Palette.Swatch swatch1, swatch2, swatch3, swatch4;
 
-            if (swatch != null) {
+            if (isDark) {
+                swatch1 = palette.getLightVibrantSwatch();
+                swatch2 = palette.getLightMutedSwatch();
+            } else {
+                swatch1 = palette.getVibrantSwatch();
+                swatch2 = palette.getMutedSwatch();
+            }
+
+            swatch3 = palette.getDarkVibrantSwatch();
+            swatch4 = palette.getDarkMutedSwatch();
+
+            if (swatch1 != null) {
+                color = swatch1.getRgb();
+            } else if (swatch2 != null) {
+                color = swatch2.getRgb();
+            } else if (swatch3 != null) {
+                color = swatch3.getRgb();
+            } else if (swatch4 != null) {
+                color = swatch4.getRgb();
+            } else {
+                swatchNotNull = false;
+            }
+
+            if (swatchNotNull) {
                 float[] values = getActualSValues(ColorUtils.S, forViewer);
                 float colorAlpha = values[0], tintFactor = values[1];
                 int colorToBlend =
@@ -88,6 +116,7 @@ public class ColorExtractor {
                                 colorAlpha);
                 color = ColorUtils.blendColors(color, colorToBlend, tintFactor);
             }
+
         }
 
         return color;
@@ -106,7 +135,7 @@ public class ColorExtractor {
         if (forViewer) {
             factor = 0.8f;
         } else {
-            factor = 0.65f;
+            factor = 0.5f;
         }
 
         if (s < 0.0f) {

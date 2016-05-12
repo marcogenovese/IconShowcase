@@ -359,8 +359,8 @@ public class ViewerActivity extends AppCompatActivity {
         if (usePalette) {
             paletteIconsColor = ColorExtractor.getIconsColorFromBitmap(picture, context, true);
             if (paletteIconsColor == 0) {
-                int light = Color.parseColor("#80000000");
-                int dark = Color.parseColor("#66ffffff");
+                int light = Color.parseColor("#66000000");
+                int dark = Color.parseColor("#80ffffff");
                 if (ColorUtils.isDark(picture)) {
                     ToolbarColorizer.colorizeToolbar(toolbar, dark);
                 } else {
@@ -380,8 +380,8 @@ public class ViewerActivity extends AppCompatActivity {
         if (usePalette) {
             paletteIconsColor = ColorExtractor.getIconsColorFromBitmap(picture, context, true);
             if (paletteIconsColor == 0) {
-                int light = Color.parseColor("#80000000");
-                int dark = Color.parseColor("#66ffffff");
+                int light = Color.parseColor("#66000000");
+                int dark = Color.parseColor("#80ffffff");
                 if (ColorUtils.isDark(picture)) {
                     finalColor = dark;
                 } else {
