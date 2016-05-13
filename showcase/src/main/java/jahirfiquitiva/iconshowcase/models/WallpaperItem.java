@@ -40,12 +40,13 @@ public class WallpaperItem implements Parcelable {
         }
     };
 
-    private String wallName, wallAuthor, wallUrl, wallDimensions, wallCopyright;
+    private String wallName, wallAuthor, wallUrl, wallThumbUrl, wallDimensions, wallCopyright;
 
-    public WallpaperItem(String wallName, String wallAuthor, String wallUrl, String wallDimensions, String wallCopyright) {
+    public WallpaperItem(String wallName, String wallAuthor, String wallUrl, String wallThumbUrl, String wallDimensions, String wallCopyright) {
         this.wallName = wallName;
         this.wallAuthor = wallAuthor;
         this.wallUrl = wallUrl;
+        this.wallThumbUrl = wallThumbUrl;
         this.wallDimensions = wallDimensions;
         this.wallCopyright = wallCopyright;
     }
@@ -60,6 +61,10 @@ public class WallpaperItem implements Parcelable {
 
     public String getWallURL() {
         return wallUrl;
+    }
+
+    public String getWallThumbUrl() {
+        return wallThumbUrl;
     }
 
     public String getWallDimensions() {

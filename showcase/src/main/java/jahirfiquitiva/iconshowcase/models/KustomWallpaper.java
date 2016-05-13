@@ -19,24 +19,29 @@
 
 package jahirfiquitiva.iconshowcase.models;
 
-public class NotificationItem {
+public class KustomWallpaper {
 
-    private String text;
-    private int type, ID;
+    private String previewPath, previewPathLand;
 
-    public NotificationItem(String text, int type, int ID) {
-        this.text = text;
-        this.type = type;
-        this.ID = ID;
+    public KustomWallpaper(String previewPath, String previewPathLand) {
+        this.previewPath = previewPath;
+        this.previewPathLand = previewPathLand;
     }
 
-    public String getText() {
-        return text;
+    public String getPreviewPath() {
+        return previewPath;
     }
-    public int getType() {
-        return type;
+
+    public void setPreviewPath(String previewPath) {
+        this.previewPath = previewPath;
     }
-    public int getID() {
-        return ID;
+
+    public String getPreviewPathLand() {
+        return previewPathLand;
     }
+
+    public void setPreviewPathLand(String previewPathLand) {
+        this.previewPathLand = previewPathLand;
+    }
+
 }

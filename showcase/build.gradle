@@ -115,6 +115,11 @@ dependencies {
     //Glide Library - Image Loading Lib
     compile 'com.github.bumptech.glide:glide:3.7.0'
 
+    //Sectioned RecyclerView
+    compile('com.afollestad:sectioned-recyclerview:0.2.2') {
+        transitive = true
+    }
+
     //Muzei API
     //noinspection GradleDynamicVersion
     compile 'com.google.android.apps.muzei:muzei-api:2.+'

@@ -89,12 +89,12 @@ import jahirfiquitiva.iconshowcase.models.WallpapersList;
 import jahirfiquitiva.iconshowcase.services.NotificationsService;
 import jahirfiquitiva.iconshowcase.tasks.LoadIconsLists;
 import jahirfiquitiva.iconshowcase.tasks.TasksExecutor;
-import jahirfiquitiva.iconshowcase.utilities.color.ColorExtractor;
 import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.utilities.ZooperIconFontsHelper;
+import jahirfiquitiva.iconshowcase.utilities.color.ColorExtractor;
 
 public class ShowcaseActivity extends AppCompatActivity implements
         FolderChooserDialog.FolderSelectionCallback, PermissionUtils.OnPermissionResultListener {
@@ -142,7 +142,7 @@ public class ShowcaseActivity extends AppCompatActivity implements
     private static boolean iconsPickerEnabled = false, wallsEnabled = false, shuffleIcons = true;
 
     private static String thaAppName, thaHome, thaPreviews, thaApply, thaWalls, thaRequest,
-            thaDonate, thaFAQs, thaZooper, thaCredits, thaSettings;
+            thaDonate, thaFAQs, thaZooper, thaCredits, thaSettings, thaKustom;
 
     private static AppCompatActivity context;
 
@@ -295,6 +295,7 @@ public class ShowcaseActivity extends AppCompatActivity implements
         thaSettings = getResources().getString(R.string.title_settings);
         thaFAQs = getResources().getString(R.string.faqs_section);
         thaZooper = getResources().getString(R.string.zooper_section_title);
+        thaKustom = "Kustom";
 
         collapsingToolbarLayout.setTitle(thaAppName);
 
@@ -407,6 +408,8 @@ public class ShowcaseActivity extends AppCompatActivity implements
                 return thaCredits;
             case "Settings":
                 return thaSettings;
+            case "Kustom":
+                return thaKustom;
         }
         return ":(";
     }
@@ -769,7 +772,7 @@ public class ShowcaseActivity extends AppCompatActivity implements
     private void setupDrawer(final Toolbar toolbar, Bundle savedInstanceState) {
 
         //Initialize PrimaryDrawerItem
-        PrimaryDrawerItem home, previews, walls, requests, apply, faqs, zooper;
+        PrimaryDrawerItem home, previews, walls, requests, apply, faqs, zooper, kustom;
 
         //initialize SecondaryDrawerItem
         SecondaryDrawerItem creditsItem, settingsItem, donationsItem;
@@ -863,6 +866,10 @@ public class ShowcaseActivity extends AppCompatActivity implements
                     zooper = new PrimaryDrawerItem().withName(thaZooper).withIcon(GoogleMaterial.Icon.gmd_widgets).withIdentifier(i + 1);
                     drawerBuilder.addDrawerItems(zooper);
                     break;
+
+                case "Kustom":
+                    kustom = new PrimaryDrawerItem().withName(thaKustom).withIcon(GoogleMaterial.Icon.gmd_widgets).withIdentifier(i + 1);
+                    drawerBuilder.addDrawerItems(kustom);
             }
         }
 

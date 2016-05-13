@@ -19,24 +19,20 @@
 
 package jahirfiquitiva.iconshowcase.models;
 
-public class NotificationItem {
+public class KustomKomponent {
 
-    private String text;
-    private int type, ID;
+    private String previewPath;
 
-    public NotificationItem(String text, int type, int ID) {
-        this.text = text;
-        this.type = type;
-        this.ID = ID;
+    public KustomKomponent(String previewPath) {
+        this.previewPath = previewPath;
     }
 
-    public String getText() {
-        return text;
+    public String getPreviewPath() {
+        return previewPath;
     }
-    public int getType() {
-        return type;
+
+    public void setPreviewPath(String previewPath) {
+        this.previewPath = previewPath;
     }
-    public int getID() {
-        return ID;
-    }
+
 }

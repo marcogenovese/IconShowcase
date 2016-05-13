@@ -48,7 +48,6 @@ public class ZooperFragment extends Fragment {
     private static Context context;
 
     public RecyclerView mRecyclerView;
-    private RecyclerFastScroller fastScroller;
     public ZooperAdapter zooperAdapter;
     private GridSpacingItemDecoration space;
     private int i = 0;
@@ -105,7 +104,7 @@ public class ZooperFragment extends Fragment {
             mRecyclerView.addItemDecoration(space);
             mRecyclerView.setHasFixedSize(true);
 
-            fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
+            RecyclerFastScroller fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
 
             zooperAdapter = new ZooperAdapter(context, LoadZooperWidgets.widgets,
                     ShowcaseActivity.wallpaperDrawable, areAppsInstalled());

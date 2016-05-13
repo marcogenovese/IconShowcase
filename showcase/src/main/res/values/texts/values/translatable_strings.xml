@@ -251,6 +251,7 @@
 
     <string name="install_apps">Install apps</string>
     <string name="install_apps_content">You need to install these apps for Zooper widgets to work properly. Press one to install it.</string>
+    <string name="install_kustom_apps_content">You need to install these apps for Kustom assets to work properly. Press one to install it.</string>
 
     <string name="install_assets">Install assets</string>
 

@@ -40,6 +40,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
@@ -47,8 +48,8 @@ import java.util.ArrayList;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.models.WallpaperItem;
-import jahirfiquitiva.iconshowcase.utilities.color.ColorExtractor;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
+import jahirfiquitiva.iconshowcase.utilities.color.ColorExtractor;
 
 public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.WallsHolder> {
 
@@ -92,40 +93,87 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
 
         final String wallUrl = wallItem.getWallURL();
 
-        Glide.with(context)
-                .load(wallUrl)
-                .asBitmap()
-                .into(new BitmapImageViewTarget(holder.wall) {
-                    @Override
-                    protected void setResource(Bitmap resource) {
+        String wallThumb = wallItem.getWallThumbUrl();
 
-                        Palette.Swatch wallSwatch = ColorExtractor.getProminentSwatch(resource);
+        DrawableRequestBuilder thumbnailRequest = null;
 
-                        if (mPrefs.getAnimationsEnabled()) {
-                            TransitionDrawable td = new TransitionDrawable(new Drawable[]{new ColorDrawable(Color.TRANSPARENT), new BitmapDrawable(context.getResources(), resource)});
-                            holder.wall.setImageDrawable(td);
-                            td.startTransition(250);
-                        } else {
-                            holder.wall.setImageBitmap(resource);
-                        }
+        if (!(wallThumb.equals("null"))) {
+            thumbnailRequest = Glide.with(context).load(wallThumb).thumbnail(0.5f);
+        }
 
-                        if (wallSwatch != null) {
+        if (thumbnailRequest != null) {
+            Glide.with(context)
+                    .load(wallUrl)
+                    .asBitmap()
+                    .thumbnail(thumbnailRequest)
+                    .into(new BitmapImageViewTarget(holder.wall) {
+                        @Override
+                        protected void setResource(Bitmap resource) {
+
+                            Palette.Swatch wallSwatch = ColorExtractor.getProminentSwatch(resource);
+
                             if (mPrefs.getAnimationsEnabled()) {
-                                TransitionDrawable td = new TransitionDrawable(
-                                        new Drawable[]{holder.titleBg.getBackground(),
-                                                new ColorDrawable(wallSwatch.getRgb())});
-                                holder.titleBg.setBackground(td);
+                                TransitionDrawable td = new TransitionDrawable(new Drawable[]{new ColorDrawable(Color.TRANSPARENT), new BitmapDrawable(context.getResources(), resource)});
+                                holder.wall.setImageDrawable(td);
                                 td.startTransition(250);
                             } else {
-                                holder.titleBg.setBackgroundColor(wallSwatch.getRgb());
+                                holder.wall.setImageBitmap(resource);
                             }
 
-                            holder.name.setTextColor(wallSwatch.getBodyTextColor());
-                            holder.authorName.setTextColor(wallSwatch.getTitleTextColor());
-                        }
+                            if (wallSwatch != null) {
+                                if (mPrefs.getAnimationsEnabled()) {
+                                    TransitionDrawable td = new TransitionDrawable(
+                                            new Drawable[]{holder.titleBg.getBackground(),
+                                                    new ColorDrawable(wallSwatch.getRgb())});
+                                    holder.titleBg.setBackground(td);
+                                    td.startTransition(250);
+                                } else {
+                                    holder.titleBg.setBackgroundColor(wallSwatch.getRgb());
+                                }
 
-                    }
-                });
+                                holder.name.setTextColor(wallSwatch.getBodyTextColor());
+                                holder.authorName.setTextColor(wallSwatch.getTitleTextColor());
+                            }
+
+                        }
+                    });
+        } else {
+            Glide.with(context)
+                    .load(wallUrl)
+                    .asBitmap()
+                    .thumbnail(0.5f)
+                    .into(new BitmapImageViewTarget(holder.wall) {
+                        @Override
+                        protected void setResource(Bitmap resource) {
+
+                            Palette.Swatch wallSwatch = ColorExtractor.getProminentSwatch(resource);
+
+                            if (mPrefs.getAnimationsEnabled()) {
+                                TransitionDrawable td = new TransitionDrawable(new Drawable[]{new ColorDrawable(Color.TRANSPARENT), new BitmapDrawable(context.getResources(), resource)});
+                                holder.wall.setImageDrawable(td);
+                                td.startTransition(250);
+                            } else {
+                                holder.wall.setImageBitmap(resource);
+                            }
+
+                            if (wallSwatch != null) {
+                                if (mPrefs.getAnimationsEnabled()) {
+                                    TransitionDrawable td = new TransitionDrawable(
+                                            new Drawable[]{holder.titleBg.getBackground(),
+                                                    new ColorDrawable(wallSwatch.getRgb())});
+                                    holder.titleBg.setBackground(td);
+                                    td.startTransition(250);
+                                } else {
+                                    holder.titleBg.setBackgroundColor(wallSwatch.getRgb());
+                                }
+
+                                holder.name.setTextColor(wallSwatch.getBodyTextColor());
+                                holder.authorName.setTextColor(wallSwatch.getTitleTextColor());
+                            }
+
+                        }
+                    });
+        }
     }
 
     @Override

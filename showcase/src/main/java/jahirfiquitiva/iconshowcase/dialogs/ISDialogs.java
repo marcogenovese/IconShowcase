@@ -446,6 +446,33 @@ public final class ISDialogs {
                 .show();
     }
 
+    public static void showKustomAppsDownloadDialog(final Context context, final ArrayList<String> appsNames) {
+        final String storePrefix = "https://play.google.com/store/apps/details?id=",
+                klwpLink = "org.kustom.wallpaper",
+                kwgtLink = "org.kustom.widget",
+                koloretteLink = "com.arun.themeutil.kolorette";
+        new MaterialDialog.Builder(context)
+                .title(R.string.install_apps)
+                .content(R.string.install_apps_content)
+                .items(appsNames)
+                .itemsCallback(new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
+                        if (appsNames.get(which).equals("Kustom Live Wallpaper")) {
+                            Utils.openLinkInChromeCustomTab(context,
+                                    storePrefix + klwpLink);
+                        } else if (appsNames.get(which).equals("Kustom Widget")) {
+                            Utils.openLinkInChromeCustomTab(context,
+                                    storePrefix + kwgtLink);
+                        } else if (appsNames.get(which).equals("Kolorette")) {
+                            Utils.openLinkInChromeCustomTab(context,
+                                    storePrefix + koloretteLink);
+                        }
+                    }
+                })
+                .show();
+    }
+
     public static void showZooperDownloadDialog(final Context context) {
         new MaterialDialog.Builder(context)
                 .title(R.string.zooper_download_dialog_title)

@@ -60,6 +60,7 @@ public class TasksExecutor {
         } else {
             new LoadIconsLists(context).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             new LoadZooperWidgets(context).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            new LoadKustomFiles(context).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             loadAppsForRequest();
             loadWallsList();
         }

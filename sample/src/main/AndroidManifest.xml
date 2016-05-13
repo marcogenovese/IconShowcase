@@ -276,6 +276,23 @@
             android:authorities="jahirfiquitiva.apps.iconshowcase.sample.zwprovider"
             tools:ignore="ExportedContentProvider"/>
 		-->
+		
+		<!-- Remove comment marks to enable Kustom Skins
+        * Replace jahirfiquitiva.apps.iconshowcase.sample with your app's package
+		* Remove intent-filter lines according to your needs. If you're not going to provide any of the options, remove such line.
+		
+		<provider
+            android:name="org.kustom.api.Provider"
+            android:authorities="jahirfiquitiva.apps.iconshowcase.sample.kprovider"
+            android:exported="true"
+            tools:ignore="ExportedContentProvider">
+            <intent-filter>
+                <action android:name="org.kustom.provider.WALLPAPERS" />
+                <action android:name="org.kustom.provider.WIDGETS" />
+                <action android:name="org.kustom.provider.KOMPONENTS" />
+            </intent-filter>
+        </provider>
+		-->
 
         <!-- Wallpapers Activity -->
         <activity

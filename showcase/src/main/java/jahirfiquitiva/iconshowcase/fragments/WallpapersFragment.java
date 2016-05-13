@@ -409,17 +409,23 @@ public class WallpapersFragment extends Fragment {
                         json = jsonarray.getJSONObject(i);
                         // Retrieve JSON Objects
 
-                        String dimens, copyright;
+                        String thumbLink, dimens, copyright;
+
+                        try {
+                            thumbLink = json.getString("thumbnail-url");
+                        } catch (JSONException e) {
+                            thumbLink = "null";
+                        }
 
                         try {
                             dimens = json.getString("dimensions");
-                        } catch (JSONException e) {
+                        } catch (JSONException e1) {
                             dimens = "null";
                         }
 
                         try {
                             copyright = json.getString("copyright");
-                        } catch (JSONException e1) {
+                        } catch (JSONException e2) {
                             copyright = "null";
                         }
 
@@ -427,6 +433,7 @@ public class WallpapersFragment extends Fragment {
                                 json.getString("name"),
                                 json.getString("author"),
                                 json.getString("url"),
+                                thumbLink,
                                 dimens,
                                 copyright));
 

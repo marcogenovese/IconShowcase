@@ -73,6 +73,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
     private final WeakReference<Activity> wrActivity;
     private Activity activity;
     private Preferences mPrefs;
+    private File filesFolder;
 
     public ZipFilesToRequest(Activity activity, MaterialDialog dialog,
                              ArrayList<RequestItem> appsListFinal) {
@@ -85,6 +86,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
     @Override
     protected void onPreExecute() {
         final Activity act = wrActivity.get();
+        this.filesFolder = null;
         if (act != null) {
             this.context = new WeakReference<>(act.getApplicationContext());
             this.activity = act;
@@ -98,7 +100,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
 
         String zipLocation = context.get().getString(R.string.request_save_location,
                 Environment.getExternalStorageDirectory().getAbsolutePath());
-        String filesLocation = zipLocation + "Files/";
+        String filesLocation = zipLocation + "Files";
 
         String appNameCorrected = context.get().getResources().getString(R.string.app_name).replace(" ", "");
 
@@ -108,7 +110,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
 
         try {
             final File zipFolder = new File(zipLocation);
-            final File filesFolder = new File(filesLocation + "/");
+            filesFolder = new File(filesLocation + "/");
 
             deleteDirectory(zipFolder);
             deleteDirectory(filesFolder);
@@ -247,6 +249,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
 
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     @Override
     protected void onPostExecute(Boolean worked) {
 
@@ -268,6 +271,9 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
                 sendIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
                 try {
+                    if (filesFolder != null) {
+                        filesFolder.delete();
+                    }
                     activity.startActivityForResult(Intent.createChooser(sendIntent, "Send mail..."), 2);
                     Calendar c = Calendar.getInstance();
                     Utils.saveCurrentTimeOfRequest(mPrefs, c);
