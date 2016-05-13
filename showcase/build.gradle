@@ -113,7 +113,7 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.2.0'
 
     //Glide Library - Image Loading Lib
-    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.github.bumptech.glide:glide:3.8.0-SNAPSHOT'
 
     //Sectioned RecyclerView
     compile('com.afollestad:sectioned-recyclerview:0.2.2') {

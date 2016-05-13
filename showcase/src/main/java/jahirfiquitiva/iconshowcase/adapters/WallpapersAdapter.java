@@ -40,7 +40,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
@@ -95,17 +94,17 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
 
         String wallThumb = wallItem.getWallThumbUrl();
 
-        DrawableRequestBuilder thumbnailRequest = null;
-
         if (!(wallThumb.equals("null"))) {
-            thumbnailRequest = Glide.with(context).load(wallThumb).thumbnail(0.5f);
-        }
-
-        if (thumbnailRequest != null) {
             Glide.with(context)
                     .load(wallUrl)
                     .asBitmap()
-                    .thumbnail(thumbnailRequest)
+                    .crossFade()
+                    .thumbnail(
+                            Glide.with(context)
+                                    .load(wallThumb)
+                                    .asBitmap()
+                                    .crossFade()
+                                    .thumbnail(0.5f))
                     .into(new BitmapImageViewTarget(holder.wall) {
                         @Override
                         protected void setResource(Bitmap resource) {
@@ -141,6 +140,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
             Glide.with(context)
                     .load(wallUrl)
                     .asBitmap()
+                    .crossFade()
                     .thumbnail(0.5f)
                     .into(new BitmapImageViewTarget(holder.wall) {
                         @Override
