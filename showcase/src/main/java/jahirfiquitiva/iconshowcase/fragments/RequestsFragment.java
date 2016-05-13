@@ -63,7 +63,7 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
     public static RequestsAdapter requestsAdapter;
     private static FloatingActionButton fab;
     private static int maxApps = 0, minutesLimit = 0;
-    private ViewGroup layout;
+    public static ViewGroup layout;
     private static Preferences mPrefs;
     private Activity context;
     private static ArrayList<RequestItem> requestList;

@@ -120,7 +120,7 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
     @Override
     protected void onPostExecute(ArrayList<RequestItem> list) {
         RequestList.setRequestList(list);
-        RequestsFragment.setupContent(null, context.get());
+        RequestsFragment.setupContent(RequestsFragment.layout, context.get());
         if (list != null) {
             long endTime = System.currentTimeMillis();
             Utils.showLog(context.get(),

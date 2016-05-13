@@ -150,9 +150,6 @@ public class LoadKustomFiles extends AsyncTask<Void, String, Boolean> {
         return fileName.substring(0, fileName.lastIndexOf("."));
     }
 
-    /**
-     * This code was created by Aidan Follestad. Complete credits to him.
-     */
     private String[] getWidgetPreviewPathFromZip(String name,
                                                  String folder,
                                                  InputStream in,
@@ -194,11 +191,6 @@ public class LoadKustomFiles extends AsyncTask<Void, String, Boolean> {
                             if (zipIn != null) zipIn.close();
                             if (zipOut != null) zipOut.close();
                         }
-                        /*
-                        if(folder.equals("komponents")){
-                            break;
-                        }
-                        */
                     }
                     if (!(thumbNames[1].isEmpty())) {
                         if (entry.getName().endsWith(thumbNames[1] + ".jpg")) {
