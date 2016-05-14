@@ -110,7 +110,13 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
         holder.txtName.setText(requestsItem.getAppName());
         holder.imgIcon.setImageDrawable(requestsItem.getIcon());
         holder.chkSelected.setChecked(requestsItem.isSelected());
-        if (context.getResources().getBoolean(R.bool.request_cards)) {
+        boolean listsCards;
+        if (context.getResources().getBoolean(R.bool.dev_options)) {
+            listsCards = mPrefs.getDevListsCards();
+        } else {
+            listsCards = context.getResources().getBoolean(R.bool.request_cards);
+        }
+        if (listsCards) {
             holder.cardView.setTag(position);
         } else {
             holder.view.setTag(position);
@@ -135,7 +141,13 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
             imgIcon = (ImageView) v.findViewById(R.id.imgIcon);
             txtName = (TextView) v.findViewById(R.id.txtName);
             chkSelected = (CheckBox) v.findViewById(R.id.chkSelected);
-            if (context.getResources().getBoolean(R.bool.request_cards)) {
+            boolean listsCards;
+            if (context.getResources().getBoolean(R.bool.dev_options)) {
+                listsCards = mPrefs.getDevListsCards();
+            } else {
+                listsCards = context.getResources().getBoolean(R.bool.request_cards);
+            }
+            if (listsCards) {
                 cardView = (CardView) v.findViewById(R.id.requestCard);
                 cardView.setOnClickListener(this);
             } else {

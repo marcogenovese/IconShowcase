@@ -23,6 +23,7 @@
 
 package jahirfiquitiva.iconshowcase.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -53,12 +54,19 @@ public class FAQsAdapter extends RecyclerView.Adapter<FAQsAdapter.FAQsHolder> {
     @Override
     public FAQsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        boolean listsCards;
+        if (context.getResources().getBoolean(R.bool.dev_options)) {
+            listsCards = mPrefs.getDevListsCards();
+        } else {
+            listsCards = context.getResources().getBoolean(R.bool.request_cards);
+        }
         return new FAQsHolder(
-                inflater.inflate(context.getResources().getBoolean(R.bool.faqs_cards) ?
+                inflater.inflate(listsCards ?
                         R.layout.card_faq :
                         R.layout.item_faq, parent, false));
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(FAQsHolder holder, int position) {
 

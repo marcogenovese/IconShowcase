@@ -21,7 +21,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslations">
 
     <string name="dev_prefs_title">Development Prefereces</string>
-    <string name="dev_prefs_summary">These preferences won't be available in final apps. These are made just for designers to check the multiple customization options IconShowcase can offer.</string>
+    <string name="dev_prefs_summary">These preferences won\'t be available in final apps. These are made just for designers to check the multiple customization options IconShowcase can offer.</string>
 
     <string name="dev_drawer_header_style_title">Drawer header style</string>
     <string name="dev_drawer_header_style_summary">When using IconShowcase you can choose between 3 different drawer header styles.</string>
@@ -36,7 +36,7 @@
     <string name="dev_lists_cards_summary">IconShowcase offers you the option to show some lists as cards instead of flat stuff.</string>
 
     <string name="dev_drawer_header_texts_title">Show drawer header texts</string>
-    <string name="dev_drawer_header_texts_summary">When disabled, IconShowcase won't show app's name and version in the drawer's header.</string>
+    <string name="dev_drawer_header_texts_summary">When disabled, IconShowcase won\'t show app\'s name and version in the drawer\'s header.</string>
 
     <string name="dev_more_options_title">More options</string>
     <string name="dev_more_options_summary">IconShowcase offers many other additional options you can setup while building your app. Tap here to check them.</string>
@@ -47,10 +47,37 @@
         <item>No header</item>
     </array>
 
-    <!-- TODO Add full options list -->
-    <array name="dev_extra_features">
+    <string-array name="dev_extra_features">
+        <item>@array/configurations_list</item>
+        <item>@array/additional_features_list</item>
+    </string-array>
+
+    <string-array name="configurations_list">
         <item>These features can be additionally configured when using the dashboard source:</item>
-        <item>Icon Requests limit: for example, X apps every Y minutes. Meaning users will be able to request X apps only every Y minutes.</item>
-    </array>
+        <item>Completely configurable UI.</item>
+        <item>Columns number for some sections.</item>
+        <item>Showcase your apps in main section.</item>
+        <item>Setup what you want users to be able to configure.</item>
+    </string-array>
+
+    <string-array name="additional_features_list">
+        <item>Additionally, IconShowcase offers some other features:</item>
+        <item>License checker.</item>
+        <item>Cloud based wallpapers.</item>
+        <item>Wallpapers viewer with zooming capabilities.</item>
+        <item>Muzei Support.</item>
+        <item>Zooper widgets support.</item>
+        <item>Kustom Live Wallpapers and Kustom Widgets support.</item>
+        <item>In-app icon request tool.</item>
+        <item>Icon Requests limit: for example, X apps every Y minutes. Meaning users will be able
+            to request X apps only every Y minutes.
+        </item>
+        <item>Support for more than 25 launchers.</item>
+        <item>Analog clock widget.</item>
+        <item>Tablet support.</item>
+        <item>App works as a gallery to pick icons or wallpapers and use them in other apps.</item>
+        <item>Dashboard translated to more than 7 languages.</item>
+        <item>Support for Android 4.1 and up.</item>
+    </string-array>
 
 </resources>

@@ -23,6 +23,7 @@
 
 package jahirfiquitiva.iconshowcase.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -42,6 +43,7 @@ import java.util.List;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.adapters.FAQsAdapter;
 import jahirfiquitiva.iconshowcase.models.FAQsItem;
+import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.views.DividerItemDecoration;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
@@ -49,9 +51,14 @@ import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 public class FAQsFragment extends Fragment {
 
     private ViewGroup layout;
+    private Context context;
+    private Preferences mPrefs;
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
+
+        context = getActivity();
+        mPrefs = new Preferences(context);
 
         if (layout != null) {
             ViewGroup parent = (ViewGroup) layout.getParent();
@@ -79,7 +86,16 @@ public class FAQsFragment extends Fragment {
         RecyclerView faqsList = (RecyclerView) layout.findViewById(R.id.faqs_list);
 
         FAQsAdapter faqsAdapter = new FAQsAdapter(faqs, getActivity());
-        if (getActivity().getResources().getBoolean(R.bool.faqs_cards)) {
+
+        boolean listsCards;
+
+        if (context.getResources().getBoolean(R.bool.dev_options)) {
+            listsCards = mPrefs.getDevListsCards();
+        } else {
+            listsCards = context.getResources().getBoolean(R.bool.faqs_cards);
+        }
+
+        if (listsCards) {
             faqsList.setLayoutManager(new GridLayoutManager(getActivity(), 1));
             faqsList.addItemDecoration(new GridSpacingItemDecoration(1,
                     getActivity().getResources().getDimensionPixelSize(R.dimen.cards_margin),

@@ -30,6 +30,8 @@
         android:title="@string/dev_prefs_title">
 
         <Preference
+            android:selectable="false"
+            android:enabled="false"
             android:persistent="true"
             android:summary="@string/dev_prefs_summary"/>
 

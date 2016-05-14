@@ -38,9 +38,10 @@
         android:background="@android:color/transparent"
         android:clickable="false"
         android:focusable="false"
-        android:lineSpacingMultiplier="1.6"
+        android:lineSpacingMultiplier="1.2"
         android:paddingTop="@dimen/dialog_margin_bottom"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textStyle="bold"
         tools:text="Title"/>
 
     <TextView
