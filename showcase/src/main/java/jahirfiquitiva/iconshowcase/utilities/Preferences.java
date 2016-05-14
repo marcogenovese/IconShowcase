@@ -57,6 +57,13 @@ public class Preferences {
             NOTIFS_UPDATE_INTERVAL = "notifs_update_interval",
             ACTIVITY_VISIBLE = "activity_visible";
 
+    private static final String
+            DEV_DRAWER_HEADER_STYLE = "dev_drawer_header_style",
+            DEV_ICONS_CHANGELOG_STYLE = "dev_changelog_style",
+            DEV_DRAWER_TEXTS = "dev_drawer_texts",
+            DEV_MINI_DRAWER_HEADER_PICTURE = "dev_mini_drawer_header_picture",
+            DEV_LISTS_CARDS = "dev_lists_cards";
+
     private final Context context;
 
     public Preferences(Context context) {
@@ -263,12 +270,53 @@ public class Preferences {
     public boolean getActivityVisible() {
         return getSharedPreferences().getBoolean(ACTIVITY_VISIBLE, true);
     }
+
     public void setVersionCode(int versionCode) {
         getSharedPreferences().edit().putInt(VERSION_CODE, versionCode).apply();
     }
 
     public int getVersionCode() {
         return getSharedPreferences().getInt(VERSION_CODE, 0);
+    }
+
+    public void setDevDrawerHeaderStyle(int style) {
+        getSharedPreferences().edit().putInt(DEV_DRAWER_HEADER_STYLE, style).apply();
+    }
+
+    public int getDevDrawerHeaderStyle() {
+        return getSharedPreferences().getInt(DEV_DRAWER_HEADER_STYLE, 0);
+    }
+
+    public void setDevIconsChangelogStyle(boolean icons) {
+        getSharedPreferences().edit().putBoolean(DEV_ICONS_CHANGELOG_STYLE, icons).apply();
+    }
+
+    public boolean getDevIconsChangelogStyle() {
+        return getSharedPreferences().getBoolean(DEV_ICONS_CHANGELOG_STYLE, false);
+    }
+
+    public void setDevDrawerTexts(boolean enable) {
+        getSharedPreferences().edit().putBoolean(DEV_DRAWER_TEXTS, enable).apply();
+    }
+
+    public boolean getDevDrawerTexts() {
+        return getSharedPreferences().getBoolean(DEV_DRAWER_TEXTS, true);
+    }
+
+    public void setDevMiniDrawerHeaderPicture(boolean showPicture) {
+        getSharedPreferences().edit().putBoolean(DEV_MINI_DRAWER_HEADER_PICTURE, showPicture).apply();
+    }
+
+    public boolean getDevMiniDrawerHeaderPicture() {
+        return getSharedPreferences().getBoolean(DEV_MINI_DRAWER_HEADER_PICTURE, true);
+    }
+
+    public void setDevListsCards(boolean enableCards) {
+        getSharedPreferences().edit().putBoolean(DEV_LISTS_CARDS, enableCards).apply();
+    }
+
+    public boolean getDevListsCards() {
+        return getSharedPreferences().getBoolean(DEV_LISTS_CARDS, false);
     }
 
 }

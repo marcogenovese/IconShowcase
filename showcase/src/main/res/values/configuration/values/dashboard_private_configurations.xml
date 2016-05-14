@@ -37,4 +37,7 @@
     Do you want the request tool to show info for theme engines (cm, cyngn, rro)
     -->
     <bool name="theme_engine_info">false</bool>
+
+    <!-- This will enable development options so set it to false unless you know what you're doing -->
+    <bool name="dev_options">false</bool>
 </resources>

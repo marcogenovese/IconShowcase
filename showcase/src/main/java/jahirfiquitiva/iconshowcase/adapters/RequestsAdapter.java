@@ -48,12 +48,14 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
 
     public final ArrayList<RequestItem> appsList;
     private final Context context;
+    private final Preferences mPrefs;
     private final ClickListener mCallback;
     private AppIconFetchingQueue mAppIconFetchingQueue;
 
     public RequestsAdapter(final Context context, final ArrayList<RequestItem> appsList,
                            final Preferences mPrefs) {
         this.context = context;
+        this.mPrefs = new Preferences(context);
         this.appsList = appsList;
         this.mCallback = new ClickListener() {
             @Override
@@ -89,8 +91,14 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
 
     @Override
     public RequestsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        boolean listsCards;
+        if (context.getResources().getBoolean(R.bool.dev_options)) {
+            listsCards = mPrefs.getDevListsCards();
+        } else {
+            listsCards = context.getResources().getBoolean(R.bool.request_cards);
+        }
         View v = LayoutInflater.from(context).inflate(
-                context.getResources().getBoolean(R.bool.request_cards) ?
+                listsCards ?
                         R.layout.card_app_to_request :
                         R.layout.item_app_to_request, parent, false);
         return new RequestsHolder(v);

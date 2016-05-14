@@ -36,15 +36,18 @@ import java.util.List;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.models.FAQsItem;
+import jahirfiquitiva.iconshowcase.utilities.Preferences;
 
 public class FAQsAdapter extends RecyclerView.Adapter<FAQsAdapter.FAQsHolder> {
 
     private final List<FAQsItem> faqs;
     private final Context context;
+    private final Preferences mPrefs;
 
     public FAQsAdapter(List<FAQsItem> faqs, Context context) {
         this.faqs = faqs;
         this.context = context;
+        this.mPrefs = new Preferences(context);
     }
 
     @Override
@@ -84,7 +87,16 @@ public class FAQsAdapter extends RecyclerView.Adapter<FAQsAdapter.FAQsHolder> {
         FAQsHolder(View v) {
             super(v);
             view = v;
-            if (context.getResources().getBoolean(R.bool.faqs_cards)) {
+
+            boolean listsCards;
+
+            if (context.getResources().getBoolean(R.bool.dev_options)) {
+                listsCards = mPrefs.getDevListsCards();
+            } else {
+                listsCards = context.getResources().getBoolean(R.bool.faqs_cards);
+            }
+
+            if (listsCards) {
                 card = (CardView) v.findViewById(R.id.faq_card);
             } else {
                 layout = (LinearLayout) v.findViewById(R.id.faq_card);

@@ -23,6 +23,7 @@
 
 package jahirfiquitiva.iconshowcase.fragments;
 
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -46,6 +47,7 @@ import java.io.File;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
+import jahirfiquitiva.iconshowcase.adapters.FeaturesAdapter;
 import jahirfiquitiva.iconshowcase.dialogs.FolderChooserDialog;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.fragments.base.PreferenceFragment;
@@ -106,6 +108,13 @@ public class SettingsFragment extends PreferenceFragment implements
 
         final PreferenceScreen preferences = (PreferenceScreen) findPreference("preferences");
         final PreferenceCategory launcherIcon = (PreferenceCategory) findPreference("launcherIconPreference");
+
+        setupDevOptions(preferences, getActivity());
+
+        PreferenceCategory notifs = (PreferenceCategory) findPreference("notifications");
+        if (!(getResources().getBoolean(R.bool.enable_notifications_service))) {
+            preferences.removePreference(notifs);
+        }
 
         PreferenceCategory uiCategory = (PreferenceCategory) findPreference("uiPreferences");
 
@@ -339,6 +348,108 @@ public class SettingsFragment extends PreferenceFragment implements
     public void onResume() {
         super.onResume();
         Utils.collapseToolbar(getActivity());
+    }
+
+    private void setupDevOptions(PreferenceScreen mainPrefs, final Context context) {
+        if (getResources().getBoolean(R.bool.dev_options)) {
+
+            Preference drawerStyle, moarOptions;
+            SwitchPreference miniHeaderPic, drawerHeaderTexts, iconsChangelog, listsCards;
+
+            drawerStyle = (Preference) findPreference("headerStyle");
+            moarOptions = (Preference) findPreference("moreOptions");
+
+            miniHeaderPic = (SwitchPreference) findPreference("miniHeaderPic");
+            drawerHeaderTexts = (SwitchPreference) findPreference("drawerHeaderTexts");
+            iconsChangelog = (SwitchPreference) findPreference("iconsChangelog");
+            listsCards = (SwitchPreference) findPreference("listsCards");
+
+            drawerStyle.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+
+                    final int selectedTheme = mPrefs.getDevDrawerHeaderStyle();
+
+                    new MaterialDialog.Builder(context)
+                            .title(R.string.dev_drawer_header_style_title)
+                            .items(R.array.drawer_header_styles)
+                            .itemsCallbackSingleChoice(selectedTheme, new MaterialDialog.ListCallbackSingleChoice() {
+                                @Override
+                                public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
+                                    if (selectedTheme != which) {
+                                        mPrefs.setDevDrawerHeaderStyle(which);
+                                        mPrefs.setSettingsModified(true);
+                                        ThemeUtils.restartActivity((Activity) context);
+                                    }
+                                    return true;
+                                }
+                            })
+                            .show();
+
+                    return true;
+                }
+            });
+
+            miniHeaderPic.setChecked(mPrefs.getDevMiniDrawerHeaderPicture());
+            miniHeaderPic.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    mPrefs.setDevMiniDrawerHeaderPicture(newValue.toString().equals("true"));
+                    mPrefs.setSettingsModified(true);
+                    ThemeUtils.restartActivity((Activity) context);
+                    return true;
+                }
+            });
+
+            drawerHeaderTexts.setChecked(mPrefs.getDevDrawerTexts());
+            drawerHeaderTexts.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    mPrefs.setDevDrawerTexts(newValue.toString().equals("true"));
+                    mPrefs.setSettingsModified(true);
+                    ThemeUtils.restartActivity((Activity) context);
+                    return true;
+                }
+            });
+
+            iconsChangelog.setChecked(mPrefs.getDevIconsChangelogStyle());
+            iconsChangelog.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    mPrefs.setDevIconsChangelogStyle(newValue.toString().equals("true"));
+                    mPrefs.setSettingsModified(true);
+                    ThemeUtils.restartActivity((Activity) context);
+                    return true;
+                }
+            });
+
+            listsCards.setChecked(mPrefs.getDevListsCards());
+            listsCards.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    mPrefs.setDevListsCards(newValue.toString().equals("true"));
+                    mPrefs.setSettingsModified(true);
+                    ThemeUtils.restartActivity((Activity) context);
+                    return true;
+                }
+            });
+
+            moarOptions.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    new MaterialDialog.Builder(context)
+                            .title(R.string.dev_more_options_title)
+                            .adapter(new FeaturesAdapter(context, R.array.dev_extra_features), null)
+                            .positiveText(R.string.great)
+                            .listSelector(android.R.color.transparent)
+                            .show();
+                    return true;
+                }
+            });
+
+        } else {
+            mainPrefs.removePreference(findPreference("devPrefs"));
+        }
     }
 
     public void changeValues(Context context) {

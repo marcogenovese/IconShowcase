@@ -108,7 +108,9 @@ public class ShowcaseActivity extends AppCompatActivity implements
     DONATIONS_GOOGLE = false,
             DONATIONS_PAYPAL = false,
             DONATIONS_FLATTR = false,
-            DONATIONS_BITCOIN = false;
+            DONATIONS_BITCOIN = false,
+
+    ENABLE_DEV_OPTIONS = false;
     //SHOW_LOAD_ICONS_DIALOG = true;
 
     public static boolean WITH_ZOOPER_SECTION = false, DEBUGGING = false;
@@ -183,6 +185,8 @@ public class ShowcaseActivity extends AppCompatActivity implements
         context = this;
         mPrefs = new Preferences(this);
 
+        ENABLE_DEV_OPTIONS = getResources().getBoolean(R.bool.dev_options);
+
         installer = getIntent().getStringExtra("installer");
         int notifType = getIntent().getIntExtra("launchNotifType", 2);
 
@@ -209,7 +213,11 @@ public class ShowcaseActivity extends AppCompatActivity implements
 
         DEBUGGING = getResources().getBoolean(R.bool.debugging);
 
-        WITH_ICONS_BASED_CHANGELOG = getResources().getBoolean(R.bool.icons_changelog);
+        if (ENABLE_DEV_OPTIONS) {
+            WITH_ICONS_BASED_CHANGELOG = mPrefs.getDevIconsChangelogStyle();
+        } else {
+            WITH_ICONS_BASED_CHANGELOG = getResources().getBoolean(R.bool.icons_changelog);
+        }
 
         shuffleIcons = getResources().getBoolean(R.bool.shuffle_toolbar_icons);
 
@@ -256,7 +264,11 @@ public class ShowcaseActivity extends AppCompatActivity implements
             secondaryDrawerItems = new String[]{"Credits", "Settings"};
         }
 
-        drawerHeaderStyle = getResources().getInteger(R.integer.nav_drawer_header_style);
+        if (ENABLE_DEV_OPTIONS) {
+            drawerHeaderStyle = mPrefs.getDevDrawerHeaderStyle() + 1;
+        } else {
+            drawerHeaderStyle = getResources().getInteger(R.integer.nav_drawer_header_style);
+        }
 
         if (drawerHeaderStyle < 1 || drawerHeaderStyle > 3) {
             drawerHeaderStyle = 1;
@@ -896,7 +908,15 @@ public class ShowcaseActivity extends AppCompatActivity implements
 
         String headerAppName = "", headerAppVersion = "";
 
-        if (getResources().getBoolean(R.bool.with_drawer_texts)) {
+        boolean withDrawerTexts;
+
+        if (ENABLE_DEV_OPTIONS) {
+            withDrawerTexts = mPrefs.getDevDrawerTexts();
+        } else {
+            withDrawerTexts = getResources().getBoolean(R.bool.with_drawer_texts);
+        }
+
+        if (withDrawerTexts) {
             headerAppName = getResources().getString(R.string.app_long_name);
             headerAppVersion = "v " + Utils.getAppVersion(this);
         }
@@ -935,7 +955,16 @@ public class ShowcaseActivity extends AppCompatActivity implements
             miniHeader.getLayoutParams().height = UIUtils.getActionBarHeight(this) + UIUtils.getStatusBarHeight(this);
             TextView appVersion = (TextView) drawer.getHeader().findViewById(R.id.text_app_version);
             TextView appName = (TextView) drawer.getHeader().findViewById(R.id.text_app_name);
-            if (context.getResources().getBoolean(R.bool.mini_header_solid_color)) {
+
+            boolean miniHeaderSolidColor;
+
+            if (ENABLE_DEV_OPTIONS) {
+                miniHeaderSolidColor = !(mPrefs.getDevMiniDrawerHeaderPicture());
+            } else {
+                miniHeaderSolidColor = context.getResources().getBoolean(R.bool.mini_header_solid_color);
+            }
+
+            if (miniHeaderSolidColor) {
                 int backgroundColor = ThemeUtils.darkTheme ?
                         ContextCompat.getColor(context, R.color.dark_theme_primary) :
                         ContextCompat.getColor(context, R.color.light_theme_primary);
