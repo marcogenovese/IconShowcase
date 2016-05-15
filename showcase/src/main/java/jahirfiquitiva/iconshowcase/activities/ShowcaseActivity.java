@@ -784,10 +784,8 @@ public class ShowcaseActivity extends AppCompatActivity implements
     private void setupDrawer(final Toolbar toolbar, Bundle savedInstanceState) {
 
         //Initialize PrimaryDrawerItem
-        PrimaryDrawerItem home, previews, walls, requests, apply, faqs, zooper, kustom;
-
-        //initialize SecondaryDrawerItem
-        SecondaryDrawerItem creditsItem, settingsItem, donationsItem;
+        PrimaryDrawerItem home, previews, walls, requests, apply, faqs, zooper, kustom,
+                creditsItem, settingsItem, donationsItem;
 
         secondaryStart = primaryDrawerItems.length + 1; //marks the first identifier value that should be used
 

@@ -140,7 +140,12 @@
                 <category android:name="android.intent.category.DEFAULT"/>
                 <data android:mimeType="image/*"/>
             </intent-filter>
-
+			<!-- Xperia Home Launcher -->		
+            <intent-filter>		
+             	<action android:name="com.sonymobile.home.ICON_PACK"/>		
+             			
+             	<category android:name="android.intent.category.DEFAULT"/>		
+             </intent-filter>		
             <!-- ADW -->
             <intent-filter>
                 <action android:name="org.adw.launcher.THEMES"/>
