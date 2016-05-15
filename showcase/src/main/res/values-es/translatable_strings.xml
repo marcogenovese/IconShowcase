@@ -182,6 +182,7 @@
     <string name="zooper_download_dialog_title">Descargar desde</string>
     <string name="install_apps">Instalar apps</string>
     <string name="install_apps_content">Necesitas instalar estas apps para que los widgets de Zooper funciones correctamente. Presiona alguna para instalarla.</string>
+    <string name="install_kustom_apps_content">Necesitas instalar estas aplicaciones para que los componentes de Kustom funcionen adecuadamente. Presiona una opción para instalarla.</string>
     <string name="install_assets">Instalar archivos</string>
     <string name="open">Abrir</string>
     <string name="assets_installed">Archivos ya instalados.</string>

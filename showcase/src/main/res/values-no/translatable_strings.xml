@@ -56,7 +56,7 @@ installere den fra Google Play-butikken?</string>
 installere det på enheten din?</string>
     <string name="gnl_title">Google Nå Launcher er IKKE kompatibel</string>
     <string name="gnl_content">Google Nå Launcher er IKKE kompatibel med NOEN ikon pakker. Vennligst
-ikke rangere ikon pakken negativt på grunn av dette. Det er en midlertidig løsning som du kan prøve selv, men det krever bruk av en ekstern app. Vil du laste den ned?</string>
+ikke rangere ikon pakken negativt på grunn av dette. Det er en løsning som du kan prøve selv, men det krever bruk av en ekstern app. Vil du laste den ned?</string>
     <string name="lg_dialog_content">Vi beklager, men LG Hjem app er eksklusivt for LG-enheter, og derfor kan det lastes ned fra Google Play Store.</string>
     <!-- Changelog Dialog Content -->
     <string name="changelog_dialog_title">Endringslogg</string>
@@ -78,7 +78,7 @@ ikke rangere ikon pakken negativt på grunn av dette. Det er en midlertidig løs
     <string name="wallpaper_author_title">"Forfatter "</string>
     <string name="wallpaper_dimensions_title">Dimensjoner</string>
     <string name="wallpaper_copyright_title">Opphavsrett</string>
-    <string name="settings_saved">Innstillingene lagret. Bakgrunn vil endres hver %1$s.</string>
+    <string name="settings_saved">Innstillingene lagret. Bakgrunn vil endres hver %1$.</string>
     <!-- License Check Dialog -->
     <string name="license_failed_title">Lisenskontroll Mislyktes</string>
     <string name="license_success_title">Lisens kontroll Suksess</string>
@@ -189,6 +189,7 @@ samfunnet på Google Plus er et bra sted å gå.</string>
     <string name="zooper_download_dialog_title">Last ned fra</string>
     <string name="install_apps">"Installer apper "</string>
     <string name="install_apps_content">Du må installere disse appene for Zooper widgets til å fungere ordentlig. Trykk en for å installere den.</string>
+    <string name="install_kustom_apps_content">Du må installere disse programmene for Kustom eiendeler for å fungere ordentlig. Trykk en til å installere den.</string>
     <string name="install_assets">"Installer ressurser "</string>
     <string name="open">Åpne</string>
     <string name="assets_installed">Ressurser allerede installert.</string>

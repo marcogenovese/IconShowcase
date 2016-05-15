@@ -38,6 +38,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -98,12 +99,10 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
             Glide.with(context)
                     .load(wallUrl)
                     .asBitmap()
-                    .crossFade()
                     .thumbnail(
                             Glide.with(context)
                                     .load(wallThumb)
                                     .asBitmap()
-                                    .crossFade()
                                     .thumbnail(0.5f))
                     .into(new BitmapImageViewTarget(holder.wall) {
                         @Override
@@ -118,6 +117,8 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
                             } else {
                                 holder.wall.setImageBitmap(resource);
                             }
+
+                            holder.progress.setVisibility(View.GONE);
 
                             if (wallSwatch != null) {
                                 if (mPrefs.getAnimationsEnabled()) {
@@ -140,7 +141,6 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
             Glide.with(context)
                     .load(wallUrl)
                     .asBitmap()
-                    .crossFade()
                     .thumbnail(0.5f)
                     .into(new BitmapImageViewTarget(holder.wall) {
                         @Override
@@ -155,6 +155,8 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
                             } else {
                                 holder.wall.setImageBitmap(resource);
                             }
+
+                            holder.progress.setVisibility(View.GONE);
 
                             if (wallSwatch != null) {
                                 if (mPrefs.getAnimationsEnabled()) {
@@ -187,6 +189,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
         public final ImageView wall;
         public final TextView name, authorName;
         public final LinearLayout titleBg;
+        public final ProgressBar progress;
 
         WallsHolder(View v) {
             super(v);
@@ -195,6 +198,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
             name = (TextView) view.findViewById(R.id.name);
             authorName = (TextView) view.findViewById(R.id.author);
             titleBg = (LinearLayout) view.findViewById(R.id.titleBg);
+            progress = (ProgressBar) view.findViewById(R.id.progress);
             view.setOnClickListener(this);
             view.setOnLongClickListener(this);
         }

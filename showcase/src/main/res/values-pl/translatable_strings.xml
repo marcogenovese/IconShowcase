@@ -55,7 +55,7 @@ Zainstalować go ze Sklepu Google Play?</string>
     <string name="cm_dialog_content">%1$s jest częścią ROMów opartych na CyanogenMod. \n
 Czy chcesz zainstalować go na swoje urządzenie?</string>
     <string name="gnl_title">Google Now Launcher NIE jest kompatybilny</string>
-    <string name="gnl_content">"Google Now Launcher NIE JEST kompatybilny z ŻADNĄ paczką ikon. Proszę nie oceniać negatywnie tej paczki ikon z tego powodu. Jest obejście, które można spróbować samemu, ale wymaga użycia zewnętrznej aplikacji. Czy chcesz ją pobrać? "</string>
+    <string name="gnl_content">Google Now Launcher NIE JEST kompatybilny z ŻADNĄ paczką ikon. Proszę nie oceniać negatywnie tej paczki ikon z tego powodu. Jest rozwiązanie, które możesz wypróbować samemu, ale wymaga ono użycia zewnętrznej aplikacji. Czy chcesz ją pobrać?</string>
     <string name="lg_dialog_content">Przykro nam, ale LG Home jest dostępny wyłącznie dla urządzeń od LG, więc nie może zostać pobrany ze sklepu Google Play.</string>
     <!-- Changelog Dialog Content -->
     <string name="changelog_dialog_title">Dziennik zmian</string>
@@ -185,6 +185,7 @@ Czy chcesz zainstalować go na swoje urządzenie?</string>
     <string name="zooper_download_dialog_title">Pobierz z</string>
     <string name="install_apps">Zainstaluj aplikacje</string>
     <string name="install_apps_content">Musisz zainstalować te aplikacje, aby widżety Zooper działały poprawnie. Tapnij na aplikację, aby ją zainstalować.</string>
+    <string name="install_kustom_apps_content">Musisz zainstalować te aplikacje, aby skórki Kustom działały poprawnie. Tapnij na aplikację, aby ją pobrać.</string>
     <string name="install_assets">Zainstaluj czcionki</string>
     <string name="open">Otwórz</string>
     <string name="assets_installed">%1$s czcionki są już zainstalowane</string>

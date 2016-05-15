@@ -132,8 +132,13 @@
 
     <string-array name="translators_names">
         <item>@string/sherry</item>
+        <item>@string/patrick</item>
         <item>@string/patryk</item>
         <item>@string/kevin</item>
+        <item>@string/anthony</item>
+        <item>Eduardo Pratti</item>
+        <item>Maximilian Keppeler</item>
+        <item>Fladir Reis</item>
         <item>Tijmen Ennik</item>
         <item>Julian Ostarek</item>
         <item>Randle P</item>
@@ -149,6 +154,17 @@
         <item>Davide Della Giustina</item>
         <item>Runar Olsen</item>
         <item>Morshedul Alam</item>
+        <item>Diaulhaq Fakhran</item>
+        <item>Ivan Krušlin</item>
+        <item>Brandon Aguilar</item>
+        <item>Framo Dev</item>
+        <item>Maximilian Jarchow</item>
+        <item>Ivan Tevano</item>
+        <item>Didier Sinmian</item>
+        <item>Mularush Seven</item>
+        <item>Danish Ansari</item>
+        <item>Lo Scienzo</item>
+        <item>coccco28</item>
     </string-array>
 
     <string-array name="libs_names">

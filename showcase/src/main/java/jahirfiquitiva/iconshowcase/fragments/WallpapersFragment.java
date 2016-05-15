@@ -412,7 +412,7 @@ public class WallpapersFragment extends Fragment {
                         String thumbLink, dimens, copyright;
 
                         try {
-                            thumbLink = json.getString("thumbnail-url");
+                            thumbLink = json.getString("thumbnail");
                         } catch (JSONException e) {
                             thumbLink = "null";
                         }

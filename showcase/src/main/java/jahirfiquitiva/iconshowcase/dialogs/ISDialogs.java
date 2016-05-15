@@ -577,6 +577,12 @@ public final class ISDialogs {
                 .title(R.string.translators)
                 .negativeText(R.string.close)
                 .items(R.array.translators_names)
+                .itemsCallback(new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
+                        //Do nothing
+                    }
+                })
                 .listSelector(android.R.color.transparent)
                 .show();
     }

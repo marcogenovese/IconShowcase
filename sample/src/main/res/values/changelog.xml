@@ -27,16 +27,30 @@
     <string-array name="fullchangelog">
         <item>@array/newstuff</item>
         <item>@array/improvements</item>
+        <item>@array/fixes</item>
     </string-array>
 
     <string-array name="newstuff">
         <item>New:</item>
-        <item>A lot of awesome stuff.</item>
+        <item>Added translations for 11 languages.</item>
+        <item>Added thumbnail support for wallpapers.</item>
+        <item>Added Kustom Live Wallpaper and Kustom Widgets support.</item>
     </string-array>
 
     <string-array name="improvements">
         <item>Improvements:</item>
-        <item>About everything.</item>
+        <item>Improved color extraction for wallpapers.</item>
+        <item>Icon request tool will always export the highest possible resolution icons.</item>
+        <item>Some improvements thanks to Allan Wang.</item>
+    </string-array>
+
+    <string-array name="fixes">
+        <item>Fixes:</item>
+        <item>Fixed License check success dialog showing a lot of times.</item>
+        <item>Fixed FC when opening Holo Launcher.</item>
+        <item>Fixed FC caused by wallpapers loading task.</item>
+        <item>Fixed FC when trying to open CM Themes App.</item>
+        <item>Fixed FAB disappearing from Home section.</item>
     </string-array>
 
     <string-array name="changelog_icons">

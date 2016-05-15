@@ -53,7 +53,7 @@
     <string name="lni_content">%1$s is momenteel niet geïnstalleerd op uw apparaat.\nZou u het willen installeren vanuit de Google Play Store?</string>
     <string name="cm_dialog_content">%1$s is onderdeel van CyanogenMod (gebaseerde) roms.\nZou u het willen installeren op uw apparaat?</string>
     <string name="gnl_title">Google Now Launcher is NIET Compatibel</string>
-    <string name="gnl_content">Google Now Launcher is niet compatibel met icon packs. Geef om die reden alstublieft geen lage beoordeling. Er is wel een manier, door middel van een andere app, waarop het mogelijk is iconen te vervangen in Google Now Launcher. Zou je die app willen downloaden?</string>
+    <string name="gnl_content">Google Now Launcher is NIET compatibel met icon packs. Geef om die reden alstublieft geen lage beoordeling. Er is wel een manier, door middel van een andere app, waarop het mogelijk is iconen te vervangen in Google Now Launcher. Zou je die app willen downloaden?</string>
     <string name="lg_dialog_content">Het spijt ons, maar LG Home app is exclusief voor LG apparaten en kan daarom niet worden gedownload in de Google Play Store.</string>
     <!-- Changelog Dialog Content -->
     <string name="changelog_dialog_title">Veranderingen</string>
@@ -186,6 +186,7 @@ community op Google Plus is hiervoor geschikt.</string>
     <string name="zooper_download_dialog_title">Download van</string>
     <string name="install_apps">Installeer apps</string>
     <string name="install_apps_content">U moet deze apps installeren als u wilt dat de Zooper widgets goed werken. Tik op een om te installeren.</string>
+    <string name="install_kustom_apps_content">Je moet deze apps installeren om Kustom goed te laten werken. Druk één om te installeren.</string>
     <string name="install_assets">Installeer middelen</string>
     <string name="open">Open</string>
     <string name="assets_installed">Benodigdheden zijn al geïnstalleerd</string>
