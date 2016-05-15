@@ -42,6 +42,7 @@
         <item>Improved color extraction for wallpapers.</item>
         <item>Icon request tool will always export the highest possible resolution icons.</item>
         <item>Some improvements thanks to Allan Wang.</item>
+        <item>Some other minor under-the-hood improvements.</item>
     </string-array>
 
     <string-array name="fixes">

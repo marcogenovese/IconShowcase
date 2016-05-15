@@ -69,7 +69,7 @@ public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
             AssetManager assetManager = context.get().getAssets();
             String[] templates = assetManager.list("templates");
 
-            File previewsFolder = new File(context.get().getExternalCacheDir(), "WidgetsPreviews");
+            File previewsFolder = new File(context.get().getExternalCacheDir(), "ZooperWidgetsPreviews");
 
             if (templates != null && templates.length > 0) {
                 clean(previewsFolder);

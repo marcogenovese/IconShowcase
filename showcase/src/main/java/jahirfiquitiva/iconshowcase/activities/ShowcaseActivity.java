@@ -205,7 +205,7 @@ public class ShowcaseActivity extends AppCompatActivity implements
 
         getAction();
 
-        TasksExecutor.with(this)
+        TasksExecutor.with(context)
                 .loadJust(
                         (iconsPicker && iconsPickerEnabled),
                         ((notifType == 1) ||

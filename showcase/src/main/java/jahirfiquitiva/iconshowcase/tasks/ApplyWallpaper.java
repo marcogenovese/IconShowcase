@@ -55,12 +55,12 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
     private final Bitmap resource;
     private final View layout;
     private final boolean isPicker;
-    private final WeakReference<Activity> wrActivity;
+    private WeakReference<Activity> wrActivity;
     private LinearLayout toHide1, toHide2;
 
-    public ApplyWallpaper(Activity activity, MaterialDialog dialog, Bitmap resource, boolean isPicker,
+    public ApplyWallpaper(Context context, MaterialDialog dialog, Bitmap resource, boolean isPicker,
                           View layout) {
-        this.wrActivity = new WeakReference<>(activity);
+        this.context = new WeakReference<>(context);
         this.dialog = dialog;
         this.resource = resource;
         this.isPicker = isPicker;
@@ -82,7 +82,6 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
     protected void onPreExecute() {
         final Activity a = wrActivity.get();
         if (a != null) {
-            this.context = new WeakReference<Context>(a.getApplicationContext());
             this.activity = a;
         }
     }
@@ -161,8 +160,9 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
                 int scaledHeight = deviceHeight;
                 int scaledWidth = (scaledHeight * bitmapWidth) / bitmapHeight;
                 try {
-                    if (scaledHeight > deviceHeight)
+                    if (scaledHeight > deviceHeight) {
                         scaledHeight = deviceHeight;
+                    }
                     bitmap = Bitmap.createScaledBitmap(bitmap, scaledWidth,
                             scaledHeight, true);
                 } catch (Exception e) {

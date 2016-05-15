@@ -23,7 +23,7 @@
 
 package jahirfiquitiva.iconshowcase.adapters;
 
-import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -38,7 +38,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -51,6 +50,7 @@ import jahirfiquitiva.iconshowcase.models.WallpaperItem;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorExtractor;
 
+
 public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.WallsHolder> {
 
     public interface ClickListener {
@@ -58,14 +58,14 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
         void onClick(WallsHolder view, int index, boolean longClick);
     }
 
-    private final Activity context;
+    private final Context context;
     private final Preferences mPrefs;
 
     private ArrayList<WallpaperItem> wallsList;
 
     private final ClickListener mCallback;
 
-    public WallpapersAdapter(Activity context, ClickListener callback) {
+    public WallpapersAdapter(Context context, ClickListener callback) {
         this.context = context;
         this.mCallback = callback;
         this.mPrefs = new Preferences(context);
@@ -92,8 +92,41 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
         holder.authorName.setText(wallItem.getWallAuthor());
 
         final String wallUrl = wallItem.getWallURL();
-
         String wallThumb = wallItem.getWallThumbUrl();
+
+        BitmapImageViewTarget target = new BitmapImageViewTarget(holder.wall) {
+            @Override
+            protected void setResource(Bitmap resource) {
+                Palette.Swatch wallSwatch = ColorExtractor.getProminentSwatch(resource);
+                boolean animsEnabled = mPrefs.getAnimationsEnabled();
+
+                if (animsEnabled) {
+                    TransitionDrawable td = new TransitionDrawable(
+                            new Drawable[]{
+                                    new ColorDrawable(Color.TRANSPARENT),
+                                    new BitmapDrawable(context.getResources(), resource)});
+                    holder.wall.setImageDrawable(td);
+                    td.startTransition(250);
+                } else {
+                    holder.wall.setImageBitmap(resource);
+                }
+
+                if (wallSwatch != null) {
+                    if (animsEnabled) {
+                        TransitionDrawable td = new TransitionDrawable(
+                                new Drawable[]{
+                                        holder.titleBg.getBackground(),
+                                        new ColorDrawable(wallSwatch.getRgb())});
+                        holder.titleBg.setBackground(td);
+                        td.startTransition(250);
+                    } else {
+                        holder.titleBg.setBackgroundColor(wallSwatch.getRgb());
+                    }
+                    holder.name.setTextColor(wallSwatch.getBodyTextColor());
+                    holder.authorName.setTextColor(wallSwatch.getTitleTextColor());
+                }
+            }
+        };
 
         if (!(wallThumb.equals("null"))) {
             Glide.with(context)
@@ -103,78 +136,14 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
                             Glide.with(context)
                                     .load(wallThumb)
                                     .asBitmap()
-                                    .thumbnail(0.5f))
-                    .into(new BitmapImageViewTarget(holder.wall) {
-                        @Override
-                        protected void setResource(Bitmap resource) {
-
-                            Palette.Swatch wallSwatch = ColorExtractor.getProminentSwatch(resource);
-
-                            if (mPrefs.getAnimationsEnabled()) {
-                                TransitionDrawable td = new TransitionDrawable(new Drawable[]{new ColorDrawable(Color.TRANSPARENT), new BitmapDrawable(context.getResources(), resource)});
-                                holder.wall.setImageDrawable(td);
-                                td.startTransition(250);
-                            } else {
-                                holder.wall.setImageBitmap(resource);
-                            }
-
-                            holder.progress.setVisibility(View.GONE);
-
-                            if (wallSwatch != null) {
-                                if (mPrefs.getAnimationsEnabled()) {
-                                    TransitionDrawable td = new TransitionDrawable(
-                                            new Drawable[]{holder.titleBg.getBackground(),
-                                                    new ColorDrawable(wallSwatch.getRgb())});
-                                    holder.titleBg.setBackground(td);
-                                    td.startTransition(250);
-                                } else {
-                                    holder.titleBg.setBackgroundColor(wallSwatch.getRgb());
-                                }
-
-                                holder.name.setTextColor(wallSwatch.getBodyTextColor());
-                                holder.authorName.setTextColor(wallSwatch.getTitleTextColor());
-                            }
-
-                        }
-                    });
+                                    .thumbnail(0.3f))
+                    .into(target);
         } else {
             Glide.with(context)
                     .load(wallUrl)
                     .asBitmap()
-                    .thumbnail(0.5f)
-                    .into(new BitmapImageViewTarget(holder.wall) {
-                        @Override
-                        protected void setResource(Bitmap resource) {
-
-                            Palette.Swatch wallSwatch = ColorExtractor.getProminentSwatch(resource);
-
-                            if (mPrefs.getAnimationsEnabled()) {
-                                TransitionDrawable td = new TransitionDrawable(new Drawable[]{new ColorDrawable(Color.TRANSPARENT), new BitmapDrawable(context.getResources(), resource)});
-                                holder.wall.setImageDrawable(td);
-                                td.startTransition(250);
-                            } else {
-                                holder.wall.setImageBitmap(resource);
-                            }
-
-                            holder.progress.setVisibility(View.GONE);
-
-                            if (wallSwatch != null) {
-                                if (mPrefs.getAnimationsEnabled()) {
-                                    TransitionDrawable td = new TransitionDrawable(
-                                            new Drawable[]{holder.titleBg.getBackground(),
-                                                    new ColorDrawable(wallSwatch.getRgb())});
-                                    holder.titleBg.setBackground(td);
-                                    td.startTransition(250);
-                                } else {
-                                    holder.titleBg.setBackgroundColor(wallSwatch.getRgb());
-                                }
-
-                                holder.name.setTextColor(wallSwatch.getBodyTextColor());
-                                holder.authorName.setTextColor(wallSwatch.getTitleTextColor());
-                            }
-
-                        }
-                    });
+                    .thumbnail(0.4f)
+                    .into(target);
         }
     }
 
@@ -189,7 +158,6 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
         public final ImageView wall;
         public final TextView name, authorName;
         public final LinearLayout titleBg;
-        public final ProgressBar progress;
 
         WallsHolder(View v) {
             super(v);
@@ -198,7 +166,6 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
             name = (TextView) view.findViewById(R.id.name);
             authorName = (TextView) view.findViewById(R.id.author);
             titleBg = (LinearLayout) view.findViewById(R.id.titleBg);
-            progress = (ProgressBar) view.findViewById(R.id.progress);
             view.setOnClickListener(this);
             view.setOnLongClickListener(this);
         }

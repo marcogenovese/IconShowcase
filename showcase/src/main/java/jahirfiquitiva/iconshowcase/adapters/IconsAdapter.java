@@ -27,11 +27,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -39,13 +35,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -56,6 +52,7 @@ import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorExtractor;
+
 
 public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder> {
 
@@ -100,34 +97,37 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
 
     @Override
     public void onBindViewHolder(final IconsHolder holder, int position) {
-        if (position < 0) return;
 
-        Glide.with(context)
-                .load(iconsList.get(holder.getAdapterPosition()).getResId())
-                .asBitmap()
-                .into(new BitmapImageViewTarget(holder.icon) {
-                    @Override
-                    protected void setResource(Bitmap resource) {
-                        if (mPrefs.getAnimationsEnabled()) {
-                            //TODO: pick an animation
+        final IconItem icon = iconsList.get(holder.getAdapterPosition());
 
-                            //if (!inChangelog) setAnimation(holder.icon, holder.getAdapterPosition());
+        final int resId = icon.getResId();
 
-                            TransitionDrawable td = new TransitionDrawable(new Drawable[]{new ColorDrawable(Color.TRANSPARENT), new BitmapDrawable(context.getResources(), resource)});
-                            holder.icon.setImageDrawable(td);
-                            td.startTransition(250);
-                        } else {
-                            holder.icon.setImageBitmap(resource);
+        if (mPrefs.getAnimationsEnabled()) {
+            Glide.with(context)
+                    .load(resId)
+                    .into(new SimpleTarget<GlideDrawable>() {
+                        @Override
+                        public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+                            holder.icon.setImageDrawable(resource);
                         }
-                    }
-                });
+                    });
+        } else {
+            Glide.with(context)
+                    .load(resId)
+                    .dontAnimate()
+                    .into(new SimpleTarget<GlideDrawable>() {
+                        @Override
+                        public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+                            holder.icon.setImageDrawable(resource);
+                        }
+                    });
+        }
 
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int resId = iconsList.get(holder.getAdapterPosition()).getResId();
-                Drawable icon = ContextCompat.getDrawable(context, resId);
-                String name = iconsList.get(holder.getAdapterPosition()).getName().toLowerCase(Locale.getDefault());
+                Drawable iconDrawable = ContextCompat.getDrawable(context, resId);
+                String name = icon.getName().toLowerCase(Locale.getDefault());
 
                 if (ShowcaseActivity.iconsPicker) {
                     Intent intent = new Intent();
@@ -158,7 +158,7 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
                                 .customView(R.layout.dialog_icon, false)
                                 .title(Utils.makeTextReadable(name))
                                 .positiveText(R.string.close)
-                                .positiveColor(ColorExtractor.getPreferredColor(icon, context, true))
+                                .positiveColor(ColorExtractor.getPreferredColor(iconDrawable, context, true))
                                 .show();
 
                         if (dialog.getCustomView() != null) {
@@ -169,17 +169,6 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
                 }
             }
         });
-    }
-
-    private int lastPosition = -1;
-
-    private void setAnimation(View viewToAnimate, int position) {
-        Animation anim = AnimationUtils.loadAnimation(context, R.anim.scale_slide);
-        if (position > lastPosition) {
-            viewToAnimate.setHasTransientState(true);
-            viewToAnimate.startAnimation(anim);
-            lastPosition = position;
-        }
     }
 
     @Override

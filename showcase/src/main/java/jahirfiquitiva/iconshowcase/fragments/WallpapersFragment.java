@@ -29,6 +29,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
@@ -77,6 +78,7 @@ import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
+
 
 public class WallpapersFragment extends Fragment {
 
@@ -144,7 +146,7 @@ public class WallpapersFragment extends Fragment {
 
         mSwipeRefreshLayout.setEnabled(false);
 
-        setupLayout(false, getActivity(), noConnection);
+        setupLayout((Activity) context, noConnection);
 
         return layout;
 
@@ -162,11 +164,11 @@ public class WallpapersFragment extends Fragment {
         inflater.inflate(R.menu.wallpapers, menu);
     }
 
-    private static void setupLayout(final boolean fromTask, final Activity context,
+    private static void setupLayout(final Context context,
                                     final ImageView noConnection) {
 
         if (WallpapersList.getWallpapersList() != null && WallpapersList.getWallpapersList().size() > 0) {
-            context.runOnUiThread(new Runnable() {
+            runOnUIThread(context, new Runnable() {
                 @Override
                 public void run() {
                     mAdapter = new WallpapersAdapter(context,
@@ -219,7 +221,7 @@ public class WallpapersFragment extends Fragment {
                                                 Utils.showLog(context, "Error getting drawable " + e.getLocalizedMessage());
                                             }
 
-                                            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(context, view.wall, ViewCompat.getTransitionName(view.wall));
+                                            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, view.wall, ViewCompat.getTransitionName(view.wall));
                                             context.startActivity(intent, options.toBundle());
                                         } else {
                                             context.startActivity(intent);
@@ -230,30 +232,33 @@ public class WallpapersFragment extends Fragment {
 
                     mAdapter.setData(WallpapersList.getWallpapersList());
 
-                    mRecyclerView.setAdapter(mAdapter);
+                    if (layout != null) {
 
-                    fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
+                        mRecyclerView.setAdapter(mAdapter);
 
-                    fastScroller.attachRecyclerView(mRecyclerView);
+                        fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
 
-                    if (fastScroller.getVisibility() != View.VISIBLE) {
-                        fastScroller.setVisibility(View.VISIBLE);
-                    }
+                        fastScroller.attachRecyclerView(mRecyclerView);
 
-                    if (Utils.hasNetwork(context)) {
-                        hideProgressBar();
-                        noConnection.setVisibility(View.GONE);
-                        mRecyclerView.setVisibility(View.VISIBLE);
-                        fastScroller.setVisibility(View.VISIBLE);
-                        mSwipeRefreshLayout.setEnabled(false);
-                        mSwipeRefreshLayout.setRefreshing(false);
-                    } else {
-                        hideStuff(noConnection);
+                        if (fastScroller.getVisibility() != View.VISIBLE) {
+                            fastScroller.setVisibility(View.VISIBLE);
+                        }
+
+                        if (Utils.hasNetwork(context)) {
+                            hideProgressBar();
+                            noConnection.setVisibility(View.GONE);
+                            mRecyclerView.setVisibility(View.VISIBLE);
+                            fastScroller.setVisibility(View.VISIBLE);
+                            mSwipeRefreshLayout.setEnabled(false);
+                            mSwipeRefreshLayout.setRefreshing(false);
+                        } else {
+                            hideStuff(noConnection);
+                        }
                     }
                 }
             });
         } else {
-            context.runOnUiThread(new Runnable() {
+            runOnUIThread(context, new Runnable() {
                 @Override
                 public void run() {
                     if (layout != null) {
@@ -263,7 +268,7 @@ public class WallpapersFragment extends Fragment {
                         timer.schedule(new TimerTask() {
                             @Override
                             public void run() {
-                                context.runOnUiThread(new Runnable() {
+                                runOnUIThread(context, new Runnable() {
                                     @Override
                                     public void run() {
                                         hideStuff(noConnection);
@@ -275,6 +280,14 @@ public class WallpapersFragment extends Fragment {
                 }
             });
         }
+    }
+
+    private static Handler handler(Context context) {
+        return new Handler(context.getMainLooper());
+    }
+
+    private static void runOnUIThread(Context context, Runnable r) {
+        handler(context).post(r);
     }
 
     private static void hideStuff(ImageView noConnection) {
@@ -349,7 +362,7 @@ public class WallpapersFragment extends Fragment {
         hideProgressBar();
     }
 
-    public static void refreshWalls(Activity context) {
+    public static void refreshWalls(Context context) {
         hideProgressBar();
         mRecyclerView.setVisibility(View.GONE);
         fastScroller.setVisibility(View.GONE);
@@ -460,7 +473,7 @@ public class WallpapersFragment extends Fragment {
                     String.valueOf((endTime - startTime) / 1000) + " secs.");
 
             if (layout != null) {
-                setupLayout(true, (Activity) taskContext.get(), noConnection);
+                setupLayout(taskContext.get(), noConnection);
             }
 
             if (wi != null)

@@ -31,6 +31,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
+
 public class HomeActivity extends AppCompatActivity {
 
     private static final boolean

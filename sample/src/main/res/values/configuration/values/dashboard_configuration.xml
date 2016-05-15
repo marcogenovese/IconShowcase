@@ -23,8 +23,6 @@
     <!-- Option to enable Log messages-->
     <bool name="debugging">true</bool>
 
-    <bool name="dev_options">true</bool>
-
     <!--
     Tabs to be used as primary drawer items
     The Home section will be added automatically
