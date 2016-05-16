@@ -96,6 +96,7 @@ import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.utilities.ZooperIconFontsHelper;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorExtractor;
 
+
 public class ShowcaseActivity extends AppCompatActivity implements
         FolderChooserDialog.FolderSelectionCallback, PermissionUtils.OnPermissionResultListener {
 
@@ -672,14 +673,13 @@ public class ShowcaseActivity extends AppCompatActivity implements
 
         try {
             if (installer != null) {
-                if (installer.matches("com.google.android.feedback") || installer.matches("com.android.vending")) {
-                    installedFromPlayStore = true;
-                }
+                installedFromPlayStore = (installer.matches("com.google.android.feedback")
+                        || installer.matches("com.android.vending"));
                 if (mPrefs.isFirstRun()) {
-                    if (installedFromPlayStore) {
+                    if (installedFromPlayStore ||
+                            ((installer.matches("com.amazon.venezia") && WITH_INSTALLED_FROM_AMAZON))) {
                         licenseSuccessDialog().show();
-                    } else if (installer.matches("com.amazon.venezia") && WITH_INSTALLED_FROM_AMAZON) {
-                        licenseSuccessDialog().show();
+                        return;
                     }
                 }
             } else {
