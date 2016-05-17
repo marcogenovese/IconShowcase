@@ -41,6 +41,7 @@ import jahirfiquitiva.iconshowcase.models.KustomKomponent;
 import jahirfiquitiva.iconshowcase.models.KustomWallpaper;
 import jahirfiquitiva.iconshowcase.models.KustomWidget;
 
+
 public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.KustomHolder> {
 
     private ArrayList<KustomWidget> widgets;
@@ -77,11 +78,11 @@ public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.Ku
     public int getItemCount(int section) {
         switch (section) {
             case 0:
-                return komponents.size();
+                return komponents != null ? komponents.size() : 0;
             case 1:
-                return kustomWalls.size();
+                return kustomWalls != null ? kustomWalls.size() : 0;
             case 2:
-                return widgets.size();
+                return widgets != null ? widgets.size() : 0;
             default:
                 return 0;
         }
@@ -99,6 +100,9 @@ public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.Ku
                 break;
             case 2:
                 holder.sectionTitle.setText("Widgets");
+                break;
+            default:
+                holder.sectionTitle.setText("Empty Assets");
                 break;
         }
     }
@@ -136,6 +140,9 @@ public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.Ku
                         filePath = widgets.get(relativePosition).getPreviewPath();
                         break;
                 }
+                break;
+            default:
+                filePath = null;
                 break;
         }
 

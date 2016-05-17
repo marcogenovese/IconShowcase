@@ -192,11 +192,14 @@ public class WallpapersFragment extends Fragment {
                                                     @Override
                                                     public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                                                         if (resource != null) {
+                                                            dialog.setContent(context.getString(R.string.setting_wall_title));
                                                             new ApplyWallpaper(
                                                                     context,
                                                                     dialog, resource,
                                                                     ShowcaseActivity.wallsPicker,
                                                                     layout).execute();
+                                                        } else {
+                                                            dialog.dismiss();
                                                         }
                                                     }
                                                 });

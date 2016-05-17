@@ -23,7 +23,10 @@
   -->
 
 <manifest
-    package="jahirfiquitiva.iconshowcase">
+    package="jahirfiquitiva.iconshowcase"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-sdk tools:overrideLibrary="org.kustom.api"/>
 
     <application/>
 

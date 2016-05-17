@@ -80,6 +80,9 @@ android {
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        aaptOptions {
+            noCompress 'zip', 'komp', 'klwp', 'kwgt', 'klck', 'kwch'
+        }
     }
 
 }
@@ -135,5 +138,9 @@ dependencies {
 
     //Required for better Zooper setup
     compile 'io.reactivex:rxandroid:1.1.0'
+
+    //Required for Kustom support.
+    //noinspection GradleDynamicVersion
+    compile 'org.bitbucket.frankmonza:kustomapi:+'
 
 }

@@ -120,18 +120,6 @@ public class KustomFragment extends Fragment {
 
             kustomFAB = (FloatingActionButton) layout.findViewById(R.id.kustom_fab);
 
-            mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                @Override
-                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                    super.onScrolled(recyclerView, dx, dy);
-                    if (dy > 0) {
-                        kustomFAB.hide();
-                    } else {
-                        kustomFAB.show();
-                    }
-                }
-            });
-
             kustomFAB.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
