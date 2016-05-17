@@ -81,31 +81,31 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
 
     @Override
     protected void onPreExecute() {
-        Activity a;
         if (wrActivity != null) {
-            a = wrActivity.get();
-            if (a != null) {
-                this.activity = a;
-            }
+            activity = wrActivity.get();
         } else if (context != null) {
-            activity = (Activity) activity;
+            activity = (Activity) context.get();
         }
     }
 
     @Override
     protected Boolean doInBackground(Void... params) {
-        WallpaperManager wm = WallpaperManager.getInstance(activity);
         Boolean worked;
-        try {
+        if (activity != null) {
+            WallpaperManager wm = WallpaperManager.getInstance(activity);
             try {
-                wm.setBitmap(scaleToActualAspectRatio(resource));
-            } catch (OutOfMemoryError ex) {
-                if (ShowcaseActivity.DEBUGGING)
-                    Utils.showLog(activity, "OutOfMemoryError: " + ex.getLocalizedMessage());
-                showRetrySnackbar();
+                try {
+                    wm.setBitmap(scaleToActualAspectRatio(resource));
+                } catch (OutOfMemoryError ex) {
+                    if (ShowcaseActivity.DEBUGGING)
+                        Utils.showLog(activity, "OutOfMemoryError: " + ex.getLocalizedMessage());
+                    showRetrySnackbar();
+                }
+                worked = true;
+            } catch (IOException e2) {
+                worked = false;
             }
-            worked = true;
-        } catch (IOException e2) {
+        } else {
             worked = false;
         }
         return worked;

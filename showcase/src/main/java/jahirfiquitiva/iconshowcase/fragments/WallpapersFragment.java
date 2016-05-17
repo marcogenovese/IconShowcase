@@ -91,8 +91,7 @@ public class WallpapersFragment extends Fragment {
     public static ImageView noConnection;
     private static Activity context;
     private static GridSpacingItemDecoration gridSpacing;
-
-    private static boolean worked;
+    private static int light, dark;
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
@@ -112,8 +111,8 @@ public class WallpapersFragment extends Fragment {
             // Do nothing
         }
 
-        int light = ContextCompat.getColor(context, R.color.drawable_tint_dark);
-        int dark = ContextCompat.getColor(context, R.color.drawable_tint_light);
+        light = ContextCompat.getColor(context, R.color.drawable_tint_dark);
+        dark = ContextCompat.getColor(context, R.color.drawable_tint_light);
 
         noConnection = (ImageView) layout.findViewById(R.id.no_connected_icon);
         mProgress = (ProgressBar) layout.findViewById(R.id.progress);
@@ -146,7 +145,7 @@ public class WallpapersFragment extends Fragment {
 
         mSwipeRefreshLayout.setEnabled(false);
 
-        setupLayout((Activity) context, noConnection);
+        setupLayout((Activity) context);
 
         return layout;
 
@@ -164,8 +163,7 @@ public class WallpapersFragment extends Fragment {
         inflater.inflate(R.menu.wallpapers, menu);
     }
 
-    private static void setupLayout(final Context context,
-                                    final ImageView noConnection) {
+    private static void setupLayout(final Context context) {
 
         if (WallpapersList.getWallpapersList() != null && WallpapersList.getWallpapersList().size() > 0) {
             runOnUIThread(context, new Runnable() {
@@ -247,6 +245,8 @@ public class WallpapersFragment extends Fragment {
                             fastScroller.setVisibility(View.VISIBLE);
                         }
 
+                        noConnection = (ImageView) layout.findViewById(R.id.no_connected_icon);
+
                         if (Utils.hasNetwork(context)) {
                             hideProgressBar();
                             noConnection.setVisibility(View.GONE);
@@ -255,6 +255,10 @@ public class WallpapersFragment extends Fragment {
                             mSwipeRefreshLayout.setEnabled(false);
                             mSwipeRefreshLayout.setRefreshing(false);
                         } else {
+                            noConnection.setImageDrawable(new IconicsDrawable(context)
+                                    .icon(GoogleMaterial.Icon.gmd_cloud_off)
+                                    .color(ThemeUtils.darkTheme ? light : dark)
+                                    .sizeDp(144));
                             hideStuff(noConnection);
                         }
                     }
@@ -265,6 +269,7 @@ public class WallpapersFragment extends Fragment {
                 @Override
                 public void run() {
                     if (layout != null) {
+                        noConnection = (ImageView) layout.findViewById(R.id.no_connected_icon);
                         noConnection.setVisibility(View.GONE);
                         showProgressBar();
                         Timer timer = new Timer();
@@ -476,7 +481,7 @@ public class WallpapersFragment extends Fragment {
                     String.valueOf((endTime - startTime) / 1000) + " secs.");
 
             if (layout != null) {
-                setupLayout(taskContext.get(), noConnection);
+                setupLayout(taskContext.get());
             }
 
             if (wi != null)

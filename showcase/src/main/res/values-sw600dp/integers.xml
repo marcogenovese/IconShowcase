@@ -29,5 +29,7 @@
     <integer name="launchers_grid_width">@integer/launchers_columns_tablet_portrait</integer>
     <integer name="requests_grid_width">2</integer>
     <integer name="toolbar_icons">6</integer>
+    <integer name="zooper_kustom_grid_width">@integer/zooper_kustom_columns_tablet_portrait
+    </integer>
 
 </resources>

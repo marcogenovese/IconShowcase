@@ -83,6 +83,7 @@ import jahirfiquitiva.iconshowcase.utilities.color.ColorExtractor;
 import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.views.TouchImageView;
 
+
 public class ViewerActivity extends AppCompatActivity {
 
     private boolean mLastTheme, mLastNavBar, usePalette;
@@ -225,12 +226,19 @@ public class ViewerActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        int colorFromCachedPic = 0;
+
+        if (bmp != null) {
+            colorFromCachedPic = ColorExtractor.getFinalGeneratedIconsColorFromPalette(bmp, usePalette);
+        } else {
+            colorFromCachedPic = ThemeUtils.darkTheme ? tintDark : tintLightLighter;
+        }
+
         final ProgressBar spinner = (ProgressBar) findViewById(R.id.progress);
         spinner.getIndeterminateDrawable()
-                .setColorFilter(bmp != null ?
-                                ColorExtractor.getFinalGeneratedIconsColorFromPalette(bmp, usePalette) :
-                                ThemeUtils.darkTheme ? tintDark : tintLightLighter,
-                        PorterDuff.Mode.SRC_IN);
+                .setColorFilter(colorFromCachedPic, PorterDuff.Mode.SRC_IN);
+
+        ToolbarColorizer.colorizeToolbar(toolbar, colorFromCachedPic);
 
         Drawable d;
         if (bmp != null) {

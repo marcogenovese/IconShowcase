@@ -56,7 +56,7 @@ public class ColorExtractor {
     public static int getIconsColorFromBitmap(Bitmap bitmap) {
         int color = 0;
         if (bitmap != null) {
-            Palette.Swatch swatch = getLessProminentSwatch(bitmap);
+            Palette.Swatch swatch = getProminentSwatch(bitmap);
             if (swatch != null) {
                 color = swatch.getBodyTextColor();
             }

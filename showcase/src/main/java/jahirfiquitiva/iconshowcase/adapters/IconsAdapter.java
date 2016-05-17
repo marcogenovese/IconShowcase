@@ -27,7 +27,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -39,9 +43,7 @@ import android.widget.ImageView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -98,30 +100,31 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
     @Override
     public void onBindViewHolder(final IconsHolder holder, int position) {
 
+        if (position < 0) return;
+
         final IconItem icon = iconsList.get(holder.getAdapterPosition());
 
         final int resId = icon.getResId();
 
-        if (mPrefs.getAnimationsEnabled()) {
-            Glide.with(context)
-                    .load(resId)
-                    .into(new SimpleTarget<GlideDrawable>() {
-                        @Override
-                        public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
-                            holder.icon.setImageDrawable(resource);
+        Glide.with(context)
+                .load(resId)
+                .asBitmap()
+                .into(new BitmapImageViewTarget(holder.icon) {
+                    @Override
+                    protected void setResource(Bitmap resource) {
+                        if (mPrefs.getAnimationsEnabled()) {
+                            TransitionDrawable td = new TransitionDrawable(
+                                    new Drawable[]{
+                                            new ColorDrawable(Color.TRANSPARENT),
+                                            new BitmapDrawable(context.getResources(), resource)
+                                    });
+                            holder.icon.setImageDrawable(td);
+                            td.startTransition(250);
+                        } else {
+                            holder.icon.setImageBitmap(resource);
                         }
-                    });
-        } else {
-            Glide.with(context)
-                    .load(resId)
-                    .dontAnimate()
-                    .into(new SimpleTarget<GlideDrawable>() {
-                        @Override
-                        public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
-                            holder.icon.setImageDrawable(resource);
-                        }
-                    });
-        }
+                    }
+                });
 
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -39,6 +39,7 @@ import jahirfiquitiva.iconshowcase.models.KustomWallpaper;
 import jahirfiquitiva.iconshowcase.models.KustomWidget;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
+
 public class LoadKustomFiles extends AsyncTask<Void, String, Boolean> {
 
     private final WeakReference<Context> context;
@@ -150,11 +151,16 @@ public class LoadKustomFiles extends AsyncTask<Void, String, Boolean> {
         return fileName.substring(0, fileName.lastIndexOf("."));
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     private String[] getWidgetPreviewPathFromZip(String name,
                                                  String folder,
                                                  InputStream in,
                                                  File previewsFolder, File widgetPreviewFile) {
         OutputStream out;
+
+        name.replaceAll(".komp", "");
+        name.replaceAll(".kwgt", "");
+        name.replaceAll(".klwp", "");
 
         String[] thumbNames = {"", ""};
         switch (folder) {
@@ -164,9 +170,10 @@ public class LoadKustomFiles extends AsyncTask<Void, String, Boolean> {
             default:
                 thumbNames[0] = "preset_thumb_portrait";
                 thumbNames[1] = "preset_thumb_landscape";
+                break;
         }
 
-        File preview1 = new File(previewsFolder, name + ".jpg");
+        File preview1 = new File(previewsFolder, name + "_port.jpg");
         File preview2 = new File(previewsFolder, name + "_land.jpg");
 
         try {
@@ -192,6 +199,7 @@ public class LoadKustomFiles extends AsyncTask<Void, String, Boolean> {
                             if (zipOut != null) zipOut.close();
                         }
                     }
+
                     if (!(thumbNames[1].isEmpty())) {
                         if (entry.getName().endsWith(thumbNames[1] + ".jpg")) {
                             InputStream zipIn = null;
@@ -204,7 +212,6 @@ public class LoadKustomFiles extends AsyncTask<Void, String, Boolean> {
                                 if (zipIn != null) zipIn.close();
                                 if (zipOut != null) zipOut.close();
                             }
-                            break;
                         }
                     }
 

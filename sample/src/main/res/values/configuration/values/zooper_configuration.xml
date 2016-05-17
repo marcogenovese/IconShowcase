@@ -53,4 +53,16 @@
     -->
     <bool name="remove_zooper_previews_background">true</bool>
 
+    <!--
+    Setup the columns amount you want in different sections
+    -->
+    <!-- PHONES - PORTRAIT MODE -->
+    <integer name="zooper_kustom_columns_normal_portrait">2</integer>
+    <!-- PHONES - LANDSCAPE MODE -->
+    <integer name="zooper_kustom_columns_normal_landscape">4</integer>
+    <!-- TABLETS - PORTRAIT MODE -->
+    <integer name="zooper_kustom_columns_tablet_portrait">4</integer>
+    <!-- TABLETS - LANDSCAPE MODE -->
+    <integer name="zooper_kustom_columns_tablet_landscape">6</integer>
+
 </resources>

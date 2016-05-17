@@ -42,6 +42,7 @@ import jahirfiquitiva.iconshowcase.tasks.LoadZooperWidgets;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 
+
 public class ZooperFragment extends Fragment {
 
     private static ViewGroup layout;
@@ -88,7 +89,7 @@ public class ZooperFragment extends Fragment {
         if (layout != null) {
 
             int gridSpacing = getResources().getDimensionPixelSize(R.dimen.lists_padding);
-            int columnsNumber = getResources().getInteger(R.integer.launchers_grid_width) - 1;
+            int columnsNumber = getResources().getInteger(R.integer.zooper_kustom_grid_width);
 
             mRecyclerView = (RecyclerView) layout.findViewById(R.id.zooper_rv);
 
