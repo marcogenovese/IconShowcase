@@ -58,7 +58,7 @@ public class FAQsAdapter extends RecyclerView.Adapter<FAQsAdapter.FAQsHolder> {
         if (context.getResources().getBoolean(R.bool.dev_options)) {
             listsCards = mPrefs.getDevListsCards();
         } else {
-            listsCards = context.getResources().getBoolean(R.bool.request_cards);
+            listsCards = context.getResources().getBoolean(R.bool.faqs_cards);
         }
         return new FAQsHolder(
                 inflater.inflate(listsCards ?

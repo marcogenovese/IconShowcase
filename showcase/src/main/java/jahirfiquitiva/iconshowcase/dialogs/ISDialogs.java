@@ -55,6 +55,7 @@ import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
+
 /**
  * This Class was created by Patrick Jung
  * on 07.01.16. For more Details and Licensing
@@ -453,7 +454,7 @@ public final class ISDialogs {
                 koloretteLink = "com.arun.themeutil.kolorette";
         new MaterialDialog.Builder(context)
                 .title(R.string.install_apps)
-                .content(R.string.install_apps_content)
+                .content(R.string.install_kustom_apps_content)
                 .items(appsNames)
                 .itemsCallback(new MaterialDialog.ListCallback() {
                     @Override
