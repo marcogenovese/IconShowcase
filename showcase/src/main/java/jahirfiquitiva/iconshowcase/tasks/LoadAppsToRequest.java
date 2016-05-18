@@ -56,6 +56,7 @@ import jahirfiquitiva.iconshowcase.models.RequestItem;
 import jahirfiquitiva.iconshowcase.models.RequestList;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
+
 public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<RequestItem>> {
 
     private static PackageManager mPackageManager;
@@ -90,7 +91,8 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
                     info.loadLabel(mPackageManager).toString(),
                     info.activityInfo.packageName,
                     info.activityInfo.name,
-                    getAppIcon(info));
+                    getAppIcon(info),
+                    getNormalAppIcon(info, mPackageManager));
 
             appsList.add(appInfo);
         }
@@ -257,7 +259,8 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
                                         info.loadLabel(mPackageManager).toString(),
                                         info.activityInfo.packageName,
                                         info.activityInfo.name,
-                                        getAppIcon(info));
+                                        getAppIcon(info),
+                                        getNormalAppIcon(info, mPackageManager));
 
                                 activitiesToRemove.add(appInfo);
                             }
@@ -376,6 +379,14 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
             }
         }
         return getAppDefaultActivityIcon();
+    }
+
+    private Drawable getNormalAppIcon(ResolveInfo info, PackageManager pm) {
+        if (info != null) {
+            return info.loadIcon(pm);
+        } else {
+            return getAppDefaultActivityIcon();
+        }
     }
 
 }

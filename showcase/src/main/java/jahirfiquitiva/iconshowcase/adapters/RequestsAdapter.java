@@ -39,6 +39,7 @@ import jahirfiquitiva.iconshowcase.models.RequestItem;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
+
 public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.RequestsHolder> {
 
     public interface ClickListener {
@@ -108,7 +109,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
     public void onBindViewHolder(RequestsHolder holder, int position) {
         RequestItem requestsItem = appsList.get(position);
         holder.txtName.setText(requestsItem.getAppName());
-        holder.imgIcon.setImageDrawable(requestsItem.getIcon());
+        holder.imgIcon.setImageDrawable(requestsItem.getNormalIcon());
         holder.chkSelected.setChecked(requestsItem.isSelected());
         boolean listsCards;
         if (context.getResources().getBoolean(R.bool.dev_options)) {

@@ -25,20 +25,24 @@ package jahirfiquitiva.iconshowcase.models;
 
 import android.graphics.drawable.Drawable;
 
+
 public class RequestItem {
 
     private String appName = null;
     private String packageName = null;
     private String className = null;
     private Drawable iconDrawable;
+    private Drawable normalIcon;
     private boolean selected = false;
 
-    public RequestItem(String appName, String packageName, String className, Drawable iconDrawable) {
+    public RequestItem(String appName, String packageName, String className, Drawable iconDrawable,
+                       Drawable normalIcon) {
         super();
         this.appName = appName;
         this.packageName = packageName;
         this.className = className;
         this.iconDrawable = iconDrawable;
+        this.normalIcon = normalIcon;
     }
 
     public String getAppName() {
@@ -55,6 +59,10 @@ public class RequestItem {
 
     public Drawable getIcon() {
         return iconDrawable;
+    }
+
+    public Drawable getNormalIcon() {
+        return normalIcon;
     }
 
     public boolean isSelected() {
