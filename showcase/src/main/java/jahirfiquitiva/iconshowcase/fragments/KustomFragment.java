@@ -51,7 +51,6 @@ public class KustomFragment extends Fragment {
     public RecyclerView mRecyclerView;
     public KustomAdapter kustomAdapter;
     private GridSpacingItemDecoration space;
-    private int i = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
@@ -93,7 +92,7 @@ public class KustomFragment extends Fragment {
         if (layout != null) {
 
             int gridSpacing = getResources().getDimensionPixelSize(R.dimen.lists_padding);
-            int columnsNumber = getResources().getInteger(R.integer.zooper_kustom_grid_width);
+            final int columnsNumber = getResources().getInteger(R.integer.zooper_kustom_grid_width);
 
             mRecyclerView = (RecyclerView) layout.findViewById(R.id.zooper_rv);
 
@@ -105,15 +104,14 @@ public class KustomFragment extends Fragment {
 
             space = new GridSpacingItemDecoration(columnsNumber, gridSpacing, true);
 
-            mRecyclerView.addItemDecoration(space);
-            mRecyclerView.setHasFixedSize(true);
-
             RecyclerFastScroller fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
 
             kustomAdapter = new KustomAdapter(context,
                     LoadKustomFiles.komponents, LoadKustomFiles.wallpapers,
                     LoadKustomFiles.widgets, ShowcaseActivity.wallpaperDrawable);
 
+            mRecyclerView.addItemDecoration(space);
+            mRecyclerView.setHasFixedSize(true);
             mRecyclerView.setLayoutManager(gridManager);
             kustomAdapter.setLayoutManager(gridManager);
             mRecyclerView.setAdapter(kustomAdapter);
