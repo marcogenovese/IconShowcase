@@ -69,6 +69,8 @@ public class KustomFragment extends Fragment {
             //Do nothing
         }
 
+        setupFAB();
+
         return layout;
     }
 
@@ -76,6 +78,7 @@ public class KustomFragment extends Fragment {
     public void onResume() {
         super.onResume();
         Utils.collapseToolbar(getActivity());
+        setupFAB();
         setupRV();
     }
 
@@ -117,53 +120,59 @@ public class KustomFragment extends Fragment {
             mRecyclerView.setAdapter(kustomAdapter);
             fastScroller.attachRecyclerView(mRecyclerView);
 
-            kustomFAB = (FloatingActionButton) layout.findViewById(R.id.kustom_fab);
-
-            kustomFAB.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ArrayList<String> apps = new ArrayList<>();
-                    if (context.getResources().getBoolean(R.bool.includes_kustom_wallpapers) &&
-                            !Utils.isAppInstalled(context, "org.kustom.wallpaper")) {
-                        apps.add("Kustom Live Wallpaper");
-                    }
-                    if (context.getResources().getBoolean(R.bool.includes_kustom_widgets) &&
-                            !Utils.isAppInstalled(context, "org.kustom.widget")) {
-                        apps.add("Kustom Widget");
-                    }
-                    if (context.getResources().getBoolean(R.bool.kustom_requires_kolorette) &&
-                            !Utils.isAppInstalled(context, "com.arun.themeutil.kolorette")) {
-                        apps.add(Utils.getStringFromResources(context, R.string.kolorette_app));
-                    }
-                    ISDialogs.showKustomAppsDownloadDialog(context, apps);
-                }
-            });
-
-            if (!(areAppsInstalled())) {
-                kustomFAB.show();
-                kustomFAB.setVisibility(View.VISIBLE);
-            }
-
         }
     }
 
     private boolean areAppsInstalled() {
-
-        boolean installed = false;
+        boolean installed = true;
 
         if (context.getResources().getBoolean(R.bool.includes_kustom_wallpapers)) {
             installed = Utils.isAppInstalled(context, "org.kustom.wallpaper");
         }
 
-        if (context.getResources().getBoolean(R.bool.includes_kustom_widgets)) {
+        if (context.getResources().getBoolean(R.bool.includes_kustom_widgets) && installed) {
             installed = Utils.isAppInstalled(context, "org.kustom.widgets");
         }
 
-        if (context.getResources().getBoolean(R.bool.kustom_requires_kolorette)) {
+        if (context.getResources().getBoolean(R.bool.kustom_requires_kolorette) && installed) {
             installed = Utils.isAppInstalled(context, "com.arun.themeutil.kolorette");
         }
 
         return installed;
+    }
+
+    private void setupFAB() {
+        if (layout != null) {
+            kustomFAB = (FloatingActionButton) layout.findViewById(R.id.kustom_fab);
+
+            if (areAppsInstalled()) {
+                kustomFAB.hide();
+                kustomFAB.setVisibility(View.GONE);
+            } else {
+                kustomFAB.show();
+                kustomFAB.setVisibility(View.VISIBLE);
+
+                kustomFAB.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ArrayList<String> apps = new ArrayList<>();
+                        if (context.getResources().getBoolean(R.bool.includes_kustom_wallpapers) &&
+                                !Utils.isAppInstalled(context, "org.kustom.wallpaper")) {
+                            apps.add("Kustom Live Wallpaper");
+                        }
+                        if (context.getResources().getBoolean(R.bool.includes_kustom_widgets) &&
+                                !Utils.isAppInstalled(context, "org.kustom.widget")) {
+                            apps.add("Kustom Widget");
+                        }
+                        if (context.getResources().getBoolean(R.bool.kustom_requires_kolorette) &&
+                                !Utils.isAppInstalled(context, "com.arun.themeutil.kolorette")) {
+                            apps.add(Utils.getStringFromResources(context, R.string.kolorette_app));
+                        }
+                        ISDialogs.showKustomAppsDownloadDialog(context, apps);
+                    }
+                });
+            }
+        }
     }
 
 }
