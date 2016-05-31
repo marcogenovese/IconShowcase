@@ -21,4 +21,4 @@
  *
  */
 
-include ':showcase', ':sample'
+include ':library', ':app'
