@@ -27,11 +27,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -39,11 +35,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -97,6 +94,38 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
         return new IconsHolder(inflater.inflate(R.layout.item_icon, parent, false));
     }
 
+    @Override
+    public void onBindViewHolder(IconsHolder holder, final int position) {
+        int iconResource = iconsList.get(position).getResId();
+        if (iconResource != 0) {
+            Glide.with(context)
+                    .load(iconResource)
+                    .dontAnimate()
+                    .into(holder.icon);
+        }
+        holder.view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                iconClick(v, position);
+            }
+        });
+        if (!inChangelog) {
+            setAnimation(holder.icon, position);
+        }
+    }
+
+    private int lastPosition = -1;
+
+    private void setAnimation(View viewToAnimate, int position) {
+        Animation anim = AnimationUtils.loadAnimation(context, android.R.anim.fade_in);
+        if (position > lastPosition && mPrefs.getAnimationsEnabled()) {
+            viewToAnimate.setHasTransientState(true);
+            viewToAnimate.startAnimation(anim);
+            lastPosition = position;
+        }
+    }
+
+    /*
     @Override
     public void onBindViewHolder(final IconsHolder holder, int position) {
 
@@ -172,6 +201,52 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
                 }
             }
         });
+    }
+    */
+
+    private void iconClick(View v, int position) {
+        int resId = iconsList.get(position).getResId();
+        String name = iconsList.get(position).getName().toLowerCase(Locale.getDefault());
+
+        if (ShowcaseActivity.iconsPicker) {
+            Intent intent = new Intent();
+            Bitmap bitmap = null;
+
+            try {
+                bitmap = BitmapFactory.decodeResource(context.getResources(), resId);
+            } catch (Exception e) {
+                if (ShowcaseActivity.DEBUGGING)
+                    Utils.showLog(context, "Icons Picker error: " + Log.getStackTraceString(e));
+            }
+
+            if (bitmap != null) {
+                intent.putExtra("icon", bitmap);
+                intent.putExtra("android.intent.extra.shortcut.ICON_RESOURCE", resId);
+                String bmUri = "android.resource://" + context.getPackageName() + "/" + String.valueOf(resId);
+                intent.setData(Uri.parse(bmUri));
+                context.setResult(Activity.RESULT_OK, intent);
+            } else {
+                context.setResult(Activity.RESULT_CANCELED, intent);
+            }
+
+            context.finish();
+
+        } else {
+            if (!inChangelog) {
+                Drawable iconDrawable = ContextCompat.getDrawable(context, resId);
+                MaterialDialog dialog = new MaterialDialog.Builder(context)
+                        .customView(R.layout.dialog_icon, false)
+                        .title(Utils.makeTextReadable(name))
+                        .positiveText(R.string.close)
+                        .positiveColor(ColorExtractor.getPreferredColor(iconDrawable, context, true, false))
+                        .show();
+
+                if (dialog.getCustomView() != null) {
+                    ImageView dialogIcon = (ImageView) dialog.getCustomView().findViewById(R.id.dialogicon);
+                    dialogIcon.setImageResource(resId);
+                }
+            }
+        }
     }
 
     @Override

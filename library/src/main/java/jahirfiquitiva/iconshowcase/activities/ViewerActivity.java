@@ -226,7 +226,8 @@ public class ViewerActivity extends AppCompatActivity {
         int colorFromCachedPic = 0;
 
         if (bmp != null) {
-            colorFromCachedPic = ColorExtractor.getFinalGeneratedIconsColorFromPalette(bmp, usePalette);
+            colorFromCachedPic = ColorExtractor.getFinalGeneratedIconsColorFromPalette(bmp,
+                    usePalette, true);
         } else {
             colorFromCachedPic = ThemeUtils.darkTheme ? tintDark : tintLightLighter;
         }
@@ -260,7 +261,7 @@ public class ViewerActivity extends AppCompatActivity {
                         public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
                             Bitmap picture = ((GlideBitmapDrawable) resource).getBitmap();
                             ToolbarColorizer.colorizeToolbar(toolbar,
-                                    ColorExtractor.getFinalGeneratedIconsColorFromPalette(picture, usePalette));
+                                    ColorExtractor.getFinalGeneratedIconsColorFromPalette(picture, usePalette, true));
                             spinner.setVisibility(View.GONE);
                             return false;
                         }
@@ -283,7 +284,7 @@ public class ViewerActivity extends AppCompatActivity {
                         public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
                             Bitmap picture = ((GlideBitmapDrawable) resource).getBitmap();
                             ToolbarColorizer.colorizeToolbar(toolbar,
-                                    ColorExtractor.getFinalGeneratedIconsColorFromPalette(picture, usePalette));
+                                    ColorExtractor.getFinalGeneratedIconsColorFromPalette(picture, usePalette, true));
                             spinner.setVisibility(View.GONE);
                             return false;
                         }
