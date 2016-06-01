@@ -509,7 +509,7 @@ public class ShowcaseActivity extends AppCompatActivity implements
         if (!iconsPicker && !wallsPicker) {
             setupToolbarHeader(this, toolbarHeader);
         }
-        ColorExtractor.setupToolbarIconsAndTextsColors(context, appbar, toolbar, toolbarHeaderImage);
+        ColorExtractor.setupToolbarIconsAndTextsColors(context, appbar, toolbar, toolbarHeaderImage, true);
         if (mLastTheme != ThemeUtils.darkTheme
                 || mLastNavBar != ThemeUtils.coloredNavBar) {
             ThemeUtils.restartActivity(this);

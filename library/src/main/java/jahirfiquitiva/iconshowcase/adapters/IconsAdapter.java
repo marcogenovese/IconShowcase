@@ -117,8 +117,8 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
     private int lastPosition = -1;
 
     private void setAnimation(View viewToAnimate, int position) {
-        Animation anim = AnimationUtils.loadAnimation(context, android.R.anim.fade_in);
         if (position > lastPosition && mPrefs.getAnimationsEnabled()) {
+            Animation anim = AnimationUtils.loadAnimation(context, android.R.anim.fade_in);
             viewToAnimate.setHasTransientState(true);
             viewToAnimate.startAnimation(anim);
             lastPosition = position;
