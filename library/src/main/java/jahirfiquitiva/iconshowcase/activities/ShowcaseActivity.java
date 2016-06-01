@@ -844,48 +844,48 @@ public class ShowcaseActivity extends AppCompatActivity implements
         for (int i = 0; i < primaryDrawerItems.length; i++) {
             switch (primaryDrawerItems[i]) {
                 case "Main":
-                    home = new PrimaryDrawerItem().withName(thaHome).withIcon(R.drawable.ic_home).withIdentifier(i + 1);
+                    home = new PrimaryDrawerItem().withName(thaHome).withIcon(R.drawable.ic_home).withIconTintingEnabled(true).withIdentifier(i + 1);
                     drawerBuilder.addDrawerItems(home);
                     break;
 
                 case "Previews":
                     iconsPickerEnabled = true;
                     iconsPickerIdentifier = i + 1;
-                    previews = new PrimaryDrawerItem().withName(thaPreviews).withIcon(R.drawable.ic_previews).withIdentifier(iconsPickerIdentifier);
+                    previews = new PrimaryDrawerItem().withName(thaPreviews).withIcon(R.drawable.ic_previews).withIconTintingEnabled(true).withIdentifier(iconsPickerIdentifier);
                     drawerBuilder.addDrawerItems(previews);
                     break;
 
                 case "Wallpapers":
                     wallsEnabled = true;
                     wallsIdentifier = i + 1;
-                    walls = new PrimaryDrawerItem().withName(thaWalls).withIcon(R.drawable.ic_wallpapers).withIdentifier(wallsIdentifier);
+                    walls = new PrimaryDrawerItem().withName(thaWalls).withIcon(R.drawable.ic_wallpapers).withIconTintingEnabled(true).withIdentifier(wallsIdentifier);
                     drawerBuilder.addDrawerItems(walls);
                     break;
 
                 case "Requests":
-                    requests = new PrimaryDrawerItem().withName(thaRequest).withIcon(R.drawable.ic_request).withIdentifier(i + 1);
+                    requests = new PrimaryDrawerItem().withName(thaRequest).withIcon(R.drawable.ic_request).withIconTintingEnabled(true).withIdentifier(i + 1);
                     drawerBuilder.addDrawerItems(requests);
                     break;
 
                 case "Apply":
                     applyIdentifier = i + 1;
-                    apply = new PrimaryDrawerItem().withName(thaApply).withIcon(R.drawable.ic_apply).withIdentifier(applyIdentifier);
+                    apply = new PrimaryDrawerItem().withName(thaApply).withIcon(R.drawable.ic_apply).withIconTintingEnabled(true).withIdentifier(applyIdentifier);
                     drawerBuilder.addDrawerItems(apply);
                     break;
 
                 case "FAQs":
-                    faqs = new PrimaryDrawerItem().withName(thaFAQs).withIcon(R.drawable.ic_questions).withIdentifier(i + 1);
+                    faqs = new PrimaryDrawerItem().withName(thaFAQs).withIcon(R.drawable.ic_questions).withIconTintingEnabled(true).withIdentifier(i + 1);
                     drawerBuilder.addDrawerItems(faqs);
                     break;
 
                 case "Zooper":
                     WITH_ZOOPER_SECTION = true;
-                    zooper = new PrimaryDrawerItem().withName(thaZooper).withIcon(R.drawable.ic_zooper_kustom).withIdentifier(i + 1);
+                    zooper = new PrimaryDrawerItem().withName(thaZooper).withIcon(R.drawable.ic_zooper_kustom).withIconTintingEnabled(true).withIdentifier(i + 1);
                     drawerBuilder.addDrawerItems(zooper);
                     break;
 
                 case "Kustom":
-                    kustom = new PrimaryDrawerItem().withName(thaKustom).withIcon(R.drawable.ic_zooper_kustom).withIdentifier(i + 1);
+                    kustom = new PrimaryDrawerItem().withName(thaKustom).withIcon(R.drawable.ic_zooper_kustom).withIconTintingEnabled(true).withIdentifier(i + 1);
                     drawerBuilder.addDrawerItems(kustom);
             }
         }

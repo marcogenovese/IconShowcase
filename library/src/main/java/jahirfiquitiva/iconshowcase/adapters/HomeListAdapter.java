@@ -196,7 +196,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             icon = (ImageView) itemView.findViewById(R.id.more_apps_icon);
             subLly = (LinearLayout) itemView.findViewById(R.id.more_apps_sub_layout);
             icon.setImageDrawable(ColorUtils.getTintedIcon(
-                    ContextCompat.getDrawable(context, R.drawable.ic_store_download),
+                    ContextCompat.getDrawable(context, R.drawable.ic_play_store),
                     ThemeUtils.darkTheme ? light : dark));
             lly.setOnClickListener(new View.OnClickListener() {
                 @Override
