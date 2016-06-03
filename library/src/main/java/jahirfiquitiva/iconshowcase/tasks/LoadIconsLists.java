@@ -182,11 +182,13 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
         List<String> list = new ArrayList<>(Arrays.asList(array));
         Collections.sort(list);
 
+        /*
         Set<String> noDuplicates = new HashSet<>();
         noDuplicates.addAll(list);
         list.clear();
         list.addAll(noDuplicates);
         Collections.sort(list);
+        */
 
         ArrayList<IconItem> sortedListArray = new ArrayList<>();
 

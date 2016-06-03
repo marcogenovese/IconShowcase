@@ -23,6 +23,7 @@
 
 package jahirfiquitiva.iconshowcase.adapters;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -59,14 +60,12 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
     private boolean inChangelog = false;
     private ArrayList<IconItem> iconsList = new ArrayList<>();
     private final Preferences mPrefs;
-    private Animation anim = null;
 
     public IconsAdapter(Activity context, ArrayList<IconItem> iconsList) {
         this.context = context;
         this.iconsList = iconsList;
         this.inChangelog = false;
         this.mPrefs = new Preferences(context);
-        this.anim = AnimationUtils.loadAnimation(context, android.R.anim.fade_in);
     }
 
     public IconsAdapter(Activity context, ArrayList<IconItem> iconsList, boolean inChangelog) {
@@ -97,36 +96,30 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
     }
 
     @Override
-    public void onBindViewHolder(IconsHolder holder, final int position) {
+    public void onBindViewHolder(IconsHolder holder, @SuppressLint("RecyclerView") final int position) {
         int iconResource = iconsList.get(position).getResId();
         if (iconResource != 0) {
-            Glide.with(context)
-                    .load(iconResource)
-                    .dontAnimate()
-                    .into(holder.icon);
+            if (mPrefs.getAnimationsEnabled()) {
+                Glide.with(context)
+                        .load(iconResource)
+                        .crossFade()
+                        .into(holder.icon);
+            } else {
+                Glide.with(context)
+                        .load(iconResource)
+                        .dontAnimate()
+                        .into(holder.icon);
+            }
         }
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                iconClick(v, position);
+                iconClick(position);
             }
         });
-        if (!inChangelog) {
-            setAnimation(holder.icon, position);
-        }
     }
 
-    private int lastPosition = -1;
-
-    private void setAnimation(View viewToAnimate, int position) {
-        if (position > lastPosition && mPrefs.getAnimationsEnabled() && anim != null) {
-            viewToAnimate.setHasTransientState(true);
-            viewToAnimate.startAnimation(anim);
-            lastPosition = position;
-        }
-    }
-
-    private void iconClick(View v, int position) {
+    private void iconClick(int position) {
         int resId = iconsList.get(position).getResId();
         String name = iconsList.get(position).getName().toLowerCase(Locale.getDefault());
 

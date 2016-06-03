@@ -27,15 +27,9 @@ import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.VectorDrawable;
-import android.os.Build;
-import android.support.annotation.CheckResult;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.*;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.view.menu.ActionMenuItemView;
 import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.SearchView;
@@ -50,6 +44,7 @@ import android.widget.TextView;
 import java.lang.reflect.Field;
 
 import jahirfiquitiva.iconshowcase.R;
+
 
 public class ToolbarColorizer {
 
@@ -114,8 +109,8 @@ public class ToolbarColorizer {
     @SuppressWarnings("PrivateResource")
     public static void tintSearchView(Context context, @NonNull Toolbar toolbar, MenuItem item,
                                       @NonNull SearchView searchView, @ColorInt int color) {
-        //item.setIcon(ColorUtils.getTintedIcon(ContextCompat.getDrawable(context, R.drawable.ic_search),color));
-        final Class<?> cls = searchView.getClass();
+        item.setIcon(ColorUtils.getTintedIcon(ContextCompat.getDrawable(context, R.drawable.ic_search), color));
+        final Class<?> searchViewClass = searchView.getClass();
         try {
             final Field mCollapseIconField = toolbar.getClass().getDeclaredField("mCollapseIcon");
             mCollapseIconField.setAccessible(true);
@@ -123,25 +118,42 @@ public class ToolbarColorizer {
             if (drawable != null)
                 mCollapseIconField.set(toolbar, ColorUtils.getTintedIcon(drawable, color));
 
-            final Field mSearchSrcTextViewField = cls.getDeclaredField("mSearchSrcTextView");
+            final Field mSearchSrcTextViewField = searchViewClass.getDeclaredField("mSearchSrcTextView");
             mSearchSrcTextViewField.setAccessible(true);
             final EditText mSearchSrcTextView = (EditText) mSearchSrcTextViewField.get(searchView);
             mSearchSrcTextView.setTextColor(color);
             mSearchSrcTextView.setHintTextColor(ColorUtils.adjustAlpha(color, 0.5f));
             setCursorTint(mSearchSrcTextView, color);
 
-            Field field = cls.getDeclaredField("mSearchButton");
+            hideSearchHintIcon(context, searchView);
+
+            Field field = searchViewClass.getDeclaredField("mSearchButton");
             tintImageView(searchView, field, color);
-            field = cls.getDeclaredField("mGoButton");
+            field = searchViewClass.getDeclaredField("mGoButton");
             tintImageView(searchView, field, color);
-            field = cls.getDeclaredField("mCloseButton");
+            field = searchViewClass.getDeclaredField("mCloseButton");
             tintImageView(searchView, field, color);
-            field = cls.getDeclaredField("mVoiceButton");
+            field = searchViewClass.getDeclaredField("mVoiceButton");
             tintImageView(searchView, field, color);
-            field = cls.getDeclaredField("mCollapsedIcon");
+            field = searchViewClass.getDeclaredField("mCollapsedIcon");
             tintImageView(searchView, field, color);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void hideSearchHintIcon(Context context, SearchView searchView) {
+        if (context != null) {
+            final Class<?> searchViewClass = searchView.getClass();
+            try {
+                final Field mSearchHintIcon = searchViewClass.getDeclaredField("mSearchHintIcon");
+                mSearchHintIcon.setAccessible(true);
+                Drawable mSearchHintIconDrawable = (Drawable) mSearchHintIcon.get(searchView);
+                mSearchHintIconDrawable.setBounds(0, 0, 0, 0);
+                mSearchHintIconDrawable.setAlpha(0);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

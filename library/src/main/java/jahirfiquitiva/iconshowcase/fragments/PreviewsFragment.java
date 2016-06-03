@@ -53,6 +53,7 @@ import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
 
+
 @SuppressWarnings("ResourceAsColor")
 public class PreviewsFragment extends Fragment {
 
@@ -93,10 +94,8 @@ public class PreviewsFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-
-        Utils.collapseToolbar(getActivity());
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         int iconsColor = ThemeUtils.darkTheme ?
                 ContextCompat.getColor(getActivity(), R.color.toolbar_text_dark) :
@@ -107,6 +106,13 @@ public class PreviewsFragment extends Fragment {
                     ((ShowcaseActivity) getActivity()).getToolbar(), mSearchItem, mSearchView,
                     iconsColor);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        Utils.collapseToolbar(getActivity());
 
         if (mPager == null) {
             mPager = (ViewPager) layout.findViewById(R.id.pager);

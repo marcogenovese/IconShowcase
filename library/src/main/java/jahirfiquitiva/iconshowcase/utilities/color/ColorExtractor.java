@@ -21,11 +21,14 @@ import java.util.Comparator;
 import java.util.List;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 
 public class ColorExtractor {
+
+    private static double previousOffset = -300;
 
     public static void setupToolbarIconsAndTextsColors(Context context, AppBarLayout appbar,
                                                        final Toolbar toolbar, final Bitmap bitmap,
@@ -50,6 +53,12 @@ public class ColorExtractor {
                             iconsColor, alpha > 1.0 ? 1.0f : (float) alpha);
                     if (toolbar != null) {
                         ToolbarColorizer.colorizeToolbar(toolbar, paletteColor);
+                        /*
+                        // Collapsed offset = -352
+                        if (verticalOffset != previousOffset) {
+                            previousOffset = verticalOffset;
+                        }
+                        */
                     }
                 }
             });
