@@ -52,6 +52,7 @@ import jahirfiquitiva.iconshowcase.tasks.LoadIconsLists;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
+import jahirfiquitiva.iconshowcase.utilities.color.ToolbarTinter;
 
 
 @SuppressWarnings("ResourceAsColor")
@@ -201,6 +202,18 @@ public class PreviewsFragment extends Fragment {
         });
 
         mSearchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+        int iconsColor = ThemeUtils.darkTheme ?
+                ContextCompat.getColor(getActivity(), R.color.toolbar_text_dark) :
+                ContextCompat.getColor(getActivity(), R.color.toolbar_text_light);
+
+        ToolbarTinter.on(menu)
+                .setOriginalMenuItemIconColor(iconsColor)
+                .setMenuItemIconColor(iconsColor)
+                .setMenuItemIconAlpha(255)
+                .forceIcons()
+                .reapplyOnChange(true)
+                .apply(getActivity());
 
     }
 

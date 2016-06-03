@@ -55,6 +55,7 @@ public class ToolbarColorizer {
      * @param toolbarIconsColor the target color of toolbar icons
      */
     public static void colorizeToolbar(Toolbar toolbar, int toolbarIconsColor) {
+        /*
         final PorterDuffColorFilter colorFilter = new PorterDuffColorFilter(toolbarIconsColor, PorterDuff.Mode.SRC_IN);
 
         for (int i = 0; i < toolbar.getChildCount(); i++) {
@@ -89,11 +90,11 @@ public class ToolbarColorizer {
                     }
                 }
             }
-
-            //Step 3: Changing the color of title and subtitle.
-            toolbar.setTitleTextColor(toolbarIconsColor);
-            toolbar.setSubtitleTextColor(toolbarIconsColor);
         }
+        */
+        //Step 3: Changing the color of title and subtitle.
+        toolbar.setTitleTextColor(toolbarIconsColor);
+        toolbar.setSubtitleTextColor(toolbarIconsColor);
     }
 
     public static void tintSaveIcon(MenuItem item, Context context, int color) {

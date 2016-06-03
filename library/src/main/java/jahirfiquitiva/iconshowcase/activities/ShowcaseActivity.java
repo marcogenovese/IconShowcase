@@ -98,6 +98,7 @@ import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.utilities.ZooperIconFontsHelper;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorExtractor;
+import jahirfiquitiva.iconshowcase.utilities.color.ToolbarTinter;
 
 
 public class ShowcaseActivity extends AppCompatActivity implements
@@ -571,6 +572,16 @@ public class ShowcaseActivity extends AppCompatActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
+        int iconsColor = ThemeUtils.darkTheme ?
+                ContextCompat.getColor(this, R.color.toolbar_text_dark) :
+                ContextCompat.getColor(this, R.color.toolbar_text_light);
+        ToolbarTinter.on(menu)
+                .setOriginalMenuItemIconColor(iconsColor)
+                .setMenuItemIconColor(iconsColor)
+                .setMenuItemIconAlpha(255)
+                .forceIcons()
+                .reapplyOnChange(true)
+                .apply(this);
         return true;
     }
 
