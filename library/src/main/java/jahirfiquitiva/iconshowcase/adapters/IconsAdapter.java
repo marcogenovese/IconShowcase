@@ -153,7 +153,7 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
                         .customView(R.layout.dialog_icon, false)
                         .title(Utils.makeTextReadable(name))
                         .positiveText(R.string.close)
-                        .positiveColor(ColorExtractor.getPreferredColor(iconDrawable, context, true, false))
+                        .positiveColor(ColorExtractor.getPreferredColor(iconDrawable, context, false))
                         .show();
 
                 if (dialog.getCustomView() != null) {

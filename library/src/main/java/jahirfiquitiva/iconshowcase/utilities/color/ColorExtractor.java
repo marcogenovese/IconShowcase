@@ -21,26 +21,21 @@ import java.util.Comparator;
 import java.util.List;
 
 import jahirfiquitiva.iconshowcase.R;
-import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 
 public class ColorExtractor {
 
-    private static double previousOffset = -300;
-
-    public static void setupToolbarIconsAndTextsColors(Context context, AppBarLayout appbar,
-                                                       final Toolbar toolbar, final Bitmap bitmap,
-                                                       boolean includeMutedSwatches) {
+    public static void setupToolbarIconsAndTextsColors(final Context context, AppBarLayout appbar,
+                                                       final Toolbar toolbar, final Bitmap bitmap) {
 
         final int iconsColor = ThemeUtils.darkTheme ?
                 ContextCompat.getColor(context, R.color.toolbar_text_dark) :
                 ContextCompat.getColor(context, R.color.toolbar_text_light);
 
         final int finalPaletteGeneratedColor = getFinalGeneratedIconsColorFromPalette(bitmap,
-                context.getResources().getBoolean(R.bool.use_palette_api_in_toolbar),
-                includeMutedSwatches);
+                context.getResources().getBoolean(R.bool.use_palette_api_in_toolbar));
 
         if (appbar != null) {
             appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
@@ -52,45 +47,44 @@ public class ColorExtractor {
                             finalPaletteGeneratedColor != 0 ? finalPaletteGeneratedColor : iconsColor,
                             iconsColor, alpha > 1.0 ? 1.0f : (float) alpha);
                     if (toolbar != null) {
-                        ToolbarColorizer.colorizeToolbar(toolbar, paletteColor);
-                        /*
                         // Collapsed offset = -352
-                        if (verticalOffset != previousOffset) {
-                            previousOffset = verticalOffset;
-                        }
-                        */
+                        ToolbarColorizer.colorizeToolbar(toolbar, paletteColor);
                     }
                 }
             });
         }
     }
 
-    public static int getIconsColorFromBitmap(Bitmap bitmap, boolean includeMutedSwatches) {
-        int color = 0;
-        if (bitmap != null) {
-            Palette.Swatch swatch = getProminentSwatch(bitmap, includeMutedSwatches);
-            if (swatch != null) {
-                color = swatch.getBodyTextColor();
-            }
-        }
-        return color;
-    }
-
-    public static int getFinalGeneratedIconsColorFromPalette(Bitmap bitmap, boolean usePalette, boolean includeMutedSwatches) {
+    public static int getFinalGeneratedIconsColorFromPalette(Bitmap bitmap, boolean usePalette) {
         int generatedIconsColorFromPalette;
         if (usePalette) {
-            generatedIconsColorFromPalette = getIconsColorFromBitmap(bitmap, includeMutedSwatches);
-            if ((generatedIconsColorFromPalette == 0) && (bitmap != null)) {
-                if (ColorUtils.isDark(bitmap)) {
-                    generatedIconsColorFromPalette = Color.parseColor("#80ffffff");
+            generatedIconsColorFromPalette = getIconsColorFromBitmap(bitmap);
+            if (generatedIconsColorFromPalette == 0) {
+                if (bitmap != null) {
+                    if (ColorUtils.isDark(bitmap)) {
+                        generatedIconsColorFromPalette = Color.parseColor("#80ffffff");
+                    } else {
+                        generatedIconsColorFromPalette = Color.parseColor("#66000000");
+                    }
                 } else {
-                    generatedIconsColorFromPalette = Color.parseColor("#66000000");
+                    generatedIconsColorFromPalette = Color.parseColor("#99ffffff");
                 }
             }
         } else {
             generatedIconsColorFromPalette = Color.parseColor("#99ffffff");
         }
         return generatedIconsColorFromPalette;
+    }
+
+    public static int getIconsColorFromBitmap(Bitmap bitmap) {
+        int color = 0;
+        if (bitmap != null) {
+            Palette.Swatch swatch = getProminentSwatch(bitmap);
+            if (swatch != null) {
+                color = swatch.getBodyTextColor();
+            }
+        }
+        return color;
     }
 
     private static double round(double value, int places) {
@@ -100,29 +94,40 @@ public class ColorExtractor {
         return bd.doubleValue();
     }
 
-    public static int getPreferredColor(Drawable drawable, Context context, boolean allowAccent, boolean includeMutedSwatches) {
-        return getPreferredColor(Utils.drawableToBitmap(drawable), context, allowAccent, includeMutedSwatches);
+    public static int getPreferredColor(Drawable drawable, Context context, boolean allowAccent) {
+        return getPreferredColor(Utils.drawableToBitmap(drawable), context, allowAccent);
     }
 
-    public static int getPreferredColor(Bitmap bitmap, Context context, boolean allowAccent, boolean includeMutedSwatches) {
-        Palette.Swatch prominentColor = getProminentSwatch(bitmap, includeMutedSwatches);
+    public static int getPreferredColor(Drawable drawable, Context context, boolean allowAccent, boolean forIcons) {
+        return getPreferredColor(Utils.drawableToBitmap(drawable), context, allowAccent, forIcons);
+    }
+
+    public static int getPreferredColor(Bitmap bitmap, Context context, boolean allowAccent) {
+        Palette.Swatch prominentColor = getProminentSwatch(bitmap);
         int accent = ContextCompat.getColor(context, ThemeUtils.darkTheme ?
                 R.color.dark_theme_accent : R.color.light_theme_accent);
         return prominentColor != null ? prominentColor.getRgb() : allowAccent ? accent : 0;
     }
 
-    public static Palette.Swatch getProminentSwatch(Drawable drawable, boolean includeMutedSwatches) {
-        return getProminentSwatch(Utils.drawableToBitmap(drawable), includeMutedSwatches);
+    public static int getPreferredColor(Bitmap bitmap, Context context, boolean allowAccent, boolean forIcons) {
+        Palette.Swatch prominentColor = getProminentSwatch(bitmap);
+        int accent = ContextCompat.getColor(context, ThemeUtils.darkTheme ?
+                R.color.dark_theme_accent : R.color.light_theme_accent);
+        return prominentColor != null ? prominentColor.getRgb() : allowAccent ? accent : 0;
     }
 
-    public static Palette.Swatch getProminentSwatch(Bitmap bitmap, boolean includeMutedSwatches) {
-        Palette palette = Palette.from(bitmap).generate();
-        return getProminentSwatch(palette, includeMutedSwatches);
+    public static Palette.Swatch getProminentSwatch(Drawable drawable) {
+        return getProminentSwatch(Utils.drawableToBitmap(drawable));
     }
 
-    public static Palette.Swatch getProminentSwatch(Palette palette, boolean includeMutedSwatches) {
+    public static Palette.Swatch getProminentSwatch(Bitmap bitmap) {
+        Palette palette = Palette.from(bitmap).clearFilters().generate();
+        return getProminentSwatch(palette);
+    }
+
+    public static Palette.Swatch getProminentSwatch(Palette palette) {
         if (palette == null) return null;
-        List<Palette.Swatch> swatches = getSwatchesList(palette, includeMutedSwatches);
+        List<Palette.Swatch> swatches = getSwatchesList(palette, false);
         return Collections.max(swatches,
                 new Comparator<Palette.Swatch>() {
                     @Override
@@ -134,18 +139,18 @@ public class ColorExtractor {
                 });
     }
 
-    public static Palette.Swatch getLessProminentSwatch(Drawable drawable, boolean includeMutedSwatches) {
-        return getLessProminentSwatch(Utils.drawableToBitmap(drawable), includeMutedSwatches);
+    public static Palette.Swatch getLessProminentSwatch(Drawable drawable) {
+        return getLessProminentSwatch(Utils.drawableToBitmap(drawable));
     }
 
-    public static Palette.Swatch getLessProminentSwatch(Bitmap bitmap, boolean includeMutedSwatches) {
-        Palette palette = Palette.from(bitmap).generate();
-        return getLessProminentSwatch(palette, includeMutedSwatches);
+    public static Palette.Swatch getLessProminentSwatch(Bitmap bitmap) {
+        Palette palette = Palette.from(bitmap).clearFilters().generate();
+        return getLessProminentSwatch(palette);
     }
 
-    public static Palette.Swatch getLessProminentSwatch(Palette palette, boolean includeMutedSwatches) {
+    public static Palette.Swatch getLessProminentSwatch(Palette palette) {
         if (palette == null) return null;
-        List<Palette.Swatch> swatches = getSwatchesList(palette, includeMutedSwatches);
+        List<Palette.Swatch> swatches = getSwatchesList(palette, false);
         return Collections.min(swatches,
                 new Comparator<Palette.Swatch>() {
                     @Override
@@ -157,31 +162,44 @@ public class ColorExtractor {
                 });
     }
 
-    private static List<Palette.Swatch> getSwatchesList(Palette palette, boolean includeMutedSwatches) {
+    private static List<Palette.Swatch> getSwatchesList(Palette palette, boolean forIcons) {
         List<Palette.Swatch> swatches = new ArrayList<>();
 
         Palette.Swatch vib = palette.getVibrantSwatch();
         Palette.Swatch vibLight = palette.getLightVibrantSwatch();
         Palette.Swatch vibDark = palette.getDarkVibrantSwatch();
 
-        swatches.add(vib);
-        swatches.add(vibLight);
-        swatches.add(vibDark);
-
-        if (includeMutedSwatches) {
-            addMutedSwatchesToSwatchesList(palette, swatches);
-        }
-
-        return swatches;
-    }
-
-    private static void addMutedSwatchesToSwatchesList(Palette palette, List<Palette.Swatch> swatches) {
         Palette.Swatch muted = palette.getMutedSwatch();
         Palette.Swatch mutedLight = palette.getLightMutedSwatch();
         Palette.Swatch mutedDark = palette.getDarkMutedSwatch();
+
+        swatches.add(vib);
+
+        if (forIcons) {
+            if (ThemeUtils.darkTheme) {
+                swatches.add(vibLight);
+            } else {
+                swatches.add(vibDark);
+            }
+        } else {
+            swatches.add(vibLight);
+            swatches.add(vibDark);
+        }
+
         swatches.add(muted);
-        swatches.add(mutedLight);
-        swatches.add(mutedDark);
+
+        if (forIcons) {
+            if (ThemeUtils.darkTheme) {
+                swatches.add(mutedLight);
+            } else {
+                swatches.add(mutedDark);
+            }
+        } else {
+            swatches.add(mutedLight);
+            swatches.add(mutedDark);
+        }
+
+        return swatches;
     }
 
 }

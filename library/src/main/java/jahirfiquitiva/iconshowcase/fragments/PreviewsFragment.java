@@ -207,10 +207,9 @@ public class PreviewsFragment extends Fragment {
                 ContextCompat.getColor(getActivity(), R.color.toolbar_text_dark) :
                 ContextCompat.getColor(getActivity(), R.color.toolbar_text_light);
 
+
         ToolbarTinter.on(menu)
-                .setOriginalMenuItemIconColor(iconsColor)
-                .setMenuItemIconColor(iconsColor)
-                .setMenuItemIconAlpha(255)
+                .setIconsColor(iconsColor)
                 .forceIcons()
                 .reapplyOnChange(true)
                 .apply(getActivity());

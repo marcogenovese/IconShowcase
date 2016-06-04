@@ -226,8 +226,7 @@ public class ViewerActivity extends AppCompatActivity {
         int colorFromCachedPic = 0;
 
         if (bmp != null) {
-            colorFromCachedPic = ColorExtractor.getFinalGeneratedIconsColorFromPalette(bmp,
-                    usePalette, true);
+            colorFromCachedPic = ColorExtractor.getFinalGeneratedIconsColorFromPalette(bmp, usePalette);
         } else {
             colorFromCachedPic = ThemeUtils.darkTheme ? tintDark : tintLightLighter;
         }
@@ -261,7 +260,7 @@ public class ViewerActivity extends AppCompatActivity {
                         public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
                             Bitmap picture = ((GlideBitmapDrawable) resource).getBitmap();
                             ToolbarColorizer.colorizeToolbar(toolbar,
-                                    ColorExtractor.getFinalGeneratedIconsColorFromPalette(picture, usePalette, true));
+                                    ColorExtractor.getFinalGeneratedIconsColorFromPalette(picture, usePalette));
                             spinner.setVisibility(View.GONE);
                             return false;
                         }
@@ -284,7 +283,7 @@ public class ViewerActivity extends AppCompatActivity {
                         public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
                             Bitmap picture = ((GlideBitmapDrawable) resource).getBitmap();
                             ToolbarColorizer.colorizeToolbar(toolbar,
-                                    ColorExtractor.getFinalGeneratedIconsColorFromPalette(picture, usePalette, true));
+                                    ColorExtractor.getFinalGeneratedIconsColorFromPalette(picture, usePalette));
                             spinner.setVisibility(View.GONE);
                             return false;
                         }
@@ -460,6 +459,7 @@ public class ViewerActivity extends AppCompatActivity {
                         Glide.with(context)
                                 .load(wallUrl)
                                 .asBitmap()
+                                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                                 .into(new SimpleTarget<Bitmap>() {
                                     @Override
                                     public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
@@ -485,6 +485,7 @@ public class ViewerActivity extends AppCompatActivity {
                         Glide.with(context)
                                 .load(wallUrl)
                                 .asBitmap()
+                                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                                 .into(new SimpleTarget<Bitmap>() {
                                     @Override
                                     public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {

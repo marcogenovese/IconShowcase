@@ -54,6 +54,7 @@ import jahirfiquitiva.iconshowcase.utilities.LauncherIntents;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.views.DividerItemDecoration;
 
+
 public class MainFragment extends Fragment {
 
     private Context context;

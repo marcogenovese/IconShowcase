@@ -97,7 +97,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
         BitmapImageViewTarget target = new BitmapImageViewTarget(holder.wall) {
             @Override
             protected void setResource(Bitmap resource) {
-                Palette.Swatch wallSwatch = ColorExtractor.getProminentSwatch(resource, true);
+                Palette.Swatch wallSwatch = ColorExtractor.getProminentSwatch(resource);
                 boolean animsEnabled = mPrefs.getAnimationsEnabled();
 
                 if (animsEnabled) {

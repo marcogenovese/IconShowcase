@@ -50,6 +50,7 @@ import android.widget.ProgressBar;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
@@ -70,13 +71,12 @@ import jahirfiquitiva.iconshowcase.activities.ViewerActivity;
 import jahirfiquitiva.iconshowcase.adapters.WallpapersAdapter;
 import jahirfiquitiva.iconshowcase.models.WallpaperItem;
 import jahirfiquitiva.iconshowcase.models.WallpapersList;
-import jahirfiquitiva.iconshowcase.tasks.ApplyWallpaper;
+import jahirfiquitiva.iconshowcase.tasks.WallpaperToCrop;
 import jahirfiquitiva.iconshowcase.utilities.JSONParser;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
-import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 
 
@@ -92,6 +92,7 @@ public class WallpapersFragment extends Fragment {
     private static Activity context;
     private static GridSpacingItemDecoration gridSpacing;
     private static int light, dark;
+    private static MaterialDialog dialogApply;
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
@@ -174,32 +175,10 @@ public class WallpapersFragment extends Fragment {
                                 public void onClick(WallpapersAdapter.WallsHolder view,
                                                     int position, boolean longClick) {
                                     if ((longClick && !ShowcaseActivity.wallsPicker) || ShowcaseActivity.wallsPicker) {
-                                        final MaterialDialog dialog = new MaterialDialog.Builder(context)
-                                                .content(R.string.downloading_wallpaper)
-                                                .progress(true, 0)
-                                                .cancelable(false)
-                                                .show();
 
-                                        WallpaperItem wallItem = WallpapersList.getWallpapersList().get(position);
+                                        showApplyWallpaperDialog(context,
+                                                WallpapersList.getWallpapersList().get(position));
 
-                                        Glide.with(context)
-                                                .load(wallItem.getWallURL())
-                                                .asBitmap()
-                                                .into(new SimpleTarget<Bitmap>() {
-                                                    @Override
-                                                    public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                                                        if (resource != null) {
-                                                            dialog.setContent(context.getString(R.string.setting_wall_title));
-                                                            new ApplyWallpaper(
-                                                                    context,
-                                                                    dialog, resource,
-                                                                    ShowcaseActivity.wallsPicker,
-                                                                    layout).execute();
-                                                        } else {
-                                                            dialog.dismiss();
-                                                        }
-                                                    }
-                                                });
                                     } else {
                                         final Intent intent = new Intent(context, ViewerActivity.class);
 
@@ -515,4 +494,45 @@ public class WallpapersFragment extends Fragment {
         Utils.showSimpleSnackbar(context, layout,
                 Utils.getStringFromResources(context, R.string.wait_for_walls));
     }
+
+    private static void showApplyWallpaperDialog(final Context context, final WallpaperItem item) {
+
+        new MaterialDialog.Builder(context)
+                .title(R.string.apply)
+                .content(R.string.confirm_apply)
+                .positiveText(R.string.apply)
+                .negativeText(android.R.string.cancel)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+                        if (dialogApply != null) {
+                            dialogApply.dismiss();
+                        }
+                        dialogApply = new MaterialDialog.Builder(context)
+                                .content(R.string.downloading_wallpaper)
+                                .progress(true, 0)
+                                .cancelable(false)
+                                .show();
+                        Glide.with(context)
+                                .load(item.getWallURL())
+                                .asBitmap()
+                                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                                .into(new SimpleTarget<Bitmap>() {
+                                    @Override
+                                    public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                                        if (resource != null) {
+                                            try {
+                                                new WallpaperToCrop((Activity) context, dialogApply, resource,
+                                                        layout, item.getWallName()).execute();
+                                            } catch (ClassCastException ex) {
+                                                ex.printStackTrace();
+                                            }
+                                        }
+                                    }
+                                });
+                    }
+                })
+                .show();
+    }
+
 }

@@ -24,6 +24,7 @@
 package jahirfiquitiva.iconshowcase.utilities.color;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
@@ -44,6 +45,7 @@ import android.widget.TextView;
 import java.lang.reflect.Field;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 
 public class ToolbarColorizer {
@@ -54,9 +56,12 @@ public class ToolbarColorizer {
      * @param toolbar           toolbar view being colored
      * @param toolbarIconsColor the target color of toolbar icons
      */
-    public static void colorizeToolbar(Toolbar toolbar, int toolbarIconsColor) {
-        /*
+    public static void colorizeToolbar(Toolbar toolbar, final int toolbarIconsColor) {
+
         final PorterDuffColorFilter colorFilter = new PorterDuffColorFilter(toolbarIconsColor, PorterDuff.Mode.SRC_IN);
+        //Possible ColorFilter modes: SCREEN, SRC_IN, SRC_ATOP, DST
+
+        final float a = Color.alpha(toolbarIconsColor);
 
         for (int i = 0; i < toolbar.getChildCount(); i++) {
             final View v = toolbar.getChildAt(i);
@@ -65,6 +70,7 @@ public class ToolbarColorizer {
             if (v instanceof ImageButton) {
                 //Action Bar back button
                 ((ImageButton) v).getDrawable().setColorFilter(colorFilter);
+                ((ImageButton) v).getDrawable().setAlpha((int) a);
             }
 
             if (v instanceof ActionMenuView) {
@@ -83,6 +89,7 @@ public class ToolbarColorizer {
                                     @Override
                                     public void run() {
                                         ((ActionMenuItemView) innerView).getCompoundDrawables()[finalK].setColorFilter(colorFilter);
+                                        ((ActionMenuItemView) innerView).getCompoundDrawables()[finalK].setAlpha((int) a);
                                     }
                                 });
                             }
@@ -91,7 +98,7 @@ public class ToolbarColorizer {
                 }
             }
         }
-        */
+
         //Step 3: Changing the color of title and subtitle.
         toolbar.setTitleTextColor(toolbarIconsColor);
         toolbar.setSubtitleTextColor(toolbarIconsColor);

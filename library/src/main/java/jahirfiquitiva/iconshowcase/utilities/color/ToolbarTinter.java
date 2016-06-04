@@ -19,6 +19,7 @@ package jahirfiquitiva.iconshowcase.utilities.color;
 
 import android.app.Activity;
 import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.v4.view.MenuItemCompat;
@@ -31,6 +32,7 @@ import android.view.MenuItem.OnActionExpandListener;
 import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SearchView;
 
@@ -41,7 +43,7 @@ import java.lang.reflect.Method;
  * <p>Apply colors and/or transparency to menu icons in a {@link Menu}.</p>
  * <p>
  * <p>Example usage:</p>
- * <p>
+ * <p/>
  * <pre class="prettyprint">
  * public boolean onCreateOptionsMenu(Menu menu) {
  * ...
@@ -105,21 +107,20 @@ public class ToolbarTinter {
      *
      * @param menuItem The {@link MenuItem} to theme.
      * @param color    The color to set for the color filter or {@code null} for no changes.
-     * @param alpha    The alpha value (0...255) to set on the icon or {@code null} for no changes.
      */
     public static void colorMenuItem(MenuItem menuItem, Integer color, Integer alpha) {
-        if (color == null && alpha == null) {
+        if (color == null) {
             return; // nothing to do.
         }
         Drawable drawable = menuItem.getIcon();
         if (drawable != null) {
             // If we don't mutate the drawable, then all drawables with this id will have the ColorFilter
             drawable.mutate();
-            if (color != null) {
-                drawable.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
-            }
+            drawable.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
             if (alpha != null) {
                 drawable.setAlpha(alpha);
+            } else {
+                drawable.setAlpha(255);
             }
         }
     }
@@ -154,7 +155,7 @@ public class ToolbarTinter {
      * @param color    the color for the ColorFilter.
      */
     public static void colorIcons(Activity activity, Menu menu, int color) {
-        ToolbarTinter.on(menu).setMenuItemIconColor(color).apply(activity);
+        ToolbarTinter.on(menu).setIconsColor(color).apply(activity);
     }
 
     /**
@@ -218,24 +219,20 @@ public class ToolbarTinter {
     }
 
     private final Menu menu;
-    private final Integer originalMenuItemIconColor;
-    private final Integer menuItemIconAlpha;
-    private final Integer subMenuIconColor;
-    private final Integer subMenuIconAlpha;
+    private final Integer originalIconsColor;
     private final Integer overflowDrawableId;
     private final boolean reApplyOnChange;
     private final boolean forceIcons;
-    private Integer menuItemIconColor;
+    private Integer iconsColor;
+    private Integer iconsAlpha;
     private ImageView overflowButton;
     private ViewGroup actionBarView;
 
     private ToolbarTinter(Builder builder) {
         menu = builder.menu;
-        originalMenuItemIconColor = builder.originalMenuItemIconColor;
-        menuItemIconColor = builder.menuItemIconColor;
-        menuItemIconAlpha = builder.menuItemIconAlpha;
-        subMenuIconColor = builder.subMenuIconColor;
-        subMenuIconAlpha = builder.subMenuIconAlpha;
+        originalIconsColor = builder.originalIconsColor;
+        iconsColor = builder.iconsColor;
+        iconsAlpha = builder.iconsAlpha;
         overflowDrawableId = builder.overflowDrawableId;
         reApplyOnChange = builder.reApplyOnChange;
         forceIcons = builder.forceIcons;
@@ -254,21 +251,23 @@ public class ToolbarTinter {
      */
     public void apply(final Activity activity) {
 
-        if (forceIcons) {
-            forceMenuIcons(menu);
-        }
+        if (menu != null) {
+            if (forceIcons) {
+                forceMenuIcons(menu);
+            }
 
-        for (int i = 0, size = menu.size(); i < size; i++) {
-            MenuItem item = menu.getItem(i);
-            colorMenuItem(item, menuItemIconColor, menuItemIconAlpha);
-            if (reApplyOnChange) {
-                View view = item.getActionView();
-                if (view != null) {
-                    if (item instanceof MenuItemImpl) {
-                        ((MenuItemImpl) item).setSupportOnActionExpandListener(
-                                new SupportActionExpandListener(this));
-                    } else {
-                        item.setOnActionExpandListener(new NativeActionExpandListener(this));
+            for (int i = 0, size = menu.size(); i < size; i++) {
+                MenuItem item = menu.getItem(i);
+                colorMenuItem(item, iconsColor, iconsAlpha);
+                if (reApplyOnChange) {
+                    View view = item.getActionView();
+                    if (view != null) {
+                        if (item instanceof MenuItemImpl) {
+                            ((MenuItemImpl) item).setSupportOnActionExpandListener(
+                                    new SupportActionExpandListener(this));
+                        } else {
+                            item.setOnActionExpandListener(new NativeActionExpandListener(this));
+                        }
                     }
                 }
             }
@@ -282,24 +281,35 @@ public class ToolbarTinter {
 
         // We must wait for the view to be created to set a color filter on the drawables.
         actionBarView.post(new Runnable() {
-
             @Override
             public void run() {
-                for (int i = 0, size = menu.size(); i < size; i++) {
-                    MenuItem menuItem = menu.getItem(i);
-                    if (isInOverflow(menuItem)) {
-                        colorMenuItem(menuItem, subMenuIconColor, subMenuIconAlpha);
-                    }
-                    if (menuItem.hasSubMenu()) {
-                        SubMenu subMenu = menuItem.getSubMenu();
-                        for (int j = 0; j < subMenu.size(); j++) {
-                            colorMenuItem(subMenu.getItem(j), subMenuIconColor, subMenuIconAlpha);
-                        }
+                for (int i = 0; i < actionBarView.getChildCount(); i++) {
+                    final View v = actionBarView.getChildAt(i);
+
+                    //Step 1 : Changing the color of back button (or open drawer button).
+                    if (v instanceof ImageButton) {
+                        //Action Bar back button
+                        ((ImageButton) v).getDrawable().setColorFilter(
+                                new PorterDuffColorFilter(iconsColor, PorterDuff.Mode.SRC_ATOP));
                     }
                 }
-                if (menuItemIconColor != null || menuItemIconAlpha != null) {
-                    overflowButton = findOverflowMenuButton(activity, actionBarView);
-                    colorOverflowMenuItem(overflowButton);
+                if (menu != null) {
+                    for (int i = 0, size = menu.size(); i < size; i++) {
+                        MenuItem menuItem = menu.getItem(i);
+                        if (isInOverflow(menuItem)) {
+                            colorMenuItem(menuItem, iconsColor, iconsAlpha);
+                        }
+                        if (menuItem.hasSubMenu()) {
+                            SubMenu subMenu = menuItem.getSubMenu();
+                            for (int j = 0; j < subMenu.size(); j++) {
+                                colorMenuItem(subMenu.getItem(j), iconsColor, iconsAlpha);
+                            }
+                        }
+                    }
+                    if (iconsColor != null) {
+                        overflowButton = findOverflowMenuButton(activity, actionBarView);
+                        colorOverflowMenuItem(overflowButton);
+                    }
                 }
             }
         });
@@ -314,10 +324,12 @@ public class ToolbarTinter {
      */
     public void reapply() {
 
-        for (int i = 0, size = menu.size(); i < size; i++) {
-            MenuItem item = menu.getItem(i);
-            if (isActionButton(item)) {
-                colorMenuItem(menu.getItem(i), menuItemIconColor, menuItemIconAlpha);
+        if (menu != null) {
+            for (int i = 0, size = menu.size(); i < size; i++) {
+                MenuItem item = menu.getItem(i);
+                if (isActionButton(item)) {
+                    colorMenuItem(menu.getItem(i), iconsColor, iconsAlpha);
+                }
             }
         }
 
@@ -329,21 +341,23 @@ public class ToolbarTinter {
 
             @Override
             public void run() {
-                for (int i = 0, size = menu.size(); i < size; i++) {
-                    MenuItem menuItem = menu.getItem(i);
-                    if (isInOverflow(menuItem)) {
-                        colorMenuItem(menuItem, subMenuIconColor, subMenuIconAlpha);
-                    } else {
-                        colorMenuItem(menu.getItem(i), menuItemIconColor, menuItemIconAlpha);
-                    }
-                    if (menuItem.hasSubMenu()) {
-                        SubMenu subMenu = menuItem.getSubMenu();
-                        for (int j = 0; j < subMenu.size(); j++) {
-                            colorMenuItem(subMenu.getItem(j), subMenuIconColor, subMenuIconAlpha);
+                if (menu != null) {
+                    for (int i = 0, size = menu.size(); i < size; i++) {
+                        MenuItem menuItem = menu.getItem(i);
+                        if (isInOverflow(menuItem)) {
+                            colorMenuItem(menuItem, iconsColor, iconsAlpha);
+                        } else {
+                            colorMenuItem(menu.getItem(i), iconsColor, iconsAlpha);
+                        }
+                        if (menuItem.hasSubMenu()) {
+                            SubMenu subMenu = menuItem.getSubMenu();
+                            for (int j = 0; j < subMenu.size(); j++) {
+                                colorMenuItem(subMenu.getItem(j), iconsColor, iconsAlpha);
+                            }
                         }
                     }
                 }
-                if (menuItemIconColor != null || menuItemIconAlpha != null) {
+                if (iconsColor != null || iconsAlpha != null) {
                     colorOverflowMenuItem(overflowButton);
                 }
             }
@@ -356,15 +370,16 @@ public class ToolbarTinter {
             if (overflowDrawableId != null) {
                 overflow.setImageResource(overflowDrawableId);
             }
-            if (menuItemIconColor != null) {
-                overflow.setColorFilter(menuItemIconColor);
+            if (iconsColor != null) {
+                overflow.setColorFilter(iconsColor);
             }
-            if (menuItemIconAlpha != null) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    overflow.setImageAlpha(menuItemIconAlpha);
-                } else {
-                    overflow.setAlpha(menuItemIconAlpha);
-                }
+            if (iconsAlpha == null) {
+                iconsAlpha = 255;
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                overflow.setImageAlpha(iconsAlpha);
+            } else {
+                overflow.setAlpha(iconsAlpha);
             }
         }
     }
@@ -378,7 +393,7 @@ public class ToolbarTinter {
     }
 
     public void setMenuItemIconColor(Integer color) {
-        menuItemIconColor = color;
+        iconsColor = color;
     }
 
     public static class NativeActionExpandListener implements OnActionExpandListener {
@@ -391,8 +406,8 @@ public class ToolbarTinter {
 
         @Override
         public boolean onMenuItemActionExpand(MenuItem item) {
-            int color = menuTint.originalMenuItemIconColor == null ? menuTint.menuItemIconColor :
-                    menuTint.originalMenuItemIconColor;
+            int color = menuTint.iconsColor != null ? menuTint.iconsColor :
+                    menuTint.originalIconsColor;
             menuTint.setMenuItemIconColor(color);
             menuTint.reapply();
             return true;
@@ -400,8 +415,8 @@ public class ToolbarTinter {
 
         @Override
         public boolean onMenuItemActionCollapse(MenuItem item) {
-            int color = menuTint.originalMenuItemIconColor == null ? menuTint.menuItemIconColor :
-                    menuTint.originalMenuItemIconColor;
+            int color = menuTint.iconsColor != null ? menuTint.iconsColor :
+                    menuTint.originalIconsColor;
             menuTint.setMenuItemIconColor(color);
             menuTint.reapply();
             return true;
@@ -420,8 +435,8 @@ public class ToolbarTinter {
 
         @Override
         public boolean onMenuItemActionExpand(MenuItem item) {
-            int color = menuTint.originalMenuItemIconColor == null ? menuTint.menuItemIconColor :
-                    menuTint.originalMenuItemIconColor;
+            int color = menuTint.iconsColor != null ? menuTint.iconsColor :
+                    menuTint.originalIconsColor;
             menuTint.setMenuItemIconColor(color);
             menuTint.reapply();
             return true;
@@ -429,8 +444,8 @@ public class ToolbarTinter {
 
         @Override
         public boolean onMenuItemActionCollapse(MenuItem item) {
-            int color = menuTint.originalMenuItemIconColor == null ? menuTint.menuItemIconColor :
-                    menuTint.originalMenuItemIconColor;
+            int color = menuTint.iconsColor != null ? menuTint.iconsColor :
+                    menuTint.originalIconsColor;
             menuTint.setMenuItemIconColor(color);
             menuTint.reapply();
             return true;
@@ -443,12 +458,10 @@ public class ToolbarTinter {
     public static final class Builder {
 
         private final Menu menu;
-        private Integer menuItemIconColor;
-        private Integer menuItemIconAlpha;
-        private Integer subMenuIconColor;
-        private Integer subMenuIconAlpha;
+        private Integer iconsColor;
+        private Integer iconsAlpha;
         private Integer overflowDrawableId;
-        private Integer originalMenuItemIconColor;
+        private Integer originalIconsColor;
         private boolean reApplyOnChange;
         private boolean forceIcons;
 
@@ -474,27 +487,14 @@ public class ToolbarTinter {
         }
 
         /**
-         * Specify an alpha value for visible MenuItem icons, including the OverflowMenuButton.
-         *
-         * @param alpha the alpha value for the drawable. 0 means fully transparent, and 255 means fully
-         *              opaque.
-         *
-         * @return this Builder object to allow for chaining of calls to set methods
-         */
-        public Builder setMenuItemIconAlpha(int alpha) {
-            menuItemIconAlpha = alpha;
-            return this;
-        }
-
-        /**
          * Specify a color for visible MenuItem icons, including the OverflowMenuButton.
          *
          * @param color the color to apply on visible MenuItem icons, including the OverflowMenuButton.
          *
          * @return this Builder object to allow for chaining of calls to set methods
          */
-        public Builder setMenuItemIconColor(int color) {
-            menuItemIconColor = color;
+        public Builder setIconsColor(int color) {
+            iconsColor = color;
             return this;
         }
 
@@ -505,8 +505,8 @@ public class ToolbarTinter {
          *
          * @return this Builder object to allow for chaining of calls to set methods
          */
-        public Builder setOriginalMenuItemIconColor(int color) {
-            originalMenuItemIconColor = color;
+        public Builder setOriginalIconsColor(int color) {
+            originalIconsColor = color;
             return this;
         }
 
@@ -522,28 +522,8 @@ public class ToolbarTinter {
             return this;
         }
 
-        /**
-         * Specify an alpha value for MenuItems that are in a SubMenu or in the Overflow menu.
-         *
-         * @param alpha the alpha value for the drawable. 0 means fully transparent, and 255 means fully
-         *              opaque.
-         *
-         * @return this Builder object to allow for chaining of calls to set methods
-         */
-        public Builder setSubMenuIconAlpha(int alpha) {
-            subMenuIconAlpha = alpha;
-            return this;
-        }
-
-        /**
-         * Specify a color for MenuItems that are in a SubMenu or in the Overflow menu.
-         *
-         * @param color the color to apply on visible MenuItem icons, including the OverflowMenuButton.
-         *
-         * @return this Builder object to allow for chaining of calls to set methods
-         */
-        public Builder setSubMenuIconColor(int color) {
-            subMenuIconColor = color;
+        public Builder setIconsAlpha(int alpha) {
+            iconsAlpha = alpha;
             return this;
         }
 

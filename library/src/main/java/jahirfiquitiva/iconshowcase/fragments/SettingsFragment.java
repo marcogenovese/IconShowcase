@@ -135,8 +135,7 @@ public class SettingsFragment extends PreferenceFragment implements
                         getActivity(),
                         ((ShowcaseActivity) getActivity()).getAppbar(),
                         ((ShowcaseActivity) getActivity()).getToolbar(),
-                        ((ShowcaseActivity) getActivity()).getToolbarHeaderImage(),
-                        true);
+                        ((ShowcaseActivity) getActivity()).getToolbarHeaderImage());
                 return true;
             }
         });
