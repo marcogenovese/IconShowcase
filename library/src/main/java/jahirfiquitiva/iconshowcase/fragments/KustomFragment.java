@@ -131,7 +131,7 @@ public class KustomFragment extends Fragment {
         }
 
         if (context.getResources().getBoolean(R.bool.includes_kustom_widgets) && installed) {
-            installed = Utils.isAppInstalled(context, "org.kustom.widgets");
+            installed = Utils.isAppInstalled(context, "org.kustom.widget");
         }
 
         if (context.getResources().getBoolean(R.bool.kustom_requires_kolorette) && installed) {

@@ -26,6 +26,7 @@ package jahirfiquitiva.iconshowcase.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+
 public class WallpaperItem implements Parcelable {
 
     public static final Creator<WallpaperItem> CREATOR = new Creator<WallpaperItem>() {
@@ -41,14 +42,17 @@ public class WallpaperItem implements Parcelable {
     };
 
     private String wallName, wallAuthor, wallUrl, wallThumbUrl, wallDimensions, wallCopyright;
+    private boolean downloadable;
 
-    public WallpaperItem(String wallName, String wallAuthor, String wallUrl, String wallThumbUrl, String wallDimensions, String wallCopyright) {
+    public WallpaperItem(String wallName, String wallAuthor, String wallUrl, String wallThumbUrl, String wallDimensions, String wallCopyright,
+                         boolean downloadable) {
         this.wallName = wallName;
         this.wallAuthor = wallAuthor;
         this.wallUrl = wallUrl;
         this.wallThumbUrl = wallThumbUrl;
         this.wallDimensions = wallDimensions;
         this.wallCopyright = wallCopyright;
+        this.downloadable = downloadable;
     }
 
     public String getWallName() {
@@ -75,6 +79,10 @@ public class WallpaperItem implements Parcelable {
         return wallCopyright;
     }
 
+    public boolean isDownloadable() {
+        return downloadable;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -86,6 +94,7 @@ public class WallpaperItem implements Parcelable {
         wallUrl = in.readString();
         wallDimensions = in.readString();
         wallCopyright = in.readString();
+        downloadable = in.readInt() == 1;
     }
 
     @Override
@@ -95,5 +104,6 @@ public class WallpaperItem implements Parcelable {
         dest.writeString(wallUrl);
         dest.writeString(wallDimensions);
         dest.writeString(wallCopyright);
+        dest.writeInt(downloadable ? 1 : 0);
     }
 }

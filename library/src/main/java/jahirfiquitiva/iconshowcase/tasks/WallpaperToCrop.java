@@ -60,15 +60,6 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
     private LinearLayout toHide1, toHide2;
 
     public WallpaperToCrop(Activity activity, MaterialDialog dialog, Bitmap resource,
-                           View layout, String wallName) {
-        this.wrActivity = new WeakReference<>(activity);
-        this.dialog = dialog;
-        this.resource = resource;
-        this.layout = layout;
-        this.wallName = wallName;
-    }
-
-    public WallpaperToCrop(Activity activity, MaterialDialog dialog, Bitmap resource,
                            View layout, String wallName, LinearLayout toHide1, LinearLayout toHide2) {
         this.wrActivity = new WeakReference<>(activity);
         this.dialog = dialog;

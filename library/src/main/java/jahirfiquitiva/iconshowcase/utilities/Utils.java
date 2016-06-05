@@ -33,7 +33,6 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
@@ -50,23 +49,18 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.graphics.Palette;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 import jahirfiquitiva.iconshowcase.R;
-import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
-import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.views.CustomCoordinatorLayout;
+
 
 /**
  * With a little help from Aidan Follestad (afollestad)
@@ -313,8 +307,6 @@ public class Utils {
         return Bitmap.createBitmap(newBitmap, minX, minY, (maxX - minX) + 1, (maxY - minY) + 1);
     }
 
-
-
     public static int convertMinutesToMillis(int minute) {
         return minute * 60 * 1000;
     }
@@ -539,7 +531,7 @@ public class Utils {
         return text;
     }
 
-    public static float getExactMinutes(int minutes) {
+    public static float getExactMinutes(int minutes, boolean withSeconds) {
         float time;
         if (minutes > 40320) {
             time = minutes / 40320.0f;
@@ -550,7 +542,11 @@ public class Utils {
         } else if (minutes > 60) {
             time = minutes / 60.0f;
         } else {
-            time = minutes;
+            if (withSeconds) {
+                time = minutes / 60.0f;
+            } else {
+                time = minutes;
+            }
         }
         return time;
     }

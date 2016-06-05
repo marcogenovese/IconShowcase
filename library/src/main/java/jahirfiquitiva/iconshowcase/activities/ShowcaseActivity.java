@@ -162,12 +162,12 @@ public class ShowcaseActivity extends AppCompatActivity implements
     private static Preferences mPrefs;
 
     public MaterialDialog settingsDialog, changelogDialog; //loadIcons,
-    public Toolbar toolbar;
-    public AppBarLayout appbar;
+    public static Toolbar toolbar;
+    public static AppBarLayout appbar;
     private CollapsingToolbarLayout collapsingToolbarLayout;
     public ImageView icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8;
-    public ImageView toolbarHeader;
-    public Bitmap toolbarHeaderImage;
+    public static ImageView toolbarHeader;
+    public static Bitmap toolbarHeaderImage;
     public static Drawable wallpaperDrawable;
 
     public Drawer drawer;
@@ -1142,7 +1142,7 @@ public class ShowcaseActivity extends AppCompatActivity implements
         }
     }
 
-    public void setupToolbarHeader(Context context, ImageView toolbarHeader) {
+    public static void setupToolbarHeader(Context context, ImageView toolbarHeader) {
 
         if (themeMode) {
             wallpaperDrawable = ContextCompat.getDrawable(context, R.drawable.heroimage);

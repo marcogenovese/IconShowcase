@@ -46,6 +46,7 @@ import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
+import jahirfiquitiva.iconshowcase.utilities.color.ColorExtractor;
 
 
 public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
@@ -120,6 +121,11 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
                 if (toHide1 != null && toHide2 != null) {
                     toHide1.setVisibility(View.GONE);
                     toHide2.setVisibility(View.GONE);
+                } else {
+                    ShowcaseActivity.setupToolbarHeader(activity, ShowcaseActivity.toolbarHeader);
+                    ColorExtractor.setupToolbarIconsAndTextsColors(activity,
+                            ShowcaseActivity.appbar, ShowcaseActivity.toolbar,
+                            ShowcaseActivity.toolbarHeaderImage);
                 }
 
                 Snackbar longSnackbar = Snackbar.make(layout,

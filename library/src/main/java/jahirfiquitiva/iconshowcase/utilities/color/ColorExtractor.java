@@ -42,10 +42,15 @@ public class ColorExtractor {
                 @SuppressWarnings("ResourceAsColor")
                 @Override
                 public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                    double alpha = round(((double) (verticalOffset * -1) / 288.0), 1);
+                    double ratio = round(((double) (verticalOffset * -1) / 255.0), 1);
+                    if (ratio > 1) {
+                        ratio = 1;
+                    } else if (ratio < 0) {
+                        ratio = 0;
+                    }
                     int paletteColor = ColorUtils.blendColors(
                             finalPaletteGeneratedColor != 0 ? finalPaletteGeneratedColor : iconsColor,
-                            iconsColor, alpha > 1.0 ? 1.0f : (float) alpha);
+                            iconsColor, (float) ratio);
                     if (toolbar != null) {
                         // Collapsed offset = -352
                         ToolbarColorizer.colorizeToolbar(toolbar, paletteColor);
@@ -59,16 +64,14 @@ public class ColorExtractor {
         int generatedIconsColorFromPalette;
         if (usePalette) {
             generatedIconsColorFromPalette = getIconsColorFromBitmap(bitmap);
-            if (generatedIconsColorFromPalette == 0) {
-                if (bitmap != null) {
-                    if (ColorUtils.isDark(bitmap)) {
-                        generatedIconsColorFromPalette = Color.parseColor("#80ffffff");
-                    } else {
-                        generatedIconsColorFromPalette = Color.parseColor("#66000000");
-                    }
+            if (generatedIconsColorFromPalette == 0 && bitmap != null) {
+                if (ColorUtils.isDark(bitmap)) {
+                    generatedIconsColorFromPalette = Color.parseColor("#80ffffff");
                 } else {
-                    generatedIconsColorFromPalette = Color.parseColor("#99ffffff");
+                    generatedIconsColorFromPalette = Color.parseColor("#66000000");
                 }
+            } else {
+                generatedIconsColorFromPalette = Color.parseColor("#99ffffff");
             }
         } else {
             generatedIconsColorFromPalette = Color.parseColor("#99ffffff");
@@ -79,7 +82,7 @@ public class ColorExtractor {
     public static int getIconsColorFromBitmap(Bitmap bitmap) {
         int color = 0;
         if (bitmap != null) {
-            Palette.Swatch swatch = getProminentSwatch(bitmap);
+            Palette.Swatch swatch = getProminentSwatch(bitmap, false);
             if (swatch != null) {
                 color = swatch.getBodyTextColor();
             }
@@ -95,39 +98,41 @@ public class ColorExtractor {
     }
 
     public static int getPreferredColor(Drawable drawable, Context context, boolean allowAccent) {
-        return getPreferredColor(Utils.drawableToBitmap(drawable), context, allowAccent);
+        return getPreferredColor(Utils.drawableToBitmap(drawable), context, allowAccent, false);
     }
 
-    public static int getPreferredColor(Drawable drawable, Context context, boolean allowAccent, boolean forIcons) {
+    public static int getPreferredColor(Drawable drawable, Context context, boolean allowAccent,
+                                        boolean forIcons) {
         return getPreferredColor(Utils.drawableToBitmap(drawable), context, allowAccent, forIcons);
     }
 
     public static int getPreferredColor(Bitmap bitmap, Context context, boolean allowAccent) {
-        Palette.Swatch prominentColor = getProminentSwatch(bitmap);
+        Palette.Swatch prominentColor = getProminentSwatch(bitmap, false);
         int accent = ContextCompat.getColor(context, ThemeUtils.darkTheme ?
                 R.color.dark_theme_accent : R.color.light_theme_accent);
         return prominentColor != null ? prominentColor.getRgb() : allowAccent ? accent : 0;
     }
 
-    public static int getPreferredColor(Bitmap bitmap, Context context, boolean allowAccent, boolean forIcons) {
-        Palette.Swatch prominentColor = getProminentSwatch(bitmap);
+    public static int getPreferredColor(Bitmap bitmap, Context context, boolean allowAccent,
+                                        boolean forIcons) {
+        Palette.Swatch prominentColor = getProminentSwatch(bitmap, forIcons);
         int accent = ContextCompat.getColor(context, ThemeUtils.darkTheme ?
                 R.color.dark_theme_accent : R.color.light_theme_accent);
         return prominentColor != null ? prominentColor.getRgb() : allowAccent ? accent : 0;
     }
 
-    public static Palette.Swatch getProminentSwatch(Drawable drawable) {
-        return getProminentSwatch(Utils.drawableToBitmap(drawable));
+    public static Palette.Swatch getProminentSwatch(Drawable drawable, boolean forIcons) {
+        return getProminentSwatch(Utils.drawableToBitmap(drawable), forIcons);
     }
 
-    public static Palette.Swatch getProminentSwatch(Bitmap bitmap) {
+    public static Palette.Swatch getProminentSwatch(Bitmap bitmap, boolean forIcons) {
         Palette palette = Palette.from(bitmap).clearFilters().generate();
-        return getProminentSwatch(palette);
+        return getProminentSwatch(palette, forIcons);
     }
 
-    public static Palette.Swatch getProminentSwatch(Palette palette) {
+    public static Palette.Swatch getProminentSwatch(Palette palette, boolean forIcons) {
         if (palette == null) return null;
-        List<Palette.Swatch> swatches = getSwatchesList(palette, false);
+        List<Palette.Swatch> swatches = getSwatchesList(palette, forIcons);
         return Collections.max(swatches,
                 new Comparator<Palette.Swatch>() {
                     @Override

@@ -40,6 +40,7 @@ import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.models.KustomKomponent;
 import jahirfiquitiva.iconshowcase.models.KustomWallpaper;
 import jahirfiquitiva.iconshowcase.models.KustomWidget;
+import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 
 public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.KustomHolder> {
@@ -108,7 +109,7 @@ public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.Ku
     }
 
     @Override
-    public void onBindViewHolder(KustomHolder holder, int section, int relativePosition, int absolutePosition) {
+    public void onBindViewHolder(KustomHolder holder, int section, final int relativePosition, int absolutePosition) {
         holder.background.setImageDrawable(wallpaper);
         String filePath = null;
         switch (section) {
@@ -116,6 +117,16 @@ public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.Ku
                 filePath = komponents.get(relativePosition).getPreviewPath();
                 break;
             case 1:
+
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (Utils.isAppInstalled(context, "org.kustom.wallpaper")) {
+                            context.startActivity(kustomWalls.get(relativePosition).getKLWPIntent(context));
+                        }
+                    }
+                });
+
                 switch (context.getResources().getConfiguration().orientation) {
                     case Configuration.ORIENTATION_PORTRAIT:
                         filePath = kustomWalls.get(relativePosition).getPreviewPath();
@@ -129,6 +140,16 @@ public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.Ku
                 }
                 break;
             case 2:
+
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (Utils.isAppInstalled(context, "org.kustom.widget")) {
+                            context.startActivity(widgets.get(relativePosition).getKWGTIntent(context));
+                        }
+                    }
+                });
+
                 switch (context.getResources().getConfiguration().orientation) {
                     case Configuration.ORIENTATION_PORTRAIT:
                         filePath = widgets.get(relativePosition).getPreviewPath();

@@ -19,11 +19,18 @@
 
 package jahirfiquitiva.iconshowcase.models;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+
+
 public class KustomWallpaper {
 
-    private String previewPath, previewPathLand;
+    private String wallpaperName, previewPath, previewPathLand;
 
-    public KustomWallpaper(String previewPath, String previewPathLand) {
+    public KustomWallpaper(String wallpaperName, String previewPath, String previewPathLand) {
+        this.wallpaperName = wallpaperName;
         this.previewPath = previewPath;
         this.previewPathLand = previewPathLand;
     }
@@ -42,6 +49,13 @@ public class KustomWallpaper {
 
     public void setPreviewPathLand(String previewPathLand) {
         this.previewPathLand = previewPathLand;
+    }
+
+    public Intent getKLWPIntent(Context context) {
+        Intent klwpIntent = new Intent();
+        klwpIntent.setComponent(new ComponentName("org.kustom.wallpaper", "org.kustom.lib.editor.WpAdvancedEditorActivity"));
+        klwpIntent.setData(Uri.parse("kfile://" + context.getPackageName() + "/wallpapers/" + wallpaperName));
+        return klwpIntent;
     }
 
 }

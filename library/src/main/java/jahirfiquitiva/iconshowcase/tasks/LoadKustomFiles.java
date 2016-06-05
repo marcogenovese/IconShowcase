@@ -111,10 +111,10 @@ public class LoadKustomFiles extends AsyncTask<Void, String, Boolean> {
                                 komponents.add(new KustomKomponent(previews[0]));
                                 break;
                             case "wallpapers":
-                                wallpapers.add(new KustomWallpaper(previews[0], previews[1]));
+                                wallpapers.add(new KustomWallpaper(template, previews[0], previews[1]));
                                 break;
                             case "widgets":
-                                widgets.add(new KustomWidget(previews[0], previews[1]));
+                                widgets.add(new KustomWidget(template, previews[0], previews[1]));
                                 break;
                         }
                     }

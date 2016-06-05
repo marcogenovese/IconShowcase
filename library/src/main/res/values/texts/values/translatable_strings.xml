@@ -89,6 +89,7 @@
     <string name="save">Save</string>
     <string name="downloading_wallpaper">Downloading this wallpaper…</string>
     <string name="setting_wall_title">Setting this wallpaper to your homescreen…</string>
+    <string name="download_takes_longer">This is taking longer than expected. Feel free to wait or cancel this action.</string>
     <string name="set_as_wall_done">Wallpaper set!</string>
     <string name="error">Error</string>
     <string name="confirm_apply">Are you sure you want to apply this wallpaper to your homescreen?

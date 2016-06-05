@@ -59,9 +59,6 @@ public class ToolbarColorizer {
     public static void colorizeToolbar(Toolbar toolbar, final int toolbarIconsColor) {
 
         final PorterDuffColorFilter colorFilter = new PorterDuffColorFilter(toolbarIconsColor, PorterDuff.Mode.SRC_IN);
-        //Possible ColorFilter modes: SCREEN, SRC_IN, SRC_ATOP, DST
-
-        final float a = Color.alpha(toolbarIconsColor);
 
         for (int i = 0; i < toolbar.getChildCount(); i++) {
             final View v = toolbar.getChildAt(i);
@@ -70,7 +67,6 @@ public class ToolbarColorizer {
             if (v instanceof ImageButton) {
                 //Action Bar back button
                 ((ImageButton) v).getDrawable().setColorFilter(colorFilter);
-                ((ImageButton) v).getDrawable().setAlpha((int) a);
             }
 
             if (v instanceof ActionMenuView) {
@@ -89,7 +85,6 @@ public class ToolbarColorizer {
                                     @Override
                                     public void run() {
                                         ((ActionMenuItemView) innerView).getCompoundDrawables()[finalK].setColorFilter(colorFilter);
-                                        ((ActionMenuItemView) innerView).getCompoundDrawables()[finalK].setAlpha((int) a);
                                     }
                                 });
                             }

@@ -166,14 +166,6 @@ public final class ISDialogs {
                 .show();
     }
 
-    public static MaterialDialog showDownloadDialog(Context context) {
-        return new MaterialDialog.Builder(context)
-                .content(R.string.downloading_wallpaper)
-                .progress(true, 0)
-                .cancelable(false)
-                .build();
-    }
-
     public static void showWallpaperDetailsDialog(final Context context, String wallName,
                                                   String wallAuthor, String wallDimensions,
                                                   String wallCopyright) {
@@ -319,7 +311,7 @@ public final class ISDialogs {
 
     public static void showRequestTimeLimitDialog(Context context, int minutes) {
         String minutesText =
-                new DecimalFormat("##.##").format(Utils.getExactMinutes(minutes)) +
+                new DecimalFormat("##.##").format(Utils.getExactMinutes(minutes, false)) +
                         " " + Utils.getTimeName(context, minutes);
 
         int secs = Utils.getSecondsLeftToEnableRequest(context, minutes, new Preferences(context));
@@ -329,7 +321,7 @@ public final class ISDialogs {
         String contentExtra;
 
         if (secs > 60) {
-            String leftText = (secs / 60) +
+            String leftText = new DecimalFormat("##.##").format(Utils.getExactMinutes(minutes, true)) +
                     " " + Utils.getTimeNameInSeconds(context, secs);
             contentExtra = context.getResources().getString(
                     R.string.apps_limit_dialog_day_extra, leftText);
