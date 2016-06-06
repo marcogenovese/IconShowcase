@@ -21,7 +21,7 @@
  *
  */
 
-package jahirfiquitiva.apps.iconshowcase.sample.zooper;
+package jahirfiquitiva.apps.iconshowcase.sampleip.zooper;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;

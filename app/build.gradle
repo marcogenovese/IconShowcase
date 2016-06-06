@@ -32,7 +32,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "jahirfiquitiva.apps.iconshowcase.sample"
+        applicationId "jahirfiquitiva.apps.iconshowcase.sampleip"
         minSdkVersion 16
         targetSdkVersion 23
         versionCode 10

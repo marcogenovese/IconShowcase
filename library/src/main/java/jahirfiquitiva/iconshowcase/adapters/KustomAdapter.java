@@ -89,6 +89,18 @@ public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.Ku
         }
     }
 
+    public int getHeadersBeforePosition(int position) {
+        int headers = 0;
+
+        for (int i = 0; i < position; i++) {
+            if (isHeader(i)) {
+                headers += 1;
+            }
+        }
+
+        return headers;
+    }
+
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindHeaderViewHolder(KustomHolder holder, int section) {
@@ -117,7 +129,6 @@ public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.Ku
                 filePath = komponents.get(relativePosition).getPreviewPath();
                 break;
             case 1:
-
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -140,7 +151,6 @@ public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.Ku
                 }
                 break;
             case 2:
-
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

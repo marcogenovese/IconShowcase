@@ -40,7 +40,7 @@ import jahirfiquitiva.iconshowcase.adapters.KustomAdapter;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.tasks.LoadKustomFiles;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
-import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
+import jahirfiquitiva.iconshowcase.views.SectionedGridSpacingItemDecoration;
 
 
 public class KustomFragment extends Fragment {
@@ -50,7 +50,7 @@ public class KustomFragment extends Fragment {
     private FloatingActionButton kustomFAB;
     public RecyclerView mRecyclerView;
     public KustomAdapter kustomAdapter;
-    private GridSpacingItemDecoration space;
+    private SectionedGridSpacingItemDecoration space;
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
@@ -105,13 +105,24 @@ public class KustomFragment extends Fragment {
 
             GridLayoutManager gridManager = new GridLayoutManager(context, columnsNumber);
 
-            space = new GridSpacingItemDecoration(columnsNumber, gridSpacing, true);
-
             RecyclerFastScroller fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
 
             kustomAdapter = new KustomAdapter(context,
                     LoadKustomFiles.komponents, LoadKustomFiles.wallpapers,
                     LoadKustomFiles.widgets, ShowcaseActivity.wallpaperDrawable);
+
+            space = new SectionedGridSpacingItemDecoration(columnsNumber, gridSpacing, true, kustomAdapter);
+
+            gridManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                @Override
+                public int getSpanSize(int position) {
+                    if (kustomAdapter.isHeader(position)) {
+                        return columnsNumber;
+                    } else {
+                        return 1;
+                    }
+                }
+            });
 
             mRecyclerView.addItemDecoration(space);
             mRecyclerView.setHasFixedSize(true);

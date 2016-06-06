@@ -21,7 +21,7 @@
  *
  */
 
-package jahirfiquitiva.apps.iconshowcase.sample;
+package jahirfiquitiva.apps.iconshowcase.sampleip;
 
 import android.content.Intent;
 import android.content.pm.PackageInfo;
