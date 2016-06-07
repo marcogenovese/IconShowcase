@@ -32,26 +32,25 @@
 
     <string-array name="newstuff">
         <item>New:</item>
-        <item>Added translations for 11 languages.</item>
-        <item>Added thumbnail support for wallpapers.</item>
-        <item>Added Kustom Live Wallpaper and Kustom Widgets support.</item>
+        <item>Updated translations for more than 10 languages.</item>
+        <item>Added new license check system.</item>
+        <item>Added a confirmation dialog when long-pressing to apply a wallpaper.</item>
+        <item>Added option to open Kustom widgets and wallpapers in respective Kustom app, directly from IconShowcase.</item>
     </string-array>
 
     <string-array name="improvements">
         <item>Improvements:</item>
-        <item>Improved color extraction for wallpapers.</item>
-        <item>Icon request tool will always export the highest possible resolution icons.</item>
-        <item>Some improvements thanks to Allan Wang.</item>
-        <item>Some other minor under-the-hood improvements.</item>
+        <item>All dashboard icons are customizable now.</item>
+        <item>Less lag in previews section.</item>
+        <item>Now you can define if a wallpaper can be downloaded by user or not.</item>
+        <item>Now if wallpaper download takes more than 10 seconds, users will be able to cancel it.</item>
     </string-array>
 
     <string-array name="fixes">
         <item>Fixes:</item>
-        <item>Fixed License check success dialog showing a lot of times.</item>
-        <item>Fixed FC when opening Holo Launcher.</item>
-        <item>Fixed FC caused by wallpapers loading task.</item>
-        <item>Fixed FC when trying to open CM Themes App.</item>
-        <item>Fixed FAB disappearing from Home section.</item>
+        <item>Fixed icons flickering/blinking in some sections.</item>
+        <item>Fixed texts in icons request limit dialog.</item>
+        <item>Fixed some crashes.</item>
     </string-array>
 
     <string-array name="changelog_icons">

@@ -39,6 +39,10 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
 
+    <!-- Uncomment if you're going to implement in-app purchases for donations
+    <uses-permission android:name="com.android.vending.BILLING" />
+    -->
+
     <supports-screens
         android:anyDensity="true"
         android:largeScreens="true"
@@ -272,20 +276,20 @@
         </activity>
 
         <!-- Remove comment marks to enable Zooper
-        Replace jahirfiquitiva.apps.iconshowcase.sampleip with your app's package
+        Replace jahirfiquitiva.apps.iconshowcase.sample with your app's package
         <provider
             android:name=".zooper.TemplateProvider"
-            android:authorities="jahirfiquitiva.apps.iconshowcase.sampleip.zwprovider"
+            android:authorities="jahirfiquitiva.apps.iconshowcase.sample.zwprovider"
             tools:ignore="ExportedContentProvider"/>
 		-->
 
         <!-- Remove comment marks to enable Kustom Skins
-        * Replace jahirfiquitiva.apps.iconshowcase.sampleip with your app's package
+        * Replace jahirfiquitiva.apps.iconshowcase.sample with your app's package
         * Remove intent-filter lines according to your needs. If you're not going to provide any of the options, remove such line.
 
         <provider
             android:name="org.kustom.api.Provider"
-            android:authorities="jahirfiquitiva.apps.iconshowcase.sampleip.kustomprovider"
+            android:authorities="jahirfiquitiva.apps.iconshowcase.sample.kustomprovider"
             android:exported="true"
             tools:ignore="ExportedContentProvider">
             <intent-filter>

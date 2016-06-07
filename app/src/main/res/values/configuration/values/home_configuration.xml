@@ -28,6 +28,13 @@
     <bool name="shuffle_toolbar_icons">true</bool>
 
     <!--
+    Do you want to let user see the device wallpaper in toolbar?
+    True, means yes.
+    False, means no.
+    -->
+    <bool name="enable_user_wallpaper_in_toolbar">true</bool>
+
+    <!--
        Do you want the app to use palette api in toolbar header?
        True, means yes.
        False, means no.

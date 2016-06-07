@@ -124,21 +124,25 @@ public class SettingsFragment extends PreferenceFragment implements
 
         SwitchPreference wallHeaderCheck = (SwitchPreference) findPreference("wallHeader");
 
-        wallHeaderCheck.setChecked(mPrefs.getWallpaperAsToolbarHeaderEnabled());
-        wallHeaderCheck.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                mPrefs.setWallpaperAsToolbarHeaderEnabled(newValue.toString().equals("true"));
-                ((ShowcaseActivity) getActivity()).setupToolbarHeader(
-                        getActivity(),
-                        ((ShowcaseActivity) getActivity()).getToolbarHeader());
-                ColorExtractor.setupToolbarIconsAndTextsColors(
-                        getActivity(),
-                        ((ShowcaseActivity) getActivity()).getAppbar(),
-                        ((ShowcaseActivity) getActivity()).getToolbar(),
-                        ((ShowcaseActivity) getActivity()).getToolbarHeaderImage());
-                return true;
-            }
-        });
+        if (getResources().getBoolean(R.bool.enable_user_wallpaper_in_toolbar)) {
+            wallHeaderCheck.setChecked(mPrefs.getWallpaperAsToolbarHeaderEnabled());
+            wallHeaderCheck.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    mPrefs.setWallpaperAsToolbarHeaderEnabled(newValue.toString().equals("true"));
+                    ((ShowcaseActivity) getActivity()).setupToolbarHeader(
+                            getActivity(),
+                            ((ShowcaseActivity) getActivity()).getToolbarHeader());
+                    ColorExtractor.setupToolbarIconsAndTextsColors(
+                            getActivity(),
+                            ((ShowcaseActivity) getActivity()).getAppbar(),
+                            ((ShowcaseActivity) getActivity()).getToolbar(),
+                            ((ShowcaseActivity) getActivity()).getToolbarHeaderImage());
+                    return true;
+                }
+            });
+        } else {
+            uiCategory.removePreference(wallHeaderCheck);
+        }
 
         // Set the preference for current selected theme
 

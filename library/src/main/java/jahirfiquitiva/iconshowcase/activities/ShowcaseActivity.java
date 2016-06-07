@@ -117,9 +117,8 @@ public class ShowcaseActivity extends AppCompatActivity implements
     ENABLE_DEV_OPTIONS = false;
     //SHOW_LOAD_ICONS_DIALOG = true;
 
-    public static boolean WITH_ZOOPER_SECTION = false, DEBUGGING = false;
-
-    public static boolean SELECT_ALL_APPS = true;
+    public static boolean WITH_ZOOPER_SECTION = false, DEBUGGING = false,
+            SELECT_ALL_APPS = true, ENABLE_USER_WALLPAPER_IN_TOOLBAR = true;
 
     private static String[] mGoogleCatalog = new String[0],
             GOOGLE_CATALOG_VALUES = new String[0];
@@ -206,6 +205,8 @@ public class ShowcaseActivity extends AppCompatActivity implements
         WITH_INSTALLED_FROM_AMAZON = getIntent().getBooleanExtra("enableAmazonInstalls", false);
 
         GOOGLE_PUBKEY = getIntent().getStringExtra("googlePubKey");
+
+        ENABLE_USER_WALLPAPER_IN_TOOLBAR = getResources().getBoolean(R.bool.enable_user_wallpaper_in_toolbar);
 
         getAction();
 
@@ -1148,7 +1149,7 @@ public class ShowcaseActivity extends AppCompatActivity implements
             wallpaperDrawable = ContextCompat.getDrawable(context, R.drawable.heroimage);
             toolbarHeader.setImageDrawable(wallpaperDrawable);
             toolbarHeaderImage = Utils.drawableToBitmap(wallpaperDrawable);
-        } else if (mPrefs.getWallpaperAsToolbarHeaderEnabled()) {
+        } else if (ENABLE_USER_WALLPAPER_IN_TOOLBAR && mPrefs.getWallpaperAsToolbarHeaderEnabled()) {
             WallpaperManager wm = WallpaperManager.getInstance(context);
 
             if (wm != null) {
@@ -1160,34 +1161,34 @@ public class ShowcaseActivity extends AppCompatActivity implements
                     toolbarHeaderImage = Utils.drawableToBitmap(currentWallpaper);
                 }
             }
-
         } else {
-
-            ArrayList<Integer> wallpapersArray = new ArrayList<>();
             String[] wallpapers = context.getResources().getStringArray(R.array.wallpapers);
 
-            int res;
+            if (wallpapers.length > 0) {
+                int res;
+                ArrayList<Integer> wallpapersArray = new ArrayList<>();
 
-            for (String wallpaper : wallpapers) {
-                res = context.getResources().getIdentifier(wallpaper, "drawable", context.getPackageName());
-                if (res != 0) {
-                    final int thumbRes = context.getResources().getIdentifier(wallpaper, "drawable", context.getPackageName());
-                    if (thumbRes != 0) {
-                        wallpapersArray.add(thumbRes);
+                for (String wallpaper : wallpapers) {
+                    res = context.getResources().getIdentifier(wallpaper, "drawable", context.getPackageName());
+                    if (res != 0) {
+                        final int thumbRes = context.getResources().getIdentifier(wallpaper, "drawable", context.getPackageName());
+                        if (thumbRes != 0) {
+                            wallpapersArray.add(thumbRes);
+                        }
                     }
                 }
+
+                Random random = new Random();
+
+                if (wallpaper == -1) {
+                    wallpaper = random.nextInt(wallpapersArray.size());
+                }
+
+                wallpaperDrawable = ContextCompat.getDrawable(context, wallpapersArray.get(wallpaper));
+                toolbarHeader.setImageDrawable(wallpaperDrawable);
+                toolbarHeaderImage = Utils.drawableToBitmap(
+                        ContextCompat.getDrawable(context, wallpapersArray.get(wallpaper)));
             }
-
-            Random random = new Random();
-
-            if (wallpaper == -1) {
-                wallpaper = random.nextInt(wallpapersArray.size());
-            }
-
-            wallpaperDrawable = ContextCompat.getDrawable(context, wallpapersArray.get(wallpaper));
-            toolbarHeader.setImageDrawable(wallpaperDrawable);
-            toolbarHeaderImage = Utils.drawableToBitmap(
-                    ContextCompat.getDrawable(context, wallpapersArray.get(wallpaper)));
         }
 
         toolbarHeader.setVisibility(View.VISIBLE);
