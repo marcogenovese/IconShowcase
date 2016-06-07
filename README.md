@@ -1,6 +1,7 @@
+<h1 align="center">IconShowcase</h1>
+
 <p align="center">
-	<h1>IconShowcase</h1>
-	<img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/icon.png" width="256">
+	<img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/icon.png" width="192">
 </p>
 
 <h4 align="center">IconShowcase is a full-of-features, easy-to-customize, free and open source, Material Design based dashboard for icon packs.</h4>
