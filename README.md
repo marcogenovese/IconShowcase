@@ -2,7 +2,6 @@
 <h4 align="center">IconShowcase is a full-of-features, easy-to-customize, free and open source, Material Design based dashboard for icon packs.</h4>
 
 <p align="center">
-[![Github All Releases](https://img.shields.io/github/downloads/atom/atom/total.svg?maxAge=2592000)](https://github.com/jahirfiquitiva/IconShowcase)
 	<a target="_blank" href="https://android-arsenal.com/api?level=16"><img src="https://img.shields.io/badge/API-16%2B-orange.svg"></a>
   <a target="_blank" href="http://bit.ly/DonateJahir1" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" /></a>
 </p>
