@@ -2,11 +2,10 @@
 <h4 align="center">IconShowcase is a full-of-features, easy-to-customize, free and open source, Material Design based dashboard for icon packs.</h4>
 
 <p align="center">
-[![GitHub release](https://img.shields.io/github/release/qubyte/rubidium.svg?maxAge=2592000)](https://github.com/jahirfiquitiva/IconShowcase)
 	<a target="_blank" href="https://github.com/jahirfiquitiva/IconShowcase/releases/tag/1.9.5"><img src="https://img.shields.io/badge/version-1.9.5-00C853.svg"></a>
 	<a target="_blank" href="http://creativecommons.org/licenses/by-sa/4.0/legalcode"><img src="https://img.shields.io/badge/license-CC%20BY%20SA-01579B.svg"></a>
-	<a target="_blank" href="https://android-arsenal.com/api?level=16"><img src="https://img.shields.io/badge/API-16%2B-orange.svg"></a>
-	<a target="_blank" href="http://bit.ly/DonateJahir1" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" /></a>
+	<a target="_blank" href="#"><img src="https://img.shields.io/badge/API-16%2B-7ac143.svg"></a>
+	<a target="_blank" href="http://bit.ly/DonateJahir1" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-FFC107.svg" /></a>
 </p>
 
 Try out the sample app [here](https://github.com/jahirfiquitiva/IconShowcase-Dashboard).
