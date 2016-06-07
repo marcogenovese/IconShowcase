@@ -2,14 +2,15 @@
 <h4 align="center">IconShowcase is a full-of-features, easy-to-customize, free and open source, Material Design based dashboard for icon packs.</h4>
 
 <p align="center">
-  <a target="_blank" href="https://www.paypal.me/jahirfiquitiva" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" /></a>
+	<a target="_blank" href="https://android-arsenal.com/api?level=16"><img src="https://img.shields.io/badge/API-16%2B-orange.svg"></a>
+  <a target="_blank" href="http://bit.ly/DonateJahir1" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" /></a>
 </p>
 
 Try out the sample app [here](https://github.com/jahirfiquitiva/IconShowcase-Dashboard).
 
 # Previews
 
-
+<p align="center">
 <img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/1.png" width="400">
 <img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/2.png" width="400">
 <img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/3.png" width="400">
@@ -21,7 +22,7 @@ Try out the sample app [here](https://github.com/jahirfiquitiva/IconShowcase-Das
 <img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/9.png" width="400">
 <img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/10.png" width="400">
 <img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/11.png" width="400">
-
+</p>
 
 # Features:
 
