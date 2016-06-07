@@ -9,9 +9,7 @@
 </p>
 
 <p align="center">
-<h3><a target="_blank" href="https://github.com/jahirfiquitiva/IconShowcase-Dashboard">SAMPLE APP</a></h3>
-<a target="_blank" href="https://github.com/jahirfiquitiva/IconShowcase-Dashboard" title="Sample App"><img src="https://img.shields.io/badge/SAMPLE-APP-34bf49.svg"/></a>
-<a href='https://play.google.com/store/apps/details?id=jahirfiquitiva.apps.iconshowcase.sampleip'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/></a>
+	<a target="_blank" href="https://github.com/jahirfiquitiva/IconShowcase-Dashboard" title="Sample App"><img src="https://img.shields.io/badge/SAMPLE-APP-34bf49.svg" /></a>
 </p>
 
 # Previews
