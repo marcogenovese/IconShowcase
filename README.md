@@ -6,8 +6,8 @@ Try out the sample app [here](https://github.com/jahirfiquitiva/IconShowcase-Das
 
 # Previews
 
-![](./art/1.png =250x)
-<img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/1.png" width="48">
+
+<img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/1.png" width="480">
 
 # Features:
 
