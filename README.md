@@ -4,6 +4,10 @@ IconShowcase is a full-of-features, easy-to-customize, free and open source, Mat
 
 Try out the sample app [here](https://github.com/jahirfiquitiva/IconShowcase-Dashboard).
 
+# Previews
+
+<img src="https://github.com/favicon.ico" width="48">
+
 # Features:
 
 - Material Design inspired/based dashboard.
