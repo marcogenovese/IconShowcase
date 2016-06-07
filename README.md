@@ -6,7 +6,7 @@ Try out the sample app [here](https://github.com/jahirfiquitiva/IconShowcase-Das
 
 # Previews
 
-<img src="https://github.com/favicon.ico" width="48">
+<img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/1.png" width="1280">
 
 # Features:
 
