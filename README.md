@@ -8,7 +8,11 @@
 	<a target="_blank" href="http://bit.ly/DonateJahir1" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-FFC107.svg" /></a>
 </p>
 
-Try out the sample app [here](https://github.com/jahirfiquitiva/IconShowcase-Dashboard).
+<p align="center">
+<h3>[SAMPLE APP](https://github.com/jahirfiquitiva/IconShowcase-Dashboard)</h3>
+<a target="_blank" href="https://github.com/jahirfiquitiva/IconShowcase-Dashboard" title="Sample App"><img src="https://img.shields.io/badge/SAMPLE-APP-34bf49.svg"/></a>
+<a href='https://play.google.com/store/apps/details?id=jahirfiquitiva.apps.iconshowcase.sampleip'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/></a>
+</p>
 
 # Previews
 
