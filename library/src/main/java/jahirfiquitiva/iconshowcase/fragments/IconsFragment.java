@@ -40,6 +40,7 @@ import jahirfiquitiva.iconshowcase.adapters.IconsAdapter;
 import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.models.IconsCategory;
 
+
 public class IconsFragment extends Fragment {
 
     private IconsAdapter mAdapter;
@@ -98,26 +99,28 @@ public class IconsFragment extends Fragment {
     }
 
     private synchronized void filter(CharSequence s, IconsAdapter adapter) {
-        if (s == null || s.toString().trim().isEmpty()) {
-            filteredIconsList = null;
-            adapter.clearIconsList();
-            adapter.setIcons(iconsList);
-        } else {
-            if (filteredIconsList != null) {
-                filteredIconsList.clear();
-            }
-            filteredIconsList = new ArrayList<>();
-            String search = s.toString().toLowerCase();
-            for (int i = 0; i < iconsList.size(); i++) {
-                String name = iconsList.get(i).getName();
-                if (name.toLowerCase().contains(search)) {
-                    filteredIconsList.add(iconsList.get(i));
+        if (iconsList != null && iconsList.size() > 0) {
+            if (s == null || s.toString().trim().isEmpty()) {
+                filteredIconsList = null;
+                adapter.clearIconsList();
+                adapter.setIcons(iconsList);
+            } else {
+                if (filteredIconsList != null) {
+                    filteredIconsList.clear();
                 }
+                filteredIconsList = new ArrayList<>();
+                String search = s.toString().toLowerCase();
+                for (int i = 0; i < iconsList.size(); i++) {
+                    String name = iconsList.get(i).getName();
+                    if (name.toLowerCase().contains(search)) {
+                        filteredIconsList.add(iconsList.get(i));
+                    }
+                }
+                adapter.clearIconsList();
+                adapter.setIcons(filteredIconsList);
             }
-            adapter.clearIconsList();
-            adapter.setIcons(filteredIconsList);
+            adapter.notifyDataSetChanged();
         }
-        adapter.notifyDataSetChanged();
     }
 
 }

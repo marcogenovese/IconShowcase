@@ -59,6 +59,7 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
     private final boolean isPicker;
     private WeakReference<Activity> wrActivity;
     private LinearLayout toHide1, toHide2;
+    private volatile boolean wasCancelled = false;
 
     public ApplyWallpaper(Context context, MaterialDialog dialog, Bitmap resource, boolean isPicker,
                           View layout) {
@@ -91,68 +92,76 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
 
     @Override
     protected Boolean doInBackground(Void... params) {
-        Boolean worked;
-        if (activity != null) {
-            WallpaperManager wm = WallpaperManager.getInstance(activity);
-            try {
+        Boolean worked = false;
+        while (!wasCancelled) {
+            if (activity != null) {
+                WallpaperManager wm = WallpaperManager.getInstance(activity);
                 try {
-                    wm.setBitmap(scaleToActualAspectRatio(resource));
-                } catch (OutOfMemoryError ex) {
-                    if (ShowcaseActivity.DEBUGGING)
-                        Utils.showLog(activity, "OutOfMemoryError: " + ex.getLocalizedMessage());
-                    showRetrySnackbar();
+                    try {
+                        wm.setBitmap(scaleToActualAspectRatio(resource));
+                    } catch (OutOfMemoryError ex) {
+                        if (ShowcaseActivity.DEBUGGING)
+                            Utils.showLog(activity, "OutOfMemoryError: " + ex.getLocalizedMessage());
+                        showRetrySnackbar();
+                    }
+                    worked = true;
+                } catch (IOException e2) {
+                    worked = false;
                 }
-                worked = true;
-            } catch (IOException e2) {
+            } else {
                 worked = false;
             }
-        } else {
-            worked = false;
         }
         return worked;
     }
 
     @Override
+    protected void onCancelled() {
+        wasCancelled = true;
+    }
+
+    @Override
     protected void onPostExecute(Boolean worked) {
-        if (worked) {
-            dialog.dismiss();
-            if (!isPicker) {
+        if (!wasCancelled) {
+            if (worked) {
+                dialog.dismiss();
+                if (!isPicker) {
 
-                if (toHide1 != null && toHide2 != null) {
-                    toHide1.setVisibility(View.GONE);
-                    toHide2.setVisibility(View.GONE);
-                } else {
-                    ShowcaseActivity.setupToolbarHeader(activity, ShowcaseActivity.toolbarHeader);
-                    ColorExtractor.setupToolbarIconsAndTextsColors(activity,
-                            ShowcaseActivity.appbar, ShowcaseActivity.toolbar,
-                            ShowcaseActivity.toolbarHeaderImage);
-                }
-
-                Snackbar longSnackbar = Snackbar.make(layout,
-                        activity.getString(R.string.set_as_wall_done), Snackbar.LENGTH_LONG);
-                final int snackbarLight = ContextCompat.getColor(activity, R.color.snackbar_light);
-                final int snackbarDark = ContextCompat.getColor(activity, R.color.snackbar_dark);
-                ViewGroup snackbarView = (ViewGroup) longSnackbar.getView();
-                snackbarView.setBackgroundColor(ThemeUtils.darkTheme ? snackbarDark : snackbarLight);
-                longSnackbar.show();
-                longSnackbar.setCallback(new Snackbar.Callback() {
-                    @Override
-                    public void onDismissed(Snackbar snackbar, int event) {
-                        super.onDismissed(snackbar, event);
-                        if (toHide1 != null && toHide2 != null) {
-                            toHide1.setVisibility(View.VISIBLE);
-                            toHide2.setVisibility(View.VISIBLE);
-                        }
+                    if (toHide1 != null && toHide2 != null) {
+                        toHide1.setVisibility(View.GONE);
+                        toHide2.setVisibility(View.GONE);
+                    } else {
+                        ShowcaseActivity.setupToolbarHeader(activity, ShowcaseActivity.toolbarHeader);
+                        ColorExtractor.setupToolbarIconsAndTextsColors(activity,
+                                ShowcaseActivity.appbar, ShowcaseActivity.toolbar,
+                                ShowcaseActivity.toolbarHeaderImage);
                     }
-                });
-            }
-        } else {
-            showRetrySnackbar();
-        }
-        if (isPicker) {
-            activity.finish();
-        }
 
+                    Snackbar longSnackbar = Snackbar.make(layout,
+                            activity.getString(R.string.set_as_wall_done), Snackbar.LENGTH_LONG);
+                    final int snackbarLight = ContextCompat.getColor(activity, R.color.snackbar_light);
+                    final int snackbarDark = ContextCompat.getColor(activity, R.color.snackbar_dark);
+                    ViewGroup snackbarView = (ViewGroup) longSnackbar.getView();
+                    snackbarView.setBackgroundColor(ThemeUtils.darkTheme ? snackbarDark : snackbarLight);
+                    longSnackbar.show();
+                    longSnackbar.setCallback(new Snackbar.Callback() {
+                        @Override
+                        public void onDismissed(Snackbar snackbar, int event) {
+                            super.onDismissed(snackbar, event);
+                            if (toHide1 != null && toHide2 != null) {
+                                toHide1.setVisibility(View.VISIBLE);
+                                toHide2.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    });
+                }
+            } else {
+                showRetrySnackbar();
+            }
+            if (isPicker) {
+                activity.finish();
+            }
+        }
     }
 
     private Bitmap scaleToActualAspectRatio(Bitmap bitmap) {

@@ -97,20 +97,9 @@ public class ColorExtractor {
         return bd.doubleValue();
     }
 
-    public static int getPreferredColor(Drawable drawable, Context context, boolean allowAccent) {
-        return getPreferredColor(Utils.drawableToBitmap(drawable), context, allowAccent, false);
-    }
-
     public static int getPreferredColor(Drawable drawable, Context context, boolean allowAccent,
                                         boolean forIcons) {
         return getPreferredColor(Utils.drawableToBitmap(drawable), context, allowAccent, forIcons);
-    }
-
-    public static int getPreferredColor(Bitmap bitmap, Context context, boolean allowAccent) {
-        Palette.Swatch prominentColor = getProminentSwatch(bitmap, false);
-        int accent = ContextCompat.getColor(context, ThemeUtils.darkTheme ?
-                R.color.dark_theme_accent : R.color.light_theme_accent);
-        return prominentColor != null ? prominentColor.getRgb() : allowAccent ? accent : 0;
     }
 
     public static int getPreferredColor(Bitmap bitmap, Context context, boolean allowAccent,
@@ -121,12 +110,8 @@ public class ColorExtractor {
         return prominentColor != null ? prominentColor.getRgb() : allowAccent ? accent : 0;
     }
 
-    public static Palette.Swatch getProminentSwatch(Drawable drawable, boolean forIcons) {
-        return getProminentSwatch(Utils.drawableToBitmap(drawable), forIcons);
-    }
-
     public static Palette.Swatch getProminentSwatch(Bitmap bitmap, boolean forIcons) {
-        Palette palette = Palette.from(bitmap).clearFilters().generate();
+        Palette palette = Palette.from(bitmap).generate();
         return getProminentSwatch(palette, forIcons);
     }
 
@@ -149,7 +134,7 @@ public class ColorExtractor {
     }
 
     public static Palette.Swatch getLessProminentSwatch(Bitmap bitmap) {
-        Palette palette = Palette.from(bitmap).clearFilters().generate();
+        Palette palette = Palette.from(bitmap).generate();
         return getLessProminentSwatch(palette);
     }
 

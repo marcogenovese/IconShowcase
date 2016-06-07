@@ -55,6 +55,7 @@ import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 
+
 public class RequestsFragment extends Fragment implements PermissionUtils.OnPermissionResultListener {
 
     private static ProgressBar progressBar;
@@ -182,6 +183,8 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
             if (requestList != null && requestList.size() > 0) {
                 requestsAdapter = new RequestsAdapter(context, requestList, mPrefs);
                 mRecyclerView.setHasFixedSize(true);
+                mRecyclerView.setItemAnimator(null);
+                mRecyclerView.setAnimation(null);
                 mRecyclerView.setAdapter(requestsAdapter);
                 requestsAdapter.startIconFetching(mRecyclerView);
                 fastScroller.attachRecyclerView(mRecyclerView);

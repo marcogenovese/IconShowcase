@@ -423,8 +423,8 @@ public class ViewerActivity extends AppCompatActivity {
                             String newContent = context.getString(R.string.downloading_wallpaper)
                                     + "\n"
                                     + context.getString(R.string.download_takes_longer);
-                            dialogApply.setContent(newContent);
-                            dialogApply.setActionButton(DialogAction.POSITIVE, android.R.string.cancel);
+                            downloadDialog.setContent(newContent);
+                            downloadDialog.setActionButton(DialogAction.POSITIVE, android.R.string.cancel);
                         }
                     }
                 });
@@ -532,42 +532,12 @@ public class ViewerActivity extends AppCompatActivity {
                                     public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                                         if (resource != null && dialogApply.isShowing()) {
                                             enteredApplyTask[0] = true;
-                                            if (dialogApply != null) {
-                                                dialogApply.dismiss();
-                                            }
-                                            dialogApply = new MaterialDialog.Builder(context)
-                                                    .content(context.getString(R.string.setting_wall_title))
-                                                    .progress(true, 0)
-                                                    .cancelable(false)
-                                                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                                        @Override
-                                                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                                            if (applyTask[0] != null) {
-                                                                applyTask[0].cancel(true);
-                                                            }
-                                                            dialogApply.dismiss();
-                                                        }
-                                                    })
-                                                    .show();
+
+                                            dialogApply.setContent(context.getString(R.string.setting_wall_title));
+
                                             applyTask[0] = new ApplyWallpaper(context, dialogApply, resource, false, layout,
                                                     toHide1, toHide2);
                                             applyTask[0].execute();
-                                            Timer timer = new Timer();
-                                            timer.schedule(new TimerTask() {
-                                                @Override
-                                                public void run() {
-                                                    runOnUIThread(context, new Runnable() {
-                                                        @Override
-                                                        public void run() {
-                                                            String newContent = context.getString(R.string.setting_wall_title)
-                                                                    + "\n"
-                                                                    + context.getString(R.string.download_takes_longer);
-                                                            dialogApply.setContent(newContent);
-                                                            dialogApply.setActionButton(DialogAction.POSITIVE, android.R.string.cancel);
-                                                        }
-                                                    });
-                                                }
-                                            }, 7000);
                                         }
                                     }
                                 });
@@ -630,7 +600,7 @@ public class ViewerActivity extends AppCompatActivity {
                                                 dialogApply.dismiss();
                                             }
                                             dialogApply = new MaterialDialog.Builder(context)
-                                                    .content(context.getString(R.string.setting_wall_title))
+                                                    .content(context.getString(R.string.preparing_wallpaper))
                                                     .progress(true, 0)
                                                     .cancelable(false)
                                                     .onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -653,7 +623,10 @@ public class ViewerActivity extends AppCompatActivity {
                                                     runOnUIThread(context, new Runnable() {
                                                         @Override
                                                         public void run() {
-                                                            dialogApply.setContent(context.getString(R.string.download_takes_longer));
+                                                            String content = context.getString(R.string.preparing_wallpaper)
+                                                                    + "\n" + context.getString(R.string.download_takes_longer);
+
+                                                            dialogApply.setContent(content);
                                                             dialogApply.setActionButton(DialogAction.POSITIVE, android.R.string.cancel);
                                                         }
                                                     });

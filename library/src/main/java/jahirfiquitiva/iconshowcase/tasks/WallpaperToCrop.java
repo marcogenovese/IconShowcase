@@ -48,6 +48,7 @@ import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
+
 public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
 
     private final MaterialDialog dialog;
@@ -58,6 +59,7 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
     private final String wallName;
     private final WeakReference<Activity> wrActivity;
     private LinearLayout toHide1, toHide2;
+    private volatile boolean wasCancelled = false;
 
     public WallpaperToCrop(Activity activity, MaterialDialog dialog, Bitmap resource,
                            View layout, String wallName, LinearLayout toHide1, LinearLayout toHide2) {
@@ -81,52 +83,61 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
 
     @Override
     protected Boolean doInBackground(Void... params) {
-        Boolean worked;
-        if (wallUri != null) {
-            wallUri = null;
-        }
-        try {
-            wallUri = getImageUri(context, resource);
-            worked = wallUri != null;
-        } catch (Exception e) {
-            worked = false;
+        Boolean worked = false;
+        while (!wasCancelled) {
+            if (wallUri != null) {
+                wallUri = null;
+            }
+            try {
+                wallUri = getImageUri(context, resource);
+                worked = wallUri != null;
+            } catch (Exception e) {
+                worked = false;
+            }
         }
         return worked;
     }
 
     @Override
     protected void onPostExecute(Boolean worked) {
-        if (toHide1 != null && toHide2 != null) {
-            toHide1.setVisibility(View.GONE);
-            toHide2.setVisibility(View.GONE);
-        }
-        if (worked) {
-            dialog.dismiss();
-            Intent setWall = new Intent(Intent.ACTION_ATTACH_DATA);
-            setWall.setDataAndType(wallUri, "image/*");
-            setWall.putExtra("png", "image/*");
-            wrActivity.get().startActivityForResult(Intent.createChooser(setWall,
-                    context.getResources().getString(R.string.set_as)), 1);
-        } else {
-            dialog.dismiss();
-            Snackbar snackbar = Snackbar.make(layout,
-                    context.getResources().getString(R.string.error), Snackbar.LENGTH_SHORT);
-            final int snackbarLight = ContextCompat.getColor(context, R.color.snackbar_light);
-            final int snackbarDark = ContextCompat.getColor(context, R.color.snackbar_dark);
-            ViewGroup snackbarView = (ViewGroup) snackbar.getView();
-            snackbarView.setBackgroundColor(ThemeUtils.darkTheme ? snackbarDark : snackbarLight);
-            snackbar.show();
-            snackbar.setCallback(new Snackbar.Callback() {
-                @Override
-                public void onDismissed(Snackbar snackbar, int event) {
-                    super.onDismissed(snackbar, event);
-                    if (toHide1 != null && toHide2 != null) {
-                        toHide1.setVisibility(View.VISIBLE);
-                        toHide2.setVisibility(View.VISIBLE);
+        if (!wasCancelled) {
+            if (toHide1 != null && toHide2 != null) {
+                toHide1.setVisibility(View.GONE);
+                toHide2.setVisibility(View.GONE);
+            }
+            if (worked) {
+                dialog.dismiss();
+                Intent setWall = new Intent(Intent.ACTION_ATTACH_DATA);
+                setWall.setDataAndType(wallUri, "image/*");
+                setWall.putExtra("png", "image/*");
+                wrActivity.get().startActivityForResult(Intent.createChooser(setWall,
+                        context.getResources().getString(R.string.set_as)), 1);
+            } else {
+                dialog.dismiss();
+                Snackbar snackbar = Snackbar.make(layout,
+                        context.getResources().getString(R.string.error), Snackbar.LENGTH_SHORT);
+                final int snackbarLight = ContextCompat.getColor(context, R.color.snackbar_light);
+                final int snackbarDark = ContextCompat.getColor(context, R.color.snackbar_dark);
+                ViewGroup snackbarView = (ViewGroup) snackbar.getView();
+                snackbarView.setBackgroundColor(ThemeUtils.darkTheme ? snackbarDark : snackbarLight);
+                snackbar.show();
+                snackbar.setCallback(new Snackbar.Callback() {
+                    @Override
+                    public void onDismissed(Snackbar snackbar, int event) {
+                        super.onDismissed(snackbar, event);
+                        if (toHide1 != null && toHide2 != null) {
+                            toHide1.setVisibility(View.VISIBLE);
+                            toHide2.setVisibility(View.VISIBLE);
+                        }
                     }
-                }
-            });
+                });
+            }
         }
+    }
+
+    @Override
+    protected void onCancelled() {
+        wasCancelled = true;
     }
 
     private Uri getImageUri(Context inContext, Bitmap inImage) {

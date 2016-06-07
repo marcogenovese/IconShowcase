@@ -545,41 +545,11 @@ public class WallpapersFragment extends Fragment {
                                     public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                                         if (resource != null && dialogApply.isShowing()) {
                                             enteredApplyTask[0] = true;
-                                            if (dialogApply != null) {
-                                                dialogApply.dismiss();
-                                            }
-                                            dialogApply = new MaterialDialog.Builder(context)
-                                                    .content(context.getString(R.string.setting_wall_title))
-                                                    .progress(true, 0)
-                                                    .cancelable(false)
-                                                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                                        @Override
-                                                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                                            if (applyTask[0] != null) {
-                                                                applyTask[0].cancel(true);
-                                                            }
-                                                            dialogApply.dismiss();
-                                                        }
-                                                    })
-                                                    .show();
+
+                                            dialogApply.setContent(context.getString(R.string.setting_wall_title));
+
                                             applyTask[0] = new ApplyWallpaper(context, dialogApply, resource, false, layout);
                                             applyTask[0].execute();
-                                            Timer timer = new Timer();
-                                            timer.schedule(new TimerTask() {
-                                                @Override
-                                                public void run() {
-                                                    runOnUIThread(context, new Runnable() {
-                                                        @Override
-                                                        public void run() {
-                                                            String newContent = context.getString(R.string.setting_wall_title)
-                                                                    + "\n"
-                                                                    + context.getString(R.string.download_takes_longer);
-                                                            dialogApply.setContent(newContent);
-                                                            dialogApply.setActionButton(DialogAction.POSITIVE, android.R.string.cancel);
-                                                        }
-                                                    });
-                                                }
-                                            }, 7000);
                                         }
                                     }
                                 });

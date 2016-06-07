@@ -45,7 +45,7 @@
     <string name="materialdrawer_web">https://github.com/mikepenz/MaterialDrawer</string>
     <string name="materialdrawer_name">MaterialDrawer</string>
 
-    <string name="sectioned_rv_web">https://github.com/truizlop/SectionedRecyclerView</string>
+    <string name="sectioned_rv_web">https://github.com/afollestad/sectioned-recyclerview</string>
     <string name="sectioned_rv_name">Sectioned RecyclerView</string>
 
     <string name="glide_name">Glide</string>
@@ -111,23 +111,23 @@
     </string-array>
 
     <string-array name="ui_collaborators_names">
-        <item>@string/rob_beane</item>
-        <item>@string/karim</item>
+        <item>@string/patryk</item>
+        <item>@string/kevin</item>
+        <item>@string/anthony</item>
         <item>@string/tim_bremer</item>
         <item>@string/josh_gray</item>
-        <item>@string/patryk</item>
-        <item>@string/anthony</item>
-        <item>@string/kevin</item>
+        <item>@string/rob_beane</item>
+        <item>@string/karim</item>
     </string-array>
 
     <string-array name="ui_collaborators_links">
-        <item>https://plus.google.com/111678887963556771807/posts</item>
-        <item>https://plus.google.com/103202379000002144026/posts</item>
+        <item>https://plus.google.com/109304801957014561872/posts</item>
+        <item>https://plus.google.com/+KevinAguilarC/posts</item>
+        <item>https://plus.google.com/111080505870850761155/posts</item>
         <item>https://plus.google.com/114641367439276138127/posts</item>
         <item>https://plus.google.com/+JoshGray1789/posts</item>
-        <item>https://plus.google.com/109304801957014561872/posts</item>
-        <item>https://plus.google.com/111080505870850761155/posts</item>
-        <item>https://plus.google.com/+KevinAguilarC/posts</item>
+        <item>https://plus.google.com/111678887963556771807/posts</item>
+        <item>https://plus.google.com/103202379000002144026/posts</item>
     </string-array>
 
     <string-array name="translators_names">

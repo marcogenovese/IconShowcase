@@ -106,7 +106,7 @@ dependencies {
     }
 
     //Material Drawer
-    compile('com.mikepenz:materialdrawer:5.2.8@aar') {
+    compile('com.mikepenz:materialdrawer:5.3.0@aar') {
         transitive = true
     }
 
