@@ -1,6 +1,6 @@
 <h1 align="center">IconShowcase</h1>
 <h4 align="center">IconShowcase is a full-of-features, easy-to-customize, free and open source, Material Design based dashboard for icon packs.</h4>
-
+<br>
 <p align="center">
 	<a target="_blank" href="https://github.com/jahirfiquitiva/IconShowcase/releases/tag/1.9.5"><img src="https://img.shields.io/badge/version-1.9.5-00C853.svg"></a>
 	<a target="_blank" href="http://creativecommons.org/licenses/by-sa/4.0/legalcode"><img src="https://img.shields.io/badge/license-CC%20BY%20SA-01579B.svg"></a>
@@ -10,6 +10,8 @@
 
 <p align="center">
 	<a target="_blank" href="https://github.com/jahirfiquitiva/IconShowcase-Dashboard" title="Sample App"><img src="https://img.shields.io/badge/SAMPLE-APP-34bf49.svg" /></a>
+	
+	<a href='https://play.google.com/store/apps/details?id=jahirfiquitiva.apps.iconshowcase.sampleip'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width='200'/></a>
 </p>
 
 # Previews
