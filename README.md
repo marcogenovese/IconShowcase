@@ -39,14 +39,15 @@
 - Wallpapers can be applied, cropped or downloaded. Wallpapers include a full-screen viewer with zooming capabilities.
 - Muzei support.
 - In-app icon request tool. Fully functional. Without duplicates and incredibly fast. This tool generates 'appfilter.xml', 'theme_resources.xml' and 'appmap.xml' which are the needed files for icon packs designers to be able to provide support to as many launchers as possible.
-- Apply section with 28 supported launchers. Launchers are sorted by installed first, and alphabetically.
+- Apply section with 26 supported launchers. Launchers are sorted by installed first, and alphabetically.
 - FAQs section, to answer the questions your users have.
-- Zooper section.
-- Credits section. With 2 layouts styles to match your likes.
+- Zooper and Kustom (widgets, wallpapers and komponents) support.
+- Credits section.
 - Settings section with these options:
 	- Option to change app theme (Light, Dark, Auto).
 	- Option to color navigation bar (Lollipop+).
 	- Option to clear app cache.
+	- Option to enable notifications (for new wallpapers and general news).
 	- Option to change where to download wallpapers.
 	- Option to hide icon from launchers.
 - Analog clock widget.
@@ -55,13 +56,12 @@
 - Full Marshmallow support.
 - App works as a gallery so users are able to pick pictures to use them in other apps.
 - Lots of customizations.
-- Dashboard texts are translated to more than 8 languages, and more will come with time.
+- Dashboard texts are translated to more than 10 languages, and more will come with time.
 - Requires API 16+ (Android 4.1+).
 
 
 # How to Implement
 
-To be able to use this library, check the [sample app repository](https://github.com/jahirfiquitiva/IconShowcase-Dashboard/).
 Everything you need to know can be found in the [Wiki site](https://github.com/jahirfiquitiva/IconShowcase-Dashboard/wiki).
 
 
@@ -96,13 +96,16 @@ Thanks to her, IconShowcase is completely free and open-source.
 - [Dani Mahardika](https://plus.google.com/+DaniMahardhika/posts)
 
 ### UI Design Collaborators
-- [Rob Beane](https://plus.google.com/111678887963556771807/posts)
-- [Karim Abou Zeid](https://plus.google.com/103202379000002144026/posts)
+- [Patryk Goworowski](https://plus.google.com/109304801957014561872/posts)
+- [Kevin Aguilar](https://plus.google.com/+KevinAguilarC/posts)
+- [Anthony Nguyen](https://plus.google.com/111080505870850761155/posts)
 - [Tim Bremer](https://plus.google.com/114641367439276138127/posts)
 - [Josh Gray](https://plus.google.com/+JoshGray1789/posts)
-- [Patryk Goworowski](https://plus.google.com/109304801957014561872/posts)
-- [Anthony Nguyen](https://plus.google.com/111080505870850761155/posts)
-- [Kevin Aguilar](https://plus.google.com/+KevinAguilarC/posts)
+- [Rob Beane](https://plus.google.com/111678887963556771807/posts)
+- [Karim Abou Zeid](https://plus.google.com/103202379000002144026/posts)
+
+### App Icon Creator
+- [Eduardo Pratti](https://plus.google.com/+EduardoPratti/posts)
 
     
 # License
