@@ -1,24 +1,26 @@
-# IconShowcase
+<h1 align="center">IconShowcase</h1>
+<h4 align="center">IconShowcase is a full-of-features, easy-to-customize, free and open source, Material Design based dashboard for icon packs.</h4>
 
-IconShowcase is a full-of-features, easy-to-customize, free and open source, Material Design based dashboard for icon packs.
+<p align="center">
+  <a target="_blank" href="https://www.paypal.me/jahirfiquitiva" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" /></a>
+</p>
 
 Try out the sample app [here](https://github.com/jahirfiquitiva/IconShowcase-Dashboard).
 
 # Previews
 
 
-<img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/1.png" width="360">
-<img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/2.png" width="360">
-<img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/3.png" width="360">
-<img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/4.png" width="360">
-<img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/5.png" width="360">
-<img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/6.png" width="360">
-<img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/7.png" width="360">
-<img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/8.png" width="360">
-<img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/9.png" width="360">
-<img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/10.png" width="360">
-<img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/11.png" width="360">
-<img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/12.png" width="360">
+<img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/1.png" width="400">
+<img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/2.png" width="400">
+<img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/3.png" width="400">
+<img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/4.png" width="400">
+<img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/5.png" width="400">
+<img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/6.png" width="400">
+<img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/7.png" width="400">
+<img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/8.png" width="400">
+<img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/9.png" width="400">
+<img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/10.png" width="400">
+<img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/11.png" width="400">
 
 
 # Features:
