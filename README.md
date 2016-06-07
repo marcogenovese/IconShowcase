@@ -7,7 +7,19 @@ Try out the sample app [here](https://github.com/jahirfiquitiva/IconShowcase-Das
 # Previews
 
 
-<img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/1.png" width="480">
+<img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/1.png" width="360">
+<img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/2.png" width="360">
+<img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/3.png" width="360">
+<img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/4.png" width="360">
+<img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/5.png" width="360">
+<img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/6.png" width="360">
+<img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/7.png" width="360">
+<img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/8.png" width="360">
+<img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/9.png" width="360">
+<img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/10.png" width="360">
+<img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/11.png" width="360">
+<img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/12.png" width="360">
+
 
 # Features:
 
