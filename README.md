@@ -1,10 +1,10 @@
 <h1 align="center">IconShowcase</h1>
 
 <p align="center">
-	<img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/icon.png" width="192">
+	<img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/icon.png" width="144">
 </p>
 
-<h4 align="center">IconShowcase is a full-of-features, easy-to-customize, free and open source, Material Design based dashboard for icon packs.</h4>
+<h4 align="center">Full-of-features, easy-to-customize, free and open source, Material Design based dashboard for icon packs.</h4>
 
 <p align="center">
 	<a target="_blank" href="https://github.com/jahirfiquitiva/IconShowcase/releases/tag/1.9.5"><img src="https://img.shields.io/badge/version-1.9.5-00C853.svg"></a>
