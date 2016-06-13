@@ -47,11 +47,6 @@
         <item>No header</item>
     </array>
 
-    <string-array name="dev_extra_features">
-        <item>@array/configurations_list</item>
-        <item>@array/additional_features_list</item>
-    </string-array>
-
     <string-array name="configurations_list">
         <item>These features can be additionally configured when using the dashboard source:</item>
         <item>Completely configurable UI.</item>

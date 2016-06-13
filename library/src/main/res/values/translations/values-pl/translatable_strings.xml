@@ -69,6 +69,8 @@ Czy chcesz zainstalować go na swoje urządzenie?</string>
     <string name="save">Zapisz</string>
     <string name="downloading_wallpaper">Pobieranie tapety...</string>
     <string name="setting_wall_title">Ustawianie tapety na pulpit...</string>
+    <string name="preparing_wallpaper">Przygotowywanie tapety do przycięcia...</string>
+    <string name="download_takes_longer">Operacja zajmuje więcej czasu niż zakładano. Możesz poczekać, lub ją anulować.</string>
     <string name="set_as_wall_done">Tapeta ustawiona!</string>
     <string name="error">Błąd</string>
     <string name="confirm_apply">Czy na pewno chcesz ustawić tę tapetę na swój pulpit?</string>

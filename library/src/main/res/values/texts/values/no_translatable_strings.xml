@@ -138,9 +138,15 @@
         <item>@string/anthony</item>
         <item>Eduardo Pratti</item>
         <item>Maximilian Keppeler</item>
+        <item>Rami Debab</item>
+        <item>@string/heinrich</item>
         <item>Fladir Reis</item>
         <item>Tijmen Ennik</item>
         <item>Julian Ostarek</item>
+        <item>Jacek Kazimierowicz</item>
+        <item>Davide Della Giustina</item>
+        <item>Framo Dev</item>
+        <item>Maximilian Jarchow</item>
         <item>Randle P</item>
         <item>Chebeto Sanchez</item>
         <item>Danet Mickael</item>
@@ -149,16 +155,12 @@
         <item>Stefano Trevisani</item>
         <item>TyronTM</item>
         <item>Sandivisi Aditya</item>
-        <item>Jacek Kazimierowicz</item>
         <item>Sven R.</item>
-        <item>Davide Della Giustina</item>
         <item>Runar Olsen</item>
         <item>Morshedul Alam</item>
         <item>Diaulhaq Fakhran</item>
         <item>Ivan Krušlin</item>
         <item>Brandon Aguilar</item>
-        <item>Framo Dev</item>
-        <item>Maximilian Jarchow</item>
         <item>Ivan Tevano</item>
         <item>Didier Sinmian</item>
         <item>Mularush Seven</item>
@@ -202,5 +204,10 @@
 
     <string name="clearcache_dialog_title">@string/pref_title_cache</string>
     <string name="md_error_label">@string/error</string>
+
+    <string-array name="dev_extra_features">
+        <item>@array/configurations_list</item>
+        <item>@array/additional_features_list</item>
+    </string-array>
 
 </resources>

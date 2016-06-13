@@ -52,6 +52,10 @@ public class KustomFragment extends Fragment {
     public KustomAdapter kustomAdapter;
     private SectionedGridSpacingItemDecoration space;
 
+    private final String KLWP_PKG = "org.kustom.wallpaper",
+            KWGT_PKG = "org.kustom.widget",
+            KOLORETTE_PKG = "com.arun.themeutil.kolorette";
+
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
 
@@ -137,16 +141,16 @@ public class KustomFragment extends Fragment {
     private boolean areAppsInstalled() {
         boolean installed = true;
 
-        if (context.getResources().getBoolean(R.bool.includes_kustom_wallpapers)) {
-            installed = Utils.isAppInstalled(context, "org.kustom.wallpaper");
+        if ((context.getResources().getBoolean(R.bool.includes_kustom_wallpapers))) {
+            installed = Utils.isAppInstalled(context, KLWP_PKG);
         }
 
-        if (context.getResources().getBoolean(R.bool.includes_kustom_widgets) && installed) {
-            installed = Utils.isAppInstalled(context, "org.kustom.widget");
+        if ((context.getResources().getBoolean(R.bool.includes_kustom_widgets)) && installed) {
+            installed = Utils.isAppInstalled(context, KWGT_PKG);
         }
 
-        if (context.getResources().getBoolean(R.bool.kustom_requires_kolorette) && installed) {
-            installed = Utils.isAppInstalled(context, "com.arun.themeutil.kolorette");
+        if ((context.getResources().getBoolean(R.bool.kustom_requires_kolorette)) && installed) {
+            installed = Utils.isAppInstalled(context, KOLORETTE_PKG);
         }
 
         return installed;
@@ -168,18 +172,20 @@ public class KustomFragment extends Fragment {
                     public void onClick(View v) {
                         ArrayList<String> apps = new ArrayList<>();
                         if (context.getResources().getBoolean(R.bool.includes_kustom_wallpapers) &&
-                                !Utils.isAppInstalled(context, "org.kustom.wallpaper")) {
+                                !Utils.isAppInstalled(context, KLWP_PKG)) {
                             apps.add("Kustom Live Wallpaper");
                         }
                         if (context.getResources().getBoolean(R.bool.includes_kustom_widgets) &&
-                                !Utils.isAppInstalled(context, "org.kustom.widget")) {
+                                !Utils.isAppInstalled(context, KWGT_PKG)) {
                             apps.add("Kustom Widget");
                         }
                         if (context.getResources().getBoolean(R.bool.kustom_requires_kolorette) &&
-                                !Utils.isAppInstalled(context, "com.arun.themeutil.kolorette")) {
+                                !Utils.isAppInstalled(context, KOLORETTE_PKG)) {
                             apps.add(Utils.getStringFromResources(context, R.string.kolorette_app));
                         }
-                        ISDialogs.showKustomAppsDownloadDialog(context, apps);
+                        if (apps.size() > 0) {
+                            ISDialogs.showKustomAppsDownloadDialog(context, apps);
+                        }
                     }
                 });
             }

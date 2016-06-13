@@ -67,6 +67,8 @@
     <string name="save">Guardar</string>
     <string name="downloading_wallpaper">Descargando fondo de pantalla...</string>
     <string name="setting_wall_title">Configurando como tu fondo de pantalla...</string>
+    <string name="preparing_wallpaper">Preparando fondo de pantalla para recortar...</string>
+    <string name="download_takes_longer">Esto está tomando más de lo esperado. Puedes esperar o cancelar esta acción.</string>
     <string name="set_as_wall_done">Fondo de pantalla configurado!</string>
     <string name="error">Error</string>
     <string name="confirm_apply">Estás seguro de querer aplicar éste fondo de pantalla a tu dispositivo?</string>

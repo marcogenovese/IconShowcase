@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-~ Copyright (c) 2016.  Jahir Fiquitiva
-~
-~ Licensed under the CreativeCommons Attribution-ShareAlike
-~ 4.0 International License. You may not use this file except in compliance
-~ with the License. You may obtain a copy of the License at
-~
-~    http://creativecommons.org/licenses/by-sa/4.0/legalcode
-~
-~ Unless required by applicable law or agreed to in writing, software
-~ distributed under the License is distributed on an "AS IS" BASIS,
-~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-~ See the License for the specific language governing permissions and
-~ limitations under the License.
-~
-~ Big thanks to the project contributors. Check them in the repository.
-~
--->
-<!--
-~
--->
+    <!--
+  ~ Copyright (c) 2016.  Jahir Fiquitiva
+  ~
+  ~ Licensed under the CreativeCommons Attribution-ShareAlike
+  ~ 4.0 International License. You may not use this file except in compliance
+  ~ with the License. You may obtain a copy of the License at
+  ~
+  ~    http://creativecommons.org/licenses/by-sa/4.0/legalcode
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  ~ Big thanks to the project contributors. Check them in the repository.
+  ~
+  -->
+    <!--
+  ~
+  -->
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="muzei_settings">Configurações Muzei</string>
     <!-- Sharing wallpaper from Muzei -->
@@ -67,6 +67,8 @@
     <string name="save">Salvar</string>
     <string name="downloading_wallpaper">Baixando papel de parede...</string>
     <string name="setting_wall_title">Definindo papel de parede para sua tela inicial...</string>
+    <string name="preparing_wallpaper">Preparando papel de parede para corte...</string>
+    <string name="download_takes_longer">Isso está demorando mais que o esperado. Você pode cancelar ou esperar esta ação.</string>
     <string name="set_as_wall_done">Papel de parede definido!</string>
     <string name="error">Erro</string>
     <string name="confirm_apply">Você gostaria de aplicar este papel de parede na sua tela inicial?</string>
@@ -152,11 +154,11 @@
     <string name="iconrestorer_widget_title">Widget restaurador de ícone</string>
     <string name="clock_widget_title">Relógio analógico</string>
     <string name="faqs_section">Perguntas frequentes</string>
-    <string name="dashboard_author">Desenvolvimento do dashboard</string>
+    <string name="dashboard_author">Desenvolvimento do painel</string>
     <string name="dashboard_author_copyright">Da Colômbia para o mundo.\nDashboard compartilhado sob CreativeCommons Attribution-ShareAlike License. Copyright © 2016.</string>
     <string name="iconpack_author">Informações do designer</string>
     <string name="fork_on_github">Fork no GitHub</string>
-    <string name="visit_website">Website</string>
+    <string name="visit_website">Site</string>
     <string name="more_apps">Mais aplicativos</string>
     <string name="more_apps_long">Confira outros aplicativos que eu publiquei na Google Play Store.</string>
     <string name="implemented_libraries">Bibliotecas implementadas</string>
@@ -228,8 +230,8 @@
         <item>Por que o aplicativo precisa de permissão para impedir que o dispositivo durma?</item>
     </string-array>
     <string-array name="answers">
-        <item>Você precisa de um launcher com suporte à Pacote de ícones. Verifique a descrição na Google Play Store para launchers suportados. Se você não tem certeza qual launcher deve usar, basta ir ao menu \"Aplicar\", em seguida escolher um da lista.</item>
-        <item>Deslize o menu de navegação à esquerda e vá para o menu \'Aplicar\', ou volte para a tela principal do aplicativo. Clique no botão no canto inferior direito. Escolha o Launcher em que deseja aplicar os ícones. Se o Launcher não está listado, mas o pacote de ícones é compatível com ele, você pode aplicá-lo manualmente a partir das configurações do Launcher. (Veja na descrição da página da Google Play a lista de launchers suportados).</item>
+        <item>Você precisa de um launcher com suporte à Pacote de ícones. Verifique a descrição na Google Play Store  para launchers suportados. Se você não tem certeza qual launcher deve usar, basta ir ao menu \"Aplicar\", em seguida escolher um da lista.</item>
+        <item>Deslize o menu de navegação à esquerda e vá para o menu \'Aplicar\', ou volte para a tela principal do aplicativo. Clique no botão no canto inferior direito. Escolha o Launcher em que deseja aplicar os ícones. Se o Launcher não está listado, mas o pacote de ícones é compatível com ele, você pode aplicá-lo manualmente a partir das configurações do Launcher.\n(Veja na descrição da página da Google Play a lista de launchers suportados)</item>
         <item>Deslize a gaveta de navegação na esquerda, e vá para o menu \"Ícones\", ou volte para a página principal do aplicativo e toque no botão \"Ícones\".</item>
         <item>Depende do launcher que você está usando. Nem todos os launchers suportam edição de ícone. Mas, na maioria deles, você pode editar o ícone com um toque longo ou um toque duplo.</item>
         <item>Deslize a gaveta de navegação na esquerda, e vá para o menu \"Pedido de Ícones\".</item>
@@ -239,7 +241,7 @@
         <item>Deslize a gaveta de navegação na esquerda, e vá para o menu \"Configurações\". Em seguida, marque a opção \"Ocultar ícone do launcher\".</item>
         <item>Vá para a tela inicial, em seguida, crie um widget para o aplicativo cujo nome é \"Restaurador de ícone\".</item>
         <item>Deslize a gaveta de navegação na esquerda, e vá para o menu \"Configurações\". Em seguida desmarque a opção \"Ocultar ícone do launcher\".</item>
-        <item>É necessário gravar os dados e arquivos dos pedidos ícones, bem como papéis de parede, e ser capaz de mudar o local de download dos papéis de parede.</item>
+        <item>É necessário gravar os dados e arquivos dos pedidos ícones , bem como papéis de parede, e ser capaz de mudar o local de download dos papéis de parede.</item>
         <item>É necessário para carregar os papéis de parede baseados em nuvem e baixá-los.</item>
         <item>É necessário para verificar se o seu aparelho tem conexão de internet.</item>
         <item>É necessário para aplicar papel de parede diretamente do aplicativo.</item>

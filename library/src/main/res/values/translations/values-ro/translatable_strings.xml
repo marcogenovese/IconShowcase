@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-~ Copyright (c) 2016.  Jahir Fiquitiva
-~
-~ Licensed under the CreativeCommons Attribution-ShareAlike
-~ 4.0 International License. You may not use this file except in compliance
-~ with the License. You may obtain a copy of the License at
-~
-~    http://creativecommons.org/licenses/by-sa/4.0/legalcode
-~
-~ Unless required by applicable law or agreed to in writing, software
-~ distributed under the License is distributed on an "AS IS" BASIS,
-~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-~ See the License for the specific language governing permissions and
-~ limitations under the License.
-~
-~ Big thanks to the project contributors. Check them in the repository.
-~
--->
-<!--
-~
--->
+    <!--
+  ~ Copyright (c) 2016.  Jahir Fiquitiva
+  ~
+  ~ Licensed under the CreativeCommons Attribution-ShareAlike
+  ~ 4.0 International License. You may not use this file except in compliance
+  ~ with the License. You may obtain a copy of the License at
+  ~
+  ~    http://creativecommons.org/licenses/by-sa/4.0/legalcode
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  ~ Big thanks to the project contributors. Check them in the repository.
+  ~
+  -->
+    <!--
+  ~
+  -->
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="muzei_settings">Setari Muzei</string>
     <!-- Sharing wallpaper from Muzei -->
@@ -48,7 +48,7 @@
     <!-- Strings for Dropdown Menu & Requests -->
     <string name="share_title">Distribuiți prin</string>
     <string name="send_title">Trimitere prin</string>
-    <string name="changelog">Ce mai e nou?</string>
+    <string name="changelog">Ce este nou?</string>
     <!-- LauncherNotInstalled Dialog -->
     <string name="lni_content">%1$s nu este instalat pe dispozitiv. Doriți să-l
 instalați din Google Play Store ?</string>
@@ -62,7 +62,7 @@ prin urmare, acesta nu poate fi descărcata din Google Play Store.</string>
     <string name="changelog_dialog_title">Noutati</string>
     <string name="great">Foarte Bine</string>
     <!-- Wallpapers Stuff -->
-    <string name="no_conn_title">Nu s-a gasit nici o conexiune</string>
+    <string name="no_conn_title">Lipsa conexiune</string>
     <string name="download">Descarca</string>
     <string name="wallpaper_downloaded">Fundalul a fost descarcat in:%1$s</string>
     <string name="wallpaper_by">De:%1$s</string>
@@ -70,9 +70,11 @@ prin urmare, acesta nu poate fi descărcata din Google Play Store.</string>
     <string name="save">Salvați</string>
     <string name="downloading_wallpaper">Se descarca fundalul...</string>
     <string name="setting_wall_title">Setati acest fundal pe homescreen</string>
+    <string name="preparing_wallpaper">Imaginea este pregatita pentru a fi taiata....</string>
+    <string name="download_takes_longer">Acestea dureaza mai mult decat normal.Simțiți-vă liber să așteptati sau să anulați această acțiune.</string>
     <string name="set_as_wall_done">Fundal setat!</string>
     <string name="error">eroare</string>
-    <string name="confirm_apply">Esti sigur ca vrei sa aplici acest fundal pe homescreen?</string>
+    <string name="confirm_apply">Esti sigur ca vrei sa aplici acest fundal pe ecranul de baza?</string>
     <string name="refreshing_walls">Reincarca lista de fundaluri</string>
     <string name="retry">reincearca</string>
     <string name="wallpaper_author_title">Autor</string>
@@ -89,7 +91,7 @@ prin urmare, acesta nu poate fi descărcata din Google Play Store.</string>
     <string name="advice">Sfat</string>
     <string name="dontshow">Nu mai afisa</string>
     <string name="rate">Voteaza</string>
-    <string name="set_as">Decupeaza fundalul si seteazal ca</string>
+    <string name="set_as">Decupeaza fundalul si seteaza-l ca...</string>
     <!-- Requests -->
     <string name="select_all">Selecteaza tot</string>
     <string name="no_selected_apps_title">Nu există aplicatii selectate</string>
@@ -251,8 +253,8 @@ prin urmare, acesta nu poate fi descărcata din Google Play Store.</string>
     </string-array>
     <string name="no_apply_tab">Contacteaza cu developerul pentru ca pare, ca lipseste ceva in aplicatie.</string>
     <!--No Theme Engine Dialog-->
-    <string name="NTED_title">Uh Oh!</string>
-    <string name="NTED_message">Se pare ca nu s-a gasit nici o aplicator pentru tema in dispozitivul tau.daca crezi ca ai unul,te rugam sa il deschizi si sa continui de acolo.daca nu ai unul,te rugam sa iti pui un alt rom fie cyanogenmod sau teme de layers si urmareste instructiunile.</string>
+    <string name="NTED_title">Upsss!</string>
+    <string name="NTED_message">Se pare ca nu s-a gasit nici un aplicator pentru tema in dispozitivul tau.daca crezi ca ai unul,te rugam sa il deschizi si sa continui de acolo.daca nu ai unul,te rugam sa iti pui un alt rom fie cyanogenmod sau teme de layers si urmareste instructiunile.</string>
     <string name="tap_to_download">%1$s\nApasa acest card pentru al descarca.</string>
     <string name="tap_to_open">%1$s\nApasa acest card pentru a putea deschide aplicatia.</string>
     <string name="donations_error_title">donații indisponibile</string>

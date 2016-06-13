@@ -69,6 +69,8 @@ mais cela demande l\'utilisation d\'une application externe. Voulez-vous la tél
     <string name="save">Enregistrer</string>
     <string name="downloading_wallpaper">Téléchargement en cours...</string>
     <string name="setting_wall_title">En cours d\'application...</string>
+    <string name="preparing_wallpaper">Préparation du fond d\'écran pour rognage ...</string>
+    <string name="download_takes_longer">L\'opération prend plus de temps que prévu. N\'hésiter pas à annuler ou patienter un peu plus.</string>
     <string name="set_as_wall_done">Fond d\'écran appliqué !</string>
     <string name="error">Erreur</string>
     <string name="confirm_apply">Êtes-vous sûr de vouloir appliquer ce fond d\'écran ?</string>

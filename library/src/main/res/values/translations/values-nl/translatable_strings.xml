@@ -67,6 +67,8 @@
     <string name="save">Opslaan</string>
     <string name="downloading_wallpaper">Deze achtergrond aan het downloaden...</string>
     <string name="setting_wall_title">Deze achtergrond instellen voor jouw thuisscherm...</string>
+    <string name="preparing_wallpaper">Achtergrond voorbereiden voor bijsnijden...</string>
+    <string name="download_takes_longer">Dit duurt langer dan verwacht. U mag blijven wachten of deze opdracht annuleren.</string>
     <string name="set_as_wall_done">Achtergrond toegepast!</string>
     <string name="error">Fout</string>
     <string name="confirm_apply">Weet u zeker dat u deze achtergrond wilt toepassen op uw thuisscherm?</string>

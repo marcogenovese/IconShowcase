@@ -72,6 +72,8 @@ Derfor kan det ikke downloades fra Google Play Store.</string>
     <string name="save">Gem</string>
     <string name="downloading_wallpaper">Downloader dette baggrund....</string>
     <string name="setting_wall_title">Indstilling af baggrund til dit hjem skærmen...</string>
+    <string name="preparing_wallpaper">Forberedelse tapet, der skal beskæres...</string>
+    <string name="download_takes_longer">Dette tager længere tid end forventet. Du er velkommen til at vente eller annullere denne handling.</string>
     <string name="set_as_wall_done">Baggrunde sæt!</string>
     <string name="error">"Error 404 "</string>
     <string name="confirm_apply">Er du sikker på, du vil anvende denne baggrund til dit hjem skærmen?</string>

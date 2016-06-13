@@ -68,6 +68,8 @@ C\'è una modo che puoi provare ad usare, ma richiede l\'utilizzo di un\'app est
     <string name="save">Salva</string>
     <string name="downloading_wallpaper">Download dello sfondo in corso...</string>
     <string name="setting_wall_title">Sto applicando lo sfondo...</string>
+    <string name="preparing_wallpaper">Sto preparando il ritaglio dello sfondo</string>
+    <string name="download_takes_longer">L\'azione sta richiedendo troppo tempo. Puoi aspettare o cancellare quest\'azione.</string>
     <string name="set_as_wall_done">Sfondo applicato!</string>
     <string name="error">Errore</string>
     <string name="confirm_apply">Sei sicuro di voler applicare questo sfondo?</string>
@@ -113,7 +115,7 @@ C\'è una modo che puoi provare ad usare, ma richiede l\'utilizzo di un\'app est
     <string-array name="themes">
         <item>Chiaro</item>
         <item>Scuro</item>
-        <item>Pulire</item>
+        <item>Trasparente</item>
         <item>Auto</item>
     </string-array>
     <string-array name="themes_no_clear">
@@ -176,7 +178,7 @@ L\'app potrebbe chiudersi inaspettatamente.\nPrima di nasconderla, leggi le FAQ 
     <string name="saving_wallpaper">Sto salvando lo sfondo...</string>
     <string name="refresh">Aggiorna</string>
     <!-- Messages shown when using LicenseChecker -->
-    <string name="license_failed">Non hai scaricato %1$sdal Google Play Store. Hai due possibilità:</string>
+    <string name="license_failed">Non hai scaricato %1$s dal Google Play Store. Hai due possibilità:</string>
     <string name="license_success">Grazie per aver scaricato %1$s. Se ti piace, non dimenticare di lasciare una recensione sul Google Play Store.</string>
     <string name="apply_advice">Se il launcher che usi non è presente in questa lista, devi applicare l\'icon pack direttamente dalle impostazioni del launcher. Alcuni launcher non consentono di applicare direttamente l\'icon pack.</string>
     <string name="walls_advice">Premi su uno sfondo per visualizzarlo a schermo intero.\nPremi a lungo per applicarlo direttamente.</string>

@@ -70,7 +70,8 @@ android {
                     'src/main/res/values',
                     'src/main/res/values/icon_pack',
                     'src/main/res/values/configuration',
-                    'src/main/res/values/texts'
+                    'src/main/res/values/texts',
+                    'src/main/res/values/translations'
             ]
         }
     }
