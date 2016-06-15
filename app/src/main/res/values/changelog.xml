@@ -32,7 +32,7 @@
 
     <string-array name="newstuff">
         <item>New:</item>
-        <item>Updated translations for more than 10 languages.</item>
+        <item>Updated translations for more than 9 languages.</item>
         <item>Added new license check system.</item>
         <item>Added a confirmation dialog when long-pressing to apply a wallpaper.</item>
         <item>Added option to open Kustom widgets and wallpapers in respective Kustom app, directly from IconShowcase.</item>
