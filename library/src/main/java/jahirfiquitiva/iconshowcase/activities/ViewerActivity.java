@@ -157,16 +157,16 @@ public class ViewerActivity extends AppCompatActivity {
         int tintLightLighter = ContextCompat.getColor(context, R.color.drawable_base_tint);
         int tintDark = ContextCompat.getColor(context, R.color.drawable_tint_dark);
 
-        Drawable save = ColorUtils.getTintedIcon(
-                ContextCompat.getDrawable(context, R.drawable.ic_save),
+        Drawable save = ColorUtils.getTintedIcon(context,
+                R.drawable.ic_save,
                 ThemeUtils.darkTheme ? tintDark : tintLightLighter);
 
-        Drawable apply = ColorUtils.getTintedIcon(
-                ContextCompat.getDrawable(context, R.drawable.ic_apply_wallpaper),
+        Drawable apply = ColorUtils.getTintedIcon(context,
+                R.drawable.ic_apply_wallpaper,
                 ThemeUtils.darkTheme ? tintDark : tintLightLighter);
 
-        Drawable info = ColorUtils.getTintedIcon(
-                ContextCompat.getDrawable(context, R.drawable.ic_info),
+        Drawable info = ColorUtils.getTintedIcon(context,
+                R.drawable.ic_info,
                 ThemeUtils.darkTheme ? tintDark : tintLightLighter);
 
         ImageView saveIV = (ImageView) findViewById(R.id.download);
@@ -192,12 +192,7 @@ public class ViewerActivity extends AppCompatActivity {
         applyIV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!PermissionUtils.canAccessStorage(context)) {
-                    PermissionUtils.setViewerActivityAction("apply");
-                    PermissionUtils.requestStoragePermission(context);
-                } else {
-                    showDialogs("apply");
-                }
+                showApplyWallpaperDialog(context, item.getWallURL());
             }
         });
 
@@ -349,7 +344,11 @@ public class ViewerActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResult) {
         if (requestCode == PermissionUtils.PERMISSION_REQUEST_CODE) {
             if (grantResult.length > 0 && grantResult[0] == PackageManager.PERMISSION_GRANTED) {
-                showDialogs(PermissionUtils.getViewerActivityAction());
+                if (PermissionUtils.getViewerActivityAction().equals("crop")) {
+                    cropWallpaper(item.getWallURL());
+                } else {
+                    showDialogs(PermissionUtils.getViewerActivityAction());
+                }
             } else {
                 ISDialogs.showPermissionNotGrantedDialog(this);
             }
@@ -533,7 +532,14 @@ public class ViewerActivity extends AppCompatActivity {
                                         if (resource != null && dialogApply.isShowing()) {
                                             enteredApplyTask[0] = true;
 
-                                            dialogApply.setContent(context.getString(R.string.setting_wall_title));
+                                            if (dialogApply != null) {
+                                                dialogApply.dismiss();
+                                            }
+                                            dialogApply = new MaterialDialog.Builder(context)
+                                                    .content(R.string.setting_wall_title)
+                                                    .progress(true, 0)
+                                                    .cancelable(false)
+                                                    .show();
 
                                             applyTask[0] = new ApplyWallpaper(context, dialogApply, resource, false, layout,
                                                     toHide1, toHide2);
@@ -564,102 +570,17 @@ public class ViewerActivity extends AppCompatActivity {
                 }, new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
-                        if (dialogApply != null) {
-                            dialogApply.dismiss();
+                        if (!PermissionUtils.canAccessStorage(context)) {
+                            PermissionUtils.setViewerActivityAction("crop");
+                            PermissionUtils.requestStoragePermission(context);
+                        } else {
+                            cropWallpaper(wallUrl);
                         }
-
-                        final WallpaperToCrop[] cropTask = new WallpaperToCrop[1];
-
-                        final boolean[] enteredCropTask = {false};
-
-                        dialogApply = new MaterialDialog.Builder(context)
-                                .content(R.string.downloading_wallpaper)
-                                .progress(true, 0)
-                                .cancelable(false)
-                                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                    @Override
-                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                        if (cropTask[0] != null) {
-                                            cropTask[0].cancel(true);
-                                        }
-                                        dialogApply.dismiss();
-                                    }
-                                })
-                                .show();
-
-                        Glide.with(context)
-                                .load(wallUrl)
-                                .asBitmap()
-                                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                                .into(new SimpleTarget<Bitmap>() {
-                                    @Override
-                                    public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                                        if (resource != null && dialogApply.isShowing()) {
-                                            enteredCropTask[0] = true;
-                                            if (dialogApply != null) {
-                                                dialogApply.dismiss();
-                                            }
-                                            dialogApply = new MaterialDialog.Builder(context)
-                                                    .content(context.getString(R.string.preparing_wallpaper))
-                                                    .progress(true, 0)
-                                                    .cancelable(false)
-                                                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                                        @Override
-                                                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                                            if (cropTask[0] != null) {
-                                                                cropTask[0].cancel(true);
-                                                            }
-                                                            dialogApply.dismiss();
-                                                        }
-                                                    })
-                                                    .show();
-                                            cropTask[0] = new WallpaperToCrop(context, dialogApply, resource,
-                                                    layout, item.getWallName(), toHide1, toHide2);
-                                            cropTask[0].execute();
-                                            Timer timer = new Timer();
-                                            timer.schedule(new TimerTask() {
-                                                @Override
-                                                public void run() {
-                                                    runOnUIThread(context, new Runnable() {
-                                                        @Override
-                                                        public void run() {
-                                                            String content = context.getString(R.string.preparing_wallpaper)
-                                                                    + "\n" + context.getString(R.string.download_takes_longer);
-
-                                                            dialogApply.setContent(content);
-                                                            dialogApply.setActionButton(DialogAction.POSITIVE, android.R.string.cancel);
-                                                        }
-                                                    });
-                                                }
-                                            }, 7000);
-                                        }
-                                    }
-                                });
-
-                        Timer timer = new Timer();
-                        timer.schedule(new TimerTask() {
-                            @Override
-                            public void run() {
-                                runOnUIThread(context, new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        if (!enteredCropTask[0]) {
-                                            String newContent = context.getString(R.string.downloading_wallpaper)
-                                                    + "\n"
-                                                    + context.getString(R.string.download_takes_longer);
-                                            dialogApply.setContent(newContent);
-                                            dialogApply.setActionButton(DialogAction.POSITIVE, android.R.string.cancel);
-                                        }
-                                    }
-                                });
-                            }
-                        }, 15000);
                     }
                 });
     }
 
     private void showNotConnectedSnackBar() {
-
         Snackbar notConnectedSnackBar = Snackbar.make(layout, R.string.no_conn_title,
                 Snackbar.LENGTH_LONG);
 
@@ -686,10 +607,6 @@ public class ViewerActivity extends AppCompatActivity {
                     case "save":
                         saveWallpaperAction(item.getWallName(), item.getWallURL());
                         break;
-
-                    case "apply":
-                        showApplyWallpaperDialog(context, item.getWallURL());
-                        break;
                 }
             } else {
                 showNotConnectedSnackBar();
@@ -703,6 +620,99 @@ public class ViewerActivity extends AppCompatActivity {
 
     private static void runOnUIThread(Context context, Runnable r) {
         handler(context).post(r);
+    }
+
+    private void cropWallpaper(String wallUrl) {
+        if (dialogApply != null) {
+            dialogApply.dismiss();
+        }
+
+        final WallpaperToCrop[] cropTask = new WallpaperToCrop[1];
+
+        final boolean[] enteredCropTask = {false};
+
+        dialogApply = new MaterialDialog.Builder(context)
+                .content(R.string.downloading_wallpaper)
+                .progress(true, 0)
+                .cancelable(false)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        if (cropTask[0] != null) {
+                            cropTask[0].cancel(true);
+                        }
+                        dialogApply.dismiss();
+                    }
+                })
+                .show();
+
+        Glide.with(context)
+                .load(wallUrl)
+                .asBitmap()
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .into(new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                        if (resource != null && dialogApply.isShowing()) {
+                            enteredCropTask[0] = true;
+                            if (dialogApply != null) {
+                                dialogApply.dismiss();
+                            }
+                            dialogApply = new MaterialDialog.Builder(context)
+                                    .content(context.getString(R.string.preparing_wallpaper))
+                                    .progress(true, 0)
+                                    .cancelable(false)
+                                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                        @Override
+                                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                            if (cropTask[0] != null) {
+                                                cropTask[0].cancel(true);
+                                            }
+                                            dialogApply.dismiss();
+                                        }
+                                    })
+                                    .show();
+                            cropTask[0] = new WallpaperToCrop(context, dialogApply, resource,
+                                    layout, item.getWallName(), toHide1, toHide2);
+                            cropTask[0].execute();
+                            Timer timer = new Timer();
+                            timer.schedule(new TimerTask() {
+                                @Override
+                                public void run() {
+                                    runOnUIThread(context, new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            String content = context.getString(R.string.preparing_wallpaper)
+                                                    + "\n" + context.getString(R.string.download_takes_longer);
+
+                                            dialogApply.setContent(content);
+                                            dialogApply.setActionButton(DialogAction.POSITIVE, android.R.string.cancel);
+                                        }
+                                    });
+                                }
+                            }, 7000);
+                        }
+                    }
+                });
+
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                runOnUIThread(context, new Runnable() {
+                    @Override
+                    public void run() {
+                        if (!enteredCropTask[0]) {
+                            String newContent = context.getString(R.string.downloading_wallpaper)
+                                    + "\n"
+                                    + context.getString(R.string.download_takes_longer);
+                            dialogApply.setContent(newContent);
+                            dialogApply.setActionButton(DialogAction.POSITIVE, android.R.string.cancel);
+                        }
+                    }
+                });
+            }
+        }, 15000);
     }
 
 }

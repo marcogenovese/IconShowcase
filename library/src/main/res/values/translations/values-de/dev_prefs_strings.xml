@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
     <!--
-  ~ Copyright (c) 2016.  Jahir Fiquitiva
+  ~ Copyright (c) 2016. Jahir Fiquitiva
   ~
   ~ Licensed under the CreativeCommons Attribution-ShareAlike
-  ~ 4. 0 International License.  You may not use this file except in compliance
-  ~ with the License.  You may obtain a copy of the License at
+  ~ 4. 0 International License. You may not use this file except in compliance
+  ~ with the License. You may obtain a copy of the License at
   ~
   ~    http://creativecommons. org/licenses/by-sa/4. 0/legalcode
   ~
@@ -14,12 +14,12 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License. 
   ~
-  ~ Big thanks to the project contributors.  Check them in the repository. 
+  ~ Big thanks to the project contributors. Check them in the repository. 
   ~
   -->
-<resources xmlns:tools="http://schemas. android. com/tools" tools:ignore="MissingTranslations">
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslations">
     <string name="dev_prefs_title">Entwicklungseinstellungen</string>
-    <string name="dev_prefs_summary">Diese Einstellungen werden in veröffentlichten Apps nicht verfügbar sein.  Sie sind nur für Designer gemacht, um verschiedene Anpassungsmöglichkeiten auszuprobieren, die IconShowcase bietet. </string>
+    <string name="dev_prefs_summary">Diese Einstellungen werden in veröffentlichten Apps nicht verfügbar sein. Sie sind nur für Designer gemacht, um verschiedene Anpassungsmöglichkeiten auszuprobieren, die IconShowcase bietet. </string>
     <string name="dev_drawer_header_style_title">Drawer Kopfleisten-Stil</string>
     <string name="dev_drawer_header_style_summary">Wenn du IconShowcase benutzt, kannst du zwischen 3 verschiedenen Drawer Kopfleisten-Stilen wählen. </string>
     <string name="dev_mini_header_picture_title">Mini Drawer Kopfleisten-Bild</string>
@@ -31,7 +31,7 @@
     <string name="dev_drawer_header_texts_title">Zeige Text in der Drawer-Kopfleiste</string>
     <string name="dev_drawer_header_texts_summary">Wenn deaktiviert, zeigt IconShowcase keinen App-Namen und Version in der Drawer-Kopfleiste. </string>
     <string name="dev_more_options_title">Mehr Optionen</string>
-    <string name="dev_more_options_summary">IconShowcase bietet viele weitere Optionen, die du einrichten kannst, während du deine App entwickelst.  Clicke hier, um sie dir anzusehen. </string>
+    <string name="dev_more_options_summary">IconShowcase bietet viele weitere Optionen, die du einrichten kannst, während du deine App entwickelst. Clicke hier, um sie dir anzusehen. </string>
     <string-array name="configurations_list">
         <item>Diese Features können zusätzlich im Dashboard Sourcecode eingerichtet werden:</item>
         <item>Vollständig konfigurierbare Oberfläche. </item>
@@ -48,7 +48,7 @@
         <item>Zooper Widgets Unterstützung. </item>
         <item>Kustom Live Wallpapers und Kustom Widgets Unterstützung. </item>
         <item>In-App Icon-Request Tool. </item>
-        <item>Icon-Requests Beschränkung: zum Beispiel, X Apps alle Y Minuten.  Heißt, dass Nutzer alle Y Minuten X Apps anfordern können. </item>
+        <item>Icon-Requests Beschränkung: zum Beispiel, X Apps alle Y Minuten. Heißt, dass Nutzer alle Y Minuten X Apps anfordern können. </item>
         <item>Unterstützung für mehr als 25 Launcher. </item>
         <item>Analoguhr Widget. </item>
         <item>Tablet Unterstützung. </item>

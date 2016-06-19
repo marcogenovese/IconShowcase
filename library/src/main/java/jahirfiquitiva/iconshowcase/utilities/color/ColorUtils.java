@@ -17,6 +17,7 @@
 package jahirfiquitiva.iconshowcase.utilities.color;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -30,12 +31,15 @@ import android.support.annotation.FloatRange;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.graphics.Palette;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+
+import jahirfiquitiva.iconshowcase.R;
 
 
 /**
@@ -142,17 +146,31 @@ public class ColorUtils {
     }
 
     public static Drawable getTintedIcon(@NonNull Context context, @DrawableRes int drawable, @ColorInt int color) {
-        return getTintedIcon(ContextCompat.getDrawable(context, drawable), color);
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                return getTintedIcon(ContextCompat.getDrawable(context, drawable), color);
+            } else {
+                Drawable icon = VectorDrawableCompat.create(context.getResources(), drawable, null);
+                return getTintedIcon(icon, color);
+            }
+        } catch (Resources.NotFoundException ex) {
+            return getTintedIcon(ContextCompat.getDrawable(context, R.drawable.iconshowcase_logo), color);
+        }
     }
 
     @CheckResult
     @Nullable
     public static Drawable getTintedIcon(Drawable drawable, int color) {
         if (drawable != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && drawable instanceof VectorDrawable) {
-                drawable.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                if (drawable instanceof VectorDrawable) {
+                    drawable.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+                }
+                drawable = DrawableCompat.wrap(drawable.mutate());
+            } else {
+                drawable = DrawableCompat.wrap(drawable);
             }
-            drawable = DrawableCompat.wrap(drawable.mutate());
+
             DrawableCompat.setTintMode(drawable, PorterDuff.Mode.SRC_IN);
             DrawableCompat.setTint(drawable, color);
             return drawable;

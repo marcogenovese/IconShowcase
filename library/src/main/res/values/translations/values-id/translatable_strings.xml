@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
     <!--
-  ~ Copyright (c) 2016.  Jahir Fiquitiva
+  ~ Copyright (c) 2016. Jahir Fiquitiva
   ~
   ~ Licensed under the CreativeCommons Attribution-ShareAlike
-  ~ 4. 0 International License.  You may not use this file except in compliance
-  ~ with the License.  You may obtain a copy of the License at
+  ~ 4. 0 International License. You may not use this file except in compliance
+  ~ with the License. You may obtain a copy of the License at
   ~
   ~    http://creativecommons. org/licenses/by-sa/4. 0/legalcode
   ~
@@ -14,16 +14,16 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License. 
   ~
-  ~ Big thanks to the project contributors.  Check them in the repository. 
+  ~ Big thanks to the project contributors. Check them in the repository. 
   ~
   -->
     <!--
   ~
   -->
-<resources xmlns:tools="http://schemas. android. com/tools">
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="muzei_settings">Pengaturan Muzei</string>
     <!-- Sharing wallpaper from Muzei -->
-    <string name="share_text">Gambarku untuk hari ini adalah %1$s oleh %2$s, dari %3$s.  Dapatkan sekarang di %4$s. </string>
+    <string name="share_text">Gambarku untuk hari ini adalah %1$s oleh %2$s, dari %3$s. Dapatkan sekarang di %4$s. </string>
     <!-- List Of Drawer Sections -->
     <string name="section_home">Beranda</string>
     <string name="section_icons">Ikon</string>
@@ -53,8 +53,8 @@
     <string name="lni_content">%1$s saat ini tidak terpasang pada perangkat Anda. \nApakah Anda ingin memasangnya dari Google Play Store?</string>
     <string name="cm_dialog_content">%1$s adalah bagian dari ROM CyanogenMod. \nApakah anda mau memasangnya pada perangkat anda?</string>
     <string name="gnl_title">Google Now Launcher tidak cocok</string>
-    <string name="gnl_content">Google Now Launcher tidak kompatibel dengan icon pack manapun.  Mohon untuk tidak menilai negatif icon pack untuk alasan ini.  Ada solusi yang dapat Anda coba sendiri, tapi membutuhkan penggunaan aplikasi eksternal.  Apakah anda ingin mengunduhnya?</string>
-    <string name="lg_dialog_content">"Mohon maaf, tapi aplikasi LG launcher eksklusif dari perangkat LG, dan oleh karena itu tidak dapat diunduh dari Google Play Store.  "</string>
+    <string name="gnl_content">Google Now Launcher tidak kompatibel dengan icon pack manapun. Mohon untuk tidak menilai negatif icon pack untuk alasan ini. Ada solusi yang dapat Anda coba sendiri, tapi membutuhkan penggunaan aplikasi eksternal. Apakah anda ingin mengunduhnya?</string>
+    <string name="lg_dialog_content">"Mohon maaf, tapi aplikasi LG launcher eksklusif dari perangkat LG, dan oleh karena itu tidak dapat diunduh dari Google Play Store. "</string>
     <!-- Changelog Dialog Content -->
     <string name="changelog_dialog_title">Changelog</string>
     <string name="great">Hebat</string>
@@ -65,10 +65,10 @@
     <string name="wallpaper_by">Oleh: %1$s</string>
     <string name="apply">Terapkan</string>
     <string name="save">Simpan</string>
-    <string name="downloading_wallpaper">Mengunduh gambar ini. . . </string>
-    <string name="setting_wall_title">Menerapkan gambar ini ke layar utama. . . </string>
-    <string name="preparing_wallpaper">Mempersiapkan wallpaper yang akan dipotong. . . </string>
-    <string name="download_takes_longer">Hal ini memakan waktu lebih lama dari yang diharapkan.  Jangan ragu untuk menunggu atau membatalkan tindakan ini. </string>
+    <string name="downloading_wallpaper">Mengunduh gambar ini...</string>
+    <string name="setting_wall_title">Menerapkan gambar ini ke layar utama...</string>
+    <string name="preparing_wallpaper">Mempersiapkan wallpaper yang akan dipotong...</string>
+    <string name="download_takes_longer">Hal ini memakan waktu lebih lama dari yang diharapkan. Jangan ragu untuk menunggu atau membatalkan tindakan ini. </string>
     <string name="set_as_wall_done">Gambar diterapkan</string>
     <string name="error">Kesalahan</string>
     <string name="confirm_apply">Apa anda yakin mau menerapkan gambar ini ke layar utama anda?</string>
@@ -77,7 +77,7 @@
     <string name="wallpaper_author_title">Pencipta</string>
     <string name="wallpaper_dimensions_title">Ukuran</string>
     <string name="wallpaper_copyright_title">Hak cipta</string>
-    <string name="settings_saved">Pengaturan disimpan.  Wallpaper akan diganti setiap %1$s. </string>
+    <string name="settings_saved">Pengaturan disimpan. Wallpaper akan diganti setiap %1$s. </string>
     <!-- License Check Dialog -->
     <string name="license_failed_title">Pemeriksaan lisensi gagal</string>
     <string name="license_success_title">"Sukses memeriksa lisensi "</string>
@@ -88,21 +88,21 @@
     <string name="advice">Anjuran</string>
     <string name="dontshow">Jangan tampilkan lagi</string>
     <string name="rate">Nilai</string>
-    <string name="set_as">Potong gambar dan jadikan sebagai. . . </string>
+    <string name="set_as">Potong gambar dan jadikan sebagai...</string>
     <!-- Requests -->
     <string name="select_all">Pilih semua</string>
     <string name="no_selected_apps_title">Tidak ada aplikasi terpilih</string>
-    <string name="no_selected_apps_content">Anda tidak memilih aplikasi apapun untuk request.  Pilih beberapa sebelum menekan FAB lagi. </string>
+    <string name="no_selected_apps_content">Anda tidak memilih aplikasi apapun untuk request. Pilih beberapa sebelum menekan FAB lagi. </string>
     <string name="apps_limit_dialog">Maaf, tetapi Anda hanya dapat memilih %1$s aplikasi untuk diminta. </string>
     <string name="apps_limit_dialog_more">Maaf, tapi Anda hanya diperbolehkan untuk meminta %1$s aplikasi lebih untuk saat ini. </string>
     <string name="apps_limit_dialog_day">Maaf, tetapi Anda hanya dapat meminta ikon setiap %1$s. </string>
     <string name="apps_limit_dialog_day_extra">Anda akan dapat meminta ikon lagi, di %1$s. </string>
     <string name="apps_limit_dialog_day_extra_sec">Anda akan dapat meminta ikon kembali, dalam waktu kurang dari satu menit. </string>
     <!-- Icon search -->
-    <string name="search_icons">Mencari icons. . . </string>
-    <string name="search_x">Mencari %1$s. . . </string>
-    <string name="building_request_dialog">Mengumpulkan file request. . . </string>
-    <string name="loading_apps">Silahkan tunggu sampai aplikasi memuat, ini akan memakan beberapa detik lagi. . . </string>
+    <string name="search_icons">Mencari icons...</string>
+    <string name="search_x">Mencari %1$s...</string>
+    <string name="building_request_dialog">Mengumpulkan file request...</string>
+    <string name="loading_apps">Silahkan tunggu sampai aplikasi memuat, ini akan memakan beberapa detik lagi...</string>
     <string name="loading_icons">Memuat icons…</string>
     <string name="choose">Pilih</string>
     <!--SETTINGS-->
@@ -152,13 +152,13 @@ pengaturan? icon yang diterapkan tidak akan terpengaruh. </string>
     <string name="pref_summary_notifs_interval_more">App akan memeriksa pemberitahuan baru setiap %1$s. </string>
     <string name="launcher_icon_restored">%1$s launcher icon dipulihkan</string>
     <string name="launcher_icon_no_restored">%1$s launcher icon sudah terlihat</string>
-    <string name="launcher_icon_restorer_error">Ada masalah dengan kode %1$s.  Silahkan hubungi developer. </string>
+    <string name="launcher_icon_restorer_error">Ada masalah dengan kode %1$s. Silahkan hubungi developer. </string>
     <!-- Widgets Names -->
     <string name="iconrestorer_widget_title">Icon Restorer Widget</string>
     <string name="clock_widget_title">Jam analog</string>
     <string name="faqs_section">FAQs</string>
     <string name="dashboard_author">Pengembangan Dashboard Aplikasi</string>
-    <string name="dashboard_author_copyright">Dari Colombia untuk dunia. \nDashboard shared under CreativeCommons Attribution-ShareAlike License.  Copyright © 2016. </string>
+    <string name="dashboard_author_copyright">Dari Colombia untuk dunia. \nDashboard shared under CreativeCommons Attribution-ShareAlike License. Copyright © 2016. </string>
     <string name="iconpack_author">Info designer</string>
     <string name="fork_on_github">Cabang di GitHub</string>
     <string name="visit_website">Situs</string>
@@ -176,18 +176,18 @@ pengaturan? icon yang diterapkan tidak akan terpengaruh. </string>
     <string name="report_bugs_summary">Lapor masalah atau reques fitur baru. </string>
     <string name="join_community">Gabung di komunitas Google Plus</string>
     <string name="join_community_summary">Jika Anda memerlukan bantuan atau memiliki pertanyaan, Komunitas IconShowcase yang di Google Plus adalah tempat yang baik untuk pergi. </string>
-    <string name="saving_wallpaper">Menyimpan wallpaper. . . </string>
+    <string name="saving_wallpaper">Menyimpan wallpaper...</string>
     <string name="refresh">Refresh</string>
     <!-- Messages shown when using LicenseChecker -->
-    <string name="license_failed">Anda tidak men-download %1$s dari Google Play Store.  Anda memiliki dua pilihan:</string>
-    <string name="license_success">Terima kasih telah mengunduh %1$s.  Jika Anda suka, jangan lupa untuk menilai dan menulis review di Google Play Store. </string>
+    <string name="license_failed">Anda tidak men-download %1$s dari Google Play Store. Anda memiliki dua pilihan:</string>
+    <string name="license_success">Terima kasih telah mengunduh %1$s. Jika Anda suka, jangan lupa untuk menilai dan menulis review di Google Play Store. </string>
     <string name="apply_advice">Jika peluncur Anda gunakan tidak tercantum di sini, Anda harus menerapkan icon pack langsung dari pengaturan peluncur. \nBeberapa peluncur tidak didukung penerapan langsung. </string>
     <string name="walls_advice">Tekan wallpaper untuk melihatnya di layar penuh. \nTekan lama untuk menerapkannya langsung ke homescreen Anda. </string>
     <string name="zooper_section_title">Siapkan Zooper</string>
     <string name="zooper_download_dialog_title">Unduh dari</string>
     <string name="install_apps">Install aplikasi</string>
-    <string name="install_apps_content">Anda perlu menginstal aplikasi ini untuk Zooper widget agar bekerja dengan baik.  Tekan satu untuk menginstalnya. </string>
-    <string name="install_kustom_apps_content">Anda perlu menginstal aplikasi ini untuk aset Kustom agar bekerja dengan baik.  Tekan untuk menginstalnya. </string>
+    <string name="install_apps_content">Anda perlu menginstal aplikasi ini untuk Zooper widget agar bekerja dengan baik. Tekan satu untuk menginstalnya. </string>
+    <string name="install_kustom_apps_content">Anda perlu menginstal aplikasi ini untuk aset Kustom agar bekerja dengan baik. Tekan untuk menginstalnya. </string>
     <string name="install_assets">Install aset</string>
     <string name="open">Buka</string>
     <string name="assets_installed">Aset sudah terinstal</string>
@@ -203,7 +203,7 @@ pengaturan? icon yang diterapkan tidak akan terpengaruh. </string>
     <string name="new_folder_hint">Nama folder</string>
     <string name="new_folder_title">Buat folder baru</string>
     <string name="new_folder_content">Silahkan ketik nama folder baru. </string>
-    <string name="wait_for_walls">Tunggu sampai pratinjau wallpaper muncul. . . </string>
+    <string name="wait_for_walls">Tunggu sampai pratinjau wallpaper muncul...</string>
     <string name="translators">Penerjemah</string>
     <string name="more">Yang lain</string>
     <string name="columns">Jumlah kolom</string>
@@ -219,7 +219,7 @@ pengaturan? icon yang diterapkan tidak akan terpengaruh. </string>
         <item>Bagaimana cara melihat semua icon yang disediakan?</item>
         <item>Bagaimana cara mengganti icon tertentu dengan alternatif?</item>
         <item>Bagaimana cara request icon yang tidak disediakan?</item>
-        <item>Setelah restart perangkat saya, icon pack tidak diterapkan lagi.  Icon tersebut dikembalikan ke
+        <item>Setelah restart perangkat saya, icon pack tidak diterapkan lagi. Icon tersebut dikembalikan ke
 default. </item>
         <item>Mengapa icon terlihat pixelated pada perangkat saya?</item>
         <item>Aku dapat melihat icon untuk aplikasi X di icon yang disediakan, tapi icon tidak diterapkan. </item>
@@ -244,7 +244,7 @@ Jika launcher Anda tidak terdaftar di sana, tapi paket ikon ini kompatibel denga
 (Lihat deskripsi di Google Play Store untuk daftar launcher yang didukung),
 Anda dapat menerapkannya secara manual dari pengaturan launcher. </item>
         <item>Geser Navigasi Drawer dari kiri, dan pergi ke bagian \"Icon\", atau kembali ke bagian utama dari aplikasi, kemudian tekan tombol yang mengatakan \"Icon\". </item>
-        <item>Hal ini tergantung pada launcher yang Anda gunakan.  Tidak setiap launcher didukun editing icon. 
+        <item>Hal ini tergantung pada launcher yang Anda gunakan. Tidak setiap launcher didukun editing icon. 
 Tapi, di sebagian besar dari mereka, Anda dapat mengedit icon dengan menekan lama atau melakukan double tap. </item>
         <item>Geser Navigasi Drawer dari kiri, dan pergi ke bagian \"Requests\". </item>
         <item>Hal itu terjadi karena icon pack dipindahkan ke SD Card, Anda harus menginstalnya di
@@ -268,13 +268,13 @@ Kemudian hapus centang pada pilihan \"Sembunyikan icon dari launcher\". </item>
     <string name="no_apply_tab">Hubungi developer karena tampaknya ada sesuatu yang kurang pada aplikasi ini. </string>
     <!--No Theme Engine Dialog-->
     <string name="NTED_title">Waduh!</string>
-    <string name="NTED_message">Sepertinya kami tidak dapat menemukan theme engine pada perangkat Anda.  Jika Anda tahu Anda mempunyainya, silakan buka dan lanjutkan dari sana.  Jika tidak, mohon gunakan ROM yang mendukung CyanogenMod atau Layers dan ikuti petunjuk mereka. </string>
+    <string name="NTED_message">Sepertinya kami tidak dapat menemukan theme engine pada perangkat Anda. Jika Anda tahu Anda mempunyainya, silakan buka dan lanjutkan dari sana. Jika tidak, mohon gunakan ROM yang mendukung CyanogenMod atau Layers dan ikuti petunjuk mereka. </string>
     <string name="tap_to_download">%1$s\nTekan kartu ini untuk mendownloadnya. </string>
     <string name="tap_to_open">%1$s\nTekan kartu ini untuk membuka aplikasi. </string>
     <string name="donations_error_title">Donasi tidak tersedia</string>
-    <string name="donations_error_content">Perangkat Anda tidak mendukung penagihan dalam aplikasi.  Ini bisa jadi karena Anda perlu memperbarui  aplikasi Google Play Store, atau karena Anda tinggal di negara dimana penagihan dalam aplikasi dinonaktifkan. </string>
+    <string name="donations_error_content">Perangkat Anda tidak mendukung penagihan dalam aplikasi. Ini bisa jadi karena Anda perlu memperbarui  aplikasi Google Play Store, atau karena Anda tinggal di negara dimana penagihan dalam aplikasi dinonaktifkan. </string>
     <string name="new_walls_notif_title">Wallpaper baru tersedia di %1$s. </string>
-    <string name="new_walls_notif_content">Ada %1$s wallpaper baru yang tersedia.  Tekan pemberitahuan untuk membuka aplikasi dan memeriksa mereka. </string>
+    <string name="new_walls_notif_content">Ada %1$s wallpaper baru yang tersedia. Tekan pemberitahuan untuk membuka aplikasi dan memeriksa mereka. </string>
     <string name="news">Berita</string>
     <string-array name="update_intervals">
         <item>Setiap jam. </item>

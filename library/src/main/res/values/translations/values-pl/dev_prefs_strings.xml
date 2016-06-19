@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
     <!--
-  ~ Copyright (c) 2016.  Jahir Fiquitiva
+  ~ Copyright (c) 2016. Jahir Fiquitiva
   ~
   ~ Licensed under the CreativeCommons Attribution-ShareAlike
-  ~ 4. 0 International License.  You may not use this file except in compliance
-  ~ with the License.  You may obtain a copy of the License at
+  ~ 4. 0 International License. You may not use this file except in compliance
+  ~ with the License. You may obtain a copy of the License at
   ~
   ~    http://creativecommons. org/licenses/by-sa/4. 0/legalcode
   ~
@@ -14,12 +14,12 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License. 
   ~
-  ~ Big thanks to the project contributors.  Check them in the repository. 
+  ~ Big thanks to the project contributors. Check them in the repository. 
   ~
   -->
-<resources xmlns:tools="http://schemas. android. com/tools" tools:ignore="MissingTranslations">
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslations">
     <string name="dev_prefs_title">Preferencje deweloperskie</string>
-    <string name="dev_prefs_summary">Te preferencje nie będą dostępne w finalnej wersji aplikacji.  Są one tutaj po to, aby projektanci mogli przetestować wiele opcji personalizacji, które oferuje IconShowcase. </string>
+    <string name="dev_prefs_summary">Te preferencje nie będą dostępne w finalnej wersji aplikacji. Są one tutaj po to, aby projektanci mogli przetestować wiele opcji personalizacji, które oferuje IconShowcase. </string>
     <string name="dev_drawer_header_style_title">Styl nagłówka szuflady nawigacji</string>
     <string name="dev_drawer_header_style_summary">Używając IconShowcase możesz wybrać spośród 3 różnych stylów nagłówka szuflady nawigacji. </string>
     <string name="dev_mini_header_picture_title">Mini obrazek nagłówka szuflady alikacji</string>
@@ -31,7 +31,7 @@
     <string name="dev_drawer_header_texts_title">Wyświetlaj teksty na nagłówku szuflady nawigacji</string>
     <string name="dev_drawer_header_texts_summary">Gdy wyłączone IconShowcase nie wyświetli nazwy aplikacji, ani jej wersji na nagłówku szuflady nawigacji. </string>
     <string name="dev_more_options_title">Więcej opcji</string>
-    <string name="dev_more_options_summary">IconShowcase oferuje wiele dodatkowych opcji, które możesz ustawić, gdy będziesz budować swoją aplikację.  Tapnij tu, aby je zobaczyć. </string>
+    <string name="dev_more_options_summary">IconShowcase oferuje wiele dodatkowych opcji, które możesz ustawić, gdy będziesz budować swoją aplikację. Tapnij tu, aby je zobaczyć. </string>
     <string-array name="configurations_list">
         <item>Te funkcje mogą być dodatkowo skonfigurowane podczas używania źródła tej aplikacji:</item>
         <item>Całkowicie konfigurowalne UI</item>
@@ -48,7 +48,7 @@
         <item>Wsparcie dla skórek Zooper Widget. </item>
         <item>Wsparcie dla skórek Kustom Live Wallpaper i Kustom Widget. </item>
         <item>Wbudowane narzędzie do wysyłania próśb o dodanie nowych ikon. </item>
-        <item>Limit na prośby o ikony: np.  X aplikacji co Y minut.  Oznacza to, że użytkownicy będą mogli wysyłać prośby o X aplikacji tylko co Y minut. </item>
+        <item>Limit na prośby o ikony: np. X aplikacji co Y minut. Oznacza to, że użytkownicy będą mogli wysyłać prośby o X aplikacji tylko co Y minut. </item>
         <item>Wsparcie dla ponad 25 launcherów. </item>
         <item>Analogowy widżet zegara. </item>
         <item>Wsparcie dla Tabletów. </item>

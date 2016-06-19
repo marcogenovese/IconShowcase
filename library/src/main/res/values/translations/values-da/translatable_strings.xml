@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
     <!--
-  ~ Copyright (c) 2016.  Jahir Fiquitiva
+  ~ Copyright (c) 2016. Jahir Fiquitiva
   ~
   ~ Licensed under the CreativeCommons Attribution-ShareAlike
-  ~ 4. 0 International License.  You may not use this file except in compliance
-  ~ with the License.  You may obtain a copy of the License at
+  ~ 4. 0 International License. You may not use this file except in compliance
+  ~ with the License. You may obtain a copy of the License at
   ~
   ~    http://creativecommons. org/licenses/by-sa/4. 0/legalcode
   ~
@@ -14,13 +14,13 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License. 
   ~
-  ~ Big thanks to the project contributors.  Check them in the repository. 
+  ~ Big thanks to the project contributors. Check them in the repository. 
   ~
   -->
     <!--
   ~
   -->
-<resources xmlns:tools="http://schemas. android. com/tools">
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="muzei_settings">Muzei Indstillinger</string>
     <!-- Sharing wallpaper from Muzei -->
     <string name="share_text">Min baggrund for i dag, er %1$s af %2$s, fra %3$s. \nHent den nu på %4$s</string>
@@ -55,9 +55,9 @@ installere det fra Google Play Store?</string>
     <string name="cm_dialog_content">%1$s er en del af CyanogenMod (baseret) roms. \nVil du
 installere det på din enhed?</string>
     <string name="gnl_title">Google Nu Launcher er IKKE kompatibel!</string>
-    <string name="gnl_content">Google Nu Launcher er ikke kompatibel med NOGEN Ikon pakker.  Vær sød ikke at
-bedømme ikon pakke negativt af denne grund.  Der er en løsning, som du kan prøve for
-dig selv, men det kræver brug af en ekstern app.  Vil du hente den?</string>
+    <string name="gnl_content">Google Nu Launcher er ikke kompatibel med NOGEN Ikon pakker. Vær sød ikke at
+bedømme ikon pakke negativt af denne grund. Der er en løsning, som du kan prøve for
+dig selv, men det kræver brug af en ekstern app. Vil du hente den?</string>
     <string name="lg_dialog_content">Vi beklager, men LG Hjem app er eksklusiv LG enheder, og
 Derfor kan det ikke downloades fra Google Play Store. </string>
     <!-- Changelog Dialog Content -->
@@ -70,19 +70,19 @@ Derfor kan det ikke downloades fra Google Play Store. </string>
     <string name="wallpaper_by">Af: %1$s</string>
     <string name="apply">Anvend</string>
     <string name="save">Gem</string>
-    <string name="downloading_wallpaper">Downloader dette baggrund. . . . </string>
-    <string name="setting_wall_title">Indstilling af baggrund til dit hjem skærmen. . . </string>
-    <string name="preparing_wallpaper">Forberedelse tapet, der skal beskæres. . . </string>
-    <string name="download_takes_longer">Dette tager længere tid end forventet.  Du er velkommen til at vente eller annullere denne handling. </string>
+    <string name="downloading_wallpaper">Downloader dette baggrund.... </string>
+    <string name="setting_wall_title">Indstilling af baggrund til dit hjem skærmen...</string>
+    <string name="preparing_wallpaper">Forberedelse tapet, der skal beskæres...</string>
+    <string name="download_takes_longer">Dette tager længere tid end forventet. Du er velkommen til at vente eller annullere denne handling. </string>
     <string name="set_as_wall_done">Baggrunde sæt!</string>
     <string name="error">"Error 404 "</string>
     <string name="confirm_apply">Er du sikker på, du vil anvende denne baggrund til dit hjem skærmen?</string>
-    <string name="refreshing_walls">Forfriskende baggrundsbilleder liste . . . </string>
+    <string name="refreshing_walls">Forfriskende baggrundsbilleder liste ...</string>
     <string name="retry">Prøv igen</string>
     <string name="wallpaper_author_title">Ophavsmand</string>
     <string name="wallpaper_dimensions_title">Mål</string>
     <string name="wallpaper_copyright_title">Copyright</string>
-    <string name="settings_saved">Indstillinger gemt.  baggrunde vil ændre hver %1$s. </string>
+    <string name="settings_saved">Indstillinger gemt. baggrunde vil ændre hver %1$s. </string>
     <!-- License Check Dialog -->
     <string name="license_failed_title">Licens Check mislykkedes!</string>
     <string name="license_success_title">Licens Check Vellykket!</string>
@@ -93,22 +93,22 @@ Derfor kan det ikke downloades fra Google Play Store. </string>
     <string name="advice">Råd</string>
     <string name="dontshow">Vis ikke igen</string>
     <string name="rate">Bedøm</string>
-    <string name="set_as">Beskær baggrund og indstillet som. . . </string>
+    <string name="set_as">Beskær baggrund og indstillet som...</string>
     <!-- Requests -->
     <string name="select_all">Vælg alle</string>
     <string name="no_selected_apps_title">Ingen udvalgte apps</string>
-    <string name="no_selected_apps_content">Du valgte ikke en app til at anmode om.  Vælg nogle før du trykker på FAB igen. </string>
+    <string name="no_selected_apps_content">Du valgte ikke en app til at anmode om. Vælg nogle før du trykker på FAB igen. </string>
     <string name="apps_limit_dialog">Beklager, men du er kun tilladt at vælge %1$s apps til at anmode om. </string>
-    <string name="apps_limit_dialog_more">"beklager, men du er kun tilladt at anmode om %1$s flere apps til nu.  "</string>
+    <string name="apps_limit_dialog_more">"beklager, men du er kun tilladt at anmode om %1$s flere apps til nu. "</string>
     <string name="apps_limit_dialog_day">Beklager, men du er kun tilladt at anmode om ikoner hver %1$s. </string>
     <string name="apps_limit_dialog_day_extra">Du vil være i stand til at anmode ikoner igen, i %1$s. </string>
     <string name="apps_limit_dialog_day_extra_sec">Du vil være i stand til at anmode ikoner igen, på mindre end et minut. </string>
     <!-- Icon search -->
-    <string name="search_icons">Søg i ikoner. . . </string>
+    <string name="search_icons">Søg i ikoner...</string>
     <string name="search_x">Søg %1$s…</string>
-    <string name="building_request_dialog">Laver anmodning. . . . . </string>
-    <string name="loading_apps">Vent nu, indtil apps belastning, vil det tage et par sekunder mere . . . </string>
-    <string name="loading_icons">Henter ikoner. . . . . </string>
+    <string name="building_request_dialog">Laver anmodning.... . </string>
+    <string name="loading_apps">Vent nu, indtil apps belastning, vil det tage et par sekunder mere ...</string>
+    <string name="loading_icons">Henter ikoner.... . </string>
     <string name="choose">Vælg nu. . </string>
     <!--SETTINGS-->
     <string name="title_settings">Indstillinger</string>
@@ -119,7 +119,7 @@ Derfor kan det ikke downloades fra Google Play Store. </string>
     <string-array name="themes">
         <item>Lys</item>
         <item>Mørk</item>
-        <item>Ryd. . .  ;)</item>
+        <item>Ryd... ;)</item>
         <item>Automatisk</item>
     </string-array>
     <string-array name="themes_no_clear">
@@ -159,13 +159,13 @@ det. </string>
     <string name="pref_summary_notifs_interval_more">App vil tjekke for nye meddelelser hver %1$s. </string>
     <string name="launcher_icon_restored">%1$s launcher ikon blev restaureret</string>
     <string name="launcher_icon_no_restored">%1$s launcher ikon er allerede synlige</string>
-    <string name="launcher_icon_restorer_error">Der er et problem med koden for %1$s.  Kontakt venligst udvikler. </string>
+    <string name="launcher_icon_restorer_error">Der er et problem med koden for %1$s. Kontakt venligst udvikler. </string>
     <!-- Widgets Names -->
     <string name="iconrestorer_widget_title">Ikon restaurator Widget</string>
     <string name="clock_widget_title">Analogt ur</string>
     <string name="faqs_section">FAQs</string>
     <string name="dashboard_author">Dashboard App Udvikling</string>
-    <string name="dashboard_author_copyright">Fra Colombia til verden. \nDashboard delt under Creative Commons Attribution-ShareAlike License.  Copyright © 2016. </string>
+    <string name="dashboard_author_copyright">Fra Colombia til verden. \nDashboard delt under Creative Commons Attribution-ShareAlike License. Copyright © 2016. </string>
     <string name="iconpack_author">Designer Info</string>
     <string name="fork_on_github">Gaffel på GitHub</string>
     <string name="visit_website">Hjemmeside</string>
@@ -184,18 +184,18 @@ det. </string>
     <string name="join_community">Deltag i Google Plus community</string>
     <string name="join_community_summary">Hvis du har brug for hjælp eller har spørgsmål, er IconShowcase
 community på Google Plus, er et godt sted at gå. </string>
-    <string name="saving_wallpaper">Gemmer baggrund. . . </string>
+    <string name="saving_wallpaper">Gemmer baggrund...</string>
     <string name="refresh">Opdater</string>
     <!-- Messages shown when using LicenseChecker -->
-    <string name="license_failed">Du har ikke downloadet %1$s fra Google Play Store.  Du har to muligheder:</string>
-    <string name="license_success">Tak for at hente %1$s.  Hvis du kan lide det, så glem ikke at vurdere det og skrive en anmeldelse i Google Play Butik. </string>
+    <string name="license_failed">Du har ikke downloadet %1$s fra Google Play Store. Du har to muligheder:</string>
+    <string name="license_success">Tak for at hente %1$s. Hvis du kan lide det, så glem ikke at vurdere det og skrive en anmeldelse i Google Play Butik. </string>
     <string name="apply_advice">Hvis launcher, du bruger, er ikke opført her, skal du anvende den ikon pack direkte fra launcher indstillinger. \nNogle løfteraketter understøtter ikke direkte anvendelse. </string>
     <string name="walls_advice">Simple tryk et tapet for at se det i fuld skærm. \nLangt tryk for at anvende det direkte til din hjemskærm. </string>
     <string name="zooper_section_title">Zooper Setup</string>
     <string name="zooper_download_dialog_title">Download fra</string>
     <string name="install_apps">Installer apps</string>
-    <string name="install_apps_content">Du skal installere disse apps for Zooper widgets til at fungere korrekt.  Tryk en til at installere det. </string>
-    <string name="install_kustom_apps_content">Du skal installere disse apps for Kustom aktiver til at fungere korrekt.  Tryk en til at installere det. </string>
+    <string name="install_apps_content">Du skal installere disse apps for Zooper widgets til at fungere korrekt. Tryk en til at installere det. </string>
+    <string name="install_kustom_apps_content">Du skal installere disse apps for Kustom aktiver til at fungere korrekt. Tryk en til at installere det. </string>
     <string name="install_assets">Installer aktiver</string>
     <string name="open">Åben</string>
     <string name="assets_installed">Aktiver allerede installeret</string>
@@ -211,7 +211,7 @@ community på Google Plus, er et godt sted at gå. </string>
     <string name="new_folder_hint">Mappe navn</string>
     <string name="new_folder_title">Opret en ny mappe</string>
     <string name="new_folder_content">Skriv den nye mappes navn, tak. </string>
-    <string name="wait_for_walls">Vent, indtil baggrund forhåndsvisning vises. . . </string>
+    <string name="wait_for_walls">Vent, indtil baggrund forhåndsvisning vises...</string>
     <string name="translators">Oversættere</string>
     <string name="more">Mere</string>
     <string name="columns">Kolonner nummer</string>
@@ -227,7 +227,7 @@ community på Google Plus, er et godt sted at gå. </string>
         <item>Hvordan ser man alle de medfølgende ikoner?</item>
         <item>Sådan udskifte visse ikoner med alternativer?</item>
         <item>Hvordan bestiller utematiseret ikoner?</item>
-        <item>Efter genstart min enhed er ikon pack ikke anvendes længere.  Ikoner blev gendannet til
+        <item>Efter genstart min enhed er ikon pack ikke anvendes længere. Ikoner blev gendannet til
 misligholdelse. </item>
         <item>Hvorfor ser ikoner pixeleret ud, på min enhed?</item>
         <item>Jeg kan se et ikon for X app i de inkluderede ikoner, men ikonet findes ikke finder anvendelse. </item>
@@ -252,7 +252,7 @@ Hvis din launcher ikke er angivet der, men dette ikon pakke er kompatibel med de
 (Se på Google Play Store beskrivelse af listen over understøttede løfteraketter),
 du kan anvende det manuelt fra launcher indstillinger. </item>
         <item>Skub Navigation Skuffe fra venstre, og gå til afsnittet \"Ikoner\", eller gå tilbage til hovedafsnit app, skal du trykke på knappen, der siger \"Ikoner\". </item>
-        <item>Det afhænger af den løfteraket, du bruger.  Ikke alle løfteraket support ikon redigering. 
+        <item>Det afhænger af den løfteraket, du bruger. Ikke alle løfteraket support ikon redigering. 
 Men i de fleste af dem, kan du redigere ikon ved lange trykke det eller laver en dobbelt tap. . </item>
         <item>Skub Navigation Skuffe fra venstre, og gå til afsnittet \"Anmodning\". </item>
         <item>Det skete, fordi ikon pakke blev flyttet til SD-kort, du SKAL du installere det i
@@ -276,21 +276,21 @@ fjerne markeringen derefter på \"Skjul ikon fra launcher\" valgmulighed. </item
     <string name="no_apply_tab">Kontakt dev, fordi det der er noget der savnet i appen. </string>
     <!--No Theme Engine Dialog-->
     <string name="NTED_title">Åh åh!</string>
-    <string name="NTED_message">Det ser ud som vi ikke er i stand til at finde et tema motor på din telefon.  Hvis du ved, du har en, skal du åbne den og gå videre derfra.  Hvis du ikke har en, skal du få en rom, der understøtter enten CyanogenMod eller lag temaer og følge deres anvisninger. </string>
+    <string name="NTED_message">Det ser ud som vi ikke er i stand til at finde et tema motor på din telefon. Hvis du ved, du har en, skal du åbne den og gå videre derfra. Hvis du ikke har en, skal du få en rom, der understøtter enten CyanogenMod eller lag temaer og følge deres anvisninger. </string>
     <string name="tap_to_download">%1$s\nTryk på dette kort for at hente den. </string>
     <string name="tap_to_open">%1$s\nTryk på dette kort for at åbne appen. </string>
     <string name="donations_error_title">donationer er utilgængelige</string>
     <string name="donations_error_content">Enheden understøtter ikke In App Billing. \nDette kan skyldes, at du har brug for at opdatere din Google Play Store-program, eller fordi du bor i et land, hvor I App Fakturering er deaktiveret. </string>
     <string name="new_walls_notif_title">Nye baggrundsbilleder til rådighed i %1$s. </string>
-    <string name="new_walls_notif_content">Der er %1$s nye baggrundsbilleder til rådighed.  Tryk på meddelelsen for at åbne appen og kontrollere dem. </string>
+    <string name="new_walls_notif_content">Der er %1$s nye baggrundsbilleder til rådighed. Tryk på meddelelsen for at åbne appen og kontrollere dem. </string>
     <string name="news">Nyheder!!</string>
     <string-array name="update_intervals">
         <item>Hver time. </item>
-        <item>Hver 6.  time. </item>
-        <item>Hver 12.  time. </item>
-        <item>Hver 24.  time. </item>
-        <item>Hver 2.  dag. </item>
-        <item>Hver 4.  dag. </item>
-        <item>Hver 7.  dag. </item>
+        <item>Hver 6. time. </item>
+        <item>Hver 12. time. </item>
+        <item>Hver 24. time. </item>
+        <item>Hver 2. dag. </item>
+        <item>Hver 4. dag. </item>
+        <item>Hver 7. dag. </item>
     </string-array>
 </resources>

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
     <!--
-  ~ Copyright (c) 2016.  Jahir Fiquitiva
+  ~ Copyright (c) 2016. Jahir Fiquitiva
   ~
   ~ Licensed under the CreativeCommons Attribution-ShareAlike
-  ~ 4. 0 International License.  You may not use this file except in compliance
-  ~ with the License.  You may obtain a copy of the License at
+  ~ 4. 0 International License. You may not use this file except in compliance
+  ~ with the License. You may obtain a copy of the License at
   ~
   ~    http://creativecommons. org/licenses/by-sa/4. 0/legalcode
   ~
@@ -14,16 +14,16 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License. 
   ~
-  ~ Big thanks to the project contributors.  Check them in the repository. 
+  ~ Big thanks to the project contributors. Check them in the repository. 
   ~
   -->
     <!--
   ~
   -->
-<resources xmlns:tools="http://schemas. android. com/tools">
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="muzei_settings">"Muzei-Einstellungen "</string>
     <!-- Sharing wallpaper from Muzei -->
-    <string name="share_text">Mein Hintergrund für heute ist %1$s designed von %2$s, von %3$s.  Hol ihn dir jetzt bei %4$s</string>
+    <string name="share_text">Mein Hintergrund für heute ist %1$s designed von %2$s, von %3$s. Hol ihn dir jetzt bei %4$s</string>
     <!-- List Of Drawer Sections -->
     <string name="section_home">Home</string>
     <string name="section_icons">Icons</string>
@@ -50,10 +50,10 @@
     <string name="send_title">Senden via</string>
     <string name="changelog">"Was ist neu? "</string>
     <!-- LauncherNotInstalled Dialog -->
-    <string name="lni_content">"%1$s ist momentan nicht auf deinem Gerät installiert.  \nMöchtest du es aus dem Google Play Store installieren? "</string>
-    <string name="cm_dialog_content">"%1$s ist ein Teil von CyanogenMod Roms.  \nMöchtest du es auf dein Gerät installieren? "</string>
+    <string name="lni_content">"%1$s ist momentan nicht auf deinem Gerät installiert. \nMöchtest du es aus dem Google Play Store installieren? "</string>
+    <string name="cm_dialog_content">"%1$s ist ein Teil von CyanogenMod Roms. \nMöchtest du es auf dein Gerät installieren? "</string>
     <string name="gnl_title">"Der Google Now Launcher ist NICHT kompatibel "</string>
-    <string name="gnl_content">Der Google Now Launcher ist mit KEINEM Icon Pack kompatibel.  Bitte bewerte diese deswegen nicht schlecht.  Es existiert eine Lösung, welche du versuchen kannst, die Methode benötigt aber eine andere App.  Möchtest du diese herunterladen?</string>
+    <string name="gnl_content">Der Google Now Launcher ist mit KEINEM Icon Pack kompatibel. Bitte bewerte diese deswegen nicht schlecht. Es existiert eine Lösung, welche du versuchen kannst, die Methode benötigt aber eine andere App. Möchtest du diese herunterladen?</string>
     <string name="lg_dialog_content">Es tut uns leid aber die LG Home App ist exklusiv für LG-Geräte und kann daher nicht vom Google Play Store heruntergeladen werden. </string>
     <!-- Changelog Dialog Content -->
     <string name="changelog_dialog_title">"Änderungen "</string>
@@ -65,19 +65,19 @@
     <string name="wallpaper_by">Von %1$s</string>
     <string name="apply">"Anwenden "</string>
     <string name="save">"Speichern "</string>
-    <string name="downloading_wallpaper">Hintergrundbild wird heruntergeladen. . . </string>
-    <string name="setting_wall_title">Hintergrundbild wird auf dem Startbildschirm eingerichtet. . . </string>
-    <string name="preparing_wallpaper">Wallpaper wird zum Zuschneiden vorbereitet. . . </string>
-    <string name="download_takes_longer">Das dauert länger als erwartet.  Du könntest warten oder die Aktion abbrechen. </string>
+    <string name="downloading_wallpaper">Hintergrundbild wird heruntergeladen...</string>
+    <string name="setting_wall_title">Hintergrundbild wird auf dem Startbildschirm eingerichtet...</string>
+    <string name="preparing_wallpaper">Wallpaper wird zum Zuschneiden vorbereitet...</string>
+    <string name="download_takes_longer">Das dauert länger als erwartet. Du könntest warten oder die Aktion abbrechen. </string>
     <string name="set_as_wall_done">Hintergrundbild eingerichtet!</string>
     <string name="error">"Fehler "</string>
     <string name="confirm_apply">Dieses Hintergrundbild wirklich auf dem Startbildschirm übernehmen?</string>
-    <string name="refreshing_walls">Hintergrundbilder werden aktualisiert. . . </string>
+    <string name="refreshing_walls">Hintergrundbilder werden aktualisiert...</string>
     <string name="retry">"Wiederholen "</string>
     <string name="wallpaper_author_title">Autor</string>
     <string name="wallpaper_dimensions_title">Größendarstellung</string>
     <string name="wallpaper_copyright_title">Copyright</string>
-    <string name="settings_saved">Einstellungen wurden gespeichert.  Hintergründe wechseln alle %1$s. </string>
+    <string name="settings_saved">Einstellungen wurden gespeichert. Hintergründe wechseln alle %1$s. </string>
     <!-- License Check Dialog -->
     <string name="license_failed_title">"Lizenzprüfung fehlgeschlagen "</string>
     <string name="license_success_title">Lizenzprüfung erfolgreich</string>
@@ -88,22 +88,22 @@
     <string name="advice">Rat</string>
     <string name="dontshow">"Nicht mehr zeigen "</string>
     <string name="rate">Bewerten</string>
-    <string name="set_as">Hintergrund zuschneiden und verwenden als. . . </string>
+    <string name="set_as">Hintergrund zuschneiden und verwenden als...</string>
     <!-- Requests -->
     <string name="select_all">Alle auswählen</string>
     <string name="no_selected_apps_title">Keine Apps ausgewählt</string>
-    <string name="no_selected_apps_content">Es wurde keine App für eine Anfrage ausgewählt.  Bitte wähle erst deine Apps aus bevor Du den Button erneut anklickst. </string>
+    <string name="no_selected_apps_content">Es wurde keine App für eine Anfrage ausgewählt. Bitte wähle erst deine Apps aus bevor Du den Button erneut anklickst. </string>
     <string name="apps_limit_dialog">Entschuldigung, mehr als%1$s Apps können zum Anfordern nicht ausgewählt werden</string>
     <string name="apps_limit_dialog_more">Verzeihung, Sie können nur %1$s weitere Apps vorschlagen. </string>
     <string name="apps_limit_dialog_day">Tut uns leid, nur alle %1$s können Icons angefordert werden</string>
     <string name="apps_limit_dialog_day_extra">Sie können weitere Icon Vorschläge erst in %1$s einreichen. </string>
     <string name="apps_limit_dialog_day_extra_sec">Sie können weitere Icon Vorschläge in weniger als einer Minute einreichen. </string>
     <!-- Icon search -->
-    <string name="search_icons">Icons suchen. . . </string>
+    <string name="search_icons">Icons suchen...</string>
     <string name="search_x">Suche %1$s…</string>
     <string name="building_request_dialog">Daten werden verarbeitet…</string>
-    <string name="loading_apps">BItte warten Sie bis die App geladen ist, es wird ein paar Sekunden dauern. . . </string>
-    <string name="loading_icons">Icons laden. . . . </string>
+    <string name="loading_apps">BItte warten Sie bis die App geladen ist, es wird ein paar Sekunden dauern...</string>
+    <string name="loading_icons">Icons laden.... </string>
     <string name="choose">Auswählen</string>
     <!--SETTINGS-->
     <string name="title_settings">"Einstellungen "</string>
@@ -140,7 +140,7 @@
 Ausgewählte Icons werden nicht beeinflusst. </string>
     <string name="hideicon_dialog_title">Achtung!</string>
     <string name="hideicon_dialog_content">Sind Sie sicher dass sie das App Icon im Launcher verstecken wollen? 
-\nDie App könnte sich unerwartet schließen.  \nLesen Sie die FAQs um zu erfahren wie sie es wieder sichtbar machen können, bevor Sie sie verstecken. </string>
+\nDie App könnte sich unerwartet schließen. \nLesen Sie die FAQs um zu erfahren wie sie es wieder sichtbar machen können, bevor Sie sie verstecken. </string>
     <string name="prefs_notifs_title">Benachrichtigungen</string>
     <string name="pref_title_enable_notifs">Benachrichtigungen aktivieren</string>
     <string name="pref_summary_enable_notifs">Benachrichtigungen für neue Hintergrundbilder und Neuigkeiten erhalten. </string>
@@ -151,13 +151,13 @@ Ausgewählte Icons werden nicht beeinflusst. </string>
     <string name="pref_summary_notifs_interval_more">Die App prüft jede %1$s nach neuen Benachrichtigungen. </string>
     <string name="launcher_icon_restored">%1$s Launcher Icon zurückgesetzt</string>
     <string name="launcher_icon_no_restored">%1$s Launcher Icon ist bereits sichtbar</string>
-    <string name="launcher_icon_restorer_error">Es gab ein Problem mit dem code von %1$s.  Bitte kontaktieren sie seinen Entwickler. </string>
+    <string name="launcher_icon_restorer_error">Es gab ein Problem mit dem code von %1$s. Bitte kontaktieren sie seinen Entwickler. </string>
     <!-- Widgets Names -->
     <string name="iconrestorer_widget_title">Icon Wiederhersteller Widget</string>
     <string name="clock_widget_title">Analoguhr</string>
     <string name="faqs_section">FAQs</string>
     <string name="dashboard_author">Dashboard App Entwicklung</string>
-    <string name="dashboard_author_copyright">Aus Kolumbien in die Welt. \nDashboard geteilt unter CreativeCommons Attribution-ShareAlike License.  Copyright© 2016. </string>
+    <string name="dashboard_author_copyright">Aus Kolumbien in die Welt. \nDashboard geteilt unter CreativeCommons Attribution-ShareAlike License. Copyright© 2016. </string>
     <string name="iconpack_author">Designer Information</string>
     <string name="fork_on_github">Fork auf GitHub</string>
     <string name="visit_website">Webseite</string>
@@ -175,18 +175,18 @@ Ausgewählte Icons werden nicht beeinflusst. </string>
     <string name="report_bugs_summary">Fehler melden oder Features vorschlagen. </string>
     <string name="join_community">Treten Sie der Google plus Gemeinschaft bei</string>
     <string name="join_community_summary">Sollten Sie Hilfe benötigen oder Fragen haben, ist die Google Plus Gemeinschaft ein guter Ort dafür. </string>
-    <string name="saving_wallpaper">Hintergrund wird gespeichert. . . </string>
+    <string name="saving_wallpaper">Hintergrund wird gespeichert...</string>
     <string name="refresh">Aktualisieren</string>
     <!-- Messages shown when using LicenseChecker -->
-    <string name="license_failed">Du hast %1$s nicht aus dem Google Play Store installiert.  Du hast zwei Möglichkeiten:</string>
-    <string name="license_success">Danke, dass Du %1$s installiert hast.  Wenn sie Dir gefällt, kannst Du die App im Google Play Store bewerten und eine Beurteilung abgeben. </string>
+    <string name="license_failed">Du hast %1$s nicht aus dem Google Play Store installiert. Du hast zwei Möglichkeiten:</string>
+    <string name="license_success">Danke, dass Du %1$s installiert hast. Wenn sie Dir gefällt, kannst Du die App im Google Play Store bewerten und eine Beurteilung abgeben. </string>
     <string name="apply_advice">Sollte der Launcher den Sie benutzen nicht aufgeführt sein, müssen sie das Icon Pack über die Einstellungen des Launchers auswählen. \nManche Launcher unterstützen die Auswahl durch andere Apps nicht. </string>
     <string name="walls_advice">Drücken sie kurz auf einen Hintergrund, um ihn im Fullscreen modus zu öffnen,\nDrücken sie lange um ihn auf ihren Homescreen anzuwenden. </string>
     <string name="zooper_section_title">Zooper Einrichtung</string>
     <string name="zooper_download_dialog_title">Herrunterladen von</string>
     <string name="install_apps">Apps installieren</string>
-    <string name="install_apps_content">Du musst diese Apps installieren, damit die Zooper Widgets funktionieren.  Bitte installiere sie und versuche es erneut. </string>
-    <string name="install_kustom_apps_content">Du musst diese Apps installieren, damit die Kustom Assets funktionieren.  Klicke auf eines um es zu installieren. </string>
+    <string name="install_apps_content">Du musst diese Apps installieren, damit die Zooper Widgets funktionieren. Bitte installiere sie und versuche es erneut. </string>
+    <string name="install_kustom_apps_content">Du musst diese Apps installieren, damit die Kustom Assets funktionieren. Klicke auf eines um es zu installieren. </string>
     <string name="install_assets">Assets installieren</string>
     <string name="open">Öffnen</string>
     <string name="assets_installed">Assets sind bereits installiert</string>
@@ -194,7 +194,7 @@ Ausgewählte Icons werden nicht beeinflusst. </string>
     <string name="copying_assets">Kopiere Daten zu ZooperWidget/%1$s</string>
     <string name="icon_pack_in_numbers">Icon Pack in Zahlen</string>
     <string name="themed_icons">Mehr als %1$s Icons. </string>
-    <string name="available_wallpapers">Ca.  %1$s verfügbare Hintergründe. </string>
+    <string name="available_wallpapers">Ca. %1$s verfügbare Hintergründe. </string>
     <string name="included_widgets">Mehr als %1$s Widgets für Zooper enthalten. </string>
     <string name="icons">Icons</string>
     <string name="md_storage_perm_error">Sie haben die \"Externen Speicher Lesen\" Genehmigung an %1$s gegeben, dies wird benötigt um diese Aktion auszuführen. </string>
@@ -202,7 +202,7 @@ Ausgewählte Icons werden nicht beeinflusst. </string>
     <string name="new_folder_hint">Ordner Name</string>
     <string name="new_folder_title">Neuen Ordner erstellen</string>
     <string name="new_folder_content">Bitte den Namen des Ordners eingeben. </string>
-    <string name="wait_for_walls">Bitte warten bis das Vorschaubild erscheint. . . </string>
+    <string name="wait_for_walls">Bitte warten bis das Vorschaubild erscheint...</string>
     <string name="translators">Übersetzer</string>
     <string name="more">Mehr</string>
     <string name="columns">Spaltenanzahl</string>
@@ -239,13 +239,13 @@ Sollten Sie unsicher sein, welchen Launcher sie verwenden sollten, besuchen Sie 
 Wählen Sie den Launcher den Sie verwenden möchten. 
 Sollte Ihr Launcher nicht aufgelistet sein, aber dieses Icon Pack dennoch mit ihm kompatibel sein (Lesen sie die Google Play Store Beschreibung für eine Liste unterstützter Launcher), können Sie es über die Einstellungen des Launcher anwenden. </item>
         <item>Öffnen sie den Navigations Drawer auf der linken Seite und tippen Sie auf den \"Icons\" Bereich, oder gehen Sie zurück zum Hauptbildschirm der App und tippen sie auf den Button mit der Aufschrift \"Icons\". </item>
-        <item>Es hängt vom Launcher ab, den Sie verwenden.  Nicht jeder Launcher unterstützt das bearbeiten von Icons.  Doch in den meisten können Sie dies tun, indem sie das Icon gedrückt halten oder es doppelt antippen. </item>
+        <item>Es hängt vom Launcher ab, den Sie verwenden. Nicht jeder Launcher unterstützt das bearbeiten von Icons. Doch in den meisten können Sie dies tun, indem sie das Icon gedrückt halten oder es doppelt antippen. </item>
         <item>Öffnen sie den Navigations Drawer auf der linken Seite und tippen Sie auf den \"Requests\" Bereich. </item>
-        <item>Dies passiert wenn Sie das Icon Pack auf Ihre SD karte verschoben haben.  Sie sollten es auf dem Internen Speicher installieren. </item>
+        <item>Dies passiert wenn Sie das Icon Pack auf Ihre SD karte verschoben haben. Sie sollten es auf dem Internen Speicher installieren. </item>
         <item>Das Problem könnte vom Launcher, den Sie verwenden ausgehen, wenn sie ein Gerät mit hoher Auflösung besitzen. 
 Sie können dem vorbeugen indem sie die Icon Größe auf 115-120% setzen oder indem Sie einen anderen Launcher ausprobieren. </item>
         <item>Icon anfordern. </item>
-        <item>Öffnen sie den Navigations Drawer auf der linken Seite und tippen Sie auf den \"Einstellungen\" Bereich.  
+        <item>Öffnen sie den Navigations Drawer auf der linken Seite und tippen Sie auf den \"Einstellungen\" Bereich. 
 Dann tippen Sie auf die \"Icon aus dem Launcher verbergen\" option. </item>
         <item>Gehen Sie auf ihren Homescreen, dann fügen Sie ein Widget dieser App hinzu welches \"IconRestorer\" heißt. </item>
         <item>Öffnen sie den Navigations Drawer auf der linken Seite und tippen Sie auf den \"Einstellungen\" Bereich. 
@@ -260,7 +260,7 @@ Dann tippen Sie auf die \"Icon aus dem Launcher verbergen\" option. </item>
     <string name="no_apply_tab">Kontaktiere den Entwickler, anscheinend fehlt etwas in der App!</string>
     <!--No Theme Engine Dialog-->
     <string name="NTED_title">Oh Oh!</string>
-    <string name="NTED_message">Es scheint so als wäre die Theme Engine nicht auf Ihrem Gerät installiert.  Sollten Sie sich sicher sein dass diese installiert ist, öffnen Sie sie bitte und fahren sie von dort fort.  Sollte sie tatsächlich nicht vorhanden sein, installieren sie bitte ein Betriebsystem welches endweder die CyanogenMod oder die Layers Theme Engine unterstützt und folgen Sie dann den Anweisungen. </string>
+    <string name="NTED_message">Es scheint so als wäre die Theme Engine nicht auf Ihrem Gerät installiert. Sollten Sie sich sicher sein dass diese installiert ist, öffnen Sie sie bitte und fahren sie von dort fort. Sollte sie tatsächlich nicht vorhanden sein, installieren sie bitte ein Betriebsystem welches endweder die CyanogenMod oder die Layers Theme Engine unterstützt und folgen Sie dann den Anweisungen. </string>
     <string name="tap_to_download">%1$s\nDiese Karte zum Download klicken</string>
     <string name="tap_to_open">%1$s\nDiese Karte zum öffnen der App klicken</string>
     <string name="donations_error_title">Spenden nicht verfügbar</string>

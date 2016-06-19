@@ -188,15 +188,15 @@ public final class ISDialogs {
             int dark = ContextCompat.getColor(context, R.color.drawable_tint_light);
 
             authorIcon.setImageDrawable(ColorUtils.getTintedIcon(
-                    ContextCompat.getDrawable(context, R.drawable.ic_person),
+                    context, R.drawable.ic_person,
                     ThemeUtils.darkTheme ? light : dark));
 
             dimensIcon.setImageDrawable(ColorUtils.getTintedIcon(
-                    ContextCompat.getDrawable(context, R.drawable.ic_dimensions),
+                    context, R.drawable.ic_dimensions,
                     ThemeUtils.darkTheme ? light : dark));
 
             copyrightIcon.setImageDrawable(ColorUtils.getTintedIcon(
-                    ContextCompat.getDrawable(context, R.drawable.ic_copyright),
+                    context, R.drawable.ic_copyright,
                     ThemeUtils.darkTheme ? light : dark));
         }
 

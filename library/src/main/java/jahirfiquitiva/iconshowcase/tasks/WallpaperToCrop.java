@@ -84,7 +84,7 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
     @Override
     protected Boolean doInBackground(Void... params) {
         Boolean worked = false;
-        while (!wasCancelled) {
+        if (!wasCancelled) {
             if (wallUri != null) {
                 wallUri = null;
             }

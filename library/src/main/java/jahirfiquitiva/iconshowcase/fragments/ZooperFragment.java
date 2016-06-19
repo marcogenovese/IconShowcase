@@ -107,7 +107,7 @@ public class ZooperFragment extends Fragment {
 
             RecyclerFastScroller fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
 
-            zooperAdapter = new ZooperAdapter(context, LoadZooperWidgets.widgets,
+            zooperAdapter = new ZooperAdapter(context, layout, LoadZooperWidgets.widgets,
                     ShowcaseActivity.wallpaperDrawable, areAppsInstalled());
 
             mRecyclerView.setAdapter(zooperAdapter);

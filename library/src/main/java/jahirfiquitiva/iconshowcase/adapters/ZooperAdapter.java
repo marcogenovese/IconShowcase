@@ -45,10 +45,14 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private Drawable wallpaper;
     private int extraCards = 0;
     private boolean everythingInstalled;
+    private View layout;
 
-    public ZooperAdapter(Context context, ArrayList<ZooperWidget> widgets, Drawable wallpaper, boolean
+    public ZooperAdapter(Context context, View layout, ArrayList<ZooperWidget> widgets, Drawable wallpaper, boolean
             appsInstalled) {
         this.context = context;
+
+        this.layout = layout;
+
         this.widgets = widgets;
         this.wallpaper = wallpaper;
 
@@ -59,11 +63,11 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         final int dark = ContextCompat.getColor(context, R.color.drawable_tint_light);
 
         this.icons[0] = ColorUtils.getTintedIcon(
-                ContextCompat.getDrawable(context, R.drawable.ic_store_download),
+                context, R.drawable.ic_store_download,
                 ThemeUtils.darkTheme ? light : dark);
 
         this.icons[1] = ColorUtils.getTintedIcon(
-                ContextCompat.getDrawable(context, R.drawable.ic_assets),
+                context, R.drawable.ic_assets,
                 ThemeUtils.darkTheme ? light : dark);
 
     }
@@ -265,7 +269,7 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     .progress(true, 0)
                     .cancelable(false)
                     .show();
-            new CopyFilesToStorage(context, dialog, folderName).execute();
+            new CopyFilesToStorage(context, layout, dialog, folderName).execute();
         }
     }
 

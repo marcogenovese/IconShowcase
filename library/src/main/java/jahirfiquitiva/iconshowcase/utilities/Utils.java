@@ -40,6 +40,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.ColorInt;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.customtabs.CustomTabsClient;
 import android.support.customtabs.CustomTabsIntent;
@@ -48,7 +49,9 @@ import android.support.customtabs.CustomTabsSession;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
+import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -583,6 +586,23 @@ public class Utils {
 
         return hours * millisInAnHour;
 
+    }
+
+    public static Drawable getVectorDrawable(@NonNull Context context, @DrawableRes int drawable) {
+        Drawable vectorDrawable;
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                vectorDrawable = ContextCompat.getDrawable(context, drawable);
+            } else {
+                vectorDrawable = VectorDrawableCompat.create(context.getResources(), drawable, null);
+                if (vectorDrawable != null) {
+                    vectorDrawable = DrawableCompat.wrap(vectorDrawable);
+                }
+            }
+        } catch (Resources.NotFoundException ex) {
+            vectorDrawable = ContextCompat.getDrawable(context, R.drawable.iconshowcase_logo);
+        }
+        return vectorDrawable != null ? vectorDrawable : null;
     }
 
 }

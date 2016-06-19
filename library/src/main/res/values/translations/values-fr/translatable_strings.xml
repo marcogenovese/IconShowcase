@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
     <!--
-  ~ Copyright (c) 2016.  Jahir Fiquitiva
+  ~ Copyright (c) 2016. Jahir Fiquitiva
   ~
   ~ Licensed under the CreativeCommons Attribution-ShareAlike
-  ~ 4. 0 International License.  You may not use this file except in compliance
-  ~ with the License.  You may obtain a copy of the License at
+  ~ 4. 0 International License. You may not use this file except in compliance
+  ~ with the License. You may obtain a copy of the License at
   ~
   ~    http://creativecommons. org/licenses/by-sa/4. 0/legalcode
   ~
@@ -14,13 +14,13 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License. 
   ~
-  ~ Big thanks to the project contributors.  Check them in the repository. 
+  ~ Big thanks to the project contributors. Check them in the repository. 
   ~
   -->
     <!--
   ~
   -->
-<resources xmlns:tools="http://schemas. android. com/tools">
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="muzei_settings">Paramètres Muzei</string>
     <!-- Sharing wallpaper from Muzei -->
     <string name="share_text">Mon fond d\'écran d\'aujourd\'hui est %1$s par %2$s , de %3$s . \nTéléchargez-le ici %4$s</string>
@@ -53,9 +53,9 @@
     <string name="lni_content">%1$s n\'est actuellement pas installé sur votre appareil. \nVoulez-vous l\'installer depuis le Play Store ?</string>
     <string name="cm_dialog_content">%1$s fait partie des roms CyanogenMod. \nVoulez-vous l\'installer sur votre appareil ?</string>
     <string name="gnl_title">Google Now Launcher n\'est pas compatible</string>
-    <string name="gnl_content">Google Now Launcher n\'est compatible avec aucun pack d\'icônes.  Merci
-de ne pas noter le pack négativement pour cette raison.  Il y a une méthode alternative que vous pouvez essayer
-mais cela demande l\'utilisation d\'une application externe.  Voulez-vous la télécharger maintenant ?</string>
+    <string name="gnl_content">Google Now Launcher n\'est compatible avec aucun pack d\'icônes. Merci
+de ne pas noter le pack négativement pour cette raison. Il y a une méthode alternative que vous pouvez essayer
+mais cela demande l\'utilisation d\'une application externe. Voulez-vous la télécharger maintenant ?</string>
     <string name="lg_dialog_content">Nous sommes désolés, mais l\'application LG Home est exclusive aux appareils LG, et donc elle ne peut être téléchargée depuis le Play Store. </string>
     <!-- Changelog Dialog Content -->
     <string name="changelog_dialog_title">Journal des modifications</string>
@@ -67,19 +67,19 @@ mais cela demande l\'utilisation d\'une application externe.  Voulez-vous la té
     <string name="wallpaper_by">De : %1$s</string>
     <string name="apply">Appliquer</string>
     <string name="save">Enregistrer</string>
-    <string name="downloading_wallpaper">Téléchargement en cours. . . </string>
-    <string name="setting_wall_title">En cours d\'application. . . </string>
-    <string name="preparing_wallpaper">Préparation du fond d\'écran pour rognage . . . </string>
-    <string name="download_takes_longer">L\'opération prend plus de temps que prévu.  N\'hésiter pas à annuler ou patienter un peu plus. </string>
+    <string name="downloading_wallpaper">Téléchargement en cours...</string>
+    <string name="setting_wall_title">En cours d\'application...</string>
+    <string name="preparing_wallpaper">Préparation du fond d\'écran pour rognage ...</string>
+    <string name="download_takes_longer">L\'opération prend plus de temps que prévu. N\'hésiter pas à annuler ou patienter un peu plus. </string>
     <string name="set_as_wall_done">Fond d\'écran appliqué !</string>
     <string name="error">Erreur</string>
     <string name="confirm_apply">Êtes-vous sûr de vouloir appliquer ce fond d\'écran ?</string>
-    <string name="refreshing_walls">Mise à jour de la liste des fonds d\'écran. . . </string>
+    <string name="refreshing_walls">Mise à jour de la liste des fonds d\'écran...</string>
     <string name="retry">Réessayer</string>
     <string name="wallpaper_author_title">Auteur</string>
     <string name="wallpaper_dimensions_title">Dimensions</string>
     <string name="wallpaper_copyright_title">Droits d\'auteur</string>
-    <string name="settings_saved">Paramètres enregistrés.  Les fonds d\'écran changeront tous les %1$s. </string>
+    <string name="settings_saved">Paramètres enregistrés. Les fonds d\'écran changeront tous les %1$s. </string>
     <!-- License Check Dialog -->
     <string name="license_failed_title">Échec de la vérification de licence</string>
     <string name="license_success_title">Vérification de la licence réussie</string>
@@ -90,11 +90,11 @@ mais cela demande l\'utilisation d\'une application externe.  Voulez-vous la té
     <string name="advice">Conseil</string>
     <string name="dontshow">Ne plus afficher</string>
     <string name="rate">Évaluer</string>
-    <string name="set_as">Rogner le fond d\'écran et appliquer en tant que. . . </string>
+    <string name="set_as">Rogner le fond d\'écran et appliquer en tant que...</string>
     <!-- Requests -->
     <string name="select_all">Tout sélectionner</string>
     <string name="no_selected_apps_title">Aucune appli sélectionnée</string>
-    <string name="no_selected_apps_content">Vous n\'avez choisi aucune appli.  Veuillez en sélectionner quelques-unes avant de réessayer. </string>
+    <string name="no_selected_apps_content">Vous n\'avez choisi aucune appli. Veuillez en sélectionner quelques-unes avant de réessayer. </string>
     <string name="apps_limit_dialog">Désolé, mais vous êtes autorisé qu\'à sélectionner %1$s applications par demande. </string>
     <string name="apps_limit_dialog_more">Désolé, vous n\'être pas autorisé à demander plus de %1$s applications pour le moment. </string>
     <string name="apps_limit_dialog_day">Désolé, mais vous êtes autorisé à demander des icônes que toutes les %1$s. </string>
@@ -151,13 +151,13 @@ mais cela demande l\'utilisation d\'une application externe.  Voulez-vous la té
     <string name="pref_summary_notifs_interval_more">L\'application va rechercher de nouvelles notifications toutes les %1$s. </string>
     <string name="launcher_icon_restored">%1$s l\'icône du lanceur a été restaurée</string>
     <string name="launcher_icon_no_restored">%1$s l’icône du lanceur est déjà visible</string>
-    <string name="launcher_icon_restorer_error">Il y a un problème avec le code de %1$s.  Veuillez contacter le développeur. </string>
+    <string name="launcher_icon_restorer_error">Il y a un problème avec le code de %1$s. Veuillez contacter le développeur. </string>
     <!-- Widgets Names -->
     <string name="iconrestorer_widget_title">Icône du widget de restauration</string>
     <string name="clock_widget_title">Horloge analogique</string>
     <string name="faqs_section">FAQ</string>
     <string name="dashboard_author">Développement de l\'application Dashboard</string>
-    <string name="dashboard_author_copyright">De la Colombie au reste du monde. \nDashboard est partagé sous licence CreativeCommons Attribution-ShareAlike.  Droit d\'auteur ©  2016. </string>
+    <string name="dashboard_author_copyright">De la Colombie au reste du monde. \nDashboard est partagé sous licence CreativeCommons Attribution-ShareAlike. Droit d\'auteur ©  2016. </string>
     <string name="iconpack_author">Informations sur le designer</string>
     <string name="fork_on_github">Contribuer sur GitHub</string>
     <string name="visit_website">Site internet</string>
@@ -178,15 +178,15 @@ mais cela demande l\'utilisation d\'une application externe.  Voulez-vous la té
     <string name="saving_wallpaper">Sauvegarde du fond d\'écran…</string>
     <string name="refresh">Actualiser</string>
     <!-- Messages shown when using LicenseChecker -->
-    <string name="license_failed">Vous n\'avez pas téléchargé %1$s depuis le Play Store.  Vous avez 2 options :</string>
-    <string name="license_success">Merci d\'avoir téléchargé %1$s.  Si vous l\'aimez, n\'oubliez pas de l\'évaluer et d\'écrire un commentaire sur le Play Store</string>
-    <string name="apply_advice">Si le lanceur que vous utilisez n\'est pas listé ici, vous devez appliquer le pack d\'icônes directement depuis les paramètres du lanceur.  Certains lanceurs ne supportent pas l\'application direct du pack d\'icônes. </string>
+    <string name="license_failed">Vous n\'avez pas téléchargé %1$s depuis le Play Store. Vous avez 2 options :</string>
+    <string name="license_success">Merci d\'avoir téléchargé %1$s. Si vous l\'aimez, n\'oubliez pas de l\'évaluer et d\'écrire un commentaire sur le Play Store</string>
+    <string name="apply_advice">Si le lanceur que vous utilisez n\'est pas listé ici, vous devez appliquer le pack d\'icônes directement depuis les paramètres du lanceur. Certains lanceurs ne supportent pas l\'application direct du pack d\'icônes. </string>
     <string name="walls_advice">Un appui court sur un fond d\'écran pour le voir en plein écran. \nUn appui long pour l\'appliquer directement</string>
     <string name="zooper_section_title">Configurer Zooper</string>
     <string name="zooper_download_dialog_title">Télécharger depuis</string>
     <string name="install_apps">Installer les applications</string>
-    <string name="install_apps_content">Vous devez installer ces applications pour que les widgets Zooper fonctionnent correctement.  Appuyez sur l\'une d\'elle pour l\'installer. </string>
-    <string name="install_kustom_apps_content">Vous avez besoin d\'installer ces applications pour que Kustom fonctionne correctement.  Appuyez sur une d\'entre elles pour l\'installer. </string>
+    <string name="install_apps_content">Vous devez installer ces applications pour que les widgets Zooper fonctionnent correctement. Appuyez sur l\'une d\'elle pour l\'installer. </string>
+    <string name="install_kustom_apps_content">Vous avez besoin d\'installer ces applications pour que Kustom fonctionne correctement. Appuyez sur une d\'entre elles pour l\'installer. </string>
     <string name="install_assets">Installer assets</string>
     <string name="open">Ouvrir</string>
     <string name="assets_installed">Assets déja installés</string>
@@ -218,7 +218,7 @@ mais cela demande l\'utilisation d\'une application externe.  Voulez-vous la té
         <item>Comment voir toutes les icônes incluses ?</item>
         <item>Comment remplacer certaines icônes par d\'autres ?</item>
         <item>Comment demander des icônes non réalisées ?</item>
-        <item>Après avoir redémarré mon appareil, le pack d\'icônes n\'est plus appliqué.  Les icônes ont été restaurées par défaut. </item>
+        <item>Après avoir redémarré mon appareil, le pack d\'icônes n\'est plus appliqué. Les icônes ont été restaurées par défaut. </item>
         <item>Pourquoi les icônes semblent pixélisées sur mon appareil ?</item>
         <item>Je peux voir l\'icône pour l\'application X dans les icônes inclus, mais l\'icône ne s\'applique pas. </item>
         <item>Comment masquer l\'icône de l\'application dans le lanceur ?</item>
@@ -239,7 +239,7 @@ Si vous n\'êtes pas sûrs du lanceur que vous devez utiliser, aller juste \"App
 Choisissez le lanceur auquel vous voulez appliquer les icônes. 
 Si votre lanceur n\'est pas inscrit là, mais que ce paquet d\'icône est compatible avec cela (voir la description dans le PlayStore de Google pour la liste de lanceurs supportés, vous pouvez l\'appliquer manuellement dans les paramètres du lanceur. </item>
         <item>Faites glisser le Tiroir de Navigation à gauche et allez à la section \"Icônes\", ou retournez à la section principale de l\'application, découvrez ensuite le bouton \" Icônes\". </item>
-        <item>Il dépend du lanceur que vous utilisez.  Tous les  lanceurs ne supporte pas forcément l\'édition d\'icône. 
+        <item>Il dépend du lanceur que vous utilisez. Tous les  lanceurs ne supporte pas forcément l\'édition d\'icône. 
 Mais, dans la plupart des cas, vous pouvez éditer l\'icône par une pression longue ou le faire d\'un double tap. </item>
         <item>Faites glisser le Tiroir de Navigation à gauche et allez à la section des \"Demandes\". </item>
         <item>C\'est arrivé parce que le paquet d\'icône a été déplacé vers la Carte SD, vous devriez l\'installer dans le stockage interne. </item>
@@ -250,7 +250,7 @@ Ou tester en utilisant un autre lanceur. </item>
         <item>Faites glisser le Tiroir de Navigation à gauche et allez à la section \"Paramètres\". 
 Vérifiez alors l\'option \"Masquer l\'icône du lanceur\" . </item>
         <item>Allez à votre écran d\'accueil, créez ensuite un gadget pour l\'application dont le nom est \"Restaurateur d\'Icône\". </item>
-        <item>Glisser le doigt vers la gauche dans le Tiroir de Navigation et rendez-vous dans la section \"Réglages\".  
+        <item>Glisser le doigt vers la gauche dans le Tiroir de Navigation et rendez-vous dans la section \"Réglages\". 
 Décochez l\'option \"Masquer l\'icône dans le lanceur\". </item>
         <item>Nécessaire pour pouvoir envoyer des demandes d\'icônes autant que d\'enregistrer, modifier ou choisir le lieu de stockage des fonds d\'écrans. </item>
         <item>Nécessaire pour pouvoir charger les fonds d\'écran depuis le cloud. </item>
@@ -262,13 +262,13 @@ Décochez l\'option \"Masquer l\'icône dans le lanceur\". </item>
     <string name="no_apply_tab">Veuillez contacter le développeur, il semble y avoir un problème avec l\'application. </string>
     <!--No Theme Engine Dialog-->
     <string name="NTED_title">Oups !</string>
-    <string name="NTED_message">Nous ne trouvons pas de gestionnaire de thèmes sur votre mobile.  Si vous êtes sûrs d\'en posséder un, ouvrez-le et procédez depuis celui-ci.  Si vous n\'en avez pas, procurez-vous une ROM qui soit compatible CyanogenMod ou supporte les couches de thèmes visuels et suivez leurs instructions. </string>
+    <string name="NTED_message">Nous ne trouvons pas de gestionnaire de thèmes sur votre mobile. Si vous êtes sûrs d\'en posséder un, ouvrez-le et procédez depuis celui-ci. Si vous n\'en avez pas, procurez-vous une ROM qui soit compatible CyanogenMod ou supporte les couches de thèmes visuels et suivez leurs instructions. </string>
     <string name="tap_to_download">%1$s\nAppuyez sur cette carte pour télécharger. </string>
     <string name="tap_to_open">%1$s\nAppuyez sur cette carte pour ouvrir l\'application. </string>
     <string name="donations_error_title">Donations indisponibles</string>
     <string name="donations_error_content">Votre appareil ne supporte pas les achats via l\'application. \nCela pourrait être parce que vous devez mettre à jour votre application Google Play Store, ou parce que vous vivez dans un pays où les achats via l\'application sont désactivés. </string>
     <string name="new_walls_notif_title">Nouveaux fonds d\'écran disponibles dans  %1$s. </string>
-    <string name="new_walls_notif_content">Il y a %1$s nouveaux fonds d\'écran disponibles.  Cliquez sur la notification pour ouvrir l\'application et les découvrir. </string>
+    <string name="new_walls_notif_content">Il y a %1$s nouveaux fonds d\'écran disponibles. Cliquez sur la notification pour ouvrir l\'application et les découvrir. </string>
     <string name="news">News</string>
     <string-array name="update_intervals">
         <item>Chaque heure. </item>

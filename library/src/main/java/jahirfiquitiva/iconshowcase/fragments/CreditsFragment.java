@@ -154,23 +154,23 @@ public class CreditsFragment extends Fragment {
         final int dark = ContextCompat.getColor(context, R.color.drawable_tint_light);
 
         Drawable collaboratorsIcon = ColorUtils.getTintedIcon(
-                ContextCompat.getDrawable(context, R.drawable.ic_code),
+                context, R.drawable.ic_code,
                 ThemeUtils.darkTheme ? light : dark);
 
         Drawable libs = ColorUtils.getTintedIcon(
-                ContextCompat.getDrawable(context, R.drawable.ic_libraries),
+                context, R.drawable.ic_libraries,
                 ThemeUtils.darkTheme ? light : dark);
 
         Drawable sherryIcon = ColorUtils.getTintedIcon(
-                ContextCompat.getDrawable(context, R.drawable.ic_award),
+                context, R.drawable.ic_award,
                 ThemeUtils.darkTheme ? light : dark);
 
         Drawable uiCollaboratorsIcon = ColorUtils.getTintedIcon(
-                ContextCompat.getDrawable(context, R.drawable.ic_design),
+                context, R.drawable.ic_design,
                 ThemeUtils.darkTheme ? light : dark);
 
         Drawable translators = ColorUtils.getTintedIcon(
-                ContextCompat.getDrawable(context, R.drawable.ic_translate),
+                context, R.drawable.ic_translate,
                 ThemeUtils.darkTheme ? light : dark);
 
         ImageView libsIcon = (ImageView) layout.findViewById(R.id.icon_libs);

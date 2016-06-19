@@ -57,7 +57,7 @@ public abstract class PreferenceFragment extends Fragment {
     private static final int MSG_BIND_PREFERENCES = 1;
     private static final int MSG_REQUEST_FOCUS = 2;
     private static final String PREFERENCES_TAG = "android:preferences";
-    private static final double HC_HORIZONTAL_PADDING = 0.8; //5.33
+    private static double HC_HORIZONTAL_PADDING = 0.8; //5.33
 
     @SuppressLint("HandlerLeak")
     private final Handler mHandler = new Handler() {
@@ -96,6 +96,9 @@ public abstract class PreferenceFragment extends Fragment {
         listView.setId(android.R.id.list);
         listView.setDividerHeight(0);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            if(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP){
+                HC_HORIZONTAL_PADDING = 5.33;
+            }
             final int horizontalPadding = (int) (HC_HORIZONTAL_PADDING * getResources().getDisplayMetrics().density);
             listView.setPadding(horizontalPadding, 0, horizontalPadding, 0);
         }

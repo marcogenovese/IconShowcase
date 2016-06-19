@@ -162,15 +162,15 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         final int dark = ContextCompat.getColor(context, R.color.drawable_tint_light);
 
         Drawable iconsDrawable = ColorUtils.getTintedIcon(
-                ContextCompat.getDrawable(context, R.drawable.ic_android),
+                context, R.drawable.ic_android,
                 ThemeUtils.darkTheme ? light : dark);
 
         Drawable wallsDrawable = ColorUtils.getTintedIcon(
-                ContextCompat.getDrawable(context, R.drawable.ic_multiple_wallpapers),
+                context, R.drawable.ic_multiple_wallpapers,
                 ThemeUtils.darkTheme ? light : dark);
 
         Drawable widgetsDrawable = ColorUtils.getTintedIcon(
-                ContextCompat.getDrawable(context, R.drawable.ic_zooper_kustom),
+                context, R.drawable.ic_zooper_kustom,
                 ThemeUtils.darkTheme ? light : dark);
 
         iconsIV.setImageDrawable(iconsDrawable);
@@ -196,7 +196,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             icon = (ImageView) itemView.findViewById(R.id.more_apps_icon);
             subLly = (LinearLayout) itemView.findViewById(R.id.more_apps_sub_layout);
             icon.setImageDrawable(ColorUtils.getTintedIcon(
-                    ContextCompat.getDrawable(context, R.drawable.ic_play_store),
+                    context, R.drawable.ic_play_store,
                     ThemeUtils.darkTheme ? light : dark));
             lly.setOnClickListener(new View.OnClickListener() {
                 @Override

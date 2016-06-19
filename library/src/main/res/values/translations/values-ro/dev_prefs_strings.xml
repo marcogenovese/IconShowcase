@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
     <!--
-  ~ Copyright (c) 2016.  Jahir Fiquitiva
+  ~ Copyright (c) 2016. Jahir Fiquitiva
   ~
   ~ Licensed under the CreativeCommons Attribution-ShareAlike
-  ~ 4. 0 International License.  You may not use this file except in compliance
-  ~ with the License.  You may obtain a copy of the License at
+  ~ 4. 0 International License. You may not use this file except in compliance
+  ~ with the License. You may obtain a copy of the License at
   ~
   ~    http://creativecommons. org/licenses/by-sa/4. 0/legalcode
   ~
@@ -14,12 +14,12 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License. 
   ~
-  ~ Big thanks to the project contributors.  Check them in the repository. 
+  ~ Big thanks to the project contributors. Check them in the repository. 
   ~
   -->
-<resources xmlns:tools="http://schemas. android. com/tools" tools:ignore="MissingTranslations">
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslations">
     <string name="dev_prefs_title">Preferinte de dezvoltare</string>
-    <string name="dev_prefs_summary">Aceste preferințe nu vor fi disponibile în aplicația finala.  Acestea sunt făcute doar pentru designeri pentru a verifica mai multe opțiuni de personalizare ce poate oferi IconShowcase. </string>
+    <string name="dev_prefs_summary">Aceste preferințe nu vor fi disponibile în aplicația finala. Acestea sunt făcute doar pentru designeri pentru a verifica mai multe opțiuni de personalizare ce poate oferi IconShowcase. </string>
     <string name="dev_drawer_header_style_title">Stilul antet al sertarului</string>
     <string name="dev_drawer_header_style_summary">"Cand utilizezi IconShowcase poti sa alegi intre 3 diferite stiluri de sertar "</string>
     <string name="dev_mini_header_picture_title">Mini sertar pentru imaginile antet</string>
@@ -48,7 +48,7 @@
         <item>Zooper Widget-uri suport. </item>
         <item>Kustom Imagini live și de sprijin Kustom Widget-uri. </item>
         <item>Solicitari de icoane direct din aplicatie</item>
-        <item>Limita pentru cereri de icoane:de exemplu, X aplicații la fiecare Y minute.  Utilizatorii vor putea solicita aplicații X numai la fiecare Y minute. </item>
+        <item>Limita pentru cereri de icoane:de exemplu, X aplicații la fiecare Y minute. Utilizatorii vor putea solicita aplicații X numai la fiecare Y minute. </item>
         <item>Suport pentru mai mult de 25 de launchere</item>
         <item>Ceas analog widget. </item>
         <item>Sprijin tabletă. </item>

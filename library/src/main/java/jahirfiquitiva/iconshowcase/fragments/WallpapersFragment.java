@@ -126,7 +126,7 @@ public class WallpapersFragment extends Fragment {
         }
 
         noConnection.setImageDrawable(ColorUtils.getTintedIcon(
-                ContextCompat.getDrawable(context, R.drawable.ic_no_connection),
+                context, R.drawable.ic_no_connection,
                 ThemeUtils.darkTheme ? light : dark));
         noConnection.setVisibility(View.GONE);
 
@@ -234,7 +234,7 @@ public class WallpapersFragment extends Fragment {
                             mSwipeRefreshLayout.setRefreshing(false);
                         } else {
                             noConnection.setImageDrawable(ColorUtils.getTintedIcon(
-                                    ContextCompat.getDrawable(context, R.drawable.ic_no_connection),
+                                    context, R.drawable.ic_no_connection,
                                     ThemeUtils.darkTheme ? light : dark));
                             hideStuff(noConnection);
                         }
@@ -546,7 +546,14 @@ public class WallpapersFragment extends Fragment {
                                         if (resource != null && dialogApply.isShowing()) {
                                             enteredApplyTask[0] = true;
 
-                                            dialogApply.setContent(context.getString(R.string.setting_wall_title));
+                                            if (dialogApply != null) {
+                                                dialogApply.dismiss();
+                                            }
+                                            dialogApply = new MaterialDialog.Builder(context)
+                                                    .content(R.string.setting_wall_title)
+                                                    .progress(true, 0)
+                                                    .cancelable(false)
+                                                    .show();
 
                                             applyTask[0] = new ApplyWallpaper(context, dialogApply, resource, false, layout);
                                             applyTask[0].execute();

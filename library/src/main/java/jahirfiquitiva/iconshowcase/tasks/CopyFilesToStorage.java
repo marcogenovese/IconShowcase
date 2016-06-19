@@ -27,6 +27,10 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -36,14 +40,20 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.ref.WeakReference;
 
+import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
+
+
 public class CopyFilesToStorage extends AsyncTask<Void, String, Boolean> {
 
     private final WeakReference<Context> context;
     private final MaterialDialog dialog;
     private final String folder;
+    private final View layout;
 
-    public CopyFilesToStorage(Context context, MaterialDialog dialog, String folder) {
+    public CopyFilesToStorage(Context context, View layout, MaterialDialog dialog, String folder) {
         this.context = new WeakReference<Context>(context);
+        this.layout = layout;
         this.dialog = dialog;
         this.folder = folder;
     }
@@ -84,6 +94,15 @@ public class CopyFilesToStorage extends AsyncTask<Void, String, Boolean> {
     @Override
     protected void onPostExecute(Boolean worked) {
         dialog.dismiss();
+        if(layout!=null){
+            Snackbar longSnackbar = Snackbar.make(layout,
+                    context.get().getString(R.string.assets_installed), Snackbar.LENGTH_SHORT);
+            final int snackbarLight = ContextCompat.getColor(context.get(), R.color.snackbar_light);
+            final int snackbarDark = ContextCompat.getColor(context.get(), R.color.snackbar_dark);
+            ViewGroup snackbarView = (ViewGroup) longSnackbar.getView();
+            snackbarView.setBackgroundColor(ThemeUtils.darkTheme ? snackbarDark : snackbarLight);
+            longSnackbar.show();
+        }
     }
 
     private void copyFiles(InputStream in, OutputStream out) throws IOException {

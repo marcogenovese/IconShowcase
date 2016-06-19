@@ -102,7 +102,7 @@ public class ToolbarColorizer {
     public static void tintSaveIcon(MenuItem item, Context context, int color) {
         item.setIcon(
                 ColorUtils.getTintedIcon(
-                        ContextCompat.getDrawable(context, R.drawable.ic_save),
+                        context, R.drawable.ic_save,
                         color));
     }
 
@@ -112,7 +112,7 @@ public class ToolbarColorizer {
     @SuppressWarnings("PrivateResource")
     public static void tintSearchView(Context context, @NonNull Toolbar toolbar, MenuItem item,
                                       @NonNull SearchView searchView, @ColorInt int color) {
-        item.setIcon(ColorUtils.getTintedIcon(ContextCompat.getDrawable(context, R.drawable.ic_search), color));
+        item.setIcon(ColorUtils.getTintedIcon(context, R.drawable.ic_search, color));
         final Class<?> searchViewClass = searchView.getClass();
         try {
             final Field mCollapseIconField = toolbar.getClass().getDeclaredField("mCollapseIcon");
@@ -172,10 +172,8 @@ public class ToolbarColorizer {
             Field fCursorDrawable = clazz.getDeclaredField("mCursorDrawable");
             fCursorDrawable.setAccessible(true);
             Drawable[] drawables = new Drawable[2];
-            drawables[0] = ContextCompat.getDrawable(editText.getContext(), mCursorDrawableRes);
-            drawables[0] = ColorUtils.getTintedIcon(drawables[0], color);
-            drawables[1] = ContextCompat.getDrawable(editText.getContext(), mCursorDrawableRes);
-            drawables[1] = ColorUtils.getTintedIcon(drawables[1], color);
+            drawables[0] = ColorUtils.getTintedIcon(editText.getContext(), mCursorDrawableRes, color);
+            drawables[1] = ColorUtils.getTintedIcon(editText.getContext(), mCursorDrawableRes, color);
             fCursorDrawable.set(editor, drawables);
         } catch (Exception e) {
             e.printStackTrace();
