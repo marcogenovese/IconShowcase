@@ -7,7 +7,7 @@
 <h4 align="center">Full-of-features, easy-to-customize, free and open source, Material Design based dashboard for icon packs.</h4>
 
 <p align="center">
-	<a target="_blank" href="https://github.com/jahirfiquitiva/IconShowcase/releases/tag/1.9.6"><img src="https://img.shields.io/badge/version-1.9.6-00C853.svg"></a>
+	<a target="_blank" href="https://github.com/jahirfiquitiva/IconShowcase/releases/tag/1.9.6.1"><img src="https://img.shields.io/badge/version-1.9.6.1-00C853.svg"></a>
 	<a target="_blank" href="http://creativecommons.org/licenses/by-sa/4.0/legalcode"><img src="https://img.shields.io/badge/license-CC%20BY%20SA-01579B.svg"></a>
 	<img src="https://img.shields.io/badge/API-16%2B-7ac143.svg">
 	<a target="_blank" href="http://bit.ly/DonateJahir1" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-FFC107.svg" /></a>
