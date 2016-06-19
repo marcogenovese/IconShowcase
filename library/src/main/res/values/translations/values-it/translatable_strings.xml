@@ -23,7 +23,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="muzei_settings">Impostazioni Muzei</string>
     <!-- Sharing wallpaper from Muzei -->
-    <string name="share_text">Il mio sfondo di oggi è %1$s di %2$s, da %3$s. \nOttienilo ora su %4$s</string>
+    <string name="share_text">Il mio sfondo di oggi è %1$s di %2$s, da %3$s.\nOttienilo ora su %4$s</string>
     <!-- List Of Drawer Sections -->
     <string name="section_home">Home</string>
     <string name="section_icons">Icone</string>
@@ -50,8 +50,8 @@
     <string name="send_title">Invia tramite</string>
     <string name="changelog">Cosa c\'è di nuovo?</string>
     <!-- LauncherNotInstalled Dialog -->
-    <string name="lni_content">%1$s non è attualmente installato sul tuo dispositivo. \nVuoi installarlo dal Google Play Store?</string>
-    <string name="cm_dialog_content">%1$s fa parte delle ROM basate su CyanogenMod. \nVuoi installarlo sul tuo dispositivo?</string>
+    <string name="lni_content">%1$s non è attualmente installato sul tuo dispositivo.\nVuoi installarlo dal Google Play Store?</string>
+    <string name="cm_dialog_content">%1$s fa parte delle ROM basate su CyanogenMod.\nVuoi installarlo sul tuo dispositivo?</string>
     <string name="gnl_title">Il launcher Google Now NON è compatibile</string>
     <string name="gnl_content">Google Now Launcher NON è compatibile con NESSUN icon pack. Per favore non lasciare un voto negativo all\'icon pack per questo motivo. 
 C\'è una modo che puoi provare ad usare, ma richiede l\'utilizzo di un\'app esterna. Vuoi installarla?</string>
@@ -131,16 +131,16 @@ C\'è una modo che puoi provare ad usare, ma richiede l\'utilizzo di un\'app est
     <string name="pref_summary_wall_header">Lo sfondo attuale del tuo dispositivo sarà mostrato nella Toolbar dell\'app. </string>
     <string name="pref_header_storage">Archiviazione</string>
     <string name="pref_title_cache">Pulisci cache e dati dell\'app</string>
-    <string name="pref_summary_cache">Questo cancellerà la cache e le preferenze dell\'app. \nCache attualmente in uso: %1$s</string>
+    <string name="pref_summary_cache">Questo cancellerà la cache e le preferenze dell\'app.\nCache attualmente in uso: %1$s</string>
     <string name="pref_title_wsl">Destinazione in cui scaricare gli sfondi</string>
-    <string name="pref_summary_wsl">Cambia destinazione in cui salvare o scaricare gli sfondi. \nPercorso attuale: %1$s</string>
+    <string name="pref_summary_wsl">Cambia destinazione in cui salvare o scaricare gli sfondi.\nPercorso attuale: %1$s</string>
     <string name="pref_header_launcher_icon">Icona del Launcher</string>
     <string name="pref_title_launcher_icon">Nascondi l\'icona dal Launcher</string>
     <string name="pref_summary_launcher_icon">Quando selezionato, verrà nascosta l\'icona dal launcher. </string>
     <string name="clearcache_dialog_content">Sei sicuro di voler cancellare i dati dell\'app, la cache e le impostazioni? Le icone applicate non saranno modificate. </string>
     <string name="hideicon_dialog_title">Attenzione!</string>
     <string name="hideicon_dialog_content">Sei sicuro di voler nascondere l\'icona dell\'app dal tuo launcher?\n
-L\'app potrebbe chiudersi inaspettatamente. \nPrima di nasconderla, leggi le FAQ per sapere come farla apparire di nuovo. </string>
+L\'app potrebbe chiudersi inaspettatamente.\nPrima di nasconderla, leggi le FAQ per sapere come farla apparire di nuovo. </string>
     <string name="prefs_notifs_title">Notifiche</string>
     <string name="pref_title_enable_notifs">Abilita notifiche</string>
     <string name="pref_summary_enable_notifs">Ricevi notifiche per nuovi sfondi e novità sullo sviluppo</string>
@@ -157,7 +157,7 @@ L\'app potrebbe chiudersi inaspettatamente. \nPrima di nasconderla, leggi le FAQ
     <string name="clock_widget_title">Orologio analogico</string>
     <string name="faqs_section">FAQ</string>
     <string name="dashboard_author">Sviluppo della Dashboard</string>
-    <string name="dashboard_author_copyright">Dalla Colombia verso il mondo. \nDashboard pubblicata sotto licenza CreativeCommons Attribution-ShareAlike. Copyright © 2016. </string>
+    <string name="dashboard_author_copyright">Dalla Colombia verso il mondo.\nDashboard pubblicata sotto licenza CreativeCommons Attribution-ShareAlike. Copyright © 2016. </string>
     <string name="iconpack_author">Informazioni sul designer</string>
     <string name="fork_on_github">Fork su GitHub</string>
     <string name="visit_website">Sito web</string>
@@ -181,7 +181,7 @@ L\'app potrebbe chiudersi inaspettatamente. \nPrima di nasconderla, leggi le FAQ
     <string name="license_failed">Non hai scaricato %1$s dal Google Play Store. Hai due possibilità:</string>
     <string name="license_success">Grazie per aver scaricato %1$s. Se ti piace, non dimenticare di lasciare una recensione sul Google Play Store. </string>
     <string name="apply_advice">Se il launcher che usi non è presente in questa lista, devi applicare l\'icon pack direttamente dalle impostazioni del launcher. Alcuni launcher non consentono di applicare direttamente l\'icon pack. </string>
-    <string name="walls_advice">Premi su uno sfondo per visualizzarlo a schermo intero. \nPremi a lungo per applicarlo direttamente. </string>
+    <string name="walls_advice">Premi su uno sfondo per visualizzarlo a schermo intero.\nPremi a lungo per applicarlo direttamente. </string>
     <string name="zooper_section_title">Impostazioni Zooper</string>
     <string name="zooper_download_dialog_title">Scarica da</string>
     <string name="install_apps">Installa applicazioni</string>
@@ -261,7 +261,7 @@ Puoi risolvere il problema aumentando la dimensione delle icone al 115 - 120%, o
     <string name="tap_to_download">%1$s\nClicca questa scheda per scaricarlo. </string>
     <string name="tap_to_open">%1$s\nClicca su questa scheda per aprire l\'applicazione. </string>
     <string name="donations_error_title">Donazioni non disponibili. </string>
-    <string name="donations_error_content">Il tuo dispositivo non supporta gli acquisti In-app. \nQuesto potrebbe succedere perchè devi aggiornare l\'applicazione Play Store, o perchè vivi in un paese in cui gli acquisti In-app sono disabilitati. </string>
+    <string name="donations_error_content">Il tuo dispositivo non supporta gli acquisti In-app.\nQuesto potrebbe succedere perchè devi aggiornare l\'applicazione Play Store, o perchè vivi in un paese in cui gli acquisti In-app sono disabilitati. </string>
     <string name="new_walls_notif_title">Nuovi sfondi disponibili in %1$s</string>
     <string name="new_walls_notif_content">Sono disponibili %1$s nuovi sfondi. Tocca la notifica per aprire l\'app e controllarli</string>
     <string name="news">Novità</string>

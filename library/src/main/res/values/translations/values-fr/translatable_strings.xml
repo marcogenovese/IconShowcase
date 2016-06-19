@@ -23,7 +23,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="muzei_settings">Paramètres Muzei</string>
     <!-- Sharing wallpaper from Muzei -->
-    <string name="share_text">Mon fond d\'écran d\'aujourd\'hui est %1$s par %2$s , de %3$s . \nTéléchargez-le ici %4$s</string>
+    <string name="share_text">Mon fond d\'écran d\'aujourd\'hui est %1$s par %2$s , de %3$s .\nTéléchargez-le ici %4$s</string>
     <!-- List Of Drawer Sections -->
     <string name="section_home">Accueil</string>
     <string name="section_icons">Icônes</string>
@@ -50,8 +50,8 @@
     <string name="send_title">Envoyer avec</string>
     <string name="changelog">Nouveautés</string>
     <!-- LauncherNotInstalled Dialog -->
-    <string name="lni_content">%1$s n\'est actuellement pas installé sur votre appareil. \nVoulez-vous l\'installer depuis le Play Store ?</string>
-    <string name="cm_dialog_content">%1$s fait partie des roms CyanogenMod. \nVoulez-vous l\'installer sur votre appareil ?</string>
+    <string name="lni_content">%1$s n\'est actuellement pas installé sur votre appareil.\nVoulez-vous l\'installer depuis le Play Store ?</string>
+    <string name="cm_dialog_content">%1$s fait partie des roms CyanogenMod.\nVoulez-vous l\'installer sur votre appareil ?</string>
     <string name="gnl_title">Google Now Launcher n\'est pas compatible</string>
     <string name="gnl_content">Google Now Launcher n\'est compatible avec aucun pack d\'icônes. Merci
 de ne pas noter le pack négativement pour cette raison. Il y a une méthode alternative que vous pouvez essayer
@@ -132,15 +132,15 @@ mais cela demande l\'utilisation d\'une application externe. Voulez-vous la tél
     <string name="pref_summary_wall_header">Votre fond d\'écran actuel apparaîtra dans la barre d\'outils de l\'application</string>
     <string name="pref_header_storage">Stockage</string>
     <string name="pref_title_cache">Effacer le cache et les données</string>
-    <string name="pref_summary_cache">Les paramètres et le cache de l\'application seront supprimés. \nTaille actuelle du cache : %1$s</string>
+    <string name="pref_summary_cache">Les paramètres et le cache de l\'application seront supprimés.\nTaille actuelle du cache : %1$s</string>
     <string name="pref_title_wsl">Emplacement des téléchargements</string>
-    <string name="pref_summary_wsl">Changer d\'emplacement pour enregistrer ou télécharger les fonds d\'écran. \nEmplacement actuel : %1$s</string>
+    <string name="pref_summary_wsl">Changer d\'emplacement pour enregistrer ou télécharger les fonds d\'écran.\nEmplacement actuel : %1$s</string>
     <string name="pref_header_launcher_icon">Icône de lanceur</string>
     <string name="pref_title_launcher_icon">Masquer l\'icône dans le lanceur</string>
     <string name="pref_summary_launcher_icon">Si coché, l\'icône de lanceur sera masquée</string>
     <string name="clearcache_dialog_content">Êtes-vous sûr de vouloir supprimer les données, le cache et les paramètres de l\'application ? Les icônes appliquées ne seront pas affectées</string>
     <string name="hideicon_dialog_title">Attention !</string>
-    <string name="hideicon_dialog_content">Êtes-vous sûr de vouloir masquer l\'icône de l\'application dans votre lanceur ?\nL\'application pourrait se fermer de manière inattendue. \nVous pouvez lire la FAQ pour savoir comment faire réapparaître l\'icône, avant de la masquer. </string>
+    <string name="hideicon_dialog_content">Êtes-vous sûr de vouloir masquer l\'icône de l\'application dans votre lanceur ?\nL\'application pourrait se fermer de manière inattendue.\nVous pouvez lire la FAQ pour savoir comment faire réapparaître l\'icône, avant de la masquer. </string>
     <string name="prefs_notifs_title">Notifications</string>
     <string name="pref_title_enable_notifs">Activer les notifications</string>
     <string name="pref_summary_enable_notifs">Recevoir des notifications pour de nouveaux fonds d\'écran et des informations sur le développement. </string>
@@ -157,7 +157,7 @@ mais cela demande l\'utilisation d\'une application externe. Voulez-vous la tél
     <string name="clock_widget_title">Horloge analogique</string>
     <string name="faqs_section">FAQ</string>
     <string name="dashboard_author">Développement de l\'application Dashboard</string>
-    <string name="dashboard_author_copyright">De la Colombie au reste du monde. \nDashboard est partagé sous licence CreativeCommons Attribution-ShareAlike. Droit d\'auteur ©  2016. </string>
+    <string name="dashboard_author_copyright">De la Colombie au reste du monde.\nDashboard est partagé sous licence CreativeCommons Attribution-ShareAlike. Droit d\'auteur ©  2016. </string>
     <string name="iconpack_author">Informations sur le designer</string>
     <string name="fork_on_github">Contribuer sur GitHub</string>
     <string name="visit_website">Site internet</string>
@@ -181,7 +181,7 @@ mais cela demande l\'utilisation d\'une application externe. Voulez-vous la tél
     <string name="license_failed">Vous n\'avez pas téléchargé %1$s depuis le Play Store. Vous avez 2 options :</string>
     <string name="license_success">Merci d\'avoir téléchargé %1$s. Si vous l\'aimez, n\'oubliez pas de l\'évaluer et d\'écrire un commentaire sur le Play Store</string>
     <string name="apply_advice">Si le lanceur que vous utilisez n\'est pas listé ici, vous devez appliquer le pack d\'icônes directement depuis les paramètres du lanceur. Certains lanceurs ne supportent pas l\'application direct du pack d\'icônes. </string>
-    <string name="walls_advice">Un appui court sur un fond d\'écran pour le voir en plein écran. \nUn appui long pour l\'appliquer directement</string>
+    <string name="walls_advice">Un appui court sur un fond d\'écran pour le voir en plein écran.\nUn appui long pour l\'appliquer directement</string>
     <string name="zooper_section_title">Configurer Zooper</string>
     <string name="zooper_download_dialog_title">Télécharger depuis</string>
     <string name="install_apps">Installer les applications</string>
@@ -266,7 +266,7 @@ Décochez l\'option \"Masquer l\'icône dans le lanceur\". </item>
     <string name="tap_to_download">%1$s\nAppuyez sur cette carte pour télécharger. </string>
     <string name="tap_to_open">%1$s\nAppuyez sur cette carte pour ouvrir l\'application. </string>
     <string name="donations_error_title">Donations indisponibles</string>
-    <string name="donations_error_content">Votre appareil ne supporte pas les achats via l\'application. \nCela pourrait être parce que vous devez mettre à jour votre application Google Play Store, ou parce que vous vivez dans un pays où les achats via l\'application sont désactivés. </string>
+    <string name="donations_error_content">Votre appareil ne supporte pas les achats via l\'application.\nCela pourrait être parce que vous devez mettre à jour votre application Google Play Store, ou parce que vous vivez dans un pays où les achats via l\'application sont désactivés. </string>
     <string name="new_walls_notif_title">Nouveaux fonds d\'écran disponibles dans  %1$s. </string>
     <string name="new_walls_notif_content">Il y a %1$s nouveaux fonds d\'écran disponibles. Cliquez sur la notification pour ouvrir l\'application et les découvrir. </string>
     <string name="news">News</string>

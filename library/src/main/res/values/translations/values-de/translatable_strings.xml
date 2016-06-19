@@ -50,8 +50,8 @@
     <string name="send_title">Senden via</string>
     <string name="changelog">"Was ist neu? "</string>
     <!-- LauncherNotInstalled Dialog -->
-    <string name="lni_content">"%1$s ist momentan nicht auf deinem Gerät installiert. \nMöchtest du es aus dem Google Play Store installieren? "</string>
-    <string name="cm_dialog_content">"%1$s ist ein Teil von CyanogenMod Roms. \nMöchtest du es auf dein Gerät installieren? "</string>
+    <string name="lni_content">"%1$s ist momentan nicht auf deinem Gerät installiert.\nMöchtest du es aus dem Google Play Store installieren? "</string>
+    <string name="cm_dialog_content">"%1$s ist ein Teil von CyanogenMod Roms.\nMöchtest du es auf dein Gerät installieren? "</string>
     <string name="gnl_title">"Der Google Now Launcher ist NICHT kompatibel "</string>
     <string name="gnl_content">Der Google Now Launcher ist mit KEINEM Icon Pack kompatibel. Bitte bewerte diese deswegen nicht schlecht. Es existiert eine Lösung, welche du versuchen kannst, die Methode benötigt aber eine andere App. Möchtest du diese herunterladen?</string>
     <string name="lg_dialog_content">Es tut uns leid aber die LG Home App ist exklusiv für LG-Geräte und kann daher nicht vom Google Play Store heruntergeladen werden. </string>
@@ -130,9 +130,9 @@
     <string name="pref_summary_wall_header">aktuelles Hintergrundbild wird in der Kopfzeile der App verwendet. </string>
     <string name="pref_header_storage">Speicher</string>
     <string name="pref_title_cache">Daten und Kurzzeitspeicher der App leeren</string>
-    <string name="pref_summary_cache">Dies löscht den Kurzzeitspeicher der app, sowie alle Einstellungen. \nAktuelle Kurzzeitspeichergröße: %1$s</string>
+    <string name="pref_summary_cache">Dies löscht den Kurzzeitspeicher der app, sowie alle Einstellungen.\nAktuelle Kurzzeitspeichergröße: %1$s</string>
     <string name="pref_title_wsl">Speicherplatz für Hintergrund downloads</string>
-    <string name="pref_summary_wsl">Ändere den Speicherort für heruntergeladene Hintergründe. \nAktueller Speicherort: %1$s</string>
+    <string name="pref_summary_wsl">Ändere den Speicherort für heruntergeladene Hintergründe.\nAktueller Speicherort: %1$s</string>
     <string name="pref_header_launcher_icon">Launcher Icon</string>
     <string name="pref_title_launcher_icon">Launcher Icon verstecken</string>
     <string name="pref_summary_launcher_icon">Wenn ausgewählt wird das Icon im Launcher verborgen. </string>
@@ -140,7 +140,7 @@
 Ausgewählte Icons werden nicht beeinflusst. </string>
     <string name="hideicon_dialog_title">Achtung!</string>
     <string name="hideicon_dialog_content">Sind Sie sicher dass sie das App Icon im Launcher verstecken wollen? 
-\nDie App könnte sich unerwartet schließen. \nLesen Sie die FAQs um zu erfahren wie sie es wieder sichtbar machen können, bevor Sie sie verstecken. </string>
+\nDie App könnte sich unerwartet schließen.\nLesen Sie die FAQs um zu erfahren wie sie es wieder sichtbar machen können, bevor Sie sie verstecken. </string>
     <string name="prefs_notifs_title">Benachrichtigungen</string>
     <string name="pref_title_enable_notifs">Benachrichtigungen aktivieren</string>
     <string name="pref_summary_enable_notifs">Benachrichtigungen für neue Hintergrundbilder und Neuigkeiten erhalten. </string>
@@ -157,7 +157,7 @@ Ausgewählte Icons werden nicht beeinflusst. </string>
     <string name="clock_widget_title">Analoguhr</string>
     <string name="faqs_section">FAQs</string>
     <string name="dashboard_author">Dashboard App Entwicklung</string>
-    <string name="dashboard_author_copyright">Aus Kolumbien in die Welt. \nDashboard geteilt unter CreativeCommons Attribution-ShareAlike License. Copyright© 2016. </string>
+    <string name="dashboard_author_copyright">Aus Kolumbien in die Welt.\nDashboard geteilt unter CreativeCommons Attribution-ShareAlike License. Copyright© 2016. </string>
     <string name="iconpack_author">Designer Information</string>
     <string name="fork_on_github">Fork auf GitHub</string>
     <string name="visit_website">Webseite</string>
@@ -180,7 +180,7 @@ Ausgewählte Icons werden nicht beeinflusst. </string>
     <!-- Messages shown when using LicenseChecker -->
     <string name="license_failed">Du hast %1$s nicht aus dem Google Play Store installiert. Du hast zwei Möglichkeiten:</string>
     <string name="license_success">Danke, dass Du %1$s installiert hast. Wenn sie Dir gefällt, kannst Du die App im Google Play Store bewerten und eine Beurteilung abgeben. </string>
-    <string name="apply_advice">Sollte der Launcher den Sie benutzen nicht aufgeführt sein, müssen sie das Icon Pack über die Einstellungen des Launchers auswählen. \nManche Launcher unterstützen die Auswahl durch andere Apps nicht. </string>
+    <string name="apply_advice">Sollte der Launcher den Sie benutzen nicht aufgeführt sein, müssen sie das Icon Pack über die Einstellungen des Launchers auswählen.\nManche Launcher unterstützen die Auswahl durch andere Apps nicht. </string>
     <string name="walls_advice">Drücken sie kurz auf einen Hintergrund, um ihn im Fullscreen modus zu öffnen,\nDrücken sie lange um ihn auf ihren Homescreen anzuwenden. </string>
     <string name="zooper_section_title">Zooper Einrichtung</string>
     <string name="zooper_download_dialog_title">Herrunterladen von</string>
@@ -264,7 +264,7 @@ Dann tippen Sie auf die \"Icon aus dem Launcher verbergen\" option. </item>
     <string name="tap_to_download">%1$s\nDiese Karte zum Download klicken</string>
     <string name="tap_to_open">%1$s\nDiese Karte zum öffnen der App klicken</string>
     <string name="donations_error_title">Spenden nicht verfügbar</string>
-    <string name="donations_error_content">Dein Gerät unterstützt leider keine In-App Käufe. \nDas könnte daran liegen, dass du die Google Play Store App updaten musst oder weil du in einem Land lebst, in dem In-App Käufe nicht verfügbar sind. </string>
+    <string name="donations_error_content">Dein Gerät unterstützt leider keine In-App Käufe.\nDas könnte daran liegen, dass du die Google Play Store App updaten musst oder weil du in einem Land lebst, in dem In-App Käufe nicht verfügbar sind. </string>
     <string name="new_walls_notif_title">Neue Hindergrundbilder in %1$s verfügbar. </string>
     <string name="new_walls_notif_content">Es sind %1$s neue Wallpaper verfügbar! Klicke auf die Benachrichtigung um die App zu öffnen und sie anzusehen. </string>
     <string name="news">Neuigkeiten</string>

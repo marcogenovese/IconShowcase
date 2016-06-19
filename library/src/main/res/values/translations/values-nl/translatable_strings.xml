@@ -23,7 +23,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="muzei_settings">Muzei Instellingen</string>
     <!-- Sharing wallpaper from Muzei -->
-    <string name="share_text">Mijn achtergrond voor vandaag is %1$s door %2$s, van %3$s. \nVerkrijg het nu bij %4$s</string>
+    <string name="share_text">Mijn achtergrond voor vandaag is %1$s door %2$s, van %3$s.\nVerkrijg het nu bij %4$s</string>
     <!-- List Of Drawer Sections -->
     <string name="section_home">Thuis</string>
     <string name="section_icons">Iconen</string>
@@ -50,8 +50,8 @@
     <string name="send_title">Verstuur via</string>
     <string name="changelog">Wat is nieuw?</string>
     <!-- LauncherNotInstalled Dialog -->
-    <string name="lni_content">%1$s is momenteel niet geïnstalleerd op uw apparaat. \nZou u het willen installeren vanuit de Google Play Store?</string>
-    <string name="cm_dialog_content">%1$s is onderdeel van CyanogenMod (gebaseerde) roms. \nZou u het willen installeren op uw apparaat?</string>
+    <string name="lni_content">%1$s is momenteel niet geïnstalleerd op uw apparaat.\nZou u het willen installeren vanuit de Google Play Store?</string>
+    <string name="cm_dialog_content">%1$s is onderdeel van CyanogenMod (gebaseerde) roms.\nZou u het willen installeren op uw apparaat?</string>
     <string name="gnl_title">Google Now Launcher is NIET Compatibel</string>
     <string name="gnl_content">Google Now Launcher is NIET compatibel met icon packs. Geef om die reden alstublieft geen lage beoordeling. Er is wel een manier, door middel van een andere app, waarop het mogelijk is iconen te vervangen in Google Now Launcher. Zou je die app willen downloaden?</string>
     <string name="lg_dialog_content">Het spijt ons, maar LG Home app is exclusief voor LG apparaten en kan daarom niet worden gedownload in de Google Play Store. </string>
@@ -130,10 +130,10 @@
     <string name="pref_summary_wall_header">Uw huidige achtergrond zal te zien zijn in de app Toolbar. </string>
     <string name="pref_header_storage">Opslag</string>
     <string name="pref_title_cache">Verwijder app cache en data</string>
-    <string name="pref_summary_cache">Dit zal de app cache en voorkeuren verwijderen. \nHuidige cache
+    <string name="pref_summary_cache">Dit zal de app cache en voorkeuren verwijderen.\nHuidige cache
 grootte: %1$s</string>
     <string name="pref_title_wsl">Achtergronden download locatie</string>
-    <string name="pref_summary_wsl">Verander de locatie om om achtergronden op te slaan. \nHuidige
+    <string name="pref_summary_wsl">Verander de locatie om om achtergronden op te slaan.\nHuidige
 locatie: %1$s</string>
     <string name="pref_header_launcher_icon">Launcher icoon</string>
     <string name="pref_title_launcher_icon">Verberg launcher icoon</string>
@@ -141,7 +141,7 @@ locatie: %1$s</string>
     <string name="clearcache_dialog_content">Weet u zeker dat u uw voorkeuren en cache wilt
 verwijderen? Toegepaste iconen blijven onaangeroerd. </string>
     <string name="hideicon_dialog_title">Waarschuwing!</string>
-    <string name="hideicon_dialog_content">Weet u zeker dat u het app icoon wilt verbergen in uw launcher?\nDe app kan onverwachts worden afgesloten. \nU kan bij veelgestelde vragen lezen hoe u dit icoon weer terug kan krijgen. </string>
+    <string name="hideicon_dialog_content">Weet u zeker dat u het app icoon wilt verbergen in uw launcher?\nDe app kan onverwachts worden afgesloten.\nU kan bij veelgestelde vragen lezen hoe u dit icoon weer terug kan krijgen. </string>
     <string name="prefs_notifs_title">Notificaties</string>
     <string name="pref_title_enable_notifs">Schakel notificaties in</string>
     <string name="pref_summary_enable_notifs">Verkrijg notificaties over nieuwe achtergronden en ontwikkelingsnieuws. </string>
@@ -158,7 +158,7 @@ verwijderen? Toegepaste iconen blijven onaangeroerd. </string>
     <string name="clock_widget_title">Analoge klok</string>
     <string name="faqs_section">FAQ</string>
     <string name="dashboard_author">Dashboard App Ontwikkeling</string>
-    <string name="dashboard_author_copyright">Vanuit Colomia voor de wereld. \nDashboard gedeeld onder CreativeCommons Attribution-ShareAlike License. Copyright © 2016. </string>
+    <string name="dashboard_author_copyright">Vanuit Colomia voor de wereld.\nDashboard gedeeld onder CreativeCommons Attribution-ShareAlike License. Copyright © 2016. </string>
     <string name="iconpack_author">Ontwerper Info</string>
     <string name="fork_on_github">Fork op GitHub</string>
     <string name="visit_website">Website</string>
@@ -183,7 +183,7 @@ community op Google Plus is hiervoor geschikt. </string>
     <string name="license_failed">Je hebt %1$s niet uit de Google Play Store gedownload. Er zijn twee opties:</string>
     <string name="license_success">Dank u voor het downloaden van %1$s. Als u dit leuk vindt, vergeet dan niet om dit te beoordelen op de Google Play Store. </string>
     <string name="apply_advice">"Als de launcher hier niet tussen staat, kun je mogelijk via de launcher instellingen de iconen selecteren. Niet alle launcher ondersteunen namelijk direct selecteren. "</string>
-    <string name="walls_advice">Tik op een achtergrond om het in FullScreen te bekijken. \nTik lang om het direct toe te passen op uw thuisscherm. </string>
+    <string name="walls_advice">Tik op een achtergrond om het in FullScreen te bekijken.\nTik lang om het direct toe te passen op uw thuisscherm. </string>
     <string name="zooper_section_title">Zooper Opzetten</string>
     <string name="zooper_download_dialog_title">Download van</string>
     <string name="install_apps">Installeer apps</string>
@@ -274,7 +274,7 @@ Schakel dan de \"Verberg icoon in launcher\" optie uit. </item>
     <string name="tap_to_download">%1$s\nDruk op de kaart om het te downloaden. </string>
     <string name="tap_to_open">%1$s\nDruk op de kaart om de app te openen</string>
     <string name="donations_error_title">Donaties niet beschikbaar</string>
-    <string name="donations_error_content">Jouw apparaat ondersteunt geen in-app aankopen. \nDit kan worden veroorzaakt door een oude Google Play Store app, of omdat het niet beschikbaar is in dit land. </string>
+    <string name="donations_error_content">Jouw apparaat ondersteunt geen in-app aankopen.\nDit kan worden veroorzaakt door een oude Google Play Store app, of omdat het niet beschikbaar is in dit land. </string>
     <string name="new_walls_notif_title">Nieuwe Achtergronden beschikbaar in %1$s. </string>
     <string name="new_walls_notif_content">Er zijn %1$s nieuwe achtergronden beschikbaar. Tik op de notificatie om de app te openen en ze te bekijken. </string>
     <string name="news">Nieuws</string>

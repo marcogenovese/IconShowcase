@@ -23,7 +23,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="muzei_settings">Ustawienia Muzei</string>
     <!-- Sharing wallpaper from Muzei -->
-    <string name="share_text">Moją tapetą na dziś jest %1$s stworzona przez %2$s, z %3$s. \nZdobądź ją tutaj %4$s</string>
+    <string name="share_text">Moją tapetą na dziś jest %1$s stworzona przez %2$s, z %3$s.\nZdobądź ją tutaj %4$s</string>
     <!-- List Of Drawer Sections -->
     <string name="section_home">Ekran Główny</string>
     <string name="section_icons">Ikony</string>
@@ -52,7 +52,7 @@
     <!-- LauncherNotInstalled Dialog -->
     <string name="lni_content">%1$s nie jest obecnie zainstalowany na Twoim urządzeniu. Czy chcesz \n
 Zainstalować go ze Sklepu Google Play?</string>
-    <string name="cm_dialog_content">%1$s jest częścią ROMów opartych na CyanogenMod. \n
+    <string name="cm_dialog_content">%1$s jest częścią ROMów opartych na CyanogenMod.\n
 Czy chcesz zainstalować go na swoje urządzenie?</string>
     <string name="gnl_title">Google Now Launcher NIE jest kompatybilny</string>
     <string name="gnl_content">Google Now Launcher NIE JEST kompatybilny z ŻADNĄ paczką ikon. Proszę nie oceniać negatywnie tej paczki ikon z tego powodu. Jest rozwiązanie, które możesz wypróbować samemu, ale wymaga ono użycia zewnętrznej aplikacji. Czy chcesz ją pobrać?</string>
@@ -132,16 +132,16 @@ Czy chcesz zainstalować go na swoje urządzenie?</string>
     <string name="pref_summary_wall_header">Twoja obecna tapeta będzie wyświetlona na pasku narzędziowym</string>
     <string name="pref_header_storage">Przechowywanie danych</string>
     <string name="pref_title_cache">Wyczyść pamięć aplikacji i dane</string>
-    <string name="pref_summary_cache">Pamięć podręczna i ustawienia zostaną usunięte. \nObecny rozmiar pamięci podręcznej: %1$s</string>
+    <string name="pref_summary_cache">Pamięć podręczna i ustawienia zostaną usunięte.\nObecny rozmiar pamięci podręcznej: %1$s</string>
     <string name="pref_title_wsl">Lokalizacja zapisu tapet</string>
-    <string name="pref_summary_wsl">Zmień lokalizację zapisu tapet. \nObecna lokalizacja: %1$s</string>
+    <string name="pref_summary_wsl">Zmień lokalizację zapisu tapet.\nObecna lokalizacja: %1$s</string>
     <string name="pref_header_launcher_icon">Ikona launchera</string>
     <string name="pref_title_launcher_icon">Ukryj ikonę w launcherze</string>
     <string name="pref_summary_launcher_icon">Jeżeli zaznaczone, ikona w launcherze zostanie ukryta. </string>
     <string name="clearcache_dialog_content">Czy na pewno chcesz usunąć dane aplikacji, pamięć podręczną i ustawienia? Nie wpłynie to na zastosowane ikony. </string>
     <string name="hideicon_dialog_title">Uwaga!</string>
     <string name="hideicon_dialog_content">Czy na pewno chcesz ukryć ikonę w launcherze? 
-\nAplikacja może się niespodziewanie zamknąć. \nPrzeczytaj FAQ aby dowiedzieć się jak ją włączyć ponownie, przed jej ukrywaniem. </string>
+\nAplikacja może się niespodziewanie zamknąć.\nPrzeczytaj FAQ aby dowiedzieć się jak ją włączyć ponownie, przed jej ukrywaniem. </string>
     <string name="prefs_notifs_title">Powiadomienia</string>
     <string name="pref_title_enable_notifs">Włącz powiadomienia</string>
     <string name="pref_summary_enable_notifs">Będziesz otrzymywać powiadomienia o nowych tapetach i wiadomości o postępach pracy nad rozwojem aplikacji. </string>
@@ -158,7 +158,7 @@ Czy chcesz zainstalować go na swoje urządzenie?</string>
     <string name="clock_widget_title">Zegar analogowy</string>
     <string name="faqs_section">FAQ</string>
     <string name="dashboard_author">Rozwój aplikacji bazowej</string>
-    <string name="dashboard_author_copyright">Z Kolumbi dla świata. \nAplikacja bazowa udostępniona pod licencją CreativeCommons Attribution-ShareAlike. Copyright© 2015~2016. </string>
+    <string name="dashboard_author_copyright">Z Kolumbi dla świata.\nAplikacja bazowa udostępniona pod licencją CreativeCommons Attribution-ShareAlike. Copyright© 2015~2016. </string>
     <string name="iconpack_author">Informacje o projektancie</string>
     <string name="fork_on_github">Fork na GitHub</string>
     <string name="visit_website">Strona internetowa</string>
@@ -182,7 +182,7 @@ Czy chcesz zainstalować go na swoje urządzenie?</string>
     <string name="license_failed">Nie pobrałeś %1$s ze Sklepu Google Play. Masz  dwie opcje:</string>
     <string name="license_success">Dziękuję za pobranie %1$s. Jeżeli Ci się podoba, nie zapomnij jej ocenić i napisać recenzji w Sklepie Google Play. </string>
     <string name="apply_advice">Jeżeli launcher, którego używasz, nie jest na liście, musisz ustawić paczkę ikon bezpośrednio z jego ustawień. Niektóre launchery nie wspierają bezpośredniego ustawiania paczek ikon. </string>
-    <string name="walls_advice">Dotknij tapetę, aby zobaczyć ją na pełnym ekranie. \nPrzytrzymaj, aby ustawić ją na tapetę pulpitu. </string>
+    <string name="walls_advice">Dotknij tapetę, aby zobaczyć ją na pełnym ekranie.\nPrzytrzymaj, aby ustawić ją na tapetę pulpitu. </string>
     <string name="zooper_section_title">Ustawienia Zooper Widget</string>
     <string name="zooper_download_dialog_title">Pobierz z</string>
     <string name="install_apps">Zainstaluj aplikacje</string>
@@ -260,7 +260,7 @@ Wybierz Launcher, dla którego chcesz ustawić paczkę ikon. Jeżeli Twojego Lau
     <string name="tap_to_download">%1$s\nTapnij tę kartę, aby pobrać aplikację. </string>
     <string name="tap_to_open">%1$s\nTapnij tę kartę, aby otworzyć aplikację. </string>
     <string name="donations_error_title">Dotacje nie są dostępne</string>
-    <string name="donations_error_content">Twoje urządzenie nie wspiera Zakupów w Aplikacji. \nMoże to być spowodowane nieaktualną wersją Sklepu Google Play, lub faktu, że w Twoim kraju Zakupy w Aplikacji są niedostępne. </string>
+    <string name="donations_error_content">Twoje urządzenie nie wspiera Zakupów w Aplikacji.\nMoże to być spowodowane nieaktualną wersją Sklepu Google Play, lub faktu, że w Twoim kraju Zakupy w Aplikacji są niedostępne. </string>
     <string name="new_walls_notif_title">Nowe tapety są dostępne w %1$s. </string>
     <string name="new_walls_notif_content">%1$s nowych tapet jest dostępnych. Tapnij powiadomienie aby otworzyć aplikację i je zobaczyć. </string>
     <string name="news">Nowości</string>

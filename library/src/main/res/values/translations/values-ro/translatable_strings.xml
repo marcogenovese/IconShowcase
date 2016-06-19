@@ -23,7 +23,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="muzei_settings">Setari Muzei</string>
     <!-- Sharing wallpaper from Muzei -->
-    <string name="share_text">Fundalul meu pentru ziua de azi este %1$s  pana la %2$s, de la %3$s. \nIa-l acum la %4$s</string>
+    <string name="share_text">Fundalul meu pentru ziua de azi este %1$s  pana la %2$s, de la %3$s.\nIa-l acum la %4$s</string>
     <!-- List Of Drawer Sections -->
     <string name="section_home">Acasa</string>
     <string name="section_icons">Icoane</string>
@@ -50,8 +50,8 @@
     <string name="send_title">Trimitere prin</string>
     <string name="changelog">Ce este nou?</string>
     <!-- LauncherNotInstalled Dialog -->
-    <string name="lni_content">%1$s nu este instalat pe dispozitiv. \nDoriți să-l instalați din Google Play Store ?</string>
-    <string name="cm_dialog_content">%1$s face parte din CyanogenMod (ROM-uri pe bază). \nDoriți să-l instalați pe dispozitiv?</string>
+    <string name="lni_content">%1$s nu este instalat pe dispozitiv.\nDoriți să-l instalați din Google Play Store ?</string>
+    <string name="cm_dialog_content">%1$s face parte din CyanogenMod (ROM-uri pe bază).\nDoriți să-l instalați pe dispozitiv?</string>
     <string name="gnl_title">Google Now Launcher nu este compatibil</string>
     <string name="gnl_content">Google Now Launcher nu este compatibil cu orice pachet de icoane. Te rog sa nu votezi negativ pachetul de icoane pentru acest motiv. Există o soluție pe care o puteți încerca dar necesită utilizarea unei aplicații externe. Doriți să-l descărcați?</string>
     <string name="lg_dialog_content">Ne pare rau, dar aplicatia LG Home este exclusiv pentru dispozitivele LG, și
@@ -131,9 +131,9 @@ prin urmare, acesta nu poate fi descărcata din Google Play Store. </string>
     <string name="pref_summary_wall_header">Imaginea de fundal va fi afișata în bara cu aplicații. </string>
     <string name="pref_header_storage">Stocare</string>
     <string name="pref_title_cache">Goliți memoria aplicației cache și a datelor</string>
-    <string name="pref_summary_cache">Acest lucru se va șterge memoria aplicației  cache și preferințele. \nDimensiunea cachului este de: %1$s</string>
+    <string name="pref_summary_cache">Acest lucru se va șterge memoria aplicației  cache și preferințele.\nDimensiunea cachului este de: %1$s</string>
     <string name="pref_title_wsl">Descarcare imagini de fundal in</string>
-    <string name="pref_summary_wsl">Schimba locatia de salvare sau descarcare a imaginilor de fundal. \nLocatia curenta: %1$s</string>
+    <string name="pref_summary_wsl">Schimba locatia de salvare sau descarcare a imaginilor de fundal.\nLocatia curenta: %1$s</string>
     <string name="pref_header_launcher_icon">Icoana de launcher</string>
     <string name="pref_title_launcher_icon">Ascunde icoana de launcher</string>
     <string name="pref_summary_launcher_icon">Cand selectezi optiunea aceasta,icoana de launcher va fi ascunsa</string>

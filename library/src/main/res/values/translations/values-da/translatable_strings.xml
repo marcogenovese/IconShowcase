@@ -23,7 +23,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="muzei_settings">Muzei Indstillinger</string>
     <!-- Sharing wallpaper from Muzei -->
-    <string name="share_text">Min baggrund for i dag, er %1$s af %2$s, fra %3$s. \nHent den nu på %4$s</string>
+    <string name="share_text">Min baggrund for i dag, er %1$s af %2$s, fra %3$s.\nHent den nu på %4$s</string>
     <!-- List Of Drawer Sections -->
     <string name="section_home">Hjem</string>
     <string name="section_icons">Ikoner</string>
@@ -50,9 +50,9 @@
     <string name="send_title">Send via</string>
     <string name="changelog">Hvad er nyt?</string>
     <!-- LauncherNotInstalled Dialog -->
-    <string name="lni_content">%1$s er i øjeblikket ikke installeret på din enhed. \nVil du
+    <string name="lni_content">%1$s er i øjeblikket ikke installeret på din enhed.\nVil du
 installere det fra Google Play Store?</string>
-    <string name="cm_dialog_content">%1$s er en del af CyanogenMod (baseret) roms. \nVil du
+    <string name="cm_dialog_content">%1$s er en del af CyanogenMod (baseret) roms.\nVil du
 installere det på din enhed?</string>
     <string name="gnl_title">Google Nu Launcher er IKKE kompatibel!</string>
     <string name="gnl_content">Google Nu Launcher er ikke kompatibel med NOGEN Ikon pakker. Vær sød ikke at
@@ -135,10 +135,10 @@ Derfor kan det ikke downloades fra Google Play Store. </string>
     <string name="pref_summary_wall_header">Din aktuelle enhed baggrund vil blive vist i apps Toolbar. </string>
     <string name="pref_header_storage">Opbevaring</string>
     <string name="pref_title_cache">Ryd app cache og data</string>
-    <string name="pref_summary_cache">Dette vil slette app cache og præferencer. \nAktuel cache
+    <string name="pref_summary_cache">Dette vil slette app cache og præferencer.\nAktuel cache
 størrelse: %1$s</string>
     <string name="pref_title_wsl">Baggrunde downloade placering</string>
-    <string name="pref_summary_wsl">Skift placering for at gemme eller hente baggrundsbilleder. \nI Current
+    <string name="pref_summary_wsl">Skift placering for at gemme eller hente baggrundsbilleder.\nI Current
 beliggenhed: %1$s</string>
     <string name="pref_header_launcher_icon">Launcher ikon</string>
     <string name="pref_title_launcher_icon">Skjul launcher ikon</string>
@@ -147,7 +147,7 @@ beliggenhed: %1$s</string>
 indstillinger? Anvendt ikoner vil ikke blive berørt. </string>
     <string name="hideicon_dialog_title">Advarsel!</string>
     <string name="hideicon_dialog_content">Er du sikker på du vil skjule app ikon i din launcher?
-\NAppen kan lukke uventet. \nDu kan læse FAQ for at lære at gøre det ud igen, før skjule
+\NAppen kan lukke uventet.\nDu kan læse FAQ for at lære at gøre det ud igen, før skjule
 det. </string>
     <string name="prefs_notifs_title">Underretninger</string>
     <string name="pref_title_enable_notifs">Aktiver underretninger</string>
@@ -165,7 +165,7 @@ det. </string>
     <string name="clock_widget_title">Analogt ur</string>
     <string name="faqs_section">FAQs</string>
     <string name="dashboard_author">Dashboard App Udvikling</string>
-    <string name="dashboard_author_copyright">Fra Colombia til verden. \nDashboard delt under Creative Commons Attribution-ShareAlike License. Copyright © 2016. </string>
+    <string name="dashboard_author_copyright">Fra Colombia til verden.\nDashboard delt under Creative Commons Attribution-ShareAlike License. Copyright © 2016. </string>
     <string name="iconpack_author">Designer Info</string>
     <string name="fork_on_github">Gaffel på GitHub</string>
     <string name="visit_website">Hjemmeside</string>
@@ -189,8 +189,8 @@ community på Google Plus, er et godt sted at gå. </string>
     <!-- Messages shown when using LicenseChecker -->
     <string name="license_failed">Du har ikke downloadet %1$s fra Google Play Store. Du har to muligheder:</string>
     <string name="license_success">Tak for at hente %1$s. Hvis du kan lide det, så glem ikke at vurdere det og skrive en anmeldelse i Google Play Butik. </string>
-    <string name="apply_advice">Hvis launcher, du bruger, er ikke opført her, skal du anvende den ikon pack direkte fra launcher indstillinger. \nNogle løfteraketter understøtter ikke direkte anvendelse. </string>
-    <string name="walls_advice">Simple tryk et tapet for at se det i fuld skærm. \nLangt tryk for at anvende det direkte til din hjemskærm. </string>
+    <string name="apply_advice">Hvis launcher, du bruger, er ikke opført her, skal du anvende den ikon pack direkte fra launcher indstillinger.\nNogle løfteraketter understøtter ikke direkte anvendelse. </string>
+    <string name="walls_advice">Simple tryk et tapet for at se det i fuld skærm.\nLangt tryk for at anvende det direkte til din hjemskærm. </string>
     <string name="zooper_section_title">Zooper Setup</string>
     <string name="zooper_download_dialog_title">Download fra</string>
     <string name="install_apps">Installer apps</string>
@@ -280,7 +280,7 @@ fjerne markeringen derefter på \"Skjul ikon fra launcher\" valgmulighed. </item
     <string name="tap_to_download">%1$s\nTryk på dette kort for at hente den. </string>
     <string name="tap_to_open">%1$s\nTryk på dette kort for at åbne appen. </string>
     <string name="donations_error_title">donationer er utilgængelige</string>
-    <string name="donations_error_content">Enheden understøtter ikke In App Billing. \nDette kan skyldes, at du har brug for at opdatere din Google Play Store-program, eller fordi du bor i et land, hvor I App Fakturering er deaktiveret. </string>
+    <string name="donations_error_content">Enheden understøtter ikke In App Billing.\nDette kan skyldes, at du har brug for at opdatere din Google Play Store-program, eller fordi du bor i et land, hvor I App Fakturering er deaktiveret. </string>
     <string name="new_walls_notif_title">Nye baggrundsbilleder til rådighed i %1$s. </string>
     <string name="new_walls_notif_content">Der er %1$s nye baggrundsbilleder til rådighed. Tryk på meddelelsen for at åbne appen og kontrollere dem. </string>
     <string name="news">Nyheder!!</string>

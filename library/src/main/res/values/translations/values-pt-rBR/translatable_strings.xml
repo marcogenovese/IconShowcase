@@ -50,7 +50,7 @@
     <string name="send_title">Enviar via</string>
     <string name="changelog">O que há de novo?</string>
     <!-- LauncherNotInstalled Dialog -->
-    <string name="lni_content">%1$s não está instalado em seu dispositivo atualmente. \nGostaria de instalá-lo na Google Play Store?</string>
+    <string name="lni_content">%1$s não está instalado em seu dispositivo atualmente.\nGostaria de instalá-lo na Google Play Store?</string>
     <string name="cm_dialog_content">"%1$s é parte de ROMs (baseadas em) CyanogenMod. Gostaria de instalar em seu dispositivo? "</string>
     <string name="gnl_title">Google Now Launcher não é compatível</string>
     <string name="gnl_content">Google Now Launcher é incompatível com pacotes de ícones. Por favor, não classifique seus pacotes de maneira negativa por esse motivo. Há uma solução que você pode experimentar, mas requer a instalação de um outro aplicativo. Gostaria de baixá-lo?</string>
@@ -130,9 +130,9 @@
     <string name="pref_summary_wall_header">Seu papel de parede foi aplicado à seu painel de ferramentas. </string>
     <string name="pref_header_storage">Armazenamento</string>
     <string name="pref_title_cache">Apagar cache e dados do aplicativo</string>
-    <string name="pref_summary_cache">Isto irá apagar o cache e preferências do aplicativo. \nTamanho atual do cache: %1$s</string>
+    <string name="pref_summary_cache">Isto irá apagar o cache e preferências do aplicativo.\nTamanho atual do cache: %1$s</string>
     <string name="pref_title_wsl">Local para baixar os papéis de parede</string>
-    <string name="pref_summary_wsl">Alterar o local para salvar ou baixar os papéis de parede. \nLocal atual: %1$s</string>
+    <string name="pref_summary_wsl">Alterar o local para salvar ou baixar os papéis de parede.\nLocal atual: %1$s</string>
     <string name="pref_header_launcher_icon">Ícone do launcher</string>
     <string name="pref_title_launcher_icon">Esconder ícone do Launcher</string>
     <string name="pref_summary_launcher_icon">Quando marcado, o ícone do Launcher será ocultado. </string>
@@ -155,7 +155,7 @@
     <string name="clock_widget_title">Relógio analógico</string>
     <string name="faqs_section">Perguntas frequentes</string>
     <string name="dashboard_author">Desenvolvimento do painel</string>
-    <string name="dashboard_author_copyright">Da Colômbia para o mundo. \nDashboard compartilhado sob CreativeCommons Attribution-ShareAlike License. Copyright © 2016. </string>
+    <string name="dashboard_author_copyright">Da Colômbia para o mundo.\nDashboard compartilhado sob CreativeCommons Attribution-ShareAlike License. Copyright © 2016. </string>
     <string name="iconpack_author">Informações do designer</string>
     <string name="fork_on_github">Fork no GitHub</string>
     <string name="visit_website">Site</string>
@@ -179,7 +179,7 @@
     <string name="license_failed">Você não baixou %1$s na Google Play Store. Você tem duas opções:</string>
     <string name="license_success">Obrigado por baixar %1$s. Se você curtiu este pacote, não se esqueça de avaliá-lo e escrever um comentário no Google Play Store. </string>
     <string name="apply_advice">Se o launcher que você usa, não está aqui, você deve aplicar o pacote de ícones diretamente das configurações do launcher. Alguns launchers não suportam aplicar diretamente. </string>
-    <string name="walls_advice">Dê um toque simples em um papel de parede para vê-lo em tela cheia. \nDê um toque longo para aplicá-lo diretamente na sua tela inicial. </string>
+    <string name="walls_advice">Dê um toque simples em um papel de parede para vê-lo em tela cheia.\nDê um toque longo para aplicá-lo diretamente na sua tela inicial. </string>
     <string name="zooper_section_title">Configurar Zooper</string>
     <string name="zooper_download_dialog_title">Baixar na</string>
     <string name="install_apps">Instalar aplicativos</string>
@@ -262,7 +262,7 @@ Em seguida desmarque a opção \"Ocultar ícone do launcher\". </item>
     <string name="tap_to_download">%1$s\nToque neste cartão para baixar. </string>
     <string name="tap_to_open">%1$s\nToque neste cartão para abrir o aplicativo. </string>
     <string name="donations_error_title">Doações indisponíveis</string>
-    <string name="donations_error_content">O dispositivo não suporta App Billing. \nIsto poderia ser porque você precisa atualizar o seu aplicativo Google Play Store, ou porque você vive em um país onde App Billing está desativado. </string>
+    <string name="donations_error_content">O dispositivo não suporta App Billing.\nIsto poderia ser porque você precisa atualizar o seu aplicativo Google Play Store, ou porque você vive em um país onde App Billing está desativado. </string>
     <string name="new_walls_notif_title">Novos papéis de parede disponíveis em %1$s. </string>
     <string name="new_walls_notif_content">Há %1$s novos papéis de parede disponíveis. Pressione a notificação para abrir o aplicativo e verificá-los. </string>
     <string name="news">Novidades</string>

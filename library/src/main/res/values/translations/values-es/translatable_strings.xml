@@ -23,7 +23,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="muzei_settings">Configuración de Muzei</string>
     <!-- Sharing wallpaper from Muzei -->
-    <string name="share_text">Mi fondo de pantalla de hoy es %1$s por %2$s, de %3$s. \nConsiguelo ahora en %4$s</string>
+    <string name="share_text">Mi fondo de pantalla de hoy es %1$s por %2$s, de %3$s.\nConsiguelo ahora en %4$s</string>
     <!-- List Of Drawer Sections -->
     <string name="section_home">Inicio</string>
     <string name="section_icons">Iconos</string>
@@ -50,8 +50,8 @@
     <string name="send_title">Enviar a través de</string>
     <string name="changelog">Qué hay de nuevo?</string>
     <!-- LauncherNotInstalled Dialog -->
-    <string name="lni_content">%1$s no está instalado en tu dispositivo. \nTe gustaría descargarlo de Google Play Store?</string>
-    <string name="cm_dialog_content">%1$s es parte de roms basadas en CyanogenMod. \nTe gustaría instalarla en tu dispositivo?</string>
+    <string name="lni_content">%1$s no está instalado en tu dispositivo.\nTe gustaría descargarlo de Google Play Store?</string>
+    <string name="cm_dialog_content">%1$s es parte de roms basadas en CyanogenMod.\nTe gustaría instalarla en tu dispositivo?</string>
     <string name="gnl_title">Google Now Launcher no es compatible</string>
     <string name="gnl_content">Google Now Launcher no es compatible con ningún paquete de iconos. Por favor, no califiques negativamente este paquete de iconos por esa razón. Hay algo que puedes intentar, pero requiere el uso de una app externa. La quieres descargar?</string>
     <string name="lg_dialog_content">Lo sentimos, pero la app LG Home es exclusiva de los dispositivos LG, y por lo tanto, no puede ser descargada de Google Play Store. </string>
@@ -130,15 +130,15 @@
     <string name="pref_summary_wall_header">Tu fondo de pantalla actual se mostrará en la barra de herramientas de la app. </string>
     <string name="pref_header_storage">Almacenamiento</string>
     <string name="pref_title_cache">Borrar caché y datos de la aplicación</string>
-    <string name="pref_summary_cache">Ésto eliminará el caché de la app y algunas configuraciones. \nTamaño actual de caché: %1$s</string>
+    <string name="pref_summary_cache">Ésto eliminará el caché de la app y algunas configuraciones.\nTamaño actual de caché: %1$s</string>
     <string name="pref_title_wsl">Ubicación para descargar fondos de pantalla</string>
-    <string name="pref_summary_wsl">Cambia la ubicación para guardar o descargar los fondos de pantalla. \nUbicación actual: %1$s</string>
+    <string name="pref_summary_wsl">Cambia la ubicación para guardar o descargar los fondos de pantalla.\nUbicación actual: %1$s</string>
     <string name="pref_header_launcher_icon">Icono</string>
     <string name="pref_title_launcher_icon">Ocultar icono del launcher</string>
     <string name="pref_summary_launcher_icon">Mientras esté marcado, el icono se ocultará. </string>
     <string name="clearcache_dialog_content">Estás seguro de querer eliminar los datos, el caché y las configuraciones de la aplicación? Los iconos aplicados no serán afectados. </string>
     <string name="hideicon_dialog_title">Advertencia!</string>
-    <string name="hideicon_dialog_content">Estás seguro de querer ocultar el icono de la aplicación en tu launcher?\nLa app se cerrará inesperadamente. \nTal vez quieras leer las preguntas frecuentes para saber cómo hacer que aparezca el icono de nuevo, antes de ocultarlo. </string>
+    <string name="hideicon_dialog_content">Estás seguro de querer ocultar el icono de la aplicación en tu launcher?\nLa app se cerrará inesperadamente.\nTal vez quieras leer las preguntas frecuentes para saber cómo hacer que aparezca el icono de nuevo, antes de ocultarlo. </string>
     <string name="prefs_notifs_title">Notificaciones</string>
     <string name="pref_title_enable_notifs">Habilitar notificaciones</string>
     <string name="pref_summary_enable_notifs">Recibe notificaciones de nuevos fondos de pantalla y noticias del desarrollo. </string>
@@ -155,7 +155,7 @@
     <string name="clock_widget_title">Reloj análogo</string>
     <string name="faqs_section">Preguntas frecuentes</string>
     <string name="dashboard_author">Desarrollo de la aplicación</string>
-    <string name="dashboard_author_copyright">Desde Colombia para el mundo. \nAplicación compartida bajo la licencia CreativeCommons Atribución-CompartirIgual. Derechos reservados de autor © 2016. </string>
+    <string name="dashboard_author_copyright">Desde Colombia para el mundo.\nAplicación compartida bajo la licencia CreativeCommons Atribución-CompartirIgual. Derechos reservados de autor © 2016. </string>
     <string name="iconpack_author">Información del diseñador</string>
     <string name="fork_on_github">Hacer fork en GitHub</string>
     <string name="visit_website">Sitio web</string>

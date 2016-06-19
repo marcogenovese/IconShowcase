@@ -50,8 +50,8 @@
     <string name="send_title">Kirim lewat</string>
     <string name="changelog">Apa yang baru?</string>
     <!-- LauncherNotInstalled Dialog -->
-    <string name="lni_content">%1$s saat ini tidak terpasang pada perangkat Anda. \nApakah Anda ingin memasangnya dari Google Play Store?</string>
-    <string name="cm_dialog_content">%1$s adalah bagian dari ROM CyanogenMod. \nApakah anda mau memasangnya pada perangkat anda?</string>
+    <string name="lni_content">%1$s saat ini tidak terpasang pada perangkat Anda.\nApakah Anda ingin memasangnya dari Google Play Store?</string>
+    <string name="cm_dialog_content">%1$s adalah bagian dari ROM CyanogenMod.\nApakah anda mau memasangnya pada perangkat anda?</string>
     <string name="gnl_title">Google Now Launcher tidak cocok</string>
     <string name="gnl_content">Google Now Launcher tidak kompatibel dengan icon pack manapun. Mohon untuk tidak menilai negatif icon pack untuk alasan ini. Ada solusi yang dapat Anda coba sendiri, tapi membutuhkan penggunaan aplikasi eksternal. Apakah anda ingin mengunduhnya?</string>
     <string name="lg_dialog_content">"Mohon maaf, tapi aplikasi LG launcher eksklusif dari perangkat LG, dan oleh karena itu tidak dapat diunduh dari Google Play Store. "</string>
@@ -131,9 +131,9 @@
     <string name="pref_header_storage">Penyimpanan</string>
     <string name="pref_title_cache">Bersihkan cache dan data aplikasi</string>
     <string name="pref_summary_cache">Ini akan menghapus cache dan 
-pengaturan aplikasi. \nUkuran cache sekarang:%1$s</string>
+pengaturan aplikasi.\nUkuran cache sekarang:%1$s</string>
     <string name="pref_title_wsl">Lokasi unduhan gambar</string>
-    <string name="pref_summary_wsl">Ganti lokasi untuk menyimpan atau mengunduh gambar. \nLokasi sekarang:%1$s</string>
+    <string name="pref_summary_wsl">Ganti lokasi untuk menyimpan atau mengunduh gambar.\nLokasi sekarang:%1$s</string>
     <string name="pref_header_launcher_icon">Ikon peluncur</string>
     <string name="pref_title_launcher_icon">Sembunyikan peluncur ikon</string>
     <string name="pref_summary_launcher_icon">Saat dicentang, peluncur ikon akan disembunyikan. </string>
@@ -141,7 +141,7 @@ pengaturan aplikasi. \nUkuran cache sekarang:%1$s</string>
 pengaturan? icon yang diterapkan tidak akan terpengaruh. </string>
     <string name="hideicon_dialog_title">Perhatian!</string>
     <string name="hideicon_dialog_content">Apakah Anda yakin ingin menyembunyikan ikon aplikasi di peluncur Anda?
-\nApp mungkin tiba-tiba menutup. \nAnda mungkin ingin membaca FAQ untuk belajar bagaimana membuatnya tampak lagi, sebelum disembunyikan. </string>
+\nApp mungkin tiba-tiba menutup.\nAnda mungkin ingin membaca FAQ untuk belajar bagaimana membuatnya tampak lagi, sebelum disembunyikan. </string>
     <string name="prefs_notifs_title">Pemberitahuan</string>
     <string name="pref_title_enable_notifs">Aktifkan pemberitahuan</string>
     <string name="pref_summary_enable_notifs">Terima pemberitahuan untuk wallpaper baru dan berita pengembangan. </string>
@@ -158,7 +158,7 @@ pengaturan? icon yang diterapkan tidak akan terpengaruh. </string>
     <string name="clock_widget_title">Jam analog</string>
     <string name="faqs_section">FAQs</string>
     <string name="dashboard_author">Pengembangan Dashboard Aplikasi</string>
-    <string name="dashboard_author_copyright">Dari Colombia untuk dunia. \nDashboard shared under CreativeCommons Attribution-ShareAlike License. Copyright © 2016. </string>
+    <string name="dashboard_author_copyright">Dari Colombia untuk dunia.\nDashboard shared under CreativeCommons Attribution-ShareAlike License. Copyright © 2016. </string>
     <string name="iconpack_author">Info designer</string>
     <string name="fork_on_github">Cabang di GitHub</string>
     <string name="visit_website">Situs</string>
@@ -181,8 +181,8 @@ pengaturan? icon yang diterapkan tidak akan terpengaruh. </string>
     <!-- Messages shown when using LicenseChecker -->
     <string name="license_failed">Anda tidak men-download %1$s dari Google Play Store. Anda memiliki dua pilihan:</string>
     <string name="license_success">Terima kasih telah mengunduh %1$s. Jika Anda suka, jangan lupa untuk menilai dan menulis review di Google Play Store. </string>
-    <string name="apply_advice">Jika peluncur Anda gunakan tidak tercantum di sini, Anda harus menerapkan icon pack langsung dari pengaturan peluncur. \nBeberapa peluncur tidak didukung penerapan langsung. </string>
-    <string name="walls_advice">Tekan wallpaper untuk melihatnya di layar penuh. \nTekan lama untuk menerapkannya langsung ke homescreen Anda. </string>
+    <string name="apply_advice">Jika peluncur Anda gunakan tidak tercantum di sini, Anda harus menerapkan icon pack langsung dari pengaturan peluncur.\nBeberapa peluncur tidak didukung penerapan langsung. </string>
+    <string name="walls_advice">Tekan wallpaper untuk melihatnya di layar penuh.\nTekan lama untuk menerapkannya langsung ke homescreen Anda. </string>
     <string name="zooper_section_title">Siapkan Zooper</string>
     <string name="zooper_download_dialog_title">Unduh dari</string>
     <string name="install_apps">Install aplikasi</string>
