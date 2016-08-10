@@ -392,7 +392,7 @@ public class WallpapersFragment extends Fragment {
         @Override
         protected Boolean doInBackground(Void... params) {
 
-            boolean worked = false;
+            boolean worked;
 
             JSONObject json = JSONParser.getJSONFromURL(taskContext.get(),
                     Utils.getStringFromResources(taskContext.get(),
@@ -408,7 +408,7 @@ public class WallpapersFragment extends Fragment {
                         // Retrieve JSON Objects
 
                         String thumbLink, dimens, copyright;
-                        boolean downloadable = true;
+                        boolean downloadable;
 
                         try {
                             thumbLink = json.getString("thumbnail");
@@ -455,13 +455,12 @@ public class WallpapersFragment extends Fragment {
                 worked = false;
             }
 
+            endTime = System.currentTimeMillis();
             return worked;
         }
 
         @Override
         protected void onPostExecute(Boolean worked) {
-
-            endTime = System.currentTimeMillis();
             Utils.showLog("Walls Task completed in: " +
                     String.valueOf((endTime - startTime) / 1000) + " secs.");
 

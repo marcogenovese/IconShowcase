@@ -21,13 +21,6 @@
 <resources>
 
     <!--
-    Do you want to allow users to change app theme?
-    True, means yes.
-    False, means no.
-    -->
-    <bool name="allow_user_theme_change">true</bool>
-
-    <!--
     Do you want to allow users to hide the app icon?
     True, means yes.
     False, means no.

@@ -81,7 +81,6 @@ import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
-import jahirfiquitiva.iconshowcase.utilities.color.ColorExtractor;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.views.TouchImageView;
@@ -145,11 +144,7 @@ public class ViewerActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
-        final int iconsColor = ThemeUtils.darkTheme ?
-                ContextCompat.getColor(context, R.color.toolbar_text_dark) :
-                ContextCompat.getColor(context, R.color.toolbar_text_light);
-
-        ToolbarColorizer.colorizeToolbar(toolbar, iconsColor);
+        ToolbarColorizer.colorizeToolbar(toolbar, ContextCompat.getColor(context, android.R.color.white));
 
         toHide1 = (LinearLayout) findViewById(R.id.iconsA);
         toHide2 = (LinearLayout) findViewById(R.id.iconsB);
@@ -230,7 +225,7 @@ public class ViewerActivity extends AppCompatActivity {
         int colorFromCachedPic = 0;
 
         if (bmp != null) {
-            colorFromCachedPic = ColorExtractor.getFinalGeneratedIconsColorFromPalette(bmp, usePalette);
+            colorFromCachedPic = ColorUtils.getProminentSwatch(bmp).getRgb();
         } else {
             colorFromCachedPic = ThemeUtils.darkTheme ? tintDark : tintLightLighter;
         }
@@ -238,8 +233,6 @@ public class ViewerActivity extends AppCompatActivity {
         final ProgressBar spinner = (ProgressBar) findViewById(R.id.progress);
         spinner.getIndeterminateDrawable()
                 .setColorFilter(colorFromCachedPic, PorterDuff.Mode.SRC_IN);
-
-        ToolbarColorizer.colorizeToolbar(toolbar, colorFromCachedPic);
 
         Drawable d;
         if (bmp != null) {
@@ -262,9 +255,6 @@ public class ViewerActivity extends AppCompatActivity {
 
                         @Override
                         public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                            Bitmap picture = ((GlideBitmapDrawable) resource).getBitmap();
-                            ToolbarColorizer.colorizeToolbar(toolbar,
-                                    ColorExtractor.getFinalGeneratedIconsColorFromPalette(picture, usePalette));
                             spinner.setVisibility(View.GONE);
                             return false;
                         }
@@ -285,9 +275,6 @@ public class ViewerActivity extends AppCompatActivity {
 
                         @Override
                         public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                            Bitmap picture = ((GlideBitmapDrawable) resource).getBitmap();
-                            ToolbarColorizer.colorizeToolbar(toolbar,
-                                    ColorExtractor.getFinalGeneratedIconsColorFromPalette(picture, usePalette));
                             spinner.setVisibility(View.GONE);
                             return false;
                         }

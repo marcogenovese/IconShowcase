@@ -56,6 +56,12 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -603,6 +609,46 @@ public class Utils {
             vectorDrawable = ContextCompat.getDrawable(context, R.drawable.iconshowcase_logo);
         }
         return vectorDrawable != null ? vectorDrawable : null;
+    }
+
+    /**
+     * Methods for tasks
+     */
+
+    public static void copyFiles(InputStream in, OutputStream out) throws IOException {
+        byte[] buffer = new byte[2048];
+        int read;
+        while ((read = in.read(buffer)) != -1) {
+            out.write(buffer, 0, read);
+        }
+        out.flush();
+    }
+
+    public static String getFilenameWithoutExtension(String fileName) {
+        return fileName.substring(0, fileName.lastIndexOf("."));
+    }
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    public static int clean(File file) {
+        if (!file.exists()) return 0;
+        int count = 0;
+        if (file.isDirectory()) {
+            File[] folderContent = file.listFiles();
+            if (folderContent != null && folderContent.length > 0) {
+                for (File fileInFolder : folderContent) {
+                    count += clean(fileInFolder);
+                }
+            }
+        }
+        file.delete();
+        return count;
+    }
+
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 
 }

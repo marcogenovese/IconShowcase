@@ -28,45 +28,31 @@ import android.support.annotation.CheckResult;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.FloatRange;
-import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.graphics.Palette;
+import android.support.v7.widget.Toolbar;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
+import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 
-/**
- * Utility methods for working with colors.
- */
 public class ColorUtils {
 
-    private ColorUtils() {
-    }
-
-    public static final int IS_LIGHT = 0;
-    public static final int IS_DARK = 1;
-    public static final int LIGHTNESS_UNKNOWN = 2;
-    public static float S = 0.0f;
-
-    /**
-     * Blend {@code color1} and {@code color2} using the given ratio.
-     *
-     * @param ratio of which to blend. 0.0 will return {@code color1}, 0.5 will give an even blend,
-     *              1.0 will return {@code color2}.
-     */
-    public static
-    @CheckResult
     @ColorInt
-    int blendColors(@ColorInt int color1,
-                    @ColorInt int color2,
-                    @FloatRange(from = 0f, to = 1f) float ratio) {
+    public static int blendColors(@ColorInt int color1,
+                                  @ColorInt int color2,
+                                  @FloatRange(from = 0f, to = 1f) float ratio) {
         final float inverseRatio = 1f - ratio;
         float a = (Color.alpha(color1) * inverseRatio) + (Color.alpha(color2) * ratio);
         float r = (Color.red(color1) * inverseRatio) + (Color.red(color2) * ratio);
@@ -75,11 +61,7 @@ public class ColorUtils {
         return Color.argb((int) a, (int) r, (int) g, (int) b);
     }
 
-    /**
-     * Changes opacity of {@code color} to the specified {@code factor}
-     *
-     * @param factor which will change the opacity of the color
-     */
+    @ColorInt
     public static int adjustAlpha(@ColorInt int color, @FloatRange(from = 0.0, to = 1.0) float factor) {
         float a = Color.alpha(color) * factor;
         float r = Color.red(color);
@@ -88,61 +70,30 @@ public class ColorUtils {
         return Color.argb((int) a, (int) r, (int) g, (int) b);
     }
 
-    /**
-     * Checks if the most populous color in the given palette is dark
-     * <p/>
-     * Annoyingly we have to return this Lightness 'enum' rather than a boolean as palette isn't
-     * guaranteed to find the most populous color.
-     */
-    public static
-    @Lightness
-    int isDark(Palette palette) {
-        Palette.Swatch mostPopulous = ColorExtractor.getProminentSwatch(palette, false);
-        if (mostPopulous == null) return LIGHTNESS_UNKNOWN;
-        return isDark(mostPopulous.getHsl()) ? IS_DARK : IS_LIGHT;
+    @ColorInt
+    public static int darkenColor(Context context, @ColorInt int color) {
+        return context.getResources().getBoolean(R.bool.darker_launcher_bg) ?
+                darkenColor(color) : color;
     }
 
-    /**
-     * Determines if a given bitmap is dark. This extracts a palette inline so should not be called
-     * with a large image!!
-     * <p/>
-     * Note: If palette fails then check the color of the central pixel
-     */
+    @ColorInt
+    public static int darkenColor(@ColorInt int color) {
+        float[] hsv = new float[3];
+        Color.colorToHSV(color, hsv);
+        hsv[2] *= 0.8f;
+        color = Color.HSVToColor(hsv);
 
-    public static boolean isDark(@NonNull Bitmap bitmap) {
-        return isDark(bitmap, bitmap.getWidth() / 2, bitmap.getHeight() / 2);
+        return color;
     }
 
-    /**
-     * Determines if a given bitmap is dark. This extracts a palette inline so should not be called
-     * with a large image!! If palette fails then check the color of the specified pixel
-     */
-    public static boolean isDark(@NonNull Bitmap bitmap, int backupPixelX, int backupPixelY) {
-        // first try palette with a small color quant size
-        Palette palette = Palette.from(bitmap).generate();
-        if (palette.getSwatches().size() > 0) {
-            return isDark(palette) == IS_DARK;
-        } else {
-            // if palette failed, then check the color of the specified pixel
-            return isDark(bitmap.getPixel(backupPixelX, backupPixelY));
-        }
-    }
+    @ColorInt
+    public static int lightenColor(@ColorInt int color) {
+        float[] hsv = new float[3];
+        Color.colorToHSV(color, hsv);
+        hsv[2] /= 0.7f;
+        color = Color.HSVToColor(hsv);
 
-    /**
-     * Check that the lightness value (0–1)
-     */
-    public static boolean isDark(float[] hsl) { // @Size(3)
-        ColorUtils.S = hsl[2];
-        return hsl[2] < 0.51f;
-    }
-
-    /**
-     * Convert to HSL & check that the lightness value
-     */
-    public static boolean isDark(@ColorInt int color) {
-        float[] hsl = new float[3];
-        android.support.v4.graphics.ColorUtils.colorToHSL(color, hsl);
-        return isDark(hsl);
+        return color;
     }
 
     public static Drawable getTintedIcon(@NonNull Context context, @DrawableRes int drawable, @ColorInt int color) {
@@ -179,9 +130,120 @@ public class ColorUtils {
         }
     }
 
-    @Retention(RetentionPolicy.SOURCE)
-    @IntDef({IS_LIGHT, IS_DARK, LIGHTNESS_UNKNOWN})
-    public @interface Lightness {
+    public static boolean isLightColor(Bitmap bitmap) {
+        Palette palette = Palette.from(bitmap).generate();
+        if (palette.getSwatches().size() > 0) {
+            return isLightColor(palette);
+        }
+        return isLightColor(palette);
+    }
 
+    public static boolean isLightColor(Palette palette) {
+        return isLightColor(ColorUtils.getProminentSwatch(palette).getRgb());
+    }
+
+    public static boolean isLightColor(@ColorInt int color) {
+        if (color == Color.BLACK) return false;
+        else if (color == Color.WHITE || color == Color.TRANSPARENT) return true;
+        final double darkness = 1 - (0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color)) / 255;
+        return darkness < 0.45;
+    }
+
+    public static boolean checkDarknessOfColor(@ColorInt int color, float darkn) {
+        if (color == Color.BLACK) return false;
+        else if (color == Color.WHITE || color == Color.TRANSPARENT) return true;
+        final double darkness = 1 - (0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color)) / 255;
+        return darkn >= 0.51 ? darkness > darkn : darkness < darkn;
+    }
+
+    public static void setupToolbarIconsAndTextsColors(final Context context, AppBarLayout appbar,
+                                                       final Toolbar toolbar, final Bitmap bitmap) {
+
+        final int iconsColor = ThemeUtils.darkTheme ?
+                ContextCompat.getColor(context, R.color.toolbar_text_dark) :
+                ContextCompat.getColor(context, R.color.toolbar_text_light);
+
+        final int defaultIconsColor = ContextCompat.getColor(context, android.R.color.white);
+
+        if (appbar != null) {
+            appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+                @SuppressWarnings("ResourceAsColor")
+                @Override
+                public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                    double ratio = Utils.round(((double) (verticalOffset * -1) / 255.0), 1);
+                    if (ratio > 1) {
+                        ratio = 1;
+                    } else if (ratio < 0) {
+                        ratio = 0;
+                    }
+                    int paletteColor = ColorUtils.blendColors(defaultIconsColor, iconsColor, (float) ratio);
+                    if (toolbar != null) {
+                        // Collapsed offset = -352
+                        ToolbarColorizer.colorizeToolbar(toolbar, paletteColor);
+                    }
+                }
+            });
+        }
+    }
+
+    public static Palette.Swatch getProminentSwatch(Bitmap bitmap) {
+        Palette palette = Palette.from(bitmap).generate();
+        return getProminentSwatch(palette);
+    }
+
+    public static Palette.Swatch getProminentSwatch(Palette palette) {
+        if (palette == null) return null;
+        List<Palette.Swatch> swatches = getSwatchesList(palette);
+        return Collections.max(swatches,
+                new Comparator<Palette.Swatch>() {
+                    @Override
+                    public int compare(Palette.Swatch opt1, Palette.Swatch opt2) {
+                        int a = opt1 == null ? 0 : opt1.getPopulation();
+                        int b = opt2 == null ? 0 : opt2.getPopulation();
+                        return a - b;
+                    }
+                });
+    }
+
+    private static List<Palette.Swatch> getSwatchesList(Palette palette) {
+        List<Palette.Swatch> swatches = new ArrayList<>();
+
+        Palette.Swatch vib = palette.getVibrantSwatch();
+        Palette.Swatch vibLight = palette.getLightVibrantSwatch();
+        Palette.Swatch vibDark = palette.getDarkVibrantSwatch();
+
+        Palette.Swatch muted = palette.getMutedSwatch();
+        Palette.Swatch mutedLight = palette.getLightMutedSwatch();
+        Palette.Swatch mutedDark = palette.getDarkMutedSwatch();
+
+        swatches.add(vib);
+        swatches.add(vibLight);
+        swatches.add(vibDark);
+        swatches.add(muted);
+        swatches.add(mutedLight);
+        swatches.add(mutedDark);
+
+        return swatches;
+    }
+
+    public static int getColorFromIcon(Drawable icon, final Context context) {
+        Palette palette = Palette.from(Utils.drawableToBitmap(icon)).generate();
+        int resultColor = getBetterColorFromIcon(palette.getVibrantColor(0));
+        if (resultColor == 0) {
+            resultColor = getBetterColorFromIcon(palette.getMutedColor(0));
+        }
+        if (resultColor == 0) {
+            resultColor = ContextCompat.getColor(context, ThemeUtils.darkTheme ?
+                    R.color.dark_theme_accent : R.color.light_theme_accent);
+        }
+        return resultColor;
+    }
+
+    public static int getBetterColorFromIcon(@ColorInt int color) {
+        if (ThemeUtils.darkTheme) {
+            return checkDarknessOfColor(color, 0.85f) ? lightenColor(color) : color;
+        } else {
+            return checkDarknessOfColor(color, 0.15f) ? darkenColor(color) : color;
+        }
     }
 }

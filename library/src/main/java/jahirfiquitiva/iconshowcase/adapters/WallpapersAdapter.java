@@ -25,11 +25,6 @@ package jahirfiquitiva.iconshowcase.adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.TransitionDrawable;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.RecyclerView;
@@ -48,7 +43,7 @@ import java.util.ArrayList;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.models.WallpaperItem;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
-import jahirfiquitiva.iconshowcase.utilities.color.ColorExtractor;
+import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 
 
 public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.WallsHolder> {
@@ -97,28 +92,16 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
         BitmapImageViewTarget target = new BitmapImageViewTarget(holder.wall) {
             @Override
             protected void setResource(Bitmap resource) {
-                Palette.Swatch wallSwatch = ColorExtractor.getProminentSwatch(resource, false);
+                Palette.Swatch wallSwatch = ColorUtils.getProminentSwatch(resource);
                 boolean animsEnabled = mPrefs.getAnimationsEnabled();
 
-                if (animsEnabled) {
-                    TransitionDrawable td = new TransitionDrawable(
-                            new Drawable[]{
-                                    new ColorDrawable(Color.TRANSPARENT),
-                                    new BitmapDrawable(context.getResources(), resource)});
-                    holder.wall.setImageDrawable(td);
-                    td.startTransition(250);
-                } else {
-                    holder.wall.setImageBitmap(resource);
-                }
+                setImageAndAnimate(holder, resource, animsEnabled);
 
                 if (wallSwatch != null) {
                     if (animsEnabled) {
-                        TransitionDrawable td = new TransitionDrawable(
-                                new Drawable[]{
-                                        holder.titleBg.getBackground(),
-                                        new ColorDrawable(wallSwatch.getRgb())});
-                        holder.titleBg.setBackground(td);
-                        td.startTransition(250);
+                        holder.titleBg.setAlpha(0f);
+                        holder.titleBg.setBackgroundColor(wallSwatch.getRgb());
+                        holder.titleBg.animate().setDuration(250).alpha(1f).start();
                     } else {
                         holder.titleBg.setBackgroundColor(wallSwatch.getRgb());
                     }
@@ -183,6 +166,16 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
             if (mCallback != null)
                 mCallback.onClick(this, index, true);
             return false;
+        }
+    }
+
+    private void setImageAndAnimate(WallsHolder holder, Bitmap bitmap, boolean animate) {
+        if (animate) {
+            holder.wall.setAlpha(0f);
+            holder.wall.setImageBitmap(bitmap);
+            holder.wall.animate().setDuration(250).alpha(1f).start();
+        } else {
+            holder.wall.setImageBitmap(bitmap);
         }
     }
 }

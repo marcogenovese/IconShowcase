@@ -112,24 +112,32 @@ public final class ISDialogs {
         ((ShowcaseActivity) context).getChangelogDialog().show();
     }
 
-    public static MaterialDialog showLicenseSuccessDialog(Context context,
-                                                          MaterialDialog.SingleButtonCallback
-                                                                  singleButtonCallback) {
+    public static void showLicenseSuccessDialog(Context context,
+                                                MaterialDialog.SingleButtonCallback
+                                                        onPositive,
+                                                MaterialDialog.OnDismissListener onDismiss,
+                                                MaterialDialog.OnCancelListener onCancel) {
         String message = context.getResources().getString(R.string.license_success,
                 context.getResources().getString(R.string.app_name));
-        return new MaterialDialog.Builder(context)
+
+        MaterialDialog licenseSuccessDialog = new MaterialDialog.Builder(context)
                 .title(R.string.license_success_title)
                 .content(message)
                 .positiveText(R.string.close)
-                .onPositive(singleButtonCallback)
+                .onPositive(onPositive)
                 .build();
+
+        licenseSuccessDialog.setOnCancelListener(onCancel);
+        licenseSuccessDialog.setOnDismissListener(onDismiss);
+
+        licenseSuccessDialog.show();
     }
 
     public static void showLicenseFailDialog(Context context,
                                              MaterialDialog.SingleButtonCallback onPositive,
                                              MaterialDialog.SingleButtonCallback onNegative,
-                                             MaterialDialog.OnCancelListener onCancel,
-                                             MaterialDialog.OnDismissListener onDismiss) {
+                                             MaterialDialog.OnDismissListener onDismiss,
+                                             MaterialDialog.OnCancelListener onCancel) {
 
         String message = context.getResources().getString(R.string.license_failed,
                 context.getResources().getString(R.string.app_name));
@@ -347,45 +355,6 @@ public final class ISDialogs {
                 .content(content)
                 .positiveText(android.R.string.ok)
                 .show();
-    }
-
-    public static MaterialDialog showThemeChooserDialog(final Activity context) {
-        int defaultTheme = context.getResources().getInteger(R.integer.default_theme) - 1;
-        final int[] selectedTheme = {PreferenceManager.getDefaultSharedPreferences(context).getInt("theme", defaultTheme)};
-        final int[] newSelectedTheme = new int[1];
-        final Preferences mPrefs = new Preferences(context);
-        return new MaterialDialog.Builder(context)
-                .title(R.string.pref_title_themes)
-                .items(R.array.themes)
-                .itemsCallbackSingleChoice(selectedTheme[0], new MaterialDialog.ListCallbackSingleChoice() {
-                    @Override
-                    public boolean onSelection(MaterialDialog dialog, View view, int position, CharSequence text) {
-                        switch (position) {
-                            case 0:
-                                ThemeUtils.changeToTheme(context, ThemeUtils.LIGHT);
-                                break;
-                            case 1:
-                                ThemeUtils.changeToTheme(context, ThemeUtils.DARK);
-                                break;
-                            case 2:
-                                ThemeUtils.changeToTheme(context, ThemeUtils.CLEAR);
-                                break;
-                            case 3:
-                                ThemeUtils.changeToTheme(context, ThemeUtils.AUTO);
-                                break;
-                        }
-                        PreferenceManager.getDefaultSharedPreferences(context).edit().putInt("theme", position).apply();
-                        newSelectedTheme[0] = position;
-                        if (newSelectedTheme[0] != selectedTheme[0]) {
-                            mPrefs.setSettingsModified(true);
-                            ThemeUtils.restartActivity(context);
-                        }
-                        return true;
-                    }
-                })
-                .positiveText(android.R.string.ok)
-                .negativeText(android.R.string.cancel)
-                .build();
     }
 
     public static void showColumnsSelectorDialog(final Context context) {

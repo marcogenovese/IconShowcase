@@ -28,7 +28,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.Preference;
@@ -48,7 +47,7 @@ import java.io.File;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.adapters.FeaturesAdapter;
-import jahirfiquitiva.iconshowcase.dialogs.FolderChooserDialog;
+import jahirfiquitiva.iconshowcase.dialogs.FolderSelectorDialog;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.fragments.base.PreferenceFragment;
 import jahirfiquitiva.iconshowcase.services.NotificationsReceiver;
@@ -56,7 +55,7 @@ import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
-import jahirfiquitiva.iconshowcase.utilities.color.ColorExtractor;
+import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 
 
 public class SettingsFragment extends PreferenceFragment implements
@@ -132,7 +131,7 @@ public class SettingsFragment extends PreferenceFragment implements
                     ((ShowcaseActivity) getActivity()).setupToolbarHeader(
                             getActivity(),
                             ((ShowcaseActivity) getActivity()).getToolbarHeader());
-                    ColorExtractor.setupToolbarIconsAndTextsColors(
+                    ColorUtils.setupToolbarIconsAndTextsColors(
                             getActivity(),
                             ((ShowcaseActivity) getActivity()).getAppbar(),
                             ((ShowcaseActivity) getActivity()).getToolbar(),
@@ -142,42 +141,6 @@ public class SettingsFragment extends PreferenceFragment implements
             });
         } else {
             uiCategory.removePreference(wallHeaderCheck);
-        }
-
-        // Set the preference for current selected theme
-
-        Preference themesSetting = findPreference("themes");
-
-        if (getResources().getBoolean(R.bool.allow_user_theme_change)) {
-            themesSetting.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    ((ShowcaseActivity) getActivity()).setSettingsDialog(
-                            ISDialogs.showThemeChooserDialog(getActivity()));
-                    ((ShowcaseActivity) getActivity()).getSettingsDialog().show();
-                    return true;
-                }
-            });
-        } else {
-            uiCategory.removePreference(themesSetting);
-        }
-
-        // Set the preference for colored nav bar on Lollipop
-        final SwitchPreference coloredNavBar = (SwitchPreference) findPreference("coloredNavBar");
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            coloredNavBar.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    mPrefs.setSettingsModified(true);
-                    if (newValue.toString().equals("true")) {
-                        ThemeUtils.changeNavBar(getActivity(), ThemeUtils.NAV_BAR_DEFAULT);
-                    } else {
-                        ThemeUtils.changeNavBar(getActivity(), ThemeUtils.NAV_BAR_BLACK);
-                    }
-                    return true;
-                }
-            });
-        } else {
-            uiCategory.removePreference(coloredNavBar);
         }
 
         SwitchPreference animations = (SwitchPreference) findPreference("animations");
@@ -360,53 +323,14 @@ public class SettingsFragment extends PreferenceFragment implements
     private void setupDevOptions(PreferenceScreen mainPrefs, final Context context) {
         if (getResources().getBoolean(R.bool.dev_options)) {
 
-            Preference drawerStyle, moarOptions;
-            SwitchPreference miniHeaderPic, drawerHeaderTexts, iconsChangelog, listsCards;
+            Preference moarOptions;
+            SwitchPreference drawerHeaderTexts, iconsChangelog, listsCards;
 
-            drawerStyle = (Preference) findPreference("headerStyle");
             moarOptions = (Preference) findPreference("moreOptions");
 
-            miniHeaderPic = (SwitchPreference) findPreference("miniHeaderPic");
             drawerHeaderTexts = (SwitchPreference) findPreference("drawerHeaderTexts");
             iconsChangelog = (SwitchPreference) findPreference("iconsChangelog");
             listsCards = (SwitchPreference) findPreference("listsCards");
-
-            drawerStyle.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-
-                    final int selectedTheme = mPrefs.getDevDrawerHeaderStyle();
-
-                    new MaterialDialog.Builder(context)
-                            .title(R.string.dev_drawer_header_style_title)
-                            .items(R.array.drawer_header_styles)
-                            .itemsCallbackSingleChoice(selectedTheme, new MaterialDialog.ListCallbackSingleChoice() {
-                                @Override
-                                public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
-                                    if (selectedTheme != which) {
-                                        mPrefs.setDevDrawerHeaderStyle(which);
-                                        mPrefs.setSettingsModified(true);
-                                        ThemeUtils.restartActivity((Activity) context);
-                                    }
-                                    return true;
-                                }
-                            })
-                            .show();
-
-                    return true;
-                }
-            });
-
-            miniHeaderPic.setChecked(mPrefs.getDevMiniDrawerHeaderPicture());
-            miniHeaderPic.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    mPrefs.setDevMiniDrawerHeaderPicture(newValue.toString().equals("true"));
-                    mPrefs.setSettingsModified(true);
-                    ThemeUtils.restartActivity((Activity) context);
-                    return true;
-                }
-            });
 
             drawerHeaderTexts.setChecked(mPrefs.getDevDrawerTexts());
             drawerHeaderTexts.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -625,12 +549,13 @@ public class SettingsFragment extends PreferenceFragment implements
     }
 
     private void showFolderChooserDialog() {
-        new FolderChooserDialog().show((AppCompatActivity) getActivity());
+        new FolderSelectorDialog().show((AppCompatActivity) getActivity());
     }
 
     @Override
     public void onStoragePermissionGranted() {
-        //TODO Show Folder Chooser dialog
+        // TODO: Fix issue with this
+        // showFolderChooserDialog();
     }
 
 }

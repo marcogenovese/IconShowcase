@@ -109,8 +109,7 @@ public class LauncherIntents {
                 Layers(context);
                 break;
             default:
-                if (ShowcaseActivity.DEBUGGING)
-                    Utils.showLog(context, "No method for: " + launcherName);
+                Utils.showLog(context, "No method for: " + launcherName);
                 break;
         }
     }

@@ -31,10 +31,12 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.LauncherIconRestorerActivity;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
+
 
 public class IconRestorerWidget extends AppWidgetProvider {
 
@@ -59,8 +61,12 @@ public class IconRestorerWidget extends AppWidgetProvider {
                 appWidgetManager.updateAppWidget(appWidgetId, views);
 
             } catch (ActivityNotFoundException e) {
-                if (context.getResources().getBoolean(R.bool.debugging))
-                    Utils.showLog(context, "App not found!");
+                Utils.showLog(context, "App not found!");
+                String errorToastContent = context.getResources().getString(R.string.launcher_icon_restorer_error,
+                        context.getResources().getString(R.string.app_name));
+                Toast.makeText(context,
+                        errorToastContent, Toast.LENGTH_LONG)
+                        .show();
             }
 
         }

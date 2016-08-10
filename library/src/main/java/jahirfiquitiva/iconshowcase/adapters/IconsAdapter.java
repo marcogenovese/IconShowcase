@@ -17,10 +17,6 @@
  *
  */
 
-/*
- *
- */
-
 package jahirfiquitiva.iconshowcase.adapters;
 
 import android.annotation.SuppressLint;
@@ -49,7 +45,7 @@ import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
-import jahirfiquitiva.iconshowcase.utilities.color.ColorExtractor;
+import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 
 
 public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder> {
@@ -128,8 +124,7 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
             try {
                 bitmap = BitmapFactory.decodeResource(context.getResources(), resId);
             } catch (Exception e) {
-                if (ShowcaseActivity.DEBUGGING)
-                    Utils.showLog(context, "Icons Picker error: " + Log.getStackTraceString(e));
+                Utils.showLog(context, "Icons Picker error: " + Log.getStackTraceString(e));
             }
 
             if (bitmap != null) {
@@ -151,7 +146,7 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
                         .customView(R.layout.dialog_icon, false)
                         .title(Utils.makeTextReadable(name))
                         .positiveText(R.string.close)
-                        .positiveColor(ColorExtractor.getPreferredColor(iconDrawable, context, true, true))
+                        .positiveColor(ColorUtils.getColorFromIcon(iconDrawable, context))
                         .show();
 
                 if (dialog.getCustomView() != null) {

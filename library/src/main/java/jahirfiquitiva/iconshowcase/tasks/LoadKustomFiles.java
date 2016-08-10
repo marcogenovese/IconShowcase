@@ -37,6 +37,7 @@ import java.util.zip.ZipFile;
 import jahirfiquitiva.iconshowcase.models.KustomKomponent;
 import jahirfiquitiva.iconshowcase.models.KustomWallpaper;
 import jahirfiquitiva.iconshowcase.models.KustomWidget;
+import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 
@@ -46,7 +47,7 @@ public class LoadKustomFiles extends AsyncTask<Void, String, Boolean> {
     public final static ArrayList<KustomKomponent> komponents = new ArrayList<>();
     public final static ArrayList<KustomWallpaper> wallpapers = new ArrayList<>();
     public final static ArrayList<KustomWidget> widgets = new ArrayList<>();
-    private long startTime;
+    private long startTime, endTime;
 
     public LoadKustomFiles(Context context) {
         this.context = new WeakReference<Context>(context);
@@ -77,15 +78,15 @@ public class LoadKustomFiles extends AsyncTask<Void, String, Boolean> {
             worked = false;
         }
 
+        endTime = System.currentTimeMillis();
         return worked;
     }
 
     @Override
     protected void onPostExecute(Boolean worked) {
-        long endTime = System.currentTimeMillis();
         if (worked) {
             Utils.showLog(context.get(),
-                    "Load of widgets task completed successfully in: " +
+                    "Load of kustom files task completed successfully in: " +
                             String.valueOf((endTime - startTime)) + " millisecs.");
         }
     }
@@ -98,11 +99,11 @@ public class LoadKustomFiles extends AsyncTask<Void, String, Boolean> {
             File previewsFolder = new File(context.get().getExternalCacheDir(), Utils.capitalizeText(folder) + "Previews");
 
             if (kustomFiles != null && kustomFiles.length > 0) {
-                clean(previewsFolder);
+                Utils.clean(previewsFolder);
                 previewsFolder.mkdirs();
                 for (String template : kustomFiles) {
                     File widgetPreviewFile = new File(previewsFolder, template);
-                    String widgetName = getFilenameWithoutExtension(template);
+                    String widgetName = Utils.getFilenameWithoutExtension(template);
                     String[] previews = getWidgetPreviewPathFromZip(widgetName, folder,
                             assetManager.open(folder + "/" + template), previewsFolder, widgetPreviewFile);
                     if (previews != null) {
@@ -138,19 +139,6 @@ public class LoadKustomFiles extends AsyncTask<Void, String, Boolean> {
         }
     }
 
-    private void copyFiles(InputStream in, OutputStream out) throws IOException {
-        byte[] buffer = new byte[2048];
-        int read;
-        while ((read = in.read(buffer)) != -1) {
-            out.write(buffer, 0, read);
-        }
-        out.flush();
-    }
-
-    private String getFilenameWithoutExtension(String fileName) {
-        return fileName.substring(0, fileName.lastIndexOf("."));
-    }
-
     @SuppressWarnings("ResultOfMethodCallIgnored")
     private String[] getWidgetPreviewPathFromZip(String name,
                                                  String folder,
@@ -178,7 +166,7 @@ public class LoadKustomFiles extends AsyncTask<Void, String, Boolean> {
 
         try {
             out = new FileOutputStream(widgetPreviewFile);
-            copyFiles(in, out);
+            Utils.copyFiles(in, out);
             in.close();
             out.close();
 
@@ -193,7 +181,7 @@ public class LoadKustomFiles extends AsyncTask<Void, String, Boolean> {
                         try {
                             zipIn = zipFile.getInputStream(entry);
                             zipOut = new FileOutputStream(preview1);
-                            copyFiles(zipIn, zipOut);
+                            Utils.copyFiles(zipIn, zipOut);
                         } finally {
                             if (zipIn != null) zipIn.close();
                             if (zipOut != null) zipOut.close();
@@ -207,7 +195,7 @@ public class LoadKustomFiles extends AsyncTask<Void, String, Boolean> {
                             try {
                                 zipIn = zipFile.getInputStream(entry);
                                 zipOut = new FileOutputStream(preview2);
-                                copyFiles(zipIn, zipOut);
+                                Utils.copyFiles(zipIn, zipOut);
                             } finally {
                                 if (zipIn != null) zipIn.close();
                                 if (zipOut != null) zipOut.close();
@@ -222,22 +210,6 @@ public class LoadKustomFiles extends AsyncTask<Void, String, Boolean> {
         }
 
         return new String[]{preview1.getAbsolutePath(), preview2.getAbsolutePath()};
-    }
-
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    private static int clean(File file) {
-        if (!file.exists()) return 0;
-        int count = 0;
-        if (file.isDirectory()) {
-            File[] folderContent = file.listFiles();
-            if (folderContent != null && folderContent.length > 0) {
-                for (File fileInFolder : folderContent) {
-                    count += clean(fileInFolder);
-                }
-            }
-        }
-        file.delete();
-        return count;
     }
 
 }

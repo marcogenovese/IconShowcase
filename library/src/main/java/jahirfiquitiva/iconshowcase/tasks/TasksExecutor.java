@@ -5,12 +5,15 @@
 package jahirfiquitiva.iconshowcase.tasks;
 
 import android.content.Context;
-import android.os.AsyncTask;
 
+import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
+import jahirfiquitiva.iconshowcase.fragments.RequestsFragment;
 import jahirfiquitiva.iconshowcase.fragments.WallpapersFragment;
+import jahirfiquitiva.iconshowcase.models.RequestList;
 import jahirfiquitiva.iconshowcase.models.WallpapersList;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
+
 
 public class TasksExecutor {
 
@@ -23,7 +26,7 @@ public class TasksExecutor {
     // Global singleton instance
     private static TasksExecutor singleton = null;
 
-    private boolean justIcons, justWallpapers;
+    private boolean justIcons, justWallpapers, includeZooper = false, includeKustom = false;
 
     public static TasksExecutor with(Context context) {
         if (singleton == null)
@@ -49,28 +52,49 @@ public class TasksExecutor {
         this.mPrefs = new Preferences(context);
         this.justIcons = justIcons;
         this.justWallpapers = justWallpapers;
+        for (String item : context.getResources().getStringArray(R.array.primary_drawer_items)) {
+            if (!includeZooper) {
+                includeZooper = item.equals("Zooper");
+            }
+            if (!includeKustom) {
+                includeKustom = item.equals("Kustom");
+            }
+        }
         executeTasks();
     }
 
     private void executeTasks() {
+
+        /*
+        TODO: Optimize the order of execution and the moment these tasks are executed...
+        Duration of tasks:
+        * Load of icons: ~300-400 millisecs.
+        * Load of wallpapers: ~1000 millisecs.
+        * Load of widgets: ~1500-3000 millisecs.
+        * Load of kustom files: ~2500-4000 millisecs.
+        * Load of apps to request: ~9 seconds.
+
+         */
+
         if (justIcons) {
-            new LoadIconsLists(context).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            new LoadIconsLists(context).execute();
         } else if (justWallpapers) {
             loadWallsList();
         } else {
-            new LoadIconsLists(context).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-            new LoadZooperWidgets(context).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-            new LoadKustomFiles(context).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-            loadAppsForRequest();
+            new LoadIconsLists(context).execute();
             loadWallsList();
-        }
-    }
+            if (includeZooper) {
+                new LoadZooperWidgets(context).execute();
+            }
+            if (includeKustom) {
+                new LoadKustomFiles(context).execute();
+            }
 
-    private void loadAppsForRequest() {
-        if (mPrefs.getAppsToRequestLoaded()) {
-            mPrefs.setAppsToRequestLoaded(!mPrefs.getAppsToRequestLoaded());
+            if (!mPrefs.didAppsToRequestLoad() || RequestList.getRequestList() == null) {
+                RequestsFragment.loadAppsToRequest = new LoadAppsToRequest(context);
+                RequestsFragment.loadAppsToRequest.execute();
+            }
         }
-        new LoadAppsToRequest(context).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     private void loadWallsList() {
@@ -90,7 +114,7 @@ public class TasksExecutor {
                     WallpapersFragment.mAdapter.notifyDataSetChanged();
                 }
             }
-        }, context, null).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }, context, null).execute();
     }
 
     /**

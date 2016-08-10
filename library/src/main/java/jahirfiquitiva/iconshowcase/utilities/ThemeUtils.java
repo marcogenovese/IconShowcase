@@ -52,7 +52,7 @@ public class ThemeUtils {
 
     public static void onActivityCreateSetTheme(Activity activity) {
         final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
-        int mTheme = sp.getInt("theme", (activity.getResources().getInteger(R.integer.default_theme) - 1));
+        int mTheme = sp.getInt("theme", (activity.getResources().getInteger(R.integer.app_theme) - 1));
         switch (mTheme) {
             default:
             case LIGHT:

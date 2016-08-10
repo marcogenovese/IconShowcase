@@ -51,7 +51,6 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -67,7 +66,6 @@ import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
-import com.mikepenz.materialize.util.UIUtils;
 
 import org.sufficientlysecure.donations.google.util.IabHelper;
 import org.sufficientlysecure.donations.google.util.IabResult;
@@ -81,7 +79,7 @@ import java.util.Random;
 import jahirfiquitiva.iconshowcase.BuildConfig;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.adapters.RequestsAdapter;
-import jahirfiquitiva.iconshowcase.dialogs.FolderChooserDialog;
+import jahirfiquitiva.iconshowcase.dialogs.FolderSelectorDialog;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.fragments.DonationsFragment;
 import jahirfiquitiva.iconshowcase.fragments.RequestsFragment;
@@ -97,11 +95,11 @@ import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.utilities.ZooperIconFontsHelper;
-import jahirfiquitiva.iconshowcase.utilities.color.ColorExtractor;
+import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 
 
 public class ShowcaseActivity extends AppCompatActivity implements
-        FolderChooserDialog.FolderSelectionCallback, PermissionUtils.OnPermissionResultListener {
+        FolderSelectorDialog.FolderSelectionCallback, PermissionUtils.OnPermissionResultListener {
 
     private static boolean WITH_LICENSE_CHECKER = false,
             WITH_INSTALLED_FROM_AMAZON = false,
@@ -115,9 +113,8 @@ public class ShowcaseActivity extends AppCompatActivity implements
             DONATIONS_BITCOIN = false,
 
     ENABLE_DEV_OPTIONS = false;
-    //SHOW_LOAD_ICONS_DIALOG = true;
 
-    public static boolean WITH_ZOOPER_SECTION = false, DEBUGGING = false,
+    public static boolean WITH_ZOOPER_SECTION = false,
             SELECT_ALL_APPS = true, ENABLE_USER_WALLPAPER_IN_TOOLBAR = true;
 
     private static String[] mGoogleCatalog = new String[0],
@@ -133,7 +130,7 @@ public class ShowcaseActivity extends AppCompatActivity implements
 
     private IabHelper mHelper;
 
-    private static int drawerHeaderStyle = 1, curVersionCode = 0;
+    private static int curVersionCode = 0;
 
     private static final String MARKET_URL = "https://play.google.com/store/apps/details?id=";
     private boolean mIsPremium = false, installedFromPlayStore = false;
@@ -160,7 +157,7 @@ public class ShowcaseActivity extends AppCompatActivity implements
     private boolean mLastTheme, mLastNavBar;
     private static Preferences mPrefs;
 
-    public MaterialDialog settingsDialog, changelogDialog; //loadIcons,
+    public MaterialDialog settingsDialog, changelogDialog;
     public static Toolbar toolbar;
     public static AppBarLayout appbar;
     private CollapsingToolbarLayout collapsingToolbarLayout;
@@ -170,8 +167,6 @@ public class ShowcaseActivity extends AppCompatActivity implements
     public static Drawable wallpaperDrawable;
 
     public Drawer drawer;
-
-    private static boolean themeMode;
     private String installer = null;
 
     @Override
@@ -210,13 +205,13 @@ public class ShowcaseActivity extends AppCompatActivity implements
 
         getAction();
 
+        setContentView(R.layout.showcase_activity);
+
         TasksExecutor.with(context)
                 .loadJust(
                         (iconsPicker && iconsPickerEnabled),
                         ((notifType == 1) ||
                                 (wallsPicker && mPrefs.areFeaturesEnabled() && wallsEnabled)));
-
-        DEBUGGING = getResources().getBoolean(R.bool.debugging);
 
         if (ENABLE_DEV_OPTIONS) {
             WITH_ICONS_BASED_CHANGELOG = mPrefs.getDevIconsChangelogStyle();
@@ -232,8 +227,6 @@ public class ShowcaseActivity extends AppCompatActivity implements
         primaryDrawerItems = new String[configurePrimaryDrawerItems.length + 1];
         primaryDrawerItems[0] = "Main";
         System.arraycopy(configurePrimaryDrawerItems, 0, primaryDrawerItems, 1, configurePrimaryDrawerItems.length);
-
-        themeMode = getResources().getBoolean(R.bool.theme_mode);
 
         if (notifType == 1) {
             NotificationsService.clearNotification(context, 97);
@@ -255,13 +248,6 @@ public class ShowcaseActivity extends AppCompatActivity implements
 
         setupDonations();
 
-        if (installedFromPlayStore) {
-            // Disable donation methods not allowed by Google
-            DONATIONS_PAYPAL = false;
-            DONATIONS_FLATTR = false;
-            DONATIONS_BITCOIN = false;
-        }
-
         //Initialize SecondaryDrawerItems
         if (WITH_DONATIONS_SECTION) {
             secondaryDrawerItems = new String[]{"Credits", "Settings", "Donations"};
@@ -269,21 +255,7 @@ public class ShowcaseActivity extends AppCompatActivity implements
             secondaryDrawerItems = new String[]{"Credits", "Settings"};
         }
 
-        if (ENABLE_DEV_OPTIONS) {
-            drawerHeaderStyle = mPrefs.getDevDrawerHeaderStyle() + 1;
-        } else {
-            drawerHeaderStyle = getResources().getInteger(R.integer.nav_drawer_header_style);
-        }
-
-        if (drawerHeaderStyle < 1 || drawerHeaderStyle > 3) {
-            drawerHeaderStyle = 1;
-        }
-
-        if (!themeMode) {
-            numOfIcons = context.getResources().getInteger(R.integer.toolbar_icons);
-        }
-
-        setContentView(R.layout.showcase_activity);
+        numOfIcons = context.getResources().getInteger(R.integer.toolbar_icons);
 
         icon1 = (ImageView) findViewById(R.id.iconOne);
         icon2 = (ImageView) findViewById(R.id.iconTwo);
@@ -324,10 +296,9 @@ public class ShowcaseActivity extends AppCompatActivity implements
                 public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
                     //TODO test this
                     if (inventory != null) {
-                        if (DEBUGGING) Utils.showLog(context, "IAP inventory exists");
+                        Utils.showLog(context, "IAP inventory exists");
                         for (String aGOOGLE_CATALOG_FREE : GOOGLE_CATALOG_FREE) {
-                            if (DEBUGGING)
-                                Utils.showLog(context, aGOOGLE_CATALOG_FREE + " is " + inventory.hasPurchase(aGOOGLE_CATALOG_FREE));
+                            Utils.showLog(context, aGOOGLE_CATALOG_FREE + " is " + inventory.hasPurchase(aGOOGLE_CATALOG_FREE));
                             if (inventory.hasPurchase(aGOOGLE_CATALOG_FREE)) { //at least one donation value found, now premium
                                 mIsPremium = true;
                             }
@@ -343,8 +314,7 @@ public class ShowcaseActivity extends AppCompatActivity implements
             mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
                 public void onIabSetupFinished(IabResult result) {
                     if (!result.isSuccess()) {
-                        if (DEBUGGING)
-                            Utils.showLog(context, "In-app Billing setup failed: " + result); //TODO move text to string?
+                        Utils.showLog(context, "In-app Billing setup failed: " + result); //TODO move text to string?
                         new MaterialDialog.Builder(ShowcaseActivity.this)
                                 .title(R.string.donations_error_title)
                                 .content(R.string.donations_error_content)
@@ -368,24 +338,6 @@ public class ShowcaseActivity extends AppCompatActivity implements
             } else if (iconsPicker && iconsPickerEnabled) {
                 drawerItemClick(iconsPickerIdentifier);
                 drawer.setSelection(iconsPickerIdentifier);
-                /* TODO Double check if this is secure enough to be deleted.
-                loadIcons = ISDialogs.showLoadingIconsDialog(context);
-                loadIcons.show();
-                loadIcons.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                    }
-                });
-                if (!SHOW_LOAD_ICONS_DIALOG) {
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            loadIcons.dismiss();
-                        }
-                    }, 500);
-                }
-                */
             } else if (wallsPicker && mPrefs.areFeaturesEnabled() && wallsEnabled) {
                 drawerItemClick(wallsIdentifier);
                 drawer.setSelection(wallsIdentifier);
@@ -440,12 +392,10 @@ public class ShowcaseActivity extends AppCompatActivity implements
         currentItem = itemId;
 
         if (fragment.equals("Main")) {
-            if (!themeMode) {
-                icon1.setVisibility(View.INVISIBLE);
-                icon2.setVisibility(View.INVISIBLE);
-                icon3.setVisibility(View.INVISIBLE);
-                icon4.setVisibility(View.INVISIBLE);
-            }
+            icon1.setVisibility(View.INVISIBLE);
+            icon2.setVisibility(View.INVISIBLE);
+            icon3.setVisibility(View.INVISIBLE);
+            icon4.setVisibility(View.INVISIBLE);
         }
 
         //Fragment Switcher
@@ -510,7 +460,7 @@ public class ShowcaseActivity extends AppCompatActivity implements
         if (!iconsPicker && !wallsPicker) {
             setupToolbarHeader(this, toolbarHeader);
         }
-        ColorExtractor.setupToolbarIconsAndTextsColors(context, appbar, toolbar, toolbarHeaderImage);
+        ColorUtils.setupToolbarIconsAndTextsColors(context, appbar, toolbar, toolbarHeaderImage);
         if (mLastTheme != ThemeUtils.darkTheme
                 || mLastNavBar != ThemeUtils.coloredNavBar) {
             ThemeUtils.restartActivity(this);
@@ -671,7 +621,6 @@ public class ShowcaseActivity extends AppCompatActivity implements
     }
 
     private void checkLicense(final Context context, final Preferences mPrefs, String licenseKey) {
-
         PiracyChecker checker = new PiracyChecker(context);
 
         if ((licenseKey != null) && (!(licenseKey.isEmpty())) && (licenseKey.length() > 25)) {
@@ -687,7 +636,26 @@ public class ShowcaseActivity extends AppCompatActivity implements
         checker.callback(new PiracyCheckerCallback() {
             @Override
             public void allow() {
-                licenseSuccessDialog().show();
+                ISDialogs.showLicenseSuccessDialog((Activity) context,
+                        new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+                                mPrefs.setFeaturesEnabled(true);
+                                showChangelogDialog();
+                            }
+                        }, new MaterialDialog.OnDismissListener() {
+                            @Override
+                            public void onDismiss(DialogInterface dialog) {
+                                mPrefs.setFeaturesEnabled(true);
+                                showChangelogDialog();
+                            }
+                        }, new MaterialDialog.OnCancelListener() {
+                            @Override
+                            public void onCancel(DialogInterface dialog) {
+                                mPrefs.setFeaturesEnabled(true);
+                                showChangelogDialog();
+                            }
+                        });
             }
 
             @Override
@@ -697,36 +665,6 @@ public class ShowcaseActivity extends AppCompatActivity implements
         });
 
         checker.start();
-
-    }
-
-    private MaterialDialog licenseSuccessDialog() {
-        MaterialDialog successDialog = ISDialogs.showLicenseSuccessDialog(context,
-                new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
-                        mPrefs.setFeaturesEnabled(true);
-                        showChangelogDialog();
-                    }
-                });
-
-        successDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                mPrefs.setFeaturesEnabled(true);
-                showChangelogDialog();
-            }
-        });
-
-        successDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                mPrefs.setFeaturesEnabled(true);
-                showChangelogDialog();
-            }
-        });
-
-        return successDialog;
     }
 
     private void showNotLicensedDialog(final Activity act, Preferences mPrefs, final String MARKET_URL) {
@@ -744,15 +682,15 @@ public class ShowcaseActivity extends AppCompatActivity implements
                     public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
                         act.finish();
                     }
+                }, new MaterialDialog.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        act.finish();
+                    }
                 }, new MaterialDialog.OnCancelListener() {
 
                     @Override
                     public void onCancel(DialogInterface dialog) {
-                        act.finish();
-                    }
-                }, new MaterialDialog.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
                         act.finish();
                     }
                 });
@@ -783,6 +721,12 @@ public class ShowcaseActivity extends AppCompatActivity implements
         new ZooperIconFontsHelper(context).check(true);
     }
 
+    @Override
+    public void onFolderSelection(@NonNull File folder) {
+        mPrefs.setDownloadsFolder(folder.getAbsolutePath());
+        SettingsFragment.changeWallsFolderValue(this, mPrefs);
+    }
+
     public interface WallsListInterface {
 
         void checkWallsListCreation(boolean result);
@@ -799,48 +743,20 @@ public class ShowcaseActivity extends AppCompatActivity implements
 
         DrawerBuilder drawerBuilder;
 
-        if (themeMode) { //enabled theme mode, long press added
-            drawerBuilder = new DrawerBuilder()
-                    .withActivity(this)
-                    .withToolbar(toolbar)
-                    .withFireOnInitialOnClick(true)
-                    .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+        drawerBuilder = new DrawerBuilder()
+                .withActivity(this)
+                .withToolbar(toolbar)
+                .withFireOnInitialOnClick(true)
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
 
-                        @Override
-                        public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                            if (drawerItem != null) {
-                                drawerItemClick(drawerItem.getIdentifier());
-                            }
-                            return false;
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        if (drawerItem != null) {
+                            drawerItemClick(drawerItem.getIdentifier());
                         }
-                    })
-                    .withOnDrawerItemLongClickListener(new Drawer.OnDrawerItemLongClickListener() {
-
-                        @Override
-                        public boolean onItemLongClick(View view, int position, IDrawerItem drawerItem) {
-                            if (drawerItem.getIdentifier() == iconsPickerIdentifier && mIsPremium) {
-                                switchFragment(iconsPickerIdentifier, "Requests", context);
-                                drawer.closeDrawer();
-                            }
-                            return false;
-                        }
-                    });
-        } else {
-            drawerBuilder = new DrawerBuilder()
-                    .withActivity(this)
-                    .withToolbar(toolbar)
-                    .withFireOnInitialOnClick(true)
-                    .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-
-                        @Override
-                        public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                            if (drawerItem != null) {
-                                drawerItemClick(drawerItem.getIdentifier());
-                            }
-                            return false;
-                        }
-                    });
-        }
+                        return false;
+                    }
+                });
 
         for (int i = 0; i < primaryDrawerItems.length; i++) {
             switch (primaryDrawerItems[i]) {
@@ -927,71 +843,25 @@ public class ShowcaseActivity extends AppCompatActivity implements
             headerAppVersion = "v " + Utils.getAppVersion(this);
         }
 
-        switch (drawerHeaderStyle) {
-            case 1:
-                AccountHeader drawerHeader = new AccountHeaderBuilder()
-                        .withActivity(this)
-                        .withHeaderBackground(ThemeUtils.darkTheme ?
-                                ThemeUtils.transparent ?
-                                        R.drawable.drawer_header_clear
-                                        : R.drawable.drawer_header_dark
-                                : R.drawable.drawer_header_light)
-                        .withSelectionFirstLine(headerAppName)
-                        .withSelectionSecondLine(headerAppVersion)
-                        .withProfileImagesClickable(false)
-                        .withResetDrawerOnProfileListClick(false)
-                        .withSelectionListEnabled(false)
-                        .withSelectionListEnabledForSingleProfile(false)
-                        .withSavedInstance(savedInstanceState)
-                        .build();
+        AccountHeader drawerHeader = new AccountHeaderBuilder()
+                .withActivity(this)
+                .withHeaderBackground(ThemeUtils.darkTheme ?
+                        ThemeUtils.transparent ?
+                                R.drawable.drawer_header_clear
+                                : R.drawable.drawer_header_dark
+                        : R.drawable.drawer_header_light)
+                .withSelectionFirstLine(headerAppName)
+                .withSelectionSecondLine(headerAppVersion)
+                .withProfileImagesClickable(false)
+                .withResetDrawerOnProfileListClick(false)
+                .withSelectionListEnabled(false)
+                .withSelectionListEnabledForSingleProfile(false)
+                .withSavedInstance(savedInstanceState)
+                .build();
 
-                drawerBuilder.withAccountHeader(drawerHeader);
-                break;
-            case 2:
-                drawerBuilder.withHeader(R.layout.mini_drawer_header);
-                break;
-            case 3:
-                break;
-        }
+        drawerBuilder.withAccountHeader(drawerHeader);
 
         drawer = drawerBuilder.build();
-
-        if (drawerHeaderStyle == 2) {
-            ImageView miniHeader = (ImageView) drawer.getHeader().findViewById(R.id.mini_drawer_header);
-            miniHeader.getLayoutParams().height = UIUtils.getActionBarHeight(this) + UIUtils.getStatusBarHeight(this);
-            TextView appVersion = (TextView) drawer.getHeader().findViewById(R.id.text_app_version);
-            TextView appName = (TextView) drawer.getHeader().findViewById(R.id.text_app_name);
-
-            boolean miniHeaderSolidColor;
-
-            if (ENABLE_DEV_OPTIONS) {
-                miniHeaderSolidColor = !(mPrefs.getDevMiniDrawerHeaderPicture());
-            } else {
-                miniHeaderSolidColor = context.getResources().getBoolean(R.bool.mini_header_solid_color);
-            }
-
-            if (miniHeaderSolidColor) {
-                int backgroundColor = ThemeUtils.darkTheme ?
-                        ContextCompat.getColor(context, R.color.dark_theme_primary) :
-                        ContextCompat.getColor(context, R.color.light_theme_primary);
-                miniHeader.setBackgroundColor(backgroundColor);
-                int iconsColor = ThemeUtils.darkTheme ?
-                        ContextCompat.getColor(this, R.color.toolbar_text_dark) :
-                        ContextCompat.getColor(this, R.color.toolbar_text_light);
-                appVersion.setTextColor(iconsColor);
-                appName.setTextColor(iconsColor);
-            } else {
-                miniHeader.setImageDrawable(ThemeUtils.darkTheme ?
-                        ThemeUtils.transparent ?
-                                ContextCompat.getDrawable(context, R.drawable.drawer_header_clear)
-                                : ContextCompat.getDrawable(context, R.drawable.drawer_header_dark)
-                        : ContextCompat.getDrawable(context, R.drawable.drawer_header_light));
-                appVersion.setTextColor(ContextCompat.getColor(context, android.R.color.white));
-                appName.setTextColor(ContextCompat.getColor(context, android.R.color.white));
-            }
-            appName.setText(headerAppName);
-            appVersion.setText(headerAppVersion);
-        }
 
     }
 
@@ -1145,11 +1015,7 @@ public class ShowcaseActivity extends AppCompatActivity implements
 
     public static void setupToolbarHeader(Context context, ImageView toolbarHeader) {
 
-        if (themeMode) {
-            wallpaperDrawable = ContextCompat.getDrawable(context, R.drawable.heroimage);
-            toolbarHeader.setImageDrawable(wallpaperDrawable);
-            toolbarHeaderImage = Utils.drawableToBitmap(wallpaperDrawable);
-        } else if (ENABLE_USER_WALLPAPER_IN_TOOLBAR && mPrefs.getWallpaperAsToolbarHeaderEnabled()) {
+        if (ENABLE_USER_WALLPAPER_IN_TOOLBAR && mPrefs.getWallpaperAsToolbarHeaderEnabled()) {
             WallpaperManager wm = WallpaperManager.getInstance(context);
 
             if (wm != null) {
@@ -1234,14 +1100,16 @@ public class ShowcaseActivity extends AppCompatActivity implements
         return this.drawer;
     }
 
-    @Override
-    public void onFolderSelection(File folder) {
-        mPrefs.setDownloadsFolder(folder.getAbsolutePath());
-        SettingsFragment.changeWallsFolderValue(this, mPrefs);
-    }
-
     private void setupDonations() {
         //donations stuff
+
+        if (installedFromPlayStore) {
+            // Disable donation methods not allowed by Google
+            DONATIONS_PAYPAL = false;
+            DONATIONS_FLATTR = false;
+            DONATIONS_BITCOIN = false;
+        }
+
         //google
         if (DONATIONS_GOOGLE) {
             GOOGLE_CATALOG_FREE = getResources().getStringArray(R.array.nonconsumable_google_donation_items);
@@ -1249,7 +1117,6 @@ public class ShowcaseActivity extends AppCompatActivity implements
             mGoogleCatalog = GOOGLE_CATALOG_FREE;
             GOOGLE_CATALOG_VALUES = getResources().getStringArray(R.array.google_donations_catalog);
 
-            //TODO check if 50 is a good reference value
             try {
                 if (!(GOOGLE_PUBKEY.length() > 50) || !(GOOGLE_CATALOG_VALUES.length > 0) || !(GOOGLE_CATALOG_FREE.length == GOOGLE_CATALOG_PRO.length) || !(GOOGLE_CATALOG_FREE.length == GOOGLE_CATALOG_VALUES.length)) {
                     DONATIONS_GOOGLE = false; //google donations setup is incorrect

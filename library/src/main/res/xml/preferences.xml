@@ -35,19 +35,6 @@
             android:persistent="true"
             android:summary="@string/dev_prefs_summary"/>
 
-        <Preference
-            android:key="headerStyle"
-            android:persistent="true"
-            android:summary="@string/dev_drawer_header_style_summary"
-            android:title="@string/dev_drawer_header_style_title"/>
-
-        <SwitchPreference
-            android:defaultValue="true"
-            android:key="miniHeaderPic"
-            android:persistent="true"
-            android:summary="@string/dev_mini_header_picture_summary"
-            android:title="@string/dev_mini_header_picture_title"/>
-
         <SwitchPreference
             android:defaultValue="true"
             android:key="drawerHeaderTexts"
@@ -80,19 +67,6 @@
     <PreferenceCategory
         android:key="uiPreferences"
         android:title="@string/pref_header_ui">
-
-        <Preference
-            android:key="themes"
-            android:persistent="true"
-            android:summary="@string/pref_summary_themes"
-            android:title="@string/pref_title_themes"/>
-
-        <SwitchPreference
-            android:defaultValue="true"
-            android:key="coloredNavBar"
-            android:persistent="true"
-            android:summary="@string/pref_summary_navbar"
-            android:title="@string/pref_title_navbar"/>
 
         <SwitchPreference
             android:defaultValue="true"

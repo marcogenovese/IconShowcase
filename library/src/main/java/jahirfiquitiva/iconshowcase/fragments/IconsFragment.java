@@ -17,10 +17,6 @@
  *
  */
 
-/*
- *
- */
-
 package jahirfiquitiva.iconshowcase.fragments;
 
 import android.os.Bundle;

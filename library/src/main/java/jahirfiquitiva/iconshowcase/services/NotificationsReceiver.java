@@ -9,6 +9,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.SystemClock;
 
 import java.util.Date;
 
@@ -37,7 +38,7 @@ public class NotificationsReceiver extends BroadcastReceiver {
              * Option 3:
              * something else D:
              */
-            long elapsedTime = 5000;
+            long elapsedTime = SystemClock.elapsedRealtime();
             alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME,
                     elapsedTime,
                     interval,

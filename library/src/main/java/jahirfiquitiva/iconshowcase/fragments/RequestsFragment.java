@@ -38,6 +38,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
@@ -49,6 +50,7 @@ import jahirfiquitiva.iconshowcase.adapters.RequestsAdapter;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.models.RequestItem;
 import jahirfiquitiva.iconshowcase.models.RequestList;
+import jahirfiquitiva.iconshowcase.tasks.LoadAppsToRequest;
 import jahirfiquitiva.iconshowcase.tasks.ZipFilesToRequest;
 import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
@@ -68,6 +70,8 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
     private static Preferences mPrefs;
     private Activity context;
     private static ArrayList<RequestItem> requestList;
+    private static TextView errorLayout;
+    public static LoadAppsToRequest loadAppsToRequest;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -96,6 +100,18 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
         } catch (InflateException e) {
             // Do nothing
         }
+
+        errorLayout = (TextView) layout.findViewById(R.id.error_view);
+        errorLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (loadAppsToRequest != null) {
+                    loadAppsToRequest.cancel(true);
+                }
+                loadAppsToRequest = new LoadAppsToRequest(context);
+                loadAppsToRequest.execute();
+            }
+        });
 
         fab = (FloatingActionButton) layout.findViewById(R.id.requests_fab);
 
@@ -147,6 +163,7 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupContent(view, getActivity());
+        errorLayout.setVisibility(View.GONE);
     }
 
     @Override
@@ -188,7 +205,10 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
                 mRecyclerView.setAdapter(requestsAdapter);
                 requestsAdapter.startIconFetching(mRecyclerView);
                 fastScroller.attachRecyclerView(mRecyclerView);
+                errorLayout.setVisibility(View.GONE);
                 showStuff();
+            } else {
+                errorLayout.setVisibility(View.VISIBLE);
             }
         }
     }

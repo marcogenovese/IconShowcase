@@ -30,8 +30,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.SearchView;
+import android.util.TypedValue;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -47,6 +47,7 @@ import java.util.Locale;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.fragments.base.FragmentStatePagerAdapter;
+import jahirfiquitiva.iconshowcase.fragments.base.ViewPagerWithCustomScrollDuration;
 import jahirfiquitiva.iconshowcase.models.IconsCategory;
 import jahirfiquitiva.iconshowcase.tasks.LoadIconsLists;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
@@ -59,7 +60,7 @@ import jahirfiquitiva.iconshowcase.utilities.color.ToolbarTinter;
 public class PreviewsFragment extends Fragment {
 
     private int mLastSelected = 0;
-    private ViewPager mPager;
+    private ViewPagerWithCustomScrollDuration mPager;
     private String[] tabs;
     private ViewGroup layout;
     private TabLayout mTabs;
@@ -116,7 +117,10 @@ public class PreviewsFragment extends Fragment {
         Utils.collapseToolbar(getActivity());
 
         if (mPager == null) {
-            mPager = (ViewPager) layout.findViewById(R.id.pager);
+            mPager = (ViewPagerWithCustomScrollDuration) layout.findViewById(R.id.pager);
+            TypedValue factor = new TypedValue();
+            getResources().getValue(R.dimen.scroll_factor, factor, true);
+            mPager.setScrollDurationFactor(factor.getFloat());
             mPager.setOffscreenPageLimit(getPageLimit());
             mPager.setAdapter(new IconsPagerAdapter(getChildFragmentManager()));
             createTabs();
@@ -139,7 +143,7 @@ public class PreviewsFragment extends Fragment {
         mTabs = (TabLayout) getActivity().findViewById(R.id.tabs);
         mTabs.setVisibility(View.VISIBLE);
         mTabs.setupWithViewPager(mPager);
-        mTabs.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        mTabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 mPager.setCurrentItem(tab.getPosition());

@@ -52,6 +52,7 @@ import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.views.CustomCoordinatorLayout;
 import jahirfiquitiva.iconshowcase.views.FixedElevationAppBarLayout;
 
+
 @SuppressWarnings("ResourceAsColor")
 public class MuzeiSettings extends AppCompatActivity implements View.OnClickListener {
 
@@ -249,15 +250,15 @@ public class MuzeiSettings extends AppCompatActivity implements View.OnClickList
                     public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
                         finish();
                     }
-                }, new MaterialDialog.OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialog) {
-                        finish();
-                    }
                 }, new MaterialDialog.OnDismissListener() {
 
                     @Override
                     public void onDismiss(DialogInterface dialog) {
+                        finish();
+                    }
+                }, new MaterialDialog.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
                         finish();
                     }
                 });

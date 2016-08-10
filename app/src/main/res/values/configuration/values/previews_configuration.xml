@@ -21,6 +21,13 @@
 <resources>
 
     <!--
+    This is the multiplier factor for tabs scrolling/swiping
+    Default is 1.0
+    Set the value you want, the bigger the slower (maybe smoother) scroll/swipe.
+    -->
+    <item name="scroll_factor" format="float" type="dimen">1.6</item>
+
+    <!--
     Do you want the "ALL ICONS" tab to be generated automatically?
     If you are sure you have put all the icons in categories.
     True, means yes.

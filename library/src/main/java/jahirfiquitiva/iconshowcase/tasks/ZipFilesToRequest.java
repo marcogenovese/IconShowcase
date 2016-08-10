@@ -190,16 +190,15 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
             sb.append("\nDevice: " + Build.MODEL);
             sb.append("\nManufacturer: " + Build.MANUFACTURER);
             sb.append("\nModel (and Product): " + Build.DEVICE + " (" + Build.PRODUCT + ")");
-            if (context.get().getResources().getBoolean(R.bool.theme_engine_info)) {
-                if (Utils.isAppInstalled(context.get(), "org.cyanogenmod.theme.chooser")) {
-                    sb.append("\nCMTE is installed");
-                }
-                if (Utils.isAppInstalled(context.get(), "com.cyngn.theme.chooser")) {
-                    sb.append("\nCyngn theme engine is installed");
-                }
-                if (Utils.isAppInstalled(context.get(), "com.lovejoy777.rroandlayersmanager")) {
-                    sb.append("\nLayers Manager is installed");
-                }
+
+            if (Utils.isAppInstalled(context.get(), "org.cyanogenmod.theme.chooser")) {
+                sb.append("\nCyanogenMod Theme Engine is installed");
+            }
+            if (Utils.isAppInstalled(context.get(), "com.cyngn.theme.chooser")) {
+                sb.append("\nCyngn Theme Engine is installed");
+            }
+            if (Utils.isAppInstalled(context.get(), "com.lovejoy777.rroandlayersmanager")) {
+                sb.append("\nLayers Manager is installed");
             }
 
             if (appsCount != 0) {
@@ -328,9 +327,9 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
             }
             zipOutputStream.close();
         } catch (FileNotFoundException e) {
-            if (ShowcaseActivity.DEBUGGING) Utils.showLog("File not found: " + e.getMessage());
+            Utils.showLog("File not found: " + e.getMessage());
         } catch (IOException e) {
-            if (ShowcaseActivity.DEBUGGING) Utils.showLog("IOException: " + e.getMessage());
+            Utils.showLog("IOException: " + e.getMessage());
         }
     }
 

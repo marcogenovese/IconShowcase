@@ -50,21 +50,13 @@
     -->
     <style name="AppTheme.LaunchScreen" parent="@style/AppTheme.Base.LightLaunchScreen"/>
 
-    <!-- Default theme
+    <!-- App theme
     1. Light
     2. Dark
     3. Clear
     4. Auto (Light in the morning & Dark in the night)
     -->
-    <integer name="default_theme">1</integer>
-
-    <!--
-    Navigation Drawer Header Style:
-    1. Normal
-    2. Mini
-    3. No header
-    -->
-    <integer name="nav_drawer_header_style">1</integer>
+    <integer name="app_theme">1</integer>
 
     <!--
     Do you want the app name and version in the drawer header?
@@ -72,14 +64,6 @@
     False, means no.
     -->
     <bool name="with_drawer_texts">true</bool>
-
-    <!--
-    Mini Navigation Drawer Header Solid Color?
-    True, means that the drawer header will use the primary color instead of a picture.
-    False, means that the drawer header will use the 'header' picture.
-    You can ignore this if you won't use the mini header style.
-    -->
-    <bool name="mini_header_solid_color">false</bool>
 
     <!--
     Do you want the app to use the icons based changelog, instead of texts one?

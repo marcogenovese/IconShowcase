@@ -54,26 +54,25 @@ import jahirfiquitiva.iconshowcase.fragments.RequestsFragment;
 import jahirfiquitiva.iconshowcase.models.AppFilterError;
 import jahirfiquitiva.iconshowcase.models.RequestItem;
 import jahirfiquitiva.iconshowcase.models.RequestList;
+import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 
 public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<RequestItem>> {
 
     private static PackageManager mPackageManager;
-    private static boolean debugging = false;
     private final static ArrayList<String> components = new ArrayList<>();
     private final static ArrayList<RequestItem> appsList = new ArrayList<>();
     private final static ArrayList<AppFilterError> appFilterErrors = new ArrayList<>();
     private final WeakReference<Context> context;
-    private final long startTime;
+    private long startTime, endTime;
     private static final String TASK = "AppsToRequest";
 
     @SuppressLint("PrivateResource")
     public LoadAppsToRequest(Context context) {
         startTime = System.currentTimeMillis();
-        this.context = new WeakReference<>(context);
 
-        debugging = context.getResources().getBoolean(R.bool.debugging);
+        this.context = new WeakReference<>(context);
 
         mPackageManager = context.getPackageManager();
 
@@ -116,20 +115,22 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
             }
         });
 
+        endTime = System.currentTimeMillis();
         return appsList;
     }
 
     @Override
     protected void onPostExecute(ArrayList<RequestItem> list) {
+        Preferences mPrefs = new Preferences(context.get());
+        mPrefs.setIfAppsToRequestLoad(list != null);
         RequestList.setRequestList(list);
         RequestsFragment.setupContent(RequestsFragment.layout, context.get());
         if (list != null) {
-            long endTime = System.currentTimeMillis();
             Utils.showLog(context.get(),
-                    "Apps to Request Task completed in: " +
+                    "Load of apps to request completed in: " +
                             String.valueOf((endTime - startTime) / 1000) + " secs.");
         }
-        if (debugging) {
+        if (context.get().getResources().getBoolean(R.bool.debugging)) {
             if (appFilterErrors != null) {
                 showAppFilterErrors(appFilterErrors, context.get());
             }
@@ -190,17 +191,15 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
 
             boolean error = emptyComponent.equals("") || halfEmptyPack || halfEmptyComp;
 
-            if (debugging) {
-                appFilterErrors.add(new AppFilterError(
-                        emptyComponent.equals(""),
-                        halfEmptyPack,
-                        halfEmptyComp,
-                        iconName,
-                        completeComponent,
-                        Utils.getIconResId(context, context.getResources(),
-                                context.getPackageName(), iconName, TASK)
-                ));
-            }
+            appFilterErrors.add(new AppFilterError(
+                    emptyComponent.equals(""),
+                    halfEmptyPack,
+                    halfEmptyComp,
+                    iconName,
+                    completeComponent,
+                    Utils.getIconResId(context, context.getResources(),
+                            context.getPackageName(), iconName, TASK)
+            ));
 
             if (error || iconName.equals("")) {
                 return null;

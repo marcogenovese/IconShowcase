@@ -31,8 +31,8 @@ repositories {
 }
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    compileSdkVersion 24
+    buildToolsVersion "24.0.1"
 
     lintOptions {
         abortOnError false
@@ -40,7 +40,7 @@ android {
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 23
+        targetSdkVersion 24
         versionCode 10
         versionName "1.0"
         vectorDrawables.useSupportLibrary = true
@@ -88,45 +88,41 @@ android {
 dependencies {
 
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:23.4.0@aar'
-    compile 'com.android.support:support-v4:23.4.0@aar'
-    compile 'com.android.support:design:23.4.0'
-    compile 'com.android.support:cardview-v7:23.4.0@aar'
-    compile 'com.android.support:recyclerview-v7:23.4.0@aar'
-    compile 'com.android.support:palette-v7:23.4.0@aar'
-    compile 'com.android.support:gridlayout-v7:23.4.0'
-    compile 'com.android.support:customtabs:23.4.0'
+    compile 'com.android.support:appcompat-v7:24.1.1@aar'
+    compile 'com.android.support:support-v4:24.1.1@aar'
+    compile 'com.android.support:design:24.1.1'
+    compile 'com.android.support:cardview-v7:24.1.1@aar'
+    compile 'com.android.support:recyclerview-v7:24.1.1@aar'
+    compile 'com.android.support:palette-v7:24.1.1@aar'
+    compile 'com.android.support:gridlayout-v7:24.1.1'
+    compile 'com.android.support:customtabs:24.1.1'
 
     //Material Dialogs
-    compile('com.afollestad.material-dialogs:core:0.8.5.9@aar') {
-        transitive = true
-    }
+    compile 'com.afollestad.material-dialogs:core:0.9.0.0'
 
     //Material Drawer
-    compile('com.mikepenz:materialdrawer:5.3.1@aar') {
+    compile('com.mikepenz:materialdrawer:5.3.6@aar') {
         transitive = true
     }
 
     //OkHttp
-    compile 'com.squareup.okhttp3:okhttp:3.3.1'
+    compile 'com.squareup.okhttp3:okhttp:3.4.1'
 
     //Glide Library - Image Loading Lib
-    compile 'com.github.bumptech.glide:glide:3.8.0-SNAPSHOT'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
 
     //Sectioned RecyclerView
-    compile('com.afollestad:sectioned-recyclerview:0.2.2') {
-        transitive = true
-    }
+    compile 'com.afollestad:sectioned-recyclerview:0.2.3'
 
     //Muzei API
     //noinspection GradleDynamicVersion
     compile 'com.google.android.apps.muzei:muzei-api:2.+'
 
     //Circular Image View
-    compile 'de.hdodenhof:circleimageview:2.0.0'
+    compile 'de.hdodenhof:circleimageview:2.1.0'
 
     //RecyclerView Fast Scroller
-    compile 'com.github.pluscubed:recycler-fast-scroll:0.3.1@aar'
+    compile 'com.github.pluscubed:recycler-fast-scroll:0.3.2@aar'
 
     //Donations Lib
     compile 'org.sufficientlysecure:donations:2.4'

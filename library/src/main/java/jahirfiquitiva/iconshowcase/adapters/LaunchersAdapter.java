@@ -45,6 +45,8 @@ import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.fragments.ApplyFragment;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
+import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
+
 
 public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.LauncherHolder> implements View.OnClickListener {
 
@@ -92,11 +94,13 @@ public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.Laun
 
         if (launchers.get(position).isInstalled(context)) {
             holder.icon.setColorFilter(null);
-            holder.itemBG.setBackgroundColor(launchers.get(position).launcherColor);
+            holder.itemBG.setBackgroundColor(ColorUtils.darkenColor(context,
+                    launchers.get(position).launcherColor));
             holder.launcherName.setTextColor(textLight);
         } else {
             holder.icon.setColorFilter(bnwFilter());
-            holder.itemBG.setBackgroundColor(ThemeUtils.darkTheme ? dark : light);
+            holder.itemBG.setBackgroundColor(ColorUtils.darkenColor(context,
+                    ThemeUtils.darkTheme ? dark : light));
             holder.launcherName.setTextColor(ThemeUtils.darkTheme ? textDark : textLight);
         }
 

@@ -31,9 +31,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.models.IconItem;
@@ -41,12 +39,13 @@ import jahirfiquitiva.iconshowcase.models.IconsCategory;
 import jahirfiquitiva.iconshowcase.models.IconsLists;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
+
 public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
 
     private final WeakReference<Context> context;
     private static ArrayList<IconsLists> iconsLists;
     private static ArrayList<IconsCategory> categories;
-    private long startTime;
+    private long startTime, endTime;
     private static final String TASK = "IconsLists";
 
     public LoadIconsLists(Context context) {
@@ -61,7 +60,7 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
     @Override
     protected Boolean doInBackground(Void... params) {
 
-        boolean worked = false;
+        boolean worked;
 
         Resources r = context.get().getResources();
         String p = context.get().getPackageName();
@@ -99,7 +98,6 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
         ArrayList<IconItem> allIcons = new ArrayList<>();
 
         for (String tabName : tabsNames) {
-
             int arrayId = r.getIdentifier(tabName, "array", p);
             String[] icons = null;
 
@@ -110,7 +108,6 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
             }
 
             if (icons != null && icons.length > 0) {
-
                 List<String> iconsList = sortList(icons);
 
                 ArrayList<IconItem> iconsArray = new ArrayList<>();
@@ -126,9 +123,6 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
                 }
 
                 categories.add(new IconsCategory(Utils.makeTextReadable(tabName), iconsArray));
-                worked = true;
-            } else {
-                worked = false;
             }
         }
 
@@ -149,26 +143,17 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
                 worked = false;
             }
         }
-
+        endTime = System.currentTimeMillis();
         return worked;
     }
 
     @Override
     protected void onPostExecute(Boolean worked) {
-        long endTime = System.currentTimeMillis();
         if (worked) {
             Utils.showLog(context.get(),
                     "Load of icons task completed successfully in: " +
                             String.valueOf((endTime - startTime)) + " millisecs.");
         }
-        /* TODO Check if it's secure enough
-        if (categories.get(categories.size() - 1).getCategoryName().equals("All")) {
-            ShowcaseActivity.SHOW_LOAD_ICONS_DIALOG = false;
-            if (ShowcaseActivity.loadIcons != null) {
-                ShowcaseActivity.loadIcons.dismiss();
-            }
-        }
-        */
     }
 
     private List<String> sortList(String[] array) {
@@ -179,9 +164,9 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
 
     private ArrayList<IconItem> sortAndOrganizeList(Resources r, String p, String[] array) {
 
-        List<String> list = new ArrayList<>(Arrays.asList(array));
-        Collections.sort(list);
+        List<String> list = sortList(array);
 
+        //TODO: Uncomment before final release
         /*
         Set<String> noDuplicates = new HashSet<>();
         noDuplicates.addAll(list);
@@ -213,27 +198,7 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
             allIconsNames[i] = initialList.get(i).getName();
         }
 
-        List<String> list = new ArrayList<>(Arrays.asList(allIconsNames));
-        Collections.sort(list);
-
-        Set<String> noDuplicates = new HashSet<>();
-        noDuplicates.addAll(list);
-        list.clear();
-        list.addAll(noDuplicates);
-        Collections.sort(list);
-
-        ArrayList<IconItem> sortedListArray = new ArrayList<>();
-
-        int resId;
-
-        for (int j = 0; j < list.size(); j++) {
-            resId = Utils.getIconResId(context.get(), r, p, list.get(j), TASK);
-            if (resId != 0) {
-                sortedListArray.add(new IconItem(list.get(j), resId));
-            }
-        }
-
-        return sortedListArray;
+        return sortAndOrganizeList(r, p, allIconsNames);
     }
 
     public static ArrayList<IconsLists> getIconsLists() {

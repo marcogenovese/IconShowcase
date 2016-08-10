@@ -97,25 +97,20 @@ public class MainFragment extends Fragment {
         }
 
         fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
-
-        themeMode = getResources().getBoolean(R.bool.theme_mode);
         RecyclerView mRecyclerView = (RecyclerView) layout.findViewById(R.id.home_rv);
 
-        if (!themeMode) {
-            setupAndAnimateIcons(true, true, 600);
+        setupAndAnimateIcons(true, true, 600);
 
-            GridLayout iconsRow = (GridLayout) getActivity().findViewById(R.id.iconsRow);
+        GridLayout iconsRow = (GridLayout) getActivity().findViewById(R.id.iconsRow);
 
-            iconsRow.setOnClickListener(new View.OnClickListener() {
+        iconsRow.setOnClickListener(new View.OnClickListener() {
 
-                @Override
-                public void onClick(View v) {
-                    ShowcaseActivity.SHUFFLE = true;
-                    setupAndAnimateIcons(true, true, 0);
-                }
-            });
-
-        }
+            @Override
+            public void onClick(View v) {
+                ShowcaseActivity.SHUFFLE = true;
+                setupAndAnimateIcons(true, true, 0);
+            }
+        });
 
         if (hasAppsList) {
             for (int i = 0; i < appsNames.length; i++) {
@@ -151,9 +146,8 @@ public class MainFragment extends Fragment {
                                         .onClickLink(appsPackages[i], true, true, intent)
                                         .build());
                             } catch (Resources.NotFoundException e) {
-                                if (ShowcaseActivity.DEBUGGING)
-                                    Utils.showLog(context, "There's no icon that matches name: "
-                                            + appsIcons[i]);
+                                Utils.showLog(context, "There's no icon that matches name: "
+                                        + appsIcons[i]);
                                 homeCards.add(new HomeCard.Builder()
                                         .context(getActivity())
                                         .title(appsNames[i])
@@ -179,8 +173,7 @@ public class MainFragment extends Fragment {
                                     .onClickLink(appsPackages[i], true, false, null)
                                     .build());
                         } catch (Resources.NotFoundException e) {
-                            if (ShowcaseActivity.DEBUGGING)
-                                Utils.showLog(context, "There's no icon that matches name: " + appsIcons[i]);
+                            Utils.showLog(context, "There's no icon that matches name: " + appsIcons[i]);
                             homeCards.add(new HomeCard.Builder()
                                     .context(getActivity())
                                     .title(appsNames[i])
@@ -195,8 +188,7 @@ public class MainFragment extends Fragment {
                     }
                 } catch (IndexOutOfBoundsException e) {
                     hasAppsList = false;
-                    if (ShowcaseActivity.DEBUGGING)
-                        Utils.showLog(context, "Apps Cards arrays are inconsistent. Fix them.");
+                    Utils.showLog(context, "Apps Cards arrays are inconsistent. Fix them.");
                 }
             }
         }
@@ -241,60 +233,24 @@ public class MainFragment extends Fragment {
     private void setupFAB() {
         fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
 
-        if (themeMode) {
-            modifyFABIcon();
+        if (!hasAppsList) {
             fab.show();
             fab.setVisibility(View.VISIBLE);
         } else {
-            if (!hasAppsList) {
-                fab.show();
-                fab.setVisibility(View.VISIBLE);
-            } else {
-                fab.hide();
-                fab.setVisibility(View.GONE);
-            }
+            fab.hide();
+            fab.setVisibility(View.GONE);
         }
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (themeMode) {
-                    if (cm || cyngn) {
-                        new LauncherIntents(getActivity(), "Cmthemeengine");
-                    } else if (rro) {
-                        new LauncherIntents(getActivity(), "Layers");
-                    } else {
-                        new MaterialDialog.Builder(getActivity())
-                                .title(R.string.NTED_title)
-                                .content(R.string.NTED_message)
-                                .show();
-                    }
-                } else {
-                    Intent rate = new Intent(Intent.ACTION_VIEW,
-                            Uri.parse("https://play.google.com/store/apps/details?id=" +
-                                    context.getPackageName()));
-                    context.startActivity(rate);
-                }
+                Intent rate = new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("https://play.google.com/store/apps/details?id=" +
+                                context.getPackageName()));
+                context.startActivity(rate);
             }
         });
 
-    }
-
-    private void modifyFABIcon() {
-        cm = Utils.isAppInstalled(context, "org.cyanogenmod.theme.chooser");
-        cyngn = Utils.isAppInstalled(context, "com.cyngn.theme.chooser");
-
-        //don't enable rro before lollipop, it didn't exist before that
-        rro = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP &&
-                Utils.isAppInstalled(context, "com.lovejoy777.rroandlayersmanager");
-
-        if (cm || cyngn) {
-            fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_apply_cm));
-        } else if (rro) {
-            fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_apply_layers));
-        } else {
-            fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_apply));
-        }
     }
 
     private void setupAndAnimateIcons(boolean justSetup, boolean animate, int delay) {

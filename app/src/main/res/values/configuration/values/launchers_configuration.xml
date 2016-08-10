@@ -20,6 +20,8 @@
 
 <resources>
 
+    <bool name="darker_launcher_bg">true</bool>
+
     <!--
     Setup the columns amount you want in different sections
     -->

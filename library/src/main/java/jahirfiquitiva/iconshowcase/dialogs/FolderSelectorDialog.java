@@ -50,7 +50,8 @@ import java.util.List;
 
 import jahirfiquitiva.iconshowcase.R;
 
-public class FolderChooserDialog extends DialogFragment implements MaterialDialog.ListCallback {
+
+public class FolderSelectorDialog extends DialogFragment implements MaterialDialog.ListCallback {
 
     private File parentFolder;
     private File[] parentContents;
@@ -63,7 +64,7 @@ public class FolderChooserDialog extends DialogFragment implements MaterialDialo
         void onFolderSelection(File folder);
     }
 
-    public FolderChooserDialog() {
+    public FolderSelectorDialog() {
     }
 
     public void setInitialPath(String path) {

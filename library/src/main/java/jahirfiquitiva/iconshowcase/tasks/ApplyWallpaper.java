@@ -46,7 +46,7 @@ import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
-import jahirfiquitiva.iconshowcase.utilities.color.ColorExtractor;
+import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 
 
 public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
@@ -92,15 +92,14 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
 
     @Override
     protected Boolean doInBackground(Void... params) {
-        Boolean worked = false;
+        Boolean worked;
         if ((!wasCancelled) && (activity != null)) {
             WallpaperManager wm = WallpaperManager.getInstance(activity);
             try {
                 try {
                     wm.setBitmap(scaleToActualAspectRatio(resource));
                 } catch (OutOfMemoryError ex) {
-                    if (ShowcaseActivity.DEBUGGING)
-                        Utils.showLog(activity, "OutOfMemoryError: " + ex.getLocalizedMessage());
+                    Utils.showLog(activity, "OutOfMemoryError: " + ex.getLocalizedMessage());
                     showRetrySnackbar();
                 }
                 worked = true;
@@ -130,7 +129,7 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
                         toHide2.setVisibility(View.GONE);
                     } else {
                         ShowcaseActivity.setupToolbarHeader(activity, ShowcaseActivity.toolbarHeader);
-                        ColorExtractor.setupToolbarIconsAndTextsColors(activity,
+                        ColorUtils.setupToolbarIconsAndTextsColors(activity,
                                 ShowcaseActivity.appbar, ShowcaseActivity.toolbar,
                                 ShowcaseActivity.toolbarHeaderImage);
                     }

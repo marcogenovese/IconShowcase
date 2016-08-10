@@ -17,24 +17,20 @@
  *
  */
 
-/*
- *
- */
-
 package jahirfiquitiva.iconshowcase.adapters;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import jahirfiquitiva.iconshowcase.R;
 
-public class ChangelogAdapter extends BaseAdapter {
+
+public class ChangelogAdapter extends RecyclerView.Adapter<ChangelogAdapter.ChangelogHolder> {
 
     private final Context context;
     private final String[][] mChangelog;
@@ -55,35 +51,13 @@ public class ChangelogAdapter extends BaseAdapter {
     }
 
     @Override
-    public int getCount() {
-        return mChangelog == null ? 0 : mChangelog.length;
+    public ChangelogHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        return new ChangelogHolder(inflater.inflate(R.layout.changelog_content, parent, false));
     }
 
     @Override
-    public String[] getItem(int position) {
-        return mChangelog[position];
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return 0;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-
-        if (convertView == null) {
-            LayoutInflater inflater = LayoutInflater.from(context);
-            convertView = inflater.inflate(R.layout.changelog_content, parent, false);
-            convertView.setClickable(false);
-            convertView.setLongClickable(false);
-            convertView.setFocusable(false);
-            convertView.setFocusableInTouchMode(false);
-            convertView.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent));
-        }
-
-        TextView title = (TextView) convertView.findViewById(R.id.changelog_title);
-        TextView content = (TextView) convertView.findViewById(R.id.changelog_content);
+    public void onBindViewHolder(ChangelogHolder holder, int position) {
         String nameStr = mChangelog[position][0];
         String contentStr = "";
 
@@ -96,20 +70,26 @@ public class ChangelogAdapter extends BaseAdapter {
             contentStr += mChangelog[position][i];
         }
 
-        title.setText(nameStr);
-        title.setClickable(false);
-        title.setLongClickable(false);
-        title.setFocusable(false);
-        title.setFocusableInTouchMode(false);
-        title.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent));
+        holder.title.setText(nameStr);
+        holder.content.setText(contentStr);
+    }
 
-        content.setText(contentStr);
-        content.setClickable(false);
-        content.setLongClickable(false);
-        content.setFocusable(false);
-        content.setFocusableInTouchMode(false);
-        content.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent));
+    @Override
+    public int getItemCount() {
+        return mChangelog == null ? 0 : mChangelog.length;
+    }
 
-        return convertView;
+    class ChangelogHolder extends RecyclerView.ViewHolder {
+
+        View view;
+        TextView title, content;
+
+        ChangelogHolder(View v) {
+            super(v);
+            view = v;
+
+            title = (TextView) view.findViewById(R.id.changelog_title);
+            content = (TextView) view.findViewById(R.id.changelog_content);
+        }
     }
 }

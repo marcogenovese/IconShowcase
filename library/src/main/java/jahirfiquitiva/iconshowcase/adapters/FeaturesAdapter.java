@@ -1,8 +1,19 @@
 /*
- * Copyright (c) 2016. Jahir Fiquitiva. Android Developer. All rights reserved.
- */
-
-/*
+ * Copyright (c) 2016.  Jahir Fiquitiva
+ *
+ * Licensed under the CreativeCommons Attribution-ShareAlike
+ * 4.0 International License. You may not use this file except in compliance
+ * with the License. You may obtain a copy of the License at
+ *
+ *    http://creativecommons.org/licenses/by-sa/4.0/legalcode
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Big thanks to the project contributors. Check them in the repository.
  *
  */
 
@@ -10,16 +21,16 @@ package jahirfiquitiva.iconshowcase.adapters;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import jahirfiquitiva.iconshowcase.R;
 
-public class FeaturesAdapter extends BaseAdapter {
+
+public class FeaturesAdapter extends RecyclerView.Adapter<FeaturesAdapter.FeatureHolder> {
 
     private final Context context;
     private final String[][] mFeatures;
@@ -40,35 +51,13 @@ public class FeaturesAdapter extends BaseAdapter {
     }
 
     @Override
-    public int getCount() {
-        return mFeatures == null ? 0 : mFeatures.length;
+    public FeatureHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        return new FeatureHolder(inflater.inflate(R.layout.features_content, parent, false));
     }
 
     @Override
-    public String[] getItem(int position) {
-        return mFeatures[position];
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return 0;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-
-        if (convertView == null) {
-            LayoutInflater inflater = LayoutInflater.from(context);
-            convertView = inflater.inflate(R.layout.features_content, parent, false);
-            convertView.setClickable(false);
-            convertView.setLongClickable(false);
-            convertView.setFocusable(false);
-            convertView.setFocusableInTouchMode(false);
-            convertView.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent));
-        }
-
-        TextView title = (TextView) convertView.findViewById(R.id.features_title);
-        TextView content = (TextView) convertView.findViewById(R.id.features_content);
+    public void onBindViewHolder(FeatureHolder holder, int position) {
         String nameStr = mFeatures[position][0];
         String contentStr = "";
 
@@ -81,20 +70,26 @@ public class FeaturesAdapter extends BaseAdapter {
             contentStr += mFeatures[position][i];
         }
 
-        title.setText(nameStr);
-        title.setClickable(false);
-        title.setLongClickable(false);
-        title.setFocusable(false);
-        title.setFocusableInTouchMode(false);
-        title.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent));
-
-        content.setText(contentStr);
-        content.setClickable(false);
-        content.setLongClickable(false);
-        content.setFocusable(false);
-        content.setFocusableInTouchMode(false);
-        content.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent));
-
-        return convertView;
+        holder.title.setText(nameStr);
+        holder.content.setText(contentStr);
     }
+
+    @Override
+    public int getItemCount() {
+        return mFeatures == null ? 0 : mFeatures.length;
+    }
+
+    class FeatureHolder extends RecyclerView.ViewHolder {
+        View view;
+        TextView title, content;
+
+        FeatureHolder(View v) {
+            super(v);
+            view = v;
+
+            title = (TextView) view.findViewById(R.id.features_title);
+            content = (TextView) view.findViewById(R.id.features_content);
+        }
+    }
+
 }

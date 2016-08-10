@@ -18,25 +18,11 @@
   ~
   -->
 
-<!--
-  ~
-  -->
-
-<resources>
-    <!--
-    Private configurations that should not be opened to sampleip.
-    They are currently for the theme flavour that I'm testing
-
-
-    Keep these as true; it has no effect on you as long as you don't use the thememode flavour
-    - Allan
-    -->
-
-    <!--universal toggle for theme mode-->
-    <bool name="theme_mode">false</bool>
-
-    <!--
-    Do you want the request tool to show info for theme engines (cm, cyngn, rro)
-    -->
-    <bool name="theme_engine_info">false</bool>
-</resources>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+       android:shape="rectangle">
+    <gradient
+        android:angle="270"
+        android:endColor="@android:color/transparent"
+        android:startColor="@color/translucent_status_bar"
+        android:type="linear"/>
+</shape>

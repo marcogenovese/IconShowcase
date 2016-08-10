@@ -44,11 +44,12 @@ import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.models.ZooperWidget;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
+
 public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
 
     private final WeakReference<Context> context;
     public final static ArrayList<ZooperWidget> widgets = new ArrayList<>();
-    private long startTime;
+    private long startTime, endTime;
 
     public LoadZooperWidgets(Context context) {
         this.context = new WeakReference<Context>(context);
@@ -72,11 +73,11 @@ public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
             File previewsFolder = new File(context.get().getExternalCacheDir(), "ZooperWidgetsPreviews");
 
             if (templates != null && templates.length > 0) {
-                clean(previewsFolder);
+                Utils.clean(previewsFolder);
                 previewsFolder.mkdirs();
                 for (String template : templates) {
                     File widgetPreviewFile = new File(previewsFolder, template);
-                    String widgetName = getFilenameWithoutExtension(template);
+                    String widgetName = Utils.getFilenameWithoutExtension(template);
                     String preview = getWidgetPreviewPathFromZip(context, widgetName,
                             assetManager.open("templates/" + template), previewsFolder, widgetPreviewFile);
                     if (preview != null) {
@@ -91,30 +92,17 @@ public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
             worked = false;
         }
 
+        endTime = System.currentTimeMillis();
         return worked;
     }
 
     @Override
     protected void onPostExecute(Boolean worked) {
-        long endTime = System.currentTimeMillis();
         if (worked) {
             Utils.showLog(context.get(),
                     "Load of widgets task completed successfully in: " +
                             String.valueOf((endTime - startTime)) + " millisecs.");
         }
-    }
-
-    private void copyFiles(InputStream in, OutputStream out) throws IOException {
-        byte[] buffer = new byte[2048];
-        int read;
-        while ((read = in.read(buffer)) != -1) {
-            out.write(buffer, 0, read);
-        }
-        out.flush();
-    }
-
-    private String getFilenameWithoutExtension(String fileName) {
-        return fileName.substring(0, fileName.lastIndexOf("."));
     }
 
     /**
@@ -127,7 +115,7 @@ public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
 
         try {
             out = new FileOutputStream(widgetPreviewFile);
-            copyFiles(in, out);
+            Utils.copyFiles(in, out);
             in.close();
             out.close();
 
@@ -142,7 +130,7 @@ public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
                         try {
                             zipIn = zipFile.getInputStream(entry);
                             zipOut = new FileOutputStream(preview);
-                            copyFiles(zipIn, zipOut);
+                            Utils.copyFiles(zipIn, zipOut);
                         } finally {
                             if (zipIn != null) zipIn.close();
                             if (zipOut != null) zipOut.close();
@@ -174,22 +162,6 @@ public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
         }
 
         return preview.getAbsolutePath();
-    }
-
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    private static int clean(File file) {
-        if (!file.exists()) return 0;
-        int count = 0;
-        if (file.isDirectory()) {
-            File[] folderContent = file.listFiles();
-            if (folderContent != null && folderContent.length > 0) {
-                for (File fileInFolder : folderContent) {
-                    count += clean(fileInFolder);
-                }
-            }
-        }
-        file.delete();
-        return count;
     }
 
 }
