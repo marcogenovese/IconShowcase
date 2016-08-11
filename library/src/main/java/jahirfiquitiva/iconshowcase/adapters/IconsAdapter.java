@@ -99,39 +99,73 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
 
         if (position < 0) return;
 
+        int iconResource = iconsList.get(holder.getAdapterPosition()).getResId();
+
+        if (iconResource == 0) return;
+
+        switch (context.getResources().getInteger(R.integer.inconloadingmethod)) {
+            case 1:
+                holder.icon.setImageResource(iconResource);
+                break;
+            case 2:
+                Glide.with(context)
+                        .fromResource()
+                        .load(iconResource)
+                        .into(holder.icon);
+                break;
+            case 3:
+                Glide.with(context)
+                        .load(iconResource)
+                        .into(holder.icon);
+                break;
+            case 4:
+                Glide.with(context)
+                        .load(iconResource)
+                        .asBitmap()
+                        .into(new BitmapImageViewTarget(holder.icon) {
+                            @Override
+                            protected void setResource(Bitmap resource) {
+                                holder.icon.setAlpha(0f);
+                                holder.icon.setImageBitmap(resource);
+                                holder.icon.animate().setDuration(300).alpha(1f).start();
+                            }
+                        });
+                break;
+        }
+
+        /*
+        METHOD 1:
+        holder.icon.setImageResource(iconResource);
+         */
+
+        /*
+        METHOD 2:
+         Glide.with(context)
+                    .fromResource()
+                    .load(iconResource)
+                    .into(holder.icon);
+         */
+
+        /*
+        METHOD 3:
         Glide.with(context)
-                .load(iconsList.get(holder.getAdapterPosition()).getResId())
+                        .load(iconResource)
+                        .into(holder.icon);
+         */
+
+        /*
+        METHOD 4:
+
+        Glide.with(context)
+                .load(iconResource)
                 .asBitmap()
                 .into(new BitmapImageViewTarget(holder.icon) {
                     @Override
                     protected void setResource(Bitmap resource) {
-                        if (mPrefs.getAnimationsEnabled()) {
-                            //if (!inChangelog) setAnimation(holder.icon, holder.getAdapterPosition());
-                            holder.icon.setAlpha(0f);
-                            holder.icon.setImageBitmap(resource);
-                            holder.icon.animate().setDuration(250).alpha(1f).start();
-                        } else {
-                            holder.icon.setImageBitmap(resource);
-                        }
+                        holder.icon.setImageBitmap(resource);
                     }
                 });
-
-		/* OLD METHOD:
-        int iconResource = iconsList.get(position).getResId();
-        if (iconResource != 0) {
-            if (mPrefs.getAnimationsEnabled()) {
-                Glide.with(context)
-                        .load(iconResource)
-                        .crossFade()
-                        .into(holder.icon);
-            } else {
-                Glide.with(context)
-                        .load(iconResource)
-                        .dontAnimate()
-                        .into(holder.icon);
-            }
-        }
-		*/
+         */
 
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,12 +173,18 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
                 iconClick(holder.getAdapterPosition());
             }
         });
+
+        //mPrefs.getAnimationsEnabled() &&
+        if (!inChangelog && (context.getResources().getInteger(R.integer.inconloadingmethod) != 4)) {
+            setAnimation(holder.icon, holder.getAdapterPosition());
+        }
+
     }
 
     private int lastPosition = -1;
 
     private void setAnimation(View viewToAnimate, int position) {
-        Animation anim = AnimationUtils.loadAnimation(context, R.anim.bounce);
+        Animation anim = AnimationUtils.loadAnimation(context, R.anim.icon_fade);
         if (position > lastPosition) {
             viewToAnimate.setHasTransientState(true);
             viewToAnimate.startAnimation(anim);

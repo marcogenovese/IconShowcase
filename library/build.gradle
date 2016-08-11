@@ -137,4 +137,7 @@ dependencies {
     //noinspection GradleDynamicVersion
     compile 'org.bitbucket.frankmonza:kustomapi:+'
 
+    //BottomSheet
+    //compile 'com.flipboard:bottomsheet-core:1.5.1'
+
 }

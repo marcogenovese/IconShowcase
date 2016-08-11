@@ -17,10 +17,6 @@
   ~
   -->
 
-<!--
-  ~
-  -->
-
 <jahirfiquitiva.iconshowcase.views.CustomCoordinatorLayout
     android:id="@+id/mainCoordinatorLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
