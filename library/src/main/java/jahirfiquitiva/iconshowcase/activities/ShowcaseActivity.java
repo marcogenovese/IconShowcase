@@ -728,7 +728,6 @@ public class ShowcaseActivity extends AppCompatActivity implements
     }
 
     public interface WallsListInterface {
-
         void checkWallsListCreation(boolean result);
     }
 

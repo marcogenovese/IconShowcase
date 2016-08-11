@@ -32,10 +32,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -54,7 +57,7 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
     private boolean inChangelog = false;
     private ArrayList<IconItem> iconsList = new ArrayList<>();
     private final Preferences mPrefs;
-	private boolean iconPressed = false;
+    private boolean iconPressed = false;
 
     public IconsAdapter(Activity context, ArrayList<IconItem> iconsList) {
         this.context = context;
@@ -91,9 +94,10 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
     }
 
     @Override
-    public void onBindViewHolder(IconsHolder holder, @SuppressLint("RecyclerView") final int position) {
-		
-		if (position < 0) return;
+    //public void onBindViewHolder(IconsHolder holder, @SuppressLint("RecyclerView") final int position) {
+    public void onBindViewHolder(final IconsHolder holder, @SuppressLint("RecyclerView") int position) {
+
+        if (position < 0) return;
 
         Glide.with(context)
                 .load(iconsList.get(holder.getAdapterPosition()).getResId())
@@ -103,15 +107,15 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
                     protected void setResource(Bitmap resource) {
                         if (mPrefs.getAnimationsEnabled()) {
                             //if (!inChangelog) setAnimation(holder.icon, holder.getAdapterPosition());
-							holder.icon.setAlpha(0f);
-							holder.icon.setImageBitmap(resource);
-							holder.icon.animate().setDuration(250).alpha(1f).start();
+                            holder.icon.setAlpha(0f);
+                            holder.icon.setImageBitmap(resource);
+                            holder.icon.animate().setDuration(250).alpha(1f).start();
                         } else {
                             holder.icon.setImageBitmap(resource);
                         }
                     }
                 });
-		
+
 		/* OLD METHOD:
         int iconResource = iconsList.get(position).getResId();
         if (iconResource != 0) {
@@ -127,20 +131,20 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
                         .into(holder.icon);
             }
         }
-		*/		
-		
+		*/
+
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                iconClick(position);
+                iconClick(holder.getAdapterPosition());
             }
         });
     }
-	
-	private int lastPosition = -1;
+
+    private int lastPosition = -1;
 
     private void setAnimation(View viewToAnimate, int position) {
-        Animation anim = AnimationUtils.loadAnimation(context, R.anim.scale_slide);
+        Animation anim = AnimationUtils.loadAnimation(context, R.anim.bounce);
         if (position > lastPosition) {
             viewToAnimate.setHasTransientState(true);
             viewToAnimate.startAnimation(anim);
@@ -176,7 +180,7 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
 
         } else {
             if (!inChangelog && !iconPressed) {
-				//iconPressed=true;
+                //iconPressed=true;
                 Drawable iconDrawable = ContextCompat.getDrawable(context, resId);
                 MaterialDialog dialog = new MaterialDialog.Builder(context)
                         .customView(R.layout.dialog_icon, false)
@@ -184,7 +188,7 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
                         .positiveText(R.string.close)
                         .positiveColor(ColorUtils.getColorFromIcon(iconDrawable, context))
                         .show();
-				// TODO: Make iconPressed false after dialog is dismissed or closed
+                // TODO: Make iconPressed false after dialog is dismissed or closed
                 if (dialog.getCustomView() != null) {
                     ImageView dialogIcon = (ImageView) dialog.getCustomView().findViewById(R.id.dialogicon);
                     dialogIcon.setImageResource(resId);
