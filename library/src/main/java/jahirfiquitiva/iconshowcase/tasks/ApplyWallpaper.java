@@ -47,6 +47,7 @@ import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
+import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 
 
 public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
@@ -209,9 +210,9 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
         String retry = activity.getResources().getString(R.string.retry);
         Snackbar snackbar = Snackbar
                 .make(layout, R.string.error, Snackbar.LENGTH_INDEFINITE)
-                .setAction(retry.toUpperCase(), new View.OnClickListener() {
+                .setAction(retry.toUpperCase(), new DebouncedClickListener() {
                     @Override
-                    public void onClick(View view) {
+                    public void onDebouncedClick(View view) {
                         new ApplyWallpaper((Activity) activity, dialog, resource, isPicker, layout);
                     }
                 });

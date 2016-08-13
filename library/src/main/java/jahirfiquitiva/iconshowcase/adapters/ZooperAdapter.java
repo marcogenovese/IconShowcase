@@ -34,6 +34,7 @@ import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
+import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 
 
 public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
@@ -165,9 +166,9 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             card = (CardView) itemView.findViewById(R.id.zooper_btn_card);
             icon = (ImageView) itemView.findViewById(R.id.zooper_btn_icon);
             text = (TextView) itemView.findViewById(R.id.zooper_btn_title);
-            card.setOnClickListener(new View.OnClickListener() {
+            card.setOnClickListener(new DebouncedClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onDebouncedClick(View v) {
                     switch (position) {
                         case 0:
                             //Open dialog

@@ -41,6 +41,7 @@ import jahirfiquitiva.iconshowcase.models.KustomKomponent;
 import jahirfiquitiva.iconshowcase.models.KustomWallpaper;
 import jahirfiquitiva.iconshowcase.models.KustomWidget;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
+import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 
 
 public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.KustomHolder> {
@@ -129,9 +130,9 @@ public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.Ku
                 filePath = komponents.get(relativePosition).getPreviewPath();
                 break;
             case 1:
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                holder.itemView.setOnClickListener(new DebouncedClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onDebouncedClick(View v) {
                         if (Utils.isAppInstalled(context, "org.kustom.wallpaper")) {
                             context.startActivity(kustomWalls.get(relativePosition).getKLWPIntent(context));
                         }
@@ -151,9 +152,9 @@ public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.Ku
                 }
                 break;
             case 2:
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                holder.itemView.setOnClickListener(new DebouncedClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onDebouncedClick(View v) {
                         if (Utils.isAppInstalled(context, "org.kustom.widget")) {
                             context.startActivity(widgets.get(relativePosition).getKWGTIntent(context));
                         }

@@ -46,9 +46,10 @@ import jahirfiquitiva.iconshowcase.fragments.ApplyFragment;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
+import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 
 
-public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.LauncherHolder> implements View.OnClickListener {
+public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.LauncherHolder> {
 
     public interface ClickListener {
 
@@ -105,21 +106,21 @@ public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.Laun
         }
 
         holder.view.setTag(position);
-        holder.view.setOnClickListener(this);
+        holder.view.setOnClickListener(new DebouncedClickListener() {
+            @Override
+            public void onDebouncedClick(View v) {
+                if (v.getTag() != null) {
+                    int index = (int) v.getTag();
+                    if (mCallback != null)
+                        mCallback.onClick(index);
+                }
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return launchers == null ? 0 : launchers.size();
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (v.getTag() != null) {
-            int index = (int) v.getTag();
-            if (mCallback != null)
-                mCallback.onClick(index);
-        }
     }
 
     class LauncherHolder extends RecyclerView.ViewHolder {

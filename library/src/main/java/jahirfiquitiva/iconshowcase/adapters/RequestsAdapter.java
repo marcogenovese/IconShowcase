@@ -38,6 +38,7 @@ import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.models.RequestItem;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
+import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 
 
 public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.RequestsHolder> {
@@ -129,7 +130,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
         return appsList == null ? 0 : appsList.size();
     }
 
-    public class RequestsHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class RequestsHolder extends RecyclerView.ViewHolder {
 
         LinearLayout view = null;
         CardView cardView = null;
@@ -150,18 +151,26 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
             }
             if (listsCards) {
                 cardView = (CardView) v.findViewById(R.id.requestCard);
-                cardView.setOnClickListener(this);
+                cardView.setOnClickListener(new DebouncedClickListener() {
+                    @Override
+                    public void onDebouncedClick(View v) {
+                        if (v.getTag() != null) {
+                            int index = (int) v.getTag();
+                            mCallback.onClick(index);
+                        }
+                    }
+                });
             } else {
                 view = (LinearLayout) v.findViewById(R.id.requestCard);
-                view.setOnClickListener(this);
-            }
-        }
-
-        @Override
-        public void onClick(View v) {
-            if (v.getTag() != null) {
-                int index = (int) v.getTag();
-                mCallback.onClick(index);
+                view.setOnClickListener(new DebouncedClickListener() {
+                    @Override
+                    public void onDebouncedClick(View v) {
+                        if (v.getTag() != null) {
+                            int index = (int) v.getTag();
+                            mCallback.onClick(index);
+                        }
+                    }
+                });
             }
         }
 

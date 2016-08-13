@@ -228,9 +228,9 @@ public class ColorUtils {
 
     public static int getColorFromIcon(Drawable icon, final Context context) {
         Palette palette = Palette.from(Utils.drawableToBitmap(icon)).generate();
-        int resultColor = getBetterColorFromIcon(palette.getVibrantColor(0));
+        int resultColor = getBetterColor(palette.getVibrantColor(0));
         if (resultColor == 0) {
-            resultColor = getBetterColorFromIcon(palette.getMutedColor(0));
+            resultColor = getBetterColor(palette.getMutedColor(0));
         }
         if (resultColor == 0) {
             resultColor = ContextCompat.getColor(context, ThemeUtils.darkTheme ?
@@ -239,11 +239,11 @@ public class ColorUtils {
         return resultColor;
     }
 
-    public static int getBetterColorFromIcon(@ColorInt int color) {
+    public static int getBetterColor(@ColorInt int color) {
         if (ThemeUtils.darkTheme) {
-            return checkDarknessOfColor(color, 0.85f) ? lightenColor(color) : color;
+            return checkDarknessOfColor(color, 0.8f) ? lightenColor(color) : color;
         } else {
-            return checkDarknessOfColor(color, 0.15f) ? darkenColor(color) : color;
+            return checkDarknessOfColor(color, 0.2f) ? darkenColor(color) : color;
         }
     }
 }

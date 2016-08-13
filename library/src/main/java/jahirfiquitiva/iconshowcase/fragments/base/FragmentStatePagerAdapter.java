@@ -35,6 +35,7 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
+
 /**
  * @author Aidan Follestad (afollestad)
  */
@@ -65,7 +66,7 @@ public abstract class FragmentStatePagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         // If we already have this item instantiated, there is nothing
-        // to do.  This can happen when we are restoring the entire pager
+        // to do. This can happen when we are restoring the entire pager
         // from its saved state, where the fragment manager has already
         // taken care of restoring the fragments we previously had instantiated.
         if (mFragments.size() > position) {

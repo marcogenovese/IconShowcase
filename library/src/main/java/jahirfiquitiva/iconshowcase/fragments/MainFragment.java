@@ -52,6 +52,7 @@ import jahirfiquitiva.iconshowcase.adapters.HomeListAdapter;
 import jahirfiquitiva.iconshowcase.models.HomeCard;
 import jahirfiquitiva.iconshowcase.utilities.LauncherIntents;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
+import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 import jahirfiquitiva.iconshowcase.views.DividerItemDecoration;
 
 
@@ -103,10 +104,10 @@ public class MainFragment extends Fragment {
 
         GridLayout iconsRow = (GridLayout) getActivity().findViewById(R.id.iconsRow);
 
-        iconsRow.setOnClickListener(new View.OnClickListener() {
+        iconsRow.setOnClickListener(new DebouncedClickListener() {
 
             @Override
-            public void onClick(View v) {
+            public void onDebouncedClick(View v) {
                 ShowcaseActivity.SHUFFLE = true;
                 setupAndAnimateIcons(true, true, 0);
             }
@@ -241,9 +242,9 @@ public class MainFragment extends Fragment {
             fab.setVisibility(View.GONE);
         }
 
-        fab.setOnClickListener(new View.OnClickListener() {
+        fab.setOnClickListener(new DebouncedClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onDebouncedClick(View v) {
                 Intent rate = new Intent(Intent.ACTION_VIEW,
                         Uri.parse("https://play.google.com/store/apps/details?id=" +
                                 context.getPackageName()));

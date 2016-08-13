@@ -388,4 +388,24 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
         }
     }
 
+    /*
+     public Drawable getIcon(Context context) {
+        if (mIcon == null) {
+            final ApplicationInfo ai = getAppInfo(context);
+            if (ai != null)
+                mIcon = ai.loadIcon(context.getPackageManager());
+        }
+        return mIcon;
+    }
+
+	@Nullable
+    public ApplicationInfo getAppInfo(Context context) {
+        try {
+            return context.getPackageManager().getApplicationInfo(mPkg, 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            return null;
+        }
+    }
+     */
+
 }

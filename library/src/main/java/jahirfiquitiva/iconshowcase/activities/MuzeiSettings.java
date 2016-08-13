@@ -50,11 +50,12 @@ import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.views.CustomCoordinatorLayout;
+import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 import jahirfiquitiva.iconshowcase.views.FixedElevationAppBarLayout;
 
 
 @SuppressWarnings("ResourceAsColor")
-public class MuzeiSettings extends AppCompatActivity implements View.OnClickListener {
+public class MuzeiSettings extends AppCompatActivity {
 
     private RadioButton minute, hour;
     private NumberPicker numberpicker;
@@ -110,9 +111,21 @@ public class MuzeiSettings extends AppCompatActivity implements View.OnClickList
         hour = (RadioButton) findViewById(R.id.hour);
 
         if (mPrefs.areFeaturesEnabled()) {
+            minute.setOnClickListener(new DebouncedClickListener() {
+                @Override
+                public void onDebouncedClick(View v) {
+                    hour.setChecked(false);
+                    minute.setChecked(true);
+                }
+            });
 
-            minute.setOnClickListener(this);
-            hour.setOnClickListener(this);
+            hour.setOnClickListener(new DebouncedClickListener() {
+                @Override
+                public void onDebouncedClick(View v) {
+                    minute.setChecked(false);
+                    hour.setChecked(true);
+                }
+            });
 
             if (mPrefs.isRotateMinute()) {
                 hour.setChecked(false);
@@ -200,26 +213,6 @@ public class MuzeiSettings extends AppCompatActivity implements View.OnClickList
             mPrefs = new Preferences(this);
         }
         mPrefs.setActivityVisible(false);
-    }
-
-    @Override
-    public void onClick(View v) {
-        int i = v.getId();
-        if (mPrefs.areFeaturesEnabled()) {
-            if (i == R.id.minute) {
-                if (minute.isChecked()) {
-                    hour.setChecked(false);
-                    minute.setChecked(true);
-                }
-            } else if (i == R.id.hour) {
-                if (hour.isChecked()) {
-                    minute.setChecked(false);
-                    hour.setChecked(true);
-                }
-            }
-        } else {
-            showNotLicensedDialog();
-        }
     }
 
     private void setDividerColor(NumberPicker picker) {

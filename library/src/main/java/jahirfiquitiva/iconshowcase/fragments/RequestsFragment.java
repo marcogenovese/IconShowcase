@@ -55,6 +55,7 @@ import jahirfiquitiva.iconshowcase.tasks.ZipFilesToRequest;
 import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
+import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 
 
@@ -102,9 +103,9 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
         }
 
         errorLayout = (TextView) layout.findViewById(R.id.error_view);
-        errorLayout.setOnClickListener(new View.OnClickListener() {
+        errorLayout.setOnClickListener(new DebouncedClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onDebouncedClick(View view) {
                 if (loadAppsToRequest != null) {
                     loadAppsToRequest.cancel(true);
                 }
@@ -123,9 +124,9 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
             fab.show();
         }
 
-        fab.setOnClickListener(new View.OnClickListener() {
+        fab.setOnClickListener(new DebouncedClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onDebouncedClick(View v) {
                 if (!PermissionUtils.canAccessStorage(getContext())) {
                     PermissionUtils.requestStoragePermission(getActivity(), RequestsFragment.this);
                 } else {

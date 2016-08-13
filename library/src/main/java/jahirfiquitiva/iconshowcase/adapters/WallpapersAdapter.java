@@ -135,12 +135,14 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
         return wallsList == null ? 0 : wallsList.size();
     }
 
-    public class WallsHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+    public class WallsHolder extends RecyclerView.ViewHolder implements View.OnClickListener,
+            View.OnLongClickListener {
 
         public final View view;
         public final ImageView wall;
         public final TextView name, authorName;
         public final LinearLayout titleBg;
+        private boolean clickable = true;
 
         WallsHolder(View v) {
             super(v);
@@ -155,18 +157,34 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
 
         @Override
         public void onClick(View v) {
-            int index = getLayoutPosition();
-            if (mCallback != null)
-                mCallback.onClick(this, index, false);
+            if (clickable) {
+                clickable = false;
+                onWallClick(v, false);
+                reset(); //comment to disable automatic reset
+            }
+
         }
 
         @Override
         public boolean onLongClick(View v) {
-            int index = getLayoutPosition();
-            if (mCallback != null)
-                mCallback.onClick(this, index, true);
+            if (clickable) {
+                clickable = false;
+                onWallClick(v, true);
+                reset(); //comment to disable automatic reset
+            }
             return false;
         }
+
+        private void onWallClick(View v, boolean longClick) {
+            int index = getLayoutPosition();
+            if (mCallback != null)
+                mCallback.onClick(this, index, longClick);
+        }
+
+        private void reset() {
+            clickable = true;
+        }
+
     }
 
     private void setImageAndAnimate(WallsHolder holder, Bitmap bitmap, boolean animate) {

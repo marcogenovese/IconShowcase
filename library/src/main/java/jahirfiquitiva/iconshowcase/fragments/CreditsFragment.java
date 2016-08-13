@@ -42,6 +42,7 @@ import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
+import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 
 
 public class CreditsFragment extends Fragment {
@@ -100,41 +101,41 @@ public class CreditsFragment extends Fragment {
                 .into(designerPhoto);
 
         CardView sherryCV = (CardView) layout.findViewById(R.id.sherryCard);
-        sherryCV.setOnClickListener(new View.OnClickListener() {
+        sherryCV.setOnClickListener(new DebouncedClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onDebouncedClick(View v) {
                 ISDialogs.showSherryDialog(context);
             }
         });
 
         CardView contributorsCV = (CardView) layout.findViewById(R.id.contributorsCard);
-        contributorsCV.setOnClickListener(new View.OnClickListener() {
+        contributorsCV.setOnClickListener(new DebouncedClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onDebouncedClick(View v) {
                 ISDialogs.showContributorsDialog(context, contributorsLinks);
             }
         });
 
         CardView uiCollabs = (CardView) layout.findViewById(R.id.uiDesignCard);
-        uiCollabs.setOnClickListener(new View.OnClickListener() {
+        uiCollabs.setOnClickListener(new DebouncedClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onDebouncedClick(View v) {
                 ISDialogs.showUICollaboratorsDialog(context, uiCollaboratorsLinks);
             }
         });
 
         CardView libsCard = (CardView) layout.findViewById(R.id.libsCard);
-        libsCard.setOnClickListener(new View.OnClickListener() {
+        libsCard.setOnClickListener(new DebouncedClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onDebouncedClick(View v) {
                 ISDialogs.showLibrariesDialog(context, libsLinks);
             }
         });
 
         CardView translators = (CardView) layout.findViewById(R.id.translatorsCard);
-        translators.setOnClickListener(new View.OnClickListener() {
+        translators.setOnClickListener(new DebouncedClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onDebouncedClick(View v) {
                 ISDialogs.showTranslatorsDialogs(context);
             }
         });
@@ -186,9 +187,9 @@ public class CreditsFragment extends Fragment {
         translatorsIV.setImageDrawable(translators);
 
         AppCompatButton emailBtn = (AppCompatButton) layout.findViewById(R.id.send_email_btn);
-        emailBtn.setOnClickListener(new View.OnClickListener() {
+        emailBtn.setOnClickListener(new DebouncedClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onDebouncedClick(View v) {
                 Utils.sendEmailWithDeviceInfo(context);
             }
         });
@@ -199,9 +200,9 @@ public class CreditsFragment extends Fragment {
         } else {
             websiteBtn.setText(Utils.getStringFromResources(context, R.string.more));
         }
-        websiteBtn.setOnClickListener(new View.OnClickListener() {
+        websiteBtn.setOnClickListener(new DebouncedClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onDebouncedClick(View v) {
                 if (YOU_HAVE_WEBSITE) {
                     Utils.openLinkInChromeCustomTab(context,
                             getResources().getString(R.string.iconpack_author_website));
@@ -212,36 +213,36 @@ public class CreditsFragment extends Fragment {
         });
 
         AppCompatButton googleBtn = (AppCompatButton) layout.findViewById(R.id.googleplus_btn);
-        googleBtn.setOnClickListener(new View.OnClickListener() {
+        googleBtn.setOnClickListener(new DebouncedClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onDebouncedClick(View v) {
                 Utils.openLinkInChromeCustomTab(context,
                         getResources().getString(R.string.iconpack_author_gplus));
             }
         });
 
         AppCompatButton forkBtn = (AppCompatButton) layout.findViewById(R.id.fork_btn);
-        forkBtn.setOnClickListener(new View.OnClickListener() {
+        forkBtn.setOnClickListener(new DebouncedClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onDebouncedClick(View v) {
                 Utils.openLinkInChromeCustomTab(context,
                         getResources().getString(R.string.dashboard_author_github));
             }
         });
 
         AppCompatButton devWebsiteBtn = (AppCompatButton) layout.findViewById(R.id.dev_website_btn);
-        devWebsiteBtn.setOnClickListener(new View.OnClickListener() {
+        devWebsiteBtn.setOnClickListener(new DebouncedClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onDebouncedClick(View v) {
                 Utils.openLinkInChromeCustomTab(context,
                         getResources().getString(R.string.dashboard_author_website));
             }
         });
 
         AppCompatButton devGoogleBtn = (AppCompatButton) layout.findViewById(R.id.dev_googleplus_btn);
-        devGoogleBtn.setOnClickListener(new View.OnClickListener() {
+        devGoogleBtn.setOnClickListener(new DebouncedClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onDebouncedClick(View v) {
                 Utils.openLinkInChromeCustomTab(context,
                         getResources().getString(R.string.dashboard_author_gplus_community));
             }

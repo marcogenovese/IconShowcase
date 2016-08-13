@@ -22,6 +22,7 @@ import jahirfiquitiva.iconshowcase.models.HomeCard;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
+import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 
 
 public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -103,18 +104,18 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 buttons.setVisibility(View.GONE);
             }
             ratebtn = (AppCompatButton) itemView.findViewById(R.id.rate_button);
-            ratebtn.setOnClickListener(new View.OnClickListener() {
+            ratebtn.setOnClickListener(new DebouncedClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onDebouncedClick(View v) {
                     Intent rate = new Intent(Intent.ACTION_VIEW,
                             Uri.parse("https://play.google.com/store/apps/details?id=" + context.getPackageName()));
                     context.startActivity(rate);
                 }
             });
             moreappsbtn = (AppCompatButton) itemView.findViewById(R.id.more_apps_button);
-            moreappsbtn.setOnClickListener(new View.OnClickListener() {
+            moreappsbtn.setOnClickListener(new DebouncedClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onDebouncedClick(View v) {
                     Utils.openLink(context, context.getResources().getString(R.string.iconpack_author_playstore));
                 }
             });
@@ -198,9 +199,9 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             icon.setImageDrawable(ColorUtils.getTintedIcon(
                     context, R.drawable.ic_play_store,
                     ThemeUtils.darkTheme ? light : dark));
-            lly.setOnClickListener(new View.OnClickListener() {
+            lly.setOnClickListener(new DebouncedClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onDebouncedClick(View v) {
                     Utils.openLink(context, context.getResources().getString(R.string.iconpack_author_playstore));
                 }
             });
@@ -221,9 +222,9 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             final int pos = i;
 
-            view.setOnClickListener(new View.OnClickListener() { //TODO make clicks work for more than just links
+            view.setOnClickListener(new DebouncedClickListener() { //TODO make clicks work for more than just links
                 @Override
-                public void onClick(View v) {
+                public void onDebouncedClick(View v) {
                     if (homeCards.get(pos - cards).isInstalled && homeCards.get(pos - cards).intent != null) {
                         context.startActivity(homeCards.get(pos - cards).intent);
                     } else if (view.getVisibility() == View.VISIBLE) {

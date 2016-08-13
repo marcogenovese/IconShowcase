@@ -49,6 +49,8 @@ import org.sufficientlysecure.donations.google.util.Purchase;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
+import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
+
 
 public class DonationsFragment extends Fragment {
 
@@ -226,10 +228,9 @@ public class DonationsFragment extends Fragment {
 
             Button btGoogle = (Button) getActivity().findViewById(
                     R.id.donations__google_android_market_donate_button);
-            btGoogle.setOnClickListener(new View.OnClickListener() {
-
+            btGoogle.setOnClickListener(new DebouncedClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onDebouncedClick(View v) {
                     donateGoogleOnClick(v);
                 }
             });
@@ -270,10 +271,9 @@ public class DonationsFragment extends Fragment {
 
             Button btPayPal = (Button) getActivity().findViewById(
                     R.id.donations__paypal_donate_button);
-            btPayPal.setOnClickListener(new View.OnClickListener() {
-
+            btPayPal.setOnClickListener(new DebouncedClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onDebouncedClick(View v) {
                     donatePayPalOnClick(v);
                 }
             });
@@ -286,10 +286,9 @@ public class DonationsFragment extends Fragment {
             bitcoinViewStub.inflate();
 
             Button btBitcoin = (Button) getActivity().findViewById(R.id.donations__bitcoin_button);
-            btBitcoin.setOnClickListener(new View.OnClickListener() {
-
+            btBitcoin.setOnClickListener(new DebouncedClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onDebouncedClick(View v) {
                     donateBitcoinOnClick(v);
                 }
             });

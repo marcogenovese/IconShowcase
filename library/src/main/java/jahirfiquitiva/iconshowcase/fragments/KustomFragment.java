@@ -40,6 +40,7 @@ import jahirfiquitiva.iconshowcase.adapters.KustomAdapter;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.tasks.LoadKustomFiles;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
+import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 import jahirfiquitiva.iconshowcase.views.SectionedGridSpacingItemDecoration;
 
 
@@ -167,9 +168,9 @@ public class KustomFragment extends Fragment {
                 kustomFAB.show();
                 kustomFAB.setVisibility(View.VISIBLE);
 
-                kustomFAB.setOnClickListener(new View.OnClickListener() {
+                kustomFAB.setOnClickListener(new DebouncedClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onDebouncedClick(View v) {
                         ArrayList<String> apps = new ArrayList<>();
                         if (context.getResources().getBoolean(R.bool.includes_kustom_wallpapers) &&
                                 !Utils.isAppInstalled(context, KLWP_PKG)) {

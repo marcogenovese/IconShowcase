@@ -83,6 +83,7 @@ import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
+import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 import jahirfiquitiva.iconshowcase.views.TouchImageView;
 
 
@@ -167,9 +168,9 @@ public class ViewerActivity extends AppCompatActivity {
         ImageView saveIV = (ImageView) findViewById(R.id.download);
         if (item.isDownloadable()) {
             saveIV.setImageDrawable(save);
-            saveIV.setOnClickListener(new View.OnClickListener() {
+            saveIV.setOnClickListener(new DebouncedClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onDebouncedClick(View v) {
                     if (!PermissionUtils.canAccessStorage(context)) {
                         PermissionUtils.setViewerActivityAction("save");
                         PermissionUtils.requestStoragePermission(context);
@@ -184,18 +185,18 @@ public class ViewerActivity extends AppCompatActivity {
 
         ImageView applyIV = (ImageView) findViewById(R.id.apply);
         applyIV.setImageDrawable(apply);
-        applyIV.setOnClickListener(new View.OnClickListener() {
+        applyIV.setOnClickListener(new DebouncedClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onDebouncedClick(View v) {
                 showApplyWallpaperDialog(context, item.getWallURL());
             }
         });
 
         ImageView infoIV = (ImageView) findViewById(R.id.info);
         infoIV.setImageDrawable(info);
-        infoIV.setOnClickListener(new View.OnClickListener() {
+        infoIV.setOnClickListener(new DebouncedClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onDebouncedClick(View v) {
                 ISDialogs.showWallpaperDetailsDialog(context, item.getWallName(), item.getWallAuthor(), item.getWallDimensions(), item.getWallCopyright());
             }
         });
@@ -225,7 +226,7 @@ public class ViewerActivity extends AppCompatActivity {
         int colorFromCachedPic = 0;
 
         if (bmp != null) {
-            colorFromCachedPic = ColorUtils.getProminentSwatch(bmp).getRgb();
+            colorFromCachedPic = ColorUtils.getBetterColor(ColorUtils.getProminentSwatch(bmp).getRgb());
         } else {
             colorFromCachedPic = ThemeUtils.darkTheme ? tintDark : tintLightLighter;
         }

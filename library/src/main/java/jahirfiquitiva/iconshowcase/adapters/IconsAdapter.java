@@ -49,6 +49,7 @@ import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
+import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 
 
 public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder> {
@@ -103,93 +104,29 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
 
         if (iconResource == 0) return;
 
-        switch (context.getResources().getInteger(R.integer.inconloadingmethod)) {
-            case 1:
-                holder.icon.setImageResource(iconResource);
-                break;
-            case 2:
-                Glide.with(context)
-                        .fromResource()
-                        .load(iconResource)
-                        .into(holder.icon);
-                break;
-            case 3:
-                Glide.with(context)
-                        .load(iconResource)
-                        .into(holder.icon);
-                break;
-            case 4:
-                Glide.with(context)
-                        .load(iconResource)
-                        .asBitmap()
-                        .into(new BitmapImageViewTarget(holder.icon) {
-                            @Override
-                            protected void setResource(Bitmap resource) {
-                                holder.icon.setAlpha(0f);
-                                holder.icon.setImageBitmap(resource);
-                                holder.icon.animate().setDuration(300).alpha(1f).start();
-                            }
-                        });
-                break;
-        }
-
-        /*
-        METHOD 1:
-        holder.icon.setImageResource(iconResource);
-         */
-
-        /*
-        METHOD 2:
-         Glide.with(context)
-                    .fromResource()
-                    .load(iconResource)
-                    .into(holder.icon);
-         */
-
-        /*
-        METHOD 3:
-        Glide.with(context)
-                        .load(iconResource)
-                        .into(holder.icon);
-         */
-
-        /*
-        METHOD 4:
-
         Glide.with(context)
                 .load(iconResource)
                 .asBitmap()
                 .into(new BitmapImageViewTarget(holder.icon) {
                     @Override
                     protected void setResource(Bitmap resource) {
-                        holder.icon.setImageBitmap(resource);
+                        if (!inChangelog && mPrefs.getAnimationsEnabled()) {
+                            holder.icon.setAlpha(0f);
+                            holder.icon.setImageBitmap(resource);
+                            holder.icon.animate().setDuration(250).alpha(1f).start();
+                        } else {
+                            holder.icon.setImageBitmap(resource);
+                        }
                     }
                 });
-         */
 
-        holder.view.setOnClickListener(new View.OnClickListener() {
+        holder.view.setOnClickListener(new DebouncedClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onDebouncedClick(View v) {
                 iconClick(holder.getAdapterPosition());
             }
         });
 
-        //mPrefs.getAnimationsEnabled() &&
-        if (!inChangelog && (context.getResources().getInteger(R.integer.inconloadingmethod) != 4)) {
-            setAnimation(holder.icon, holder.getAdapterPosition());
-        }
-
-    }
-
-    private int lastPosition = -1;
-
-    private void setAnimation(View viewToAnimate, int position) {
-        Animation anim = AnimationUtils.loadAnimation(context, R.anim.icon_fade);
-        if (position > lastPosition) {
-            viewToAnimate.setHasTransientState(true);
-            viewToAnimate.startAnimation(anim);
-            lastPosition = position;
-        }
     }
 
     private void iconClick(int position) {

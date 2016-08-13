@@ -175,10 +175,8 @@ public class WallpapersFragment extends Fragment {
                                 public void onClick(WallpapersAdapter.WallsHolder view,
                                                     int position, boolean longClick) {
                                     if ((longClick && !ShowcaseActivity.wallsPicker) || ShowcaseActivity.wallsPicker) {
-
                                         showApplyWallpaperDialog(context,
                                                 WallpapersList.getWallpapersList().get(position));
-
                                     } else {
                                         final Intent intent = new Intent(context, ViewerActivity.class);
 

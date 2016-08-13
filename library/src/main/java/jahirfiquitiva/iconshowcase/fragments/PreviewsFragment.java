@@ -121,52 +121,37 @@ public class PreviewsFragment extends Fragment {
             TypedValue factor = new TypedValue();
             getResources().getValue(R.dimen.scroll_factor, factor, true);
             mPager.setScrollDurationFactor(factor.getFloat());
-            mPager.setOffscreenPageLimit(getPageLimit());
             mPager.setAdapter(new IconsPagerAdapter(getChildFragmentManager()));
+            mPager.setOffscreenPageLimit(categories.size() - 1 < 1 ? 1 : categories.size() - 1);
             createTabs();
         }
 
     }
 
-    private int getPageLimit() {
-        if (categories != null) {
-            int categoriesNum = categories.size();
-            int halfCategories = categoriesNum / 2;
-            int limit = categoriesNum - halfCategories;
-            return limit < 1 ? 1 : limit;
-        } else {
-            return 2;
-        }
-    }
-
     private void createTabs() {
         mTabs = (TabLayout) getActivity().findViewById(R.id.tabs);
+        mTabs.removeAllTabs();
         mTabs.setVisibility(View.VISIBLE);
-        mTabs.setupWithViewPager(mPager);
-        mTabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        mTabs.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mPager));
+        mPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabs) {
             @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                mPager.setCurrentItem(tab.getPosition());
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
                 if (mLastSelected > -1) {
                     IconsFragment frag = (IconsFragment) getChildFragmentManager().findFragmentByTag("page:" + mLastSelected);
                     if (frag != null)
                         frag.performSearch(null);
                 }
-                mLastSelected = tab.getPosition();
+                mLastSelected = position;
                 if (mSearchView != null && getActivity() != null)
                     mSearchView.setQueryHint(getString(R.string.search_x, tabs[mLastSelected]));
                 if (getActivity() != null)
                     getActivity().invalidateOptionsMenu();
             }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-            }
         });
+        for (IconsCategory category : categories) {
+            mTabs.addTab(mTabs.newTab().setText(category.getCategoryName()));
+        }
     }
 
     @Override
