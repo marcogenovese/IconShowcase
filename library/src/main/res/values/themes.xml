@@ -62,7 +62,6 @@
 
         <item name="actionBarTheme">@style/Toolbar.AppCompat.Responsive.Light</item>
         <item name="actionBarPopupTheme">@style/Toolbar.Popup.AppCompat</item>
-
     </style>
 
     <style name="AppTheme.Base.Clear" parent="AppTheme.Base.Dark">
@@ -103,7 +102,6 @@
         <item name="tabsNormalTextColor">@color/tabs_normal_text_dark</item>
         <item name="tabsSelectedTextColor">@color/tabs_selected_text_dark</item>
 
-
         <item name="actionModeStyle">@style/Responsive.ActionMode</item>
         <item name="actionModeCloseButtonStyle">@style/Responsive.ActionButton.CloseMode</item>
 
@@ -113,7 +111,6 @@
 
         <item name="actionBarTheme">@style/Toolbar.AppCompat.Responsive.Dark</item>
         <item name="actionBarPopupTheme">@style/Toolbar.Popup.AppCompat</item>
-
     </style>
 
     <style name="ThemeOverlay.AppCompat.Clear" parent="ThemeOverlay.AppCompat.Dark">

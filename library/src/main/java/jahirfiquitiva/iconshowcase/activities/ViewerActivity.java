@@ -47,7 +47,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -113,8 +112,12 @@ public class ViewerActivity extends AppCompatActivity {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             ThemeUtils.onActivityCreateSetNavBar(this);
-            Window window = getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            getWindow().getDecorView().setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+            //getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            ThemeUtils.onActivityCreateSetStatusBar(this);
         }
 
         super.onCreate(savedInstanceState);
@@ -226,7 +229,8 @@ public class ViewerActivity extends AppCompatActivity {
         int colorFromCachedPic = 0;
 
         if (bmp != null) {
-            colorFromCachedPic = ColorUtils.getBetterColor(ColorUtils.getProminentSwatch(bmp).getRgb());
+            colorFromCachedPic = ColorUtils.getBetterProgressBarColor(
+                    ColorUtils.getProminentSwatch(bmp).getRgb(), context);
         } else {
             colorFromCachedPic = ThemeUtils.darkTheme ? tintDark : tintLightLighter;
         }

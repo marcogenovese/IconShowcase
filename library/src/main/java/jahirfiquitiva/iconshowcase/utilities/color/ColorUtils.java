@@ -246,4 +246,20 @@ public class ColorUtils {
             return checkDarknessOfColor(color, 0.2f) ? darkenColor(color) : color;
         }
     }
+
+    public static int getBetterProgressBarColor(@ColorInt int color, Context context) {
+        int betterColor = 0;
+
+        betterColor = checkDarknessOfColor(color, 0.8f) ? lightenColor(color) : color;
+
+        betterColor = checkDarknessOfColor(betterColor, 0.2f) ? darkenColor(betterColor) : betterColor;
+
+        if (betterColor == 0) {
+            betterColor = ContextCompat.getColor(context, ThemeUtils.darkTheme ?
+                    R.color.dark_theme_accent : R.color.light_theme_accent);
+        }
+
+        return betterColor;
+    }
+
 }

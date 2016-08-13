@@ -19,7 +19,6 @@
 
 package jahirfiquitiva.iconshowcase.adapters;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -32,8 +31,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -59,6 +56,7 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
     private ArrayList<IconItem> iconsList = new ArrayList<>();
     private final Preferences mPrefs;
     private boolean iconPressed = false;
+    private int lastPosition = -1;
 
     public IconsAdapter(Activity context, ArrayList<IconItem> iconsList) {
         this.context = context;
@@ -95,8 +93,7 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
     }
 
     @Override
-    //public void onBindViewHolder(IconsHolder holder, @SuppressLint("RecyclerView") final int position) {
-    public void onBindViewHolder(final IconsHolder holder, @SuppressLint("RecyclerView") int position) {
+    public void onBindViewHolder(final IconsHolder holder, int position) {
 
         if (position < 0) return;
 
@@ -110,10 +107,12 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
                 .into(new BitmapImageViewTarget(holder.icon) {
                     @Override
                     protected void setResource(Bitmap resource) {
-                        if (!inChangelog && mPrefs.getAnimationsEnabled()) {
+                        if ((!inChangelog && mPrefs.getAnimationsEnabled()) &&
+                                (lastPosition > holder.getAdapterPosition())) {
                             holder.icon.setAlpha(0f);
                             holder.icon.setImageBitmap(resource);
                             holder.icon.animate().setDuration(250).alpha(1f).start();
+                            lastPosition = holder.getAdapterPosition();
                         } else {
                             holder.icon.setImageBitmap(resource);
                         }
@@ -127,6 +126,16 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
             }
         });
 
+    }
+
+    @Override
+    public int getItemCount() {
+        return iconsList == null ? 0 : iconsList.size();
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(IconsHolder holder) {
+        holder.clearAnimation();
     }
 
     private void iconClick(int position) {
@@ -174,11 +183,6 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
         }
     }
 
-    @Override
-    public int getItemCount() {
-        return iconsList == null ? 0 : iconsList.size();
-    }
-
     class IconsHolder extends RecyclerView.ViewHolder {
 
         final View view;
@@ -189,6 +193,12 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
             view = v;
             icon = (ImageView) v.findViewById(R.id.icon_img);
         }
+
+        private void clearAnimation() {
+            if (view != null) view.clearAnimation();
+            if (icon != null) icon.clearAnimation();
+        }
+
     }
 
 }

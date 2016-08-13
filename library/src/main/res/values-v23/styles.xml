@@ -35,5 +35,12 @@
         <item name="android:windowLightStatusBar">@bool/light_statusbar_in_clear_theme</item>
     </style>
 
+    <style name="AppTheme.Base.LightLaunchScreen">
+        <item name="android:windowLightStatusBar">@bool/light_statusbar_in_light_theme</item>
+    </style>
+
+    <style name="AppTheme.Base.DarkLaunchScreen">
+        <item name="android:windowLightStatusBar">@bool/light_statusbar_in_dark_theme</item>
+    </style>
 
 </resources>

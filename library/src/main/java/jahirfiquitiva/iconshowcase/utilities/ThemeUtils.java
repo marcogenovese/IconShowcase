@@ -26,7 +26,6 @@ package jahirfiquitiva.iconshowcase.utilities;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
@@ -35,11 +34,9 @@ import java.util.Calendar;
 
 import jahirfiquitiva.iconshowcase.R;
 
+
 @SuppressWarnings("ResourceAsColor")
 public class ThemeUtils {
-
-    public final static int NAV_BAR_DEFAULT = 0;
-    public final static int NAV_BAR_BLACK = 1;
 
     public final static int LIGHT = 0;
     public final static int DARK = 1;
@@ -87,37 +84,14 @@ public class ThemeUtils {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public static void onActivityCreateSetNavBar(Activity activity) {
-        final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
-        int navBarState = 0;
-        int mNavBar = sp.getInt("navBar", navBarState);
-        switch (mNavBar) {
-            default:
-            case NAV_BAR_DEFAULT:
-                activity.getWindow().setNavigationBarColor(darkTheme ?
-                        ContextCompat.getColor(activity, R.color.dark_theme_primary_dark) :
-                        ContextCompat.getColor(activity, R.color.light_theme_primary_dark));
-                coloredNavBar = true;
-                break;
-            case NAV_BAR_BLACK:
-                activity.getWindow().setNavigationBarColor(transparent ?
-                        ContextCompat.getColor(activity, R.color.home_clear_background) :
-                        ContextCompat.getColor(activity, android.R.color.black));
-                coloredNavBar = false;
-                break;
-        }
+        activity.getWindow().setNavigationBarColor(darkTheme ?
+                ContextCompat.getColor(activity, R.color.dark_theme_navigation_bar) :
+                ContextCompat.getColor(activity, R.color.light_theme_navigation_bar));
     }
 
-    public static void changeNavBar(Activity activity, int mNavBar) {
-        final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
-        final Editor editor = sp.edit();
-        editor.putInt("navBar", mNavBar).apply();
-        restartActivity(activity);
-    }
-
-    public static void changeToTheme(Activity activity, int mTheme) {
-        final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
-        final Editor editor = sp.edit();
-        editor.putInt("theme", mTheme).apply();
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public static void onActivityCreateSetStatusBar(Activity activity) {
+        activity.getWindow().setStatusBarColor(ContextCompat.getColor(activity, android.R.color.transparent));
     }
 
     public static void restartActivity(Activity activity) {
