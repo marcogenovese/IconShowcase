@@ -67,6 +67,7 @@ public class SettingsFragment extends PreferenceFragment implements
     private ComponentName componentName;
     private static Preference WSL, data, notifsUpdateInterval;
     private String location, cacheSize;
+    private boolean shouldShowFolderChooserDialog = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -318,6 +319,10 @@ public class SettingsFragment extends PreferenceFragment implements
     public void onResume() {
         super.onResume();
         Utils.collapseToolbar(getActivity());
+        if(shouldShowFolderChooserDialog) {
+            showFolderChooserDialog();
+            shouldShowFolderChooserDialog = false;
+        }
     }
 
     private void setupDevOptions(PreferenceScreen mainPrefs, final Context context) {
@@ -549,14 +554,13 @@ public class SettingsFragment extends PreferenceFragment implements
         notifsUpdateInterval.setSummary(part1 + part2);
     }
 
-    private void showFolderChooserDialog() {
+    public void showFolderChooserDialog() {
         new FolderSelectorDialog().show((AppCompatActivity) getActivity());
     }
 
     @Override
     public void onStoragePermissionGranted() {
-        // TODO: Fix issue with this
-        // showFolderChooserDialog();
+        shouldShowFolderChooserDialog = true;
     }
 
 }
