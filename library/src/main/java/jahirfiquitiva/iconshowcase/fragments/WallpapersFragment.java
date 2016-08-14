@@ -66,8 +66,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.activities.AltWallpaperViewerActivity;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
-import jahirfiquitiva.iconshowcase.activities.ViewerActivity;
+import jahirfiquitiva.iconshowcase.activities.WallpaperViewerActivity;
 import jahirfiquitiva.iconshowcase.adapters.WallpapersAdapter;
 import jahirfiquitiva.iconshowcase.models.WallpaperItem;
 import jahirfiquitiva.iconshowcase.models.WallpapersList;
@@ -88,7 +89,7 @@ public class WallpapersFragment extends Fragment {
     private static RecyclerFastScroller fastScroller;
     public static SwipeRefreshLayout mSwipeRefreshLayout;
     public static WallpapersAdapter mAdapter;
-    public static ImageView noConnection;
+    private static ImageView noConnection;
     private static Activity context;
     private static GridSpacingItemDecoration gridSpacing;
     private static int light, dark;
@@ -145,7 +146,7 @@ public class WallpapersFragment extends Fragment {
 
         mSwipeRefreshLayout.setEnabled(false);
 
-        setupLayout((Activity) context);
+        setupLayout(context);
 
         return layout;
 
@@ -178,7 +179,9 @@ public class WallpapersFragment extends Fragment {
                                         showApplyWallpaperDialog(context,
                                                 WallpapersList.getWallpapersList().get(position));
                                     } else {
-                                        final Intent intent = new Intent(context, ViewerActivity.class);
+                                        final Intent intent = new Intent(context,
+                                                context.getResources().getBoolean(R.bool.alternative_viewer) ? AltWallpaperViewerActivity.class :
+                                                        WallpaperViewerActivity.class);
 
                                         intent.putExtra("item", WallpapersList.getWallpapersList().get(position));
                                         intent.putExtra("transitionName", ViewCompat.getTransitionName(view.wall));
@@ -369,17 +372,14 @@ public class WallpapersFragment extends Fragment {
     public static class DownloadJSON extends AsyncTask<Void, Void, Boolean> {
 
         final ShowcaseActivity.WallsListInterface wi;
-        private final ImageView noConnection;
         private final ArrayList<WallpaperItem> walls = new ArrayList<>();
-        private WeakReference<Context> taskContext;
+        private final WeakReference<Context> taskContext;
 
         long startTime, endTime;
 
-        public DownloadJSON(ShowcaseActivity.WallsListInterface wi, Context context,
-                            ImageView noConnection) {
+        public DownloadJSON(ShowcaseActivity.WallsListInterface wi, Context context) {
             this.wi = wi;
             this.taskContext = new WeakReference<>(context);
-            this.noConnection = noConnection;
         }
 
         @Override
@@ -552,7 +552,7 @@ public class WallpapersFragment extends Fragment {
                                                     .cancelable(false)
                                                     .show();
 
-                                            applyTask[0] = new ApplyWallpaper(context, dialogApply, resource, false, layout);
+                                            applyTask[0] = new ApplyWallpaper(context, dialogApply, resource, false, layout, null);
                                             applyTask[0].execute();
                                         }
                                     }

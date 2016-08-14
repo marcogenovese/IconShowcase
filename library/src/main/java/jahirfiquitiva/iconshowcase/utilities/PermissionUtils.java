@@ -30,6 +30,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 
+
 /**
  * This Class was created by Patrick J
  * on 07.01.16. For more Details and Licensing
@@ -39,18 +40,19 @@ import android.support.v4.app.ActivityCompat;
 public final class PermissionUtils {
 
     public static final int PERMISSION_REQUEST_CODE = 42;
-    public static String folderName;
     private static String VIEWER_ACTIVITY_ACTION;
     private static OnPermissionResultListener onPermissionResultListener;
 
     public interface OnPermissionResultListener {
+
         void onStoragePermissionGranted();
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static boolean canAccessStorage(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             return context.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
-        }else{
+        } else {
             return true;
         }
     }
@@ -60,12 +62,6 @@ public final class PermissionUtils {
     }
 
     public static void requestStoragePermission(Activity activity, OnPermissionResultListener permissionResultListener) {
-        onPermissionResultListener = permissionResultListener;
-        requestStoragePermission(activity);
-    }
-
-    public static void requestStoragePermission(Activity activity, OnPermissionResultListener permissionResultListener, String folderName) {
-        PermissionUtils.folderName = folderName;
         onPermissionResultListener = permissionResultListener;
         requestStoragePermission(activity);
     }

@@ -31,8 +31,4 @@ public class KustomKomponent {
         return previewPath;
     }
 
-    public void setPreviewPath(String previewPath) {
-        this.previewPath = previewPath;
-    }
-
 }

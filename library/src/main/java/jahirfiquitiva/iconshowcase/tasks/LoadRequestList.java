@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import jahirfiquitiva.iconshowcase.models.RequestItem;
 
 
-public class LoadRequestList {
+class LoadRequestList {
 
     private ArrayList<RequestItem> themedApps;
 

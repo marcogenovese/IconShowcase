@@ -43,7 +43,6 @@ import java.io.FileOutputStream;
 import java.lang.ref.WeakReference;
 
 import jahirfiquitiva.iconshowcase.R;
-import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
@@ -70,6 +69,15 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
         this.wallName = wallName;
         this.toHide1 = toHide1;
         this.toHide2 = toHide2;
+    }
+
+    public WallpaperToCrop(Activity activity, MaterialDialog dialog, Bitmap resource,
+                           View layout, String wallName) {
+        this.wrActivity = new WeakReference<>(activity);
+        this.dialog = dialog;
+        this.resource = resource;
+        this.layout = layout;
+        this.wallName = wallName;
     }
 
     @Override
@@ -120,6 +128,9 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
                 final int snackbarDark = ContextCompat.getColor(context, R.color.snackbar_dark);
                 ViewGroup snackbarView = (ViewGroup) snackbar.getView();
                 snackbarView.setBackgroundColor(ThemeUtils.darkTheme ? snackbarDark : snackbarLight);
+                snackbarView.setPadding(snackbarView.getPaddingLeft(),
+                        snackbarView.getPaddingTop(), snackbarView.getPaddingRight(),
+                        Utils.getNavigationBarHeight(context));
                 snackbar.show();
                 snackbar.setCallback(new Snackbar.Callback() {
                     @Override

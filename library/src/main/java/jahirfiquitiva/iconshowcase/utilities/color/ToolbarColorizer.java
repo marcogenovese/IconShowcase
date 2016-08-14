@@ -24,13 +24,11 @@
 package jahirfiquitiva.iconshowcase.utilities.color;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.view.menu.ActionMenuItemView;
 import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.SearchView;
@@ -45,7 +43,6 @@ import android.widget.TextView;
 import java.lang.reflect.Field;
 
 import jahirfiquitiva.iconshowcase.R;
-import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 
 public class ToolbarColorizer {
@@ -145,7 +142,7 @@ public class ToolbarColorizer {
         }
     }
 
-    public static void hideSearchHintIcon(Context context, SearchView searchView) {
+    private static void hideSearchHintIcon(Context context, SearchView searchView) {
         if (context != null) {
             final Class<?> searchViewClass = searchView.getClass();
             try {
@@ -160,7 +157,7 @@ public class ToolbarColorizer {
         }
     }
 
-    public static void setCursorTint(@NonNull EditText editText, @ColorInt int color) {
+    private static void setCursorTint(@NonNull EditText editText, @ColorInt int color) {
         try {
             Field fCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");
             fCursorDrawableRes.setAccessible(true);

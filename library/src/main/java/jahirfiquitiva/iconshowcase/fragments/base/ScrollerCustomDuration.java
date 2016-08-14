@@ -24,7 +24,7 @@ import android.content.Context;
 import android.view.animation.Interpolator;
 import android.widget.Scroller;
 
-public class ScrollerCustomDuration extends Scroller {
+class ScrollerCustomDuration extends Scroller {
 
     private double mScrollFactor = 1;
 

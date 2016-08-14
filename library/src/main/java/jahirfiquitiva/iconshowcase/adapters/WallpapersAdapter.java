@@ -55,9 +55,8 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
 
     private final Context context;
     private final Preferences mPrefs;
-
+    private int lastPosition = -1;
     private ArrayList<WallpaperItem> wallsList;
-
     private final ClickListener mCallback;
 
     public WallpapersAdapter(Context context, ClickListener callback) {
@@ -74,11 +73,13 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
     @Override
     public WallsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        return new WallsHolder(inflater.inflate(R.layout.item_wallpaper, parent, false));
+        return new WallsHolder(inflater.inflate(
+                context.getResources().getBoolean(R.bool.rectangular_wallpaper_view) ? R.layout.item_wallpaper_rect :
+                        R.layout.item_wallpaper, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(final WallsHolder holder, int position) {
+    public void onBindViewHolder(final WallsHolder holder, final int position) {
         final WallpaperItem wallItem = wallsList.get(position);
 
         ViewCompat.setTransitionName(holder.wall, "transition" + position);
@@ -95,13 +96,14 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
                 Palette.Swatch wallSwatch = ColorUtils.getProminentSwatch(resource);
                 boolean animsEnabled = mPrefs.getAnimationsEnabled();
 
-                setImageAndAnimate(holder, resource, animsEnabled);
+                setImageAndAnimate(holder, resource, animsEnabled, position);
 
                 if (wallSwatch != null) {
-                    if (animsEnabled) {
+                    if (animsEnabled && (position > lastPosition)) {
                         holder.titleBg.setAlpha(0f);
                         holder.titleBg.setBackgroundColor(wallSwatch.getRgb());
                         holder.titleBg.animate().setDuration(250).alpha(1f).start();
+                        lastPosition = position;
                     } else {
                         holder.titleBg.setBackgroundColor(wallSwatch.getRgb());
                     }
@@ -159,7 +161,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
         public void onClick(View v) {
             if (clickable) {
                 clickable = false;
-                onWallClick(v, false);
+                onWallClick(false);
                 reset(); //comment to disable automatic reset
             }
 
@@ -169,13 +171,13 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
         public boolean onLongClick(View v) {
             if (clickable) {
                 clickable = false;
-                onWallClick(v, true);
+                onWallClick(true);
                 reset(); //comment to disable automatic reset
             }
             return false;
         }
 
-        private void onWallClick(View v, boolean longClick) {
+        private void onWallClick(boolean longClick) {
             int index = getLayoutPosition();
             if (mCallback != null)
                 mCallback.onClick(this, index, longClick);
@@ -187,8 +189,9 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
 
     }
 
-    private void setImageAndAnimate(WallsHolder holder, Bitmap bitmap, boolean animate) {
-        if (animate) {
+    private void setImageAndAnimate(WallsHolder holder, Bitmap bitmap, boolean animate,
+                                    int position) {
+        if (animate && (position > lastPosition)) {
             holder.wall.setAlpha(0f);
             holder.wall.setImageBitmap(bitmap);
             holder.wall.animate().setDuration(250).alpha(1f).start();

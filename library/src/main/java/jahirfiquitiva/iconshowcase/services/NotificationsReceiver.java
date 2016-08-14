@@ -18,7 +18,7 @@ import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 public class NotificationsReceiver extends BroadcastReceiver {
 
-    public static void scheduleAlarms(Context context, boolean cancel) {
+    private static void scheduleAlarms(Context context, boolean cancel) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, NotificationsService.class);
         PendingIntent pendingIntent = PendingIntent.getService(context, 0, intent, 0);

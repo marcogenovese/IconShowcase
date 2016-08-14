@@ -86,9 +86,9 @@ import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 import jahirfiquitiva.iconshowcase.views.TouchImageView;
 
 
-public class ViewerActivity extends AppCompatActivity {
+public class WallpaperViewerActivity extends AppCompatActivity {
 
-    private boolean mLastTheme, mLastNavBar, usePalette;
+    private boolean mLastTheme, mLastNavBar;
 
     private WallpaperItem item;
 
@@ -96,7 +96,6 @@ public class ViewerActivity extends AppCompatActivity {
     private static Preferences mPrefs;
     private static File downloadsFolder;
     private MaterialDialog dialogApply;
-    private Toolbar toolbar;
 
     private LinearLayout toHide1, toHide2;
 
@@ -112,19 +111,12 @@ public class ViewerActivity extends AppCompatActivity {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             ThemeUtils.onActivityCreateSetNavBar(this);
-            getWindow().getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-            //getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            ThemeUtils.onActivityCreateSetStatusBar(this);
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
 
         super.onCreate(savedInstanceState);
 
         context = this;
-
-        usePalette = getResources().getBoolean(R.bool.use_palette_api_in_viewer);
 
         mPrefs = new Preferences(context);
 
@@ -135,14 +127,14 @@ public class ViewerActivity extends AppCompatActivity {
 
         item = intent.getParcelableExtra("item");
 
-        setContentView(R.layout.wall_viewer_activity);
+        setContentView(R.layout.wallpaper_viewer_activity);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("");
-            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back_with_shadow);
             getSupportActionBar().setHomeButtonEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -226,7 +218,7 @@ public class ViewerActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        int colorFromCachedPic = 0;
+        int colorFromCachedPic;
 
         if (bmp != null) {
             colorFromCachedPic = ColorUtils.getBetterProgressBarColor(
@@ -292,14 +284,12 @@ public class ViewerActivity extends AppCompatActivity {
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         mLastTheme = ThemeUtils.darkTheme;
-        mLastNavBar = ThemeUtils.coloredNavBar;
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (mLastTheme != ThemeUtils.darkTheme
-                || mLastNavBar != ThemeUtils.coloredNavBar) {
+        if (mLastTheme != ThemeUtils.darkTheme) {
             ThemeUtils.restartActivity(context);
         }
     }
@@ -533,8 +523,8 @@ public class ViewerActivity extends AppCompatActivity {
                                                     .cancelable(false)
                                                     .show();
 
-                                            applyTask[0] = new ApplyWallpaper(context, dialogApply, resource, false, layout,
-                                                    toHide1, toHide2);
+                                            applyTask[0] = new ApplyWallpaper(context, dialogApply,
+                                                    resource, layout, toHide1, toHide2);
                                             applyTask[0].execute();
                                         }
                                     }

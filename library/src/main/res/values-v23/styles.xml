@@ -37,10 +37,18 @@
 
     <style name="AppTheme.Base.LightLaunchScreen">
         <item name="android:windowLightStatusBar">@bool/light_statusbar_in_light_theme</item>
+        <item name="android:windowBackground">@drawable/splash_screen_light</item>
+        <item name="colorPrimaryDark">@color/splash_light_statusbar</item>
+        <item name="colorAccent">@color/splash_light_statusbar</item>
+        <item name="android:navigationBarColor">@color/splash_light_statusbar</item>
     </style>
 
     <style name="AppTheme.Base.DarkLaunchScreen">
         <item name="android:windowLightStatusBar">@bool/light_statusbar_in_dark_theme</item>
+        <item name="android:windowBackground">@drawable/splash_screen_dark</item>
+        <item name="colorPrimaryDark">@color/splash_dark_statusbar</item>
+        <item name="colorAccent">@color/splash_dark_statusbar</item>
+        <item name="android:navigationBarColor">@color/splash_light_statusbar</item>
     </style>
 
 </resources>

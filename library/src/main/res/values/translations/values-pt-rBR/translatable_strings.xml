@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <!--
-  ~ Copyright (c) 2016. Jahir Fiquitiva
-  ~
-  ~ Licensed under the CreativeCommons Attribution-ShareAlike
-  ~ 4. 0 International License. You may not use this file except in compliance
-  ~ with the License. You may obtain a copy of the License at
-  ~
-  ~    http://creativecommons. org/licenses/by-sa/4. 0/legalcode
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software
-  ~ distributed under the License is distributed on an "AS IS" BASIS,
-  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
-  ~ See the License for the specific language governing permissions and
-  ~ limitations under the License. 
-  ~
-  ~ Big thanks to the project contributors. Check them in the repository. 
-  ~
-  -->
-    <!--
-  ~
-  -->
+<!--
+~ Copyright (c) 2016. Jahir Fiquitiva
+~
+~ Licensed under the CreativeCommons Attribution-ShareAlike
+~ 4. 0 International License. You may not use this file except in compliance
+~ with the License. You may obtain a copy of the License at
+~
+~    http://creativecommons. org/licenses/by-sa/4. 0/legalcode
+~
+~ Unless required by applicable law or agreed to in writing, software
+~ distributed under the License is distributed on an "AS IS" BASIS,
+~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~ See the License for the specific language governing permissions and
+~ limitations under the License.
+~
+~ Big thanks to the project contributors. Check them in the repository.
+~
+-->
+<!--
+~
+-->
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="muzei_settings">Configurações Muzei</string>
     <!-- Sharing wallpaper from Muzei -->
@@ -33,7 +33,7 @@
     <string name="section_donate">Doar</string>
     <string name="section_about">Sobre o Aplicativo</string>
     <!-- Wallpapers Activity -->
-    <string name="title_activity_detailed_wallpaper">Visualizador de Papeis de Parede</string>
+    <string name="title_activity_detailed_wallpaper">Visualizador de Papéis de Parede</string>
     <!-- Muzei Stuff -->
     <string name="muzeisets_title">Atualizar papéis de parede a cada:</string>
     <string name="seconds">Segundos</string>
@@ -65,14 +65,14 @@
     <string name="wallpaper_by">Por: %1$s</string>
     <string name="apply">Aplicar</string>
     <string name="save">Salvar</string>
-    <string name="downloading_wallpaper">Baixando papel de parede...</string>
-    <string name="setting_wall_title">Definindo papel de parede para sua tela inicial...</string>
-    <string name="preparing_wallpaper">Preparando papel de parede para corte...</string>
+    <string name="downloading_wallpaper">Baixando papel de parede…</string>
+    <string name="setting_wall_title">Definindo papel de parede para sua tela inicial…</string>
+    <string name="preparing_wallpaper">Preparando papel de parede para corte…</string>
     <string name="download_takes_longer">Isso está demorando mais que o esperado. Você pode cancelar ou esperar esta ação. </string>
     <string name="set_as_wall_done">Papel de parede definido!</string>
     <string name="error">Erro</string>
     <string name="confirm_apply">Você gostaria de aplicar este papel de parede na sua tela inicial?</string>
-    <string name="refreshing_walls">Recarregando lista de papéis de parede...</string>
+    <string name="refreshing_walls">Recarregando lista de papéis de parede…</string>
     <string name="retry">Tentar novamente</string>
     <string name="wallpaper_author_title">Autor</string>
     <string name="wallpaper_dimensions_title">Dimensões</string>
@@ -88,7 +88,7 @@
     <string name="advice">Aviso</string>
     <string name="dontshow">Não exibir novamente</string>
     <string name="rate">Avaliar</string>
-    <string name="set_as">Cortar papel de parede e definir como...</string>
+    <string name="set_as">Cortar papel de parede e definir como…</string>
     <!-- Requests -->
     <string name="select_all">Selecionar tudo</string>
     <string name="no_selected_apps_title">Nenhum aplicativo selecionado</string>
@@ -99,11 +99,11 @@
     <string name="apps_limit_dialog_day_extra">Você poderá pedir ícones novamente em %1$s. </string>
     <string name="apps_limit_dialog_day_extra_sec">Você poderá pedir ícones novamente em menos de um minuto. </string>
     <!-- Icon search -->
-    <string name="search_icons">Pesquisar ícone...</string>
+    <string name="search_icons">Pesquisar ícone…</string>
     <string name="search_x">Pesquisar %1$s</string>
-    <string name="building_request_dialog">Construindo os arquivos solicitados...</string>
-    <string name="loading_apps">Por favor aguarde até que seus aplicativos sejam carregados. Isso pode demorar alguns segundos...</string>
-    <string name="loading_icons">Carregando ícones...</string>
+    <string name="building_request_dialog">Construindo os arquivos solicitados…</string>
+    <string name="loading_apps">Por favor aguarde até que seus aplicativos sejam carregados. Isso pode demorar alguns segundos…</string>
+    <string name="loading_icons">Carregando ícones…</string>
     <string name="choose">Escolher</string>
     <!--SETTINGS-->
     <string name="title_settings">Configurações</string>
@@ -173,7 +173,7 @@
     <string name="report_bugs_summary">Relatar erros ou solicitar novos recursos. </string>
     <string name="join_community">Participe da comunidade no Google Plus</string>
     <string name="join_community_summary">Se você precisar de ajuda ou tiver dúvidas, a comunidade IconShowcase no Google Plus é o lugar ideal para isto. </string>
-    <string name="saving_wallpaper">Salvando papel de parede...</string>
+    <string name="saving_wallpaper">Salvando papel de parede…</string>
     <string name="refresh">Recarregar</string>
     <!-- Messages shown when using LicenseChecker -->
     <string name="license_failed">Você não baixou %1$s na Google Play Store. Você tem duas opções:</string>
@@ -200,7 +200,7 @@
     <string name="new_folder_hint">Nome da pasta</string>
     <string name="new_folder_title">Criar uma nova pasta</string>
     <string name="new_folder_content">Favor inserir o nome da nova pasta. </string>
-    <string name="wait_for_walls">Por favor, aguarde até a pré-visualização de papel de parede aparecer...</string>
+    <string name="wait_for_walls">Por favor, aguarde até a pré-visualização de papel de parede aparecer…</string>
     <string name="translators">Tradutores</string>
     <string name="more">Mais</string>
     <string name="columns">Número de colunas</string>

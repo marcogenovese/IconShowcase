@@ -40,26 +40,25 @@ import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.models.KustomKomponent;
 import jahirfiquitiva.iconshowcase.models.KustomWallpaper;
 import jahirfiquitiva.iconshowcase.models.KustomWidget;
+import jahirfiquitiva.iconshowcase.tasks.LoadKustomFiles;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 
 
 public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.KustomHolder> {
 
-    private ArrayList<KustomWidget> widgets;
-    private ArrayList<KustomKomponent> komponents;
-    private ArrayList<KustomWallpaper> kustomWalls;
-    private Context context;
-    private Drawable wallpaper;
+    private final ArrayList<KustomWidget> widgets;
+    private final ArrayList<KustomKomponent> komponents;
+    private final ArrayList<KustomWallpaper> kustomWalls;
+    private final Context context;
+    private final Drawable wallpaper;
 
-    public KustomAdapter(Context context, ArrayList<KustomKomponent> komponents,
-                         ArrayList<KustomWallpaper> kustomWalls,
-                         ArrayList<KustomWidget> widgets, Drawable wallpaper) {
+    public KustomAdapter(Context context, Drawable wallpaper) {
         this.context = context;
 
-        this.komponents = komponents;
-        this.kustomWalls = kustomWalls;
-        this.widgets = widgets;
+        this.komponents = LoadKustomFiles.komponents;
+        this.kustomWalls = LoadKustomFiles.wallpapers;
+        this.widgets = LoadKustomFiles.widgets;
 
         this.wallpaper = wallpaper;
     }
@@ -124,7 +123,7 @@ public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.Ku
     @Override
     public void onBindViewHolder(KustomHolder holder, int section, final int relativePosition, int absolutePosition) {
         holder.background.setImageDrawable(wallpaper);
-        String filePath = null;
+        String filePath;
         switch (section) {
             case 0:
                 filePath = komponents.get(relativePosition).getPreviewPath();
@@ -187,8 +186,9 @@ public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.Ku
 
     class KustomHolder extends RecyclerView.ViewHolder {
 
-        ImageView background, widget;
-        TextView sectionTitle;
+        final ImageView background;
+        final ImageView widget;
+        final TextView sectionTitle;
 
         public KustomHolder(View itemView) {
             super(itemView);

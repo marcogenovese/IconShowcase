@@ -52,7 +52,7 @@ public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
     private long startTime, endTime;
 
     public LoadZooperWidgets(Context context) {
-        this.context = new WeakReference<Context>(context);
+        this.context = new WeakReference<>(context);
     }
 
     @Override
@@ -80,9 +80,7 @@ public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
                     String widgetName = Utils.getFilenameWithoutExtension(template);
                     String preview = getWidgetPreviewPathFromZip(context, widgetName,
                             assetManager.open("templates/" + template), previewsFolder, widgetPreviewFile);
-                    if (preview != null) {
-                        widgets.add(new ZooperWidget(preview));
-                    }
+                    widgets.add(new ZooperWidget(preview));
                     widgetPreviewFile.delete();
                 }
                 worked = widgets.size() == templates.length;

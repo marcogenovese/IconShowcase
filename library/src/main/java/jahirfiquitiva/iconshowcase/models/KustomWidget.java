@@ -27,7 +27,9 @@ import android.net.Uri;
 
 public class KustomWidget {
 
-    private String widgetName, previewPath, previewPathLand;
+    private final String widgetName;
+    private String previewPath;
+    private String previewPathLand;
 
     public KustomWidget(String widgetName, String previewPath, String previewPathLand) {
         this.widgetName = widgetName;
@@ -39,16 +41,8 @@ public class KustomWidget {
         return previewPath;
     }
 
-    public void setPreviewPath(String previewPath) {
-        this.previewPath = previewPath;
-    }
-
     public String getPreviewPathLand() {
         return previewPathLand;
-    }
-
-    public void setPreviewPathLand(String previewPathLand) {
-        this.previewPathLand = previewPathLand;
     }
 
     public Intent getKWGTIntent(Context context) {

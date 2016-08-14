@@ -40,7 +40,7 @@ public abstract class DebouncedClickListener implements View.OnClickListener {
     /**
      * Allows another click.
      */
-    public void reset() {
+    private void reset() {
         clickable = true;
     }
 

@@ -57,22 +57,22 @@ import java.util.zip.ZipException;
 import java.util.zip.ZipOutputStream;
 
 import jahirfiquitiva.iconshowcase.R;
-import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.models.RequestItem;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
+@SuppressWarnings("StringConcatenationInsideStringBufferAppend")
 public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
 
     private final MaterialDialog dialog;
-    private ArrayList<RequestItem> appsListFinal;
+    private final ArrayList<RequestItem> appsListFinal;
     private static final int BUFFER = 2048;
     private String zipFilePath;
     private WeakReference<Context> context;
     private StringBuilder emailContent = new StringBuilder();
     private final WeakReference<Activity> wrActivity;
     private Activity activity;
-    private Preferences mPrefs;
+    private final Preferences mPrefs;
     private File filesFolder;
 
     public ZipFilesToRequest(Activity activity, MaterialDialog dialog,
@@ -209,7 +209,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
                     bufferedWriter1.write(appFilterBuilder.toString());
                     bufferedWriter1.close();
                 } catch (Exception e) {
-                    worked = false;
+                    //Do nothing
                 }
 
                 try {
@@ -218,7 +218,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
                     bufferedWriter2.write(appMapBuilder.toString());
                     bufferedWriter2.close();
                 } catch (Exception e) {
-                    worked = false;
+                    //Do nothing
                 }
 
                 try {
@@ -227,7 +227,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
                     bufferedWriter3.write(themeResourcesBuilder.toString());
                     bufferedWriter3.close();
                 } catch (Exception e) {
-                    worked = false;
+                    //Do nothing
                 }
 
                 createZipFile(filesLocation, zipFilePath);

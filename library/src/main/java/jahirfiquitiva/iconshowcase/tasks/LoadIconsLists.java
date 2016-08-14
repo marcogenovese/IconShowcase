@@ -31,7 +31,9 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.models.IconItem;
@@ -65,7 +67,7 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
         Resources r = context.get().getResources();
         String p = context.get().getPackageName();
 
-        int iconResId = 0;
+        int iconResId;
 
         iconsLists = new ArrayList<>();
 
@@ -166,14 +168,11 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
 
         List<String> list = sortList(array);
 
-        //TODO: Uncomment before final release
-        /*
         Set<String> noDuplicates = new HashSet<>();
         noDuplicates.addAll(list);
         list.clear();
         list.addAll(noDuplicates);
         Collections.sort(list);
-        */
 
         ArrayList<IconItem> sortedListArray = new ArrayList<>();
 

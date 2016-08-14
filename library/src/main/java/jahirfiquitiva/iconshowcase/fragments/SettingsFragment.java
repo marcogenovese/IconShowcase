@@ -23,6 +23,7 @@
 
 package jahirfiquitiva.iconshowcase.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
@@ -128,14 +129,13 @@ public class SettingsFragment extends PreferenceFragment implements
             wallHeaderCheck.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     mPrefs.setWallpaperAsToolbarHeaderEnabled(newValue.toString().equals("true"));
-                    ((ShowcaseActivity) getActivity()).setupToolbarHeader(
+                    ShowcaseActivity.setupToolbarHeader(
                             getActivity(),
                             ((ShowcaseActivity) getActivity()).getToolbarHeader());
                     ColorUtils.setupToolbarIconsAndTextsColors(
                             getActivity(),
                             ((ShowcaseActivity) getActivity()).getAppbar(),
-                            ((ShowcaseActivity) getActivity()).getToolbar(),
-                            ((ShowcaseActivity) getActivity()).getToolbarHeaderImage());
+                            ((ShowcaseActivity) getActivity()).getToolbar());
                     return true;
                 }
             });
@@ -326,7 +326,7 @@ public class SettingsFragment extends PreferenceFragment implements
             Preference moarOptions;
             SwitchPreference drawerHeaderTexts, iconsChangelog, listsCards;
 
-            moarOptions = (Preference) findPreference("moreOptions");
+            moarOptions = findPreference("moreOptions");
 
             drawerHeaderTexts = (SwitchPreference) findPreference("drawerHeaderTexts");
             iconsChangelog = (SwitchPreference) findPreference("iconsChangelog");
@@ -383,7 +383,7 @@ public class SettingsFragment extends PreferenceFragment implements
         }
     }
 
-    public void changeValues(Context context) {
+    private void changeValues(Context context) {
         if (mPrefs.getDownloadsFolder() != null) {
             location = mPrefs.getDownloadsFolder();
         } else {
@@ -449,6 +449,7 @@ public class SettingsFragment extends PreferenceFragment implements
         return dir != null && dir.delete();
     }
 
+    @SuppressLint("DefaultLocale")
     private static String fullCacheDataSize(Context context) {
         String finalSize;
 

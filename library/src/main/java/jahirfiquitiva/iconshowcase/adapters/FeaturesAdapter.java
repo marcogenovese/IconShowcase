@@ -32,12 +32,9 @@ import jahirfiquitiva.iconshowcase.R;
 
 public class FeaturesAdapter extends RecyclerView.Adapter<FeaturesAdapter.FeatureHolder> {
 
-    private final Context context;
     private final String[][] mFeatures;
 
     public FeaturesAdapter(Context context, int featuresArray) {
-        // Save the context
-        this.context = context;
         // Populate the two-dimensional array
         TypedArray typedArray = context.getResources().obtainTypedArray(featuresArray);
         mFeatures = new String[typedArray.length()][];
@@ -80,8 +77,9 @@ public class FeaturesAdapter extends RecyclerView.Adapter<FeaturesAdapter.Featur
     }
 
     class FeatureHolder extends RecyclerView.ViewHolder {
-        View view;
-        TextView title, content;
+        final View view;
+        final TextView title;
+        final TextView content;
 
         FeatureHolder(View v) {
             super(v);

@@ -190,7 +190,7 @@ Czy chcesz zainstalować go na swoje urządzenie?</string>
     <string name="install_kustom_apps_content">Musisz zainstalować te aplikacje, aby skórki Kustom działały poprawnie. Tapnij na aplikację, aby ją pobrać. </string>
     <string name="install_assets">Zainstaluj czcionki</string>
     <string name="open">Otwórz</string>
-    <string name="assets_installed">%1$s czcionki są już zainstalowane</string>
+    <string name="assets_installed">Czcionki są już zainstalowane</string>
     <string name="apps_installed">Aplikacje są już zainstalowane</string>
     <string name="copying_assets">Kopiuję pliki do ZooperWidget/%1$s</string>
     <string name="icon_pack_in_numbers">Paczka ikon w liczbach</string>

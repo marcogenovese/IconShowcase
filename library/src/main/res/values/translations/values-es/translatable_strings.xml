@@ -65,14 +65,14 @@
     <string name="wallpaper_by">Por: %1$s</string>
     <string name="apply">Aplicar</string>
     <string name="save">Guardar</string>
-    <string name="downloading_wallpaper">Descargando fondo de pantalla...</string>
-    <string name="setting_wall_title">Configurando como tu fondo de pantalla...</string>
-    <string name="preparing_wallpaper">Preparando fondo de pantalla para recortar...</string>
+    <string name="downloading_wallpaper">Descargando fondo de pantalla…</string>
+    <string name="setting_wall_title">Configurando como tu fondo de pantalla…</string>
+    <string name="preparing_wallpaper">Preparando fondo de pantalla para recortar…</string>
     <string name="download_takes_longer">Esto está tomando más de lo esperado. Puedes esperar o cancelar esta acción. </string>
     <string name="set_as_wall_done">Fondo de pantalla configurado!</string>
     <string name="error">Error</string>
     <string name="confirm_apply">Estás seguro de querer aplicar éste fondo de pantalla a tu dispositivo?</string>
-    <string name="refreshing_walls">Actualizando lista de fondos de pantalla...</string>
+    <string name="refreshing_walls">Actualizando lista de fondos de pantalla…</string>
     <string name="retry">Reintentar</string>
     <string name="wallpaper_author_title">Autor</string>
     <string name="wallpaper_dimensions_title">Dimensiones</string>
@@ -88,7 +88,7 @@
     <string name="advice">Aviso</string>
     <string name="dontshow">No mostrar de nuevo</string>
     <string name="rate">Calificar</string>
-    <string name="set_as">Recortar imagen y configurar como...</string>
+    <string name="set_as">Recortar imagen y configurar como…</string>
     <!-- Requests -->
     <string name="select_all">Seleccionar todos</string>
     <string name="no_selected_apps_title">No hay apps seleccionadas</string>
@@ -99,11 +99,11 @@
     <string name="apps_limit_dialog_day_extra">Podrás solicitar iconos de nuevo, dentro de %1$s. </string>
     <string name="apps_limit_dialog_day_extra_sec">Podrás solicitar iconos de nuevo, en menos de un minuto. </string>
     <!-- Icon search -->
-    <string name="search_icons">Buscar iconos...</string>
-    <string name="search_x">Buscar %1$s...</string>
-    <string name="building_request_dialog">Guardando archivos para solicitar...</string>
-    <string name="loading_apps">Por favor espera mientras las apps cargan, esto tomará unos pocos segundos más...</string>
-    <string name="loading_icons">Cargando iconos...</string>
+    <string name="search_icons">Buscar iconos…</string>
+    <string name="search_x">Buscar %1$s…</string>
+    <string name="building_request_dialog">Guardando archivos para solicitar…</string>
+    <string name="loading_apps">Por favor espera mientras las apps cargan, esto tomará unos pocos segundos más…</string>
+    <string name="loading_icons">Cargando iconos…</string>
     <string name="choose">Escoger</string>
     <!--SETTINGS-->
     <string name="title_settings">Configuración</string>
@@ -173,7 +173,7 @@
     <string name="report_bugs_summary">Reporta fallos o solicita nuevas características. </string>
     <string name="join_community">Únete a la comunidad de Google Plus</string>
     <string name="join_community_summary">Si necesitas ayuda o tienes preguntas, la comunidad de IconShowcase en Google Plus es un buen lugar para ir. </string>
-    <string name="saving_wallpaper">Guardando fondo de pantalla...</string>
+    <string name="saving_wallpaper">Guardando fondo de pantalla…</string>
     <string name="refresh">Actualizar</string>
     <!-- Messages shown when using LicenseChecker -->
     <string name="license_failed">No descargaste %1$s desde Google Play Store. Tienes dos opciones:</string>
@@ -200,7 +200,7 @@
     <string name="new_folder_hint">Nombre de la carpeta</string>
     <string name="new_folder_title">Crear una nueva carpeta</string>
     <string name="new_folder_content">Escribe el nombre de la nueva carpeta, por favor. </string>
-    <string name="wait_for_walls">Por favor espera hasta que la imagen aparezca...</string>
+    <string name="wait_for_walls">Por favor espera hasta que la imagen aparezca…</string>
     <string name="translators">Traductores</string>
     <string name="more">Más</string>
     <string name="columns">Número de columnas</string>
@@ -251,7 +251,7 @@ Escoge el launcher al que quieres aplicar los iconos. Si el launcher no se encue
     </string-array>
     <string name="no_apply_tab">Contacta al desarrollador, pues parece que hace falta algo en la app. </string>
     <!--No Theme Engine Dialog-->
-    <string name="NTED_title">Oh  Oh!</string>
+    <string name="NTED_title" tools:ignore="Typos">Oh Oh!</string>
     <string name="NTED_message">Parece que no podemos encontrar un motor de temas en tu dispositivo. Si sabes que tienes uno, por favor, ábrelo y úsalo. Si no lo tienes, por favor instala una rom que lo soporte, puede ser CyanogenMod, o Layers, y sigue sus instrucciones. </string>
     <string name="tap_to_download">%1$s\nToca ésta tarjeta para descargarla. </string>
     <string name="tap_to_open">%1$s\nToca ésta tarjeta para abrirla. </string>

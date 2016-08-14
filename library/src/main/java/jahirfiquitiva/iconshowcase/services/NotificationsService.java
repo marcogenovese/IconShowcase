@@ -48,8 +48,6 @@ import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 public class NotificationsService extends IntentService {
 
-    private Preferences mPrefs;
-
     public NotificationsService() {
         super("IconShowcase - Notifs Service");
     }
@@ -57,7 +55,7 @@ public class NotificationsService extends IntentService {
     @Override
     public void onCreate() {
         super.onCreate();
-        mPrefs = new Preferences(this);
+        Preferences mPrefs = new Preferences(this);
         if (Utils.hasNetwork(getApplicationContext()) && mPrefs.getNotifsEnabled()
                 && !mPrefs.getActivityVisible()) {
             new CheckForNotifications().execute();
@@ -74,7 +72,7 @@ public class NotificationsService extends IntentService {
         public JSONObject mainObject, tag;
         public JSONArray notifs;
 
-        private ArrayList<NotificationItem> notifsList = new ArrayList<>();
+        private final ArrayList<NotificationItem> notifsList = new ArrayList<>();
 
         public CheckForNotifications() {
         }
@@ -120,7 +118,7 @@ public class NotificationsService extends IntentService {
             for (int i = 0; i < notifsList.size(); i++) {
                 NotificationItem notif = notifsList.get(i);
                 if (notif.getType() == 1) {
-                    int number = 0;
+                    int number;
                     String notifText = notif.getText();
                     try {
                         number = Integer.valueOf(notifText);

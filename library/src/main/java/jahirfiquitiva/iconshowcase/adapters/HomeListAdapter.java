@@ -93,7 +93,8 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public class WelcomeCard extends RecyclerView.ViewHolder {
 
         final LinearLayout buttons;
-        AppCompatButton ratebtn, moreappsbtn;
+        final AppCompatButton ratebtn;
+        final AppCompatButton moreappsbtn;
 
         public WelcomeCard(View itemView) {
             super(itemView);
@@ -184,9 +185,11 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         final int light = ContextCompat.getColor(context, R.color.drawable_tint_dark);
         final int dark = ContextCompat.getColor(context, R.color.drawable_tint_light);
 
-        LinearLayout lly, subLly;
-        TextView title, desc;
-        ImageView icon;
+        final LinearLayout lly;
+        final LinearLayout subLly;
+        final TextView title;
+        final TextView desc;
+        final ImageView icon;
 
         public MoreAppsCard(View itemView) {
             super(itemView);

@@ -20,11 +20,10 @@
 
 <resources>
 
-    <!--
-    Do you want the app to use palette api in wallpapers viewer?
-    True, means yes.
-    False, means no.
-    -->
-    <bool name="use_palette_api_in_viewer">true</bool>
+    <!-- Set this to true if you want a rectangular wallpaper view. -->
+    <bool name="rectangular_wallpaper_view">false</bool>
+
+    <!-- Set this to true if you want the alternative wallpaper viewer. -->
+    <bool name="alternative_viewer">false</bool>
 
 </resources>

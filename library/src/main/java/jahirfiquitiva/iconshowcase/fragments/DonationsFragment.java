@@ -54,24 +54,24 @@ import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 
 public class DonationsFragment extends Fragment {
 
-    public static final String ARG_DEBUG = "debug";
+    private static final String ARG_DEBUG = "debug";
 
-    public static final String ARG_GOOGLE_ENABLED = "googleEnabled";
-    public static final String ARG_GOOGLE_PUBKEY = "googlePubkey";
-    public static final String ARG_GOOGLE_CATALOG = "googleCatalog";
-    public static final String ARG_GOOGLE_CATALOG_VALUES = "googleCatalogValues";
+    private static final String ARG_GOOGLE_ENABLED = "googleEnabled";
+    private static final String ARG_GOOGLE_PUBKEY = "googlePubkey";
+    private static final String ARG_GOOGLE_CATALOG = "googleCatalog";
+    private static final String ARG_GOOGLE_CATALOG_VALUES = "googleCatalogValues";
 
-    public static final String ARG_PAYPAL_ENABLED = "paypalEnabled";
-    public static final String ARG_PAYPAL_USER = "paypalUser";
-    public static final String ARG_PAYPAL_CURRENCY_CODE = "paypalCurrencyCode";
-    public static final String ARG_PAYPAL_ITEM_NAME = "mPaypalItemName";
+    private static final String ARG_PAYPAL_ENABLED = "paypalEnabled";
+    private static final String ARG_PAYPAL_USER = "paypalUser";
+    private static final String ARG_PAYPAL_CURRENCY_CODE = "paypalCurrencyCode";
+    private static final String ARG_PAYPAL_ITEM_NAME = "mPaypalItemName";
 
-    public static final String ARG_FLATTR_ENABLED = "flattrEnabled";
-    public static final String ARG_FLATTR_PROJECT_URL = "flattrProjectUrl";
-    public static final String ARG_FLATTR_URL = "flattrUrl";
+    private static final String ARG_FLATTR_ENABLED = "flattrEnabled";
+    private static final String ARG_FLATTR_PROJECT_URL = "flattrProjectUrl";
+    private static final String ARG_FLATTR_URL = "flattrUrl";
 
-    public static final String ARG_BITCOIN_ENABLED = "bitcoinEnabled";
-    public static final String ARG_BITCOIN_ADDRESS = "bitcoinAddress";
+    private static final String ARG_BITCOIN_ENABLED = "bitcoinEnabled";
+    private static final String ARG_BITCOIN_ADDRESS = "bitcoinAddress";
 
     // http://developer.android.com/google/play/billing/billing_testing.html
     private static final String[] CATALOG_DEBUG = new String[]{"android.test.purchased",
@@ -82,31 +82,30 @@ public class DonationsFragment extends Fragment {
     // Google Play helper object
     private IabHelper mHelper;
 
-    protected boolean mDebug = false;
+    private boolean mDebug = false;
 
-    protected boolean mGoogleEnabled = false;
-    protected String mGooglePubkey = "";
-    protected String[] mGgoogleCatalog = new String[]{};
-    protected String[] mGoogleCatalogValues = new String[]{};
+    private boolean mGoogleEnabled = false;
+    private String mGooglePubkey = "";
+    private String[] mGgoogleCatalog = new String[]{};
+    private String[] mGoogleCatalogValues = new String[]{};
 
-    protected boolean mPaypalEnabled = false;
-    protected String mPaypalUser = "";
-    protected String mPaypalCurrencyCode = "";
-    protected String mPaypalItemName = "";
+    private boolean mPaypalEnabled = false;
+    private String mPaypalUser = "";
+    private String mPaypalCurrencyCode = "";
+    private String mPaypalItemName = "";
 
-    protected boolean mFlattrEnabled = false;
-    protected String mFlattrProjectUrl = "";
-    protected String mFlattrUrl = "";
+    private boolean mFlattrEnabled = false;
+    private String mFlattrProjectUrl = "";
+    private String mFlattrUrl = "";
 
-    protected boolean mBitcoinEnabled = false;
-    protected String mBitcoinAddress = "";
+    private boolean mBitcoinEnabled = false;
+    private String mBitcoinAddress = "";
 
     private Context context;
 
     /**
      * Instantiate DonationsFragment.
      *
-     * @param debug               You can use BuildConfig.DEBUG to propagate the debug flag from your app to the Donations library
      * @param googleEnabled       Enabled Google Play donations
      * @param googlePubkey        Your Google Play public key
      * @param googleCatalog       Possible item names that can be purchased from Google Play
@@ -117,21 +116,17 @@ public class DonationsFragment extends Fragment {
      *                            https://developer.paypal.com/webapps/developer/docs/classic/api/currency_codes/#id09A6G0U0GYK
      * @param paypalItemName      Display item name on PayPal, like "Donation for NTPSync"
      * @param flattrEnabled       Enable Flattr donations
-     * @param flattrProjectUrl    The project URL used on Flattr
-     * @param flattrUrl           The Flattr URL to your thing. NOTE: Enter without http://
      * @param bitcoinEnabled      Enable bitcoin donations
-     * @param bitcoinAddress      The address to receive bitcoin
-     *
      * @return DonationsFragment
      */
-    public static DonationsFragment newInstance(boolean debug, boolean googleEnabled, String googlePubkey, String[] googleCatalog,
+    public static DonationsFragment newInstance(boolean googleEnabled, String googlePubkey, String[] googleCatalog,
                                                 String[] googleCatalogValues, boolean paypalEnabled, String paypalUser,
                                                 String paypalCurrencyCode, String paypalItemName, boolean flattrEnabled,
-                                                String flattrProjectUrl, String flattrUrl, boolean bitcoinEnabled, String bitcoinAddress) {
+                                                boolean bitcoinEnabled) {
         DonationsFragment donationsFragment = new DonationsFragment();
         Bundle args = new Bundle();
 
-        args.putBoolean(ARG_DEBUG, debug);
+        args.putBoolean(ARG_DEBUG, jahirfiquitiva.iconshowcase.BuildConfig.DEBUG);
 
         args.putBoolean(ARG_GOOGLE_ENABLED, googleEnabled);
         args.putString(ARG_GOOGLE_PUBKEY, googlePubkey);
@@ -144,11 +139,11 @@ public class DonationsFragment extends Fragment {
         args.putString(ARG_PAYPAL_ITEM_NAME, paypalItemName);
 
         args.putBoolean(ARG_FLATTR_ENABLED, flattrEnabled);
-        args.putString(ARG_FLATTR_PROJECT_URL, flattrProjectUrl);
-        args.putString(ARG_FLATTR_URL, flattrUrl);
+        args.putString(ARG_FLATTR_PROJECT_URL, null);
+        args.putString(ARG_FLATTR_URL, null);
 
         args.putBoolean(ARG_BITCOIN_ENABLED, bitcoinEnabled);
-        args.putString(ARG_BITCOIN_ADDRESS, bitcoinAddress);
+        args.putString(ARG_BITCOIN_ADDRESS, null);
 
         donationsFragment.setArguments(args);
         return donationsFragment;
@@ -231,7 +226,7 @@ public class DonationsFragment extends Fragment {
             btGoogle.setOnClickListener(new DebouncedClickListener() {
                 @Override
                 public void onDebouncedClick(View v) {
-                    donateGoogleOnClick(v);
+                    donateGoogleOnClick();
                 }
             });
 
@@ -274,7 +269,7 @@ public class DonationsFragment extends Fragment {
             btPayPal.setOnClickListener(new DebouncedClickListener() {
                 @Override
                 public void onDebouncedClick(View v) {
-                    donatePayPalOnClick(v);
+                    donatePayPalOnClick();
                 }
             });
         }
@@ -318,7 +313,7 @@ public class DonationsFragment extends Fragment {
     /**
      * Open dialog
      */
-    void openDialog(int icon, int title, String message) {
+    private void openDialog(int icon, int title, String message) {
         new MaterialDialog.Builder(getActivity())
                 .icon(ContextCompat.getDrawable(getActivity(), icon))
                 .title(title)
@@ -331,7 +326,7 @@ public class DonationsFragment extends Fragment {
     /**
      * Donate button executes donations based on selection in spinner
      */
-    public void donateGoogleOnClick(View view) {
+    private void donateGoogleOnClick() {
         final int index;
         index = mGoogleSpinner.getSelectedItemPosition();
         if (mDebug)
@@ -350,7 +345,7 @@ public class DonationsFragment extends Fragment {
     }
 
     // Callback for when a purchase is finished
-    IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
+    private final IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
         public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
             if (mDebug)
                 Utils.showLog(context, "Purchase finished: " + result + ", purchase: " + purchase);
@@ -373,7 +368,7 @@ public class DonationsFragment extends Fragment {
     };
 
     // Called when consumption is complete
-    IabHelper.OnConsumeFinishedListener mConsumeFinishedListener = new IabHelper.OnConsumeFinishedListener() {
+    private final IabHelper.OnConsumeFinishedListener mConsumeFinishedListener = new IabHelper.OnConsumeFinishedListener() {
         public void onConsumeFinished(Purchase purchase, IabResult result) {
             if (mDebug)
                 Utils.showLog(context, "Consumption finished. Purchase: " + purchase + ", result: " + result);
@@ -412,7 +407,7 @@ public class DonationsFragment extends Fragment {
      * Donate button with PayPal by opening browser with defined URL For possible parameters see:
      * https://developer.paypal.com/webapps/developer/docs/classic/paypal-payments-standard/integration-guide/Appx_websitestandard_htmlvariables/
      */
-    public void donatePayPalOnClick(View view) {
+    private void donatePayPalOnClick() {
         Uri.Builder uriBuilder = new Uri.Builder();
         uriBuilder.scheme("https").authority("www.paypal.com").path("cgi-bin/webscr");
         uriBuilder.appendQueryParameter("cmd", "_donations");
@@ -441,7 +436,7 @@ public class DonationsFragment extends Fragment {
     /**
      * Donate with bitcoin by opening a bitcoin: intent if available.
      */
-    public void donateBitcoinOnClick(View view) {
+    private void donateBitcoinOnClick(View view) {
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse("bitcoin:" + mBitcoinAddress));
 
@@ -459,7 +454,7 @@ public class DonationsFragment extends Fragment {
      * Build view for Flattr. see Flattr API for more information:
      * http://developers.flattr.net/button/
      */
-    @SuppressLint("SetJavaScriptEnabled")
+    @SuppressLint({"SetJavaScriptEnabled", "SetTextI18n"})
     @TargetApi(11)
     private void buildFlattrView() {
         final FrameLayout mLoadingFrame;
@@ -487,7 +482,6 @@ public class DonationsFragment extends Fragment {
                     openDialog(android.R.drawable.ic_dialog_alert, R.string.donations__alert_dialog_title,
                             getString(R.string.donations__alert_dialog_no_browser));
                 }
-
                 return false;
             }
 

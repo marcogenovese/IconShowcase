@@ -30,6 +30,7 @@ import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.fragments.ZooperFragment;
 import jahirfiquitiva.iconshowcase.models.ZooperWidget;
 import jahirfiquitiva.iconshowcase.tasks.CopyFilesToStorage;
+import jahirfiquitiva.iconshowcase.tasks.LoadZooperWidgets;
 import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
@@ -40,21 +41,21 @@ import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         implements PermissionUtils.OnPermissionResultListener {
 
-    private ArrayList<ZooperWidget> widgets;
-    private Drawable[] icons = new Drawable[2];
-    private Context context;
-    private Drawable wallpaper;
+    private final ArrayList<ZooperWidget> widgets;
+    private final Drawable[] icons = new Drawable[2];
+    private final Context context;
+    private final Drawable wallpaper;
     private int extraCards = 0;
-    private boolean everythingInstalled;
-    private View layout;
+    private final boolean everythingInstalled;
+    private final View layout;
 
-    public ZooperAdapter(Context context, View layout, ArrayList<ZooperWidget> widgets, Drawable wallpaper, boolean
-            appsInstalled) {
+    public ZooperAdapter(Context context, View layout,
+                         Drawable wallpaper, boolean appsInstalled) {
         this.context = context;
 
         this.layout = layout;
 
-        this.widgets = widgets;
+        this.widgets = LoadZooperWidgets.widgets;
         this.wallpaper = wallpaper;
 
         this.everythingInstalled = (appsInstalled && areAssetsInstalled());
@@ -145,7 +146,8 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     class ZooperHolder extends RecyclerView.ViewHolder {
 
-        ImageView background, widget;
+        final ImageView background;
+        final ImageView widget;
 
         public ZooperHolder(View itemView) {
             super(itemView);
@@ -157,9 +159,9 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     class ZooperButtonHolder extends RecyclerView.ViewHolder {
 
-        CardView card;
-        ImageView icon;
-        TextView text;
+        final CardView card;
+        final ImageView icon;
+        final TextView text;
 
         public ZooperButtonHolder(View itemView, final int position) {
             super(itemView);

@@ -67,7 +67,7 @@ public class ToolbarTinter {
      *
      * @return {@code true} if the MenuItem is visible on the ActionBar.
      */
-    public static boolean isActionButton(MenuItem item) {
+    private static boolean isActionButton(MenuItem item) {
         if (item instanceof MenuItemImpl) {
             return ((MenuItemImpl) item).isActionButton();
         }
@@ -82,6 +82,7 @@ public class ToolbarTinter {
             }
         }
         try {
+            //noinspection ConstantConditions
             return (boolean) nativeIsActionButton.invoke(item, (Object[]) null);
         } catch (Exception e) {
             e.printStackTrace();
@@ -98,7 +99,7 @@ public class ToolbarTinter {
      *
      * @see #isActionButton(MenuItem)
      */
-    public static boolean isInOverflow(MenuItem item) {
+    private static boolean isInOverflow(MenuItem item) {
         return !isActionButton(item);
     }
 
@@ -108,7 +109,7 @@ public class ToolbarTinter {
      * @param menuItem The {@link MenuItem} to theme.
      * @param color    The color to set for the color filter or {@code null} for no changes.
      */
-    public static void colorMenuItem(MenuItem menuItem, Integer color, Integer alpha) {
+    private static void colorMenuItem(MenuItem menuItem, Integer color, Integer alpha) {
         if (color == null) {
             return; // nothing to do.
         }
@@ -130,7 +131,7 @@ public class ToolbarTinter {
      *
      * @param menu the menu to force icons to show
      */
-    public static void forceMenuIcons(Menu menu) {
+    private static void forceMenuIcons(Menu menu) {
         try {
             Class<?> MenuBuilder = menu.getClass();
             Method setOptionalIconsVisible =
@@ -249,7 +250,7 @@ public class ToolbarTinter {
      *
      * @param activity the activity to apply the menu tinting on.
      */
-    public void apply(final Activity activity) {
+    private void apply(final Activity activity) {
 
         if (menu != null) {
             if (forceIcons) {
@@ -322,7 +323,7 @@ public class ToolbarTinter {
      * <p>This should only be called after calling {@link #apply(Activity)}. It is useful for when
      * {@link MenuItem}s might be re-arranged due to an action view being collapsed or expanded.</p>
      */
-    public void reapply() {
+    private void reapply() {
 
         if (menu != null) {
             for (int i = 0, size = menu.size(); i < size; i++) {
@@ -357,7 +358,7 @@ public class ToolbarTinter {
                         }
                     }
                 }
-                if (iconsColor != null || iconsAlpha != null) {
+                if (iconsColor != null) {
                     colorOverflowMenuItem(overflowButton);
                 }
             }
@@ -372,9 +373,6 @@ public class ToolbarTinter {
             }
             if (iconsColor != null) {
                 overflow.setColorFilter(iconsColor);
-            }
-            if (iconsAlpha == null) {
-                iconsAlpha = 255;
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 overflow.setImageAlpha(iconsAlpha);
@@ -392,7 +390,7 @@ public class ToolbarTinter {
         return overflowButton;
     }
 
-    public void setMenuItemIconColor(Integer color) {
+    private void setMenuItemIconColor(Integer color) {
         iconsColor = color;
     }
 
@@ -546,10 +544,9 @@ public class ToolbarTinter {
          * <p>
          * <p>Note: This is targeted for the native ActionBar/Toolbar, not AppCompat.</p>
          */
-        public ToolbarTinter apply(Activity activity) {
+        public void apply(Activity activity) {
             ToolbarTinter theme = new ToolbarTinter(this);
             theme.apply(activity);
-            return theme;
         }
 
         /**

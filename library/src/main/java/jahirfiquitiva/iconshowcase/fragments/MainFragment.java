@@ -28,7 +28,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -42,15 +41,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.afollestad.materialdialogs.MaterialDialog;
-
 import java.util.ArrayList;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.adapters.HomeListAdapter;
 import jahirfiquitiva.iconshowcase.models.HomeCard;
-import jahirfiquitiva.iconshowcase.utilities.LauncherIntents;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 import jahirfiquitiva.iconshowcase.views.DividerItemDecoration;
@@ -60,8 +56,6 @@ public class MainFragment extends Fragment {
 
     private Context context;
     private ViewGroup layout;
-
-    private boolean themeMode, cm, cyngn, rro; //to store theme engine installation status
 
     private FloatingActionButton fab;
     private final ArrayList<HomeCard> homeCards = new ArrayList<>();
@@ -100,7 +94,7 @@ public class MainFragment extends Fragment {
         fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
         RecyclerView mRecyclerView = (RecyclerView) layout.findViewById(R.id.home_rv);
 
-        setupAndAnimateIcons(true, true, 600);
+        setupAndAnimateIcons(600);
 
         GridLayout iconsRow = (GridLayout) getActivity().findViewById(R.id.iconsRow);
 
@@ -109,14 +103,14 @@ public class MainFragment extends Fragment {
             @Override
             public void onDebouncedClick(View v) {
                 ShowcaseActivity.SHUFFLE = true;
-                setupAndAnimateIcons(true, true, 0);
+                setupAndAnimateIcons(0);
             }
         });
 
         if (hasAppsList) {
             for (int i = 0; i < appsNames.length; i++) {
                 try {
-                    if (appsPackages[i].indexOf("http") != -1) { //checks if package is a site
+                    if (appsPackages[i].contains("http")) { //checks if package is a site
                         homeCards.add(new HomeCard.Builder()
                                 .context(getActivity())
                                 .title(appsNames[i])
@@ -254,13 +248,9 @@ public class MainFragment extends Fragment {
 
     }
 
-    private void setupAndAnimateIcons(boolean justSetup, boolean animate, int delay) {
-        if (justSetup) {
-            ((ShowcaseActivity) getActivity()).setupIcons();
-        }
-        if (animate) {
-            ((ShowcaseActivity) getActivity()).animateIcons(delay);
-        }
+    private void setupAndAnimateIcons(int delay) {
+        ((ShowcaseActivity) getActivity()).setupIcons();
+        ((ShowcaseActivity) getActivity()).animateIcons(delay);
     }
 
 }

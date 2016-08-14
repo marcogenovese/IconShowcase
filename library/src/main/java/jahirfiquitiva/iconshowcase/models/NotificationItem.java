@@ -21,8 +21,9 @@ package jahirfiquitiva.iconshowcase.models;
 
 public class NotificationItem {
 
-    private String text;
-    private int type, ID;
+    private final String text;
+    private final int type;
+    private final int ID;
 
     public NotificationItem(String text, int type, int ID) {
         this.text = text;

@@ -30,7 +30,7 @@ import android.content.Intent;
 import android.widget.Toast;
 
 import jahirfiquitiva.iconshowcase.R;
-import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
+
 
 public class LauncherIntents {
 
@@ -303,7 +303,7 @@ public class LauncherIntents {
     }
 
     //for theme support
-    public void Layers(Context context) {
+    private void Layers(Context context) {
         try {
             Intent layers = new Intent("android.intent.action.MAIN");
             layers.setComponent(new ComponentName("com.lovejoy777.rroandlayersmanager",

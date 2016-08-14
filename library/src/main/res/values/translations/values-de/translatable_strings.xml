@@ -65,14 +65,14 @@
     <string name="wallpaper_by">Von %1$s</string>
     <string name="apply">"Anwenden "</string>
     <string name="save">"Speichern "</string>
-    <string name="downloading_wallpaper">Hintergrundbild wird heruntergeladen...</string>
-    <string name="setting_wall_title">Hintergrundbild wird auf dem Startbildschirm eingerichtet...</string>
-    <string name="preparing_wallpaper">Wallpaper wird zum Zuschneiden vorbereitet...</string>
+    <string name="downloading_wallpaper">Hintergrundbild wird heruntergeladen…</string>
+    <string name="setting_wall_title">Hintergrundbild wird auf dem Startbildschirm eingerichtet…</string>
+    <string name="preparing_wallpaper">Wallpaper wird zum Zuschneiden vorbereitet…</string>
     <string name="download_takes_longer">Das dauert länger als erwartet. Du könntest warten oder die Aktion abbrechen. </string>
     <string name="set_as_wall_done">Hintergrundbild eingerichtet!</string>
     <string name="error">"Fehler "</string>
     <string name="confirm_apply">Dieses Hintergrundbild wirklich auf dem Startbildschirm übernehmen?</string>
-    <string name="refreshing_walls">Hintergrundbilder werden aktualisiert...</string>
+    <string name="refreshing_walls">Hintergrundbilder werden aktualisiert…</string>
     <string name="retry">"Wiederholen "</string>
     <string name="wallpaper_author_title">Autor</string>
     <string name="wallpaper_dimensions_title">Größendarstellung</string>
@@ -88,7 +88,7 @@
     <string name="advice">Rat</string>
     <string name="dontshow">"Nicht mehr zeigen "</string>
     <string name="rate">Bewerten</string>
-    <string name="set_as">Hintergrund zuschneiden und verwenden als...</string>
+    <string name="set_as">Hintergrund zuschneiden und verwenden als…</string>
     <!-- Requests -->
     <string name="select_all">Alle auswählen</string>
     <string name="no_selected_apps_title">Keine Apps ausgewählt</string>
@@ -99,11 +99,11 @@
     <string name="apps_limit_dialog_day_extra">Sie können weitere Icon Vorschläge erst in %1$s einreichen. </string>
     <string name="apps_limit_dialog_day_extra_sec">Sie können weitere Icon Vorschläge in weniger als einer Minute einreichen. </string>
     <!-- Icon search -->
-    <string name="search_icons">Icons suchen...</string>
+    <string name="search_icons">Icons suchen…</string>
     <string name="search_x">Suche %1$s…</string>
     <string name="building_request_dialog">Daten werden verarbeitet…</string>
-    <string name="loading_apps">BItte warten Sie bis die App geladen ist, es wird ein paar Sekunden dauern...</string>
-    <string name="loading_icons">Icons laden.... </string>
+    <string name="loading_apps">BItte warten Sie bis die App geladen ist, es wird ein paar Sekunden dauern…</string>
+    <string name="loading_icons">Icons laden…. </string>
     <string name="choose">Auswählen</string>
     <!--SETTINGS-->
     <string name="title_settings">"Einstellungen "</string>
@@ -175,7 +175,7 @@ Ausgewählte Icons werden nicht beeinflusst. </string>
     <string name="report_bugs_summary">Fehler melden oder Features vorschlagen. </string>
     <string name="join_community">Treten Sie der Google plus Gemeinschaft bei</string>
     <string name="join_community_summary">Sollten Sie Hilfe benötigen oder Fragen haben, ist die Google Plus Gemeinschaft ein guter Ort dafür. </string>
-    <string name="saving_wallpaper">Hintergrund wird gespeichert...</string>
+    <string name="saving_wallpaper">Hintergrund wird gespeichert…</string>
     <string name="refresh">Aktualisieren</string>
     <!-- Messages shown when using LicenseChecker -->
     <string name="license_failed">Du hast %1$s nicht aus dem Google Play Store installiert. Du hast zwei Möglichkeiten:</string>
@@ -202,7 +202,7 @@ Ausgewählte Icons werden nicht beeinflusst. </string>
     <string name="new_folder_hint">Ordner Name</string>
     <string name="new_folder_title">Neuen Ordner erstellen</string>
     <string name="new_folder_content">Bitte den Namen des Ordners eingeben. </string>
-    <string name="wait_for_walls">Bitte warten bis das Vorschaubild erscheint...</string>
+    <string name="wait_for_walls">Bitte warten bis das Vorschaubild erscheint…</string>
     <string name="translators">Übersetzer</string>
     <string name="more">Mehr</string>
     <string name="columns">Spaltenanzahl</string>

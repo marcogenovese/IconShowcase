@@ -302,7 +302,12 @@
 
         <!-- Wallpapers Activity -->
         <activity
-            android:name="jahirfiquitiva.iconshowcase.activities.ViewerActivity"
+            android:name="jahirfiquitiva.iconshowcase.activities.WallpaperViewerActivity"
+            android:label="@string/title_activity_detailed_wallpaper"
+            android:theme="@style/AppTheme"/>
+
+        <activity
+            android:name="jahirfiquitiva.iconshowcase.activities.AltWallpaperViewerActivity"
             android:label="@string/title_activity_detailed_wallpaper"
             android:theme="@style/AppTheme"/>
 

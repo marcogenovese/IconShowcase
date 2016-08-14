@@ -163,9 +163,9 @@ public class FolderSelectorDialog extends DialogFragment implements MaterialDial
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mCallback = (FolderSelectionCallback) activity;
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mCallback = (FolderSelectionCallback) ((Activity) context);
     }
 
     public void show(AppCompatActivity context) {

@@ -41,8 +41,13 @@ public class WallpaperItem implements Parcelable {
         }
     };
 
-    private String wallName, wallAuthor, wallUrl, wallThumbUrl, wallDimensions, wallCopyright;
-    private boolean downloadable;
+    private final String wallName;
+    private final String wallAuthor;
+    private final String wallUrl;
+    private String wallThumbUrl;
+    private final String wallDimensions;
+    private final String wallCopyright;
+    private final boolean downloadable;
 
     public WallpaperItem(String wallName, String wallAuthor, String wallUrl, String wallThumbUrl, String wallDimensions, String wallCopyright,
                          boolean downloadable) {
@@ -88,7 +93,7 @@ public class WallpaperItem implements Parcelable {
         return 0;
     }
 
-    protected WallpaperItem(Parcel in) {
+    private WallpaperItem(Parcel in) {
         wallName = in.readString();
         wallAuthor = in.readString();
         wallUrl = in.readString();

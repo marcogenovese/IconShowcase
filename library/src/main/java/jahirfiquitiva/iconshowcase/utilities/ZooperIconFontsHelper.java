@@ -50,9 +50,9 @@ import rx.schedulers.Schedulers;
 
 public class ZooperIconFontsHelper {
 
-    public static final int CHECKING = 0;
-    public static final int FIXING = 1;
-    public static final int CANCELING = 2;
+    private static final int CHECKING = 0;
+    private static final int FIXING = 1;
+    private static final int CANCELING = 2;
 
     public interface Callback {
 
@@ -111,7 +111,7 @@ public class ZooperIconFontsHelper {
      *                 (Callback)Interface for all check/fix or cancel updates. />
      **/
 
-    public void setCallback(Callback callback) {
+    private void setCallback(Callback callback) {
         this.mCallback = callback;
     }
 
@@ -157,7 +157,7 @@ public class ZooperIconFontsHelper {
      * Starts Sub To Fix Any Missing IconFonts.
      **/
 
-    public void fix() {
+    private void fix() {
         this.subscription(FIXING);
     }
 

@@ -50,9 +50,9 @@ import jahirfiquitiva.iconshowcase.utilities.Utils;
 public class ColorUtils {
 
     @ColorInt
-    public static int blendColors(@ColorInt int color1,
-                                  @ColorInt int color2,
-                                  @FloatRange(from = 0f, to = 1f) float ratio) {
+    private static int blendColors(@ColorInt int color1,
+                                   @ColorInt int color2,
+                                   @FloatRange(from = 0f, to = 1f) float ratio) {
         final float inverseRatio = 1f - ratio;
         float a = (Color.alpha(color1) * inverseRatio) + (Color.alpha(color2) * ratio);
         float r = (Color.red(color1) * inverseRatio) + (Color.red(color2) * ratio);
@@ -61,6 +61,7 @@ public class ColorUtils {
         return Color.argb((int) a, (int) r, (int) g, (int) b);
     }
 
+    @SuppressWarnings("SameParameterValue")
     @ColorInt
     public static int adjustAlpha(@ColorInt int color, @FloatRange(from = 0.0, to = 1.0) float factor) {
         float a = Color.alpha(color) * factor;
@@ -77,7 +78,7 @@ public class ColorUtils {
     }
 
     @ColorInt
-    public static int darkenColor(@ColorInt int color) {
+    private static int darkenColor(@ColorInt int color) {
         float[] hsv = new float[3];
         Color.colorToHSV(color, hsv);
         hsv[2] *= 0.8f;
@@ -87,7 +88,7 @@ public class ColorUtils {
     }
 
     @ColorInt
-    public static int lightenColor(@ColorInt int color) {
+    private static int lightenColor(@ColorInt int color) {
         float[] hsv = new float[3];
         Color.colorToHSV(color, hsv);
         hsv[2] /= 0.7f;
@@ -138,18 +139,18 @@ public class ColorUtils {
         return isLightColor(palette);
     }
 
-    public static boolean isLightColor(Palette palette) {
+    private static boolean isLightColor(Palette palette) {
         return isLightColor(ColorUtils.getProminentSwatch(palette).getRgb());
     }
 
-    public static boolean isLightColor(@ColorInt int color) {
+    private static boolean isLightColor(@ColorInt int color) {
         if (color == Color.BLACK) return false;
         else if (color == Color.WHITE || color == Color.TRANSPARENT) return true;
         final double darkness = 1 - (0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color)) / 255;
         return darkness < 0.45;
     }
 
-    public static boolean checkDarknessOfColor(@ColorInt int color, float darkn) {
+    private static boolean checkDarknessOfColor(@ColorInt int color, float darkn) {
         if (color == Color.BLACK) return false;
         else if (color == Color.WHITE || color == Color.TRANSPARENT) return true;
         final double darkness = 1 - (0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color)) / 255;
@@ -157,7 +158,7 @@ public class ColorUtils {
     }
 
     public static void setupToolbarIconsAndTextsColors(final Context context, AppBarLayout appbar,
-                                                       final Toolbar toolbar, final Bitmap bitmap) {
+                                                       final Toolbar toolbar) {
 
         final int iconsColor = ThemeUtils.darkTheme ?
                 ContextCompat.getColor(context, R.color.toolbar_text_dark) :
@@ -191,7 +192,7 @@ public class ColorUtils {
         return getProminentSwatch(palette);
     }
 
-    public static Palette.Swatch getProminentSwatch(Palette palette) {
+    private static Palette.Swatch getProminentSwatch(Palette palette) {
         if (palette == null) return null;
         List<Palette.Swatch> swatches = getSwatchesList(palette);
         return Collections.max(swatches,
@@ -239,7 +240,7 @@ public class ColorUtils {
         return resultColor;
     }
 
-    public static int getBetterColor(@ColorInt int color) {
+    private static int getBetterColor(@ColorInt int color) {
         if (ThemeUtils.darkTheme) {
             return checkDarknessOfColor(color, 0.8f) ? lightenColor(color) : color;
         } else {
@@ -248,9 +249,7 @@ public class ColorUtils {
     }
 
     public static int getBetterProgressBarColor(@ColorInt int color, Context context) {
-        int betterColor = 0;
-
-        betterColor = checkDarknessOfColor(color, 0.8f) ? lightenColor(color) : color;
+        int betterColor = checkDarknessOfColor(color, 0.8f) ? lightenColor(color) : color;
 
         betterColor = checkDarknessOfColor(betterColor, 0.2f) ? darkenColor(betterColor) : betterColor;
 

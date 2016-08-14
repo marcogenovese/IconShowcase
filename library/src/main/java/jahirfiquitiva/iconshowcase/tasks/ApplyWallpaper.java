@@ -52,6 +52,11 @@ import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 
 public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
 
+    public interface ApplyCallback {
+
+        void afterApplied();
+    }
+
     private WeakReference<Context> context;
     private Activity activity;
     private final MaterialDialog dialog;
@@ -61,22 +66,24 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
     private WeakReference<Activity> wrActivity;
     private LinearLayout toHide1, toHide2;
     private volatile boolean wasCancelled = false;
+    private ApplyCallback afterApplied;
 
     public ApplyWallpaper(Context context, MaterialDialog dialog, Bitmap resource, boolean isPicker,
-                          View layout) {
+                          View layout, ApplyCallback afterApplied) {
         this.context = new WeakReference<>(context);
         this.dialog = dialog;
         this.resource = resource;
         this.isPicker = isPicker;
         this.layout = layout;
+        this.afterApplied = afterApplied;
     }
 
-    public ApplyWallpaper(Activity activity, MaterialDialog dialog, Bitmap resource, boolean isPicker,
+    public ApplyWallpaper(Activity activity, MaterialDialog dialog, Bitmap resource,
                           View layout, LinearLayout toHide1, LinearLayout toHide2) {
         this.wrActivity = new WeakReference<>(activity);
         this.dialog = dialog;
         this.resource = resource;
-        this.isPicker = isPicker;
+        this.isPicker = false;
         this.layout = layout;
         this.toHide1 = toHide1;
         this.toHide2 = toHide2;
@@ -124,15 +131,13 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
             if (worked) {
                 dialog.dismiss();
                 if (!isPicker) {
-
                     if (toHide1 != null && toHide2 != null) {
                         toHide1.setVisibility(View.GONE);
                         toHide2.setVisibility(View.GONE);
                     } else {
                         ShowcaseActivity.setupToolbarHeader(activity, ShowcaseActivity.toolbarHeader);
                         ColorUtils.setupToolbarIconsAndTextsColors(activity,
-                                ShowcaseActivity.appbar, ShowcaseActivity.toolbar,
-                                ShowcaseActivity.toolbarHeaderImage);
+                                ShowcaseActivity.appbar, ShowcaseActivity.toolbar);
                     }
 
                     Snackbar longSnackbar = Snackbar.make(layout,
@@ -141,6 +146,9 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
                     final int snackbarDark = ContextCompat.getColor(activity, R.color.snackbar_dark);
                     ViewGroup snackbarView = (ViewGroup) longSnackbar.getView();
                     snackbarView.setBackgroundColor(ThemeUtils.darkTheme ? snackbarDark : snackbarLight);
+                    snackbarView.setPadding(snackbarView.getPaddingLeft(),
+                            snackbarView.getPaddingTop(), snackbarView.getPaddingRight(),
+                            Utils.getNavigationBarHeight(context.get()));
                     longSnackbar.show();
                     longSnackbar.setCallback(new Snackbar.Callback() {
                         @Override
@@ -150,6 +158,7 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
                                 toHide1.setVisibility(View.VISIBLE);
                                 toHide2.setVisibility(View.VISIBLE);
                             }
+                            if (afterApplied != null) afterApplied.afterApplied();
                         }
                     });
                 }
@@ -213,9 +222,17 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
                 .setAction(retry.toUpperCase(), new DebouncedClickListener() {
                     @Override
                     public void onDebouncedClick(View view) {
-                        new ApplyWallpaper((Activity) activity, dialog, resource, isPicker, layout);
+                        new ApplyWallpaper(activity, dialog, resource, isPicker, layout,
+                                afterApplied);
                     }
                 });
+        final int snackbarLight = ContextCompat.getColor(context.get(), R.color.snackbar_light);
+        final int snackbarDark = ContextCompat.getColor(context.get(), R.color.snackbar_dark);
+        ViewGroup snackbarView = (ViewGroup) snackbar.getView();
+        snackbarView.setBackgroundColor(ThemeUtils.darkTheme ? snackbarDark : snackbarLight);
+        snackbarView.setPadding(snackbarView.getPaddingLeft(),
+                snackbarView.getPaddingTop(), snackbarView.getPaddingRight(),
+                Utils.getNavigationBarHeight(context.get()));
         TypedValue typedValue = new TypedValue();
         Resources.Theme theme = activity.getTheme();
         theme.resolveAttribute(R.attr.accentColor, typedValue, true);

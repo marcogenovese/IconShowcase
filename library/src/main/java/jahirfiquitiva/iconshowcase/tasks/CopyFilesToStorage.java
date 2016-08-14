@@ -52,7 +52,7 @@ public class CopyFilesToStorage extends AsyncTask<Void, String, Boolean> {
     private final View layout;
 
     public CopyFilesToStorage(Context context, View layout, MaterialDialog dialog, String folder) {
-        this.context = new WeakReference<Context>(context);
+        this.context = new WeakReference<>(context);
         this.layout = layout;
         this.dialog = dialog;
         this.folder = folder;

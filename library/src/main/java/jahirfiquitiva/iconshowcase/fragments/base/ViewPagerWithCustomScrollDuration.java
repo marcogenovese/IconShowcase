@@ -56,6 +56,7 @@ public class ViewPagerWithCustomScrollDuration extends ViewPager {
                     (Interpolator) interpolator.get(null));
             scroller.set(this, mScroller);
         } catch (Exception e) {
+            //Do nothing
         }
     }
 

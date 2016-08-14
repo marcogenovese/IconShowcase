@@ -35,7 +35,6 @@ import org.json.JSONObject;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.WeakHashMap;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.utilities.JSONParser;
@@ -127,10 +126,10 @@ public class MuzeiArtSourceService extends RemoteMuzeiArtSource {
 
         public JSONObject mainObject, wallItem;
         public JSONArray wallInfo;
-        private WeakReference<Context> context;
+        private final WeakReference<Context> context;
 
         public DownloadJSONAndSetWall(Context context) {
-            this.context = new WeakReference<Context>(context);
+            this.context = new WeakReference<>(context);
         }
 
         @Override
@@ -142,7 +141,7 @@ public class MuzeiArtSourceService extends RemoteMuzeiArtSource {
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            boolean worked = false;
+            boolean worked;
             try {
                 mainObject = JSONParser.getJSONFromURL(getApplicationContext(),
                         getResources().getString(R.string.json_file_url));

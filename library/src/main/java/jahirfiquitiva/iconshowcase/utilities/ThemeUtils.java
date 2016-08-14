@@ -38,14 +38,13 @@ import jahirfiquitiva.iconshowcase.R;
 @SuppressWarnings("ResourceAsColor")
 public class ThemeUtils {
 
-    public final static int LIGHT = 0;
-    public final static int DARK = 1;
-    public final static int CLEAR = 2;
-    public final static int AUTO = 3;
+    private final static int LIGHT = 0;
+    private final static int DARK = 1;
+    private final static int CLEAR = 2;
+    private final static int AUTO = 3;
 
     public static boolean darkTheme;
     public static boolean transparent;
-    public static boolean coloredNavBar;
 
     public static void onActivityCreateSetTheme(Activity activity) {
         final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
@@ -87,11 +86,6 @@ public class ThemeUtils {
         activity.getWindow().setNavigationBarColor(darkTheme ?
                 ContextCompat.getColor(activity, R.color.dark_theme_navigation_bar) :
                 ContextCompat.getColor(activity, R.color.light_theme_navigation_bar));
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public static void onActivityCreateSetStatusBar(Activity activity) {
-        activity.getWindow().setStatusBarColor(ContextCompat.getColor(activity, android.R.color.transparent));
     }
 
     public static void restartActivity(Activity activity) {

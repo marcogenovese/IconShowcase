@@ -47,7 +47,7 @@ public class TasksExecutor {
         TasksExecutor.singleton = singleton;
     }
 
-    TasksExecutor(Context context, boolean justIcons, boolean justWallpapers) {
+    private TasksExecutor(Context context, boolean justIcons, boolean justWallpapers) {
         this.context = context;
         this.mPrefs = new Preferences(context);
         this.justIcons = justIcons;
@@ -68,11 +68,11 @@ public class TasksExecutor {
         /*
         TODO: Optimize the order of execution and the moment these tasks are executed...
         Duration of tasks:
-        * Load of icons: ~300-400 millisecs.
-        * Load of wallpapers: ~1000 millisecs.
-        * Load of widgets: ~1500-3000 millisecs.
-        * Load of kustom files: ~2500-4000 millisecs.
-        * Load of apps to request: ~9 seconds.
+        * Load of icons: ~300-1200 millisecs.
+        * Load of wallpapers: ~2 seconds.
+        * Load of widgets: ~2000-3500 millisecs.
+        * Load of kustom files: ~3500-5000 millisecs.
+        * Load of apps to request: ~10 seconds.
 
          */
 
@@ -114,7 +114,7 @@ public class TasksExecutor {
                     WallpapersFragment.mAdapter.notifyDataSetChanged();
                 }
             }
-        }, context, null).execute();
+        }, context).execute();
     }
 
     /**

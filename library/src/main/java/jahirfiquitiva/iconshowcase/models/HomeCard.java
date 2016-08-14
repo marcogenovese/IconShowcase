@@ -6,28 +6,23 @@ import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+
 public class HomeCard implements Parcelable {
 
     public final String title, desc;
     public String onClickLink;
-    private String packageName;
     public final Drawable img;
-    private Context context;
     public final boolean imgEnabled;
-    private boolean isAnApp;
     public boolean isInstalled;
     public Intent intent;
 
-    public HomeCard(Builder builder) {
+    private HomeCard(Builder builder) {
         this.title = builder.title;
         this.desc = builder.desc;
         this.img = builder.img;
         this.imgEnabled = builder.imgEnabled;
         this.onClickLink = builder.onClickLink;
-        this.packageName = builder.packageName;
-        this.isAnApp = builder.isAnApp;
         this.isInstalled = builder.isInstalled;
-        this.context = builder.context;
         this.intent = builder.intent;
     }
 
@@ -82,7 +77,7 @@ public class HomeCard implements Parcelable {
         }
     }
 
-    protected HomeCard(Parcel in) { //TODO correct parcel
+    private HomeCard(Parcel in) { //TODO correct parcel
         title = in.readString();
         desc = in.readString();
         img = (Drawable) in.readValue(Drawable.class.getClassLoader());

@@ -67,6 +67,7 @@ public class HomeActivity extends AppCompatActivity {
         intent.putExtra("enableFlattrDonations", ENABLE_FLATTR_DONATIONS);
         intent.putExtra("enableBitcoinDonations", ENABLE_BITCOIN_DONATIONS);
 
+        //noinspection PointlessBooleanExpression
         intent.putExtra("enableLicenseCheck", (ENABLE_LICENSE_CHECK && !BuildConfig.DEBUG));
         intent.putExtra("enableAmazonInstalls", ENABLE_AMAZON_INSTALLS);
 

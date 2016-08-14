@@ -17,9 +17,10 @@ import jahirfiquitiva.iconshowcase.adapters.KustomAdapter;
 
 public class SectionedGridSpacingItemDecoration extends RecyclerView.ItemDecoration {
 
-    private int spanCount, spacing;
-    private boolean includeEdge;
-    private KustomAdapter adapter;
+    private final int spanCount;
+    private final int spacing;
+    private final boolean includeEdge;
+    private final KustomAdapter adapter;
 
     public SectionedGridSpacingItemDecoration(int spanCount, int spacing, boolean includeEdge,
                                               KustomAdapter adapter) {

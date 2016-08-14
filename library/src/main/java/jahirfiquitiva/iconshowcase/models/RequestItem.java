@@ -31,8 +31,8 @@ public class RequestItem {
     private String appName = null;
     private String packageName = null;
     private String className = null;
-    private Drawable iconDrawable;
-    private Drawable normalIcon;
+    private final Drawable iconDrawable;
+    private final Drawable normalIcon;
     private boolean selected = false;
 
     public RequestItem(String appName, String packageName, String className, Drawable iconDrawable,

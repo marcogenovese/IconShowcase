@@ -44,6 +44,9 @@
 
     <dimen name="fab_size_normal">56dp</dimen>
     <dimen name="fab_size_mini">40dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="mini_fab_right_margin">24dp</dimen>
+    <dimen name="mini_fab_space">8dp</dimen>
 
     <dimen name="toolbar_expanded">256dp</dimen>
     <integer name="toolbar_elevation">4</integer>

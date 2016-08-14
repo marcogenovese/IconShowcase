@@ -27,7 +27,9 @@ import android.net.Uri;
 
 public class KustomWallpaper {
 
-    private String wallpaperName, previewPath, previewPathLand;
+    private final String wallpaperName;
+    private String previewPath;
+    private String previewPathLand;
 
     public KustomWallpaper(String wallpaperName, String previewPath, String previewPathLand) {
         this.wallpaperName = wallpaperName;
@@ -39,16 +41,8 @@ public class KustomWallpaper {
         return previewPath;
     }
 
-    public void setPreviewPath(String previewPath) {
-        this.previewPath = previewPath;
-    }
-
     public String getPreviewPathLand() {
         return previewPathLand;
-    }
-
-    public void setPreviewPathLand(String previewPathLand) {
-        this.previewPathLand = previewPathLand;
     }
 
     public Intent getKLWPIntent(Context context) {

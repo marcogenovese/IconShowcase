@@ -26,7 +26,6 @@ package jahirfiquitiva.iconshowcase.dialogs;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
@@ -102,6 +101,7 @@ public final class ISDialogs {
             ArrayList<IconItem> icons = null;
 
             if (LoadIconsLists.getIconsLists() != null) {
+                //noinspection ConstantConditions
                 icons = LoadIconsLists.getIconsLists().get(0).getIconsArray();
             }
 
@@ -159,7 +159,7 @@ public final class ISDialogs {
     }
 
     /*
-    ViewerActivity Dialogs
+    WallpaperViewerActivity Dialogs
      */
 
     public static void showApplyWallpaperDialog(Context context, MaterialDialog.SingleButtonCallback onPositive, MaterialDialog.SingleButtonCallback onNeutral) {
@@ -208,7 +208,7 @@ public final class ISDialogs {
                     ThemeUtils.darkTheme ? light : dark));
         }
 
-        LinearLayout author = (LinearLayout) v.findViewById(R.id.authorName);
+        @SuppressWarnings("ConstantConditions") LinearLayout author = (LinearLayout) v.findViewById(R.id.authorName);
         LinearLayout dimensions = (LinearLayout) v.findViewById(R.id.wallDimensions);
         LinearLayout copyright = (LinearLayout) v.findViewById(R.id.wallCopyright);
 
@@ -431,7 +431,7 @@ public final class ISDialogs {
                 .show();
     }
 
-    public static void showZooperDownloadDialog(final Context context) {
+    private static void showZooperDownloadDialog(final Context context) {
         new MaterialDialog.Builder(context)
                 .title(R.string.zooper_download_dialog_title)
                 .items(R.array.zooper_download_dialog_options)
@@ -568,25 +568,6 @@ public final class ISDialogs {
                 .onPositive(positive)
                 .onNegative(negative)
                 .dismissListener(dismissListener)
-                .show();
-    }
-
-    /*
-    Another dialog
-     */
-
-    public static MaterialDialog showLoadingIconsDialog(Context context) {
-        return new MaterialDialog.Builder(context)
-                .content(R.string.loading_icons)
-                .progress(true, 0)
-                .cancelable(false)
-                .build();
-    }
-
-    public static void showLoadingRequestAppsDialog(Context context) {
-        new MaterialDialog.Builder(context)
-                .content(R.string.loading_apps)
-                .positiveText(android.R.string.ok)
                 .show();
     }
 

@@ -37,7 +37,6 @@ import java.util.zip.ZipFile;
 import jahirfiquitiva.iconshowcase.models.KustomKomponent;
 import jahirfiquitiva.iconshowcase.models.KustomWallpaper;
 import jahirfiquitiva.iconshowcase.models.KustomWidget;
-import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 
@@ -50,7 +49,7 @@ public class LoadKustomFiles extends AsyncTask<Void, String, Boolean> {
     private long startTime, endTime;
 
     public LoadKustomFiles(Context context) {
-        this.context = new WeakReference<Context>(context);
+        this.context = new WeakReference<>(context);
     }
 
     @Override

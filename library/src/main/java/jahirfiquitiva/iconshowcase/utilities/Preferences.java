@@ -34,7 +34,6 @@ public class Preferences {
     private static final String
             PREFERENCES_NAME = "DASHBOARD_PREFERENCES",
             FEATURES_ENABLED = "features_enabled",
-            FIRST_RUN = "first_run",
             VERSION_CODE = "version_code",
             ROTATE_MINUTE = "rotate_time_minute",
             ROTATE_TIME = "muzei_rotate_time",
@@ -73,14 +72,6 @@ public class Preferences {
 
     private SharedPreferences prefs() {
         return context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
-    }
-
-    public void setFirstRun(boolean firstRun) {
-        prefs().edit().putBoolean(FIRST_RUN, firstRun).apply();
-    }
-
-    public boolean isFirstRun() {
-        return prefs().getBoolean(FIRST_RUN, true);
     }
 
     public void setFeaturesEnabled(boolean enable) {
@@ -280,14 +271,6 @@ public class Preferences {
         return prefs().getInt(VERSION_CODE, 0);
     }
 
-    public void setDevDrawerHeaderStyle(int style) {
-        prefs().edit().putInt(DEV_DRAWER_HEADER_STYLE, style).apply();
-    }
-
-    public int getDevDrawerHeaderStyle() {
-        return prefs().getInt(DEV_DRAWER_HEADER_STYLE, 0);
-    }
-
     public void setDevIconsChangelogStyle(boolean icons) {
         prefs().edit().putBoolean(DEV_ICONS_CHANGELOG_STYLE, icons).apply();
     }
@@ -302,14 +285,6 @@ public class Preferences {
 
     public boolean getDevDrawerTexts() {
         return prefs().getBoolean(DEV_DRAWER_TEXTS, true);
-    }
-
-    public void setDevMiniDrawerHeaderPicture(boolean showPicture) {
-        prefs().edit().putBoolean(DEV_MINI_DRAWER_HEADER_PICTURE, showPicture).apply();
-    }
-
-    public boolean getDevMiniDrawerHeaderPicture() {
-        return prefs().getBoolean(DEV_MINI_DRAWER_HEADER_PICTURE, true);
     }
 
     public void setDevListsCards(boolean enableCards) {

@@ -45,19 +45,12 @@
             android:focusable="false"
             android:gravity="center"/>
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="76.0dip"
-            android:background="@drawable/toolbar_gradient"
-            android:fitsSystemWindows="true"
-            tools:ignore="ContentDescription"/>
-
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
             android:layout_marginTop="@dimen/materialize_statusbar"
-            android:background="@android:color/transparent"
+            android:background="@drawable/toolbar_gradient"
             app:contentInsetStart="@dimen/second_keyline"
             app:popupTheme="@style/Toolbar.Popup.AppCompat"
             app:theme="@style/Toolbar.AppCompat.Responsive.Light"/>

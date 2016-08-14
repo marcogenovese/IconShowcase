@@ -55,7 +55,6 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
     private boolean inChangelog = false;
     private ArrayList<IconItem> iconsList = new ArrayList<>();
     private final Preferences mPrefs;
-    private boolean iconPressed = false;
     private int lastPosition = -1;
 
     public IconsAdapter(Activity context, ArrayList<IconItem> iconsList) {
@@ -108,7 +107,7 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
                     @Override
                     protected void setResource(Bitmap resource) {
                         if ((!inChangelog && mPrefs.getAnimationsEnabled()) &&
-                                (lastPosition > holder.getAdapterPosition())) {
+                                (holder.getAdapterPosition() > lastPosition)) {
                             holder.icon.setAlpha(0f);
                             holder.icon.setImageBitmap(resource);
                             holder.icon.animate().setDuration(250).alpha(1f).start();
@@ -165,8 +164,7 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
             context.finish();
 
         } else {
-            if (!inChangelog && !iconPressed) {
-                //iconPressed=true;
+            if (!inChangelog) {
                 Drawable iconDrawable = ContextCompat.getDrawable(context, resId);
                 MaterialDialog dialog = new MaterialDialog.Builder(context)
                         .customView(R.layout.dialog_icon, false)
@@ -174,7 +172,6 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
                         .positiveText(R.string.close)
                         .positiveColor(ColorUtils.getColorFromIcon(iconDrawable, context))
                         .show();
-                // TODO: Make iconPressed false after dialog is dismissed or closed
                 if (dialog.getCustomView() != null) {
                     ImageView dialogIcon = (ImageView) dialog.getCustomView().findViewById(R.id.dialogicon);
                     dialogIcon.setImageResource(resId);

@@ -38,7 +38,6 @@ import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.adapters.ZooperAdapter;
-import jahirfiquitiva.iconshowcase.tasks.LoadZooperWidgets;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 
@@ -48,10 +47,9 @@ public class ZooperFragment extends Fragment {
     private static ViewGroup layout;
     private static Context context;
 
-    public RecyclerView mRecyclerView;
-    public ZooperAdapter zooperAdapter;
+    private RecyclerView mRecyclerView;
+    private ZooperAdapter zooperAdapter;
     private GridSpacingItemDecoration space;
-    private int i = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
@@ -80,11 +78,6 @@ public class ZooperFragment extends Fragment {
         setupRV();
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
-
     private void setupRV() {
         if (layout != null) {
 
@@ -107,7 +100,7 @@ public class ZooperFragment extends Fragment {
 
             RecyclerFastScroller fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
 
-            zooperAdapter = new ZooperAdapter(context, layout, LoadZooperWidgets.widgets,
+            zooperAdapter = new ZooperAdapter(context, layout,
                     ShowcaseActivity.wallpaperDrawable, areAppsInstalled());
 
             mRecyclerView.setAdapter(zooperAdapter);

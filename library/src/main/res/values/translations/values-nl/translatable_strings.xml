@@ -65,14 +65,14 @@
     <string name="wallpaper_by">Door: %1$s</string>
     <string name="apply">Toepassen</string>
     <string name="save">Opslaan</string>
-    <string name="downloading_wallpaper">Deze achtergrond aan het downloaden...</string>
-    <string name="setting_wall_title">Deze achtergrond instellen voor jouw thuisscherm...</string>
-    <string name="preparing_wallpaper">Achtergrond voorbereiden voor bijsnijden...</string>
+    <string name="downloading_wallpaper">Deze achtergrond aan het downloaden…</string>
+    <string name="setting_wall_title">Deze achtergrond instellen voor jouw thuisscherm…</string>
+    <string name="preparing_wallpaper">Achtergrond voorbereiden voor bijsnijden…</string>
     <string name="download_takes_longer">Dit duurt langer dan verwacht. U mag blijven wachten of deze opdracht annuleren. </string>
     <string name="set_as_wall_done">Achtergrond toegepast!</string>
     <string name="error">Fout</string>
     <string name="confirm_apply">Weet u zeker dat u deze achtergrond wilt toepassen op uw thuisscherm?</string>
-    <string name="refreshing_walls">Achtegronden lijst herladen...</string>
+    <string name="refreshing_walls">Achtegronden lijst herladen…</string>
     <string name="retry">Probeer nog een keer</string>
     <string name="wallpaper_author_title">Auteur</string>
     <string name="wallpaper_dimensions_title">Dimensies</string>
@@ -88,7 +88,7 @@
     <string name="advice">Advies</string>
     <string name="dontshow">Nooit meer laten zien</string>
     <string name="rate">Beoordelen</string>
-    <string name="set_as">Snij achtergrond bij en stel in als...</string>
+    <string name="set_as">Snij achtergrond bij en stel in als…</string>
     <!-- Requests -->
     <string name="select_all">Selecteer alles</string>
     <string name="no_selected_apps_title">Geen geselecteerde apps</string>
@@ -101,9 +101,9 @@
     <!-- Icon search -->
     <string name="search_icons">Zoek iconen</string>
     <string name="search_x">Zoek %1$s…</string>
-    <string name="building_request_dialog">Aanvraag bestanden maken...</string>
-    <string name="loading_apps">Wacht alsjeblieft tot alle apps zijn geladen, nog een paar seconden...</string>
-    <string name="loading_icons">Iconen laden...</string>
+    <string name="building_request_dialog">Aanvraag bestanden maken…</string>
+    <string name="loading_apps">Wacht alsjeblieft tot alle apps zijn geladen, nog een paar seconden…</string>
+    <string name="loading_icons">Iconen laden…</string>
     <string name="choose">Kies</string>
     <!--SETTINGS-->
     <string name="title_settings">Instellingen</string>
@@ -177,7 +177,7 @@ verwijderen? Toegepaste iconen blijven onaangeroerd. </string>
     <string name="join_community">Sluit je aan bij de Google Plus community</string>
     <string name="join_community_summary">Mocht je vragen of hulp nodig hebben, de IconShowcase 
 community op Google Plus is hiervoor geschikt. </string>
-    <string name="saving_wallpaper">Achtergrond opslaan...</string>
+    <string name="saving_wallpaper">Achtergrond opslaan…</string>
     <string name="refresh">Ververs</string>
     <!-- Messages shown when using LicenseChecker -->
     <string name="license_failed">Je hebt %1$s niet uit de Google Play Store gedownload. Er zijn twee opties:</string>
@@ -204,7 +204,7 @@ community op Google Plus is hiervoor geschikt. </string>
     <string name="new_folder_hint">Map naam</string>
     <string name="new_folder_title">Creëer een nieuwe map</string>
     <string name="new_folder_content">Type de nieuwe map naam, alstublieft. </string>
-    <string name="wait_for_walls">Wacht alstublieft tot het achtergrond voorbeeld verschijnt...</string>
+    <string name="wait_for_walls">Wacht alstublieft tot het achtergrond voorbeeld verschijnt…</string>
     <string name="translators">Vertalers</string>
     <string name="more">Meer</string>
     <string name="columns">Kolom nummer</string>

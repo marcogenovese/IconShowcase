@@ -65,9 +65,9 @@
     <string name="wallpaper_by">Oleh: %1$s</string>
     <string name="apply">Terapkan</string>
     <string name="save">Simpan</string>
-    <string name="downloading_wallpaper">Mengunduh gambar ini...</string>
-    <string name="setting_wall_title">Menerapkan gambar ini ke layar utama...</string>
-    <string name="preparing_wallpaper">Mempersiapkan wallpaper yang akan dipotong...</string>
+    <string name="downloading_wallpaper">Mengunduh gambar ini…</string>
+    <string name="setting_wall_title">Menerapkan gambar ini ke layar utama…</string>
+    <string name="preparing_wallpaper">Mempersiapkan wallpaper yang akan dipotong…</string>
     <string name="download_takes_longer">Hal ini memakan waktu lebih lama dari yang diharapkan. Jangan ragu untuk menunggu atau membatalkan tindakan ini. </string>
     <string name="set_as_wall_done">Gambar diterapkan</string>
     <string name="error">Kesalahan</string>
@@ -88,7 +88,7 @@
     <string name="advice">Anjuran</string>
     <string name="dontshow">Jangan tampilkan lagi</string>
     <string name="rate">Nilai</string>
-    <string name="set_as">Potong gambar dan jadikan sebagai...</string>
+    <string name="set_as">Potong gambar dan jadikan sebagai…</string>
     <!-- Requests -->
     <string name="select_all">Pilih semua</string>
     <string name="no_selected_apps_title">Tidak ada aplikasi terpilih</string>
@@ -99,10 +99,10 @@
     <string name="apps_limit_dialog_day_extra">Anda akan dapat meminta ikon lagi, di %1$s. </string>
     <string name="apps_limit_dialog_day_extra_sec">Anda akan dapat meminta ikon kembali, dalam waktu kurang dari satu menit. </string>
     <!-- Icon search -->
-    <string name="search_icons">Mencari icons...</string>
-    <string name="search_x">Mencari %1$s...</string>
-    <string name="building_request_dialog">Mengumpulkan file request...</string>
-    <string name="loading_apps">Silahkan tunggu sampai aplikasi memuat, ini akan memakan beberapa detik lagi...</string>
+    <string name="search_icons">Mencari icons…</string>
+    <string name="search_x">Mencari %1$s…</string>
+    <string name="building_request_dialog">Mengumpulkan file request…</string>
+    <string name="loading_apps">Silahkan tunggu sampai aplikasi memuat, ini akan memakan beberapa detik lagi…</string>
     <string name="loading_icons">Memuat icons…</string>
     <string name="choose">Pilih</string>
     <!--SETTINGS-->
@@ -176,7 +176,7 @@ pengaturan? icon yang diterapkan tidak akan terpengaruh. </string>
     <string name="report_bugs_summary">Lapor masalah atau reques fitur baru. </string>
     <string name="join_community">Gabung di komunitas Google Plus</string>
     <string name="join_community_summary">Jika Anda memerlukan bantuan atau memiliki pertanyaan, Komunitas IconShowcase yang di Google Plus adalah tempat yang baik untuk pergi. </string>
-    <string name="saving_wallpaper">Menyimpan wallpaper...</string>
+    <string name="saving_wallpaper">Menyimpan wallpaper…</string>
     <string name="refresh">Refresh</string>
     <!-- Messages shown when using LicenseChecker -->
     <string name="license_failed">Anda tidak men-download %1$s dari Google Play Store. Anda memiliki dua pilihan:</string>
@@ -203,7 +203,7 @@ pengaturan? icon yang diterapkan tidak akan terpengaruh. </string>
     <string name="new_folder_hint">Nama folder</string>
     <string name="new_folder_title">Buat folder baru</string>
     <string name="new_folder_content">Silahkan ketik nama folder baru. </string>
-    <string name="wait_for_walls">Tunggu sampai pratinjau wallpaper muncul...</string>
+    <string name="wait_for_walls">Tunggu sampai pratinjau wallpaper muncul…</string>
     <string name="translators">Penerjemah</string>
     <string name="more">Yang lain</string>
     <string name="columns">Jumlah kolom</string>

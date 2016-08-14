@@ -51,14 +51,12 @@ import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 public class FAQsFragment extends Fragment {
 
     private ViewGroup layout;
-    private Context context;
-    private Preferences mPrefs;
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
 
-        context = getActivity();
-        mPrefs = new Preferences(context);
+        Context context = getActivity();
+        Preferences mPrefs = new Preferences(context);
 
         if (layout != null) {
             ViewGroup parent = (ViewGroup) layout.getParent();

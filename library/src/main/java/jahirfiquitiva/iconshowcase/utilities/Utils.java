@@ -53,7 +53,10 @@ import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.Log;
+import android.view.KeyCharacterMap;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 
 import java.io.File;
@@ -162,7 +165,7 @@ public class Utils {
         }
     }
 
-    public static void showLog(Context context, String tag, String s) {
+    private static void showLog(Context context, String tag, String s) {
         if (context.getResources().getBoolean(R.bool.debugging)) {
             Log.d(context.getResources().getString(R.string.app_name) + " " + tag, s);
         }
@@ -277,7 +280,7 @@ public class Utils {
     }
 
     @SuppressWarnings("ConstantConditions")
-    public static Bitmap getBitmapWithReplacedColor(@NonNull Bitmap bitmap, @ColorInt int colorToReplace, @ColorInt int replaceWith) {
+    public static Bitmap getWidgetPreview(@NonNull Bitmap bitmap, @ColorInt int colorToReplace) {
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
         int[] pixels = new int[width * height];
@@ -296,9 +299,9 @@ public class Utils {
                 int index = y * width + x;
                 pixel = pixels[index];
                 if (pixel == colorToReplace) {
-                    pixels[index] = replaceWith;
+                    pixels[index] = android.graphics.Color.TRANSPARENT;
                 }
-                if (pixels[index] != replaceWith) {
+                if (pixels[index] != android.graphics.Color.TRANSPARENT) {
                     if (x < minX)
                         minX = x;
                     if (x > maxX)
@@ -370,7 +373,7 @@ public class Utils {
     }
 
     @SuppressLint("DefaultLocale")
-    public static boolean timeHappened(int numOfMinutes, Preferences mPrefs, Calendar c) {
+    private static boolean timeHappened(int numOfMinutes, Preferences mPrefs, Calendar c) {
         float hours = (numOfMinutes + 1) / 60.0f;
         float hoursToDays = hours / 24.0f;
 
@@ -401,7 +404,7 @@ public class Utils {
                     e.printStackTrace();
                 }
 
-                long difference = endDate.getTime() - startDate.getTime();
+                long difference = (endDate != null ? endDate.getTime() : 0) - (startDate != null ? startDate.getTime() : 0);
                 if (difference < 0) {
                     Date dateMax = null;
                     try {
@@ -415,7 +418,7 @@ public class Utils {
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                    difference = (dateMax.getTime() - startDate.getTime()) + (endDate.getTime() - dateMin.getTime());
+                    difference = ((dateMax != null ? dateMax.getTime() : 0) - startDate.getTime()) + (endDate.getTime() - (dateMin != null ? dateMin.getTime() : 0));
                 }
                 int days = Integer.valueOf(currentDay) - dayNum;
                 int hoursHappened = (int) ((difference - (1000 * 60 * 60 * 24 * days)) / (1000 * 60 * 60));
@@ -423,12 +426,8 @@ public class Utils {
 
                 if (days >= hoursToDays) {
                     return true;
-                } else if (hoursHappened >= hours) {
-                    return true;
-                } else if (min >= numOfMinutes) {
-                    return true;
                 } else {
-                    return false;
+                    return hoursHappened >= hours || min >= numOfMinutes;
                 }
             } else {
                 return true;
@@ -436,6 +435,7 @@ public class Utils {
         }
     }
 
+    @SuppressLint("DefaultLocale")
     public static int getSecondsLeftToEnableRequest(Context context,
                                                     int numOfMinutes, Preferences mPrefs) {
 
@@ -469,7 +469,7 @@ public class Utils {
                 e.printStackTrace();
             }
 
-            long difference = endDate.getTime() - startDate.getTime();
+            long difference = (endDate != null ? endDate.getTime() : 0) - (startDate != null ? startDate.getTime() : 0);
             if (difference < 0) {
                 Date dateMax = null;
                 try {
@@ -483,7 +483,7 @@ public class Utils {
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                difference = (dateMax.getTime() - startDate.getTime()) + (endDate.getTime() - dateMin.getTime());
+                difference = ((dateMax != null ? dateMax.getTime() : 0) - startDate.getTime()) + (endDate.getTime() - (dateMin != null ? dateMin.getTime() : 0));
             }
             int days = Integer.valueOf(currentDay) - dayNum;
             int hoursHappened = (int) ((difference - (1000 * 60 * 60 * 24 * days)) / (1000 * 60 * 60));
@@ -649,6 +649,18 @@ public class Utils {
         BigDecimal bd = new BigDecimal(value);
         bd = bd.setScale(places, RoundingMode.HALF_UP);
         return bd.doubleValue();
+    }
+
+    public static int getNavigationBarHeight(Context context) {
+        if (!(ViewConfiguration.get(context).hasPermanentMenuKey()) &&
+                !(KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK))) {
+            //On-screen navigation bar
+            int resId = context.getResources().getIdentifier("navigation_bar_height", "dimen", "android");
+            return resId > 0 ? context.getResources().getDimensionPixelSize(resId) : 0;
+        } else {
+            //Hardware buttons
+            return 0;
+        }
     }
 
 }

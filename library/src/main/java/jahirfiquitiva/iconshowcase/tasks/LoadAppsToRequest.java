@@ -65,7 +65,8 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
     private final static ArrayList<RequestItem> appsList = new ArrayList<>();
     private final static ArrayList<AppFilterError> appFilterErrors = new ArrayList<>();
     private final WeakReference<Context> context;
-    private long startTime, endTime;
+    private final long startTime;
+    private long endTime;
     private static final String TASK = "AppsToRequest";
 
     @SuppressLint("PrivateResource")
@@ -132,10 +133,10 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
         }
         if (context.get().getResources().getBoolean(R.bool.debugging)) {
             if (appFilterErrors != null) {
-                showAppFilterErrors(appFilterErrors, context.get());
+                showAppFilterErrors(context.get());
             }
             if (components != null) {
-                showDuplicatedComponentsInLog(components, context.get());
+                showDuplicatedComponentsInLog(context.get());
             }
         }
     }
@@ -278,11 +279,11 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
         return activitiesToRemove;
     }
 
-    private static void showAppFilterErrors(ArrayList<AppFilterError> errors, Context context) {
+    private static void showAppFilterErrors(Context context) {
 
         Utils.showAppFilterLog(context, "----- START OF APPFILTER DEBUG -----");
 
-        for (AppFilterError error : errors) {
+        for (AppFilterError error : LoadAppsToRequest.appFilterErrors) {
             String iconName = error.getIconName();
             if (iconName.equals("")) {
                 Utils.showAppFilterLog(context, "Found empty drawable for component: \'" + error.getCompleteComponent() + "\'");
@@ -301,11 +302,10 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
         }
     }
 
-    private static void showDuplicatedComponentsInLog(ArrayList<String> components,
-                                                      Context context) {
+    private static void showDuplicatedComponentsInLog(Context context) {
 
-        String[] componentsArray = new String[components.size()];
-        componentsArray = components.toArray(componentsArray);
+        String[] componentsArray = new String[LoadAppsToRequest.components.size()];
+        componentsArray = LoadAppsToRequest.components.toArray(componentsArray);
 
         SimpleArrayMap<String, Integer> occurrences = new SimpleArrayMap<>();
 
@@ -327,12 +327,12 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
 
     }
 
-    public Drawable getAppDefaultActivityIcon() {
+    private Drawable getAppDefaultActivityIcon() {
         return getAppIcon(Resources.getSystem(), android.R.mipmap.sym_def_app_icon);
     }
 
     @SuppressWarnings("deprecation")
-    public Drawable getAppIcon(Resources resources, int iconId) {
+    private Drawable getAppIcon(Resources resources, int iconId) {
         Drawable d;
         try {
             int iconDpi;
@@ -360,11 +360,11 @@ public class LoadAppsToRequest extends AsyncTask<Void, String, ArrayList<Request
         return (d != null) ? d : getAppDefaultActivityIcon();
     }
 
-    public Drawable getAppIcon(ResolveInfo info) {
+    private Drawable getAppIcon(ResolveInfo info) {
         return getAppIcon(info.activityInfo);
     }
 
-    public Drawable getAppIcon(ActivityInfo info) {
+    private Drawable getAppIcon(ActivityInfo info) {
         Resources resources;
         try {
             resources = context.get().getPackageManager().getResourcesForApplication(info.applicationInfo);

@@ -32,12 +32,9 @@ import jahirfiquitiva.iconshowcase.R;
 
 public class ChangelogAdapter extends RecyclerView.Adapter<ChangelogAdapter.ChangelogHolder> {
 
-    private final Context context;
     private final String[][] mChangelog;
 
     public ChangelogAdapter(Context context, int changelogArray) {
-        // Save the context
-        this.context = context;
         // Populate the two-dimensional array
         TypedArray typedArray = context.getResources().obtainTypedArray(changelogArray);
         mChangelog = new String[typedArray.length()][];
@@ -81,8 +78,9 @@ public class ChangelogAdapter extends RecyclerView.Adapter<ChangelogAdapter.Chan
 
     class ChangelogHolder extends RecyclerView.ViewHolder {
 
-        View view;
-        TextView title, content;
+        final View view;
+        final TextView title;
+        final TextView content;
 
         ChangelogHolder(View v) {
             super(v);

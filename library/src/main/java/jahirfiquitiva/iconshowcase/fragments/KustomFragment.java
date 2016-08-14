@@ -38,7 +38,6 @@ import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.adapters.KustomAdapter;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
-import jahirfiquitiva.iconshowcase.tasks.LoadKustomFiles;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 import jahirfiquitiva.iconshowcase.views.SectionedGridSpacingItemDecoration;
@@ -49,8 +48,8 @@ public class KustomFragment extends Fragment {
     private static ViewGroup layout;
     private static Context context;
     private FloatingActionButton kustomFAB;
-    public RecyclerView mRecyclerView;
-    public KustomAdapter kustomAdapter;
+    private RecyclerView mRecyclerView;
+    private KustomAdapter kustomAdapter;
     private SectionedGridSpacingItemDecoration space;
 
     private final String KLWP_PKG = "org.kustom.wallpaper",
@@ -112,9 +111,7 @@ public class KustomFragment extends Fragment {
 
             RecyclerFastScroller fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
 
-            kustomAdapter = new KustomAdapter(context,
-                    LoadKustomFiles.komponents, LoadKustomFiles.wallpapers,
-                    LoadKustomFiles.widgets, ShowcaseActivity.wallpaperDrawable);
+            kustomAdapter = new KustomAdapter(context, ShowcaseActivity.wallpaperDrawable);
 
             space = new SectionedGridSpacingItemDecoration(columnsNumber, gridSpacing, true, kustomAdapter);
 

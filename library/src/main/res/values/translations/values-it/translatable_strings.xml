@@ -66,14 +66,14 @@ C\'è una modo che puoi provare ad usare, ma richiede l\'utilizzo di un\'app est
     <string name="wallpaper_by">Da: %1$s</string>
     <string name="apply">Applica</string>
     <string name="save">Salva</string>
-    <string name="downloading_wallpaper">Download dello sfondo in corso...</string>
-    <string name="setting_wall_title">Sto applicando lo sfondo...</string>
+    <string name="downloading_wallpaper">Download dello sfondo in corso…</string>
+    <string name="setting_wall_title">Sto applicando lo sfondo…</string>
     <string name="preparing_wallpaper">Sto preparando il ritaglio dello sfondo</string>
     <string name="download_takes_longer">L\'azione sta richiedendo troppo tempo. Puoi aspettare o cancellare quest\'azione. </string>
     <string name="set_as_wall_done">Sfondo applicato!</string>
     <string name="error">Errore</string>
     <string name="confirm_apply">Sei sicuro di voler applicare questo sfondo?</string>
-    <string name="refreshing_walls">Sto aggiornando la lista degli sfondi...</string>
+    <string name="refreshing_walls">Sto aggiornando la lista degli sfondi…</string>
     <string name="retry">Riprova</string>
     <string name="wallpaper_author_title">Autore</string>
     <string name="wallpaper_dimensions_title">Dimensioni</string>
@@ -89,7 +89,7 @@ C\'è una modo che puoi provare ad usare, ma richiede l\'utilizzo di un\'app est
     <string name="advice">Consiglio</string>
     <string name="dontshow">Non mostrare più</string>
     <string name="rate">Valuta</string>
-    <string name="set_as">Ritaglia sfondo e impostalo come...</string>
+    <string name="set_as">Ritaglia sfondo e impostalo come…</string>
     <!-- Requests -->
     <string name="select_all">Seleziona tutto</string>
     <string name="no_selected_apps_title">Nessuna app selezionata</string>
@@ -100,11 +100,11 @@ C\'è una modo che puoi provare ad usare, ma richiede l\'utilizzo di un\'app est
     <string name="apps_limit_dialog_day_extra">Potrai richiedere di nuovo icone tra %1$s</string>
     <string name="apps_limit_dialog_day_extra_sec">Potra richiedere di nuovo icone tra meno di un minuto</string>
     <!-- Icon search -->
-    <string name="search_icons">Cerca icone...</string>
-    <string name="search_x">Cerca %1$s...</string>
-    <string name="building_request_dialog">Sto generando il file per la richiesta...</string>
-    <string name="loading_apps">Per favore attendi il caricamento dell\'app , solo qualche secondo...</string>
-    <string name="loading_icons">Caricamento icone...</string>
+    <string name="search_icons">Cerca icone…</string>
+    <string name="search_x">Cerca %1$s…</string>
+    <string name="building_request_dialog">Sto generando il file per la richiesta…</string>
+    <string name="loading_apps">Per favore attendi il caricamento dell\'app , solo qualche secondo…</string>
+    <string name="loading_icons">Caricamento icone…</string>
     <string name="choose">Scegli</string>
     <!--SETTINGS-->
     <string name="title_settings">Impostazioni</string>
@@ -175,7 +175,7 @@ L\'app potrebbe chiudersi inaspettatamente.\nPrima di nasconderla, leggi le FAQ 
     <string name="report_bugs_summary">Segnala errori o richiedi nuove funzionalità. </string>
     <string name="join_community">Unisciti alla community su Google+</string>
     <string name="join_community_summary">Se hai bisogno di aiuto o se hai delle domande, la community di IconShowcase su Google+ è il posto giusto in cui cercare. </string>
-    <string name="saving_wallpaper">Sto salvando lo sfondo...</string>
+    <string name="saving_wallpaper">Sto salvando lo sfondo…</string>
     <string name="refresh">Aggiorna</string>
     <!-- Messages shown when using LicenseChecker -->
     <string name="license_failed">Non hai scaricato %1$s dal Google Play Store. Hai due possibilità:</string>
@@ -189,8 +189,8 @@ L\'app potrebbe chiudersi inaspettatamente.\nPrima di nasconderla, leggi le FAQ 
     <string name="install_kustom_apps_content">E\' necessario installare queste applicazioni per far funzionare correttamente le Kustom assets. Premi uno per installare. </string>
     <string name="install_assets">"Installa "</string>
     <string name="open">Apri</string>
-    <string name="assets_installed">gli Assets sono gia installati</string>
-    <string name="apps_installed">App gia installate</string>
+    <string name="assets_installed">gli Assets sono già installati</string>
+    <string name="apps_installed">App già installate</string>
     <string name="copying_assets">Copiando file nel Widget/Zooper%1$s</string>
     <string name="icon_pack_in_numbers">L\'icon pack in numeri</string>
     <string name="themed_icons">Più di %1$s icone. </string>
@@ -202,7 +202,7 @@ L\'app potrebbe chiudersi inaspettatamente.\nPrima di nasconderla, leggi le FAQ 
     <string name="new_folder_hint">Nome cartella</string>
     <string name="new_folder_title">Crea nuova cartella</string>
     <string name="new_folder_content">Inserisci il nome della nuova cartella. </string>
-    <string name="wait_for_walls">Per favore attendi il caricamento dell\'anteprima dello sfondo...</string>
+    <string name="wait_for_walls">Per favore attendi il caricamento dell\'anteprima dello sfondo…</string>
     <string name="translators">Traduttori</string>
     <string name="more">Altro</string>
     <string name="columns">Numero colonne</string>
@@ -261,7 +261,7 @@ Puoi risolvere il problema aumentando la dimensione delle icone al 115 - 120%, o
     <string name="tap_to_download">%1$s\nClicca questa scheda per scaricarlo. </string>
     <string name="tap_to_open">%1$s\nClicca su questa scheda per aprire l\'applicazione. </string>
     <string name="donations_error_title">Donazioni non disponibili. </string>
-    <string name="donations_error_content">Il tuo dispositivo non supporta gli acquisti In-app.\nQuesto potrebbe succedere perchè devi aggiornare l\'applicazione Play Store, o perchè vivi in un paese in cui gli acquisti In-app sono disabilitati. </string>
+    <string name="donations_error_content">Il tuo dispositivo non supporta gli acquisti In-app.\nQuesto potrebbe succedere perché devi aggiornare l\'applicazione Play Store, o perché vivi in un paese in cui gli acquisti In-app sono disabilitati. </string>
     <string name="new_walls_notif_title">Nuovi sfondi disponibili in %1$s</string>
     <string name="new_walls_notif_content">Sono disponibili %1$s nuovi sfondi. Tocca la notifica per aprire l\'app e controllarli</string>
     <string name="news">Novità</string>

@@ -158,7 +158,7 @@ public class MuzeiSettings extends AppCompatActivity {
         int i = item.getItemId();
         if (mPrefs.areFeaturesEnabled()) {
             if (i == R.id.save) {
-                String timeText = "unknown time";
+                String timeText;
                 int rotate_time;
                 if (minute.isChecked()) {
                     rotate_time = Utils.convertMinutesToMillis(numberpicker.getValue());
@@ -189,8 +189,7 @@ public class MuzeiSettings extends AppCompatActivity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        mLastTheme = ThemeUtils.darkTheme;
-        mLastNavBar = ThemeUtils.coloredNavBar;
+        mLastTheme = ThemeUtils.darkTheme;;
     }
 
     @Override
@@ -200,8 +199,7 @@ public class MuzeiSettings extends AppCompatActivity {
                 ContextCompat.getColor(this, R.color.toolbar_text_dark) :
                 ContextCompat.getColor(this, R.color.toolbar_text_light);
         ToolbarColorizer.colorizeToolbar(toolbar, iconsColor);
-        if (mLastTheme != ThemeUtils.darkTheme
-                || mLastNavBar != ThemeUtils.coloredNavBar) {
+        if (mLastTheme != ThemeUtils.darkTheme) {
             this.recreate();
         }
     }
