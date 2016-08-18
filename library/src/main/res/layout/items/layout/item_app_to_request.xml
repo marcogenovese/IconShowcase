@@ -18,10 +18,6 @@
   ~
   -->
 
-<!--
-  ~
-  -->
-
 <LinearLayout
     android:id="@+id/requestCard"
     xmlns:android="http://schemas.android.com/apk/res/android"

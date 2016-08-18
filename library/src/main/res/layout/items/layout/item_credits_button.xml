@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2016.  Jahir Fiquitiva
   ~
   ~ Licensed under the CreativeCommons Attribution-ShareAlike
@@ -17,20 +16,10 @@
   ~ Big thanks to the project contributors. Check them in the repository.
   ~
   -->
-
-<!--
-  ~
-  -->
-
-<resources>
-
-    <integer name="wallpapers_grid_width">3</integer>
-    <integer name="icons_grid_width">@integer/icons_columns_tablet_portrait</integer>
-    <integer name="launchers_grid_width">@integer/launchers_columns_tablet_portrait</integer>
-    <integer name="requests_grid_width">2</integer>
-    <integer name="toolbar_icons">6</integer>
-    <integer name="zooper_kustom_grid_width">@integer/zooper_kustom_columns_tablet_portrait
-    </integer>
-    <integer name="credits_grid_width">2</integer>
-
-</resources>
+<android.support.v7.widget.AppCompatButton xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.AppCompat.Button.Borderless"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textColor="?attr/accentColor"
+    tools:text="Button" />

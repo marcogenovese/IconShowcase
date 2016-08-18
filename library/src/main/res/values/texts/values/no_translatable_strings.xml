@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2016.  Jahir Fiquitiva
   ~
   ~ Licensed under the CreativeCommons Attribution-ShareAlike
@@ -27,6 +26,7 @@
     <string name="dashboard_author_gplus_community">https://plus.google.com/communities/117748118619432374563</string>
     <string name="dashboard_author_github">https://github.com/jahirfiquitiva/IconShowcase</string>
     <string name="dashboard_bugs_report">https://github.com/jahirfiquitiva/IconShowcase/issues</string>
+    <string name="dashboard_author_gplus">https://www.google.com/+JahirFiquitivaJDev</string>
     <string name="app_version">v %1$s</string>
 
     <string name="zooper_app">Zooper Widget Pro</string>
@@ -168,10 +168,10 @@
     <string-array name="libs_names">
         <item>@string/materialdialogs_name</item>
         <item>@string/materialdrawer_name</item>
-        <item>@string/sectioned_rv_name</item>
         <item>@string/okhttp</item>
         <item>@string/glide_name</item>
         <item>@string/rv_fast_scroller_name</item>
+        <item>@string/sectioned_rv_name</item>
         <item>@string/circleiv_name</item>
         <item>@string/muzei_api_name</item>
     </string-array>
@@ -179,10 +179,10 @@
     <string-array name="libs_links">
         <item>@string/materialdialogs_web</item>
         <item>@string/materialdrawer_web</item>
-        <item>@string/sectioned_rv_web</item>
         <item>@string/okhttp_web</item>
         <item>@string/glide_web</item>
         <item>@string/rv_fast_scroller_web</item>
+        <item>@string/sectioned_rv_web</item>
         <item>@string/circleiv_web</item>
         <item>@string/muzei_api_web</item>
     </string-array>
@@ -204,6 +204,22 @@
     <string-array name="dev_extra_features">
         <item>@array/configurations_list</item>
         <item>@array/additional_features_list</item>
+    </string-array>
+
+    <string-array name="credits_drawables">
+        <item>ic_award</item>
+        <item>ic_code</item>
+        <item>ic_design</item>
+        <item>ic_translate</item>
+        <item>ic_libraries</item>
+    </string-array>
+
+    <string-array name="more_credits_titles">
+        <item>@string/sherry_title</item>
+        <item>@string/contributors</item>
+        <item>@string/ui_design</item>
+        <item>@string/translators</item>
+        <item>@string/implemented_libraries</item>
     </string-array>
 
 </resources>

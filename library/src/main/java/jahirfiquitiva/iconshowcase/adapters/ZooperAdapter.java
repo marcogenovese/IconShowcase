@@ -141,7 +141,7 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Override
     public void onStoragePermissionGranted() {
-
+        installAssets();
     }
 
     class ZooperHolder extends RecyclerView.ViewHolder {

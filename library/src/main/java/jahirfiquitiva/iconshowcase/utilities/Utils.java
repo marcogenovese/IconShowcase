@@ -155,7 +155,11 @@ public class Utils {
                 .setShowTitle(true)
                 .build();
 
-        customTabsIntent.launchUrl((Activity) context, Uri.parse(link));
+        try {
+            customTabsIntent.launchUrl((Activity) context, Uri.parse(link));
+        } catch (Exception ex) {
+            openLink(context, link);
+        }
     }
 
     public static void showLog(Context context, String s) {

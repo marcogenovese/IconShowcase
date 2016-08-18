@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <!--
   ~ Copyright (c) 2016.  Jahir Fiquitiva
   ~
@@ -18,9 +19,7 @@
   ~
   -->
 
-<jahirfiquitiva.iconshowcase.views.IconShowcaseCardView
-    android:id="@+id/launcher_item"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<jahirfiquitiva.iconshowcase.views.IconShowcaseCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -29,36 +28,32 @@
     android:stateListAnimator="@anim/card_lift"
     app:cardCornerRadius="@dimen/card_corner_radius"
     app:cardElevation="@dimen/cards_elevation"
-    app:cardPreventCornerOverlap="false"
-    >
+    app:cardPreventCornerOverlap="false">
 
     <LinearLayout
-        android:id="@+id/itemBG"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:minHeight="@dimen/md_listitem_height"
+        android:orientation="horizontal"
+        android:padding="16dp">
 
-        <jahirfiquitiva.iconshowcase.views.SquaredImageView
-            android:id="@+id/launcherIcon"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="?attr/colorCardBackground"
-            android:padding="@dimen/launchers_icons_padding"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_na_launcher"
-            tools:ignore="ContentDescription, UnusedAttribute"/>
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            tools:ignore="ContentDescription" />
 
         <TextView
-            android:id="@+id/launcherName"
-            style="@style/ListsContent"
-            android:layout_width="match_parent"
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:ellipsize="end"
-            android:gravity="center"
-            android:maxLines="1"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            tools:text="Launcher Name"/>
+            android:layout_marginLeft="24dp"
+            android:layout_marginStart="24dp"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            tools:text="Extra credit" />
 
     </LinearLayout>
 

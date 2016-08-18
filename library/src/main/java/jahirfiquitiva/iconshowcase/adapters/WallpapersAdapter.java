@@ -45,11 +45,9 @@ import jahirfiquitiva.iconshowcase.models.WallpaperItem;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 
-
 public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.WallsHolder> {
 
     public interface ClickListener {
-
         void onClick(WallsHolder view, int index, boolean longClick);
     }
 
@@ -79,10 +77,10 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
     }
 
     @Override
-    public void onBindViewHolder(final WallsHolder holder, final int position) {
-        final WallpaperItem wallItem = wallsList.get(position);
+    public void onBindViewHolder(final WallsHolder holder, int position) {
+        final WallpaperItem wallItem = wallsList.get(holder.getAdapterPosition());
 
-        ViewCompat.setTransitionName(holder.wall, "transition" + position);
+        ViewCompat.setTransitionName(holder.wall, "transition" + holder.getAdapterPosition());
 
         holder.name.setText(wallItem.getWallName());
         holder.authorName.setText(wallItem.getWallAuthor());
@@ -92,23 +90,20 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
 
         BitmapImageViewTarget target = new BitmapImageViewTarget(holder.wall) {
             @Override
-            protected void setResource(Bitmap resource) {
-                Palette.Swatch wallSwatch = ColorUtils.getProminentSwatch(resource);
-                boolean animsEnabled = mPrefs.getAnimationsEnabled();
+            protected void setResource(Bitmap bitmap) {
+                Palette.Swatch wallSwatch = ColorUtils.getProminentSwatch(bitmap);
 
-                setImageAndAnimate(holder, resource, animsEnabled, position);
-
-                if (wallSwatch != null) {
-                    if (animsEnabled && (position > lastPosition)) {
-                        holder.titleBg.setAlpha(0f);
-                        holder.titleBg.setBackgroundColor(wallSwatch.getRgb());
-                        holder.titleBg.animate().setDuration(250).alpha(1f).start();
-                        lastPosition = position;
-                    } else {
-                        holder.titleBg.setBackgroundColor(wallSwatch.getRgb());
-                    }
-                    holder.name.setTextColor(wallSwatch.getBodyTextColor());
-                    holder.authorName.setTextColor(wallSwatch.getTitleTextColor());
+                if (mPrefs.getAnimationsEnabled() && (holder.getAdapterPosition() > lastPosition)) {
+                    holder.wall.setAlpha(0f);
+                    holder.titleBg.setAlpha(0f);
+                    holder.wall.setImageBitmap(bitmap);
+                    setWallInfoColors(wallSwatch, holder);
+                    holder.wall.animate().setDuration(250).alpha(1f).start();
+                    holder.titleBg.animate().setDuration(250).alpha(1f).start();
+                    lastPosition = holder.getAdapterPosition();
+                } else {
+                    holder.wall.setImageBitmap(bitmap);
+                    setWallInfoColors(wallSwatch, holder);
                 }
             }
         };
@@ -189,14 +184,12 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
 
     }
 
-    private void setImageAndAnimate(WallsHolder holder, Bitmap bitmap, boolean animate,
-                                    int position) {
-        if (animate && (position > lastPosition)) {
-            holder.wall.setAlpha(0f);
-            holder.wall.setImageBitmap(bitmap);
-            holder.wall.animate().setDuration(250).alpha(1f).start();
-        } else {
-            holder.wall.setImageBitmap(bitmap);
+    private void setWallInfoColors(Palette.Swatch swatch, WallsHolder holder) {
+        if (swatch != null) {
+            holder.titleBg.setBackgroundColor(swatch.getRgb());
+            holder.name.setTextColor(ColorUtils.adjustAlpha(swatch.getBodyTextColor(), 0.3f));
+            holder.authorName.setTextColor(ColorUtils.adjustAlpha(swatch.getTitleTextColor(), 0.2f));
         }
     }
+
 }

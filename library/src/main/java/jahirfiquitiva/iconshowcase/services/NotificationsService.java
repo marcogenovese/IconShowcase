@@ -103,34 +103,39 @@ public class NotificationsService extends IntentService {
                                 notifsList.add(new NotificationItem(info, 2, 19));
                             }
                         }
+                        return true;
                     } catch (JSONException e) {
                         Utils.showLog("Error downloading notifs - JSONException: " + e.getLocalizedMessage());
+                        return false;
                     }
                 }
             } catch (Exception e) {
                 Utils.showLog("Error downloading notifs - Exception: " + e.getLocalizedMessage());
+                return false;
             }
-            return true;
+            return false;
         }
 
         @Override
         protected void onPostExecute(Boolean worked) {
-            for (int i = 0; i < notifsList.size(); i++) {
-                NotificationItem notif = notifsList.get(i);
-                if (notif.getType() == 1) {
-                    int number;
-                    String notifText = notif.getText();
-                    try {
-                        number = Integer.valueOf(notifText);
-                    } catch (NumberFormatException numEx) {
-                        number = 0;
-                    }
-                    if (number > 0) {
-                        pushNotification(notif.getText(), notif.getType(), notif.getID());
-                    }
-                } else {
-                    if (!(notif.getText().equals("null"))) {
-                        pushNotification(notif.getText(), notif.getType(), notif.getID());
+            if (worked) {
+                for (int i = 0; i < notifsList.size(); i++) {
+                    NotificationItem notif = notifsList.get(i);
+                    if (notif.getType() == 1) {
+                        int number;
+                        String notifText = notif.getText();
+                        try {
+                            number = Integer.valueOf(notifText);
+                        } catch (NumberFormatException numEx) {
+                            number = 0;
+                        }
+                        if (number > 0) {
+                            pushNotification(notif.getText(), notif.getType(), notif.getID());
+                        }
+                    } else {
+                        if (!(notif.getText().equals("null"))) {
+                            pushNotification(notif.getText(), notif.getType(), notif.getID());
+                        }
                     }
                 }
             }
@@ -202,6 +207,7 @@ public class NotificationsService extends IntentService {
             stackBuilder.addNextIntent(appIntent);
             PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
             notifBuilder.setContentIntent(resultPendingIntent);
+            notifBuilder.setDeleteIntent(resultPendingIntent);
         }
 
         notifBuilder.setOngoing(false);
