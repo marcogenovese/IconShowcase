@@ -50,11 +50,9 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private ArrayList<DetailedCreditsItem> detailedCredits;
     private ArrayList<CreditsItem> credits;
     private Context context;
-    private int columns = 0;
 
-    public CreditsAdapter(Context context, int columns) {
+    public CreditsAdapter(Context context) {
         this.context = context;
-        this.columns = columns;
 
         Resources r = context.getResources();
 

@@ -55,7 +55,7 @@ public class SplitButtonsLayout extends LinearLayout {
         if (isInEditMode()) {
             mButtonCount = 2;
             addButton("Website", "http://www.jahirfiquitiva.net");
-            addButton("Instagram", "http://instagram.com/jahirfiquitiva");
+            addButton("Google+", "https://www.google.com/+JahirFiquitivaJDev");
         }
     }
 

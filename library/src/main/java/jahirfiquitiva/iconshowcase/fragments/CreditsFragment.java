@@ -70,7 +70,7 @@ public class CreditsFragment extends Fragment {
 
         RecyclerFastScroller fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
 
-        CreditsAdapter adapter = new CreditsAdapter(context, columnsNumber);
+        CreditsAdapter adapter = new CreditsAdapter(context);
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
