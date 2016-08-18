@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
   ~ Copyright (c) 2016.  Jahir Fiquitiva
   ~
   ~ Licensed under the CreativeCommons Attribution-ShareAlike
@@ -22,4 +24,4 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:textColor="?attr/accentColor"
-    tools:text="Button" />
+    tools:text="Instagram"/>

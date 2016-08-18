@@ -35,13 +35,6 @@
     <bool name="enable_user_wallpaper_in_toolbar">true</bool>
 
     <!--
-       Do you want the app to use palette api in toolbar header?
-       True, means yes.
-       False, means no.
-       -->
-    <bool name="use_palette_api_in_toolbar">true</bool>
-
-    <!--
     Do you want to hide "Icon Pack in numbers" section?
     True, means yes.
     False, means no.

@@ -144,7 +144,7 @@ public class MuzeiArtSourceService extends RemoteMuzeiArtSource {
             boolean worked;
             try {
                 mainObject = JSONParser.getJSONFromURL(getApplicationContext(),
-                        getResources().getString(R.string.json_file_url));
+                        getResources().getString(R.string.wallpapers_json_link));
                 if (mainObject != null) {
                     try {
                         wallInfo = mainObject.getJSONArray("wallpapers");

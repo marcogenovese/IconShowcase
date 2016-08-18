@@ -499,7 +499,7 @@ public class WallpapersFragment extends Fragment {
 
             JSONObject json = JSONParser.getJSONFromURL(taskContext.get(),
                     Utils.getStringFromResources(taskContext.get(),
-                            R.string.json_file_url));
+                            R.string.wallpapers_json_link));
 
             if (json != null) {
                 try {

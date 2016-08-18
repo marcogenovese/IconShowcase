@@ -25,6 +25,7 @@
     Default is 1.0
     Set the value you want, the bigger the slower (maybe smoother) scroll/swipe.
     -->
+    <!-- TODO: Delete if not really needed -->
     <item name="scroll_factor" format="float" type="dimen">1.0</item>
 
     <!--

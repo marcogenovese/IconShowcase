@@ -20,9 +20,6 @@
 
 <resources>
 
-    <!-- Set this to true if you want a rectangular wallpaper view. -->
-    <bool name="rectangular_wallpaper_view">false</bool>
-
     <!-- Set this to true if you want the alternative wallpaper viewer. -->
     <bool name="alternative_viewer">false</bool>
 

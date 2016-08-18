@@ -195,7 +195,8 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderSelecto
         setContentView(R.layout.showcase_activity);
 
         TasksExecutor.with(context)
-                .loadJust((iconsPicker && iconsPickerEnabled), ((notifType == 1) || (wallsPicker && mPrefs.areFeaturesEnabled() && wallsEnabled)));
+                .loadJust((iconsPicker && iconsPickerEnabled),
+                        ((notifType == 1) || (wallsPicker && mPrefs.areFeaturesEnabled() && wallsEnabled)));
 
         if (ENABLE_DEV_OPTIONS) {
             WITH_ICONS_BASED_CHANGELOG = mPrefs.getDevIconsChangelogStyle();

@@ -1,5 +1,20 @@
 /*
- * Copyright (c) 2016. Jahir Fiquitiva. Android Developer. All rights reserved.
+ * Copyright (c) 2016.  Jahir Fiquitiva
+ *
+ * Licensed under the CreativeCommons Attribution-ShareAlike
+ * 4.0 International License. You may not use this file except in compliance
+ * with the License. You may obtain a copy of the License at
+ *
+ *    http://creativecommons.org/licenses/by-sa/4.0/legalcode
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Big thanks to the project contributors. Check them in the repository.
+ *
  */
 
 package jahirfiquitiva.iconshowcase.adapters;
@@ -35,9 +50,12 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private ArrayList<DetailedCreditsItem> detailedCredits;
     private ArrayList<CreditsItem> credits;
     private Context context;
+    private int columns = 0;
 
-    public CreditsAdapter(Context context) {
+    public CreditsAdapter(Context context, int columns) {
         this.context = context;
+        this.columns = columns;
+
         Resources r = context.getResources();
 
         final String[] titles = r.getStringArray(R.array.credits_titles);
@@ -64,13 +82,13 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         final String[] jahirBtns = {
                 r.getString(R.string.visit_website),
                 r.getString(R.string.google_plus),
-                r.getString(R.string.fork_on_github)
+                r.getString(R.string.play_store)
         };
 
         final String[] jahirLinks = {
                 r.getString(R.string.dashboard_author_website),
                 r.getString(R.string.dashboard_author_gplus),
-                r.getString(R.string.dashboard_author_github)
+                "http://play.google.com/store/apps/dev?id=7438639276314720952"
         };
 
         detailedCredits.add(new DetailedCreditsItem(r.getString(R.string.dashboard_author_banner),

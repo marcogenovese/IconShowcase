@@ -72,18 +72,11 @@ public class ColorUtils {
     }
 
     @ColorInt
-    public static int darkenColor(Context context, @ColorInt int color) {
-        return context.getResources().getBoolean(R.bool.darker_launcher_bg) ?
-                darkenColor(color) : color;
-    }
-
-    @ColorInt
     private static int darkenColor(@ColorInt int color) {
         float[] hsv = new float[3];
         Color.colorToHSV(color, hsv);
-        hsv[2] *= 0.8f;
+        hsv[2] *= 0.6f;
         color = Color.HSVToColor(hsv);
-
         return color;
     }
 
@@ -91,9 +84,8 @@ public class ColorUtils {
     private static int lightenColor(@ColorInt int color) {
         float[] hsv = new float[3];
         Color.colorToHSV(color, hsv);
-        hsv[2] /= 0.7f;
+        hsv[2] /= 0.45f;
         color = Color.HSVToColor(hsv);
-
         return color;
     }
 
@@ -143,18 +135,14 @@ public class ColorUtils {
         return isLightColor(ColorUtils.getProminentSwatch(palette).getRgb());
     }
 
-    private static boolean isLightColor(@ColorInt int color) {
-        if (color == Color.BLACK) return false;
-        else if (color == Color.WHITE || color == Color.TRANSPARENT) return true;
-        final double darkness = 1 - (0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color)) / 255;
-        return darkness < 0.45;
+    public static boolean isLightColor(@ColorInt int color) {
+        return getColorDarkness(color) < 0.45;
     }
 
-    private static boolean checkDarknessOfColor(@ColorInt int color, float darkn) {
-        if (color == Color.BLACK) return false;
-        else if (color == Color.WHITE || color == Color.TRANSPARENT) return true;
-        final double darkness = 1 - (0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color)) / 255;
-        return darkn >= 0.51 ? darkness > darkn : darkness < darkn;
+    public static double getColorDarkness(@ColorInt int color) {
+        if (color == Color.BLACK) return 1.0;
+        else if (color == Color.WHITE || color == Color.TRANSPARENT) return 0.0;
+        return (1 - (0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color)) / 255);
     }
 
     public static void setupToolbarIconsAndTextsColors(final Context context, AppBarLayout appbar,
@@ -241,24 +229,12 @@ public class ColorUtils {
     }
 
     private static int getBetterColor(@ColorInt int color) {
+        if (color == 0) return 0;
         if (ThemeUtils.darkTheme) {
-            return checkDarknessOfColor(color, 0.8f) ? lightenColor(color) : color;
+            return getColorDarkness(color) > 0.6f ? lightenColor(color) : color;
         } else {
-            return checkDarknessOfColor(color, 0.2f) ? darkenColor(color) : color;
+            return getColorDarkness(color) < 0.3f ? darkenColor(color) : color;
         }
-    }
-
-    public static int getBetterProgressBarColor(@ColorInt int color, Context context) {
-        int betterColor = checkDarknessOfColor(color, 0.8f) ? lightenColor(color) : color;
-
-        betterColor = checkDarknessOfColor(betterColor, 0.2f) ? darkenColor(betterColor) : betterColor;
-
-        if (betterColor == 0) {
-            betterColor = ContextCompat.getColor(context, ThemeUtils.darkTheme ?
-                    R.color.dark_theme_accent : R.color.light_theme_accent);
-        }
-
-        return betterColor;
     }
 
 }

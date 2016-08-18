@@ -138,28 +138,8 @@
 
     <string name="pref_header_ui">UI</string>
 
-    <string name="pref_title_themes">Base theme</string>
-    <string name="pref_summary_themes">Choose between light, dark, clear or auto.</string>
-    <string name="pref_summary_themes_no_clear">Choose between light, dark or auto.</string>
-
-    <string-array name="themes">
-        <item>Light</item>
-        <item>Dark</item>
-        <item>Clear</item>
-        <item>Auto</item>
-    </string-array>
-
-    <string-array name="themes_no_clear">
-        <item>Light</item>
-        <item>Dark</item>
-        <item>Auto</item>
-    </string-array>
-
     <string name="pref_title_anims">Enable animations</string>
     <string name="pref_summary_anims">This may cause lag in some devices.</string>
-
-    <string name="pref_title_navbar">Colored navigation bar</string>
-    <string name="pref_summary_navbar">Enable primary colored navigation bar.</string>
 
     <string name="pref_title_wall_header">Enable use of wallpaper as Toolbar header</string>
     <string name="pref_summary_wall_header">Your current device wallpaper will be shown in app\'s Toolbar.</string>
@@ -212,7 +192,7 @@
     <string name="faqs_section">FAQs</string>
 
     <string name="dashboard_author">Dashboard App Development</string>
-    <string name="dashboard_author_copyright">From Colombia to the world.\nDashboard shared under CreativeCommons Attribution-ShareAlike License. Copyright © 2016.</string>
+    <string name="dashboard_author_copyright">I am a 19-year-old Android development enthusiast and the developer of the dashboard.\n\nShared from Colombia to the world, under CreativeCommons Attribution-ShareAlike License.\nCopyright © 2016.</string>
     <string name="iconpack_author">Designer Info</string>
 
     <string name="fork_on_github">Fork on GitHub</string>

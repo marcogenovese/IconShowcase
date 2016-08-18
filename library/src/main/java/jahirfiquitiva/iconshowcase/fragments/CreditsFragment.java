@@ -26,6 +26,7 @@ package jahirfiquitiva.iconshowcase.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
@@ -37,7 +38,7 @@ import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.adapters.CreditsAdapter;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
-import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
+import jahirfiquitiva.iconshowcase.views.StaggeredGridSpacingItemDecoration;
 
 
 public class CreditsFragment extends Fragment {
@@ -65,19 +66,14 @@ public class CreditsFragment extends Fragment {
         RecyclerView recyclerView = (RecyclerView) layout.findViewById(R.id.credits_rv);
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(columnsNumber, StaggeredGridLayoutManager.VERTICAL));
 
-        // TODO: Create proper SpacingItemDecoration
-        recyclerView.addItemDecoration(
-                new GridSpacingItemDecoration(columnsNumber,
-                        gridSpacing,
-                        true));
+        recyclerView.addItemDecoration(new StaggeredGridSpacingItemDecoration(columnsNumber, gridSpacing));
 
         RecyclerFastScroller fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
 
-        CreditsAdapter adapter = new CreditsAdapter(context);
+        CreditsAdapter adapter = new CreditsAdapter(context, columnsNumber);
 
         recyclerView.setHasFixedSize(true);
-        recyclerView.setItemAnimator(null);
-        recyclerView.setAnimation(null);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
         fastScroller.attachRecyclerView(recyclerView);

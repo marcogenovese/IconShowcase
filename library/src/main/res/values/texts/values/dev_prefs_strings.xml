@@ -23,12 +23,6 @@
     <string name="dev_prefs_title">Development Preferences</string>
     <string name="dev_prefs_summary">These preferences won\'t be available in final apps. These are made just for designers to check the multiple customization options IconShowcase can offer.</string>
 
-    <string name="dev_drawer_header_style_title">Drawer header style</string>
-    <string name="dev_drawer_header_style_summary">When using IconShowcase you can choose between 3 different drawer header styles.</string>
-
-    <string name="dev_mini_header_picture_title">Mini drawer header picture</string>
-    <string name="dev_mini_header_picture_summary">When disabled, IconShowcase will show a solid color header.</string>
-
     <string name="dev_icons_changelog_title">Icons based changelog</string>
     <string name="dev_icons_changelog_summary">IconShowcase offers 2 changelog styles: a text based one and an icons based one.</string>
 
@@ -40,12 +34,6 @@
 
     <string name="dev_more_options_title">More options</string>
     <string name="dev_more_options_summary">IconShowcase offers many other additional options you can setup while building your app. Tap here to check them.</string>
-
-    <array name="drawer_header_styles">
-        <item>Full height header</item>
-        <item>Mini header</item>
-        <item>No header</item>
-    </array>
 
     <string-array name="configurations_list">
         <item>These features can be additionally configured when using the dashboard source:</item>

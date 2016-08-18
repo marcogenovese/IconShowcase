@@ -88,7 +88,7 @@ public class NotificationsService extends IntentService {
         protected Boolean doInBackground(Void... params) {
             try {
                 mainObject = JSONParser.getJSONFromURL(getApplicationContext(),
-                        getResources().getString(R.string.notifications_file_url));
+                        getResources().getString(R.string.notifications_json_link));
                 if (mainObject != null) {
                     try {
                         notifs = mainObject.getJSONArray("notifications");

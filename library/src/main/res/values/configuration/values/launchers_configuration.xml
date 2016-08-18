@@ -19,9 +19,6 @@
   -->
 
 <resources>
-
-    <bool name="darker_launcher_bg">true</bool>
-
     <!--
     Setup the columns amount you want in different sections
     -->
@@ -33,5 +30,4 @@
     <integer name="launchers_columns_tablet_portrait">5</integer>
     <!-- TABLETS - LANDSCAPE MODE -->
     <integer name="launchers_columns_tablet_landscape">8</integer>
-
 </resources>

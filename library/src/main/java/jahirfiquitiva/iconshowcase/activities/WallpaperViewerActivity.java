@@ -221,8 +221,7 @@ public class WallpaperViewerActivity extends AppCompatActivity {
         int colorFromCachedPic;
 
         if (bmp != null) {
-            colorFromCachedPic = ColorUtils.getBetterProgressBarColor(
-                    ColorUtils.getProminentSwatch(bmp).getRgb(), context);
+            colorFromCachedPic = ColorUtils.getProminentSwatch(bmp).getTitleTextColor();
         } else {
             colorFromCachedPic = ThemeUtils.darkTheme ? tintDark : tintLightLighter;
         }

@@ -71,9 +71,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
     @Override
     public WallsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        return new WallsHolder(inflater.inflate(
-                context.getResources().getBoolean(R.bool.rectangular_wallpaper_view) ? R.layout.item_wallpaper_rect :
-                        R.layout.item_wallpaper, parent, false));
+        return new WallsHolder(inflater.inflate(R.layout.item_wallpaper, parent, false));
     }
 
     @Override
@@ -92,7 +90,6 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
             @Override
             protected void setResource(Bitmap bitmap) {
                 Palette.Swatch wallSwatch = ColorUtils.getProminentSwatch(bitmap);
-
                 if (mPrefs.getAnimationsEnabled() && (holder.getAdapterPosition() > lastPosition)) {
                     holder.wall.setAlpha(0f);
                     holder.titleBg.setAlpha(0f);
@@ -187,8 +184,8 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
     private void setWallInfoColors(Palette.Swatch swatch, WallsHolder holder) {
         if (swatch != null) {
             holder.titleBg.setBackgroundColor(swatch.getRgb());
-            holder.name.setTextColor(ColorUtils.adjustAlpha(swatch.getBodyTextColor(), 0.3f));
-            holder.authorName.setTextColor(ColorUtils.adjustAlpha(swatch.getTitleTextColor(), 0.2f));
+            holder.name.setTextColor(swatch.getBodyTextColor());
+            holder.authorName.setTextColor(swatch.getTitleTextColor());
         }
     }
 

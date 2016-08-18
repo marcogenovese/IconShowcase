@@ -73,14 +73,6 @@
     <bool name="icons_changelog">false</bool>
 
     <!--
-    Do you have a website?
-    Something like: www.myrealcustomwebsite.com
-    True, means yes.
-    False, means no.
-    -->
-    <bool name="you_have_a_website">true</bool>
-
-    <!--
     Do you want to use Light Status Bar in Light, or Dark theme?
     True, means yes.
     False, means no.

@@ -37,7 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/credits_headers"
             android:scaleType="centerCrop"
-            tools:ignore="ContentDescription" />
+            tools:ignore="ContentDescription"/>
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/photo"
@@ -48,7 +48,7 @@
             android:layout_marginTop="@dimen/credits_photo_margin"
             app:civ_border_color="?attr/colorCardBackground"
             app:civ_border_width="2dp"
-            tools:ignore="ContentDescription" />
+            tools:ignore="ContentDescription"/>
 
         <TextView
             android:id="@+id/title"
@@ -62,7 +62,7 @@
             android:layout_toEndOf="@id/photo"
             android:layout_toRightOf="@id/photo"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            tools:text="Your name" />
+            tools:text="Your name"/>
 
         <TextView
             android:id="@+id/content"
@@ -74,18 +74,21 @@
             android:layout_marginRight="@dimen/cards_content_margin_small"
             android:layout_marginTop="@dimen/cards_content_margin_mini"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            tools:text="I am a graphic designer, I love Android, and obviously, this awesome dashboard." />
+            tools:text="I am a graphic designer, I love Android, and obviously, this awesome dashboard."
+            />
 
         <jahirfiquitiva.iconshowcase.views.SplitButtonsLayout
             android:id="@+id/buttons"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/content"
+            android:layout_alignStart="@id/content"
             android:layout_below="@id/content"
             android:layout_marginBottom="@dimen/cards_margin"
-            android:layout_marginLeft="@dimen/cards_content_margin_s"
-            android:layout_marginStart="@dimen/cards_content_margin_s"
-            android:gravity="center_vertical|end"
-            android:orientation="horizontal" />
+            android:layout_marginEnd="@dimen/cards_content_margin_small"
+            android:layout_marginRight="@dimen/cards_content_margin_small"
+            android:gravity="center_vertical|start"
+            android:orientation="horizontal"/>
 
     </RelativeLayout>
 

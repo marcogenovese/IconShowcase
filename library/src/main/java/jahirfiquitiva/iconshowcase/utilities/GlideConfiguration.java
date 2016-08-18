@@ -49,15 +49,9 @@ public class GlideConfiguration implements GlideModule {
             lowRAMDevice = memInfo.lowMemory;
         }
 
-        if (runsMinSDK) {
-            if (lowRAMDevice) {
-                builder.setDecodeFormat(DecodeFormat.PREFER_RGB_565);
-            } else {
-                builder.setDecodeFormat(DecodeFormat.PREFER_ARGB_8888);
-            }
-        } else {
-            builder.setDecodeFormat(DecodeFormat.PREFER_RGB_565);
-        }
+        builder.setDecodeFormat(runsMinSDK ?
+                lowRAMDevice ? DecodeFormat.PREFER_RGB_565 : DecodeFormat.PREFER_ARGB_8888 :
+                DecodeFormat.PREFER_RGB_565);
     }
 
     @Override
