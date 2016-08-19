@@ -77,6 +77,7 @@ import java.util.Random;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.adapters.RequestsAdapter;
+import jahirfiquitiva.iconshowcase.dialogs.ChangelogDialog;
 import jahirfiquitiva.iconshowcase.dialogs.FolderSelectorDialog;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.fragments.DonationsFragment;
@@ -538,7 +539,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderSelecto
             if (WITH_ICONS_BASED_CHANGELOG) {
                 ISDialogs.showIconsChangelogDialog(this);
             } else {
-                ISDialogs.showChangelogDialog(this);
+                ChangelogDialog.show(this);
             }
         } else if (i == R.id.refresh) {
             WallpapersFragment.refreshWalls(context);
@@ -592,7 +593,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderSelecto
             if (WITH_ICONS_BASED_CHANGELOG) {
                 ISDialogs.showIconsChangelogDialog(this);
             } else {
-                ISDialogs.showChangelogDialog(this);
+                ChangelogDialog.show(this);
             }
         }
 

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <version title="New:" />
+    <item text="Updated translations for more than 9 languages." />
+    <item text="Added new license check system." />
+    <item text="Added a confirmation dialog when long-pressing to apply a wallpaper." />
+    <item text="Added option to open Kustom widgets and wallpapers in respective Kustom app, directly from IconShowcase." />
+
+    <version title="Improvements:" />
+    <item text="All dashboard icons are customizable now." />
+    <item text="Less lag in previews section." />
+    <item text="Now you can define if a wallpaper can be downloaded by user or not." />
+    <item text="Now if wallpaper download takes more than 10 seconds, users will be able to cancel it." />
+
+    <version title="Fixes:" />
+    <item text="Fixed icons flickering/blinking in some sections." />
+    <item text="Fixed texts in icons request limit dialog." />
+    <item text="Fixed some crashes." />
+</resources>

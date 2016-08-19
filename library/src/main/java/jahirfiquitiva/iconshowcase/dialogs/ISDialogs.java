@@ -66,20 +66,6 @@ public final class ISDialogs {
     Dialogs used in the Showcase Activity
      */
 
-    public static void showChangelogDialog(Context context) {
-        if (((ShowcaseActivity) context).getChangelogDialog() != null) {
-            ((ShowcaseActivity) context).getChangelogDialog().dismiss();
-            ((ShowcaseActivity) context).setChangelogDialog(null);
-        }
-        ((ShowcaseActivity) context).setChangelogDialog(new MaterialDialog.Builder(context)
-                .title(R.string.changelog_dialog_title)
-                .adapter(new ChangelogAdapter(context, R.array.fullchangelog), null)
-                .positiveText(R.string.great)
-                .listSelector(android.R.color.transparent)
-                .build());
-        ((ShowcaseActivity) context).getChangelogDialog().show();
-    }
-
     public static void showIconsChangelogDialog(final Activity context) {
 
         if (((ShowcaseActivity) context).getChangelogDialog() != null) {
