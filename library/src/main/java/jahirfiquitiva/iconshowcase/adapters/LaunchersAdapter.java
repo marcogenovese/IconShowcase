@@ -75,20 +75,19 @@ public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.Laun
     public void onBindViewHolder(LauncherHolder holder, int position) {
         // Turns Launcher name "Something Pro" to "ic_something_pro"
         String iconName = "ic_" + launchers.get(position).name.toLowerCase().replace(" ", "_");
-        int iconResource = Utils.getIconResId(context, context.getResources(),
-                context.getPackageName(), iconName, "Launchers");
+        int iconResource = Utils.getIconResId(context.getResources(), context.getPackageName(), iconName);
 
         final int dark = ContextCompat.getColor(context, R.color.launcher_tint_dark);
         final int light = ContextCompat.getColor(context, R.color.launcher_tint_light);
         final int textDark = ContextCompat.getColor(context, R.color.launcher_text_light);
         final int textLight = ContextCompat.getColor(context, R.color.launcher_text_dark);
 
-        if (iconResource != 0) {
-            Glide.with(context)
-                    .load(iconResource)
-                    .dontAnimate()
-                    .into(holder.icon);
-        }
+        Glide.with(context)
+                .load(iconResource != 0 ?
+                        iconResource :
+                        Utils.getIconResId(context.getResources(), context.getPackageName(), "ic_na_launcher"))
+                .dontAnimate()
+                .into(holder.icon);
 
         holder.launcherName.setText(launchers.get(position).name.toUpperCase(Locale.getDefault()));
 

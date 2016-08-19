@@ -34,6 +34,7 @@ import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import jahirfiquitiva.iconshowcase.fragments.KustomFragment;
 import jahirfiquitiva.iconshowcase.models.KustomKomponent;
 import jahirfiquitiva.iconshowcase.models.KustomWallpaper;
 import jahirfiquitiva.iconshowcase.models.KustomWidget;
@@ -84,6 +85,10 @@ public class LoadKustomFiles extends AsyncTask<Void, String, Boolean> {
     @Override
     protected void onPostExecute(Boolean worked) {
         if (worked) {
+            if (KustomFragment.kustomAdapter != null) {
+                KustomFragment.kustomAdapter.setLists(widgets,
+                        komponents, wallpapers);
+            }
             Utils.showLog(context.get(),
                     "Load of kustom files task completed successfully in: " +
                             String.valueOf((endTime - startTime)) + " millisecs.");

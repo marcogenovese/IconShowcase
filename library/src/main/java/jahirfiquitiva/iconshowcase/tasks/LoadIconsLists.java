@@ -76,7 +76,7 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
 
         ArrayList<IconItem> changelogIconsArray = new ArrayList<>();
         for (String icon : newIconsL) {
-            iconResId = Utils.getIconResId(context.get(), r, p, icon, TASK);
+            iconResId = Utils.getIconResId(r, p, icon);
             if (iconResId != 0) {
                 changelogIconsArray.add(new IconItem(icon, iconResId));
             }
@@ -88,7 +88,7 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
 
         ArrayList<IconItem> previewIconsArray = new ArrayList<>();
         for (String icon : previewIconsL) {
-            iconResId = Utils.getIconResId(context.get(), r, p, icon, TASK);
+            iconResId = Utils.getIconResId(r, p, icon);
             if (iconResId != 0) {
                 previewIconsArray.add(new IconItem(icon, iconResId));
             }
@@ -115,7 +115,7 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
                 ArrayList<IconItem> iconsArray = new ArrayList<>();
 
                 for (int j = 0; j < iconsList.size(); j++) {
-                    iconResId = Utils.getIconResId(context.get(), r, p, iconsList.get(j), TASK);
+                    iconResId = Utils.getIconResId(r, p, iconsList.get(j));
                     if (iconResId != 0) {
                         iconsArray.add(new IconItem(iconsList.get(j), iconResId));
                         if (context.get().getResources().getBoolean(R.bool.auto_generate_all_icons)) {
@@ -176,10 +176,8 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
 
         ArrayList<IconItem> sortedListArray = new ArrayList<>();
 
-        int resId;
-
         for (int j = 0; j < list.size(); j++) {
-            resId = Utils.getIconResId(context.get(), r, p, list.get(j), TASK);
+            int resId = Utils.getIconResId(r, p, list.get(j));
             if (resId != 0) {
                 sortedListArray.add(new IconItem(list.get(j), resId));
             }

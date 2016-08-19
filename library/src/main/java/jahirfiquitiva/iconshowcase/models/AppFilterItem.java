@@ -19,33 +19,13 @@
 
 package jahirfiquitiva.iconshowcase.models;
 
-public class AppFilterError {
+public class AppFilterItem {
 
-    private final boolean emptyComponent, halfEmptyPackage, halfEmptyComponent;
-    private final String iconName, completeComponent;
-    private final int iconID;
+    private final String completeComponent, iconName;
 
-    public AppFilterError(boolean emptyComponent, boolean halfEmptyPackage,
-                          boolean halfEmptyComponent, String iconName, String completeComponent,
-                          int iconID) {
-        this.emptyComponent = emptyComponent;
-        this.halfEmptyPackage = halfEmptyPackage;
-        this.halfEmptyComponent = halfEmptyComponent;
-        this.iconName = iconName;
+    public AppFilterItem(String completeComponent, String iconName) {
         this.completeComponent = completeComponent;
-        this.iconID = iconID;
-    }
-
-    public boolean hasEmptyComponent() {
-        return emptyComponent;
-    }
-
-    public boolean hasHalfEmptyPackage() {
-        return halfEmptyPackage;
-    }
-
-    public boolean hasHalfEmptyComponent() {
-        return halfEmptyComponent;
+        this.iconName = iconName;
     }
 
     public String getIconName() {
@@ -54,10 +34,6 @@ public class AppFilterError {
 
     public String getCompleteComponent() {
         return completeComponent;
-    }
-
-    public int getIconID() {
-        return iconID;
     }
 
 }

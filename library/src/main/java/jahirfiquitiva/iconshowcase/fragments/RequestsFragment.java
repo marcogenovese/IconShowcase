@@ -50,7 +50,7 @@ import jahirfiquitiva.iconshowcase.adapters.RequestsAdapter;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.models.RequestItem;
 import jahirfiquitiva.iconshowcase.models.RequestList;
-import jahirfiquitiva.iconshowcase.tasks.LoadAppsToRequest;
+import jahirfiquitiva.iconshowcase.tasks.LoadRequestList;
 import jahirfiquitiva.iconshowcase.tasks.ZipFilesToRequest;
 import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
@@ -72,10 +72,10 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
     private Activity context;
     private static ArrayList<RequestItem> requestList;
     private static TextView errorLayout;
-    public static LoadAppsToRequest loadAppsToRequest;
+    public static LoadRequestList loadAppsToRequest;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
 
         int gridSpacing = getResources().getDimensionPixelSize(R.dimen.lists_padding);
         int columnsNumber = getResources().getInteger(R.integer.requests_grid_width);
@@ -109,7 +109,7 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
                 if (loadAppsToRequest != null) {
                     loadAppsToRequest.cancel(true);
                 }
-                loadAppsToRequest = new LoadAppsToRequest(context);
+                loadAppsToRequest = new LoadRequestList(context);
                 loadAppsToRequest.execute();
             }
         });

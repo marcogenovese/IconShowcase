@@ -331,16 +331,11 @@ public class Utils {
         return millis / 60 / 1000;
     }
 
-    public static int getIconResId(Context context, Resources r, String p, String name, String task) {
+    public static int getIconResId(Resources r, String p, String name) {
         int res = r.getIdentifier(name, "drawable", p);
         if (res != 0) {
             return res;
         } else {
-            if (task != null) {
-                showLog(context, task, "Missing icon: " + name);
-            } else {
-                showLog(context, "Missing icon: " + name);
-            }
             return 0;
         }
     }

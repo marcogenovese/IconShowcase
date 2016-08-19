@@ -25,6 +25,10 @@
         drawable="people"/>
 
     <item
+        component="ComponentInfo{com.android.contacts/com.android.contacts.activities.PeopleActivity}"
+        drawable="people"/>
+
+    <item
         component="ComponentInfo{/com.android.contacts.DialtactsContactsEntryActivity}"
         drawable="people"/>
 
@@ -46,6 +50,10 @@
 
     <item
         component="ComponentInfo{/com.android.contacts.DialtactsContactsEntryActivity}"
+        drawable="phone"/>
+
+    <item
+        component="ComponentInfo{com.android.dialer/com.android.dialer.DialtactsActivity}"
         drawable="phone"/>
 
     <item

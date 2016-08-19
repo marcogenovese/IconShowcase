@@ -252,7 +252,7 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         final int dark = ContextCompat.getColor(context, R.color.drawable_tint_light);
 
         return ColorUtils.getTintedIcon(context,
-                Utils.getIconResId(context, context.getResources(), context.getPackageName(), name, null),
+                Utils.getIconResId(context.getResources(), context.getPackageName(), name),
                 ThemeUtils.darkTheme ? light : dark);
     }
 

@@ -58,10 +58,8 @@ public class Preferences {
             ACTIVITY_VISIBLE = "activity_visible";
 
     private static final String
-            DEV_DRAWER_HEADER_STYLE = "dev_drawer_header_style",
             DEV_ICONS_CHANGELOG_STYLE = "dev_changelog_style",
             DEV_DRAWER_TEXTS = "dev_drawer_texts",
-            DEV_MINI_DRAWER_HEADER_PICTURE = "dev_mini_drawer_header_picture",
             DEV_LISTS_CARDS = "dev_lists_cards";
 
     private final Context context;
@@ -114,7 +112,7 @@ public class Preferences {
         return prefs().getString(WALLS_DOWNLOAD_FOLDER, null);
     }
 
-    public void setIfAppsToRequestLoad(boolean loaded) {
+    public void setIfAppsToRequestLoaded(boolean loaded) {
         prefs().edit().putBoolean(APPS_TO_REQUEST_LOADED, loaded).apply();
     }
 

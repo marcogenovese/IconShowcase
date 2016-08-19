@@ -44,7 +44,6 @@ import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.RequestsHolder> {
 
     public interface ClickListener {
-
         void onClick(int index);
     }
 

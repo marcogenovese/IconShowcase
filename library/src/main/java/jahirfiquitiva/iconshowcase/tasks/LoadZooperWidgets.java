@@ -41,6 +41,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.fragments.ZooperFragment;
 import jahirfiquitiva.iconshowcase.models.ZooperWidget;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
@@ -97,6 +98,9 @@ public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
     @Override
     protected void onPostExecute(Boolean worked) {
         if (worked) {
+            if (ZooperFragment.zooperAdapter != null) {
+                ZooperFragment.zooperAdapter.setWidgets(widgets);
+            }
             Utils.showLog(context.get(),
                     "Load of widgets task completed successfully in: " +
                             String.valueOf((endTime - startTime)) + " millisecs.");

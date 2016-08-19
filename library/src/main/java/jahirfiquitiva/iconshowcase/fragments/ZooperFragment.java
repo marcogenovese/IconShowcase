@@ -48,7 +48,7 @@ public class ZooperFragment extends Fragment {
     private static Context context;
 
     private RecyclerView mRecyclerView;
-    private ZooperAdapter zooperAdapter;
+    public static ZooperAdapter zooperAdapter;
     private GridSpacingItemDecoration space;
 
     @Override

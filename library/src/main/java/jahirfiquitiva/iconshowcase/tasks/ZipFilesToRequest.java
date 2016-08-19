@@ -155,7 +155,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
                     sb.append("App Link: " + "https://play.google.com/store/apps/details?id=" + appsListFinal.get(i).getPackageName() + "\n");
                     sb.append("\n");
 
-                    Bitmap bitmap = ((BitmapDrawable) (appsListFinal.get(i).getIcon())).getBitmap();
+                    Bitmap bitmap = ((BitmapDrawable) (appsListFinal.get(i).getHiResIcon())).getBitmap();
 
                     FileOutputStream fileOutputStream;
                     try {

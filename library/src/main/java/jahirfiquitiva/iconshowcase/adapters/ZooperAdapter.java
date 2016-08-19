@@ -41,7 +41,7 @@ import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         implements PermissionUtils.OnPermissionResultListener {
 
-    private final ArrayList<ZooperWidget> widgets;
+    private ArrayList<ZooperWidget> widgets;
     private final Drawable[] icons = new Drawable[2];
     private final Context context;
     private final Drawable wallpaper;
@@ -72,6 +72,16 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 context, R.drawable.ic_assets,
                 ThemeUtils.darkTheme ? light : dark);
 
+    }
+
+    public void setWidgets(ArrayList<ZooperWidget> widgets) {
+        if (widgets != null) {
+            this.widgets.addAll(widgets);
+            this.notifyItemRangeInserted(0, widgets.size() - 1);
+        } else {
+            this.widgets = new ArrayList<>();
+            this.notifyItemRangeInserted(0, 0);
+        }
     }
 
     @Override

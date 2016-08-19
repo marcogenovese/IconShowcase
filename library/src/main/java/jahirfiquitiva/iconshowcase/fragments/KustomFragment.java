@@ -49,7 +49,7 @@ public class KustomFragment extends Fragment {
     private static Context context;
     private FloatingActionButton kustomFAB;
     private RecyclerView mRecyclerView;
-    private KustomAdapter kustomAdapter;
+    public static KustomAdapter kustomAdapter;
     private SectionedGridSpacingItemDecoration space;
 
     private final String KLWP_PKG = "org.kustom.wallpaper",

@@ -91,7 +91,7 @@ public class TasksExecutor {
             }
 
             if (!mPrefs.didAppsToRequestLoad() || RequestList.getRequestList() == null) {
-                RequestsFragment.loadAppsToRequest = new LoadAppsToRequest(context);
+                RequestsFragment.loadAppsToRequest = new LoadRequestList(context);
                 RequestsFragment.loadAppsToRequest.execute();
             }
         }

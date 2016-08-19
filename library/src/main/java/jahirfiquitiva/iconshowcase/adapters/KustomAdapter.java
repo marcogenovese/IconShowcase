@@ -47,9 +47,9 @@ import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 
 public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.KustomHolder> {
 
-    private final ArrayList<KustomWidget> widgets;
-    private final ArrayList<KustomKomponent> komponents;
-    private final ArrayList<KustomWallpaper> kustomWalls;
+    private ArrayList<KustomWidget> widgets;
+    private ArrayList<KustomKomponent> komponents;
+    private ArrayList<KustomWallpaper> kustomWalls;
     private final Context context;
     private final Drawable wallpaper;
 
@@ -61,6 +61,32 @@ public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.Ku
         this.widgets = LoadKustomFiles.widgets;
 
         this.wallpaper = wallpaper;
+    }
+
+    public void setLists(ArrayList<KustomWidget> widgets,
+                         ArrayList<KustomKomponent> komponents,
+                         ArrayList<KustomWallpaper> kustomWalls) {
+        if (widgets != null) {
+            this.widgets.addAll(widgets);
+            this.notifyItemRangeInserted(0, widgets.size() - 1);
+        } else {
+            this.widgets = new ArrayList<>();
+            this.notifyItemRangeInserted(0, 0);
+        }
+        if (komponents != null) {
+            this.komponents.addAll(komponents);
+            this.notifyItemRangeInserted(0, komponents.size() - 1);
+        } else {
+            this.komponents = new ArrayList<>();
+            this.notifyItemRangeInserted(0, 0);
+        }
+        if (kustomWalls != null) {
+            this.kustomWalls.addAll(kustomWalls);
+            this.notifyItemRangeInserted(0, kustomWalls.size() - 1);
+        } else {
+            this.kustomWalls = new ArrayList<>();
+            this.notifyItemRangeInserted(0, 0);
+        }
     }
 
     @Override

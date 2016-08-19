@@ -28,21 +28,21 @@ import android.graphics.drawable.Drawable;
 
 public class RequestItem {
 
-    private String appName = null;
-    private String packageName = null;
-    private String className = null;
-    private final Drawable iconDrawable;
-    private final Drawable normalIcon;
+    private String appName = null, packageName = null, className = null;
+    private final Drawable normalIcon, hiResIcon;
     private boolean selected = false;
 
-    public RequestItem(String appName, String packageName, String className, Drawable iconDrawable,
-                       Drawable normalIcon) {
-        super();
+    public RequestItem(String appName, String packageName, String className,
+                       Drawable normalIcon, Drawable hiResIcon) {
         this.appName = appName;
         this.packageName = packageName;
         this.className = className;
-        this.iconDrawable = iconDrawable;
         this.normalIcon = normalIcon;
+        this.hiResIcon = hiResIcon;
+    }
+
+    public String getClassName() {
+        return className;
     }
 
     public String getAppName() {
@@ -53,16 +53,12 @@ public class RequestItem {
         return packageName;
     }
 
-    public String getClassName() {
-        return className;
-    }
-
-    public Drawable getIcon() {
-        return iconDrawable;
-    }
-
     public Drawable getNormalIcon() {
         return normalIcon;
+    }
+
+    public Drawable getHiResIcon() {
+        return hiResIcon;
     }
 
     public boolean isSelected() {
@@ -77,7 +73,6 @@ public class RequestItem {
      * Used to compare object to object
      *
      * @param other
-     *
      * @return
      */
     @Override
@@ -85,10 +80,7 @@ public class RequestItem {
         if (!(other instanceof RequestItem)) {
             return false;
         }
-
         RequestItem that = (RequestItem) other;
-
-        // Custom equality check here.
         return this.appName.equals(that.appName)
                 && this.packageName.equals(that.packageName)
                 && this.className.equals(that.className);
