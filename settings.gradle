@@ -21,4 +21,4 @@
  *
  */
 
-include ':app', ':library'
+include ':library', ':app'

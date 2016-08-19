@@ -21,13 +21,9 @@ buildscript {
     repositories {
         mavenCentral()
     }
-    dependencies {
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
-    }
 }
 
 apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
 
 repositories {
     mavenCentral()
@@ -96,8 +92,9 @@ android {
 }
 
 dependencies {
-
     compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    //Android Support Libraries
     compile "com.android.support:appcompat-v7:$ANDROID_SUPPORT_LIBS"
     compile "com.android.support:support-v4:$ANDROID_SUPPORT_LIBS"
     compile "com.android.support:design:$ANDROID_SUPPORT_LIBS"
