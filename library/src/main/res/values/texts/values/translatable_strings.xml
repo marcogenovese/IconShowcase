@@ -54,6 +54,7 @@
     <string name="share_title">Share via</string>
     <string name="send_title">Send via</string>
     <string name="changelog">What\'s new?</string>
+    <string name="default_changelog_title">Update</string>
 
     <!-- LauncherNotInstalled Dialog -->
     <string name="lni_content">%1$s is currently not installed on your device.\nWould you like to
@@ -74,6 +75,7 @@
 
     <!-- Changelog Dialog Content -->
     <string name="changelog_dialog_title">Changelog</string>
+    <string name="empty_changelog">Empty Changelog</string>
     <string name="great">Great</string>
 
     <!-- Wallpapers Stuff -->

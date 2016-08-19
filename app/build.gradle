@@ -33,6 +33,13 @@ android {
     compileSdkVersion TARGET_SDK
     buildToolsVersion BUILD_TOOLS
 
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            output.outputFile = new File(
+                    output.outputFile.parent, "IconShowcase-${variant.versionName}.apk")
+        }
+    }
+
     lintOptions {
         abortOnError false
     }
