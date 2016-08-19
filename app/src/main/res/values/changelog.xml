@@ -24,35 +24,6 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
-    <string-array name="fullchangelog">
-        <item>@array/newstuff</item>
-        <item>@array/improvements</item>
-        <item>@array/fixes</item>
-    </string-array>
-
-    <string-array name="newstuff">
-        <item>New:</item>
-        <item>Updated translations for more than 9 languages.</item>
-        <item>Added new license check system.</item>
-        <item>Added a confirmation dialog when long-pressing to apply a wallpaper.</item>
-        <item>Added option to open Kustom widgets and wallpapers in respective Kustom app, directly from IconShowcase.</item>
-    </string-array>
-
-    <string-array name="improvements">
-        <item>Improvements:</item>
-        <item>All dashboard icons are customizable now.</item>
-        <item>Less lag in previews section.</item>
-        <item>Now you can define if a wallpaper can be downloaded by user or not.</item>
-        <item>Now if wallpaper download takes more than 10 seconds, users will be able to cancel it.</item>
-    </string-array>
-
-    <string-array name="fixes">
-        <item>Fixes:</item>
-        <item>Fixed icons flickering/blinking in some sections.</item>
-        <item>Fixed texts in icons request limit dialog.</item>
-        <item>Fixed some crashes.</item>
-    </string-array>
-
     <string-array name="changelog_icons">
         <item>an_icon</item>
         <item>andy</item>
