@@ -21,9 +21,6 @@ import jahirfiquitiva.iconshowcase.R;
  */
 public class ChangelogXmlParser {
 
-    private ChangelogXmlParser() {
-    }
-
     public static class ChangelogItem implements Parcelable {
 
         private final String mTitle;
@@ -53,7 +50,7 @@ public class ChangelogXmlParser {
         protected ChangelogItem(Parcel in) {
             mTitle = in.readString();
             if (in.readByte() == 0x01) {
-                mPoints = new ArrayList<String>();
+                mPoints = new ArrayList<>();
                 in.readList(mPoints, String.class.getClassLoader());
             } else {
                 mPoints = null;
@@ -107,7 +104,7 @@ public class ChangelogXmlParser {
                             mChangelogItems.add(mCurrentChangelogItem);
                         } else if (tagName.equalsIgnoreCase("item")) {
                             if (mCurrentChangelogItem == null) {
-                                mCurrentChangelogItem = new ChangelogItem(context.getString(R.string.default_changelog_title));
+                                mCurrentChangelogItem = new ChangelogItem(context.getString(R.string.default_new_version_title));
                                 mChangelogItems.add(mCurrentChangelogItem);
                             }
                             mCurrentChangelogItem.addItem(parser.getAttributeValue(null, "text"));

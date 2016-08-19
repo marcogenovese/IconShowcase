@@ -37,6 +37,8 @@ import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 
+import com.afollestad.materialdialogs.util.DialogUtils;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -72,21 +74,61 @@ public class ColorUtils {
     }
 
     @ColorInt
-    private static int darkenColor(@ColorInt int color) {
+    public static int shiftColor(@ColorInt int color, @FloatRange(from = 0.0f, to = 2.0f) float by) {
+        if (by == 1f) return color;
+        int alpha = Color.alpha(color);
         float[] hsv = new float[3];
         Color.colorToHSV(color, hsv);
-        hsv[2] *= 0.6f;
-        color = Color.HSVToColor(hsv);
-        return color;
+        hsv[2] *= by; // value component
+        return (alpha << 24) + (0x00ffffff & Color.HSVToColor(hsv));
     }
 
     @ColorInt
-    private static int lightenColor(@ColorInt int color) {
-        float[] hsv = new float[3];
-        Color.colorToHSV(color, hsv);
-        hsv[2] /= 0.45f;
-        color = Color.HSVToColor(hsv);
-        return color;
+    public static int darkenColor(@ColorInt int color) {
+        return shiftColor(color, 0.9f);
+    }
+
+    @ColorInt
+    public static int lightenColor(@ColorInt int color) {
+        return shiftColor(color, 1.1f);
+    }
+
+    public static boolean isLightColor(Bitmap bitmap) {
+        Palette palette = Palette.from(bitmap).generate();
+        if (palette.getSwatches().size() > 0) {
+            return isLightColor(palette);
+        }
+        return isLightColor(palette);
+    }
+
+    private static boolean isLightColor(Palette palette) {
+        return isLightColor(ColorUtils.getPaletteSwatch(palette).getRgb());
+    }
+
+    public static boolean isLightColor(@ColorInt int color) {
+        return getColorDarkness(color) < 0.45;
+    }
+
+    public static double getColorDarkness(@ColorInt int color) {
+        if (color == Color.BLACK) return 1.0;
+        else if (color == Color.WHITE || color == Color.TRANSPARENT) return 0.0;
+        return (1 - (0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color)) / 255);
+    }
+
+    @ColorInt
+    public static int shiftLightTextColor(@ColorInt int textColor, @ColorInt int backgroundColor) {
+        while (isLightColor(textColor) && isLightColor(backgroundColor)) {
+            textColor = darkenColor(textColor);
+        }
+        return textColor;
+    }
+
+    @ColorInt
+    public static int shiftDarkTextColor(@ColorInt int textColor, @ColorInt int backgroundColor) {
+        while (!isLightColor(textColor) && !isLightColor(backgroundColor)) {
+            textColor = lightenColor(textColor);
+        }
+        return textColor;
     }
 
     public static Drawable getTintedIcon(@NonNull Context context, @DrawableRes int drawable, @ColorInt int color) {
@@ -123,28 +165,6 @@ public class ColorUtils {
         }
     }
 
-    public static boolean isLightColor(Bitmap bitmap) {
-        Palette palette = Palette.from(bitmap).generate();
-        if (palette.getSwatches().size() > 0) {
-            return isLightColor(palette);
-        }
-        return isLightColor(palette);
-    }
-
-    private static boolean isLightColor(Palette palette) {
-        return isLightColor(ColorUtils.getProminentSwatch(palette).getRgb());
-    }
-
-    public static boolean isLightColor(@ColorInt int color) {
-        return getColorDarkness(color) < 0.45;
-    }
-
-    public static double getColorDarkness(@ColorInt int color) {
-        if (color == Color.BLACK) return 1.0;
-        else if (color == Color.WHITE || color == Color.TRANSPARENT) return 0.0;
-        return (1 - (0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color)) / 255);
-    }
-
     public static void setupToolbarIconsAndTextsColors(final Context context, AppBarLayout appbar,
                                                        final Toolbar toolbar) {
 
@@ -175,14 +195,34 @@ public class ColorUtils {
         }
     }
 
-    public static Palette.Swatch getProminentSwatch(Bitmap bitmap) {
+    public static Palette.Swatch getPaletteSwatch(Bitmap bitmap) {
         Palette palette = Palette.from(bitmap).generate();
-        return getProminentSwatch(palette);
+        return getPaletteSwatch(palette);
     }
 
-    private static Palette.Swatch getProminentSwatch(Palette palette) {
-        if (palette == null) return null;
-        List<Palette.Swatch> swatches = getSwatchesList(palette);
+    private static Palette.Swatch getPaletteSwatch(Palette palette) {
+        if (palette != null) {
+            if (palette.getVibrantSwatch() != null) {
+                return palette.getVibrantSwatch();
+            } else if (palette.getMutedSwatch() != null) {
+                return palette.getMutedSwatch();
+            } else if (palette.getDarkVibrantSwatch() != null) {
+                return palette.getDarkVibrantSwatch();
+            } else if (palette.getDarkMutedSwatch() != null) {
+                return palette.getDarkMutedSwatch();
+            } else if (palette.getLightVibrantSwatch() != null) {
+                return palette.getLightVibrantSwatch();
+            } else if (palette.getLightMutedSwatch() != null) {
+                return palette.getLightMutedSwatch();
+            } else if (!palette.getSwatches().isEmpty()) {
+                return getPaletteSwatch(palette.getSwatches());
+            }
+        }
+        return null;
+    }
+
+    private static Palette.Swatch getPaletteSwatch(List<Palette.Swatch> swatches) {
+        if (swatches == null) return null;
         return Collections.max(swatches,
                 new Comparator<Palette.Swatch>() {
                     @Override
@@ -217,9 +257,9 @@ public class ColorUtils {
 
     public static int getColorFromIcon(Drawable icon, final Context context) {
         Palette palette = Palette.from(Utils.drawableToBitmap(icon)).generate();
-        int resultColor = getBetterColor(palette.getVibrantColor(0));
+        int resultColor = getBetterColor(context, palette.getVibrantColor(0));
         if (resultColor == 0) {
-            resultColor = getBetterColor(palette.getMutedColor(0));
+            resultColor = getBetterColor(context, palette.getMutedColor(0));
         }
         if (resultColor == 0) {
             resultColor = ContextCompat.getColor(context, ThemeUtils.darkTheme ?
@@ -228,13 +268,52 @@ public class ColorUtils {
         return resultColor;
     }
 
-    private static int getBetterColor(@ColorInt int color) {
+    private static int getBetterColor(Context context, @ColorInt int color) {
         if (color == 0) return 0;
+        return ThemeUtils.darkTheme ?
+                shiftDarkTextColor(color, ContextCompat.getColor(context,
+                        R.color.md_background_color_dark))
+                : shiftLightTextColor(color, ContextCompat.getColor(context,
+                R.color.md_background_color_light));
+    }
+
+    public static int getMaterialPrimaryTextColor() {
         if (ThemeUtils.darkTheme) {
-            return getColorDarkness(color) > 0.6f ? lightenColor(color) : color;
+            // 100%
+            return Color.parseColor("#ffffffff");
         } else {
-            return getColorDarkness(color) < 0.3f ? darkenColor(color) : color;
+            // 87%
+            return Color.parseColor("#de000000");
         }
+    }
+
+    public static int getMaterialSecondaryTextColor() {
+        if (ThemeUtils.darkTheme) {
+            // 70%
+            return Color.parseColor("#b3ffffff");
+        } else {
+            // 54%
+            return Color.parseColor("#8a000000");
+        }
+    }
+
+    public static int getMaterialTertiaryColor() {
+        if (ThemeUtils.darkTheme) {
+            // 50%
+            return Color.parseColor("#80ffffff");
+        } else {
+            // 38%
+            return Color.parseColor("#61000000");
+        }
+    }
+
+    @ColorInt
+    public static int getCheckBoxColor(Context context, @ColorInt int defaultColor) {
+        int color = DialogUtils.resolveColor(context, R.attr.accentColor, defaultColor);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            color = DialogUtils.resolveColor(context, android.R.attr.colorAccent, color);
+        }
+        return color;
     }
 
 }

@@ -65,7 +65,7 @@ public class ChangelogDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity())
-                .title(R.string.changelog)
+                .title(R.string.changelog_dialog_title)
                 .titleGravity(GravityEnum.CENTER)
                 .titleColorAttr(android.R.attr.textColorPrimary)
                 .positiveText(R.string.great)

@@ -39,6 +39,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.OvershootInterpolator;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -78,7 +79,7 @@ import jahirfiquitiva.iconshowcase.views.TouchImageView;
 
 public class AltWallpaperViewerActivity extends AppCompatActivity {
 
-    private boolean mLastTheme, mLastNavBar, opened = false;
+    private boolean mLastTheme, opened = false;
 
     private WallpaperItem item;
     private CoordinatorLayout layout;
@@ -101,7 +102,7 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             getWindow().getDecorView().setSystemUiVisibility(
                     View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
 
@@ -149,9 +150,19 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
         int tintLightLighter = ContextCompat.getColor(context, R.color.drawable_base_tint);
         int tintDark = ContextCompat.getColor(context, R.color.drawable_tint_dark);
 
+        int navBarHeight = Utils.getNavigationBarHeight(context);
+
+        ImageView navbarGradient = (ImageView) findViewById(R.id.navbarGradient);
+        if (navBarHeight <= 0) {
+            navbarGradient.setVisibility(View.GONE);
+        } else {
+            navbarGradient.getLayoutParams().height = navBarHeight;
+            navbarGradient.requestLayout();
+        }
+
         LinearLayout.LayoutParams p = (LinearLayout.LayoutParams) fab.getLayoutParams();
         int fabMargin = context.getResources().getDimensionPixelSize(R.dimen.cards_padding);
-        p.setMargins(0, 0, fabMargin, (fabMargin + Utils.getNavigationBarHeight(context)));
+        p.setMargins(0, 0, fabMargin, (fabMargin + navBarHeight));
         fab.setLayoutParams(p);
 
         fab.setOnClickListener(new DebouncedClickListener() {
@@ -218,7 +229,7 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
         int colorFromCachedPic;
 
         if (bmp != null) {
-            colorFromCachedPic = ColorUtils.getProminentSwatch(bmp).getTitleTextColor();
+            colorFromCachedPic = ColorUtils.getPaletteSwatch(bmp).getTitleTextColor();
         } else {
             colorFromCachedPic = ThemeUtils.darkTheme ? tintDark : tintLightLighter;
         }

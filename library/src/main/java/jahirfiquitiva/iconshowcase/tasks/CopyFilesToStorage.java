@@ -94,7 +94,7 @@ public class CopyFilesToStorage extends AsyncTask<Void, String, Boolean> {
     @Override
     protected void onPostExecute(Boolean worked) {
         dialog.dismiss();
-        if(layout!=null){
+        if (layout != null) {
             Snackbar longSnackbar = Snackbar.make(layout,
                     context.get().getString(R.string.assets_installed), Snackbar.LENGTH_SHORT);
             final int snackbarLight = ContextCompat.getColor(context.get(), R.color.snackbar_light);

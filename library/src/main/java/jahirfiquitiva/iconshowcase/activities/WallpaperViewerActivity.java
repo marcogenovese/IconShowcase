@@ -221,7 +221,7 @@ public class WallpaperViewerActivity extends AppCompatActivity {
         int colorFromCachedPic;
 
         if (bmp != null) {
-            colorFromCachedPic = ColorUtils.getProminentSwatch(bmp).getTitleTextColor();
+            colorFromCachedPic = ColorUtils.getPaletteSwatch(bmp).getTitleTextColor();
         } else {
             colorFromCachedPic = ThemeUtils.darkTheme ? tintDark : tintLightLighter;
         }
