@@ -46,6 +46,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.config.Config;
 import jahirfiquitiva.iconshowcase.fragments.RequestsFragment;
 import jahirfiquitiva.iconshowcase.models.AppFilterItem;
 import jahirfiquitiva.iconshowcase.models.RequestItem;
@@ -61,7 +62,6 @@ public class LoadRequestList extends AsyncTask<Void, String, Boolean> {
     private ArrayList<AppFilterItem> appFilterItems;
     private PackageManager pm;
     private WeakReference<Context> context;
-    private Resources res;
 
     private final long startTime;
     private long endTime;
@@ -69,9 +69,8 @@ public class LoadRequestList extends AsyncTask<Void, String, Boolean> {
     public LoadRequestList(Context context) {
         this.context = new WeakReference<>(context);
         this.pm = context.getPackageManager();
-        this.res = context.getResources();
         this.startTime = System.currentTimeMillis();
-        if (res.getBoolean(R.bool.debugging)) {
+        if (Config.get().allowDebugging()) {
             appFilterItems = new ArrayList<>();
         }
     }
@@ -124,7 +123,7 @@ public class LoadRequestList extends AsyncTask<Void, String, Boolean> {
                                 .replace("}", "");
                         String drawablename = xpp.getAttributeValue(null, "drawable");
                         if (cnstr != null && !(cnstr.isEmpty())) {
-                            if (res.getBoolean(R.bool.debugging)) {
+                            if (Config.get().allowDebugging()) {
                                 if (appFilterItems != null) {
                                     appFilterItems.add(new AppFilterItem(
                                             cnstr,
@@ -174,11 +173,11 @@ public class LoadRequestList extends AsyncTask<Void, String, Boolean> {
         RequestList.setRequestList(appsToTheme);
         RequestsFragment.setupContent(RequestsFragment.layout, context.get());
         if (worked) {
-            Timber.d("Load of request list completed in: %d seconds", (endTime - startTime) / 1000);
+            Timber.d("Load of request list completed in: %d milliseconds", (endTime - startTime));
         }
-        if (res.getBoolean(R.bool.debugging)) {
-            showAppFilterErrors(context.get());
-            showDuplicatedComponentsInLog(context.get());
+        if (Config.get().allowDebugging()) {
+            showAppFilterErrors();
+            showDuplicatedComponentsInLog();
         }
     }
 
@@ -302,40 +301,40 @@ public class LoadRequestList extends AsyncTask<Void, String, Boolean> {
         return getHiResAppIcon(Resources.getSystem(), android.R.mipmap.sym_def_app_icon);
     }
 
-    private void showAppFilterErrors(Context context) {
-        Utils.showAppFilterLog(context, "----- START OF APPFILTER DEBUG -----");
+    private void showAppFilterErrors() {
+        Timber.d("----- START OF APPFILTER DEBUG -----");
         for (AppFilterItem error : appFilterItems) {
             String iconName = error.getIconName();
             if (iconName.equals("")) {
-                Utils.showAppFilterLog(context, "Found empty drawable for component: \'" + error.getCompleteComponent() + "\'");
+                Timber.d("Found empty drawable for component: \'%s\'", error.getCompleteComponent());
             } else {
-                Utils.showAppFilterLog(context, "COMPONENT: " + error.getCompleteComponent());
+                Timber.d("COMPONENT: " + error.getCompleteComponent());
                 if (error.getCompleteComponent().isEmpty() ||
                         (error.getCompleteComponent().contains("/") && error.getCompleteComponent().length() <= 1)) {
-                    Utils.showAppFilterLog(context, "Found empty ComponentInfo for icon: \'" + iconName + "\'");
+                    Timber.d("Found empty ComponentInfo for icon: \'%s\'", iconName);
                 } else {
                     String[] comp = getSplitComponent(error.getCompleteComponent());
                     if (comp != null) {
                         try {
                             if (comp[0].isEmpty()) {
-                                Utils.showAppFilterLog(context, "Found empty component package for icon: \'" + iconName + "\'");
+                                Timber.d("Found empty component package for icon: \'%s\'", iconName);
                             }
                             if (comp[1].isEmpty()) {
-                                Utils.showAppFilterLog(context, "Found empty component for icon: \'" + iconName + "\'");
+                                Timber.d("Found empty component for icon: \'%s\'", iconName);
                             }
                         } catch (ArrayIndexOutOfBoundsException ex) {
                             //Do nothing
                         }
                     }
                 }
-                if (Utils.getIconResId(context.getResources(), context.getPackageName(), iconName) == 0) {
-                    Utils.showAppFilterLog(context, "Icon \'" + iconName + "\' is mentioned in appfilter.xml but could not be found in the app resources.");
+                if (Config.get().getIconResId(iconName) == 0) {
+                    Timber.d("Icon \'%s\' is mentioned in appfilter.xml but could not be found in the app resources.", iconName);
                 }
             }
         }
     }
 
-    private void showDuplicatedComponentsInLog(Context context) {
+    private void showDuplicatedComponentsInLog() {
         SimpleArrayMap<String, Integer> occurrences = new SimpleArrayMap<>();
         String[] components = new String[appFilterItems.size()];
         for (int i = 0; i < appFilterItems.size(); i++) {
@@ -350,10 +349,10 @@ public class LoadRequestList extends AsyncTask<Void, String, Boolean> {
         for (int j = 0; j < occurrences.size(); j++) {
             String word = occurrences.keyAt(j);
             if (count > 0) {
-                Utils.showAppFilterLog(context, "Duplicated component: \'" + word + "\' - " + String.valueOf(count) + " times.");
+                Timber.d("Duplicated component: \'%s\' - %d times", word, count);
             }
         }
-        Utils.showAppFilterLog(context, "----- END OF APPFILTER DEBUG -----");
+        Timber.d("----- END OF APPFILTER DEBUG -----");
     }
 
 }

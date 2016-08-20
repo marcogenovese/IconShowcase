@@ -118,12 +118,9 @@ public class ShowcaseActivity extends BaseActivity implements FolderSelectorDial
     DONATIONS_GOOGLE = false,
             DONATIONS_PAYPAL = false,
             DONATIONS_FLATTR = false,
-            DONATIONS_BITCOIN = false,
-
-    ENABLE_DEV_OPTIONS = false;
+            DONATIONS_BITCOIN = false;
 
     public static boolean WITH_ZOOPER_SECTION = false, SELECT_ALL_APPS = true;
-    private static boolean ENABLE_USER_WALLPAPER_IN_TOOLBAR = true;
 
     private static String[] mGoogleCatalog = new String[0],
             GOOGLE_CATALOG_VALUES = new String[0],
@@ -190,8 +187,6 @@ public class ShowcaseActivity extends BaseActivity implements FolderSelectorDial
         context = this;
         mPrefs = new Preferences(this);
 
-        ENABLE_DEV_OPTIONS = getResources().getBoolean(R.bool.dev_options);
-
         String installer = getIntent().getStringExtra("installer");
         boolean openWallpapers = getIntent().getBooleanExtra("open_wallpapers", false);
 
@@ -207,8 +202,6 @@ public class ShowcaseActivity extends BaseActivity implements FolderSelectorDial
         WITH_INSTALLED_FROM_AMAZON = getIntent().getBooleanExtra("enableAmazonInstalls", false);
 
         GOOGLE_PUBKEY = getIntent().getStringExtra("googlePubKey");
-
-        ENABLE_USER_WALLPAPER_IN_TOOLBAR = getResources().getBoolean(R.bool.enable_user_wallpaper_in_toolbar);
 
         getAction();
 
@@ -736,7 +729,7 @@ public class ShowcaseActivity extends BaseActivity implements FolderSelectorDial
 
         boolean withDrawerTexts;
 
-        if (ENABLE_DEV_OPTIONS) {
+        if (Config.get().devOptions()) {
             withDrawerTexts = mPrefs.getDevDrawerTexts();
         } else {
             withDrawerTexts = getResources().getBoolean(R.bool.with_drawer_texts);
@@ -953,7 +946,7 @@ public class ShowcaseActivity extends BaseActivity implements FolderSelectorDial
 
     public static void setupToolbarHeader(Context context, ImageView toolbarHeader) {
 
-        if (ENABLE_USER_WALLPAPER_IN_TOOLBAR && mPrefs.getWallpaperAsToolbarHeaderEnabled()) {
+        if (Config.get().userWallpaperInToolbar() && mPrefs.getWallpaperAsToolbarHeaderEnabled()) {
             WallpaperManager wm = WallpaperManager.getInstance(context);
 
             if (wm != null) {

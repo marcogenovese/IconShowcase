@@ -553,7 +553,7 @@ public class WallpapersFragment extends NoFabBaseFragment {
 
         @Override
         protected void onPostExecute(Boolean worked) {
-            Timber.d("Walls Task completed in: %d seconds", (endTime - startTime) / 1000);
+            Timber.d("Walls Task completed in: %d milliseconds", (endTime - startTime));
 
             if (layout != null) {
                 setupLayout(taskContext.get());

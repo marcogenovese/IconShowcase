@@ -49,6 +49,7 @@ import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.BaseActivity;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.adapters.FeaturesAdapter;
+import jahirfiquitiva.iconshowcase.config.Config;
 import jahirfiquitiva.iconshowcase.dialogs.FolderSelectorDialog;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.fragments.base.PreferenceFragment;
@@ -121,7 +122,7 @@ public class SettingsFragment extends PreferenceFragment implements
 
         SwitchPreference wallHeaderCheck = (SwitchPreference) findPreference("wallHeader");
 
-        if (getResources().getBoolean(R.bool.enable_user_wallpaper_in_toolbar)) {
+        if (Config.get().userWallpaperInToolbar()) {
             wallHeaderCheck.setChecked(mPrefs.getWallpaperAsToolbarHeaderEnabled());
             wallHeaderCheck.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
