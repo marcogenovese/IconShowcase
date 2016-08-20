@@ -28,6 +28,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
@@ -50,6 +51,13 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (getIntent().getExtras() != null) {
+            for (String key : getIntent().getExtras().keySet()) {
+                Log.d("HomeActivity", "Key: " + key + " Value: " +
+                        String.valueOf(getIntent().getExtras().getString(key)));
+            }
+        }
 
         int notifType = getIntent().getIntExtra("notifType", 2);
 

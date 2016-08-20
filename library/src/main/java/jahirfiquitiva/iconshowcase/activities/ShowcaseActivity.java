@@ -39,7 +39,6 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -64,8 +63,6 @@ import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
-import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
-import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import org.sufficientlysecure.donations.google.util.IabHelper;
@@ -76,7 +73,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.IllegalFormatException;
 import java.util.List;
 import java.util.Random;
 
@@ -87,7 +83,6 @@ import jahirfiquitiva.iconshowcase.dialogs.FolderSelectorDialog;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.enums.DrawerType;
 import jahirfiquitiva.iconshowcase.fragments.ApplyFragment;
-import jahirfiquitiva.iconshowcase.fragments.BaseFragment;
 import jahirfiquitiva.iconshowcase.fragments.CreditsFragment;
 import jahirfiquitiva.iconshowcase.fragments.DonationsFragment;
 import jahirfiquitiva.iconshowcase.fragments.FAQsFragment;
@@ -100,7 +95,6 @@ import jahirfiquitiva.iconshowcase.fragments.WallpapersFragment;
 import jahirfiquitiva.iconshowcase.fragments.ZooperFragment;
 import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.models.WallpapersList;
-import jahirfiquitiva.iconshowcase.services.NotificationsService;
 import jahirfiquitiva.iconshowcase.tasks.LoadIconsLists;
 import jahirfiquitiva.iconshowcase.tasks.TasksExecutor;
 import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
@@ -187,7 +181,7 @@ public class ShowcaseActivity extends BaseActivity implements FolderSelectorDial
         ENABLE_DEV_OPTIONS = getResources().getBoolean(R.bool.dev_options);
 
         String installer = getIntent().getStringExtra("installer");
-        int notifType = getIntent().getIntExtra("launchNotifType", 2);
+        boolean openWallpapers = getIntent().getBooleanExtra("open_wallpapers", false);
 
         curVersionCode = getIntent().getIntExtra("curVersionCode", -1);
 
@@ -210,19 +204,11 @@ public class ShowcaseActivity extends BaseActivity implements FolderSelectorDial
 
         TasksExecutor.with(context)
                 .loadJust((iconsPicker && iconsPickerEnabled),
-                        ((notifType == 1) || (wallsPicker && mPrefs.areFeaturesEnabled() && wallsEnabled)));
+                        (wallsPicker && mPrefs.areFeaturesEnabled() && wallsEnabled));
 
         shuffleIcons = getResources().getBoolean(R.bool.shuffle_toolbar_icons);
 
         mPrefs.setActivityVisible(true);
-
-        if (notifType == 1) {
-            NotificationsService.clearNotification(context, 97);
-        }
-
-        if (notifType == 2) {
-            NotificationsService.clearNotification(context, 19);
-        }
 
         try {
             //TODO move theses strings to final
@@ -302,7 +288,7 @@ public class ShowcaseActivity extends BaseActivity implements FolderSelectorDial
         }
 
         if (savedInstanceState == null) {
-            if (notifType == 1) {
+            if (openWallpapers) {
                 drawerItemSelectAndClick(mDrawerMap.get(DrawerType.WALLPAPERS));
             } else if (iconsPicker && iconsPickerEnabled) {
                 drawerItemSelectAndClick(mDrawerMap.get(DrawerType.REQUESTS));

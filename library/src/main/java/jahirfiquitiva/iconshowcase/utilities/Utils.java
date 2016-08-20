@@ -25,6 +25,8 @@ package jahirfiquitiva.iconshowcase.utilities;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -35,6 +37,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -50,6 +53,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.graphics.drawable.VectorDrawableCompat;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.Log;
@@ -69,6 +73,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Map;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.views.CustomCoordinatorLayout;
@@ -656,6 +661,44 @@ public class Utils {
             //Hardware buttons
             return 0;
         }
+    }
+
+    public static void sendFirebaseNotification(Context context, Class mainActivity,
+                                        Map<String, String> data, String title, String content) {
+        Intent intent = new Intent(context, mainActivity);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        if (data != null) {
+            if (data.size() > 0) {
+                intent.putExtra("in-app-notif", true);
+                for (int i = 0; i < data.size(); i++) {
+                    String[] dataValue = data.toString().replace("{", "").replace("}", "").split(",")[i].split("=");
+                    intent.putExtra(dataValue[0], dataValue[1]);
+                }
+            }
+        }
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0 /* Request code */, intent,
+                PendingIntent.FLAG_ONE_SHOT);
+
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
+                .setSmallIcon(R.drawable.ic_notifications)
+                .setContentTitle(title)
+                .setTicker(title)
+                .setContentText(content)
+                .setAutoCancel(true)
+                .setOngoing(false)
+                .setColor(ThemeUtils.darkTheme ?
+                        ContextCompat.getColor(context, jahirfiquitiva.iconshowcase.R.color.dark_theme_accent) :
+                        ContextCompat.getColor(context, jahirfiquitiva.iconshowcase.R.color.light_theme_accent))
+                .setSound(defaultSoundUri)
+                .setContentIntent(pendingIntent);
+
+        NotificationManager notificationManager =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
     }
 
 }

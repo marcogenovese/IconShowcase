@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "867034820676",
+    "firebase_url": "https://iconshowcase.firebaseio.com",
+    "project_id": "iconshowcase",
+    "storage_bucket": "iconshowcase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:867034820676:android:f1f4bc11c9de6e1d",
+        "android_client_info": {
+          "package_name": "jahirfiquitiva.apps.iconshowcase.sampleip"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "867034820676-fv3sqrpr6ghvtu9qidqtc2n6is9rp957.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHV2hdvQ01uEJVtEpaAtEoHtLdAcTtupE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
