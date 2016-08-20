@@ -413,7 +413,6 @@ public class ShowcaseActivity extends BaseActivity implements FolderSelectorDial
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         mLastTheme = ThemeUtils.darkTheme;
-        ;
     }
 
     @Override

@@ -69,14 +69,8 @@ public class ZooperFragment extends NoFabBaseFragment {
             //Do nothing
         }
 
-        return layout;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Utils.collapseToolbar(getActivity());
         setupRV();
+        return layout;
     }
 
     private void setupRV() {
