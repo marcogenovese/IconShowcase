@@ -49,6 +49,7 @@ public class Config implements IConfig {
         mR = null;
     }
 
+    //TODO deinit Config when Showcase is destroyed
     public static void deinit() {
         if (mConfig != null) {
             mConfig.destroy();

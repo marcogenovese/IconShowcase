@@ -143,7 +143,7 @@ public class ShowcaseActivity extends BaseActivity implements FolderSelectorDial
             nova_action = "com.novalauncher.THEME";
 
     public static boolean iconsPicker, wallsPicker, SHUFFLE = true;
-    private static boolean iconsPickerEnabled = false, wallsEnabled = false, shuffleIcons = true;
+    private static boolean shuffleIcons = true;
 
     private static String thaAppName;
 
@@ -210,8 +210,8 @@ public class ShowcaseActivity extends BaseActivity implements FolderSelectorDial
         setContentView(R.layout.showcase_activity);
 
         TasksExecutor.with(context)
-                .loadJust((iconsPicker && iconsPickerEnabled),
-                        ((notifType == 1) || (wallsPicker && mPrefs.areFeaturesEnabled() && wallsEnabled)));
+                .loadJust((iconsPicker && mDrawerMap.containsKey(DrawerType.REQUESTS)),
+                        ((notifType == 1) || (wallsPicker && mPrefs.areFeaturesEnabled() && mDrawerMap.containsKey(DrawerType.WALLPAPERS))));
 
         shuffleIcons = getResources().getBoolean(R.bool.shuffle_toolbar_icons);
 
@@ -305,9 +305,9 @@ public class ShowcaseActivity extends BaseActivity implements FolderSelectorDial
         if (savedInstanceState == null) {
             if (notifType == 1) {
                 drawerItemSelectAndClick(mDrawerMap.get(DrawerType.WALLPAPERS));
-            } else if (iconsPicker && iconsPickerEnabled) {
+            } else if (iconsPicker && mDrawerMap.containsKey(DrawerType.REQUESTS)) {
                 drawerItemSelectAndClick(mDrawerMap.get(DrawerType.REQUESTS));
-            } else if (wallsPicker && mPrefs.areFeaturesEnabled() && wallsEnabled) {
+            } else if (wallsPicker && mPrefs.areFeaturesEnabled() && mDrawerMap.containsKey(DrawerType.WALLPAPERS)) {
                 drawerItemSelectAndClick(mDrawerMap.get(DrawerType.WALLPAPERS));
             } else {
                 if (mPrefs.getSettingsModified()) {
@@ -677,10 +677,8 @@ public class ShowcaseActivity extends BaseActivity implements FolderSelectorDial
             case "previews":
                 return DrawerType.PREVIEWS;
             case "wallpapers":
-                wallsEnabled = true;
                 return DrawerType.WALLPAPERS;
             case "requests":
-                iconsPickerEnabled = true;
                 return DrawerType.REQUESTS;
             case "apply":
                 return DrawerType.APPLY;
