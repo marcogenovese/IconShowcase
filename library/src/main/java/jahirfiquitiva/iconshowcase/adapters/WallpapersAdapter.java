@@ -17,9 +17,6 @@
  *
  */
 
-/*
- *
- */
 
 package jahirfiquitiva.iconshowcase.adapters;
 
@@ -105,7 +102,6 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
 
         WallpaperGlideRequest.Builder.from(Glide.with(context), wall)
                 .generatePalette(context).build()
-                .dontAnimate()
                 .into(new WallpaperTarget(holder.wall) {
                     @Override
                     public void onLoadCleared(Drawable placeholder) {

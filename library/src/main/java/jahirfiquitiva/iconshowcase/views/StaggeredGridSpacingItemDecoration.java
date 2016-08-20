@@ -82,7 +82,6 @@ public class StaggeredGridSpacingItemDecoration extends RecyclerView.ItemDecorat
 
                 if ((position > spanCount - 1) && (itemsWithoutExtraCedits % 2 != 0) &&
                         (position == itemsWithoutExtraCedits - 1)) {
-                    Utils.showLog("Item " + position + " will be modified");
                     if (extrasAtLeft) {
                         outRect.right = spacing;
                         outRect.left = spacing / 2;
@@ -94,7 +93,6 @@ public class StaggeredGridSpacingItemDecoration extends RecyclerView.ItemDecorat
             } else {
                 if (position == itemsWithoutExtraCedits) {
                     extrasAtLeft = column == 0;
-                    Utils.showLog("At left? " + extrasAtLeft);
                 }
 
                 if (extrasAtLeft) {

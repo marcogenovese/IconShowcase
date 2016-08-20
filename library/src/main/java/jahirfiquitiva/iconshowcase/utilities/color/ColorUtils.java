@@ -105,7 +105,7 @@ public class ColorUtils {
     }
 
     public static boolean isLightColor(@ColorInt int color) {
-        return getColorDarkness(color) < 0.45;
+        return getColorDarkness(color) < 0.4;
     }
 
     public static double getColorDarkness(@ColorInt int color) {

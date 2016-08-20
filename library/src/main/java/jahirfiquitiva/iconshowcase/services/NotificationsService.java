@@ -105,12 +105,12 @@ public class NotificationsService extends IntentService {
                         }
                         return true;
                     } catch (JSONException e) {
-                        Utils.showLog("Error downloading notifs - JSONException: " + e.getLocalizedMessage());
+                        Utils.showLog(getApplicationContext(), "Error downloading notifs - JSONException: " + e.getLocalizedMessage());
                         return false;
                     }
                 }
             } catch (Exception e) {
-                Utils.showLog("Error downloading notifs - Exception: " + e.getLocalizedMessage());
+                Utils.showLog(getApplicationContext(), "Error downloading notifs - Exception: " + e.getLocalizedMessage());
                 return false;
             }
             return false;

@@ -564,7 +564,7 @@ public class WallpapersFragment extends Fragment {
 
         @Override
         protected void onPostExecute(Boolean worked) {
-            Utils.showLog("Walls Task completed in: " +
+            Utils.showLog(context, "Walls Task completed in: " +
                     String.valueOf((endTime - startTime) / 1000) + " secs.");
 
             if (layout != null) {

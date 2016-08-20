@@ -169,20 +169,10 @@ public class Utils {
         }
     }
 
-    private static void showLog(Context context, String tag, String s) {
-        if (context.getResources().getBoolean(R.bool.debugging)) {
-            Log.d(context.getResources().getString(R.string.app_name) + " " + tag, s);
-        }
-    }
-
     public static void showLog(Context context, boolean muzei, String s) {
         if (context.getResources().getBoolean(R.bool.debugging) && muzei) {
             Log.d(context.getResources().getString(R.string.app_name) + " Muzei", s);
         }
-    }
-
-    public static void showLog(String s) {
-        Log.d("IconShowcase ", s);
     }
 
     public static void showAppFilterLog(Context context, String s) {
