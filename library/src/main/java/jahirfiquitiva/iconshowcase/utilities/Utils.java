@@ -77,6 +77,7 @@ import java.util.Map;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.views.CustomCoordinatorLayout;
+import timber.log.Timber;
 
 
 /**
@@ -664,7 +665,7 @@ public class Utils {
     }
 
     public static void sendFirebaseNotification(Context context, Class mainActivity,
-                                        Map<String, String> data, String title, String content) {
+                                                Map<String, String> data, String title, String content) {
         Intent intent = new Intent(context, mainActivity);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
@@ -672,6 +673,7 @@ public class Utils {
             if (data.size() > 0) {
                 for (int i = 0; i < data.size(); i++) {
                     String[] dataValue = data.toString().replace("{", "").replace("}", "").split(",")[i].split("=");
+                    Timber.d("Key: " + dataValue[0] + " Value: " + dataValue[1]);
                     intent.putExtra(dataValue[0], dataValue[1]);
                 }
             }

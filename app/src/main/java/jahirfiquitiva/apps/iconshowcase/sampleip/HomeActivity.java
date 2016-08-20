@@ -53,13 +53,15 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         if (getIntent().getStringExtra("open_link") != null) {
-            Utils.openLinkInChromeCustomTab(this, getIntent().getStringExtra("open_link"));
+            Utils.openLink(this, getIntent().getStringExtra("open_link"));
         } else {
             Intent intent = new Intent(HomeActivity.this, jahirfiquitiva.iconshowcase.activities.ShowcaseActivity.class);
 
             intent.putExtra("installer", getAppInstaller());
 
-            intent.putExtra("open_wallpapers", getIntent().getBooleanExtra("wallpapers_notif", false));
+            intent.putExtra("open_wallpapers",
+                    getIntent().getStringExtra("wallpapers_notif") != null &&
+                            getIntent().getStringExtra("wallpapers_notif").equals("true"));
 
             intent.putExtra("curVersionCode", getAppCurrentVersionCode());
 

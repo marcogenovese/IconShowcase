@@ -32,7 +32,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -225,36 +224,35 @@ public class WallpapersFragment extends NoFabBaseFragment {
                     fastScroller.setVisibility(View.VISIBLE);
                     mSwipeRefreshLayout.setEnabled(false);
                     mSwipeRefreshLayout.setRefreshing(false);
-                } else {
-                    noConnection.setImageDrawable(ColorUtils.getTintedIcon(
-                            context, R.drawable.ic_no_connection,
-                            ThemeUtils.darkTheme ? light : dark));
-                    hideStuff(noConnection);
                 }
-            }
-        } else {
-            runOnUIThread(context, new Runnable() {
-                @Override
-                public void run() {
-                    if (layout != null) {
-                        noConnection = (ImageView) layout.findViewById(R.id.no_connected_icon);
-                        noConnection.setVisibility(View.GONE);
-                        showProgressBar();
-                        Timer timer = new Timer();
-                        timer.schedule(new TimerTask() {
-                            @Override
-                            public void run() {
-                                runOnUIThread(context, new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        hideStuff(noConnection);
-                                    }
-                                });
-                            }
-                        }, 7500);
+
+                runOnUIThread(context, new Runnable() {
+                    @Override
+                    public void run() {
+                        if (layout != null) {
+                            noConnection.setVisibility(View.GONE);
+                            showProgressBar();
+                            Timer timer = new Timer();
+                            timer.schedule(new TimerTask() {
+                                @Override
+                                public void run() {
+                                    runOnUIThread(context, new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            if (WallpapersList.getWallpapersList().size() <= 0) {
+                                                noConnection.setImageDrawable(ColorUtils.getTintedIcon(
+                                                        context, R.drawable.ic_no_connection,
+                                                        ThemeUtils.darkTheme ? light : dark));
+                                                hideStuff(noConnection);
+                                            }
+                                        }
+                                    });
+                                }
+                            }, 7500);
+                        }
                     }
-                }
-            });
+                });
+            }
         }
     }
 
