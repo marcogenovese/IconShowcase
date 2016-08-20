@@ -52,6 +52,20 @@ public interface IConfig {
 
     //Amounts interface?
 
+    @Nullable
+    String[] homeListTitles();
+
+    @Nullable
+    String[] homeListDescriptions();
+
+    @Nullable
+    String[] homeListIcons();
+
+    @Nullable
+    String[] homeListLinks();
+
+    //Kustom Configs
+
 
 
 
