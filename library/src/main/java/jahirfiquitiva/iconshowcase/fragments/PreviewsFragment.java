@@ -62,7 +62,6 @@ public class PreviewsFragment extends NoFabBaseFragment {
     private int mLastSelected = 0;
     private ViewPagerWithCustomScrollDuration mPager;
     private String[] tabs;
-    private ViewGroup layout;
     private TabLayout mTabs;
     private SearchView mSearchView;
     private ArrayList<IconsCategory> categories;
@@ -72,20 +71,16 @@ public class PreviewsFragment extends NoFabBaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        if (layout != null) {
-            ViewGroup parent = (ViewGroup) layout.getParent();
-            if (parent != null) {
-                parent.removeView(layout);
-            }
-        }
-
-        try {
-            layout = (ViewGroup) inflater.inflate(R.layout.icons_preview_section, container, false);
-        } catch (InflateException e) {
-            //Do nothing
-        }
-
+        View layout = inflater.inflate(R.layout.icons_preview_section, container, false);
         categories = LoadIconsLists.getIconsCategories();
+
+        mPager = (ViewPagerWithCustomScrollDuration) layout.findViewById(R.id.pager);
+        TypedValue factor = new TypedValue();
+        getResources().getValue(R.dimen.scroll_factor, factor, true);
+        mPager.setScrollDurationFactor(factor.getFloat());
+        mPager.setAdapter(new IconsPagerAdapter(getChildFragmentManager()));
+        mPager.setOffscreenPageLimit(categories.size() - 1 < 1 ? 1 : categories.size() - 1);
+        createTabs();
 
         return layout;
     }
@@ -109,24 +104,6 @@ public class PreviewsFragment extends NoFabBaseFragment {
                     ((ShowcaseActivity) getActivity()).getToolbar(), mSearchItem, mSearchView,
                     iconsColor);
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        Utils.collapseToolbar(getActivity());
-
-        if (mPager == null) {
-            mPager = (ViewPagerWithCustomScrollDuration) layout.findViewById(R.id.pager);
-            TypedValue factor = new TypedValue();
-            getResources().getValue(R.dimen.scroll_factor, factor, true);
-            mPager.setScrollDurationFactor(factor.getFloat());
-            mPager.setAdapter(new IconsPagerAdapter(getChildFragmentManager()));
-            mPager.setOffscreenPageLimit(categories.size() - 1 < 1 ? 1 : categories.size() - 1);
-            createTabs();
-        }
-
     }
 
     private void createTabs() {

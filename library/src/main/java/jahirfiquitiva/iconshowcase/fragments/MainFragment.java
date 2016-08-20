@@ -55,7 +55,6 @@ import jahirfiquitiva.iconshowcase.views.DividerItemDecoration;
 public class MainFragment extends BaseFragment {
 
     private Context context;
-    private ViewGroup layout;
 
     private final ArrayList<HomeCard> homeCards = new ArrayList<>();
     private boolean hasAppsList = false;
@@ -98,17 +97,7 @@ public class MainFragment extends BaseFragment {
 
         context = getActivity();
 
-        if (layout != null) {
-            ViewGroup parent = (ViewGroup) layout.getParent();
-            if (parent != null) {
-                parent.removeView(layout);
-            }
-        }
-        try {
-            layout = (ViewGroup) inflater.inflate(R.layout.main_section, container, false);
-        } catch (InflateException e) {
-            //Do nothing
-        }
+        View layout = inflater.inflate(R.layout.main_section, container, false);
 
         RecyclerView mRecyclerView = (RecyclerView) layout.findViewById(R.id.home_rv);
 

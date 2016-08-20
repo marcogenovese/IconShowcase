@@ -176,12 +176,6 @@ public class DonationsFragment extends NoFabBaseFragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        Utils.collapseToolbar(getActivity());
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         return inflater.inflate(R.layout.donations__fragment, container, false);

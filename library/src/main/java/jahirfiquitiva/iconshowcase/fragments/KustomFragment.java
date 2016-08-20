@@ -45,7 +45,6 @@ import jahirfiquitiva.iconshowcase.views.SectionedGridSpacingItemDecoration;
 
 public class KustomFragment extends BaseFragment {
 
-    private static ViewGroup layout;
     private static Context context;
     private RecyclerView mRecyclerView;
     public static KustomAdapter kustomAdapter;
@@ -77,72 +76,48 @@ public class KustomFragment extends BaseFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         context = getActivity();
 
-        if (layout != null) {
-            ViewGroup parent = (ViewGroup) layout.getParent();
-            if (parent != null) {
-                parent.removeView(layout);
-            }
-        }
-        try {
-            layout = (ViewGroup) inflater.inflate(R.layout.zooper_section, container, false);
-        } catch (InflateException e) {
-            //Do nothing
-        }
-
-        if (layout != null) {
-            if (areAppsInstalled()) {
-                hideFab();
-            }
-        }
+        View layout = inflater.inflate(R.layout.zooper_section, container, false);
+        setupRV(layout);
+        if (areAppsInstalled()) hideFab();
 
         return layout;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        setupRV();
-    }
+    private void setupRV(View layout) {
+        int gridSpacing = getResources().getDimensionPixelSize(R.dimen.lists_padding);
+        final int columnsNumber = getResources().getInteger(R.integer.zooper_kustom_grid_width);
 
-    private void setupRV() {
-        if (layout != null) {
+        mRecyclerView = (RecyclerView) layout.findViewById(R.id.zooper_rv);
 
-            int gridSpacing = getResources().getDimensionPixelSize(R.dimen.lists_padding);
-            final int columnsNumber = getResources().getInteger(R.integer.zooper_kustom_grid_width);
-
-            mRecyclerView = (RecyclerView) layout.findViewById(R.id.zooper_rv);
-
-            if (space != null) {
-                mRecyclerView.removeItemDecoration(space);
-            }
-
-            GridLayoutManager gridManager = new GridLayoutManager(context, columnsNumber);
-
-            RecyclerFastScroller fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
-
-            kustomAdapter = new KustomAdapter(context, ShowcaseActivity.wallpaperDrawable);
-
-            space = new SectionedGridSpacingItemDecoration(columnsNumber, gridSpacing, true, kustomAdapter);
-
-            gridManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-                @Override
-                public int getSpanSize(int position) {
-                    if (kustomAdapter.isHeader(position)) {
-                        return columnsNumber;
-                    } else {
-                        return 1;
-                    }
-                }
-            });
-
-            mRecyclerView.addItemDecoration(space);
-            mRecyclerView.setHasFixedSize(true);
-            mRecyclerView.setLayoutManager(gridManager);
-            kustomAdapter.setLayoutManager(gridManager);
-            mRecyclerView.setAdapter(kustomAdapter);
-            fastScroller.attachRecyclerView(mRecyclerView);
-
+        if (space != null) {
+            mRecyclerView.removeItemDecoration(space);
         }
+
+        GridLayoutManager gridManager = new GridLayoutManager(context, columnsNumber);
+
+        RecyclerFastScroller fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
+
+        kustomAdapter = new KustomAdapter(context, ShowcaseActivity.wallpaperDrawable);
+
+        space = new SectionedGridSpacingItemDecoration(columnsNumber, gridSpacing, true, kustomAdapter);
+
+        gridManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                if (kustomAdapter.isHeader(position)) {
+                    return columnsNumber;
+                } else {
+                    return 1;
+                }
+            }
+        });
+
+        mRecyclerView.addItemDecoration(space);
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(gridManager);
+        kustomAdapter.setLayoutManager(gridManager);
+        mRecyclerView.setAdapter(kustomAdapter);
+        fastScroller.attachRecyclerView(mRecyclerView);
     }
 
     private boolean areAppsInstalled() {

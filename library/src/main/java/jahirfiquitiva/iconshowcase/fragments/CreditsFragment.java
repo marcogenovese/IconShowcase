@@ -44,21 +44,13 @@ import jahirfiquitiva.iconshowcase.views.StaggeredGridSpacingItemDecoration;
 public class CreditsFragment extends NoFabBaseFragment {
 
     private Context context;
-    private ViewGroup layout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         context = getActivity();
 
-        if (layout != null) {
-            ViewGroup parent = (ViewGroup) layout.getParent();
-            if (parent != null) {
-                parent.removeView(layout);
-            }
-        }
-
-        layout = (ViewGroup) inflater.inflate(R.layout.credits_section, container, false);
+        View layout = inflater.inflate(R.layout.credits_section, container, false);
 
         int gridSpacing = getResources().getDimensionPixelSize(R.dimen.cards_margin);
         int columnsNumber = getResources().getInteger(R.integer.credits_grid_width);
@@ -79,12 +71,6 @@ public class CreditsFragment extends NoFabBaseFragment {
         fastScroller.attachRecyclerView(recyclerView);
 
         return layout;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Utils.collapseToolbar(getActivity());
     }
 
 }

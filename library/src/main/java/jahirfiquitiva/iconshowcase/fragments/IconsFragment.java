@@ -41,21 +41,13 @@ public class IconsFragment extends NoFabBaseFragment {
 
     private IconsAdapter mAdapter;
     private ArrayList<IconItem> iconsList, filteredIconsList;
-    private ViewGroup layout;
 
     @Override
     @SuppressWarnings("unchecked")
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        if (layout != null) {
-            ViewGroup parent = (ViewGroup) layout.getParent();
-            if (parent != null) {
-                parent.removeView(layout);
-            }
-        }
-
-        layout = (ViewGroup) inflater.inflate(R.layout.icons_grid, container, false);
+        View layout = inflater.inflate(R.layout.icons_grid, container, false);
 
         RecyclerView iconsGrid = (RecyclerView) layout.findViewById(R.id.iconsGrid);
 

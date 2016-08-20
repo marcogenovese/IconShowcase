@@ -64,25 +64,13 @@ public class ApplyFragment extends NoFabBaseFragment {
 
     private Preferences mPrefs;
 
-    private ViewGroup layout;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        if (layout != null) {
-            ViewGroup parent = (ViewGroup) layout.getParent();
-            if (parent != null) {
-                parent.removeView(layout);
-            }
-        }
-        try {
-            layout = (ViewGroup) inflater.inflate(R.layout.apply_section, container, false);
-        } catch (InflateException e) {
-            //Do nothing
-        }
+
+        View layout = inflater.inflate(R.layout.apply_section, container, false);
 
         mPrefs = new Preferences(getActivity());
-
         showApplyAdviceDialog(getActivity());
 
         recyclerView = (RecyclerView) layout.findViewById(R.id.launchersList);
@@ -94,17 +82,12 @@ public class ApplyFragment extends NoFabBaseFragment {
                         getResources().getDimensionPixelSize(R.dimen.lists_padding),
                         true));
 
+        updateLaunchersList(layout);
+
         return layout;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        Utils.collapseToolbar(getActivity());
-        updateLaunchersList();
-    }
-
-    private void updateLaunchersList() {
+    private void updateLaunchersList(View layout) {
 
         launchers.clear();
 
