@@ -39,7 +39,6 @@ import android.support.v7.widget.Toolbar;
 
 import com.afollestad.materialdialogs.util.DialogUtils;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -106,7 +105,7 @@ public class ColorUtils {
     }
 
     public static boolean isLightColor(@ColorInt int color) {
-        return getColorDarkness(color) < 0.45;
+        return getColorDarkness(color) < 0.4;
     }
 
     public static double getColorDarkness(@ColorInt int color) {
@@ -200,7 +199,7 @@ public class ColorUtils {
         return getPaletteSwatch(palette);
     }
 
-    private static Palette.Swatch getPaletteSwatch(Palette palette) {
+    public static Palette.Swatch getPaletteSwatch(Palette palette) {
         if (palette != null) {
             if (palette.getVibrantSwatch() != null) {
                 return palette.getVibrantSwatch();
@@ -234,27 +233,6 @@ public class ColorUtils {
                 });
     }
 
-    private static List<Palette.Swatch> getSwatchesList(Palette palette) {
-        List<Palette.Swatch> swatches = new ArrayList<>();
-
-        Palette.Swatch vib = palette.getVibrantSwatch();
-        Palette.Swatch vibLight = palette.getLightVibrantSwatch();
-        Palette.Swatch vibDark = palette.getDarkVibrantSwatch();
-
-        Palette.Swatch muted = palette.getMutedSwatch();
-        Palette.Swatch mutedLight = palette.getLightMutedSwatch();
-        Palette.Swatch mutedDark = palette.getDarkMutedSwatch();
-
-        swatches.add(vib);
-        swatches.add(vibLight);
-        swatches.add(vibDark);
-        swatches.add(muted);
-        swatches.add(mutedLight);
-        swatches.add(mutedDark);
-
-        return swatches;
-    }
-
     public static int getColorFromIcon(Drawable icon, final Context context) {
         Palette palette = Palette.from(Utils.drawableToBitmap(icon)).generate();
         int resultColor = getBetterColor(context, palette.getVibrantColor(0));
@@ -277,8 +255,8 @@ public class ColorUtils {
                 R.color.md_background_color_light));
     }
 
-    public static int getMaterialPrimaryTextColor() {
-        if (ThemeUtils.darkTheme) {
+    public static int getMaterialPrimaryTextColor(boolean dark) {
+        if (dark) {
             // 100%
             return Color.parseColor("#ffffffff");
         } else {
@@ -287,8 +265,8 @@ public class ColorUtils {
         }
     }
 
-    public static int getMaterialSecondaryTextColor() {
-        if (ThemeUtils.darkTheme) {
+    public static int getMaterialSecondaryTextColor(boolean dark) {
+        if (dark) {
             // 70%
             return Color.parseColor("#b3ffffff");
         } else {
@@ -297,8 +275,8 @@ public class ColorUtils {
         }
     }
 
-    public static int getMaterialTertiaryColor() {
-        if (ThemeUtils.darkTheme) {
+    public static int getMaterialTertiaryColor(boolean dark) {
+        if (dark) {
             // 50%
             return Color.parseColor("#80ffffff");
         } else {

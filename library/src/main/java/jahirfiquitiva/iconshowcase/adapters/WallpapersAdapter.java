@@ -17,14 +17,11 @@
  *
  */
 
-/*
- *
- */
 
 package jahirfiquitiva.iconshowcase.adapters;
 
 import android.content.Context;
-import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.RecyclerView;
@@ -36,11 +33,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
 import java.util.ArrayList;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.glide.WallpaperGlideRequest;
+import jahirfiquitiva.iconshowcase.glide.WallpaperTarget;
 import jahirfiquitiva.iconshowcase.models.WallpaperItem;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
@@ -83,45 +81,46 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
         holder.name.setText(wallItem.getWallName());
         holder.authorName.setText(wallItem.getWallAuthor());
 
-        final String wallUrl = wallItem.getWallURL();
-        String wallThumb = wallItem.getWallThumbUrl();
+        loadWallpaper(wallItem, holder);
 
-        BitmapImageViewTarget target = new BitmapImageViewTarget(holder.wall) {
-            @Override
-            protected void setResource(Bitmap bitmap) {
-                Palette.Swatch wallSwatch = ColorUtils.getPaletteSwatch(bitmap);
-                if (mPrefs.getAnimationsEnabled() && (holder.getAdapterPosition() > lastPosition)) {
-                    holder.wall.setAlpha(0f);
-                    holder.titleBg.setAlpha(0f);
-                    holder.wall.setImageBitmap(bitmap);
-                    setWallInfoColors(wallSwatch, holder);
-                    holder.wall.animate().setDuration(250).alpha(1f).start();
-                    holder.titleBg.animate().setDuration(250).alpha(1f).start();
-                    lastPosition = holder.getAdapterPosition();
-                } else {
-                    holder.wall.setImageBitmap(bitmap);
-                    setWallInfoColors(wallSwatch, holder);
-                }
+    }
+
+    private void setColors(int color, WallsHolder holder) {
+        if (holder.titleBg != null && color != 0) {
+            holder.titleBg.setBackgroundColor(color);
+            if (holder.name != null) {
+                holder.name.setTextColor(ColorUtils.getMaterialPrimaryTextColor(!ColorUtils.isLightColor(color)));
             }
-        };
-
-        if (!(wallThumb.equals("null"))) {
-            Glide.with(context)
-                    .load(wallUrl)
-                    .asBitmap()
-                    .thumbnail(
-                            Glide.with(context)
-                                    .load(wallThumb)
-                                    .asBitmap()
-                                    .thumbnail(0.3f))
-                    .into(target);
-        } else {
-            Glide.with(context)
-                    .load(wallUrl)
-                    .asBitmap()
-                    .thumbnail(0.4f)
-                    .into(target);
+            if (holder.authorName != null) {
+                holder.authorName.setTextColor(ColorUtils.getMaterialPrimaryTextColor(!ColorUtils.isLightColor(color)));
+            }
         }
+    }
+
+    protected void loadWallpaper(WallpaperItem wall, final WallsHolder holder) {
+        if (holder.wall == null) return;
+
+        WallpaperGlideRequest.Builder.from(Glide.with(context), wall)
+                .generatePalette(context).build()
+                .into(new WallpaperTarget(holder.wall) {
+                    @Override
+                    public void onLoadCleared(Drawable placeholder) {
+                        super.onLoadCleared(placeholder);
+                    }
+                    @Override
+                    public void onColorReady(int color) {
+                        if (mPrefs.getAnimationsEnabled() && (holder.getAdapterPosition() > lastPosition)) {
+                            holder.wall.setAlpha(0f);
+                            holder.titleBg.setAlpha(0f);
+                            setColors(color, holder);
+                            holder.wall.animate().setDuration(250).alpha(1f).start();
+                            holder.titleBg.animate().setDuration(250).alpha(1f).start();
+                            lastPosition = holder.getAdapterPosition();
+                        } else {
+                            setColors(color, holder);
+                        }
+                    }
+                });
     }
 
     @Override

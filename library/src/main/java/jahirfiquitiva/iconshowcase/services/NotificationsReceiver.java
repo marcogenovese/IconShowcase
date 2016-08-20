@@ -43,7 +43,7 @@ public class NotificationsReceiver extends BroadcastReceiver {
                     elapsedTime,
                     interval,
                     pendingIntent);
-            Utils.showLog("Scheduling next notification at " + new Date(System.currentTimeMillis() + interval));
+            Utils.showLog(context, "Scheduling next notification at " + new Date(System.currentTimeMillis() + interval));
 
         } else {
             alarmManager.cancel(pendingIntent);

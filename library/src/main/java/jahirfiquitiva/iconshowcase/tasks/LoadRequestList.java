@@ -107,7 +107,7 @@ public class LoadRequestList extends AsyncTask<Void, String, Boolean> {
             xpp.setInput(istr, "UTF-8");
             // TODO: Test if this is needed: xpp.setInput(istr, null);
         } catch (XmlPullParserException e) {
-            Utils.showLog(e.getMessage());
+            Utils.showLog(context.get(), e.getMessage());
             return false;
         }
 
@@ -121,7 +121,7 @@ public class LoadRequestList extends AsyncTask<Void, String, Boolean> {
                         String cnstr = xpp.getAttributeValue(null, "component")
                                 .replace("ComponentInfo{", "")
                                 .replace("}", "");
-                        Utils.showLog(cnstr);
+                        Utils.showLog(context.get(), cnstr);
                         String drawablename = xpp.getAttributeValue(null, "drawable");
                         if (cnstr != null && !(cnstr.isEmpty())) {
                             if (res.getBoolean(R.bool.debugging)) {
@@ -147,7 +147,7 @@ public class LoadRequestList extends AsyncTask<Void, String, Boolean> {
                 xpp.next();
             }
         } catch (XmlPullParserException | IOException e) {
-            Utils.showLog(e.getMessage());
+            Utils.showLog(context.get(), e.getMessage());
             return false;
         }
 
@@ -162,7 +162,7 @@ public class LoadRequestList extends AsyncTask<Void, String, Boolean> {
             endTime = System.currentTimeMillis();
             return true;
         } catch (Exception ex) {
-            Utils.showLog(ex.getMessage());
+            Utils.showLog(context.get(), ex.getMessage());
             return false;
         }
     }

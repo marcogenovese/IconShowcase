@@ -70,14 +70,14 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
     private String zipFilePath;
     private WeakReference<Context> context;
     private StringBuilder emailContent = new StringBuilder();
-    private final WeakReference<Activity> wrActivity;
+    private static WeakReference<Activity> wrActivity;
     private Activity activity;
     private final Preferences mPrefs;
     private File filesFolder;
 
     public ZipFilesToRequest(Activity activity, MaterialDialog dialog,
                              ArrayList<RequestItem> appsListFinal) {
-        this.wrActivity = new WeakReference<>(activity);
+        ZipFilesToRequest.wrActivity = new WeakReference<>(activity);
         this.dialog = dialog;
         this.appsListFinal = appsListFinal;
         this.mPrefs = new Preferences(activity);
@@ -327,9 +327,9 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
             }
             zipOutputStream.close();
         } catch (FileNotFoundException e) {
-            Utils.showLog("File not found: " + e.getMessage());
+            Utils.showLog(wrActivity.get(), "File not found: " + e.getMessage());
         } catch (IOException e) {
-            Utils.showLog("IOException: " + e.getMessage());
+            Utils.showLog(wrActivity.get(), "IOException: " + e.getMessage());
         }
     }
 

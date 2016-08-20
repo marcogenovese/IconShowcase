@@ -17,11 +17,7 @@
  *
  */
 
-/*
- *
- */
-
-package jahirfiquitiva.iconshowcase.utilities;
+package jahirfiquitiva.iconshowcase.glide;
 
 import android.app.ActivityManager;
 import android.content.Context;

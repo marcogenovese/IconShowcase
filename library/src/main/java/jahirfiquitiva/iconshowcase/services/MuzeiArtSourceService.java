@@ -64,7 +64,7 @@ public class MuzeiArtSourceService extends RemoteMuzeiArtSource {
             try {
                 onTryUpdate(UPDATE_REASON_USER_NEXT);
             } catch (RetryException e) {
-                Utils.showLog("Error updating Muzei: " + e.getLocalizedMessage());
+                Utils.showLog(getApplicationContext(), "Error updating Muzei: " + e.getLocalizedMessage());
             }
         }
         return super.onStartCommand(intent, flags, startId);
@@ -105,7 +105,7 @@ public class MuzeiArtSourceService extends RemoteMuzeiArtSource {
             try {
                 new DownloadJSONAndSetWall(getApplicationContext()).execute();
             } catch (Exception e) {
-                Utils.showLog("Error updating Muzei: " + e.getLocalizedMessage());
+                Utils.showLog(getApplicationContext(), "Error updating Muzei: " + e.getLocalizedMessage());
                 throw new RetryException();
             }
         }
@@ -157,14 +157,14 @@ public class MuzeiArtSourceService extends RemoteMuzeiArtSource {
                         worked = true;
                     } catch (JSONException e) {
                         worked = false;
-                        Utils.showLog("Error downloading JSON for Muzei: " + e.getLocalizedMessage());
+                        Utils.showLog(getApplicationContext(), "Error downloading JSON for Muzei: " + e.getLocalizedMessage());
                     }
                 } else {
                     worked = false;
                 }
             } catch (Exception e) {
                 worked = false;
-                Utils.showLog("Error in Muzei: " + e.getLocalizedMessage());
+                Utils.showLog(getApplicationContext(), "Error in Muzei: " + e.getLocalizedMessage());
             }
             return worked;
         }
