@@ -30,6 +30,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import jahirfiquitiva.iconshowcase.utilities.Utils;
+import timber.log.Timber;
 
 
 public class HomeActivity extends AppCompatActivity {
@@ -88,7 +89,7 @@ public class HomeActivity extends AppCompatActivity {
             PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
             return packageInfo.versionCode;
         } catch (PackageManager.NameNotFoundException e) {
-            Utils.showLog(this, "Unable to get version code. Reason: " + e.getLocalizedMessage());
+            Timber.d("Unable to get version code. Reason:", e.getLocalizedMessage());
             return -1;
         }
     }

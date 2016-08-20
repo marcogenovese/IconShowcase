@@ -80,6 +80,7 @@ import java.util.IllegalFormatException;
 import java.util.List;
 import java.util.Random;
 
+import jahirfiquitiva.iconshowcase.BuildConfig;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.adapters.RequestsAdapter;
 import jahirfiquitiva.iconshowcase.config.Config;
@@ -99,6 +100,7 @@ import jahirfiquitiva.iconshowcase.fragments.RequestsFragment;
 import jahirfiquitiva.iconshowcase.fragments.SettingsFragment;
 import jahirfiquitiva.iconshowcase.fragments.WallpapersFragment;
 import jahirfiquitiva.iconshowcase.fragments.ZooperFragment;
+import jahirfiquitiva.iconshowcase.logging.CrashReportingTree;
 import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.models.WallpapersList;
 import jahirfiquitiva.iconshowcase.services.NotificationsService;
@@ -109,6 +111,7 @@ import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
+import timber.log.Timber;
 
 public class ShowcaseActivity extends BaseActivity implements FolderSelectorDialog.FolderSelectionCallback {
 
@@ -174,6 +177,14 @@ public class ShowcaseActivity extends BaseActivity implements FolderSelectorDial
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Config.init(this);
+
+        if (BuildConfig.DEBUG || Config.get().allowDebugging()) {
+            Timber.plant(new Timber.DebugTree());
+        } else {
+            //Disable debug & verbose logging on release
+            Timber.plant(new CrashReportingTree());
+        }
+
         ThemeUtils.onActivityCreateSetTheme(this);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -270,9 +281,9 @@ public class ShowcaseActivity extends BaseActivity implements FolderSelectorDial
 
                 public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
                     if (inventory != null) {
-                        Utils.showLog(context, "IAP inventory exists");
+                        Timber.i("IAP inventory exists");
                         for (String aGOOGLE_CATALOG_FREE : GOOGLE_CATALOG_FREE) {
-                            Utils.showLog(context, aGOOGLE_CATALOG_FREE + " is " + inventory.hasPurchase(aGOOGLE_CATALOG_FREE));
+                            Timber.i(aGOOGLE_CATALOG_FREE, "is", inventory.hasPurchase(aGOOGLE_CATALOG_FREE));
                             if (inventory.hasPurchase(aGOOGLE_CATALOG_FREE)) { //at least one donation value found, now premium
                                 mIsPremium = true;
                             }
@@ -288,7 +299,7 @@ public class ShowcaseActivity extends BaseActivity implements FolderSelectorDial
             mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
                 public void onIabSetupFinished(IabResult result) {
                     if (!result.isSuccess()) {
-                        Utils.showLog(context, "In-app Billing setup failed: " + result); //TODO move text to string?
+                        Timber.d("In-app Billing setup failed:", result); //TODO move text to string?
                         new MaterialDialog.Builder(ShowcaseActivity.this).title(R.string.donations_error_title)
                                 .content(R.string.donations_error_content)
                                 .positiveText(android.R.string.ok)

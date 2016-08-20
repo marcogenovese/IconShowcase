@@ -47,6 +47,7 @@ import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
+import timber.log.Timber;
 
 
 public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder> {
@@ -148,7 +149,7 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
             try {
                 bitmap = BitmapFactory.decodeResource(context.getResources(), resId);
             } catch (Exception e) {
-                Utils.showLog(context, "Icons Picker error: " + Log.getStackTraceString(e));
+                Timber.d("Icons Picker error:", e);
             }
 
             if (bitmap != null) {
