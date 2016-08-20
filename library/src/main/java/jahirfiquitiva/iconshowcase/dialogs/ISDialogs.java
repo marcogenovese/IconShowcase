@@ -62,42 +62,6 @@ import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 
 public final class ISDialogs {
 
-    /*
-    Dialogs used in the Showcase Activity
-     */
-
-    public static void showIconsChangelogDialog(final Activity context) {
-
-        if (((ShowcaseActivity) context).getChangelogDialog() != null) {
-            ((ShowcaseActivity) context).getChangelogDialog().dismiss();
-            ((ShowcaseActivity) context).setChangelogDialog(null);
-        }
-
-        ((ShowcaseActivity) context).setChangelogDialog(new MaterialDialog.Builder(context).title(R.string.changelog)
-                .customView(R.layout.icons_changelog, false)
-                .positiveText(context.getResources().getString(R.string.close))
-                .build());
-
-        final View v = ((ShowcaseActivity) context).getChangelogDialog().getCustomView();
-        if (v != null) {
-            final RecyclerView iconsGrid = (RecyclerView) v.findViewById(R.id.changelogRV);
-            final int grids = context.getResources().getInteger(R.integer.icons_grid_width);
-            iconsGrid.setLayoutManager(new GridLayoutManager(context, grids));
-
-            ArrayList<IconItem> icons = null;
-
-            if (LoadIconsLists.getIconsLists() != null) {
-                //noinspection ConstantConditions
-                icons = LoadIconsLists.getIconsLists().get(0).getIconsArray();
-            }
-
-            final IconsAdapter adapter = new IconsAdapter(context, icons, true);
-            iconsGrid.setAdapter(adapter);
-        }
-
-        ((ShowcaseActivity) context).getChangelogDialog().show();
-    }
-
     public static void showLicenseSuccessDialog(Context context,
                                                 MaterialDialog.SingleButtonCallback
                                                         onPositive,

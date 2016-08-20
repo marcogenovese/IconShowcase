@@ -58,7 +58,6 @@ public class Preferences {
             ACTIVITY_VISIBLE = "activity_visible";
 
     private static final String
-            DEV_ICONS_CHANGELOG_STYLE = "dev_changelog_style",
             DEV_DRAWER_TEXTS = "dev_drawer_texts",
             DEV_LISTS_CARDS = "dev_lists_cards";
 
@@ -267,14 +266,6 @@ public class Preferences {
 
     public int getVersionCode() {
         return prefs().getInt(VERSION_CODE, 0);
-    }
-
-    public void setDevIconsChangelogStyle(boolean icons) {
-        prefs().edit().putBoolean(DEV_ICONS_CHANGELOG_STYLE, icons).apply();
-    }
-
-    public boolean getDevIconsChangelogStyle() {
-        return prefs().getBoolean(DEV_ICONS_CHANGELOG_STYLE, false);
     }
 
     public void setDevDrawerTexts(boolean enable) {

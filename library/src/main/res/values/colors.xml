@@ -140,6 +140,4 @@
     <color name="drawable_base_tint">#616161</color>
     <color name="divider">#757575</color>
 
-    <color name="translucent_status_bar">#4d000000</color>
-
 </resources>

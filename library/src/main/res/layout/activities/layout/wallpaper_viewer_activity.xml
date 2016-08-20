@@ -18,23 +18,23 @@
   -->
 
 <RelativeLayout
-    android:id="@+id/viewerLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/viewerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        
+
         <jahirfiquitiva.iconshowcase.views.TouchImageView
             android:id="@+id/big_wallpaper"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"/>
-        
+
         <ProgressBar
             android:id="@+id/progress"
             style="?android:progressBarStyleLarge"
@@ -45,18 +45,31 @@
             android:focusable="false"
             android:gravity="center"/>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/materialize_statusbar">
+
+            <ImageView
+                android:id="@+id/toolbarGradient"
+                android:layout_width="match_parent"
+                android:layout_height="84.0dip"
+                android:background="@drawable/toolbar_gradient"
+                tools:ignore="ContentDescription"/>
+        </LinearLayout>
+
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
             android:layout_marginTop="@dimen/materialize_statusbar"
-            android:background="@drawable/toolbar_gradient"
+            android:background="@android:color/transparent"
             app:contentInsetStart="@dimen/second_keyline"
             app:popupTheme="@style/Toolbar.Popup.AppCompat"
             app:theme="@style/Toolbar.AppCompat.Responsive.Light"/>
-    
+
     </FrameLayout>
-    
+
     <LinearLayout
         android:id="@+id/iconsA"
         android:layout_width="wrap_content"
@@ -69,7 +82,7 @@
         android:minHeight="?actionBarSize"
         android:orientation="horizontal"
         tools:ignore="UnusedAttribute">
-        
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -78,7 +91,7 @@
             android:gravity="center_vertical"
             android:orientation="horizontal"
             tools:ignore="UselessParent">
-            
+
             <ImageView
                 android:id="@+id/download"
                 android:layout_width="24dp"
@@ -87,7 +100,7 @@
                 android:layout_marginStart="@dimen/dialog_margin"
                 android:background="?selectableItemBackgroundBorderless"
                 tools:ignore="ContentDescription"/>
-            
+
             <ImageView
                 android:id="@+id/apply"
                 android:layout_width="24dp"
@@ -96,18 +109,18 @@
                 android:layout_marginRight="@dimen/dialog_margin"
                 android:background="?selectableItemBackgroundBorderless"
                 tools:ignore="ContentDescription"/>
-            
+
             <ImageView
                 android:id="@+id/info"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:background="?selectableItemBackgroundBorderless"
                 tools:ignore="ContentDescription"/>
-        
+
         </LinearLayout>
-    
+
     </LinearLayout>
-    
+
     <LinearLayout
         android:id="@+id/iconsB"
         android:layout_width="match_parent"
@@ -121,7 +134,7 @@
         android:minHeight="?actionBarSize"
         android:orientation="horizontal"
         tools:ignore="UnusedAttribute">
-        
+
         <TextView
             android:id="@+id/wallName"
             android:layout_width="wrap_content"
@@ -132,7 +145,7 @@
             android:singleLine="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             tools:text="This is a super long text just to test how the app puts the ellipsis."/>
-    
+
     </LinearLayout>
 
 </RelativeLayout>

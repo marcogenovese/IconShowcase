@@ -89,7 +89,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
         BitmapImageViewTarget target = new BitmapImageViewTarget(holder.wall) {
             @Override
             protected void setResource(Bitmap bitmap) {
-                Palette.Swatch wallSwatch = ColorUtils.getProminentSwatch(bitmap);
+                Palette.Swatch wallSwatch = ColorUtils.getPaletteSwatch(bitmap);
                 if (mPrefs.getAnimationsEnabled() && (holder.getAdapterPosition() > lastPosition)) {
                     holder.wall.setAlpha(0f);
                     holder.titleBg.setAlpha(0f);

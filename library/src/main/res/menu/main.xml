@@ -22,15 +22,15 @@
   -->
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto"
-      xmlns:tools="http://schemas.android.com/tools"
-      tools:context="jahirfiquitiva.iconshowcase.activities.ShowcaseActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="jahirfiquitiva.iconshowcase.activities.ShowcaseActivity">
 
     <item
         android:id="@+id/changelog"
         android:icon="@drawable/ic_changelog"
         android:orderInCategory="100"
-        android:title="@string/changelog"
+        android:title="@string/changelog_dialog_title"
         app:showAsAction="always"/>
 
 </menu>

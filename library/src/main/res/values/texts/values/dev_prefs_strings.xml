@@ -23,9 +23,6 @@
     <string name="dev_prefs_title">Development Preferences</string>
     <string name="dev_prefs_summary">These preferences won\'t be available in final apps. These are made just for designers to check the multiple customization options IconShowcase can offer.</string>
 
-    <string name="dev_icons_changelog_title">Icons based changelog</string>
-    <string name="dev_icons_changelog_summary">IconShowcase offers 2 changelog styles: a text based one and an icons based one.</string>
-
     <string name="dev_lists_cards_title">Lists cards</string>
     <string name="dev_lists_cards_summary">IconShowcase offers you the option to show some lists as cards instead of flat stuff.</string>
 

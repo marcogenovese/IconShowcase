@@ -67,7 +67,7 @@
                 <ImageView
                     android:id="@+id/toolbarGradient"
                     android:layout_width="match_parent"
-                    android:layout_height="76.0dip"
+                    android:layout_height="84.0dip"
                     android:background="@drawable/toolbar_gradient"
                     android:fitsSystemWindows="true"
                     app:layout_collapseMode="parallax"

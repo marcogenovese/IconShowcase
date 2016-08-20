@@ -113,7 +113,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderSelecto
             WITH_LICENSE_CHECKER = false,
             WITH_INSTALLED_FROM_AMAZON = false,
             WITH_DONATIONS_SECTION = false,
-            WITH_ICONS_BASED_CHANGELOG = false,
 
     //Donations stuff
     DONATIONS_GOOGLE = false,
@@ -210,12 +209,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderSelecto
         TasksExecutor.with(context)
                 .loadJust((iconsPicker && iconsPickerEnabled),
                         ((notifType == 1) || (wallsPicker && mPrefs.areFeaturesEnabled() && wallsEnabled)));
-
-        if (ENABLE_DEV_OPTIONS) {
-            WITH_ICONS_BASED_CHANGELOG = mPrefs.getDevIconsChangelogStyle();
-        } else {
-            WITH_ICONS_BASED_CHANGELOG = getResources().getBoolean(R.bool.icons_changelog);
-        }
 
         shuffleIcons = getResources().getBoolean(R.bool.shuffle_toolbar_icons);
 
@@ -511,11 +504,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderSelecto
         super.onOptionsItemSelected(item);
         int i = item.getItemId();
         if (i == R.id.changelog) {
-            if (WITH_ICONS_BASED_CHANGELOG) {
-                ISDialogs.showIconsChangelogDialog(this);
-            } else {
-                ChangelogDialog.show(this);
-            }
+            ChangelogDialog.show(this);
         } else if (i == R.id.refresh) {
             WallpapersFragment.refreshWalls(context);
             loadWallsList(this);
@@ -565,11 +554,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderSelecto
 
         if ((curVersionCode > prevVersionCode) && (curVersionCode > -1)) {
             mPrefs.setVersionCode(curVersionCode);
-            if (WITH_ICONS_BASED_CHANGELOG) {
-                ISDialogs.showIconsChangelogDialog(this);
-            } else {
-                ChangelogDialog.show(this);
-            }
+            ChangelogDialog.show(this);
         }
 
     }
@@ -825,7 +810,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderSelecto
 
         if (LoadIconsLists.getIconsLists() != null) {
             //noinspection ConstantConditions
-            icons = LoadIconsLists.getIconsLists().get(1).getIconsArray();
+            icons = LoadIconsLists.getIconsLists().get(0).getIconsArray();
         }
 
         ArrayList<IconItem> finalIconsList = new ArrayList<>();

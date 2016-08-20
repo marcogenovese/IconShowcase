@@ -348,17 +348,6 @@ public class SettingsFragment extends PreferenceFragment implements
                 }
             });
 
-            iconsChangelog.setChecked(mPrefs.getDevIconsChangelogStyle());
-            iconsChangelog.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    mPrefs.setDevIconsChangelogStyle(newValue.toString().equals("true"));
-                    mPrefs.setSettingsModified(true);
-                    ThemeUtils.restartActivity((Activity) context);
-                    return true;
-                }
-            });
-
             listsCards.setChecked(mPrefs.getDevListsCards());
             listsCards.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override

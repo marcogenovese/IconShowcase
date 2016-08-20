@@ -137,9 +137,6 @@ dependencies {
     //License Checker Lib
     compile 'com.github.javiersantos:PiracyChecker:0.0.2'
 
-    //Required for better Zooper setup .... TODO: Actually required?
-    //compile 'io.reactivex:rxandroid:1.1.0'
-
     //Required for Kustom support.
     //noinspection GradleDynamicVersion
     compile 'org.bitbucket.frankmonza:kustomapi:+'

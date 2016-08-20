@@ -48,7 +48,6 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
     private static ArrayList<IconsLists> iconsLists;
     private static ArrayList<IconsCategory> categories;
     private long startTime, endTime;
-    private static final String TASK = "IconsLists";
 
     public LoadIconsLists(Context context) {
         this.context = new WeakReference<>(context);
@@ -70,18 +69,6 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
         int iconResId;
 
         iconsLists = new ArrayList<>();
-
-        String[] newIcons = r.getStringArray(R.array.changelog_icons);
-        List<String> newIconsL = sortList(newIcons);
-
-        ArrayList<IconItem> changelogIconsArray = new ArrayList<>();
-        for (String icon : newIconsL) {
-            iconResId = Utils.getIconResId(r, p, icon);
-            if (iconResId != 0) {
-                changelogIconsArray.add(new IconItem(icon, iconResId));
-            }
-        }
-        iconsLists.add(new IconsLists(changelogIconsArray));
 
         String[] prev = r.getStringArray(R.array.preview);
         List<String> previewIconsL = sortList(prev);

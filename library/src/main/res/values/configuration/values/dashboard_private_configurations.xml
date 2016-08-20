@@ -21,4 +21,6 @@
 <resources>
     <!-- This will enable development options so set it to false unless you know what you're doing -->
     <bool name="dev_options">false</bool>
+    <color name="gradient_black">#66000000</color>
+    <color name="gradient_center_black">#38000000</color>
 </resources>

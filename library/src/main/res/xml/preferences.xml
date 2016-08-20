@@ -44,13 +44,6 @@
 
         <SwitchPreference
             android:defaultValue="false"
-            android:key="iconsChangelog"
-            android:persistent="true"
-            android:summary="@string/dev_icons_changelog_summary"
-            android:title="@string/dev_icons_changelog_title"/>
-
-        <SwitchPreference
-            android:defaultValue="false"
             android:key="listsCards"
             android:persistent="true"
             android:summary="@string/dev_lists_cards_summary"
