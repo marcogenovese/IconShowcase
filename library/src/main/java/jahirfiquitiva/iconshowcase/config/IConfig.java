@@ -52,7 +52,7 @@ public interface IConfig {
 
     //Amounts interface?
 
-    
+
 
 
 
