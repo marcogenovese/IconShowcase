@@ -14,6 +14,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -160,10 +161,26 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
             navbarGradient.requestLayout();
         }
 
-        LinearLayout.LayoutParams p = (LinearLayout.LayoutParams) fab.getLayoutParams();
-        int fabMargin = context.getResources().getDimensionPixelSize(R.dimen.cards_padding);
-        p.setMargins(0, 0, fabMargin, (fabMargin + navBarHeight));
-        fab.setLayoutParams(p);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            LinearLayout.LayoutParams p = (LinearLayout.LayoutParams) fab.getLayoutParams();
+            LinearLayout.LayoutParams mp = (LinearLayout.LayoutParams) infoFab.getLayoutParams();
+            int fabMargin = context.getResources().getDimensionPixelSize(R.dimen.fab_margin);
+            if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                if ((!(Utils.isTablet(context)))) {
+                    int miniFabMargin = context.getResources().getDimensionPixelSize(R.dimen.mini_fab_right_margin);
+                    p.setMargins(0, 0, (fabMargin + navBarHeight), fabMargin);
+                    mp.setMargins(0, 0, (fabMargin + navBarHeight + miniFabMargin), fabMargin);
+                    infoFab.setLayoutParams(mp);
+                    applyFab.setLayoutParams(mp);
+                    saveFab.setLayoutParams(mp);
+                } else {
+                    p.setMargins(0, 0, fabMargin, (fabMargin + navBarHeight));
+                }
+            } else {
+                p.setMargins(0, 0, fabMargin, (fabMargin + navBarHeight));
+            }
+            fab.setLayoutParams(p);
+        }
 
         fab.setOnClickListener(new DebouncedClickListener() {
             @Override
@@ -419,9 +436,15 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
     }
 
     private void reshowFab(FloatingActionButton fab) {
-        showFab(fab);
-        //TODO: Make sure the plus rotates to original position
-        //fab.animate().rotation(0.0f).withLayer().setDuration(300).setInterpolator(new OvershootInterpolator(10.0F)).start();
+
+        //TODO: Make sure the plus rotates to original state, while fab does NOT rotate
+        if (fab != null) {
+            fab.show();
+            fab.setVisibility(View.VISIBLE);
+            if (fab.isShown()) {
+                fab.animate().rotation(0.0f).withLayer().setDuration(300).setInterpolator(new OvershootInterpolator(10.0F)).start();
+            }
+        }
     }
 
     private void saveWallpaperAction(final String name, String url) {

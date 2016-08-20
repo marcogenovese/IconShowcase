@@ -143,6 +143,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
+            android:layout_marginTop="@dimen/materialize_statusbar"
             android:background="@android:color/transparent"
             android:transitionName="actionBar"
             app:contentInsetStart="@dimen/second_keyline"
