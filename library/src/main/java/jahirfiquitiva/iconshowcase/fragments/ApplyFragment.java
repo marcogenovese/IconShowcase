@@ -54,7 +54,7 @@ import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.utilities.sort.InstalledLauncherComparator;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 
-public class ApplyFragment extends Fragment {
+public class ApplyFragment extends NoFabBaseFragment {
 
     private static final String MARKET_URL = "https://play.google.com/store/apps/details?id=";
 
@@ -68,7 +68,7 @@ public class ApplyFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+        super.onCreateView(inflater, container, savedInstanceState);
         if (layout != null) {
             ViewGroup parent = (ViewGroup) layout.getParent();
             if (parent != null) {

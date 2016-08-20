@@ -109,7 +109,7 @@ import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 
-public class ShowcaseActivity extends AppCompatActivity implements FolderSelectorDialog.FolderSelectionCallback {
+public class ShowcaseActivity extends BaseActivity implements FolderSelectorDialog.FolderSelectionCallback {
 
     private static boolean
             WITH_LICENSE_CHECKER = false,
@@ -169,7 +169,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderSelecto
     private HashMap<DrawerType, Integer> mDrawerMap = new HashMap<>();
 
     private Drawer drawer;
-    private FloatingActionButton mFab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -250,7 +249,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderSelecto
         icon7 = (ImageView) findViewById(R.id.iconSeven);
         icon8 = (ImageView) findViewById(R.id.iconEight);
 
-        mFab = (FloatingActionButton) findViewById(R.id.fab);
+        setupFab(R.id.fab);
         appbar = (AppBarLayout) findViewById(R.id.appbar);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbar);
@@ -320,14 +319,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderSelecto
                 }
             }
         }
-    }
-
-    private BaseFragment getCurrentBaseFragment() {
-        return (BaseFragment) getSupportFragmentManager().findFragmentById(R.id.main);
-    }
-
-    public FloatingActionButton getFab() {
-        return mFab;
     }
 
     private void switchFragment(long itemId, DrawerType dt, AppCompatActivity context) {
@@ -405,7 +396,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderSelecto
                 fragment = new MainFragment();
                 break;
         }
-        fragmentTransaction.replace(R.id.main, fragment, dt.getName());
+        fragmentTransaction.replace(getFragmentId(), fragment, dt.getName());
 
         if (mPrefs.getAnimationsEnabled())
             fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
@@ -669,6 +660,11 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderSelecto
     public void onFolderSelection(@NonNull File folder) {
         mPrefs.setDownloadsFolder(folder.getAbsolutePath());
         SettingsFragment.changeWallsFolderValue(this, mPrefs);
+    }
+
+    @Override
+    protected int getFragmentId() {
+        return R.id.main;
     }
 
     public interface WallsListInterface {

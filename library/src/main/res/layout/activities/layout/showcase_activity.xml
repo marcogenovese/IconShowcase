@@ -124,7 +124,6 @@
         android:visibility="gone"
         app:backgroundTint="?attr/fabTintColor"
         app:fabSize="normal"
-        app:rippleColor="@color/semitransparent_white"
-        app:srcCompat="@drawable/ic_rate"/>
+        app:rippleColor="@color/semitransparent_white"/>
 
 </jahirfiquitiva.iconshowcase.views.CustomCoordinatorLayout>

@@ -39,14 +39,14 @@ import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.adapters.CreditsAdapter;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
-public class CreditsFragment extends Fragment {
+public class CreditsFragment extends NoFabBaseFragment {
 
     private Context context;
     private ViewGroup layout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+        super.onCreateView(inflater, container, savedInstanceState);
         context = getActivity();
 
         if (layout != null) {

@@ -46,6 +46,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import java.io.File;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.activities.BaseActivity;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.adapters.FeaturesAdapter;
 import jahirfiquitiva.iconshowcase.dialogs.FolderSelectorDialog;
@@ -72,6 +73,7 @@ public class SettingsFragment extends PreferenceFragment implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        BaseActivity.hideFab(getActivity());
 
         mPrefs = new Preferences(getActivity());
 

@@ -81,7 +81,7 @@ import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 
 
-public class WallpapersFragment extends Fragment {
+public class WallpapersFragment extends NoFabBaseFragment {
 
     private static ViewGroup layout;
     private static ProgressBar mProgress;
@@ -97,6 +97,7 @@ public class WallpapersFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
 
         setHasOptionsMenu(true);
         context = getActivity();

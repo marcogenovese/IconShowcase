@@ -52,7 +52,7 @@ import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 
 
-public class DonationsFragment extends Fragment {
+public class DonationsFragment extends NoFabBaseFragment {
 
     private static final String ARG_DEBUG = "debug";
 
@@ -183,6 +183,7 @@ public class DonationsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         return inflater.inflate(R.layout.donations__fragment, container, false);
     }
 
