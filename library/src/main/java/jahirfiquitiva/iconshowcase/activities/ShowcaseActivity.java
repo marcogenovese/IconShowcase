@@ -82,6 +82,7 @@ import java.util.Random;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.adapters.RequestsAdapter;
+import jahirfiquitiva.iconshowcase.config.Config;
 import jahirfiquitiva.iconshowcase.dialogs.ChangelogDialog;
 import jahirfiquitiva.iconshowcase.dialogs.FolderSelectorDialog;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
@@ -172,7 +173,7 @@ public class ShowcaseActivity extends BaseActivity implements FolderSelectorDial
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        Config.init(this);
         ThemeUtils.onActivityCreateSetTheme(this);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
