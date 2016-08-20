@@ -22,7 +22,7 @@ public class DonationUtil {
     }
 
     public static void hasPurchase(final Context context, @Nullable String pubKey, final OnPremiumListener listener) {
-        if (pubKey == null || !Config.get(context).hasGoogleDonations()) {
+        if (pubKey == null || pubKey.isEmpty() || !Config.get(context).hasGoogleDonations()) {
             listener.hasNoPurchase();
             return;
         }

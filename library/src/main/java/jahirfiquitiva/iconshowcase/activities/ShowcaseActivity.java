@@ -100,6 +100,7 @@ import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.models.WallpapersList;
 import jahirfiquitiva.iconshowcase.tasks.LoadIconsLists;
 import jahirfiquitiva.iconshowcase.tasks.TasksExecutor;
+import jahirfiquitiva.iconshowcase.utilities.Common;
 import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
@@ -130,7 +131,6 @@ public class ShowcaseActivity extends BaseActivity implements FolderSelectorDial
 
     private IabHelper mHelper;
 
-    private static final String MARKET_URL = "https://play.google.com/store/apps/details?id=";
     private boolean mIsPremium = false, installedFromPlayStore = false;
 
     private static final String adw_action = "org.adw.launcher.icons.ACTION_PICK_ICON", turbo_action = "com.phonemetra.turbo.launcher.icons.ACTION_PICK_ICON",
@@ -603,7 +603,7 @@ public class ShowcaseActivity extends BaseActivity implements FolderSelectorDial
         ISDialogs.showLicenseFailDialog(act, new MaterialDialog.SingleButtonCallback() {
             @Override
             public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(ShowcaseActivity.MARKET_URL + act.getPackageName()));
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Common.MARKET_URL + act.getPackageName()));
                 act.startActivity(browserIntent);
             }
         }, new MaterialDialog.SingleButtonCallback() {

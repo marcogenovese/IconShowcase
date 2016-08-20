@@ -48,6 +48,7 @@ import java.util.List;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.adapters.LaunchersAdapter;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
+import jahirfiquitiva.iconshowcase.utilities.Common;
 import jahirfiquitiva.iconshowcase.utilities.LauncherIntents;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
@@ -55,8 +56,6 @@ import jahirfiquitiva.iconshowcase.utilities.sort.InstalledLauncherComparator;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 
 public class ApplyFragment extends NoFabBaseFragment {
-
-    private static final String MARKET_URL = "https://play.google.com/store/apps/details?id=";
 
     private String intentString;
     private final List<Launcher> launchers = new ArrayList<>();
@@ -144,7 +143,7 @@ public class ApplyFragment extends NoFabBaseFragment {
     }
 
     private void openInPlayStore(final Launcher launcher) {
-        intentString = MARKET_URL + launcher.packageName;
+        intentString = Common.MARKET_URL + launcher.packageName;
         final String LauncherName = launcher.name;
         final String cmName = "CM Theme Engine";
         String dialogContent;
@@ -153,7 +152,7 @@ public class ApplyFragment extends NoFabBaseFragment {
             intentString = "http://download.cyanogenmod.org/";
         } else {
             dialogContent = getResources().getString(R.string.lni_content, launcher.name);
-            intentString = MARKET_URL + launcher.packageName;
+            intentString = Common.MARKET_URL + launcher.packageName;
         }
         ISDialogs.showOpenInPlayStoreDialog(getContext(), launcher.name, dialogContent, new MaterialDialog.SingleButtonCallback() {
             @Override
@@ -197,7 +196,7 @@ public class ApplyFragment extends NoFabBaseFragment {
     }
 
     private void gnlDialog() {
-        final String appLink = MARKET_URL + getResources().getString(R.string.extraapp);
+        final String appLink = Common.MARKET_URL + getResources().getString(R.string.extraapp);
         ISDialogs.showGoogleNowLauncherDialog(getContext(), new MaterialDialog.SingleButtonCallback() {
             @Override
             public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
