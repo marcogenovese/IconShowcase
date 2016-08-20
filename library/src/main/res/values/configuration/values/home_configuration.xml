@@ -41,36 +41,21 @@
     -->
     <bool name="hide_pack_info">false</bool>
 
-    <!--TODO generate amounts automatically-->
-
     <!--
     How many icons does your app include?
     -->
     <integer name="icons_amount">600</integer>
 
-    <!--
-    How many wallpapers does your app include?
-    -->
-    <integer name="walls_amount">100</integer>
-
-    <!--
-    How many Zooper widget does your app include?
-    (Don't worry, it will be ignored if your app doesn't include Zooper).
-    -->
-    <integer name="zooper_widgets">0</integer>
-
-    <!--TODO support all links? Not just app package names-->
-
-    <string-array name="apps_titles">
+    <string-array name="home_list_titles">
     </string-array>
 
-    <string-array name="apps_descriptions">
+    <string-array name="home_list_descriptions">
     </string-array>
 
-    <string-array name="apps_icons">
+    <string-array name="home_list_icons">
     </string-array>
 
-    <string-array name="apps_packages">
+    <string-array name="home_list_links">
     </string-array>
 
 </resources>

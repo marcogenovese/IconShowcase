@@ -21,6 +21,6 @@
 <resources>
 
     <!-- Set this to true if you want the alternative wallpaper viewer. -->
-    <bool name="alternative_viewer">false</bool>
+    <bool name="alternative_viewer">true</bool>
 
 </resources>

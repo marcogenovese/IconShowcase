@@ -29,9 +29,11 @@
         android:id="@+id/credits_rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clipToPadding="false"
         android:overScrollMode="ifContentScrolls"
+        android:padding="@dimen/cards_super_small_margin"
         android:scrollbars="none"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
     <com.pluscubed.recyclerfastscroll.RecyclerFastScroller
         android:id="@+id/rvFastScroller"
@@ -39,6 +41,6 @@
         android:layout_height="match_parent"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_gravity="end" />
+        android:layout_gravity="end"/>
 
 </RelativeLayout>

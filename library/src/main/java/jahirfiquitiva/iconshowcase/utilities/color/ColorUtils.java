@@ -73,6 +73,15 @@ public class ColorUtils {
     }
 
     @ColorInt
+    public static int changeAlpha(@ColorInt int color, @FloatRange(from = 0.0, to = 1.0) float newAlpha) {
+        float a = 255 * newAlpha;
+        float r = Color.red(color);
+        float g = Color.green(color);
+        float b = Color.blue(color);
+        return Color.argb((int) a, (int) r, (int) g, (int) b);
+    }
+
+    @ColorInt
     public static int shiftColor(@ColorInt int color, @FloatRange(from = 0.0f, to = 2.0f) float by) {
         if (by == 1f) return color;
         int alpha = Color.alpha(color);

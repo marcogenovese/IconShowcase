@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.models.HomeCard;
+import jahirfiquitiva.iconshowcase.models.WallpapersList;
+import jahirfiquitiva.iconshowcase.tasks.LoadZooperWidgets;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
@@ -126,8 +128,13 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public class AppInfoCard extends RecyclerView.ViewHolder {
 
         final String themedIcons = String.valueOf(context.getResources().getInteger(R.integer.icons_amount));
-        final String availableWallpapers = String.valueOf(context.getResources().getInteger(R.integer.walls_amount));
-        final String includedWidgets = String.valueOf(context.getResources().getInteger(R.integer.zooper_widgets));
+
+        //TODO: Improve tasks so the items amount is accurate
+
+        final String availableWallpapers = String.valueOf(
+                WallpapersList.getWallpapersList() != null ? WallpapersList.getWallpapersList().size() : 0);
+        final String includedWidgets = String.valueOf(
+                LoadZooperWidgets.widgets != null ? LoadZooperWidgets.widgets.size() : 0);
 
         final ImageView iconsIV, wallsIV, widgetsIV;
         final TextView iconsT, wallsT, widgetsT;
@@ -225,7 +232,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             final int pos = i;
 
-            view.setOnClickListener(new DebouncedClickListener() { //TODO make clicks work for more than just links
+            view.setOnClickListener(new DebouncedClickListener() {
                 @Override
                 public void onDebouncedClick(View v) {
                     if (homeCards.get(pos - cards).isInstalled && homeCards.get(pos - cards).intent != null) {

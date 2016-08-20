@@ -72,7 +72,7 @@ public class WallpaperItem implements Parcelable {
         return wallUrl;
     }
 
-    public String getWallThumbUrl() {
+    public String getWallThumbURL() {
         return wallThumbUrl;
     }
 

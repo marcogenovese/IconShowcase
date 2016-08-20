@@ -25,8 +25,6 @@ package jahirfiquitiva.iconshowcase.fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -82,13 +80,13 @@ public class MainFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        String[] appsNames = getResources().getStringArray(R.array.apps_titles);
-        String[] appsDescriptions = getResources().getStringArray(R.array.apps_descriptions);
-        String[] appsIcons = getResources().getStringArray(R.array.apps_icons);
-        String[] appsPackages = getResources().getStringArray(R.array.apps_packages);
+        String[] listNames = getResources().getStringArray(R.array.home_list_titles);
+        String[] listDescriptions = getResources().getStringArray(R.array.home_list_descriptions);
+        String[] listIcons = getResources().getStringArray(R.array.home_list_icons);
+        String[] listLinks = getResources().getStringArray(R.array.home_list_links);
 
-        int names = appsNames.length, descs = appsDescriptions.length, icons = appsIcons.length,
-                packs = appsPackages.length;
+        int names = listNames.length, descs = listDescriptions.length, icons = listIcons.length,
+                packs = listLinks.length;
 
         if (names > 0 && names == descs && names == icons && names == packs) {
             hasAppsList = true;
@@ -115,74 +113,17 @@ public class MainFragment extends BaseFragment {
         });
 
         if (hasAppsList) {
-            for (int i = 0; i < appsNames.length; i++) {
+            for (int i = 0; i < listNames.length; i++) {
                 try {
-                    if (appsPackages[i].contains("http")) { //checks if package is a site
-                        homeCards.add(new HomeCard.Builder()
-                                .context(getActivity())
-                                .title(appsNames[i])
-                                .description(appsDescriptions[i])
-                                .icon(ContextCompat.getDrawable(context,
-                                        Utils.getIconResId(getResources(),
-                                                context.getPackageName(), appsIcons[i])))
-                                .onClickLink(appsPackages[i], false, false, null)
-                                .build());
-                        continue;
-                    }
-                    Intent intent;
-                    boolean isInstalled = Utils.isAppInstalled(context, appsPackages[i]);
-                    if (isInstalled) {
-                        PackageManager pm = context.getPackageManager();
-                        intent = pm.getLaunchIntentForPackage(appsPackages[i]);
-                        if (intent != null) {
-                            try {
-                                homeCards.add(new HomeCard.Builder()
-                                        .context(getActivity())
-                                        .title(appsNames[i])
-                                        .description(appsDescriptions[i])
-                                        .icon(ContextCompat.getDrawable(context,
-                                                Utils.getIconResId(getResources(),
-                                                        context.getPackageName(), appsIcons[i])))
-                                        .onClickLink(appsPackages[i], true, true, intent)
-                                        .build());
-                            } catch (Resources.NotFoundException e) {
-                                Utils.showLog(context, "There's no icon that matches name: "
-                                        + appsIcons[i]);
-                                homeCards.add(new HomeCard.Builder()
-                                        .context(getActivity())
-                                        .title(appsNames[i])
-                                        .description(appsDescriptions[i])
-                                        .icon(ContextCompat.getDrawable(context,
-                                                Utils.getIconResId(getResources(),
-                                                        context.getPackageName(), "ic_na_launcher")))
-                                        .onClickLink(appsPackages[i], true, true, intent)
-                                        .build());
-                            }
-                        }
-                    } else {
-                        try {
-                            homeCards.add(new HomeCard.Builder()
-                                    .context(getActivity())
-                                    .title(appsNames[i])
-                                    .description(appsDescriptions[i])
-                                    .icon(ContextCompat.getDrawable(context,
-                                            Utils.getIconResId(getResources(),
-                                                    context.getPackageName(), appsIcons[i])))
-                                    .onClickLink(appsPackages[i], true, false, null)
-                                    .build());
-                        } catch (Resources.NotFoundException e) {
-                            Utils.showLog(context, "There's no icon that matches name: " + appsIcons[i]);
-                            homeCards.add(new HomeCard.Builder()
-                                    .context(getActivity())
-                                    .title(appsNames[i])
-                                    .description(appsDescriptions[i])
-                                    .icon(ContextCompat.getDrawable(context,
-                                            Utils.getIconResId(getResources(),
-                                                    context.getPackageName(), "ic_na_launcher")))
-                                    .onClickLink(appsPackages[i], true, false, null)
-                                    .build());
-                        }
-                    }
+                    homeCards.add(new HomeCard.Builder()
+                            .context(getActivity())
+                            .title(listNames[i])
+                            .description(listDescriptions[i])
+                            .icon(ContextCompat.getDrawable(context,
+                                    Utils.getIconResId(getResources(),
+                                            context.getPackageName(), listIcons[i])))
+                            .onClickLink(listLinks[i])
+                            .build());
                 } catch (IndexOutOfBoundsException e) {
                     hasAppsList = false;
                     showFab();

@@ -53,7 +53,6 @@ import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
 
     public interface ApplyCallback {
-
         void afterApplied();
     }
 

@@ -162,81 +162,76 @@ public class WallpapersFragment extends NoFabBaseFragment {
     private static void setupLayout(final Context context) {
 
         if (WallpapersList.getWallpapersList() != null && WallpapersList.getWallpapersList().size() > 0) {
-            runOnUIThread(context, new Runnable() {
-                @Override
-                public void run() {
-                    mAdapter = new WallpapersAdapter(context,
-                            new WallpapersAdapter.ClickListener() {
-                                @Override
-                                public void onClick(WallpapersAdapter.WallsHolder view,
-                                                    int position, boolean longClick) {
-                                    if ((longClick && !ShowcaseActivity.wallsPicker) || ShowcaseActivity.wallsPicker) {
-                                        showApplyWallpaperDialog(context,
-                                                WallpapersList.getWallpapersList().get(position));
-                                    } else {
-                                        final Intent intent = new Intent(context,
-                                                context.getResources().getBoolean(R.bool.alternative_viewer) ? AltWallpaperViewerActivity.class :
-                                                        WallpaperViewerActivity.class);
+            mAdapter = new WallpapersAdapter(context,
+                    new WallpapersAdapter.ClickListener() {
+                        @Override
+                        public void onClick(WallpapersAdapter.WallsHolder view,
+                                            int position, boolean longClick) {
+                            if ((longClick && !ShowcaseActivity.wallsPicker) || ShowcaseActivity.wallsPicker) {
+                                showApplyWallpaperDialog(context,
+                                        WallpapersList.getWallpapersList().get(position));
+                            } else {
+                                final Intent intent = new Intent(context,
+                                        context.getResources().getBoolean(R.bool.alternative_viewer) ? AltWallpaperViewerActivity.class :
+                                                WallpaperViewerActivity.class);
 
-                                        intent.putExtra("item", WallpapersList.getWallpapersList().get(position));
-                                        intent.putExtra("transitionName", ViewCompat.getTransitionName(view.wall));
+                                intent.putExtra("item", WallpapersList.getWallpapersList().get(position));
+                                intent.putExtra("transitionName", ViewCompat.getTransitionName(view.wall));
 
-                                        Bitmap bitmap;
+                                Bitmap bitmap;
 
-                                        if (view.wall.getDrawable() != null) {
-                                            bitmap = Utils.drawableToBitmap(view.wall.getDrawable());
+                                if (view.wall.getDrawable() != null) {
+                                    bitmap = Utils.drawableToBitmap(view.wall.getDrawable());
 
-                                            try {
-                                                String filename = "temp.png";
-                                                FileOutputStream stream = context.openFileOutput(filename, Context.MODE_PRIVATE);
-                                                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                                                stream.close();
-                                                intent.putExtra("image", filename);
-                                            } catch (Exception e) {
-                                                Utils.showLog(context, "Error getting drawable " + e.getLocalizedMessage());
-                                            }
-
-                                            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, view.wall, ViewCompat.getTransitionName(view.wall));
-                                            context.startActivity(intent, options.toBundle());
-                                        } else {
-                                            context.startActivity(intent);
-                                        }
+                                    try {
+                                        String filename = "temp.png";
+                                        FileOutputStream stream = context.openFileOutput(filename, Context.MODE_PRIVATE);
+                                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                                        stream.close();
+                                        intent.putExtra("image", filename);
+                                    } catch (Exception e) {
+                                        Utils.showLog(context, "Error getting drawable " + e.getLocalizedMessage());
                                     }
+
+                                    ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, view.wall, ViewCompat.getTransitionName(view.wall));
+                                    context.startActivity(intent, options.toBundle());
+                                } else {
+                                    context.startActivity(intent);
                                 }
-                            });
-
-                    mAdapter.setData(WallpapersList.getWallpapersList());
-
-                    if (layout != null) {
-
-                        mRecyclerView.setAdapter(mAdapter);
-
-                        fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
-
-                        fastScroller.attachRecyclerView(mRecyclerView);
-
-                        if (fastScroller.getVisibility() != View.VISIBLE) {
-                            fastScroller.setVisibility(View.VISIBLE);
+                            }
                         }
+                    });
 
-                        noConnection = (ImageView) layout.findViewById(R.id.no_connected_icon);
+            mAdapter.setData(WallpapersList.getWallpapersList());
 
-                        if (Utils.hasNetwork(context)) {
-                            hideProgressBar();
-                            noConnection.setVisibility(View.GONE);
-                            mRecyclerView.setVisibility(View.VISIBLE);
-                            fastScroller.setVisibility(View.VISIBLE);
-                            mSwipeRefreshLayout.setEnabled(false);
-                            mSwipeRefreshLayout.setRefreshing(false);
-                        } else {
-                            noConnection.setImageDrawable(ColorUtils.getTintedIcon(
-                                    context, R.drawable.ic_no_connection,
-                                    ThemeUtils.darkTheme ? light : dark));
-                            hideStuff(noConnection);
-                        }
-                    }
+            if (layout != null) {
+
+                mRecyclerView.setAdapter(mAdapter);
+
+                fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
+
+                fastScroller.attachRecyclerView(mRecyclerView);
+
+                if (fastScroller.getVisibility() != View.VISIBLE) {
+                    fastScroller.setVisibility(View.VISIBLE);
                 }
-            });
+
+                noConnection = (ImageView) layout.findViewById(R.id.no_connected_icon);
+
+                if (Utils.hasNetwork(context)) {
+                    hideProgressBar();
+                    noConnection.setVisibility(View.GONE);
+                    mRecyclerView.setVisibility(View.VISIBLE);
+                    fastScroller.setVisibility(View.VISIBLE);
+                    mSwipeRefreshLayout.setEnabled(false);
+                    mSwipeRefreshLayout.setRefreshing(false);
+                } else {
+                    noConnection.setImageDrawable(ColorUtils.getTintedIcon(
+                            context, R.drawable.ic_no_connection,
+                            ThemeUtils.darkTheme ? light : dark));
+                    hideStuff(noConnection);
+                }
+            }
         } else {
             runOnUIThread(context, new Runnable() {
                 @Override

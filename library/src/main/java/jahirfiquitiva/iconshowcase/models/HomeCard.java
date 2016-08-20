@@ -2,9 +2,12 @@ package jahirfiquitiva.iconshowcase.models;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 
 public class HomeCard implements Parcelable {
@@ -61,13 +64,16 @@ public class HomeCard implements Parcelable {
             return this;
         }
 
-        public Builder onClickLink(String s, boolean isAnApp, boolean isInstalled, Intent intent) {
-            this.onClickLink = isAnApp ? "https://play.google.com/store/apps/details?id=" + s : s;
-            this.isAnApp = isAnApp;
+        public Builder onClickLink(String s) {
+            this.onClickLink = s;
+            this.isAnApp = s.startsWith("https://play.google.com/store/apps/details?id=");
             if (isAnApp) {
                 this.packageName = s;
-                this.isInstalled = isInstalled;
-                this.intent = intent;
+                this.isInstalled = Utils.isAppInstalled(context, packageName);
+                if (isInstalled) {
+                    PackageManager pm = context.getPackageManager();
+                    this.intent = pm.getLaunchIntentForPackage(packageName);
+                }
             }
             return this;
         }
@@ -82,7 +88,7 @@ public class HomeCard implements Parcelable {
         desc = in.readString();
         img = (Drawable) in.readValue(Drawable.class.getClassLoader());
         imgEnabled = in.readByte() != 0x00;
-//        onClick = (Object) in.readValue(Object.class.getClassLoader());
+        onClickLink = (String) in.readValue(Object.class.getClassLoader());
     }
 
     @Override
@@ -96,7 +102,7 @@ public class HomeCard implements Parcelable {
         dest.writeString(desc);
         dest.writeValue(img);
         dest.writeByte((byte) (imgEnabled ? 0x01 : 0x00));
-//        dest.writeValue(onClick);
+        dest.writeValue(onClickLink);
     }
 
     @SuppressWarnings("unused")
