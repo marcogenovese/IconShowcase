@@ -28,7 +28,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import timber.log.Timber;
@@ -53,36 +52,31 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getIntent().getExtras() != null) {
-            for (String key : getIntent().getExtras().keySet()) {
-                Log.d("HomeActivity", "Key: " + key + " Value: " +
-                        String.valueOf(getIntent().getExtras().getString(key)));
-            }
+        if (getIntent().getStringExtra("open_link") != null) {
+            Utils.openLinkInChromeCustomTab(this, getIntent().getStringExtra("open_link"));
+        } else {
+            Intent intent = new Intent(HomeActivity.this, jahirfiquitiva.iconshowcase.activities.ShowcaseActivity.class);
+
+            intent.putExtra("installer", getAppInstaller());
+
+            intent.putExtra("open_wallpapers", getIntent().getBooleanExtra("wallpapers_notif", false));
+
+            intent.putExtra("curVersionCode", getAppCurrentVersionCode());
+
+            intent.putExtra("enableDonations", ENABLE_DONATIONS);
+            intent.putExtra("enableGoogleDonations", ENABLE_GOOGLE_DONATIONS);
+            intent.putExtra("enablePayPalDonations", ENABLE_PAYPAL_DONATIONS);
+            intent.putExtra("enableFlattrDonations", ENABLE_FLATTR_DONATIONS);
+            intent.putExtra("enableBitcoinDonations", ENABLE_BITCOIN_DONATIONS);
+
+            //noinspection PointlessBooleanExpression
+            intent.putExtra("enableLicenseCheck", (ENABLE_LICENSE_CHECK && !BuildConfig.DEBUG));
+            intent.putExtra("enableAmazonInstalls", ENABLE_AMAZON_INSTALLS);
+
+            intent.putExtra("googlePubKey", GOOGLE_PUBLISHER_KEY);
+
+            startActivity(intent);
         }
-
-        int notifType = getIntent().getIntExtra("notifType", 2);
-
-        Intent intent = new Intent(HomeActivity.this, jahirfiquitiva.iconshowcase.activities.ShowcaseActivity.class);
-
-        intent.putExtra("installer", getAppInstaller());
-
-        intent.putExtra("launchNotifType", notifType);
-
-        intent.putExtra("curVersionCode", getAppCurrentVersionCode());
-
-        intent.putExtra("enableDonations", ENABLE_DONATIONS);
-        intent.putExtra("enableGoogleDonations", ENABLE_GOOGLE_DONATIONS);
-        intent.putExtra("enablePayPalDonations", ENABLE_PAYPAL_DONATIONS);
-        intent.putExtra("enableFlattrDonations", ENABLE_FLATTR_DONATIONS);
-        intent.putExtra("enableBitcoinDonations", ENABLE_BITCOIN_DONATIONS);
-
-        //noinspection PointlessBooleanExpression
-        intent.putExtra("enableLicenseCheck", (ENABLE_LICENSE_CHECK && !BuildConfig.DEBUG));
-        intent.putExtra("enableAmazonInstalls", ENABLE_AMAZON_INSTALLS);
-
-        intent.putExtra("googlePubKey", GOOGLE_PUBLISHER_KEY);
-
-        startActivity(intent);
 
         finish();
 

@@ -670,7 +670,6 @@ public class Utils {
 
         if (data != null) {
             if (data.size() > 0) {
-                intent.putExtra("in-app-notif", true);
                 for (int i = 0; i < data.size(); i++) {
                     String[] dataValue = data.toString().replace("{", "").replace("}", "").split(",")[i].split("=");
                     intent.putExtra(dataValue[0], dataValue[1]);
