@@ -121,7 +121,6 @@ public class LoadRequestList extends AsyncTask<Void, String, Boolean> {
                         String cnstr = xpp.getAttributeValue(null, "component")
                                 .replace("ComponentInfo{", "")
                                 .replace("}", "");
-                        Utils.showLog(context.get(), cnstr);
                         String drawablename = xpp.getAttributeValue(null, "drawable");
                         if (cnstr != null && !(cnstr.isEmpty())) {
                             if (res.getBoolean(R.bool.debugging)) {
@@ -197,21 +196,28 @@ public class LoadRequestList extends AsyncTask<Void, String, Boolean> {
         //intent.setComponent(new ComponentName("com.myapp", "com.myapp.launcher.settings"));
 
         if (componentString != null) {
-            String[] split;
+            String[] split = getSplitComponent(componentString);
             try {
-                split = componentString.split("/");
-                try {
+                if (split != null) {
                     intent.setComponent(new ComponentName(split[0], split[1]));
-                } catch (ArrayIndexOutOfBoundsException e1) {
-                    return null;
                 }
-            } catch (ArrayIndexOutOfBoundsException e) {
+            } catch (ArrayIndexOutOfBoundsException e1) {
                 return null;
             }
             return pm.resolveActivity(intent, 0);
         } else {
             return null;
         }
+    }
+
+    private String[] getSplitComponent(String componentString) {
+        String[] split;
+        try {
+            split = componentString.split("/");
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return null;
+        }
+        return split;
     }
 
     private Drawable getHiResAppIcon(ResolveInfo info) {
@@ -304,16 +310,25 @@ public class LoadRequestList extends AsyncTask<Void, String, Boolean> {
             if (iconName.equals("")) {
                 Utils.showAppFilterLog(context, "Found empty drawable for component: \'" + error.getCompleteComponent() + "\'");
             } else {
-                if (error.getCompleteComponent().isEmpty()) {
+                Utils.showAppFilterLog(context, "COMPONENT: " + error.getCompleteComponent());
+                if (error.getCompleteComponent().isEmpty() ||
+                        (error.getCompleteComponent().contains("/") && error.getCompleteComponent().length() <= 1)) {
                     Utils.showAppFilterLog(context, "Found empty ComponentInfo for icon: \'" + iconName + "\'");
-                } /* else {
-                    String[] comp = error.getCompleteComponent().split("/");
-                    if (comp[0].isEmpty()) {
-                        Utils.showAppFilterLog(context, "Found empty component package for icon: \'" + iconName + "\'");
-                    } else if (comp[1].isEmpty()) {
-                        Utils.showAppFilterLog(context, "Found empty component for icon: \'" + iconName + "\'");
+                } else {
+                    String[] comp = getSplitComponent(error.getCompleteComponent());
+                    if (comp != null) {
+                        try {
+                            if (comp[0].isEmpty()) {
+                                Utils.showAppFilterLog(context, "Found empty component package for icon: \'" + iconName + "\'");
+                            }
+                            if (comp[1].isEmpty()) {
+                                Utils.showAppFilterLog(context, "Found empty component for icon: \'" + iconName + "\'");
+                            }
+                        } catch (ArrayIndexOutOfBoundsException ex) {
+                            //Do nothing
+                        }
                     }
-                } */
+                }
                 if (Utils.getIconResId(context.getResources(), context.getPackageName(), iconName) == 0) {
                     Utils.showAppFilterLog(context, "Icon \'" + iconName + "\' is mentioned in appfilter.xml but could not be found in the app resources.");
                 }
@@ -323,9 +338,13 @@ public class LoadRequestList extends AsyncTask<Void, String, Boolean> {
 
     private void showDuplicatedComponentsInLog(Context context) {
         SimpleArrayMap<String, Integer> occurrences = new SimpleArrayMap<>();
-        int count = 0;
+        String[] components = new String[appFilterItems.size()];
         for (int i = 0; i < appFilterItems.size(); i++) {
-            String word = appFilterItems.get(i).getCompleteComponent();
+            components[i] = appFilterItems.get(i).getCompleteComponent();
+        }
+        // TODO Make this work properly
+        int count = 0;
+        for (String word : components) {
             count = occurrences.get(word) == null ? 0 : occurrences.get(word);
             occurrences.put(word, count + 1);
         }

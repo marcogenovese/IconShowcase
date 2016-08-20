@@ -229,7 +229,7 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
         int colorFromCachedPic;
 
         if (bmp != null) {
-            colorFromCachedPic = ColorUtils.getPaletteSwatch(bmp).getTitleTextColor();
+            colorFromCachedPic = ColorUtils.getPaletteSwatch(bmp).getBodyTextColor();
         } else {
             colorFromCachedPic = ThemeUtils.darkTheme ? tintDark : tintLightLighter;
         }
@@ -348,8 +348,7 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
-            showFab(fab);
-            fab.animate().rotation(0.0f).withLayer().setDuration(300).setInterpolator(new OvershootInterpolator(10.0F)).start();
+            reshowFab(fab);
         }
     }
 
@@ -417,6 +416,12 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
             fab.hide();
             fab.setVisibility(View.GONE);
         }
+    }
+
+    private void reshowFab(FloatingActionButton fab) {
+        showFab(fab);
+        //TODO: Make sure the plus rotates to original position
+        //fab.animate().rotation(0.0f).withLayer().setDuration(300).setInterpolator(new OvershootInterpolator(10.0F)).start();
     }
 
     private void saveWallpaperAction(final String name, String url) {
@@ -529,8 +534,7 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
                             @Override
                             public void onDismissed(Snackbar snackbar, int event) {
                                 super.onDismissed(snackbar, event);
-                                showFab(fab);
-                                fab.animate().rotation(0.0f).withLayer().setDuration(300).setInterpolator(new OvershootInterpolator(10.0F)).start();
+                                reshowFab(fab);
                             }
                         });
                     }
@@ -599,8 +603,7 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
                                                     resource, false, layout, new ApplyWallpaper.ApplyCallback() {
                                                 @Override
                                                 public void afterApplied() {
-                                                    showFab(fab);
-                                                    fab.animate().rotation(0.0f).withLayer().setDuration(300).setInterpolator(new OvershootInterpolator(10.0F)).start();
+                                                    reshowFab(fab);
                                                 }
                                             });
                                             applyTask[0].execute();

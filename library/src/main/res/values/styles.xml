@@ -125,10 +125,4 @@
         <item name="android:shadowRadius">1</item>
     </style>
 
-    <style name="WallpaperViewer" parent="AppTheme">
-        <item name="android:fitsSystemWindows">true</item>
-        <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:windowTranslucentNavigation">true</item>
-    </style>
-
 </resources>

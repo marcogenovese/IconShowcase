@@ -1014,14 +1014,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderSelecto
         this.settingsDialog = settingsDialog;
     }
 
-    public MaterialDialog getChangelogDialog() {
-        return this.changelogDialog;
-    }
-
-    public void setChangelogDialog(MaterialDialog changelogDialog) {
-        this.changelogDialog = changelogDialog;
-    }
-
     public Toolbar getToolbar() {
         return toolbar;
     }
@@ -1032,10 +1024,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderSelecto
 
     public ImageView getToolbarHeader() {
         return toolbarHeader;
-    }
-
-    public Bitmap getToolbarHeaderImage() {
-        return toolbarHeaderImage;
     }
 
     public Drawer getDrawer() {

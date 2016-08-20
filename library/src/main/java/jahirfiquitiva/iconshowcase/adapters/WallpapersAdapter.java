@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.models.WallpaperItem;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
+import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 
 public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.WallsHolder> {
@@ -74,9 +75,14 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
 
     @Override
     public void onBindViewHolder(final WallsHolder holder, int position) {
-        holder.titleBg.setBackgroundColor(ContextCompat.getColor(context, R.color.semitransparent_black));
-        holder.name.setTextColor(ContextCompat.getColor(context, android.R.color.white));
-        holder.authorName.setTextColor(ContextCompat.getColor(context, android.R.color.white));
+        holder.titleBg.setBackgroundColor(
+                ColorUtils.changeAlpha(
+                        ContextCompat.getColor(context,
+                                ThemeUtils.darkTheme ? R.color.card_light_background
+                                        : R.color.card_dark_background),
+                        0.65f));
+        holder.name.setTextColor(ColorUtils.getMaterialPrimaryTextColor(!ThemeUtils.darkTheme));
+        holder.authorName.setTextColor(ColorUtils.getMaterialSecondaryTextColor(!ThemeUtils.darkTheme));
 
         final WallpaperItem wallItem = wallsList.get(holder.getAdapterPosition());
 
@@ -85,23 +91,8 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
         holder.name.setText(wallItem.getWallName());
         holder.authorName.setText(wallItem.getWallAuthor());
 
-        loadWallpaper(wallItem, holder);
-    }
+        final String wallURL = wallItem.getWallURL(), wallThumbURL = wallItem.getWallThumbURL();
 
-    private void setColors(int color, WallsHolder holder) {
-        if (holder.titleBg != null && color != 0) {
-            holder.titleBg.setBackgroundColor(color);
-            if (holder.name != null) {
-                holder.name.setTextColor(ColorUtils.getMaterialPrimaryTextColor(!ColorUtils.isLightColor(color)));
-            }
-            if (holder.authorName != null) {
-                holder.authorName.setTextColor(ColorUtils.getMaterialPrimaryTextColor(!ColorUtils.isLightColor(color)));
-            }
-        }
-    }
-
-    protected void loadWallpaper(WallpaperItem wall, final WallsHolder holder) {
-        if (holder.wall == null) return;
         BitmapImageViewTarget target = new BitmapImageViewTarget(holder.wall) {
             @Override
             protected void setResource(Bitmap bitmap) {
@@ -121,22 +112,35 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
             }
         };
 
-        if (!(wall.getWallThumbUrl().equals("null"))) {
+        if (!(wallThumbURL.equals("null"))) {
             Glide.with(context)
-                    .load(wall.getWallURL())
+                    .load(wallURL)
                     .asBitmap()
                     .thumbnail(
                             Glide.with(context)
-                                    .load(wall.getWallThumbUrl())
+                                    .load(wallThumbURL)
                                     .asBitmap()
                                     .thumbnail(0.3f))
                     .into(target);
         } else {
             Glide.with(context)
-                    .load(wall.getWallThumbUrl())
+                    .load(wallURL)
                     .asBitmap()
-                    .thumbnail(0.4f)
+                    .thumbnail(0.5f)
                     .into(target);
+        }
+
+    }
+
+    private void setColors(int color, WallsHolder holder) {
+        if (holder.titleBg != null && color != 0) {
+            holder.titleBg.setBackgroundColor(color);
+            if (holder.name != null) {
+                holder.name.setTextColor(ColorUtils.getMaterialPrimaryTextColor(!ColorUtils.isLightColor(color)));
+            }
+            if (holder.authorName != null) {
+                holder.authorName.setTextColor(ColorUtils.getMaterialPrimaryTextColor(!ColorUtils.isLightColor(color)));
+            }
         }
     }
 

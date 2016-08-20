@@ -201,12 +201,11 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
             if (requestList != null && requestList.size() > 0) {
                 requestsAdapter = new RequestsAdapter(context, requestList, mPrefs);
                 requestsAdapter.startIconFetching(mRecyclerView);
-                /*
                 mRecyclerView.setHasFixedSize(true);
                 mRecyclerView.setItemAnimator(null);
                 mRecyclerView.setAnimation(null);
-                */
                 mRecyclerView.setAdapter(requestsAdapter);
+                requestsAdapter.notifyItemRangeInserted(0, requestList.size() - 1);
                 fastScroller.attachRecyclerView(mRecyclerView);
                 errorLayout.setVisibility(View.GONE);
                 showStuff();

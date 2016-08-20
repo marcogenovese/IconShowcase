@@ -40,7 +40,7 @@
         <item name="android:windowBackground">@drawable/splash_screen_light</item>
         <item name="colorPrimaryDark">@color/splash_light_statusbar</item>
         <item name="colorAccent">@color/splash_light_statusbar</item>
-        <item name="android:navigationBarColor">@color/splash_light_statusbar</item>
+        <item name="android:navigationBarColor">@color/light_theme_navigation_bar</item>
     </style>
 
     <style name="AppTheme.Base.DarkLaunchScreen">
@@ -48,7 +48,7 @@
         <item name="android:windowBackground">@drawable/splash_screen_dark</item>
         <item name="colorPrimaryDark">@color/splash_dark_statusbar</item>
         <item name="colorAccent">@color/splash_dark_statusbar</item>
-        <item name="android:navigationBarColor">@color/splash_light_statusbar</item>
+        <item name="android:navigationBarColor">@color/dark_theme_navigation_bar</item>
     </style>
 
 </resources>

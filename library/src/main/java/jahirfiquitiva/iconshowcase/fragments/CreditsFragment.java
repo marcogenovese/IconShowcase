@@ -38,8 +38,6 @@ import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.adapters.CreditsAdapter;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
-import jahirfiquitiva.iconshowcase.views.StaggeredGridSpacingItemDecoration;
-
 
 public class CreditsFragment extends Fragment {
 
@@ -60,13 +58,11 @@ public class CreditsFragment extends Fragment {
 
         layout = (ViewGroup) inflater.inflate(R.layout.credits_section, container, false);
 
-        int gridSpacing = getResources().getDimensionPixelSize(R.dimen.cards_margin);
         int columnsNumber = getResources().getInteger(R.integer.credits_grid_width);
 
         RecyclerView recyclerView = (RecyclerView) layout.findViewById(R.id.credits_rv);
-        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(columnsNumber, StaggeredGridLayoutManager.VERTICAL));
-
-        recyclerView.addItemDecoration(new StaggeredGridSpacingItemDecoration(columnsNumber, gridSpacing));
+        recyclerView.setLayoutManager(
+                new StaggeredGridLayoutManager(columnsNumber, StaggeredGridLayoutManager.VERTICAL));
 
         RecyclerFastScroller fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
 
