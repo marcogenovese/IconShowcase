@@ -45,13 +45,20 @@ import timber.log.Timber;
 
 public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
 
-    private final WeakReference<Context> context;
-    private static ArrayList<IconsLists> iconsLists;
-    private static ArrayList<IconsCategory> categories;
-    private long startTime, endTime;
+    private final WeakReference<Context> mContext;
 
-    public LoadIconsLists(Context context) {
-        this.context = new WeakReference<>(context);
+    private static ArrayList<IconsLists> mIconList;
+    private static ArrayList<IconsCategory> mCategoryList;
+    private long startTime, endTime;
+    public interface IIconList {
+        void onListSizeLoaded(int listSize);
+        void onLoadComplete(List<IconsLists> iconList, List<IconsCategory> categoryList);
+    }
+    private IIconList mCallback;
+
+    public LoadIconsLists(Context context, IIconList callback) {
+        mContext = new WeakReference<>(context);
+        mCallback = callback;
     }
 
     @Override
@@ -64,12 +71,12 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
 
         boolean worked;
 
-        Resources r = context.get().getResources();
-        String p = context.get().getPackageName();
+        Resources r = mContext.get().getResources();
+        String p = mContext.get().getPackageName();
 
         int iconResId;
 
-        iconsLists = new ArrayList<>();
+        mIconList = new ArrayList<>();
 
         String[] prev = r.getStringArray(R.array.preview);
         List<String> previewIconsL = sortList(prev);
@@ -81,10 +88,10 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
                 previewIconsArray.add(new IconItem(icon, iconResId));
             }
         }
-        iconsLists.add(new IconsLists(previewIconsArray));
+        mIconList.add(new IconsLists(previewIconsArray));
 
         String[] tabsNames = r.getStringArray(R.array.tabs);
-        categories = new ArrayList<>();
+        mCategoryList = new ArrayList<>();
         ArrayList<IconItem> allIcons = new ArrayList<>();
 
         for (String tabName : tabsNames) {
@@ -106,20 +113,20 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
                     iconResId = Utils.getIconResId(r, p, iconsList.get(j));
                     if (iconResId != 0) {
                         iconsArray.add(new IconItem(iconsList.get(j), iconResId));
-                        if (context.get().getResources().getBoolean(R.bool.auto_generate_all_icons)) {
+                        if (mContext.get().getResources().getBoolean(R.bool.auto_generate_all_icons)) {
                             allIcons.add(new IconItem(iconsList.get(j), iconResId));
                         }
                     }
                 }
 
-                categories.add(new IconsCategory(Utils.makeTextReadable(tabName), iconsArray));
+                mCategoryList.add(new IconsCategory(Utils.makeTextReadable(tabName), iconsArray));
             }
         }
 
-        if (context.get().getResources().getBoolean(R.bool.auto_generate_all_icons)) {
+        if (mContext.get().getResources().getBoolean(R.bool.auto_generate_all_icons)) {
             ArrayList<IconItem> allTheIcons = getAllIconsList(r, p, allIcons);
             if (allTheIcons.size() > 0) {
-                categories.add(new IconsCategory("All", allTheIcons));
+                mCategoryList.add(new IconsCategory("All", allTheIcons));
                 worked = true;
             } else {
                 worked = false;
@@ -127,7 +134,7 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
         } else {
             String[] allIconsArray = r.getStringArray(R.array.icon_pack);
             if (allIconsArray.length > 0) {
-                categories.add(new IconsCategory("All", sortAndOrganizeList(r, p, allIconsArray)));
+                mCategoryList.add(new IconsCategory("All", sortAndOrganizeList(r, p, allIconsArray)));
                 worked = true;
             } else {
                 worked = false;
@@ -186,11 +193,11 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
     }
 
     public static ArrayList<IconsLists> getIconsLists() {
-        return iconsLists.size() > 0 ? iconsLists : null;
+        return mIconList.size() > 0 ? mIconList : null;
     }
 
-    public static ArrayList<IconsCategory> getIconsCategories() {
-        return categories.size() > 0 ? categories : null;
+    public static ArrayList<IconsCategory> getIconsmCategoryList() {
+        return mCategoryList.size() > 0 ? mCategoryList : null;
     }
 
 }
