@@ -38,7 +38,6 @@ import java.util.Set;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.models.IconsCategory;
-import jahirfiquitiva.iconshowcase.models.IconsLists;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import timber.log.Timber;
 
@@ -46,7 +45,7 @@ import timber.log.Timber;
 public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
 
     private final WeakReference<Context> context;
-    private static ArrayList<IconsLists> iconsLists;
+    public static ArrayList<IconItem> previewIcons;
     private static ArrayList<IconsCategory> categories;
     private long startTime, endTime;
 
@@ -69,19 +68,16 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
 
         int iconResId;
 
-        iconsLists = new ArrayList<>();
-
         String[] prev = r.getStringArray(R.array.preview);
         List<String> previewIconsL = sortList(prev);
 
-        ArrayList<IconItem> previewIconsArray = new ArrayList<>();
+        previewIcons = new ArrayList<>();
         for (String icon : previewIconsL) {
             iconResId = Utils.getIconResId(r, p, icon);
             if (iconResId != 0) {
-                previewIconsArray.add(new IconItem(icon, iconResId));
+                previewIcons.add(new IconItem(icon, iconResId));
             }
         }
-        iconsLists.add(new IconsLists(previewIconsArray));
 
         String[] tabsNames = r.getStringArray(R.array.tabs);
         categories = new ArrayList<>();
@@ -185,12 +181,12 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
         return sortAndOrganizeList(r, p, allIconsNames);
     }
 
-    public static ArrayList<IconsLists> getIconsLists() {
-        return iconsLists.size() > 0 ? iconsLists : null;
+    public static ArrayList<IconItem> getPreviewIcons() {
+        return previewIcons != null ? previewIcons.size() > 0 ? previewIcons : null : null;
     }
 
     public static ArrayList<IconsCategory> getIconsCategories() {
-        return categories.size() > 0 ? categories : null;
+        return categories != null ? categories.size() > 0 ? categories : null : null;
     }
 
 }

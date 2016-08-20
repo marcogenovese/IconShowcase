@@ -804,9 +804,9 @@ public class ShowcaseActivity extends BaseActivity implements FolderSelectorDial
 
         ArrayList<IconItem> icons = null;
 
-        if (LoadIconsLists.getIconsLists() != null) {
+        if (LoadIconsLists.getPreviewIcons() != null) {
             //noinspection ConstantConditions
-            icons = LoadIconsLists.getIconsLists().get(0).getIconsArray();
+            icons = LoadIconsLists.getPreviewIcons();
         }
 
         ArrayList<IconItem> finalIconsList = new ArrayList<>();
