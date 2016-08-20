@@ -60,6 +60,7 @@ import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.models.RequestItem;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
+import timber.log.Timber;
 
 @SuppressWarnings("StringConcatenationInsideStringBufferAppend")
 public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
@@ -327,9 +328,9 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
             }
             zipOutputStream.close();
         } catch (FileNotFoundException e) {
-            Utils.showLog(wrActivity.get(), "File not found: " + e.getMessage());
+            Timber.d("File not found: ", e.getMessage());
         } catch (IOException e) {
-            Utils.showLog(wrActivity.get(), "IOException: " + e.getMessage());
+            Timber.d("IOException: ", e.getMessage());
         }
     }
 

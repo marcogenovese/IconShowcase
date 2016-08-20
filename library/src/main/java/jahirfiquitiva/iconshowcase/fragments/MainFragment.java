@@ -48,6 +48,7 @@ import jahirfiquitiva.iconshowcase.models.HomeCard;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 import jahirfiquitiva.iconshowcase.views.DividerItemDecoration;
+import timber.log.Timber;
 
 
 public class MainFragment extends BaseFragment {
@@ -127,7 +128,7 @@ public class MainFragment extends BaseFragment {
                 } catch (IndexOutOfBoundsException e) {
                     hasAppsList = false;
                     showFab();
-                    Utils.showLog(context, "Apps Cards arrays are inconsistent. Fix them.");
+                    Timber.d("Apps Cards arrays are inconsistent. Fix them.");
                 }
             }
         }

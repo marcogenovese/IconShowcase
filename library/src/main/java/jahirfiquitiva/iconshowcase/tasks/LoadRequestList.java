@@ -52,6 +52,7 @@ import jahirfiquitiva.iconshowcase.models.RequestItem;
 import jahirfiquitiva.iconshowcase.models.RequestList;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
+import timber.log.Timber;
 
 
 public class LoadRequestList extends AsyncTask<Void, String, Boolean> {
@@ -107,7 +108,7 @@ public class LoadRequestList extends AsyncTask<Void, String, Boolean> {
             xpp.setInput(istr, "UTF-8");
             // TODO: Test if this is needed: xpp.setInput(istr, null);
         } catch (XmlPullParserException e) {
-            Utils.showLog(context.get(), e.getMessage());
+            Timber.d(e.getMessage());
             return false;
         }
 
@@ -146,7 +147,7 @@ public class LoadRequestList extends AsyncTask<Void, String, Boolean> {
                 xpp.next();
             }
         } catch (XmlPullParserException | IOException e) {
-            Utils.showLog(context.get(), e.getMessage());
+            Timber.d(e.getMessage());
             return false;
         }
 
@@ -161,7 +162,7 @@ public class LoadRequestList extends AsyncTask<Void, String, Boolean> {
             endTime = System.currentTimeMillis();
             return true;
         } catch (Exception ex) {
-            Utils.showLog(context.get(), ex.getMessage());
+            Timber.d(ex.getMessage());
             return false;
         }
     }
@@ -173,9 +174,7 @@ public class LoadRequestList extends AsyncTask<Void, String, Boolean> {
         RequestList.setRequestList(appsToTheme);
         RequestsFragment.setupContent(RequestsFragment.layout, context.get());
         if (worked) {
-            Utils.showLog(context.get(),
-                    "Load of request list completed in: " +
-                            String.valueOf((endTime - startTime) / 1000) + " secs.");
+            Timber.d("Load of request list completed in: %d seconds", (endTime - startTime) / 1000);
         }
         if (res.getBoolean(R.bool.debugging)) {
             showAppFilterErrors(context.get());

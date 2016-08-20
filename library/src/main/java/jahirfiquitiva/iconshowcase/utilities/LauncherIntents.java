@@ -30,6 +30,7 @@ import android.content.Intent;
 import android.widget.Toast;
 
 import jahirfiquitiva.iconshowcase.R;
+import timber.log.Timber;
 
 
 public class LauncherIntents {
@@ -109,7 +110,7 @@ public class LauncherIntents {
                 Layers(context);
                 break;
             default:
-                Utils.showLog(context, "No method for: " + launcherName);
+                Timber.d("No method for:", launcherName);
                 break;
         }
     }

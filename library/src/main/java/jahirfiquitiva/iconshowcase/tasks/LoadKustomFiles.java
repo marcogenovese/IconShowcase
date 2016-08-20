@@ -39,6 +39,7 @@ import jahirfiquitiva.iconshowcase.models.KustomKomponent;
 import jahirfiquitiva.iconshowcase.models.KustomWallpaper;
 import jahirfiquitiva.iconshowcase.models.KustomWidget;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
+import timber.log.Timber;
 
 
 public class LoadKustomFiles extends AsyncTask<Void, String, Boolean> {
@@ -89,9 +90,7 @@ public class LoadKustomFiles extends AsyncTask<Void, String, Boolean> {
                 KustomFragment.kustomAdapter.setLists(widgets,
                         komponents, wallpapers);
             }
-            Utils.showLog(context.get(),
-                    "Load of kustom files task completed successfully in: " +
-                            String.valueOf((endTime - startTime)) + " millisecs.");
+            Timber.d("Load of kustom files task completed successfully in: %d milliseconds", (endTime - startTime));
         }
     }
 

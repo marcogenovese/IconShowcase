@@ -44,6 +44,7 @@ import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.fragments.ZooperFragment;
 import jahirfiquitiva.iconshowcase.models.ZooperWidget;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
+import timber.log.Timber;
 
 
 public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
@@ -101,9 +102,7 @@ public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
             if (ZooperFragment.zooperAdapter != null) {
                 ZooperFragment.zooperAdapter.setWidgets(widgets);
             }
-            Utils.showLog(context.get(),
-                    "Load of widgets task completed successfully in: " +
-                            String.valueOf((endTime - startTime)) + " millisecs.");
+            Timber.d("Load of widgets task completed successfully in: %d milliseconds", (endTime - startTime));
         }
     }
 
@@ -153,12 +152,12 @@ public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
                 out = new FileOutputStream(preview);
                 bmp.compress(Bitmap.CompressFormat.PNG, 100, out);
             } catch (IOException e) {
-                Utils.showLog(context.get(), "IOExcption: " + e.getLocalizedMessage());
+                Timber.d("ZooperIOException", e.getLocalizedMessage());
             } finally {
                 try {
                     if (out != null) out.close();
                 } catch (IOException e1) {
-                    Utils.showLog(context.get(), "IOExcption: " + e1.getLocalizedMessage());
+                    Timber.d("ZooperIOException2", e1.getLocalizedMessage());
                 }
             }
         }

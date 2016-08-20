@@ -149,7 +149,7 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
             try {
                 bitmap = BitmapFactory.decodeResource(context.getResources(), resId);
             } catch (Exception e) {
-                Timber.d("Icons Picker error:", e);
+                Timber.d("Icons Picker error:", e.getLocalizedMessage());
             }
 
             if (bitmap != null) {

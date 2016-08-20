@@ -48,6 +48,7 @@ import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
+import timber.log.Timber;
 
 
 public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
@@ -106,7 +107,7 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
                 try {
                     wm.setBitmap(scaleToActualAspectRatio(resource));
                 } catch (OutOfMemoryError ex) {
-                    Utils.showLog(activity, "OutOfMemoryError: " + ex.getLocalizedMessage());
+                    Timber.d("OutOfMemoryError: " + ex.getLocalizedMessage());
                     showRetrySnackbar();
                 }
                 worked = true;

@@ -46,6 +46,7 @@ import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
+import timber.log.Timber;
 
 
 public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
@@ -177,7 +178,7 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
                 inImage.compress(Bitmap.CompressFormat.PNG, 100,
                         new FileOutputStream(destFile));
             } catch (final Exception e) {
-                Utils.showLog(context, e.getLocalizedMessage());
+                Timber.d("WalllpaperToCrop", e.getLocalizedMessage());
             }
         }
 

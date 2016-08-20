@@ -40,6 +40,7 @@ import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.models.IconsCategory;
 import jahirfiquitiva.iconshowcase.models.IconsLists;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
+import timber.log.Timber;
 
 
 public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
@@ -93,7 +94,7 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
             try {
                 icons = r.getStringArray(arrayId);
             } catch (Resources.NotFoundException e) {
-                Utils.showLog(context.get(), "Couldn't find array: " + tabName);
+                Timber.d("Couldn't find array: " + tabName);
             }
 
             if (icons != null && icons.length > 0) {
@@ -138,10 +139,9 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
 
     @Override
     protected void onPostExecute(Boolean worked) {
+        //TODO onPostExecute only executes if task is not cancelled, worked boolean may not be necessary
         if (worked) {
-            Utils.showLog(context.get(),
-                    "Load of icons task completed successfully in: " +
-                            String.valueOf((endTime - startTime)) + " millisecs.");
+            Timber.d("Load of icons task completed successfully in: %d milliseconds", (endTime - startTime));
         }
     }
 

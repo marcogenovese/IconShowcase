@@ -78,6 +78,7 @@ import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
+import timber.log.Timber;
 
 
 public class WallpapersFragment extends NoFabBaseFragment {
@@ -189,7 +190,7 @@ public class WallpapersFragment extends NoFabBaseFragment {
                                         stream.close();
                                         intent.putExtra("image", filename);
                                     } catch (Exception e) {
-                                        Utils.showLog(context, "Error getting drawable " + e.getLocalizedMessage());
+                                        Timber.d("Error getting drawable", e.getLocalizedMessage());
                                     }
 
                                     ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, view.wall, ViewCompat.getTransitionName(view.wall));
@@ -552,8 +553,7 @@ public class WallpapersFragment extends NoFabBaseFragment {
 
         @Override
         protected void onPostExecute(Boolean worked) {
-            Utils.showLog(context, "Walls Task completed in: " +
-                    String.valueOf((endTime - startTime) / 1000) + " secs.");
+            Timber.d("Walls Task completed in: %d seconds", (endTime - startTime) / 1000);
 
             if (layout != null) {
                 setupLayout(taskContext.get());

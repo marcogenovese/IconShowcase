@@ -50,6 +50,7 @@ import org.sufficientlysecure.donations.google.util.Purchase;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
+import timber.log.Timber;
 
 
 public class DonationsFragment extends NoFabBaseFragment {
@@ -101,8 +102,6 @@ public class DonationsFragment extends NoFabBaseFragment {
     private boolean mBitcoinEnabled = false;
     private String mBitcoinAddress = "";
 
-    private Context context;
-
     /**
      * Instantiate DonationsFragment.
      *
@@ -153,8 +152,7 @@ public class DonationsFragment extends NoFabBaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        context = getActivity();
-
+        //TODO remove debug and all other bundle vars and use Config
         mDebug = getArguments().getBoolean(ARG_DEBUG);
 
         mGoogleEnabled = getArguments().getBoolean(ARG_GOOGLE_ENABLED);
@@ -227,7 +225,7 @@ public class DonationsFragment extends NoFabBaseFragment {
 
             // Create the helper, passing it our context and the public key to verify signatures with
             if (mDebug)
-                Utils.showLog(context, "Creating IAB helper.");
+                Timber.d("Creating IAB helper.");
             mHelper = new IabHelper(getActivity(), mGooglePubkey);
 
             // enable debug logging (for a production application, you should set this to false).
@@ -236,11 +234,11 @@ public class DonationsFragment extends NoFabBaseFragment {
             // Start setup. This is asynchronous and the specified listener
             // will be called once setup completes.
             if (mDebug)
-                Utils.showLog(context, "Starting setup.");
+                Timber.d("Starting setup.");
             mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
                 public void onIabSetupFinished(IabResult result) {
                     if (mDebug)
-                        Utils.showLog(context, "Setup finished.");
+                        Timber.d("Setup finished.");
 
                     if (!result.isSuccess()) {
                         // Oh noes, there was a problem.
@@ -325,7 +323,7 @@ public class DonationsFragment extends NoFabBaseFragment {
         final int index;
         index = mGoogleSpinner.getSelectedItemPosition();
         if (mDebug)
-            Utils.showLog(context, "selected item in spinner: " + index);
+            Timber.d("selected item in spinner: " + index);
 
         if (mDebug) {
             // when debugging, choose android.test.x item
@@ -343,14 +341,14 @@ public class DonationsFragment extends NoFabBaseFragment {
     private final IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
         public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
             if (mDebug)
-                Utils.showLog(context, "Purchase finished: " + result + ", purchase: " + purchase);
+                Timber.d("Purchase finished: " + result + ", purchase: " + purchase);
 
             // if we were disposed of in the meantime, quit.
             if (mHelper == null) return;
 
             if (result.isSuccess()) {
                 if (mDebug)
-                    Utils.showLog(context, "Purchase successful.");
+                    Timber.d("Purchase successful.");
 
                 // directly consume in-app purchase, so that people can donate multiple times
                 mHelper.consumeAsync(purchase, mConsumeFinishedListener);
@@ -366,24 +364,24 @@ public class DonationsFragment extends NoFabBaseFragment {
     private final IabHelper.OnConsumeFinishedListener mConsumeFinishedListener = new IabHelper.OnConsumeFinishedListener() {
         public void onConsumeFinished(Purchase purchase, IabResult result) {
             if (mDebug)
-                Utils.showLog(context, "Consumption finished. Purchase: " + purchase + ", result: " + result);
+                Timber.d("Consumption finished. Purchase: " + purchase + ", result: " + result);
 
             // if we were disposed of in the meantime, quit.
             if (mHelper == null) return;
 
             if (result.isSuccess()) {
                 if (mDebug)
-                    Utils.showLog(context, "Consumption successful. Provisioning.");
+                    Timber.d("Consumption successful. Provisioning.");
             }
             if (mDebug)
-                Utils.showLog(context, "End consumption flow.");
+                Timber.d("End consumption flow.");
         }
     };
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (mDebug)
-            Utils.showLog(context, "onActivityResult(" + requestCode + "," + resultCode + "," + data);
+            Timber.d("onActivityResult(" + requestCode + "," + resultCode + "," + data);
         if (mHelper == null) return;
 
         // Pass on the fragment result to the helper for handling
@@ -394,7 +392,7 @@ public class DonationsFragment extends NoFabBaseFragment {
             super.onActivityResult(requestCode, resultCode, data);
         } else {
             if (mDebug)
-                Utils.showLog(context, "onActivityResult handled by IABUtil.");
+                Timber.d("onActivityResult handled by IABUtil.");
         }
     }
 
@@ -416,7 +414,7 @@ public class DonationsFragment extends NoFabBaseFragment {
         Uri payPalUri = uriBuilder.build();
 
         if (mDebug)
-            Utils.showLog(context, "Opening the browser with the url: " + payPalUri.toString());
+            Timber.d("Opening the browser with the url: " + payPalUri.toString());
 
         // Start your favorite browser
         try {
@@ -436,7 +434,7 @@ public class DonationsFragment extends NoFabBaseFragment {
         i.setData(Uri.parse("bitcoin:" + mBitcoinAddress));
 
         if (mDebug)
-            Utils.showLog(context, "Attempting to donate bitcoin using URI: " + i.getDataString());
+            Timber.d("Attempting to donate bitcoin using URI: " + i.getDataString());
 
         try {
             startActivity(i);
