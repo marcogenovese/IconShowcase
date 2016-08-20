@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #############################################################################
 #
 # .gitignore declares what files should be ignored by git
@@ -88,4 +87,3 @@ proguard/
 .DS_Store
 /build
 /captures
->>>>>>> 059150e5bf96ad06afc01e351d926c757ef87a6f

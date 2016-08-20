@@ -39,6 +39,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -86,6 +87,7 @@ import jahirfiquitiva.iconshowcase.dialogs.FolderSelectorDialog;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.enums.DrawerType;
 import jahirfiquitiva.iconshowcase.fragments.ApplyFragment;
+import jahirfiquitiva.iconshowcase.fragments.BaseFragment;
 import jahirfiquitiva.iconshowcase.fragments.CreditsFragment;
 import jahirfiquitiva.iconshowcase.fragments.DonationsFragment;
 import jahirfiquitiva.iconshowcase.fragments.FAQsFragment;
@@ -167,6 +169,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderSelecto
     private HashMap<DrawerType, Integer> mDrawerMap = new HashMap<>();
 
     private Drawer drawer;
+    private FloatingActionButton mFab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -247,6 +250,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderSelecto
         icon7 = (ImageView) findViewById(R.id.iconSeven);
         icon8 = (ImageView) findViewById(R.id.iconEight);
 
+        mFab = (FloatingActionButton) findViewById(R.id.fab);
         appbar = (AppBarLayout) findViewById(R.id.appbar);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbar);
@@ -316,6 +320,14 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderSelecto
                 }
             }
         }
+    }
+
+    private BaseFragment getCurrentBaseFragment() {
+        return (BaseFragment) getSupportFragmentManager().findFragmentById(R.id.main);
+    }
+
+    public FloatingActionButton getFab() {
+        return mFab;
     }
 
     private void switchFragment(long itemId, DrawerType dt, AppCompatActivity context) {
