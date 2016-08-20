@@ -43,11 +43,10 @@ import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 import jahirfiquitiva.iconshowcase.views.SectionedGridSpacingItemDecoration;
 
 
-public class KustomFragment extends Fragment {
+public class KustomFragment extends BaseFragment {
 
     private static ViewGroup layout;
     private static Context context;
-    private FloatingActionButton kustomFAB;
     private RecyclerView mRecyclerView;
     public static KustomAdapter kustomAdapter;
     private SectionedGridSpacingItemDecoration space;
@@ -56,9 +55,26 @@ public class KustomFragment extends Fragment {
             KWGT_PKG = "org.kustom.widget",
             KOLORETTE_PKG = "com.arun.themeutil.kolorette";
 
+    //TODO check if extra FAB is necessary
+
+    @Override
+    public void onFabClick(View v) {
+
+    }
+
+    @Override
+    int getFabIcon() {
+        return R.drawable.ic_store_download;
+    }
+
+    @Override
+    boolean hasFab() {
+        return true;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
-
+        super.onCreateView(inflater, container, savedInstanceState);
         context = getActivity();
 
         if (layout != null) {
@@ -73,7 +89,11 @@ public class KustomFragment extends Fragment {
             //Do nothing
         }
 
-        setupFAB();
+        if (layout != null) {
+            if (areAppsInstalled()) {
+                hideFab();
+            }
+        }
 
         return layout;
     }
@@ -81,18 +101,7 @@ public class KustomFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Utils.collapseToolbar(getActivity());
-        setupFAB();
         setupRV();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        if (kustomFAB != null) {
-            kustomFAB.hide();
-            kustomFAB.setVisibility(View.GONE);
-        }
     }
 
     private void setupRV() {
@@ -152,42 +161,6 @@ public class KustomFragment extends Fragment {
         }
 
         return installed;
-    }
-
-    private void setupFAB() {
-        if (layout != null) {
-            kustomFAB = (FloatingActionButton) layout.findViewById(R.id.kustom_fab);
-
-            if (areAppsInstalled()) {
-                kustomFAB.hide();
-                kustomFAB.setVisibility(View.GONE);
-            } else {
-                kustomFAB.show();
-                kustomFAB.setVisibility(View.VISIBLE);
-
-                kustomFAB.setOnClickListener(new DebouncedClickListener() {
-                    @Override
-                    public void onDebouncedClick(View v) {
-                        ArrayList<String> apps = new ArrayList<>();
-                        if (context.getResources().getBoolean(R.bool.includes_kustom_wallpapers) &&
-                                !Utils.isAppInstalled(context, KLWP_PKG)) {
-                            apps.add("Kustom Live Wallpaper");
-                        }
-                        if (context.getResources().getBoolean(R.bool.includes_kustom_widgets) &&
-                                !Utils.isAppInstalled(context, KWGT_PKG)) {
-                            apps.add("Kustom Widget");
-                        }
-                        if (context.getResources().getBoolean(R.bool.kustom_requires_kolorette) &&
-                                !Utils.isAppInstalled(context, KOLORETTE_PKG)) {
-                            apps.add(Utils.getStringFromResources(context, R.string.kolorette_app));
-                        }
-                        if (apps.size() > 0) {
-                            ISDialogs.showKustomAppsDownloadDialog(context, apps);
-                        }
-                    }
-                });
-            }
-        }
     }
 
 }

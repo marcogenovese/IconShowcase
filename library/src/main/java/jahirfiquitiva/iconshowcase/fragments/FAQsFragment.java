@@ -48,12 +48,13 @@ import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.views.DividerItemDecoration;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 
-public class FAQsFragment extends Fragment {
+public class FAQsFragment extends NoFabBaseFragment {
 
     private ViewGroup layout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
 
         Context context = getActivity();
         Preferences mPrefs = new Preferences(context);

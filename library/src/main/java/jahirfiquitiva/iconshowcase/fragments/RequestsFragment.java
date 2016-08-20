@@ -59,13 +59,12 @@ import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 
 
-public class RequestsFragment extends Fragment implements PermissionUtils.OnPermissionResultListener {
+public class RequestsFragment extends BaseFragment implements PermissionUtils.OnPermissionResultListener {
 
     private static ProgressBar progressBar;
     public static RecyclerView mRecyclerView;
     private static RecyclerFastScroller fastScroller;
     public static RequestsAdapter requestsAdapter;
-    private static FloatingActionButton fab;
     private static int maxApps = 0, minutesLimit = 0;
     public static ViewGroup layout;
     private static Preferences mPrefs;
@@ -74,8 +73,35 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
     private static TextView errorLayout;
     public static LoadRequestList loadAppsToRequest;
 
+    DebouncedClickListener debouncedClickListener = new DebouncedClickListener() {
+        @Override
+        public void onDebouncedClick(View v) {
+            if (!PermissionUtils.canAccessStorage(getContext())) {
+                PermissionUtils.requestStoragePermission(getActivity(), RequestsFragment.this);
+            } else {
+                startRequestProcess();
+            }
+        }
+    };
+
+    @Override
+    public void onFabClick(View v) {
+        debouncedClickListener.onDebouncedClick(v);
+    }
+
+    @Override
+    int getFabIcon() {
+        return R.drawable.ic_email;
+    }
+
+    @Override
+    boolean hasFab() {
+        return true;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
 
         int gridSpacing = getResources().getDimensionPixelSize(R.dimen.lists_padding);
         int columnsNumber = getResources().getInteger(R.integer.requests_grid_width);
@@ -114,26 +140,12 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
             }
         });
 
-        fab = (FloatingActionButton) layout.findViewById(R.id.requests_fab);
 
         requestList = RequestList.getRequestList();
 
         if (requestList == null || requestList.size() <= 0) {
-            fab.hide();
-        } else {
-            fab.show();
+            hideFab();
         }
-
-        fab.setOnClickListener(new DebouncedClickListener() {
-            @Override
-            public void onDebouncedClick(View v) {
-                if (!PermissionUtils.canAccessStorage(getContext())) {
-                    PermissionUtils.requestStoragePermission(getActivity(), RequestsFragment.this);
-                } else {
-                    startRequestProcess();
-                }
-            }
-        });
 
         progressBar = (ProgressBar) layout.findViewById(R.id.requestProgress);
         mRecyclerView = (RecyclerView) layout.findViewById(R.id.appsToRequestList);
@@ -150,9 +162,9 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 if (dy > 0) {
-                    fab.hide();
+                    hideFab();
                 } else {
-                    fab.show();
+                    showFab();
                 }
             }
         });
@@ -216,13 +228,14 @@ public class RequestsFragment extends Fragment implements PermissionUtils.OnPerm
         }
     }
 
+    //TODO fix this
     private static void showStuff() {
         if (progressBar.getVisibility() != View.GONE) {
             progressBar.setVisibility(View.GONE);
         }
         mRecyclerView.setVisibility(View.VISIBLE);
         fastScroller.setVisibility(View.VISIBLE);
-        fab.show();
+        //fab.show();
     }
 
     private void hideStuff() {

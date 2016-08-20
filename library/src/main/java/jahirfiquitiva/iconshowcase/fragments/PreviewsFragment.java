@@ -57,7 +57,7 @@ import jahirfiquitiva.iconshowcase.utilities.color.ToolbarTinter;
 
 
 @SuppressWarnings("ResourceAsColor")
-public class PreviewsFragment extends Fragment {
+public class PreviewsFragment extends NoFabBaseFragment {
 
     private int mLastSelected = 0;
     private ViewPagerWithCustomScrollDuration mPager;
@@ -70,6 +70,7 @@ public class PreviewsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
 
         if (layout != null) {
             ViewGroup parent = (ViewGroup) layout.getParent();

@@ -37,7 +37,7 @@ import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.models.IconsCategory;
 
 
-public class IconsFragment extends Fragment {
+public class IconsFragment extends NoFabBaseFragment {
 
     private IconsAdapter mAdapter;
     private ArrayList<IconItem> iconsList, filteredIconsList;
@@ -46,6 +46,7 @@ public class IconsFragment extends Fragment {
     @Override
     @SuppressWarnings("unchecked")
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
 
         if (layout != null) {
             ViewGroup parent = (ViewGroup) layout.getParent();

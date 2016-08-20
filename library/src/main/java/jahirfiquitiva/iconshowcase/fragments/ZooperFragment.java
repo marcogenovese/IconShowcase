@@ -42,7 +42,7 @@ import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 
 
-public class ZooperFragment extends Fragment {
+public class ZooperFragment extends NoFabBaseFragment {
 
     private static ViewGroup layout;
     private static Context context;
@@ -53,6 +53,7 @@ public class ZooperFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
 
         context = getActivity();
 

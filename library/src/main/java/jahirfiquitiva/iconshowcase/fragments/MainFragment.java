@@ -52,18 +52,36 @@ import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 import jahirfiquitiva.iconshowcase.views.DividerItemDecoration;
 
 
-public class MainFragment extends Fragment {
+public class MainFragment extends BaseFragment {
 
     private Context context;
     private ViewGroup layout;
 
-    private FloatingActionButton fab;
     private final ArrayList<HomeCard> homeCards = new ArrayList<>();
     private boolean hasAppsList = false;
 
     @Override
+    public void onFabClick(View v) {
+        Intent rate = new Intent(Intent.ACTION_VIEW,
+                Uri.parse("https://play.google.com/store/apps/details?id=" +
+                        context.getPackageName()));
+        context.startActivity(rate);
+    }
+
+    @Override
+    int getFabIcon() {
+        return R.drawable.ic_rate;
+    }
+
+    @Override
+    boolean hasFab() {
+        return true;
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
 
         String[] appsNames = getResources().getStringArray(R.array.apps_titles);
         String[] appsDescriptions = getResources().getStringArray(R.array.apps_descriptions);
@@ -75,6 +93,7 @@ public class MainFragment extends Fragment {
 
         if (names > 0 && names == descs && names == icons && names == packs) {
             hasAppsList = true;
+            hideFab();
         }
 
         context = getActivity();
@@ -91,7 +110,6 @@ public class MainFragment extends Fragment {
             //Do nothing
         }
 
-        fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
         RecyclerView mRecyclerView = (RecyclerView) layout.findViewById(R.id.home_rv);
 
         setupAndAnimateIcons(600);
@@ -178,12 +196,11 @@ public class MainFragment extends Fragment {
                     }
                 } catch (IndexOutOfBoundsException e) {
                     hasAppsList = false;
+                    showFab();
                     Utils.showLog(context, "Apps Cards arrays are inconsistent. Fix them.");
                 }
             }
         }
-
-        setupFAB();
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -197,50 +214,6 @@ public class MainFragment extends Fragment {
         mRecyclerView.setAdapter(mAdapter);
 
         return layout;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        setupFAB();
-        if (ShowcaseActivity.iconsPicker || ShowcaseActivity.wallsPicker) {
-            Utils.collapseToolbar(getActivity());
-        } else {
-            Utils.expandToolbar(getActivity());
-        }
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
-        if (fab != null && ShowcaseActivity.currentItem != 1) {
-            fab.hide();
-            fab.setVisibility(View.GONE);
-        }
-    }
-
-    private void setupFAB() {
-        fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
-
-        if (!hasAppsList) {
-            fab.show();
-            fab.setVisibility(View.VISIBLE);
-        } else {
-            fab.hide();
-            fab.setVisibility(View.GONE);
-        }
-
-        fab.setOnClickListener(new DebouncedClickListener() {
-            @Override
-            public void onDebouncedClick(View v) {
-                Intent rate = new Intent(Intent.ACTION_VIEW,
-                        Uri.parse("https://play.google.com/store/apps/details?id=" +
-                                context.getPackageName()));
-                context.startActivity(rate);
-            }
-        });
-
     }
 
     private void setupAndAnimateIcons(int delay) {
