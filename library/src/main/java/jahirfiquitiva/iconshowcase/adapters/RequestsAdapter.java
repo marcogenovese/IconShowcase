@@ -40,6 +40,7 @@ import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.models.RequestItem;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
+import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
@@ -112,11 +113,9 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
     @Override
     public void onBindViewHolder(RequestsHolder holder, int position) {
         RequestItem requestsItem = appsList.get(position);
-        holder.txtName.setTextColor(ColorUtils.getMaterialPrimaryTextColor());
+        holder.txtName.setTextColor(ColorUtils.getMaterialPrimaryTextColor(ThemeUtils.darkTheme));
         holder.txtName.setText(requestsItem.getAppName());
         holder.imgIcon.setImageDrawable(requestsItem.getNormalIcon());
-        MDTintHelper.setTint(holder.chkSelected, ColorUtils.getCheckBoxColor(context,
-                ContextCompat.getColor(context, R.color.md_teal_A400)));
         holder.chkSelected.setChecked(requestsItem.isSelected());
         boolean listsCards;
         if (context.getResources().getBoolean(R.bool.dev_options)) {
@@ -149,6 +148,8 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
             imgIcon = (ImageView) v.findViewById(R.id.imgIcon);
             txtName = (TextView) v.findViewById(R.id.txtName);
             chkSelected = (CheckBox) v.findViewById(R.id.chkSelected);
+            MDTintHelper.setTint(chkSelected, ColorUtils.getCheckBoxColor(context,
+                    ContextCompat.getColor(context, R.color.md_teal_A400)));
             boolean listsCards;
             if (context.getResources().getBoolean(R.bool.dev_options)) {
                 listsCards = mPrefs.getDevListsCards();

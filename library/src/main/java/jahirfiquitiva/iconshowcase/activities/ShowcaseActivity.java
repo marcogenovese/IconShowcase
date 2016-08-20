@@ -312,7 +312,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderSelecto
                     drawerItemSelectAndClick(settingsIdentifier);
                 } else {
                     currentItem = -1;
-                    drawerItemSelectAndClick(1);
+                    drawerItemSelectAndClick(0);
                 }
             }
         }
