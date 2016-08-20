@@ -50,8 +50,6 @@ import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 
 public class FAQsFragment extends NoFabBaseFragment {
 
-    private ViewGroup layout;
-
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
@@ -59,17 +57,7 @@ public class FAQsFragment extends NoFabBaseFragment {
         Context context = getActivity();
         Preferences mPrefs = new Preferences(context);
 
-        if (layout != null) {
-            ViewGroup parent = (ViewGroup) layout.getParent();
-            if (parent != null) {
-                parent.removeView(layout);
-            }
-        }
-        try {
-            layout = (ViewGroup) inflater.inflate(R.layout.faqs_section, container, false);
-        } catch (InflateException e) {
-            //Do nothing
-        }
+        View layout = inflater.inflate(R.layout.faqs_section, container, false);
 
         String[] questions = getResources().getStringArray(R.array.questions);
         String[] answers = getResources().getStringArray(R.array.answers);
@@ -112,12 +100,6 @@ public class FAQsFragment extends NoFabBaseFragment {
         fastScroller.attachRecyclerView(faqsList);
 
         return layout;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Utils.collapseToolbar(getActivity());
     }
 
 }

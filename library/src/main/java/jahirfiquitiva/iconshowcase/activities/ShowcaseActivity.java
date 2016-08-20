@@ -76,8 +76,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+import jahirfiquitiva.iconshowcase.BuildConfig;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.adapters.RequestsAdapter;
+import jahirfiquitiva.iconshowcase.config.Config;
 import jahirfiquitiva.iconshowcase.dialogs.ChangelogDialog;
 import jahirfiquitiva.iconshowcase.dialogs.FolderSelectorDialog;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
@@ -93,6 +95,7 @@ import jahirfiquitiva.iconshowcase.fragments.RequestsFragment;
 import jahirfiquitiva.iconshowcase.fragments.SettingsFragment;
 import jahirfiquitiva.iconshowcase.fragments.WallpapersFragment;
 import jahirfiquitiva.iconshowcase.fragments.ZooperFragment;
+import jahirfiquitiva.iconshowcase.logging.CrashReportingTree;
 import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.models.WallpapersList;
 import jahirfiquitiva.iconshowcase.tasks.LoadIconsLists;
@@ -102,6 +105,7 @@ import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
+import timber.log.Timber;
 
 public class ShowcaseActivity extends BaseActivity implements FolderSelectorDialog.FolderSelectionCallback {
 
@@ -136,7 +140,7 @@ public class ShowcaseActivity extends BaseActivity implements FolderSelectorDial
             nova_action = "com.novalauncher.THEME";
 
     public static boolean iconsPicker, wallsPicker, SHUFFLE = true;
-    private static boolean iconsPickerEnabled = false, wallsEnabled = false, shuffleIcons = true;
+    private static boolean shuffleIcons = true;
 
     private static String thaAppName;
 
@@ -166,6 +170,14 @@ public class ShowcaseActivity extends BaseActivity implements FolderSelectorDial
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Config.init(this);
+
+        if (BuildConfig.DEBUG || Config.get().allowDebugging()) {
+            Timber.plant(new Timber.DebugTree());
+        } else {
+            //Disable debug & verbose logging on release
+            Timber.plant(new CrashReportingTree());
+        }
 
         ThemeUtils.onActivityCreateSetTheme(this);
 
@@ -203,8 +215,8 @@ public class ShowcaseActivity extends BaseActivity implements FolderSelectorDial
         setContentView(R.layout.showcase_activity);
 
         TasksExecutor.with(context)
-                .loadJust((iconsPicker && iconsPickerEnabled),
-                        (wallsPicker && mPrefs.areFeaturesEnabled() && wallsEnabled));
+                .loadJust((iconsPicker && mDrawerMap.containsKey(DrawerType.PREVIEWS)),
+                        (wallsPicker && mPrefs.areFeaturesEnabled() && mDrawerMap.containsKey(DrawerType.WALLPAPERS)));
 
         shuffleIcons = getResources().getBoolean(R.bool.shuffle_toolbar_icons);
 
@@ -255,9 +267,9 @@ public class ShowcaseActivity extends BaseActivity implements FolderSelectorDial
 
                 public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
                     if (inventory != null) {
-                        Utils.showLog(context, "IAP inventory exists");
+                        Timber.i("IAP inventory exists");
                         for (String aGOOGLE_CATALOG_FREE : GOOGLE_CATALOG_FREE) {
-                            Utils.showLog(context, aGOOGLE_CATALOG_FREE + " is " + inventory.hasPurchase(aGOOGLE_CATALOG_FREE));
+                            Timber.i(aGOOGLE_CATALOG_FREE, "is", inventory.hasPurchase(aGOOGLE_CATALOG_FREE));
                             if (inventory.hasPurchase(aGOOGLE_CATALOG_FREE)) { //at least one donation value found, now premium
                                 mIsPremium = true;
                             }
@@ -273,7 +285,7 @@ public class ShowcaseActivity extends BaseActivity implements FolderSelectorDial
             mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
                 public void onIabSetupFinished(IabResult result) {
                     if (!result.isSuccess()) {
-                        Utils.showLog(context, "In-app Billing setup failed: " + result); //TODO move text to string?
+                        Timber.d("In-app Billing setup failed:", result); //TODO move text to string?
                         new MaterialDialog.Builder(ShowcaseActivity.this).title(R.string.donations_error_title)
                                 .content(R.string.donations_error_content)
                                 .positiveText(android.R.string.ok)
@@ -290,9 +302,9 @@ public class ShowcaseActivity extends BaseActivity implements FolderSelectorDial
         if (savedInstanceState == null) {
             if (openWallpapers) {
                 drawerItemSelectAndClick(mDrawerMap.get(DrawerType.WALLPAPERS));
-            } else if (iconsPicker && iconsPickerEnabled) {
-                drawerItemSelectAndClick(mDrawerMap.get(DrawerType.REQUESTS));
-            } else if (wallsPicker && mPrefs.areFeaturesEnabled() && wallsEnabled) {
+            } else if (iconsPicker && mDrawerMap.containsKey(DrawerType.PREVIEWS)) {
+                drawerItemSelectAndClick(mDrawerMap.get(DrawerType.PREVIEWS));
+            } else if (wallsPicker && mPrefs.areFeaturesEnabled() && mDrawerMap.containsKey(DrawerType.WALLPAPERS)) {
                 drawerItemSelectAndClick(mDrawerMap.get(DrawerType.WALLPAPERS));
             } else {
                 if (mPrefs.getSettingsModified()) {
@@ -399,7 +411,6 @@ public class ShowcaseActivity extends BaseActivity implements FolderSelectorDial
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         mLastTheme = ThemeUtils.darkTheme;
-        ;
     }
 
     @Override
@@ -663,10 +674,8 @@ public class ShowcaseActivity extends BaseActivity implements FolderSelectorDial
             case "previews":
                 return DrawerType.PREVIEWS;
             case "wallpapers":
-                wallsEnabled = true;
                 return DrawerType.WALLPAPERS;
             case "requests":
-                iconsPickerEnabled = true;
                 return DrawerType.REQUESTS;
             case "apply":
                 return DrawerType.APPLY;

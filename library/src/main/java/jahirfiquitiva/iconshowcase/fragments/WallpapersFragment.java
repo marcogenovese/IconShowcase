@@ -154,12 +154,6 @@ public class WallpapersFragment extends NoFabBaseFragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        Utils.collapseToolbar(getActivity());
-    }
-
-    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.wallpapers, menu);

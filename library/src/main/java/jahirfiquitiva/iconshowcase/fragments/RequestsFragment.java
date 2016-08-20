@@ -169,6 +169,8 @@ public class RequestsFragment extends BaseFragment implements PermissionUtils.On
             }
         });
 
+        setupMaxApps();
+
         return layout;
     }
 
@@ -189,13 +191,6 @@ public class RequestsFragment extends BaseFragment implements PermissionUtils.On
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.requests, menu);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Utils.collapseToolbar(getActivity());
-        setupMaxApps();
     }
 
     @Override
