@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.utilities.Common;
 import jahirfiquitiva.iconshowcase.utilities.JSONParser;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
@@ -50,7 +51,6 @@ public class MuzeiArtSourceService extends RemoteMuzeiArtSource {
     private final ArrayList<String> urls = new ArrayList<>();
 
     private static final String ARTSOURCE_NAME = "IconShowcase - MuzeiExtension";
-    private static final String MARKET_URL = "https://play.google.com/store/apps/details?id=";
     private static final int COMMAND_ID_SHARE = 1337;
 
     public MuzeiArtSourceService() {
@@ -89,7 +89,7 @@ public class MuzeiArtSourceService extends RemoteMuzeiArtSource {
             shareWall.setType("text/plain");
             String wallName = currentArtwork.getTitle();
             String authorName = currentArtwork.getByline();
-            String storeUrl = MARKET_URL + getPackageName();
+            String storeUrl = Common.MARKET_URL + getPackageName();
             String iconPackName = getString(R.string.app_name);
             shareWall.putExtra(Intent.EXTRA_TEXT,
                     getString(R.string.share_text, wallName, authorName, iconPackName, storeUrl));

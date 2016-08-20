@@ -17,13 +17,13 @@ public interface IConfig {
 
     //General Functions
 
-    boolean getBool2(@BoolRes int id);
+    boolean bool(@BoolRes int id);
 
-    String getString2(@StringRes int id);
+    String string(@StringRes int id);
 
-    String[] getStringArray2(@ArrayRes int id);
+    String[] stringArray(@ArrayRes int id);
 
-    int getInt2(@IntegerRes int id);
+    int integer(@IntegerRes int id);
 
     boolean hasString(@StringRes int id);
 
@@ -34,6 +34,8 @@ public interface IConfig {
     boolean allowDebugging();
 
     int appTheme();
+
+    boolean hasDonations();
 
     boolean hasGoogleDonations();
 
@@ -51,6 +53,8 @@ public interface IConfig {
     boolean userWallpaperInToolbar();
 
     boolean hidePackInfo();
+
+    int getIconResId(String iconName);
 
     //Amounts interface?
 

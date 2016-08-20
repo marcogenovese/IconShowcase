@@ -15,7 +15,7 @@ import jahirfiquitiva.iconshowcase.R;
 
 /**
  * Created by Allan Wang on 2016-08-19.
- * <p>
+ * <p/>
  * With reference to Polar
  * https://github.com/afollestad/polar-dashboard/blob/master/app/src/main/java/com/afollestad/polar/config/Config.java
  */
@@ -64,22 +64,13 @@ public class Config implements IConfig {
         return mConfig;
     }
 
-    public static boolean getBool(@BoolRes int id) {
-        return get().getBool2(id);
+    @NonNull
+    public static IConfig get(@NonNull Context context) {
+        if (mConfig == null)
+            return new Config(context);
+        return mConfig;
     }
-
-    public static String getString(@StringRes int id) {
-        return get().getString2(id);
-    }
-
-    public static String[] getStringArray(@ArrayRes int id) {
-        return get().getStringArray2(id);
-    }
-
-    public static int getInt(@IntegerRes int id) {
-        return get().getInt2(id);
-    }
-
+    
     // Getters
 
     private Preference prefs() {
@@ -87,39 +78,39 @@ public class Config implements IConfig {
     }
 
     @Override
-    public boolean getBool2(@BoolRes int id) {
+    public boolean bool(@BoolRes int id) {
         return mR != null && mR.getBoolean(id);
     }
 
     @Override
     @Nullable
-    public String getString2(@StringRes int id) {
+    public String string(@StringRes int id) {
         if (mR == null) return null;
         return mR.getString(id);
     }
 
     @Override
     @Nullable
-    public String[] getStringArray2(@ArrayRes int id) {
+    public String[] stringArray(@ArrayRes int id) {
         if (mR == null) return null;
         return mR.getStringArray(id);
     }
 
     @Override
-    public int getInt2(@IntegerRes int id) {
+    public int integer(@IntegerRes int id) {
         if (mR == null) return 0;
         return mR.getInteger(id);
     }
 
     @Override
     public boolean hasString(@StringRes int id) {
-        String s = getString2(id);
+        String s = string(id);
         return (s != null && !s.isEmpty());
     }
 
     @Override
     public boolean hasArray(@ArrayRes int id) {
-        String[] s = getStringArray2(id);
+        String[] s = stringArray(id);
         return (s != null && s.length != 0);
     }
 
@@ -130,11 +121,16 @@ public class Config implements IConfig {
 
     @Override
     public int appTheme() {
-        return getInt2(R.integer.app_theme);
+        return integer(R.integer.app_theme);
     }
 
     @Override
-    public boolean hasGoogleDonations() {
+    public boolean hasDonations() {
+        return hasGoogleDonations() || hasPaypal();
+    }
+
+    @Override
+    public boolean hasGoogleDonations() { //Also check donation key from java
         return hasArray(R.array.google_donations_catalog) && hasArray(R.array.consumable_google_donation_items) && hasArray(R.array.nonconsumable_google_donation_items);
     }
 
@@ -146,28 +142,34 @@ public class Config implements IConfig {
     @NonNull
     @Override
     public String getPaypalCurrency() {
-        String s = getString(R.string.paypal_currency_code);
+        String s = string(R.string.paypal_currency_code);
         if (s == null || s.length() != 3) return "USD"; //TODO log currency issue
         return s;
     }
 
     @Override
     public boolean devOptions() {
-        return getBool2(R.bool.dev_options);
+        return bool(R.bool.dev_options);
     }
 
     @Override
     public boolean shuffleToolbarIcons() {
-        return getBool2(R.bool.shuffle_toolbar_icons);
+        return bool(R.bool.shuffle_toolbar_icons);
     }
 
     @Override
     public boolean userWallpaperInToolbar() {
-        return getBool2(R.bool.enable_user_wallpaper_in_toolbar);
+        return bool(R.bool.enable_user_wallpaper_in_toolbar);
     }
 
     @Override
     public boolean hidePackInfo() {
-        return getBool2(R.bool.hide_pack_info);
+        return bool(R.bool.hide_pack_info);
+    }
+
+    @Override
+    public int getIconResId(String iconName) {
+        if (mContext == null) return 0;
+        return mR.getIdentifier(iconName, "drawable", mContext.getPackageName());
     }
 }

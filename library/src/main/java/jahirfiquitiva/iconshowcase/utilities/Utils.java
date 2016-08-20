@@ -186,15 +186,6 @@ public class Utils {
         }
     }
 
-    public static void showAppFilterLog(Context context, String s) {
-        if (context != null) {
-            if (context.getResources().getBoolean(R.bool.debugging)) {
-                String tag = context.getResources().getString(R.string.app_name) + " AppFilter";
-                Log.d(tag, s);
-            }
-        }
-    }
-
     public static String getStringFromResources(Context context, int id) {
         return context.getResources().getString(id);
     }

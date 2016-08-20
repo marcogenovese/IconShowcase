@@ -45,6 +45,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.services.MuzeiArtSourceService;
+import jahirfiquitiva.iconshowcase.utilities.Common;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
@@ -64,7 +65,6 @@ public class MuzeiSettings extends AppCompatActivity {
     private Context context;
     private CustomCoordinatorLayout customCoordinatorLayout;
     private Toolbar toolbar;
-    private static final String MARKET_URL = "https://play.google.com/store/apps/details?id=";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -233,7 +233,7 @@ public class MuzeiSettings extends AppCompatActivity {
                 new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
-                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(MARKET_URL + getPackageName()));
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Common.MARKET_URL + getPackageName()));
                         startActivity(browserIntent);
                     }
                 }, new MaterialDialog.SingleButtonCallback() {
