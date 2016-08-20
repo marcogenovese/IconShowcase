@@ -27,11 +27,4 @@
     -->
     <bool name="allow_user_to_hide_app_icon">true</bool>
 
-    <!--
-    Do you plan to notify users about new wallpapers or other news?
-    True, means yes.
-    False, means no.
-    -->
-    <bool name="enable_notifications_service">true</bool>
-
 </resources>

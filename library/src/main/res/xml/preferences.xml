@@ -94,37 +94,6 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:key="notifications"
-        android:title="@string/prefs_notifs_title">
-
-        <SwitchPreference
-            android:defaultValue="false"
-            android:key="enableNotifs"
-            android:persistent="true"
-            android:summary="@string/pref_summary_enable_notifs"
-            android:title="@string/pref_title_enable_notifs"/>
-
-        <SwitchPreference
-            android:defaultValue="true"
-            android:key="enableNotifsLED"
-            android:persistent="true"
-            android:title="@string/pref_title_enable_notifs_led"/>
-
-        <SwitchPreference
-            android:defaultValue="true"
-            android:key="enableNotifsVibration"
-            android:persistent="true"
-            android:title="@string/pref_title_enable_notifs_vibration"/>
-
-        <Preference
-            android:key="notifsUpdateInterval"
-            android:persistent="true"
-            android:summary="@string/pref_summary_notifs_interval"
-            android:title="@string/pref_title_notifs_interval"/>
-
-    </PreferenceCategory>
-
-    <PreferenceCategory
         android:key="launcherIconPreference"
         android:title="@string/pref_header_launcher_icon">
 

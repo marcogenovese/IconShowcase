@@ -52,7 +52,6 @@ import jahirfiquitiva.iconshowcase.adapters.FeaturesAdapter;
 import jahirfiquitiva.iconshowcase.dialogs.FolderSelectorDialog;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.fragments.base.PreferenceFragment;
-import jahirfiquitiva.iconshowcase.services.NotificationsReceiver;
 import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
@@ -114,11 +113,6 @@ public class SettingsFragment extends PreferenceFragment implements
         final PreferenceCategory launcherIcon = (PreferenceCategory) findPreference("launcherIconPreference");
 
         setupDevOptions(preferences, getActivity());
-
-        PreferenceCategory notifs = (PreferenceCategory) findPreference("notifications");
-        if (!(getResources().getBoolean(R.bool.enable_notifications_service))) {
-            preferences.removePreference(notifs);
-        }
 
         PreferenceCategory uiCategory = (PreferenceCategory) findPreference("uiPreferences");
 
@@ -183,70 +177,6 @@ public class SettingsFragment extends PreferenceFragment implements
                 return true;
             }
         });
-
-        if ((getResources().getBoolean(R.bool.enable_notifications_service))) {
-            SwitchPreference enableNotifs = (SwitchPreference) findPreference("enableNotifs");
-            enableNotifs.setChecked(mPrefs.getNotifsEnabled());
-            enableNotifs.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    mPrefs.setNotifsEnabled(newValue.toString().equals("true"));
-                    NotificationsReceiver.scheduleAlarms(getActivity());
-                    return true;
-                }
-            });
-
-            SwitchPreference enableNotifsLED = (SwitchPreference) findPreference("enableNotifsLED");
-            enableNotifsLED.setChecked(mPrefs.getNotifsLedEnabled());
-            enableNotifsLED.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    mPrefs.setNotifsLedEnabled(newValue.toString().equals("true"));
-                    return true;
-                }
-            });
-
-            SwitchPreference enableNotifsVibration = (SwitchPreference) findPreference("enableNotifsVibration");
-            enableNotifsVibration.setChecked(mPrefs.getNotifsVibrationEnabled());
-            enableNotifsVibration.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    mPrefs.setNotifsVibrationEnabled(newValue.toString().equals("true"));
-                    return true;
-                }
-            });
-
-            notifsUpdateInterval = findPreference("notifsUpdateInterval");
-            changeNotifsUpdate(getActivity());
-            notifsUpdateInterval.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    final int currentInterval = mPrefs.getNotifsUpdateInterval();
-                    new MaterialDialog.Builder(getActivity())
-                            .title(R.string.pref_title_notifs_interval)
-                            .content(R.string.pref_summary_notifs_interval)
-                            .items(R.array.update_intervals)
-                            .itemsCallbackSingleChoice(currentInterval - 1,
-                                    new MaterialDialog.ListCallbackSingleChoice() {
-                                        @Override
-                                        public boolean onSelection(MaterialDialog dialog, View itemView,
-                                                                   int which, CharSequence text) {
-                                            int newInterval = which + 1;
-                                            if (newInterval != currentInterval) {
-                                                mPrefs.setNotifsUpdateInterval(newInterval);
-                                            }
-                                            NotificationsReceiver.scheduleAlarms(getActivity());
-                                            changeNotifsUpdate(getActivity());
-                                            return true;
-                                        }
-                                    })
-                            .positiveText(android.R.string.ok)
-                            .negativeText(android.R.string.cancel)
-                            .show();
-                    return true;
-                }
-            });
-        }
 
         if (getResources().getBoolean(R.bool.allow_user_to_hide_app_icon)) {
             final SwitchPreference hideIcon = (SwitchPreference) findPreference("launcherIcon");
@@ -321,7 +251,7 @@ public class SettingsFragment extends PreferenceFragment implements
     public void onResume() {
         super.onResume();
         Utils.collapseToolbar(getActivity());
-        if(shouldShowFolderChooserDialog) {
+        if (shouldShowFolderChooserDialog) {
             showFolderChooserDialog();
             shouldShowFolderChooserDialog = false;
         }
