@@ -285,13 +285,14 @@ public class ColorUtils {
     }
 
     public static int getMaterialTertiaryColor(boolean dark) {
-        if (dark) {
-            // 50%
-            return Color.parseColor("#80ffffff");
-        } else {
-            // 38%
-            return Color.parseColor("#61000000");
-        }
+        return 0xffff00ff;
+//        if (dark) {
+//            // 50%
+//            return Color.parseColor("#80ffffff");
+//        } else {
+//            // 38%
+//            return Color.parseColor("#61000000");
+//        }
     }
 
     @ColorInt

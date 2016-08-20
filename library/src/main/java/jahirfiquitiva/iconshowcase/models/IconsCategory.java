@@ -25,15 +25,16 @@ package jahirfiquitiva.iconshowcase.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 
 public class IconsCategory implements Parcelable {
 
     private final String name;
-    private ArrayList<IconItem> iconsArray = new ArrayList<>();
+    private final ArrayList<IconItem> iconsArray;
 
-    public IconsCategory(String name, ArrayList<IconItem> iconsArray) {
+    public IconsCategory(String name, @NonNull ArrayList<IconItem> iconsArray) {
         this.name = name;
         this.iconsArray = iconsArray;
     }

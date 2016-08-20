@@ -47,8 +47,8 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
 
     private final WeakReference<Context> mContext;
 
-    private static ArrayList<IconsLists> mIconList;
-    private static ArrayList<IconsCategory> mCategoryList;
+    private ArrayList<IconItem> mPreviewIcons = new ArrayList<>();
+    private ArrayList<IconsCategory> mCategoryList = new ArrayList<>();
     private long startTime, endTime;
     public interface IIconList {
         void onListSizeLoaded(int listSize);
@@ -59,6 +59,10 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
     public LoadIconsLists(Context context, IIconList callback) {
         mContext = new WeakReference<>(context);
         mCallback = callback;
+    }
+
+    public LoadIconsLists(Context context) {
+        mContext = new WeakReference<>(context);
     }
 
     @Override
@@ -76,22 +80,17 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
 
         int iconResId;
 
-        mIconList = new ArrayList<>();
-
         String[] prev = r.getStringArray(R.array.preview);
         List<String> previewIconsL = sortList(prev);
 
-        ArrayList<IconItem> previewIconsArray = new ArrayList<>();
         for (String icon : previewIconsL) {
             iconResId = Utils.getIconResId(r, p, icon);
             if (iconResId != 0) {
-                previewIconsArray.add(new IconItem(icon, iconResId));
+                mPreviewIcons.add(new IconItem(icon, iconResId));
             }
         }
-        mIconList.add(new IconsLists(previewIconsArray));
 
         String[] tabsNames = r.getStringArray(R.array.tabs);
-        mCategoryList = new ArrayList<>();
         ArrayList<IconItem> allIcons = new ArrayList<>();
 
         for (String tabName : tabsNames) {
@@ -190,14 +189,6 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
         }
 
         return sortAndOrganizeList(r, p, allIconsNames);
-    }
-
-    public static ArrayList<IconsLists> getIconsLists() {
-        return mIconList.size() > 0 ? mIconList : null;
-    }
-
-    public static ArrayList<IconsCategory> getIconsmCategoryList() {
-        return mCategoryList.size() > 0 ? mCategoryList : null;
     }
 
 }

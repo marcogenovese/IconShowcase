@@ -21,6 +21,13 @@
 
 <resources>
 
+
+
+    <style name="Test" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="colorControlActivated">#f0f</item>
+        <item name="android:background">#f00</item>
+
+    </style>
     <style name="Toolbar.Popup.AppCompat" parent="Theme.AppCompat.Light"/>
 
     <style name="Toolbar.AppCompat.Responsive.Light" parent="AppTheme.Base">
