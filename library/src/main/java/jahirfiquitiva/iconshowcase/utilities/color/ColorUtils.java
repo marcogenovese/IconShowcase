@@ -287,11 +287,7 @@ public class ColorUtils {
 
     @ColorInt
     public static int getCheckBoxColor(Context context, @ColorInt int defaultColor) {
-        int color = DialogUtils.resolveColor(context, R.attr.accentColor, defaultColor);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            color = DialogUtils.resolveColor(context, android.R.attr.colorAccent, color);
-        }
-        return color;
+        return DialogUtils.resolveColor(context, R.attr.accentColor, defaultColor);
     }
 
 }

@@ -20,18 +20,14 @@
 package jahirfiquitiva.iconshowcase.adapters;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.afollestad.materialdialogs.internal.MDTintHelper;
 
 import java.util.ArrayList;
 
@@ -44,6 +40,7 @@ import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
+import jahirfiquitiva.iconshowcase.views.RequestsCheckBox;
 
 
 public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.RequestsHolder> {
@@ -141,15 +138,13 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
         CardView cardView = null;
         final ImageView imgIcon;
         final TextView txtName;
-        final CheckBox chkSelected;
+        final RequestsCheckBox chkSelected;
 
         public RequestsHolder(View v) {
             super(v);
             imgIcon = (ImageView) v.findViewById(R.id.imgIcon);
             txtName = (TextView) v.findViewById(R.id.txtName);
-            chkSelected = (CheckBox) v.findViewById(R.id.chkSelected);
-            MDTintHelper.setTint(chkSelected, ColorUtils.getCheckBoxColor(context,
-                    ContextCompat.getColor(context, R.color.md_teal_A400)));
+            chkSelected = (RequestsCheckBox) v.findViewById(R.id.chkSelected);
             boolean listsCards;
             if (context.getResources().getBoolean(R.bool.dev_options)) {
                 listsCards = mPrefs.getDevListsCards();

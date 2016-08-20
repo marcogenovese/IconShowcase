@@ -66,10 +66,7 @@ public class ChangelogDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity())
                 .title(R.string.changelog_dialog_title)
-                .titleGravity(GravityEnum.CENTER)
-                .titleColorAttr(android.R.attr.textColorPrimary)
-                .positiveText(R.string.great)
-                .positiveColorAttr(android.R.attr.textColorSecondary);
+                .positiveText(R.string.great);
 
         if (getArguments() == null || !getArguments().containsKey(changelog_items)) {
             builder.content(R.string.empty_changelog);

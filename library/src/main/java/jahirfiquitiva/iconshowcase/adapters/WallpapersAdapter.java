@@ -21,7 +21,8 @@
 package jahirfiquitiva.iconshowcase.adapters;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
+import android.graphics.Bitmap;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.RecyclerView;
@@ -33,12 +34,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
 import java.util.ArrayList;
 
 import jahirfiquitiva.iconshowcase.R;
-import jahirfiquitiva.iconshowcase.glide.WallpaperGlideRequest;
-import jahirfiquitiva.iconshowcase.glide.WallpaperTarget;
 import jahirfiquitiva.iconshowcase.models.WallpaperItem;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
@@ -74,6 +74,10 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
 
     @Override
     public void onBindViewHolder(final WallsHolder holder, int position) {
+        holder.titleBg.setBackgroundColor(ContextCompat.getColor(context, R.color.semitransparent_black));
+        holder.name.setTextColor(ContextCompat.getColor(context, android.R.color.white));
+        holder.authorName.setTextColor(ContextCompat.getColor(context, android.R.color.white));
+
         final WallpaperItem wallItem = wallsList.get(holder.getAdapterPosition());
 
         ViewCompat.setTransitionName(holder.wall, "transition" + holder.getAdapterPosition());
@@ -82,7 +86,6 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
         holder.authorName.setText(wallItem.getWallAuthor());
 
         loadWallpaper(wallItem, holder);
-
     }
 
     private void setColors(int color, WallsHolder holder) {
@@ -99,28 +102,42 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
 
     protected void loadWallpaper(WallpaperItem wall, final WallsHolder holder) {
         if (holder.wall == null) return;
+        BitmapImageViewTarget target = new BitmapImageViewTarget(holder.wall) {
+            @Override
+            protected void setResource(Bitmap bitmap) {
+                Palette.Swatch wallSwatch = ColorUtils.getPaletteSwatch(bitmap);
+                if (mPrefs.getAnimationsEnabled() && (holder.getAdapterPosition() > lastPosition)) {
+                    holder.wall.setAlpha(0f);
+                    holder.titleBg.setAlpha(0f);
+                    holder.wall.setImageBitmap(bitmap);
+                    if (wallSwatch != null) setColors(wallSwatch.getRgb(), holder);
+                    holder.wall.animate().setDuration(250).alpha(1f).start();
+                    holder.titleBg.animate().setDuration(250).alpha(1f).start();
+                    lastPosition = holder.getAdapterPosition();
+                } else {
+                    holder.wall.setImageBitmap(bitmap);
+                    if (wallSwatch != null) setColors(wallSwatch.getRgb(), holder);
+                }
+            }
+        };
 
-        WallpaperGlideRequest.Builder.from(Glide.with(context), wall)
-                .generatePalette(context).build()
-                .into(new WallpaperTarget(holder.wall) {
-                    @Override
-                    public void onLoadCleared(Drawable placeholder) {
-                        super.onLoadCleared(placeholder);
-                    }
-                    @Override
-                    public void onColorReady(int color) {
-                        if (mPrefs.getAnimationsEnabled() && (holder.getAdapterPosition() > lastPosition)) {
-                            holder.wall.setAlpha(0f);
-                            holder.titleBg.setAlpha(0f);
-                            setColors(color, holder);
-                            holder.wall.animate().setDuration(250).alpha(1f).start();
-                            holder.titleBg.animate().setDuration(250).alpha(1f).start();
-                            lastPosition = holder.getAdapterPosition();
-                        } else {
-                            setColors(color, holder);
-                        }
-                    }
-                });
+        if (!(wall.getWallThumbUrl().equals("null"))) {
+            Glide.with(context)
+                    .load(wall.getWallURL())
+                    .asBitmap()
+                    .thumbnail(
+                            Glide.with(context)
+                                    .load(wall.getWallThumbUrl())
+                                    .asBitmap()
+                                    .thumbnail(0.3f))
+                    .into(target);
+        } else {
+            Glide.with(context)
+                    .load(wall.getWallThumbUrl())
+                    .asBitmap()
+                    .thumbnail(0.4f)
+                    .into(target);
+        }
     }
 
     @Override
@@ -178,14 +195,6 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
             clickable = true;
         }
 
-    }
-
-    private void setWallInfoColors(Palette.Swatch swatch, WallsHolder holder) {
-        if (swatch != null) {
-            holder.titleBg.setBackgroundColor(swatch.getRgb());
-            holder.name.setTextColor(swatch.getBodyTextColor());
-            holder.authorName.setTextColor(swatch.getTitleTextColor());
-        }
     }
 
 }

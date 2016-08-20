@@ -163,22 +163,28 @@ public class Utils {
     }
 
     public static void showLog(Context context, String s) {
-        if (context.getResources().getBoolean(R.bool.debugging)) {
-            String tag = "IconShowcase + " + context.getResources().getString(R.string.app_name);
-            Log.d(tag, s);
+        if (context != null) {
+            if (context.getResources().getBoolean(R.bool.debugging)) {
+                String tag = "IconShowcase + " + context.getResources().getString(R.string.app_name);
+                Log.d(tag, s);
+            }
         }
     }
 
     public static void showLog(Context context, boolean muzei, String s) {
-        if (context.getResources().getBoolean(R.bool.debugging) && muzei) {
-            Log.d(context.getResources().getString(R.string.app_name) + " Muzei", s);
+        if (context != null) {
+            if (context.getResources().getBoolean(R.bool.debugging) && muzei) {
+                Log.d(context.getResources().getString(R.string.app_name) + " Muzei", s);
+            }
         }
     }
 
     public static void showAppFilterLog(Context context, String s) {
-        if (context.getResources().getBoolean(R.bool.debugging)) {
-            String tag = context.getResources().getString(R.string.app_name) + " AppFilter";
-            Log.d(tag, s);
+        if (context != null) {
+            if (context.getResources().getBoolean(R.bool.debugging)) {
+                String tag = context.getResources().getString(R.string.app_name) + " AppFilter";
+                Log.d(tag, s);
+            }
         }
     }
 

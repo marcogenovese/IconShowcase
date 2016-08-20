@@ -70,14 +70,14 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
     private String zipFilePath;
     private WeakReference<Context> context;
     private StringBuilder emailContent = new StringBuilder();
-    private static WeakReference<Activity> wrActivity;
+    private WeakReference<Activity> wrActivity;
     private Activity activity;
     private final Preferences mPrefs;
     private File filesFolder;
 
     public ZipFilesToRequest(Activity activity, MaterialDialog dialog,
                              ArrayList<RequestItem> appsListFinal) {
-        ZipFilesToRequest.wrActivity = new WeakReference<>(activity);
+        this.wrActivity = new WeakReference<>(activity);
         this.dialog = dialog;
         this.appsListFinal = appsListFinal;
         this.mPrefs = new Preferences(activity);
@@ -306,7 +306,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
         }
     }
 
-    private static void createZipFile(final String path, final String outputFile) {
+    private void createZipFile(final String path, final String outputFile) {
         final File filesFolder = new File(path);
 
         if (!filesFolder.canRead() || !filesFolder.canWrite()) {
