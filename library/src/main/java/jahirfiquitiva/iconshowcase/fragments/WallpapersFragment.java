@@ -162,6 +162,7 @@ public class WallpapersFragment extends NoFabBaseFragment {
     private static void setupLayout(final Context context) {
 
         if (WallpapersList.getWallpapersList() != null && WallpapersList.getWallpapersList().size() > 0) {
+            hideProgressBar();
             mAdapter = new WallpapersAdapter(context,
                     new WallpapersAdapter.ClickListener() {
                         @Override
@@ -225,6 +226,7 @@ public class WallpapersFragment extends NoFabBaseFragment {
                     fastScroller.setVisibility(View.VISIBLE);
                     mSwipeRefreshLayout.setEnabled(false);
                     mSwipeRefreshLayout.setRefreshing(false);
+                    hideProgressBar();
                 }
 
                 runOnUIThread(context, new Runnable() {
@@ -245,6 +247,8 @@ public class WallpapersFragment extends NoFabBaseFragment {
                                                         context, R.drawable.ic_no_connection,
                                                         ThemeUtils.darkTheme ? light : dark));
                                                 hideStuff(noConnection);
+                                            } else {
+                                                hideProgressBar();
                                             }
                                         }
                                     });

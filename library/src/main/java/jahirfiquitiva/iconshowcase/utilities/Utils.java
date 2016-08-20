@@ -32,6 +32,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -656,12 +657,29 @@ public class Utils {
         if (!(ViewConfiguration.get(context).hasPermanentMenuKey()) &&
                 !(KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK))) {
             //On-screen navigation bar
-            int resId = context.getResources().getIdentifier("navigation_bar_height", "dimen", "android");
+
+            int resId = 0;
+            int orientation = context.getResources().getConfiguration().orientation;
+
+            if (isTablet(context)){
+                resId = context.getResources().getIdentifier(orientation == Configuration.ORIENTATION_PORTRAIT ? "navigation_bar_height" : "navigation_bar_height_landscape", "dimen", "android");
+            }  else {
+                resId = context.getResources().getIdentifier(orientation == Configuration.ORIENTATION_PORTRAIT ? "navigation_bar_height" : "navigation_bar_width", "dimen", "android");
+            }
+
+            //int resId = context.getResources().getIdentifier("navigation_bar_height", "dimen", "android");
+
             return resId > 0 ? context.getResources().getDimensionPixelSize(resId) : 0;
         } else {
             //Hardware buttons
             return 0;
         }
+    }
+
+    public static boolean isTablet(Context context) {
+        return (context.getResources().getConfiguration().screenLayout
+                & Configuration.SCREENLAYOUT_SIZE_MASK)
+                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 
     public static void sendFirebaseNotification(Context context, Class mainActivity,
