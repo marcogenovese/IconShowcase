@@ -41,6 +41,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -73,6 +74,9 @@ import org.sufficientlysecure.donations.google.util.Inventory;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.IllegalFormatException;
+import java.util.List;
 import java.util.Random;
 
 import jahirfiquitiva.iconshowcase.R;
@@ -80,10 +84,18 @@ import jahirfiquitiva.iconshowcase.adapters.RequestsAdapter;
 import jahirfiquitiva.iconshowcase.dialogs.ChangelogDialog;
 import jahirfiquitiva.iconshowcase.dialogs.FolderSelectorDialog;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
+import jahirfiquitiva.iconshowcase.enums.DrawerType;
+import jahirfiquitiva.iconshowcase.fragments.ApplyFragment;
+import jahirfiquitiva.iconshowcase.fragments.CreditsFragment;
 import jahirfiquitiva.iconshowcase.fragments.DonationsFragment;
+import jahirfiquitiva.iconshowcase.fragments.FAQsFragment;
+import jahirfiquitiva.iconshowcase.fragments.KustomFragment;
+import jahirfiquitiva.iconshowcase.fragments.MainFragment;
+import jahirfiquitiva.iconshowcase.fragments.PreviewsFragment;
 import jahirfiquitiva.iconshowcase.fragments.RequestsFragment;
 import jahirfiquitiva.iconshowcase.fragments.SettingsFragment;
 import jahirfiquitiva.iconshowcase.fragments.WallpapersFragment;
+import jahirfiquitiva.iconshowcase.fragments.ZooperFragment;
 import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.models.WallpapersList;
 import jahirfiquitiva.iconshowcase.services.NotificationsService;
@@ -115,8 +127,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderSelecto
 
     private static String[] mGoogleCatalog = new String[0],
             GOOGLE_CATALOG_VALUES = new String[0],
-            primaryDrawerItems = new String[0],
-            secondaryDrawerItems = new String[0],
             GOOGLE_CATALOG_FREE, GOOGLE_CATALOG_PRO;
 
     private static String GOOGLE_PUBKEY = "", PAYPAL_USER = "", PAYPAL_CURRENCY_CODE = "";
@@ -132,19 +142,19 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderSelecto
     public static boolean iconsPicker, wallsPicker, SHUFFLE = true;
     private static boolean iconsPickerEnabled = false, wallsEnabled = false, shuffleIcons = true;
 
-    private static String thaAppName, thaHome, thaPreviews, thaApply, thaWalls,
-            thaRequest, thaDonate, thaFAQs, thaZooper, thaCredits, thaSettings, thaKustom;
+    private static String thaAppName;
 
     private static AppCompatActivity context;
 
     public static long currentItem = -1;
-    private static long iconsPickerIdentifier = 0, applyIdentifier = 0, wallsIdentifier = 0, secondaryStart = 0;
 
     private static int numOfIcons = 4, wallpaper = -1, curVersionCode = 0;
 
     private boolean mLastTheme;
     private static Preferences mPrefs;
 
+    //TODO remove static variables if possible
+    //TODO do not save Dialog instance; use fragment tags
     private MaterialDialog settingsDialog, changelogDialog;
     public static Toolbar toolbar;
     public static AppBarLayout appbar;
@@ -153,6 +163,8 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderSelecto
     public static ImageView toolbarHeader;
     public static Bitmap toolbarHeaderImage;
     public static Drawable wallpaperDrawable;
+    private List<DrawerType> mDrawerItems;
+    private HashMap<DrawerType, Integer> mDrawerMap = new HashMap<>();
 
     private Drawer drawer;
 
@@ -202,11 +214,6 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderSelecto
 
         mPrefs.setActivityVisible(true);
 
-        String[] configurePrimaryDrawerItems = getResources().getStringArray(R.array.primary_drawer_items);
-        primaryDrawerItems = new String[configurePrimaryDrawerItems.length + 1];
-        primaryDrawerItems[0] = "Main";
-        System.arraycopy(configurePrimaryDrawerItems, 0, primaryDrawerItems, 1, configurePrimaryDrawerItems.length);
-
         if (notifType == 1) {
             NotificationsService.clearNotification(context, 97);
         }
@@ -216,6 +223,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderSelecto
         }
 
         try {
+            //TODO move theses strings to final
             if (installer.matches("com.google.android.feedback") || installer.matches("com.android.vending")) {
                 installedFromPlayStore = true;
             }
@@ -227,13 +235,7 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderSelecto
 
         setupDonations();
 
-        //Initialize SecondaryDrawerItems
-        if (WITH_DONATIONS_SECTION) {
-            secondaryDrawerItems = new String[]{"Credits", "Settings", "Donations"};
-        } else {
-            secondaryDrawerItems = new String[]{"Credits", "Settings"};
-        }
-
+        //TODO dynamically add icons rather than defining 8 and hiding those that aren't used
         numOfIcons = context.getResources().getInteger(R.integer.toolbar_icons);
 
         icon1 = (ImageView) findViewById(R.id.iconOne);
@@ -253,27 +255,16 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderSelecto
         setSupportActionBar(toolbar);
 
         thaAppName = getResources().getString(R.string.app_name);
-        thaHome = getResources().getString(R.string.section_home);
-        thaPreviews = getResources().getString(R.string.section_icons);
-        thaApply = getResources().getString(R.string.section_apply);
-        thaWalls = getResources().getString(R.string.section_wallpapers);
-        thaRequest = getResources().getString(R.string.section_icon_request);
-        thaDonate = getResources().getString(R.string.section_donate);
-        thaCredits = getResources().getString(R.string.section_about);
-        thaSettings = getResources().getString(R.string.title_settings);
-        thaFAQs = getResources().getString(R.string.faqs_section);
-        thaZooper = getResources().getString(R.string.zooper_section_title);
-        thaKustom = "Kustom";
 
         collapsingToolbarLayout.setTitle(thaAppName);
         Utils.setupCollapsingToolbarTextColors(context, collapsingToolbarLayout);
+        setupDrawer(toolbar, savedInstanceState);
 
         //Setup donations
         if (DONATIONS_GOOGLE) {
             final IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
 
                 public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
-                    //TODO test this
                     if (inventory != null) {
                         Utils.showLog(context, "IAP inventory exists");
                         for (String aGOOGLE_CATALOG_FREE : GOOGLE_CATALOG_FREE) {
@@ -307,61 +298,27 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderSelecto
             });
         }
 
-        setupDrawer(toolbar, savedInstanceState);
-
         if (savedInstanceState == null) {
             if (notifType == 1) {
-                drawerItemClick(wallsIdentifier);
-                drawer.setSelection(wallsIdentifier);
+                drawerItemSelectAndClick(mDrawerMap.get(DrawerType.WALLPAPERS));
             } else if (iconsPicker && iconsPickerEnabled) {
-                drawerItemClick(iconsPickerIdentifier);
-                drawer.setSelection(iconsPickerIdentifier);
+                drawerItemSelectAndClick(mDrawerMap.get(DrawerType.REQUESTS));
             } else if (wallsPicker && mPrefs.areFeaturesEnabled() && wallsEnabled) {
-                drawerItemClick(wallsIdentifier);
-                drawer.setSelection(wallsIdentifier);
+                drawerItemSelectAndClick(mDrawerMap.get(DrawerType.WALLPAPERS));
             } else {
                 if (mPrefs.getSettingsModified()) {
+                    //TODO check this
                     long settingsIdentifier = 0;
-                    drawerItemClick(settingsIdentifier);
-                    drawer.setSelection(settingsIdentifier);
+                    drawerItemSelectAndClick(settingsIdentifier);
                 } else {
                     currentItem = -1;
-                    drawerItemClick(1);
-                    drawer.setSelection(1);
+                    drawerItemSelectAndClick(1);
                 }
             }
         }
     }
 
-    private static String fragment2title(String fragment) {
-        switch (fragment) {
-            case "Main":
-                return thaAppName;
-            case "Previews":
-                return thaPreviews;
-            case "Apply":
-                return thaApply;
-            case "Wallpapers":
-                return thaWalls;
-            case "Requests":
-                return thaRequest;
-            case "Zooper":
-                return thaZooper;
-            case "Donations":
-                return thaDonate;
-            case "FAQs":
-                return thaFAQs;
-            case "Credits":
-                return thaCredits;
-            case "Settings":
-                return thaSettings;
-            case "Kustom":
-                return thaKustom;
-        }
-        return ":(";
-    }
-
-    private void switchFragment(long itemId, String fragment, AppCompatActivity context) {
+    private void switchFragment(long itemId, DrawerType dt, AppCompatActivity context) {
 
         if (currentItem == itemId) {
             // Don't allow re-selection of the currently active item
@@ -369,7 +326,13 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderSelecto
         }
         currentItem = itemId;
 
-        if (fragment.equals("Main")) {
+        if (dt == DrawerType.HOME && !iconsPicker && !wallsPicker) {
+            Utils.expandToolbar(this);
+        } else {
+            Utils.collapseToolbar(this);
+        }
+
+        if (dt == DrawerType.HOME) {
             icon1.setVisibility(View.INVISIBLE);
             icon2.setVisibility(View.INVISIBLE);
             icon3.setVisibility(View.INVISIBLE);
@@ -377,54 +340,66 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderSelecto
         }
 
         //Fragment Switcher
-        if (mPrefs.getAnimationsEnabled()) {
-            if (fragment.equals("Donations")) {
-                DonationsFragment donationsFragment;
-                donationsFragment = DonationsFragment.newInstance(DONATIONS_GOOGLE,
-                        GOOGLE_PUBKEY,
-                        mGoogleCatalog,
-                        GOOGLE_CATALOG_VALUES,
-                        DONATIONS_PAYPAL,
-                        PAYPAL_USER,
-                        PAYPAL_CURRENCY_CODE,
-                        context.getString(R.string.section_donate),
-                        DONATIONS_FLATTR,
-                        DONATIONS_BITCOIN);
-                context.getSupportFragmentManager()
-                        .beginTransaction()
-                        .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-                        .replace(R.id.main, donationsFragment, "donationsFragment")
-                        .commit();
-            } else {
-                context.getSupportFragmentManager()
-                        .beginTransaction()
-                        .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
-                        .replace(R.id.main, Fragment.instantiate(context, "jahirfiquitiva.iconshowcase.fragments." + fragment + "Fragment"))
-                        .commit();
-            }
-        } else {
-            if (fragment.equals("Donations")) {
-                DonationsFragment donationsFragment;
-                donationsFragment = DonationsFragment.newInstance(DONATIONS_GOOGLE,
-                        GOOGLE_PUBKEY,
-                        mGoogleCatalog,
-                        GOOGLE_CATALOG_VALUES,
-                        DONATIONS_PAYPAL,
-                        PAYPAL_USER,
-                        PAYPAL_CURRENCY_CODE,
-                        context.getString(R.string.section_donate),
-                        DONATIONS_FLATTR,
-                        DONATIONS_BITCOIN);
-                context.getSupportFragmentManager().beginTransaction().replace(R.id.main, donationsFragment, "donationsFragment").commit();
-            } else {
-                context.getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.main, Fragment.instantiate(context, "jahirfiquitiva.iconshowcase.fragments." + fragment + "Fragment"))
-                        .commit();
-            }
-        }
+        FragmentTransaction fragmentTransaction = context.getSupportFragmentManager()
+                .beginTransaction();
 
-        collapsingToolbarLayout.setTitle(fragment2title(fragment));
+        Fragment fragment;
+
+        switch (dt) {
+            case DONATE:
+                fragment = DonationsFragment.newInstance(DONATIONS_GOOGLE,
+                        GOOGLE_PUBKEY,
+                        mGoogleCatalog,
+                        GOOGLE_CATALOG_VALUES,
+                        DONATIONS_PAYPAL,
+                        PAYPAL_USER,
+                        PAYPAL_CURRENCY_CODE,
+                        context.getString(R.string.section_donate),
+                        DONATIONS_FLATTR,
+                        DONATIONS_BITCOIN);
+                break;
+            case HOME:
+                fragment = new MainFragment();
+                break;
+            case PREVIEWS:
+                fragment = new PreviewsFragment();
+                break;
+            case WALLPAPERS:
+                fragment = new WallpapersFragment();
+                break;
+            case REQUESTS:
+                fragment = new RequestsFragment();
+                break;
+            case APPLY:
+                fragment = new ApplyFragment();
+                break;
+            case FAQS:
+                fragment = new FAQsFragment();
+                break;
+            case ZOOPER:
+                fragment = new ZooperFragment();
+                break;
+            case KUSTOM:
+                fragment = new KustomFragment();
+                break;
+            case CREDITS:
+                fragment = new CreditsFragment();
+                break;
+            case SETTINGS:
+                fragment = new SettingsFragment();
+                break;
+            default:
+                //throw error
+                fragment = new MainFragment();
+                break;
+        }
+        fragmentTransaction.replace(R.id.main, fragment, dt.getName());
+
+        if (mPrefs.getAnimationsEnabled())
+            fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
+        fragmentTransaction.commit();
+
+        collapsingToolbarLayout.setTitle(getString(dt.getTitleID()));
 
         if (drawer != null) {
             drawer.setSelection(itemId);
@@ -689,18 +664,46 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderSelecto
         void checkWallsListCreation(boolean result);
     }
 
+    private DrawerType drawerKeyToType(String s) {
+        switch (s.toLowerCase()) {
+            case "previews":
+                return DrawerType.PREVIEWS;
+            case "wallpapers":
+                wallsEnabled = true;
+                return DrawerType.WALLPAPERS;
+            case "requests":
+                iconsPickerEnabled = true;
+                return DrawerType.REQUESTS;
+            case "apply":
+                return DrawerType.APPLY;
+            case "faqs":
+                return DrawerType.FAQS;
+            case "zooper":
+                return DrawerType.ZOOPER;
+            case "kustom":
+                return DrawerType.KUSTOM;
+            default:
+                //TODO add better catch;
+                throw new RuntimeException("Invalid drawer key " + s + ".\nPlease check your primary_drawer_items array");
+        }
+    }
+
     @SuppressWarnings("ResourceAsColor")
     private void setupDrawer(final Toolbar toolbar, Bundle savedInstanceState) {
+        mDrawerItems = new ArrayList<>();
+        mDrawerItems.add(DrawerType.HOME);
 
-        //Initialize PrimaryDrawerItem
-        PrimaryDrawerItem home, previews, walls, requests, apply, faqs, zooper, kustom,
-                creditsItem, settingsItem, donationsItem;
+        //Convert keys to enums
+        String[] configurePrimaryDrawerItems = getResources().getStringArray(R.array.primary_drawer_items);
 
-        secondaryStart = primaryDrawerItems.length + 1; //marks the first identifier value that should be used
+        for (String s : configurePrimaryDrawerItems) {
+            mDrawerItems.add(drawerKeyToType(s));
+        }
+        mDrawerItems.add(DrawerType.CREDITS);
+        mDrawerItems.add(DrawerType.SETTINGS);
+        if (WITH_DONATIONS_SECTION) mDrawerItems.add(DrawerType.DONATE);
 
-        DrawerBuilder drawerBuilder;
-
-        drawerBuilder = new DrawerBuilder().withActivity(this)
+        DrawerBuilder drawerBuilder = new DrawerBuilder().withActivity(this)
                 .withToolbar(toolbar)
                 .withFireOnInitialOnClick(true)
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
@@ -714,96 +717,14 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderSelecto
                     }
                 });
 
-        for (int i = 0; i < primaryDrawerItems.length; i++) {
-            switch (primaryDrawerItems[i]) {
-                case "Main":
-                    home = new PrimaryDrawerItem().withName(thaHome)
-                            .withIcon(Utils.getVectorDrawable(context, R.drawable.ic_home))
-                            .withIconTintingEnabled(true)
-                            .withIdentifier(i + 1);
-                    drawerBuilder.addDrawerItems(home);
-                    break;
-
-                case "Previews":
-                    iconsPickerEnabled = true;
-                    iconsPickerIdentifier = i + 1;
-                    previews = new PrimaryDrawerItem().withName(thaPreviews)
-                            .withIcon(Utils.getVectorDrawable(context, R.drawable.ic_previews))
-                            .withIconTintingEnabled(true)
-                            .withIdentifier(iconsPickerIdentifier);
-                    drawerBuilder.addDrawerItems(previews);
-                    break;
-
-                case "Wallpapers":
-                    wallsEnabled = true;
-                    wallsIdentifier = i + 1;
-                    walls = new PrimaryDrawerItem().withName(thaWalls)
-                            .withIcon(Utils.getVectorDrawable(context, R.drawable.ic_wallpapers))
-                            .withIconTintingEnabled(true)
-                            .withIdentifier(wallsIdentifier);
-                    drawerBuilder.addDrawerItems(walls);
-                    break;
-
-                case "Requests":
-                    requests = new PrimaryDrawerItem().withName(thaRequest)
-                            .withIcon(Utils.getVectorDrawable(context, R.drawable.ic_request))
-                            .withIconTintingEnabled(true)
-                            .withIdentifier(i + 1);
-                    drawerBuilder.addDrawerItems(requests);
-                    break;
-
-                case "Apply":
-                    applyIdentifier = i + 1;
-                    apply = new PrimaryDrawerItem().withName(thaApply)
-                            .withIcon(Utils.getVectorDrawable(context, R.drawable.ic_apply))
-                            .withIconTintingEnabled(true)
-                            .withIdentifier(applyIdentifier);
-                    drawerBuilder.addDrawerItems(apply);
-                    break;
-
-                case "FAQs":
-                    faqs = new PrimaryDrawerItem().withName(thaFAQs)
-                            .withIcon(Utils.getVectorDrawable(context, R.drawable.ic_questions))
-                            .withIconTintingEnabled(true)
-                            .withIdentifier(i + 1);
-                    drawerBuilder.addDrawerItems(faqs);
-                    break;
-
-                case "Zooper":
-                    WITH_ZOOPER_SECTION = true;
-                    zooper = new PrimaryDrawerItem().withName(thaZooper)
-                            .withIcon(Utils.getVectorDrawable(context, R.drawable.ic_zooper_kustom))
-                            .withIconTintingEnabled(true)
-                            .withIdentifier(i + 1);
-                    drawerBuilder.addDrawerItems(zooper);
-                    break;
-
-                case "Kustom":
-                    kustom = new PrimaryDrawerItem().withName(thaKustom)
-                            .withIcon(Utils.getVectorDrawable(context, R.drawable.ic_zooper_kustom))
-                            .withIconTintingEnabled(true)
-                            .withIdentifier(i + 1);
-                    drawerBuilder.addDrawerItems(kustom);
+        for (int i = 0; i < mDrawerItems.size(); i++) {
+            DrawerType dt = mDrawerItems.get(i);
+            //TODO change; credits will always be the first secondary item
+            if (dt == DrawerType.CREDITS) {
+                drawerBuilder.addDrawerItems(new DividerDrawerItem());
             }
-        }
-
-        drawerBuilder.addDrawerItems(new DividerDrawerItem()); //divider between primary and secondary
-
-        for (int i = 0; i < secondaryDrawerItems.length; i++) {
-            switch (secondaryDrawerItems[i]) {
-                case "Credits":
-                    creditsItem = new SecondaryDrawerItem().withName(thaCredits).withIdentifier(i + secondaryStart);
-                    drawerBuilder.addDrawerItems(creditsItem);
-                    break;
-                case "Settings":
-                    settingsItem = new SecondaryDrawerItem().withName(thaSettings).withIdentifier(i + secondaryStart);
-                    drawerBuilder.addDrawerItems(settingsItem);
-                    break;
-                case "Donations":
-                    donationsItem = new SecondaryDrawerItem().withName(thaDonate).withIdentifier(i + secondaryStart);
-                    drawerBuilder.addDrawerItems(donationsItem);
-                    break;
-            }
+            mDrawerMap.put(dt, i);
+            drawerBuilder.addDrawerItems(DrawerType.getDrawerItem(context, dt, i));
         }
 
         drawerBuilder.withSavedInstance(savedInstanceState);
@@ -841,12 +762,13 @@ public class ShowcaseActivity extends AppCompatActivity implements FolderSelecto
 
     }
 
+    private void drawerItemSelectAndClick(long id) {
+        drawer.setSelection(id);
+        drawerItemClick(id);
+    }
+
     private void drawerItemClick(long id) {
-        if (id <= primaryDrawerItems.length) {
-            switchFragment(id, primaryDrawerItems[(int) id - 1], context);
-        } else {
-            switchFragment(id, secondaryDrawerItems[((int) (id - secondaryStart))], context);
-        }
+        switchFragment(id, mDrawerItems.get((int) id), context);
     }
 
     private void getAction() {

@@ -35,8 +35,9 @@ android {
 
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
-            output.outputFile = new File(
-                    output.outputFile.parent, "IconShowcase-IconPack-${variant.versionName}.apk")
+            //noinspection GroovyAssignabilityCheck
+            output.outputFile = new File(output.outputFile.parent,
+                    "IS-IconPack-v${variant.versionName}.apk")
         }
     }
 
