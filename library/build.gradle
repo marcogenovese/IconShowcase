@@ -143,4 +143,6 @@ dependencies {
     //BottomSheet (for a future feature)
     //compile 'com.flipboard:bottomsheet-core:1.5.1'
 
+    compile 'com.github.AllanWang:Butler:1524a84601'
+
 }
