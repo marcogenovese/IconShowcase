@@ -90,10 +90,10 @@ public class TasksExecutor {
                 new LoadKustomFiles(context).execute();
             }
 
-            if (!mPrefs.didAppsToRequestLoad() || RequestList.getRequestList() == null) {
-                RequestsFragment.loadAppsToRequest = new LoadRequestList(context);
-                RequestsFragment.loadAppsToRequest.execute();
-            }
+//            if (!mPrefs.didAppsToRequestLoad() || RequestList.getRequestList() == null) {
+//                RequestsFragment.loadAppsToRequest = new LoadRequestList(context);
+//                RequestsFragment.loadAppsToRequest.execute();
+//            }
         }
     }
 

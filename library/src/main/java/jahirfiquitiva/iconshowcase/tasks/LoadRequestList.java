@@ -58,27 +58,31 @@ import timber.log.Timber;
 
 public class LoadRequestList extends AsyncTask<Void, String, Boolean> {
 
-    private ArrayList<RequestItem> appsToTheme;
-    private ArrayList<AppFilterItem> appFilterItems;
+    private ArrayList<RequestItem> mAppsToTheme = new ArrayList<>();
+    private ArrayList<AppFilterItem> mAppfilterItems;
     private PackageManager pm;
     private WeakReference<Context> context;
 
     private final long startTime;
     private long endTime;
+    private IRequestList mCallback;
+    
+    public interface IRequestList {
+        void onListLoaded(ArrayList<RequestItem> appList);
+    }
 
-    public LoadRequestList(Context context) {
+    public LoadRequestList(Context context, IRequestList callback) {
         this.context = new WeakReference<>(context);
         this.pm = context.getPackageManager();
+        mCallback = callback;
         this.startTime = System.currentTimeMillis();
         if (Config.get().allowDebugging()) {
-            appFilterItems = new ArrayList<>();
+            mAppfilterItems = new ArrayList<>();
         }
     }
 
     @Override
     protected Boolean doInBackground(Void... voids) {
-
-        appsToTheme = new ArrayList<>();
 
         ArrayList<ResolveInfo> rAllActivitiesList =
                 (ArrayList<ResolveInfo>) pm.queryIntentActivities(getAllActivitiesIntent(), 0);
@@ -87,15 +91,16 @@ public class LoadRequestList extends AsyncTask<Void, String, Boolean> {
             if (info.activityInfo.packageName.equals(context.get().getPackageName())) {
                 continue;
             }
-            appsToTheme.add(new RequestItem(
+            mAppsToTheme.add(new RequestItem(
                     info.loadLabel(pm).toString(),
                     info.activityInfo.packageName,
                     info.activityInfo.name,
                     getNormalIcon(info, pm),
-                    getHiResAppIcon(info)));
+                    info));
+//                    getHiResAppIcon(info)));
         }
 
-        if (appsToTheme == null) return false;
+        if (mAppsToTheme == null) return false;
 
         XmlPullParser xpp;
 
@@ -124,8 +129,8 @@ public class LoadRequestList extends AsyncTask<Void, String, Boolean> {
                         String drawablename = xpp.getAttributeValue(null, "drawable");
                         if (cnstr != null && !(cnstr.isEmpty())) {
                             if (Config.get().allowDebugging()) {
-                                if (appFilterItems != null) {
-                                    appFilterItems.add(new AppFilterItem(
+                                if (mAppfilterItems != null) {
+                                    mAppfilterItems.add(new AppFilterItem(
                                             cnstr,
                                             drawablename
                                     ));
@@ -137,8 +142,11 @@ public class LoadRequestList extends AsyncTask<Void, String, Boolean> {
                                         ri.loadLabel(pm).toString(),
                                         ri.activityInfo.packageName,
                                         ri.activityInfo.name,
-                                        getNormalIcon(ri, pm),
-                                        getHiResAppIcon(ri)));
+                                        //No Need to load these portions TODO check if other strings are all necessary
+                                        null, null));
+//                                        getNormalIcon(ri, pm),
+//                                        ri));
+//                                        getHiResAppIcon(ri)));
                             }
                         }
                     }
@@ -151,8 +159,8 @@ public class LoadRequestList extends AsyncTask<Void, String, Boolean> {
         }
 
         try {
-            appsToTheme.removeAll(themedApps);
-            Collections.sort(appsToTheme, new Comparator<RequestItem>() {
+            mAppsToTheme.removeAll(themedApps);
+            Collections.sort(mAppsToTheme, new Comparator<RequestItem>() {
                 @Override
                 public int compare(RequestItem a, RequestItem b) {
                     return a.getAppName().compareToIgnoreCase(b.getAppName());
@@ -168,10 +176,10 @@ public class LoadRequestList extends AsyncTask<Void, String, Boolean> {
 
     @Override
     protected void onPostExecute(Boolean worked) {
-        Preferences mPrefs = new Preferences(context.get());
-        mPrefs.setIfAppsToRequestLoaded(worked);
-        RequestList.setRequestList(appsToTheme);
-        RequestsFragment.setupContent(RequestsFragment.layout, context.get());
+        mCallback.onListLoaded(mAppsToTheme);
+        //TODO remove
+//        Preferences mPrefs = new Preferences(context.get());
+//        mPrefs.setIfAppsToRequestLoaded(worked);
         if (worked) {
             Timber.d("Load of request list completed in: %d milliseconds", (endTime - startTime));
         }
@@ -303,7 +311,7 @@ public class LoadRequestList extends AsyncTask<Void, String, Boolean> {
 
     private void showAppFilterErrors() {
         Timber.d("----- START OF APPFILTER DEBUG -----");
-        for (AppFilterItem error : appFilterItems) {
+        for (AppFilterItem error : mAppfilterItems) {
             String iconName = error.getIconName();
             if (iconName.equals("")) {
                 Timber.d("Found empty drawable for component: \'%s\'", error.getCompleteComponent());
@@ -336,9 +344,9 @@ public class LoadRequestList extends AsyncTask<Void, String, Boolean> {
 
     private void showDuplicatedComponentsInLog() {
         SimpleArrayMap<String, Integer> occurrences = new SimpleArrayMap<>();
-        String[] components = new String[appFilterItems.size()];
-        for (int i = 0; i < appFilterItems.size(); i++) {
-            components[i] = appFilterItems.get(i).getCompleteComponent();
+        String[] components = new String[mAppfilterItems.size()];
+        for (int i = 0; i < mAppfilterItems.size(); i++) {
+            components[i] = mAppfilterItems.get(i).getCompleteComponent();
         }
         // TODO Make this work properly
         int count = 0;
