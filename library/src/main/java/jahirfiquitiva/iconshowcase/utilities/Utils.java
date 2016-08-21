@@ -668,6 +668,7 @@ public class Utils {
     }
 
     public static boolean isTablet(Context context) {
+        //TODO Fix this because it's not working
         return (context.getResources().getConfiguration().screenLayout
                 & Configuration.SCREENLAYOUT_SIZE_MASK)
                 >= Configuration.SCREENLAYOUT_SIZE_LARGE;

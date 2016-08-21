@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2016. Jahir Fiquitiva. Android Developer. All rights reserved.
+ */
+
 package jahirfiquitiva.iconshowcase.fragments;
 
 import android.os.Bundle;

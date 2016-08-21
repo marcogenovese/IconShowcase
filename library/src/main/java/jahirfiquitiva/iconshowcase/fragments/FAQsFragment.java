@@ -25,12 +25,10 @@ package jahirfiquitiva.iconshowcase.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,7 +42,6 @@ import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.adapters.FAQsAdapter;
 import jahirfiquitiva.iconshowcase.models.FAQsItem;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
-import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.views.DividerItemDecoration;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 

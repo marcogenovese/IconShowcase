@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 
 import jahirfiquitiva.iconshowcase.fragments.BaseFragment;
+import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 
 /**
  * Created by Allan Wang on 2016-08-19.
@@ -38,9 +39,9 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected void setupFab(@IdRes int id) {
         mFab = (FloatingActionButton) findViewById(id);
-        mFab.setOnClickListener(new View.OnClickListener() {
+        mFab.setOnClickListener(new DebouncedClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onDebouncedClick(View view) {
                 getCurrentBaseFragment().onFabClick(view);
             }
         });

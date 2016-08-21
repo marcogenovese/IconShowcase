@@ -23,7 +23,6 @@
 
 package jahirfiquitiva.iconshowcase.tasks;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.AsyncTask;
@@ -151,7 +150,9 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
         if (worked) {
             Timber.d("Load of icons task completed successfully in: %d milliseconds", (endTime - startTime));
         }
-        mCallback.onLoadComplete(mPreviewIcons, mCategoryList);
+        if (mCallback != null) {
+            mCallback.onLoadComplete(mPreviewIcons, mCategoryList);
+        }
     }
 
     private List<String> sortList(String[] array) {
