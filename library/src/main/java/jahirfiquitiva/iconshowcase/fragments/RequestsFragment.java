@@ -144,8 +144,8 @@ public class RequestsFragment extends BaseFragment implements PermissionUtils.On
                 if (loadAppsToRequest != null) {
                     loadAppsToRequest.cancel(true);
                 }
-                loadAppsToRequest = new LoadRequestList(context);
-                loadAppsToRequest.execute();
+//                loadAppsToRequest = new LoadRequestList(context);
+//                loadAppsToRequest.execute();
             }
         });
 
@@ -180,15 +180,31 @@ public class RequestsFragment extends BaseFragment implements PermissionUtils.On
 
         setupMaxApps();
 
+//        requestList = RequestList.getRequestList();
+//        if (requestList != null && requestList.size() > 0) {
+            requestsAdapter = new RequestsAdapter(context, mPrefs);
+            requestsAdapter.startIconFetching(mRecyclerView);
+            mRecyclerView.setHasFixedSize(true);
+            mRecyclerView.setItemAnimator(null);
+            mRecyclerView.setAnimation(null);
+            mRecyclerView.setAdapter(requestsAdapter);
+//            requestsAdapter.notifyItemRangeInserted(0, requestList.size() - 1);
+            fastScroller.attachRecyclerView(mRecyclerView);
+            errorLayout.setVisibility(View.GONE);
+            showStuff();
+//        } else {
+//            errorLayout.setVisibility(View.VISIBLE);
+//        }
+
         return layout;
     }
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        setupContent(view, getActivity());
-        errorLayout.setVisibility(View.GONE);
-    }
+//    @Override
+//    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+//        super.onViewCreated(view, savedInstanceState);
+//        setupContent(view, getActivity());
+//        errorLayout.setVisibility(View.GONE);
+//    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -215,7 +231,7 @@ public class RequestsFragment extends BaseFragment implements PermissionUtils.On
         if (layout != null) {
             requestList = RequestList.getRequestList();
             if (requestList != null && requestList.size() > 0) {
-                requestsAdapter = new RequestsAdapter(context, requestList, mPrefs);
+                requestsAdapter = new RequestsAdapter(context, mPrefs);
                 requestsAdapter.startIconFetching(mRecyclerView);
                 mRecyclerView.setHasFixedSize(true);
                 mRecyclerView.setItemAnimator(null);
@@ -251,39 +267,39 @@ public class RequestsFragment extends BaseFragment implements PermissionUtils.On
 
     private void showRequestsFilesCreationDialog(Context context) {
 
-        if (requestsAdapter.getSelectedApps() > 0) {
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-                    ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) !=
-                            PackageManager.PERMISSION_GRANTED) {
-
-                ISDialogs.showPermissionNotGrantedDialog(context);
-
-            } else {
-                if (getResources().getInteger(R.integer.max_apps_to_request) > -1) {
-                    if (maxApps < 0) {
-                        maxApps = 0;
-                    }
-                    if (requestsAdapter.getSelectedApps() <= mPrefs.getRequestsLeft()) {
-                        final MaterialDialog dialog = ISDialogs.showBuildingRequestDialog(context);
-                        dialog.show();
-
-                        new ZipFilesToRequest((Activity) context, dialog,
-                                ((RequestsAdapter) mRecyclerView.getAdapter()).appsList).execute();
-                    } else {
-                        ISDialogs.showRequestLimitDialog(context, maxApps);
-                    }
-                } else {
-                    final MaterialDialog dialog = ISDialogs.showBuildingRequestDialog(context);
-                    dialog.show();
-
-                    new ZipFilesToRequest((Activity) context, dialog,
-                            ((RequestsAdapter) mRecyclerView.getAdapter()).appsList).execute();
-                }
-            }
-        } else {
-            ISDialogs.showNoSelectedAppsDialog(context);
-        }
+//        if (requestsAdapter.getSelectedApps() > 0) {
+//
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+//                    ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) !=
+//                            PackageManager.PERMISSION_GRANTED) {
+//
+//                ISDialogs.showPermissionNotGrantedDialog(context);
+//
+//            } else {
+//                if (getResources().getInteger(R.integer.max_apps_to_request) > -1) {
+//                    if (maxApps < 0) {
+//                        maxApps = 0;
+//                    }
+//                    if (requestsAdapter.getSelectedApps() <= mPrefs.getRequestsLeft()) {
+//                        final MaterialDialog dialog = ISDialogs.showBuildingRequestDialog(context);
+//                        dialog.show();
+//
+//                        new ZipFilesToRequest((Activity) context, dialog,
+//                                ((RequestsAdapter) mRecyclerView.getAdapter()).appsList).execute();
+//                    } else {
+//                        ISDialogs.showRequestLimitDialog(context, maxApps);
+//                    }
+//                } else {
+//                    final MaterialDialog dialog = ISDialogs.showBuildingRequestDialog(context);
+//                    dialog.show();
+//
+//                    new ZipFilesToRequest((Activity) context, dialog,
+//                            ((RequestsAdapter) mRecyclerView.getAdapter()).appsList).execute();
+//                }
+//            }
+//        } else {
+//            ISDialogs.showNoSelectedAppsDialog(context);
+//        }
 
     }
 
@@ -293,22 +309,22 @@ public class RequestsFragment extends BaseFragment implements PermissionUtils.On
     }
 
     private void startRequestProcess() {
-        if (getResources().getInteger(R.integer.max_apps_to_request) > -1) {
-            if (mPrefs.getRequestsLeft() <= 0) {
-                if (requestsAdapter.getSelectedApps() < mPrefs.getRequestsLeft()) {
-                    showRequestsFilesCreationDialog(context);
-                } else if ((Utils.canRequestXApps(context, minutesLimit, mPrefs) != -2)
-                        || (minutesLimit <= 0)) {
-                    showRequestsFilesCreationDialog(context);
-                } else {
-                    ISDialogs.showRequestTimeLimitDialog(context, minutesLimit);
-                }
-            } else {
-                showRequestsFilesCreationDialog(context);
-            }
-        } else {
-            showRequestsFilesCreationDialog(context);
-        }
+//        if (getResources().getInteger(R.integer.max_apps_to_request) > -1) {
+//            if (mPrefs.getRequestsLeft() <= 0) {
+//                if (requestsAdapter.getSelectedApps() < mPrefs.getRequestsLeft()) {
+//                    showRequestsFilesCreationDialog(context);
+//                } else if ((Utils.canRequestXApps(context, minutesLimit, mPrefs) != -2)
+//                        || (minutesLimit <= 0)) {
+//                    showRequestsFilesCreationDialog(context);
+//                } else {
+//                    ISDialogs.showRequestTimeLimitDialog(context, minutesLimit);
+//                }
+//            } else {
+//                showRequestsFilesCreationDialog(context);
+//            }
+//        } else {
+//            showRequestsFilesCreationDialog(context);
+//        }
     }
 
     private void setupMaxApps() {

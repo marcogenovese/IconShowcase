@@ -20,6 +20,7 @@
 package jahirfiquitiva.iconshowcase.adapters;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -28,6 +29,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.pitchedapps.butler.library.icon.request.App;
+import com.pitchedapps.butler.library.icon.request.IconRequest;
 
 import java.util.ArrayList;
 
@@ -49,45 +53,50 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
         void onClick(int index);
     }
 
-    public final ArrayList<RequestItem> appsList;
     private final Context context;
     private final Preferences mPrefs;
     private final ClickListener mCallback;
     private AppIconFetchingQueue mAppIconFetchingQueue;
 
-    public RequestsAdapter(final Context context, final ArrayList<RequestItem> appsList,
+    @Nullable
+    public ArrayList<App> getApps() {
+        if (IconRequest.get() != null)
+            return IconRequest.get().getApps();
+        return null;
+    }
+
+    public RequestsAdapter(final Context context,
                            final Preferences mPrefs) {
         this.context = context;
         this.mPrefs = new Preferences(context);
-        this.appsList = appsList;
         this.mCallback = new ClickListener() {
             @Override
             public void onClick(int position) {
-                int limit = mPrefs.getRequestsLeft();
-                if (limit < 0) {
-                    changeAppSelectedState(position);
-                } else {
-                    if (context.getResources().getInteger(R.integer.limit_request_to_x_minutes) <= 0) {
-                        changeAppSelectedState(position);
-                    } else if (getSelectedApps() < limit) {
-                        changeAppSelectedState(position);
-                    } else {
-                        if (isSelected(position)) {
-                            changeAppSelectedState(position);
-                        } else {
-                            if (context.getResources().getInteger(R.integer.max_apps_to_request) > -1) {
-                                if (Utils.canRequestXApps(context,
-                                        context.getResources().getInteger(R.integer.limit_request_to_x_minutes),
-                                        mPrefs) == -2) {
-                                    ISDialogs.showRequestTimeLimitDialog(context,
-                                            context.getResources().getInteger(R.integer.limit_request_to_x_minutes));
-                                } else {
-                                    ISDialogs.showRequestLimitDialog(context, limit);
-                                }
-                            }
-                        }
-                    }
-                }
+//                int limit = mPrefs.getRequestsLeft();
+//                if (limit < 0) {
+//                    changeAppSelectedState(position);
+//                } else {
+//                    if (context.getResources().getInteger(R.integer.limit_request_to_x_minutes) <= 0) {
+//                        changeAppSelectedState(position);
+//                    } else if (getSelectedApps() < limit) {
+//                        changeAppSelectedState(position);
+//                    } else {
+//                        if (isSelected(position)) {
+//                            changeAppSelectedState(position);
+//                        } else {
+//                            if (context.getResources().getInteger(R.integer.max_apps_to_request) > -1) {
+//                                if (Utils.canRequestXApps(context,
+//                                        context.getResources().getInteger(R.integer.limit_request_to_x_minutes),
+//                                        mPrefs) == -2) {
+//                                    ISDialogs.showRequestTimeLimitDialog(context,
+//                                            context.getResources().getInteger(R.integer.limit_request_to_x_minutes));
+//                                } else {
+//                                    ISDialogs.showRequestLimitDialog(context, limit);
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
             }
         };
     }
@@ -109,11 +118,11 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
 
     @Override
     public void onBindViewHolder(RequestsHolder holder, int position) {
-        RequestItem requestsItem = appsList.get(position);
+        if (getApps() == null) return;
+        final App app = getApps().get(position);
         holder.txtName.setTextColor(ColorUtils.getMaterialPrimaryTextColor(ThemeUtils.darkTheme));
-        holder.txtName.setText(requestsItem.getAppName());
-        holder.imgIcon.setImageDrawable(requestsItem.getNormalIcon());
-        holder.chkSelected.setChecked(requestsItem.isSelected());
+        holder.txtName.setText(app.getName());
+        app.loadIcon(holder.imgIcon);
         boolean listsCards;
         if (context.getResources().getBoolean(R.bool.dev_options)) {
             listsCards = mPrefs.getDevListsCards();
@@ -129,7 +138,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
 
     @Override
     public int getItemCount() {
-        return appsList == null ? 0 : appsList.size();
+        return getApps() == null ? 0 : getApps().size();
     }
 
     public class RequestsHolder extends RecyclerView.ViewHolder {
@@ -178,97 +187,97 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
 
     }
 
-    public void selectOrDeselectAll(boolean select, Preferences mPrefs) {
+//    public void selectOrDeselectAll(boolean select, Preferences mPrefs) {
+//
+//        boolean showDialog = false, showTimeLimitDialog = false;
+//
+//        int limit = Utils.canRequestXApps(context,
+//                context.getResources().getInteger(R.integer.limit_request_to_x_minutes),
+//                mPrefs);
+//
+//        if (limit >= -1) {
+//            for (int i = 0; i < getApps().size(); i++) {
+//                if (select) {
+//                    if (limit < 0) {
+//                        selectApp(i);
+//                    } else {
+//                        if (limit > 0) {
+//                            if (getSelectedApps() < limit) {
+//                                selectApp(i);
+//                            } else {
+//                                showDialog = true;
+//                                break;
+//                            }
+//                        }
+//                    }
+//                } else {
+//                    deselectApp(i);
+//                }
+//            }
+//        } else {
+//            showTimeLimitDialog = limit == -2;
+//        }
+//
+//        if (showDialog) ISDialogs.showRequestLimitDialog(context, limit);
+//
+//        if (showTimeLimitDialog) {
+//            ISDialogs.showRequestTimeLimitDialog(context,
+//                    context.getResources().getInteger(R.integer.limit_request_to_x_minutes));
+//            deselectAllApps();
+//            ShowcaseActivity.SELECT_ALL_APPS = false;
+//        }
+//
+//    }
 
-        boolean showDialog = false, showTimeLimitDialog = false;
-
-        int limit = Utils.canRequestXApps(context,
-                context.getResources().getInteger(R.integer.limit_request_to_x_minutes),
-                mPrefs);
-
-        if (limit >= -1) {
-            for (int i = 0; i < appsList.size(); i++) {
-                if (select) {
-                    if (limit < 0) {
-                        selectApp(i);
-                    } else {
-                        if (limit > 0) {
-                            if (getSelectedApps() < limit) {
-                                selectApp(i);
-                            } else {
-                                showDialog = true;
-                                break;
-                            }
-                        }
-                    }
-                } else {
-                    deselectApp(i);
-                }
-            }
-        } else {
-            showTimeLimitDialog = limit == -2;
-        }
-
-        if (showDialog) ISDialogs.showRequestLimitDialog(context, limit);
-
-        if (showTimeLimitDialog) {
-            ISDialogs.showRequestTimeLimitDialog(context,
-                    context.getResources().getInteger(R.integer.limit_request_to_x_minutes));
-            deselectAllApps();
-            ShowcaseActivity.SELECT_ALL_APPS = false;
-        }
-
-    }
-
-    private void selectApp(int position) {
-        RequestItem requestsItem = appsList.get(position);
-        if (!requestsItem.isSelected()) {
-            requestsItem.setSelected(true);
-            appsList.set(position, requestsItem);
-            notifyItemChanged(position);
-        }
-    }
-
-    private void deselectApp(int position) {
-        RequestItem requestsItem = appsList.get(position);
-        if (requestsItem.isSelected()) {
-            requestsItem.setSelected(false);
-            appsList.set(position, requestsItem);
-            notifyItemChanged(position);
-        }
-    }
-
-    public void deselectAllApps() {
-        for (int i = 0; i < appsList.size(); i++) {
-            RequestItem requestsItem = appsList.get(i);
-            if (requestsItem.isSelected()) {
-                requestsItem.setSelected(false);
-                appsList.set(i, requestsItem);
-                notifyItemChanged(i);
-            }
-        }
-    }
-
-    private void changeAppSelectedState(int position) {
-        RequestItem requestsItem = appsList.get(position);
-        requestsItem.setSelected(!requestsItem.isSelected());
-        appsList.set(position, requestsItem);
-        notifyItemChanged(position);
-    }
-
-    public int getSelectedApps() {
-        int selected = 0;
-        for (int i = 0; i < appsList.size(); i++) {
-            if (appsList.get(i).isSelected()) {
-                selected += 1;
-            }
-        }
-        return selected;
-    }
-
-    private boolean isSelected(int i) {
-        return appsList.get(i).isSelected();
-    }
+//    private void selectApp(int position) {
+//        RequestItem requestsItem = getApps().get(position);
+//        if (!requestsItem.isSelected()) {
+//            requestsItem.setSelected(true);
+//            getApps().set(position, requestsItem);
+//            notifyItemChanged(position);
+//        }
+//    }
+//
+//    private void deselectApp(int position) {
+//        RequestItem requestsItem = getApps().get(position);
+//        if (requestsItem.isSelected()) {
+//            requestsItem.setSelected(false);
+//            getApps().set(position, requestsItem);
+//            notifyItemChanged(position);
+//        }
+//    }
+//
+//    public void deselectAllApps() {
+//        for (int i = 0; i < getApps().size(); i++) {
+//            RequestItem requestsItem = getApps().get(i);
+//            if (requestsItem.isSelected()) {
+//                requestsItem.setSelected(false);
+//                getApps().set(i, requestsItem);
+//                notifyItemChanged(i);
+//            }
+//        }
+//    }
+//
+//    private void changeAppSelectedState(int position) {
+//        RequestItem requestsItem = getApps().get(position);
+//        requestsItem.setSelected(!requestsItem.isSelected());
+//        getApps().set(position, requestsItem);
+//        notifyItemChanged(position);
+//    }
+//
+//    public int getSelectedApps() {
+//        int selected = 0;
+//        for (int i = 0; i < getApps().size(); i++) {
+//            if (getApps().get(i).isSelected()) {
+//                selected += 1;
+//            }
+//        }
+//        return selected;
+//    }
+//
+//    private boolean isSelected(int i) {
+//        return getApps().get(i).isSelected();
+//    }
 
     public void startIconFetching(RecyclerView view) {
         mAppIconFetchingQueue = new AppIconFetchingQueue(view);
@@ -287,7 +296,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
 
         AppIconFetchingQueue(RecyclerView recyclerView) {
             mRecyclerView = recyclerView;
-            mIconsRemaining = appsList != null ? appsList.size() : 0;
+            mIconsRemaining = getApps() != null ? getApps().size() : 0;
         }
 
         public void stop() {

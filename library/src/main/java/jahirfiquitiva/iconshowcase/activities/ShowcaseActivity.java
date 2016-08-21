@@ -525,11 +525,11 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
         } else if (i == R.id.columns) {
             ISDialogs.showColumnsSelectorDialog(context);
         } else if (i == R.id.select_all) {
-            RequestsAdapter requestsAdapter = RequestsFragment.requestsAdapter;
-            if (requestsAdapter != null && RequestsFragment.requestsAdapter.appsList.size() > 0) {
-                RequestsFragment.requestsAdapter.selectOrDeselectAll(SELECT_ALL_APPS, mPrefs);
-                SELECT_ALL_APPS = !SELECT_ALL_APPS;
-            }
+//            RequestsAdapter requestsAdapter = RequestsFragment.requestsAdapter;
+//            if (requestsAdapter != null && RequestsFragment.requestsAdapter.appsList.size() > 0) {
+//                RequestsFragment.requestsAdapter.selectOrDeselectAll(SELECT_ALL_APPS, mPrefs);
+//                SELECT_ALL_APPS = !SELECT_ALL_APPS;
+//            }
         }
         return true;
     }
@@ -538,12 +538,12 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == RESULT_OK && requestCode == 2) {
-            RequestsAdapter adapter = ((RequestsAdapter) RequestsFragment.mRecyclerView.getAdapter());
-            if (adapter != null) {
-                adapter.deselectAllApps();
-            }
-        }
+//        if (resultCode == RESULT_OK && requestCode == 2) {
+//            RequestsAdapter adapter = ((RequestsAdapter) RequestsFragment.mRecyclerView.getAdapter());
+//            if (adapter != null) {
+//                adapter.deselectAllApps();
+//            }
+//        }
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragment = fragmentManager.findFragmentByTag("donationsFragment");
