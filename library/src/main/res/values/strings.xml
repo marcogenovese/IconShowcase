@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) 2016.  Jahir Fiquitiva
+  ~ Copyright (c) 2016 Jahir Fiquitiva
   ~
   ~ Licensed under the CreativeCommons Attribution-ShareAlike
   ~ 4.0 International License. You may not use this file except in compliance
@@ -14,8 +14,8 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   ~
-  ~ Big thanks to the project contributors. Check them in the repository.
-  ~
+  ~ Special thanks to the project contributors and collaborators
+  ~ 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
@@ -108,7 +108,7 @@
     <!-- These things are needed for some launchers (Feel free to edit, though is not needed) -->
     <string name="theme_title">@string/app_name</string>
     <string name="theme_name">@string/theme_title</string>
-    <string name="developer_name">@string/iconpack_author</string>
+    <string name="developer_name">@string/iconpack_author_name</string>
     <string name="developerName">@string/developer_name</string>
     <string name="theme_author">@string/developer_name</string>
     <string name="authorName">@string/developer_name</string>

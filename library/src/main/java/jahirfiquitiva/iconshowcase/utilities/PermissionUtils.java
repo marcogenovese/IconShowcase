@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016.  Jahir Fiquitiva
+ * Copyright (c) 2016 Jahir Fiquitiva
  *
  * Licensed under the CreativeCommons Attribution-ShareAlike
  * 4.0 International License. You may not use this file except in compliance
@@ -13,12 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Big thanks to the project contributors. Check them in the repository.
- *
- */
-
-/*
- *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
 package jahirfiquitiva.iconshowcase.utilities;
@@ -29,7 +25,6 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
-
 
 /**
  * This Class was created by Patrick J
@@ -45,11 +40,11 @@ public final class PermissionUtils {
 
     public interface OnPermissionResultListener {
 
-        void onStoragePermissionGranted();
+        void onStoragePermissionGranted ();
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    public static boolean canAccessStorage(Context context) {
+    public static boolean canAccessStorage (Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             return context.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
         } else {
@@ -57,24 +52,24 @@ public final class PermissionUtils {
         }
     }
 
-    public static void requestStoragePermission(Activity activity) {
+    public static void requestStoragePermission (Activity activity) {
         ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
     }
 
-    public static void requestStoragePermission(Activity activity, OnPermissionResultListener permissionResultListener) {
+    public static void requestStoragePermission (Activity activity, OnPermissionResultListener permissionResultListener) {
         onPermissionResultListener = permissionResultListener;
         requestStoragePermission(activity);
     }
 
-    public static OnPermissionResultListener permissionReceived() {
+    public static OnPermissionResultListener permissionReceived () {
         return onPermissionResultListener;
     }
 
-    public static void setViewerActivityAction(String viewerActivityAction) {
+    public static void setViewerActivityAction (String viewerActivityAction) {
         VIEWER_ACTIVITY_ACTION = viewerActivityAction;
     }
 
-    public static String getViewerActivityAction() {
+    public static String getViewerActivityAction () {
         return VIEWER_ACTIVITY_ACTION;
     }
 }

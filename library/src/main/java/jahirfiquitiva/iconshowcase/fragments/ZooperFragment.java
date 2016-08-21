@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016.  Jahir Fiquitiva
+ * Copyright (c) 2016 Jahir Fiquitiva
  *
  * Licensed under the CreativeCommons Attribution-ShareAlike
  * 4.0 International License. You may not use this file except in compliance
@@ -13,12 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Big thanks to the project contributors. Check them in the repository.
- *
- */
-
-/*
- *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
 package jahirfiquitiva.iconshowcase.fragments;
@@ -40,7 +36,6 @@ import jahirfiquitiva.iconshowcase.adapters.ZooperAdapter;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 
-
 public class ZooperFragment extends NoFabBaseFragment {
 
     private static ViewGroup layout;
@@ -51,7 +46,7 @@ public class ZooperFragment extends NoFabBaseFragment {
     private GridSpacingItemDecoration space;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView (LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
         context = getActivity();
@@ -72,7 +67,7 @@ public class ZooperFragment extends NoFabBaseFragment {
         return layout;
     }
 
-    private void setupRV() {
+    private void setupRV () {
         if (layout != null) {
 
             int gridSpacing = getResources().getDimensionPixelSize(R.dimen.lists_padding);
@@ -104,21 +99,21 @@ public class ZooperFragment extends NoFabBaseFragment {
         }
     }
 
-    public static void showInstalledAppsSnackbar() {
+    public static void showInstalledAppsSnackbar () {
         if (layout != null && context != null) {
             Utils.showSimpleSnackbar(context, layout,
                     Utils.getStringFromResources(context, R.string.apps_installed));
         }
     }
 
-    public static void showInstalledAssetsSnackbar() {
+    public static void showInstalledAssetsSnackbar () {
         if (layout != null && context != null) {
             Utils.showSimpleSnackbar(context, layout,
                     Utils.getStringFromResources(context, R.string.assets_installed));
         }
     }
 
-    private boolean areAppsInstalled() {
+    private boolean areAppsInstalled () {
 
         boolean installed = Utils.isAppInstalled(context, "org.zooper.zwpro");
 

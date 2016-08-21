@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016.  Jahir Fiquitiva
+ * Copyright (c) 2016 Jahir Fiquitiva
  *
  * Licensed under the CreativeCommons Attribution-ShareAlike
  * 4.0 International License. You may not use this file except in compliance
@@ -13,12 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Big thanks to the project contributors. Check them in the repository.
- *
- */
-
-/*
- *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
 package jahirfiquitiva.iconshowcase.models;
@@ -28,29 +24,29 @@ public class FAQsItem {
     private String question;
     private String answer;
 
-    public FAQsItem(String question, String answer) {
+    public FAQsItem (String question, String answer) {
         this.question = question;
         this.answer = answer;
     }
 
-    public String getAnswer() {
+    public String getAnswer () {
         return answer;
     }
 
-    public void setAnswer(String answer) {
+    public void setAnswer (String answer) {
         this.answer = answer;
     }
 
-    public String getQuestion() {
+    public String getQuestion () {
         return question;
     }
 
-    public void setQuestion(String question) {
+    public void setQuestion (String question) {
         this.question = question;
     }
 
     @Override
-    public String toString() {
+    public String toString () {
         return question + "\n" + answer;
     }
 

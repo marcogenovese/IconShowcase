@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016.  Jahir Fiquitiva
+ * Copyright (c) 2016 Jahir Fiquitiva
  *
  * Licensed under the CreativeCommons Attribution-ShareAlike
  * 4.0 International License. You may not use this file except in compliance
@@ -13,12 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Big thanks to the project contributors. Check them in the repository.
- *
- */
-
-/*
- *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
 package jahirfiquitiva.iconshowcase.models;
@@ -28,20 +24,19 @@ import android.graphics.Color;
 
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
-
 public class ZooperWidget {
 
     private final String previewPath;
 
-    public ZooperWidget(String previewPath) {
+    public ZooperWidget (String previewPath) {
         this.previewPath = previewPath;
     }
 
-    public String getPreviewPath() {
+    public String getPreviewPath () {
         return this.previewPath;
     }
 
-    public static Bitmap getTransparentBackgroundPreview(Bitmap original) {
+    public static Bitmap getTransparentBackgroundPreview (Bitmap original) {
         return Utils.getWidgetPreview(original, Color.parseColor("#555555"));
     }
 

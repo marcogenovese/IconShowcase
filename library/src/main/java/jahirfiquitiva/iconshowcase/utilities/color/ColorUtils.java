@@ -1,4 +1,23 @@
 /*
+ * Copyright (c) 2016 Jahir Fiquitiva
+ *
+ * Licensed under the CreativeCommons Attribution-ShareAlike
+ * 4.0 International License. You may not use this file except in compliance
+ * with the License. You may obtain a copy of the License at
+ *
+ *    http://creativecommons.org/licenses/by-sa/4.0/legalcode
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
+ */
+
+/*
  * Copyright 2015 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -47,13 +66,12 @@ import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 
-
 public class ColorUtils {
 
     @ColorInt
-    private static int blendColors(@ColorInt int color1,
-                                   @ColorInt int color2,
-                                   @FloatRange(from = 0f, to = 1f) float ratio) {
+    private static int blendColors (@ColorInt int color1,
+                                    @ColorInt int color2,
+                                    @FloatRange(from = 0f, to = 1f) float ratio) {
         final float inverseRatio = 1f - ratio;
         float a = (Color.alpha(color1) * inverseRatio) + (Color.alpha(color2) * ratio);
         float r = (Color.red(color1) * inverseRatio) + (Color.red(color2) * ratio);
@@ -64,7 +82,7 @@ public class ColorUtils {
 
     @SuppressWarnings("SameParameterValue")
     @ColorInt
-    public static int adjustAlpha(@ColorInt int color, @FloatRange(from = 0.0, to = 1.0) float factor) {
+    public static int adjustAlpha (@ColorInt int color, @FloatRange(from = 0.0, to = 1.0) float factor) {
         float a = Color.alpha(color) * factor;
         float r = Color.red(color);
         float g = Color.green(color);
@@ -73,7 +91,7 @@ public class ColorUtils {
     }
 
     @ColorInt
-    public static int changeAlpha(@ColorInt int color, @FloatRange(from = 0.0, to = 1.0) float newAlpha) {
+    public static int changeAlpha (@ColorInt int color, @FloatRange(from = 0.0, to = 1.0) float newAlpha) {
         float a = 255 * newAlpha;
         float r = Color.red(color);
         float g = Color.green(color);
@@ -82,7 +100,7 @@ public class ColorUtils {
     }
 
     @ColorInt
-    public static int shiftColor(@ColorInt int color, @FloatRange(from = 0.0f, to = 2.0f) float by) {
+    public static int shiftColor (@ColorInt int color, @FloatRange(from = 0.0f, to = 2.0f) float by) {
         if (by == 1f) return color;
         int alpha = Color.alpha(color);
         float[] hsv = new float[3];
@@ -92,16 +110,16 @@ public class ColorUtils {
     }
 
     @ColorInt
-    public static int darkenColor(@ColorInt int color) {
+    public static int darkenColor (@ColorInt int color) {
         return shiftColor(color, 0.9f);
     }
 
     @ColorInt
-    public static int lightenColor(@ColorInt int color) {
+    public static int lightenColor (@ColorInt int color) {
         return shiftColor(color, 1.1f);
     }
 
-    public static boolean isLightColor(Bitmap bitmap) {
+    public static boolean isLightColor (Bitmap bitmap) {
         Palette palette = Palette.from(bitmap).generate();
         if (palette.getSwatches().size() > 0) {
             return isLightColor(palette);
@@ -109,22 +127,22 @@ public class ColorUtils {
         return isLightColor(palette);
     }
 
-    private static boolean isLightColor(Palette palette) {
+    private static boolean isLightColor (Palette palette) {
         return isLightColor(ColorUtils.getPaletteSwatch(palette).getRgb());
     }
 
-    public static boolean isLightColor(@ColorInt int color) {
+    public static boolean isLightColor (@ColorInt int color) {
         return getColorDarkness(color) < 0.4;
     }
 
-    public static double getColorDarkness(@ColorInt int color) {
+    public static double getColorDarkness (@ColorInt int color) {
         if (color == Color.BLACK) return 1.0;
         else if (color == Color.WHITE || color == Color.TRANSPARENT) return 0.0;
         return (1 - (0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color)) / 255);
     }
 
     @ColorInt
-    public static int shiftLightTextColor(@ColorInt int textColor, @ColorInt int backgroundColor) {
+    public static int shiftLightTextColor (@ColorInt int textColor, @ColorInt int backgroundColor) {
         while (isLightColor(textColor) && isLightColor(backgroundColor)) {
             textColor = darkenColor(textColor);
         }
@@ -132,14 +150,14 @@ public class ColorUtils {
     }
 
     @ColorInt
-    public static int shiftDarkTextColor(@ColorInt int textColor, @ColorInt int backgroundColor) {
+    public static int shiftDarkTextColor (@ColorInt int textColor, @ColorInt int backgroundColor) {
         while (!isLightColor(textColor) && !isLightColor(backgroundColor)) {
             textColor = lightenColor(textColor);
         }
         return textColor;
     }
 
-    public static Drawable getTintedIcon(@NonNull Context context, @DrawableRes int drawable, @ColorInt int color) {
+    public static Drawable getTintedIcon (@NonNull Context context, @DrawableRes int drawable, @ColorInt int color) {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 return getTintedIcon(ContextCompat.getDrawable(context, drawable), color);
@@ -154,7 +172,7 @@ public class ColorUtils {
 
     @CheckResult
     @Nullable
-    public static Drawable getTintedIcon(Drawable drawable, int color) {
+    public static Drawable getTintedIcon (Drawable drawable, int color) {
         if (drawable != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 if (drawable instanceof VectorDrawable) {
@@ -173,8 +191,8 @@ public class ColorUtils {
         }
     }
 
-    public static void setupToolbarIconsAndTextsColors(final Context context, AppBarLayout appbar,
-                                                       final Toolbar toolbar) {
+    public static void setupToolbarIconsAndTextsColors (final Context context, AppBarLayout appbar,
+                                                        final Toolbar toolbar) {
 
         final int iconsColor = ThemeUtils.darkTheme ?
                 ContextCompat.getColor(context, R.color.toolbar_text_dark) :
@@ -186,7 +204,7 @@ public class ColorUtils {
             appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
                 @SuppressWarnings("ResourceAsColor")
                 @Override
-                public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                public void onOffsetChanged (AppBarLayout appBarLayout, int verticalOffset) {
                     double ratio = Utils.round(((double) (verticalOffset * -1) / 255.0), 1);
                     if (ratio > 1) {
                         ratio = 1;
@@ -203,12 +221,12 @@ public class ColorUtils {
         }
     }
 
-    public static Palette.Swatch getPaletteSwatch(Bitmap bitmap) {
+    public static Palette.Swatch getPaletteSwatch (Bitmap bitmap) {
         Palette palette = Palette.from(bitmap).generate();
         return getPaletteSwatch(palette);
     }
 
-    public static Palette.Swatch getPaletteSwatch(Palette palette) {
+    public static Palette.Swatch getPaletteSwatch (Palette palette) {
         if (palette != null) {
             if (palette.getVibrantSwatch() != null) {
                 return palette.getVibrantSwatch();
@@ -229,12 +247,12 @@ public class ColorUtils {
         return null;
     }
 
-    private static Palette.Swatch getPaletteSwatch(List<Palette.Swatch> swatches) {
+    private static Palette.Swatch getPaletteSwatch (List<Palette.Swatch> swatches) {
         if (swatches == null) return null;
         return Collections.max(swatches,
                 new Comparator<Palette.Swatch>() {
                     @Override
-                    public int compare(Palette.Swatch opt1, Palette.Swatch opt2) {
+                    public int compare (Palette.Swatch opt1, Palette.Swatch opt2) {
                         int a = opt1 == null ? 0 : opt1.getPopulation();
                         int b = opt2 == null ? 0 : opt2.getPopulation();
                         return a - b;
@@ -242,7 +260,7 @@ public class ColorUtils {
                 });
     }
 
-    public static int getColorFromIcon(Drawable icon, final Context context) {
+    public static int getColorFromIcon (Drawable icon, final Context context) {
         Palette palette = Palette.from(Utils.drawableToBitmap(icon)).generate();
         int resultColor = getBetterColor(context, palette.getVibrantColor(0));
         if (resultColor == 0) {
@@ -255,7 +273,7 @@ public class ColorUtils {
         return resultColor;
     }
 
-    private static int getBetterColor(Context context, @ColorInt int color) {
+    private static int getBetterColor (Context context, @ColorInt int color) {
         if (color == 0) return 0;
         return ThemeUtils.darkTheme ?
                 shiftDarkTextColor(color, ContextCompat.getColor(context,
@@ -264,7 +282,7 @@ public class ColorUtils {
                 R.color.md_background_color_light));
     }
 
-    public static int getMaterialPrimaryTextColor(boolean dark) {
+    public static int getMaterialPrimaryTextColor (boolean dark) {
         if (dark) {
             // 100%
             return Color.parseColor("#ffffffff");
@@ -274,7 +292,7 @@ public class ColorUtils {
         }
     }
 
-    public static int getMaterialSecondaryTextColor(boolean dark) {
+    public static int getMaterialSecondaryTextColor (boolean dark) {
         if (dark) {
             // 70%
             return Color.parseColor("#b3ffffff");
@@ -284,19 +302,19 @@ public class ColorUtils {
         }
     }
 
-    public static int getMaterialTertiaryColor(boolean dark) {
+    public static int getMaterialTertiaryColor (boolean dark) {
         return 0xffff00ff;
-//        if (dark) {
-//            // 50%
-//            return Color.parseColor("#80ffffff");
-//        } else {
-//            // 38%
-//            return Color.parseColor("#61000000");
-//        }
+        //        if (dark) {
+        //            // 50%
+        //            return Color.parseColor("#80ffffff");
+        //        } else {
+        //            // 38%
+        //            return Color.parseColor("#61000000");
+        //        }
     }
 
     @ColorInt
-    public static int getCheckBoxColor(Context context, @ColorInt int defaultColor) {
+    public static int getCheckBoxColor (Context context, @ColorInt int defaultColor) {
         return DialogUtils.resolveColor(context, R.attr.accentColor, defaultColor);
     }
 

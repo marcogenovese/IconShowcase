@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016.  Jahir Fiquitiva
+ * Copyright (c) 2016 Jahir Fiquitiva
  *
  * Licensed under the CreativeCommons Attribution-ShareAlike
  * 4.0 International License. You may not use this file except in compliance
@@ -13,12 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Big thanks to the project contributors. Check them in the repository.
- *
- */
-
-/*
- *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
 package jahirfiquitiva.iconshowcase.dialogs;
@@ -28,8 +24,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -42,17 +36,11 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import jahirfiquitiva.iconshowcase.R;
-import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
-import jahirfiquitiva.iconshowcase.adapters.ChangelogAdapter;
-import jahirfiquitiva.iconshowcase.adapters.IconsAdapter;
 import jahirfiquitiva.iconshowcase.fragments.WallpapersFragment;
-import jahirfiquitiva.iconshowcase.models.IconItem;
-import jahirfiquitiva.iconshowcase.tasks.LoadIconsLists;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
-
 
 /**
  * This Class was created by Patrick Jung
@@ -62,11 +50,11 @@ import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 
 public final class ISDialogs {
 
-    public static void showLicenseSuccessDialog(Context context,
-                                                MaterialDialog.SingleButtonCallback
-                                                        onPositive,
-                                                MaterialDialog.OnDismissListener onDismiss,
-                                                MaterialDialog.OnCancelListener onCancel) {
+    public static void showLicenseSuccessDialog (Context context,
+                                                 MaterialDialog.SingleButtonCallback
+                                                         onPositive,
+                                                 MaterialDialog.OnDismissListener onDismiss,
+                                                 MaterialDialog.OnCancelListener onCancel) {
         String message = context.getResources().getString(R.string.license_success,
                 context.getResources().getString(R.string.app_name));
 
@@ -83,11 +71,11 @@ public final class ISDialogs {
         licenseSuccessDialog.show();
     }
 
-    public static void showLicenseFailDialog(Context context,
-                                             MaterialDialog.SingleButtonCallback onPositive,
-                                             MaterialDialog.SingleButtonCallback onNegative,
-                                             MaterialDialog.OnDismissListener onDismiss,
-                                             MaterialDialog.OnCancelListener onCancel) {
+    public static void showLicenseFailDialog (Context context,
+                                              MaterialDialog.SingleButtonCallback onPositive,
+                                              MaterialDialog.SingleButtonCallback onNegative,
+                                              MaterialDialog.OnDismissListener onDismiss,
+                                              MaterialDialog.OnCancelListener onCancel) {
 
         String message = context.getResources().getString(R.string.license_failed,
                 context.getResources().getString(R.string.app_name));
@@ -112,7 +100,7 @@ public final class ISDialogs {
     WallpaperViewerActivity Dialogs
      */
 
-    public static void showApplyWallpaperDialog(Context context, MaterialDialog.SingleButtonCallback onPositive, MaterialDialog.SingleButtonCallback onNeutral) {
+    public static void showApplyWallpaperDialog (Context context, MaterialDialog.SingleButtonCallback onPositive, MaterialDialog.SingleButtonCallback onNeutral) {
         new MaterialDialog.Builder(context)
                 .title(R.string.apply)
                 .content(R.string.confirm_apply)
@@ -124,9 +112,9 @@ public final class ISDialogs {
                 .show();
     }
 
-    public static void showWallpaperDetailsDialog(final Context context, String wallName,
-                                                  String wallAuthor, String wallDimensions,
-                                                  String wallCopyright) {
+    public static void showWallpaperDetailsDialog (final Context context, String wallName,
+                                                   String wallAuthor, String wallDimensions,
+                                                   String wallCopyright) {
 
         MaterialDialog dialog = new MaterialDialog.Builder(context).title(wallName)
                 .customView(R.layout.wallpaper_details, false)
@@ -192,7 +180,7 @@ public final class ISDialogs {
     Apply Fragment Dialogs
      */
 
-    public static void showOpenInPlayStoreDialog(Context context, String title, String content, MaterialDialog.SingleButtonCallback onPositive) {
+    public static void showOpenInPlayStoreDialog (Context context, String title, String content, MaterialDialog.SingleButtonCallback onPositive) {
         new MaterialDialog.Builder(context)
                 .title(title)
                 .content(content)
@@ -202,7 +190,7 @@ public final class ISDialogs {
                 .show();
     }
 
-    public static void showGoogleNowLauncherDialog(Context context, MaterialDialog.SingleButtonCallback onPositive) {
+    public static void showGoogleNowLauncherDialog (Context context, MaterialDialog.SingleButtonCallback onPositive) {
         new MaterialDialog.Builder(context)
                 .title(R.string.gnl_title)
                 .content(R.string.gnl_content)
@@ -212,7 +200,7 @@ public final class ISDialogs {
                 .show();
     }
 
-    public static void showApplyAdviceDialog(Context context, MaterialDialog.SingleButtonCallback callback) {
+    public static void showApplyAdviceDialog (Context context, MaterialDialog.SingleButtonCallback callback) {
         new MaterialDialog.Builder(context)
                 .title(R.string.advice)
                 .content(R.string.apply_advice)
@@ -226,7 +214,7 @@ public final class ISDialogs {
     Request Fragment Dialogs
      */
 
-    public static void showPermissionNotGrantedDialog(Context context) {
+    public static void showPermissionNotGrantedDialog (Context context) {
         String appName = Utils.getStringFromResources(context, R.string.app_name);
         new MaterialDialog.Builder(context)
                 .title(R.string.md_error_label)
@@ -235,7 +223,7 @@ public final class ISDialogs {
                 .show();
     }
 
-    public static MaterialDialog showBuildingRequestDialog(Context context) {
+    public static MaterialDialog showBuildingRequestDialog (Context context) {
         return new MaterialDialog.Builder(context)
                 .content(R.string.building_request_dialog)
                 .progress(true, 0)
@@ -243,7 +231,7 @@ public final class ISDialogs {
                 .build();
     }
 
-    public static void showNoSelectedAppsDialog(Context context) {
+    public static void showNoSelectedAppsDialog (Context context) {
         new MaterialDialog.Builder(context)
                 .title(R.string.no_selected_apps_title)
                 .content(R.string.no_selected_apps_content)
@@ -251,7 +239,7 @@ public final class ISDialogs {
                 .show();
     }
 
-    public static void showRequestLimitDialog(Context context, int maxApps) {
+    public static void showRequestLimitDialog (Context context, int maxApps) {
         if (context.getResources().getInteger(R.integer.max_apps_to_request) > -1) {
             String content;
             if (maxApps == context.getResources().getInteger(R.integer.max_apps_to_request)) {
@@ -267,7 +255,7 @@ public final class ISDialogs {
         }
     }
 
-    public static void showRequestTimeLimitDialog(Context context, int minutes) {
+    public static void showRequestTimeLimitDialog (Context context, int minutes) {
         String minutesText =
                 new DecimalFormat("##.##").format(Utils.getExactMinutes(minutes, false)) +
                         " " + Utils.getTimeName(context, minutes);
@@ -297,7 +285,7 @@ public final class ISDialogs {
                 .show();
     }
 
-    public static void showHideIconErrorDialog(final Activity context) {
+    public static void showHideIconErrorDialog (final Activity context) {
         String content = context.getResources().getString(R.string.launcher_icon_restorer_error,
                 Utils.getStringFromResources(context, R.string.app_name));
         new MaterialDialog.Builder(context)
@@ -307,7 +295,7 @@ public final class ISDialogs {
                 .show();
     }
 
-    public static void showColumnsSelectorDialog(final Context context) {
+    public static void showColumnsSelectorDialog (final Context context) {
         Preferences mPrefs = new Preferences(context);
         final int current = mPrefs.getWallsColumnsNumber();
         new MaterialDialog.Builder(context)
@@ -316,7 +304,7 @@ public final class ISDialogs {
                 .items(R.array.columns_options)
                 .itemsCallbackSingleChoice(current - 1, new MaterialDialog.ListCallbackSingleChoice() {
                     @Override
-                    public boolean onSelection(MaterialDialog dialog, View view, int position, CharSequence text) {
+                    public boolean onSelection (MaterialDialog dialog, View view, int position, CharSequence text) {
                         int newSelected = position + 1;
                         if (newSelected != current) {
                             WallpapersFragment.updateRecyclerView(newSelected);
@@ -329,7 +317,7 @@ public final class ISDialogs {
                 .show();
     }
 
-    public static void showZooperAppsDialog(final Context context, final ArrayList<String> appsNames) {
+    public static void showZooperAppsDialog (final Context context, final ArrayList<String> appsNames) {
         final String storePrefix = "https://play.google.com/store/apps/details?id=",
                 muLink = "com.batescorp.notificationmediacontrols.alpha",
                 koloretteLink = "com.arun.themeutil.kolorette";
@@ -339,7 +327,7 @@ public final class ISDialogs {
                 .items(appsNames)
                 .itemsCallback(new MaterialDialog.ListCallback() {
                     @Override
-                    public void onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
+                    public void onSelection (MaterialDialog dialog, View itemView, int which, CharSequence text) {
                         if (appsNames.get(which).equals("Zooper Widget Pro")) {
                             showZooperDownloadDialog(context);
                         } else if (appsNames.get(which).equals("Media Utilities")) {
@@ -354,7 +342,7 @@ public final class ISDialogs {
                 .show();
     }
 
-    public static void showKustomAppsDownloadDialog(final Context context, final ArrayList<String> appsNames) {
+    public static void showKustomAppsDownloadDialog (final Context context, final ArrayList<String> appsNames) {
         final String storePrefix = "https://play.google.com/store/apps/details?id=",
                 klwpLink = "org.kustom.wallpaper",
                 kwgtLink = "org.kustom.widget",
@@ -365,7 +353,7 @@ public final class ISDialogs {
                 .items(appsNames)
                 .itemsCallback(new MaterialDialog.ListCallback() {
                     @Override
-                    public void onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
+                    public void onSelection (MaterialDialog dialog, View itemView, int which, CharSequence text) {
                         if (appsNames.get(which).equals("Kustom Live Wallpaper")) {
                             Utils.openLinkInChromeCustomTab(context,
                                     storePrefix + klwpLink);
@@ -381,13 +369,13 @@ public final class ISDialogs {
                 .show();
     }
 
-    private static void showZooperDownloadDialog(final Context context) {
+    private static void showZooperDownloadDialog (final Context context) {
         new MaterialDialog.Builder(context)
                 .title(R.string.zooper_download_dialog_title)
                 .items(R.array.zooper_download_dialog_options)
                 .itemsCallback(new MaterialDialog.ListCallback() {
                     @Override
-                    public void onSelection(MaterialDialog dialog, View view, int selection, CharSequence text) {
+                    public void onSelection (MaterialDialog dialog, View view, int selection, CharSequence text) {
                         switch (selection) {
                             case 0:
                                 Utils.openLinkInChromeCustomTab(context,
@@ -408,7 +396,7 @@ public final class ISDialogs {
                 .show();
     }
 
-    public static void showSherryDialog(final Context context) {
+    public static void showSherryDialog (final Context context) {
         new MaterialDialog.Builder(context)
                 .title(R.string.sherry_title)
                 .content(R.string.sherry_dialog)
@@ -416,7 +404,7 @@ public final class ISDialogs {
                 .positiveText(R.string.close)
                 .onNeutral(new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    public void onClick (@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         Utils.openLinkInChromeCustomTab(context,
                                 context.getResources().getString(R.string.sherry_link));
                     }
@@ -424,70 +412,70 @@ public final class ISDialogs {
                 .show();
     }
 
-    public static void showUICollaboratorsDialog(final Context context, final String[] uiCollaboratorsLinks) {
+    public static void showUICollaboratorsDialog (final Context context, final String[] uiCollaboratorsLinks) {
         new MaterialDialog.Builder(context)
                 .title(R.string.ui_design)
                 .negativeText(R.string.close)
                 .items(R.array.ui_collaborators_names)
                 .itemsCallback(new MaterialDialog.ListCallback() {
                     @Override
-                    public void onSelection(MaterialDialog materialDialog, View view,
-                                            final int i, CharSequence charSequence) {
+                    public void onSelection (MaterialDialog materialDialog, View view,
+                                             final int i, CharSequence charSequence) {
                         Utils.openLinkInChromeCustomTab(context, uiCollaboratorsLinks[i]);
                     }
                 }).show();
     }
 
-    public static void showLibrariesDialog(final Context context, final String[] libsLinks) {
+    public static void showLibrariesDialog (final Context context, final String[] libsLinks) {
         new MaterialDialog.Builder(context)
                 .title(R.string.implemented_libraries)
                 .negativeText(R.string.close)
                 .items(R.array.libs_names)
                 .itemsCallback(new MaterialDialog.ListCallback() {
                     @Override
-                    public void onSelection(MaterialDialog materialDialog, View view,
-                                            final int i, CharSequence charSequence) {
+                    public void onSelection (MaterialDialog materialDialog, View view,
+                                             final int i, CharSequence charSequence) {
                         Utils.openLinkInChromeCustomTab(context, libsLinks[i]);
                     }
                 }).show();
     }
 
-    public static void showContributorsDialog(final Context context, final String[] contributorsLinks) {
+    public static void showContributorsDialog (final Context context, final String[] contributorsLinks) {
         new MaterialDialog.Builder(context)
                 .title(R.string.contributors)
                 .negativeText(R.string.close)
                 .items(R.array.contributors_names)
                 .itemsCallback(new MaterialDialog.ListCallback() {
                     @Override
-                    public void onSelection(MaterialDialog materialDialog, View view,
-                                            final int i, CharSequence charSequence) {
+                    public void onSelection (MaterialDialog materialDialog, View view,
+                                             final int i, CharSequence charSequence) {
                         Utils.openLinkInChromeCustomTab(context, contributorsLinks[i]);
                     }
                 }).show();
     }
 
-    public static void showDesignerLinksDialog(final Context context, final String[] designerLinks) {
+    public static void showDesignerLinksDialog (final Context context, final String[] designerLinks) {
         new MaterialDialog.Builder(context)
                 .title(R.string.more)
                 .negativeText(R.string.close)
                 .items(R.array.iconpack_author_sites)
                 .itemsCallback(new MaterialDialog.ListCallback() {
                     @Override
-                    public void onSelection(MaterialDialog materialDialog, View view,
-                                            final int i, CharSequence charSequence) {
+                    public void onSelection (MaterialDialog materialDialog, View view,
+                                             final int i, CharSequence charSequence) {
                         Utils.openLinkInChromeCustomTab(context, designerLinks[i]);
                     }
                 }).show();
     }
 
-    public static void showTranslatorsDialogs(final Context context) {
+    public static void showTranslatorsDialogs (final Context context) {
         new MaterialDialog.Builder(context)
                 .title(R.string.translators)
                 .negativeText(R.string.close)
                 .items(R.array.translators_names)
                 .itemsCallback(new MaterialDialog.ListCallback() {
                     @Override
-                    public void onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
+                    public void onSelection (MaterialDialog dialog, View itemView, int which, CharSequence text) {
                         //Do nothing
                     }
                 })
@@ -499,7 +487,7 @@ public final class ISDialogs {
     Settings Fragment Dialogs
      */
 
-    public static void showClearCacheDialog(Context context, MaterialDialog.SingleButtonCallback singleButtonCallback) {
+    public static void showClearCacheDialog (Context context, MaterialDialog.SingleButtonCallback singleButtonCallback) {
         new MaterialDialog.Builder(context)
                 .title(R.string.clearcache_dialog_title)
                 .content(R.string.clearcache_dialog_content)
@@ -509,7 +497,7 @@ public final class ISDialogs {
                 .show();
     }
 
-    public static MaterialDialog showHideIconDialog(Context context, MaterialDialog.SingleButtonCallback positive, MaterialDialog.SingleButtonCallback negative, DialogInterface.OnDismissListener dismissListener) {
+    public static MaterialDialog showHideIconDialog (Context context, MaterialDialog.SingleButtonCallback positive, MaterialDialog.SingleButtonCallback negative, DialogInterface.OnDismissListener dismissListener) {
         return new MaterialDialog.Builder(context)
                 .title(R.string.hideicon_dialog_title)
                 .content(R.string.hideicon_dialog_content)

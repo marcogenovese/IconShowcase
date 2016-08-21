@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016.  Jahir Fiquitiva
+ * Copyright (c) 2016 Jahir Fiquitiva
  *
  * Licensed under the CreativeCommons Attribution-ShareAlike
  * 4.0 International License. You may not use this file except in compliance
@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Big thanks to the project contributors. Check them in the repository.
- *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
 package jahirfiquitiva.iconshowcase.activities;
@@ -32,7 +32,7 @@ import jahirfiquitiva.iconshowcase.utilities.Utils;
 public class LauncherIconRestorerActivity extends Activity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Preferences mPrefs = new Preferences(LauncherIconRestorerActivity.this);
@@ -49,9 +49,9 @@ public class LauncherIconRestorerActivity extends Activity {
             className = Class.forName(componentNameString);
         } catch (ClassNotFoundException e) {
             componentNameString = getResources().getString(R.string.main_activity_fullname);
-            try{
+            try {
                 className = Class.forName(componentNameString);
-            }catch (ClassNotFoundException ex){
+            } catch (ClassNotFoundException ex) {
                 //Do nothing
             }
         }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016.  Jahir Fiquitiva
+ * Copyright (c) 2016 Jahir Fiquitiva
  *
  * Licensed under the CreativeCommons Attribution-ShareAlike
  * 4.0 International License. You may not use this file except in compliance
@@ -13,12 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Big thanks to the project contributors. Check them in the repository.
- *
- */
-
-/*
- *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
 package jahirfiquitiva.iconshowcase.views;
@@ -30,6 +26,9 @@ import android.util.DisplayMetrics;
 
 import jahirfiquitiva.iconshowcase.R;
 
+/**
+ * @author Alexandre Piveteau
+ */
 public class FixedElevationAppBarLayout extends AppBarLayout {
 
     /**
@@ -37,25 +36,25 @@ public class FixedElevationAppBarLayout extends AppBarLayout {
      */
     private int fElevation;
 
-    public FixedElevationAppBarLayout(Context context) {
+    public FixedElevationAppBarLayout (Context context) {
         super(context);
         setupElevation();
     }
 
-    public FixedElevationAppBarLayout(Context context, AttributeSet attrs) {
+    public FixedElevationAppBarLayout (Context context, AttributeSet attrs) {
         super(context, attrs);
         setupElevation();
     }
 
     @Override
-    public void setElevation(float ignored) {
+    public void setElevation (float ignored) {
         super.setElevation(fElevation);
     }
 
     /**
      * A method for setting up the elevation. Improves performance if only done once.
      */
-    private void setupElevation() {
+    private void setupElevation () {
         fElevation = dpToPx(getResources().getInteger(R.integer.toolbar_elevation));
     }
 
@@ -66,7 +65,7 @@ public class FixedElevationAppBarLayout extends AppBarLayout {
      *
      * @return The pixel-converted result
      */
-    private int dpToPx(int dp) {
+    private int dpToPx (int dp) {
         DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
         return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }

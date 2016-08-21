@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016.  Jahir Fiquitiva
+ * Copyright (c) 2016 Jahir Fiquitiva
  *
  * Licensed under the CreativeCommons Attribution-ShareAlike
  * 4.0 International License. You may not use this file except in compliance
@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Big thanks to the project contributors. Check them in the repository.
- *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
 package jahirfiquitiva.iconshowcase.fragments;
@@ -56,7 +56,6 @@ import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 
-
 public class RequestsFragment extends BaseFragment implements PermissionUtils.OnPermissionResultListener {
 
     private static ProgressBar progressBar;
@@ -73,7 +72,7 @@ public class RequestsFragment extends BaseFragment implements PermissionUtils.On
 
     DebouncedClickListener debouncedClickListener = new DebouncedClickListener() {
         @Override
-        public void onDebouncedClick(View v) {
+        public void onDebouncedClick (View v) {
             if (!PermissionUtils.canAccessStorage(getContext())) {
                 PermissionUtils.requestStoragePermission(getActivity(), RequestsFragment.this);
             } else {
@@ -83,22 +82,22 @@ public class RequestsFragment extends BaseFragment implements PermissionUtils.On
     };
 
     @Override
-    public void onFabClick(View v) {
+    public void onFabClick (View v) {
         debouncedClickListener.onDebouncedClick(v);
     }
 
     @Override
-    int getFabIcon() {
+    int getFabIcon () {
         return R.drawable.ic_email;
     }
 
     @Override
-    boolean hasFab() {
+    boolean hasFab () {
         return true;
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView (LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
         int gridSpacing = getResources().getDimensionPixelSize(R.dimen.lists_padding);
@@ -129,7 +128,7 @@ public class RequestsFragment extends BaseFragment implements PermissionUtils.On
         errorLayout = (TextView) layout.findViewById(R.id.error_view);
         errorLayout.setOnClickListener(new DebouncedClickListener() {
             @Override
-            public void onDebouncedClick(View view) {
+            public void onDebouncedClick (View view) {
                 if (loadAppsToRequest != null) {
                     loadAppsToRequest.cancel(true);
                 }
@@ -137,7 +136,6 @@ public class RequestsFragment extends BaseFragment implements PermissionUtils.On
                 loadAppsToRequest.execute();
             }
         });
-
 
         requestList = RequestList.getRequestList();
 
@@ -157,7 +155,7 @@ public class RequestsFragment extends BaseFragment implements PermissionUtils.On
 
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            public void onScrolled (RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 if (dy > 0) {
                     hideFab();
@@ -173,26 +171,26 @@ public class RequestsFragment extends BaseFragment implements PermissionUtils.On
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated (View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupContent(view, getActivity());
         errorLayout.setVisibility(View.GONE);
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
+    public void onActivityCreated (Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         context = getActivity();
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu (Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.requests, menu);
     }
 
     @Override
-    public void onDestroy() {
+    public void onDestroy () {
         super.onDestroy();
         RequestsAdapter adapter = ((RequestsAdapter) mRecyclerView.getAdapter());
         if (adapter != null) {
@@ -200,7 +198,7 @@ public class RequestsFragment extends BaseFragment implements PermissionUtils.On
         }
     }
 
-    public static void setupContent(View layout, Context context) {
+    public static void setupContent (View layout, Context context) {
         if (layout != null) {
             requestList = RequestList.getRequestList();
             if (requestList != null && requestList.size() > 0) {
@@ -221,7 +219,7 @@ public class RequestsFragment extends BaseFragment implements PermissionUtils.On
     }
 
     //TODO fix this
-    private static void showStuff() {
+    private static void showStuff () {
         if (progressBar.getVisibility() != View.GONE) {
             progressBar.setVisibility(View.GONE);
         }
@@ -230,7 +228,7 @@ public class RequestsFragment extends BaseFragment implements PermissionUtils.On
         //fab.show();
     }
 
-    private void hideStuff() {
+    private void hideStuff () {
         if (progressBar.getVisibility() != View.VISIBLE) {
             progressBar.setVisibility(View.VISIBLE);
         }
@@ -238,7 +236,7 @@ public class RequestsFragment extends BaseFragment implements PermissionUtils.On
         fastScroller.setVisibility(View.GONE);
     }
 
-    private void showRequestsFilesCreationDialog(Context context) {
+    private void showRequestsFilesCreationDialog (Context context) {
 
         if (requestsAdapter.getSelectedApps() > 0) {
 
@@ -277,11 +275,11 @@ public class RequestsFragment extends BaseFragment implements PermissionUtils.On
     }
 
     @Override
-    public void onStoragePermissionGranted() {
+    public void onStoragePermissionGranted () {
         showRequestsFilesCreationDialog(context);
     }
 
-    private void startRequestProcess() {
+    private void startRequestProcess () {
         if (getResources().getInteger(R.integer.max_apps_to_request) > -1) {
             if (mPrefs.getRequestsLeft() <= 0) {
                 if (requestsAdapter.getSelectedApps() < mPrefs.getRequestsLeft()) {
@@ -300,7 +298,7 @@ public class RequestsFragment extends BaseFragment implements PermissionUtils.On
         }
     }
 
-    private void setupMaxApps() {
+    private void setupMaxApps () {
         if (!mPrefs.getRequestsCreated()) {
             mPrefs.setRequestsLeft(context.getResources().getInteger(R.integer.max_apps_to_request));
         }

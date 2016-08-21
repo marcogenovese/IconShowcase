@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016.  Jahir Fiquitiva
+ * Copyright (c) 2016 Jahir Fiquitiva
  *
  * Licensed under the CreativeCommons Attribution-ShareAlike
  * 4.0 International License. You may not use this file except in compliance
@@ -13,12 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Big thanks to the project contributors. Check them in the repository.
- *
- */
-
-/*
- *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
 package jahirfiquitiva.iconshowcase.fragments.base;
@@ -35,7 +31,6 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
-
 /**
  * @author Aidan Follestad (afollestad)
  */
@@ -49,22 +44,22 @@ public abstract class FragmentStatePagerAdapter extends PagerAdapter {
     private final ArrayList<Fragment> mFragments = new ArrayList<>();
     private Fragment mCurrentPrimaryItem = null;
 
-    protected FragmentStatePagerAdapter(FragmentManager fm) {
+    protected FragmentStatePagerAdapter (FragmentManager fm) {
         mFragmentManager = fm;
     }
 
     /**
      * Return the Fragment associated with a specified position.
      */
-    protected abstract Fragment getItem(int position);
+    protected abstract Fragment getItem (int position);
 
     @Override
-    public void startUpdate(ViewGroup container) {
+    public void startUpdate (ViewGroup container) {
     }
 
     @SuppressLint("CommitTransaction")
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem (ViewGroup container, int position) {
         // If we already have this item instantiated, there is nothing
         // to do. This can happen when we are restoring the entire pager
         // from its saved state, where the fragment manager has already
@@ -97,7 +92,7 @@ public abstract class FragmentStatePagerAdapter extends PagerAdapter {
 
     @SuppressLint("CommitTransaction")
     @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
+    public void destroyItem (ViewGroup container, int position, Object object) {
         Fragment fragment = (Fragment) object;
         if (mCurTransaction == null) {
             mCurTransaction = mFragmentManager.beginTransaction();
@@ -111,7 +106,7 @@ public abstract class FragmentStatePagerAdapter extends PagerAdapter {
     }
 
     @Override
-    public void setPrimaryItem(ViewGroup container, int position, Object object) {
+    public void setPrimaryItem (ViewGroup container, int position, Object object) {
         Fragment fragment = (Fragment) object;
         if (fragment != mCurrentPrimaryItem) {
             if (mCurrentPrimaryItem != null) {
@@ -125,7 +120,7 @@ public abstract class FragmentStatePagerAdapter extends PagerAdapter {
     }
 
     @Override
-    public void finishUpdate(ViewGroup container) {
+    public void finishUpdate (ViewGroup container) {
         if (mCurTransaction != null) {
             mCurTransaction.commitAllowingStateLoss();
             mCurTransaction = null;
@@ -134,12 +129,12 @@ public abstract class FragmentStatePagerAdapter extends PagerAdapter {
     }
 
     @Override
-    public boolean isViewFromObject(View view, Object object) {
+    public boolean isViewFromObject (View view, Object object) {
         return ((Fragment) object).getView() == view;
     }
 
     @Override
-    public Parcelable saveState() {
+    public Parcelable saveState () {
         Bundle state = null;
         if (mSavedState.size() > 0) {
             state = new Bundle();
@@ -161,7 +156,7 @@ public abstract class FragmentStatePagerAdapter extends PagerAdapter {
     }
 
     @Override
-    public void restoreState(Parcelable state, ClassLoader loader) {
+    public void restoreState (Parcelable state, ClassLoader loader) {
         if (state != null) {
             Bundle bundle = (Bundle) state;
             bundle.setClassLoader(loader);

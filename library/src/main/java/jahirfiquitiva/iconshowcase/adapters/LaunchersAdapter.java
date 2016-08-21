@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016.  Jahir Fiquitiva
+ * Copyright (c) 2016 Jahir Fiquitiva
  *
  * Licensed under the CreativeCommons Attribution-ShareAlike
  * 4.0 International License. You may not use this file except in compliance
@@ -13,12 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Big thanks to the project contributors. Check them in the repository.
- *
- */
-
-/*
- *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
 package jahirfiquitiva.iconshowcase.adapters;
@@ -47,32 +43,31 @@ import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 
-
 public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.LauncherHolder> {
 
     public interface ClickListener {
 
-        void onClick(int index);
+        void onClick (int index);
     }
 
     private final Context context;
     private final List<ApplyFragment.Launcher> launchers;
     private final ClickListener mCallback;
 
-    public LaunchersAdapter(Context context, List<ApplyFragment.Launcher> launchers, ClickListener callback) {
+    public LaunchersAdapter (Context context, List<ApplyFragment.Launcher> launchers, ClickListener callback) {
         this.context = context;
         this.launchers = launchers;
         this.mCallback = callback;
     }
 
     @Override
-    public LauncherHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public LauncherHolder onCreateViewHolder (ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         return new LauncherHolder(inflater.inflate(R.layout.item_launcher, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(LauncherHolder holder, int position) {
+    public void onBindViewHolder (LauncherHolder holder, int position) {
         // Turns Launcher name "Something Pro" to "ic_something_pro"
         String iconName = "ic_" + launchers.get(position).name.toLowerCase().replace(" ", "_");
         int iconResource = Utils.getIconResId(context.getResources(), context.getPackageName(), iconName);
@@ -104,7 +99,7 @@ public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.Laun
         holder.view.setTag(position);
         holder.view.setOnClickListener(new DebouncedClickListener() {
             @Override
-            public void onDebouncedClick(View v) {
+            public void onDebouncedClick (View v) {
                 if (v.getTag() != null) {
                     int index = (int) v.getTag();
                     if (mCallback != null)
@@ -115,7 +110,7 @@ public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.Laun
     }
 
     @Override
-    public int getItemCount() {
+    public int getItemCount () {
         return launchers == null ? 0 : launchers.size();
     }
 
@@ -126,7 +121,7 @@ public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.Laun
         final TextView launcherName;
         final LinearLayout itemBG;
 
-        LauncherHolder(View v) {
+        LauncherHolder (View v) {
             super(v);
             view = v;
             itemBG = (LinearLayout) view.findViewById(R.id.itemBG);
@@ -135,7 +130,7 @@ public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.Laun
         }
     }
 
-    private ColorFilter bnwFilter() {
+    private ColorFilter bnwFilter () {
         ColorMatrix matrix = new ColorMatrix();
         matrix.setSaturation(0);
         return new ColorMatrixColorFilter(matrix);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016.  Jahir Fiquitiva
+ * Copyright (c) 2016 Jahir Fiquitiva
  *
  * Licensed under the CreativeCommons Attribution-ShareAlike
  * 4.0 International License. You may not use this file except in compliance
@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Big thanks to the project contributors. Check them in the repository.
- *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
 package jahirfiquitiva.iconshowcase.views;
@@ -33,24 +33,24 @@ import jahirfiquitiva.iconshowcase.R;
  */
 public class SplitButtonsLayout extends LinearLayout {
 
-    public SplitButtonsLayout(Context context) {
+    public SplitButtonsLayout (Context context) {
         super(context);
         init();
     }
 
-    public SplitButtonsLayout(Context context, AttributeSet attrs) {
+    public SplitButtonsLayout (Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public SplitButtonsLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+    public SplitButtonsLayout (Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
 
     private int mButtonCount;
 
-    private void init() {
+    private void init () {
         setOrientation(HORIZONTAL);
         if (isInEditMode()) {
             mButtonCount = 2;
@@ -62,12 +62,12 @@ public class SplitButtonsLayout extends LinearLayout {
     /**
      * Sets how many buttons the layout will have.
      */
-    public void setButtonCount(int buttonCount) {
+    public void setButtonCount (int buttonCount) {
         this.mButtonCount = buttonCount;
         setWeightSum(buttonCount);
     }
 
-    public void addButton(String text, String link) {
+    public void addButton (String text, String link) {
         if (getChildCount() == mButtonCount)
             throw new IllegalStateException(mButtonCount + " buttons have already been added.");
         final Button newButton = (Button) LayoutInflater.from(getContext())
@@ -80,7 +80,7 @@ public class SplitButtonsLayout extends LinearLayout {
         addView(newButton, lp);
     }
 
-    public boolean hasAllButtons() {
+    public boolean hasAllButtons () {
         return getChildCount() == mButtonCount;
     }
 }

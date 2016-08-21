@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016.  Jahir Fiquitiva
+ * Copyright (c) 2016 Jahir Fiquitiva
  *
  * Licensed under the CreativeCommons Attribution-ShareAlike
  * 4.0 International License. You may not use this file except in compliance
@@ -13,12 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Big thanks to the project contributors. Check them in the repository.
- *
- */
-
-/*
- *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
 package jahirfiquitiva.iconshowcase.activities;
@@ -126,7 +122,7 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
 
     private static String[] mGoogleCatalog = new String[0],
             GOOGLE_CATALOG_VALUES = new String[0],
-            GOOGLE_CATALOG_FREE, GOOGLE_CATALOG_PRO;
+            GOOGLE_CATALOG;
 
     private static String GOOGLE_PUBKEY = "", PAYPAL_USER = "", PAYPAL_CURRENCY_CODE = "";
 
@@ -167,7 +163,7 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
     private Drawer drawer;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate (Bundle savedInstanceState) {
         Config.init(this);
 
         if (BuildConfig.DEBUG || Config.get().allowDebugging()) {
@@ -262,25 +258,25 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
         if (DONATIONS_GOOGLE) {
             final IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
 
-                public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
+                public void onQueryInventoryFinished (IabResult result, Inventory inventory) {
                     if (inventory != null) {
                         Timber.i("IAP inventory exists");
-                        for (String aGOOGLE_CATALOG_FREE : GOOGLE_CATALOG_FREE) {
-                            Timber.i(aGOOGLE_CATALOG_FREE, "is", inventory.hasPurchase(aGOOGLE_CATALOG_FREE));
-                            if (inventory.hasPurchase(aGOOGLE_CATALOG_FREE)) { //at least one donation value found, now premium
+                        for (String aGOOGLE_CATALOG : GOOGLE_CATALOG) {
+                            Timber.i(aGOOGLE_CATALOG, "is", inventory.hasPurchase(aGOOGLE_CATALOG));
+                            if (inventory.hasPurchase(aGOOGLE_CATALOG)) { //at least one donation value found, now premium
                                 mIsPremium = true;
                             }
                         }
                     }
                     if (isPremium()) {
-                        mGoogleCatalog = GOOGLE_CATALOG_PRO;
+                        mGoogleCatalog = GOOGLE_CATALOG;
                     }
                 }
             };
 
             mHelper = new IabHelper(ShowcaseActivity.this, GOOGLE_PUBKEY);
             mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
-                public void onIabSetupFinished(IabResult result) {
+                public void onIabSetupFinished (IabResult result) {
                     if (!result.isSuccess()) {
                         Timber.d("In-app Billing setup failed:", result); //TODO move text to string?
                         new MaterialDialog.Builder(ShowcaseActivity.this).title(R.string.donations_error_title)
@@ -316,11 +312,11 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
         }
     }
 
-    private Fragment getCurrentFragment() {
+    private Fragment getCurrentFragment () {
         return getSupportFragmentManager().findFragmentById(getFragmentId());
     }
 
-    private void reloadCurrentFragment() {
+    private void reloadCurrentFragment () {
         DrawerType dt = mDrawerItems.get((int) currentItem);
         FragmentTransaction fragmentTransaction = context.getSupportFragmentManager()
                 .beginTransaction();
@@ -332,7 +328,7 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
         fragmentTransaction.commit();
     }
 
-    private Fragment drawerTypeToFragment(DrawerType dt) {
+    private Fragment drawerTypeToFragment (DrawerType dt) {
         switch (dt) {
             case DONATE:
                 return DonationsFragment.newInstance(DONATIONS_GOOGLE,
@@ -383,7 +379,7 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
         }
     }
 
-    private void switchFragment(long itemId, DrawerType dt, AppCompatActivity context) {
+    private void switchFragment (long itemId, DrawerType dt, AppCompatActivity context) {
 
         if (currentItem == itemId) {
             // Don't allow re-selection of the currently active item
@@ -422,13 +418,13 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
     }
 
     @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
+    protected void onPostCreate (Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         mLastTheme = ThemeUtils.darkTheme;
     }
 
     @Override
-    protected void onResume() {
+    protected void onResume () {
         super.onResume();
         if (mPrefs == null) {
             mPrefs = new Preferences(this);
@@ -443,7 +439,7 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState (Bundle outState) {
         if (drawer != null) {
             outState = drawer.saveInstanceState(outState);
         }
@@ -455,7 +451,7 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
     }
 
     @Override
-    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+    protected void onRestoreInstanceState (@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         if (collapsingToolbarLayout != null) {
             Utils.setupCollapsingToolbarTextColors(this, collapsingToolbarLayout);
@@ -465,7 +461,7 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
     }
 
     @Override
-    public void onBackPressed() {
+    public void onBackPressed () {
         if (drawer != null && drawer.isDrawerOpen()) {
             drawer.closeDrawer();
         } else if (drawer != null && currentItem != 1 && !iconsPicker) {
@@ -478,7 +474,7 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
     }
 
     @Override
-    protected void onDestroy() {
+    protected void onDestroy () {
         super.onDestroy();
         if (settingsDialog != null) {
             settingsDialog.dismiss();
@@ -495,13 +491,13 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu (Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResult) {
+    public void onRequestPermissionsResult (int requestCode, @NonNull String[] permissions, @NonNull int[] grantResult) {
         if (requestCode == PermissionUtils.PERMISSION_REQUEST_CODE) {
             if (permissionGranted(grantResult) && PermissionUtils.permissionReceived() != null) {
                 PermissionUtils.permissionReceived().onStoragePermissionGranted();
@@ -509,12 +505,12 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
         }
     }
 
-    private boolean permissionGranted(int[] results) {
+    private boolean permissionGranted (int[] results) {
         return results.length > 0 && results[0] == PackageManager.PERMISSION_GRANTED;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected (MenuItem item) {
         super.onOptionsItemSelected(item);
         int i = item.getItemId();
         if (i == R.id.changelog) {
@@ -535,7 +531,7 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult (int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == RESULT_OK && requestCode == 2) {
@@ -552,7 +548,7 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
         }
     }
 
-    private void runLicenseChecker(String licenseKey) {
+    private void runLicenseChecker (String licenseKey) {
         mPrefs.setSettingsModified(false);
         if (WITH_LICENSE_CHECKER) {
             checkLicense(context, mPrefs, licenseKey);
@@ -562,7 +558,7 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
         }
     }
 
-    private void showChangelogDialog() {
+    private void showChangelogDialog () {
 
         int prevVersionCode = mPrefs.getVersionCode();
 
@@ -573,7 +569,7 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
 
     }
 
-    private void checkLicense(final Context context, final Preferences mPrefs, String licenseKey) {
+    private void checkLicense (final Context context, final Preferences mPrefs, String licenseKey) {
         PiracyChecker checker = new PiracyChecker(context);
 
         if ((licenseKey != null) && (!(licenseKey.isEmpty())) && (licenseKey.length() > 25)) {
@@ -588,22 +584,22 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
 
         checker.callback(new PiracyCheckerCallback() {
             @Override
-            public void allow() {
+            public void allow () {
                 ISDialogs.showLicenseSuccessDialog(context, new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+                    public void onClick (@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
                         mPrefs.setFeaturesEnabled(true);
                         showChangelogDialog();
                     }
                 }, new MaterialDialog.OnDismissListener() {
                     @Override
-                    public void onDismiss(DialogInterface dialog) {
+                    public void onDismiss (DialogInterface dialog) {
                         mPrefs.setFeaturesEnabled(true);
                         showChangelogDialog();
                     }
                 }, new MaterialDialog.OnCancelListener() {
                     @Override
-                    public void onCancel(DialogInterface dialog) {
+                    public void onCancel (DialogInterface dialog) {
                         mPrefs.setFeaturesEnabled(true);
                         showChangelogDialog();
                     }
@@ -611,7 +607,7 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
             }
 
             @Override
-            public void dontAllow(PiracyCheckerError piracyCheckerError) {
+            public void dontAllow (PiracyCheckerError piracyCheckerError) {
                 showNotLicensedDialog((Activity) context, mPrefs);
             }
         });
@@ -619,42 +615,42 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
         checker.start();
     }
 
-    private void showNotLicensedDialog(final Activity act, Preferences mPrefs) {
+    private void showNotLicensedDialog (final Activity act, Preferences mPrefs) {
         mPrefs.setFeaturesEnabled(false);
         ISDialogs.showLicenseFailDialog(act, new MaterialDialog.SingleButtonCallback() {
             @Override
-            public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+            public void onClick (@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Common.MARKET_URL + act.getPackageName()));
                 act.startActivity(browserIntent);
             }
         }, new MaterialDialog.SingleButtonCallback() {
 
             @Override
-            public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+            public void onClick (@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
                 act.finish();
             }
         }, new MaterialDialog.OnDismissListener() {
             @Override
-            public void onDismiss(DialogInterface dialog) {
+            public void onDismiss (DialogInterface dialog) {
                 act.finish();
             }
         }, new MaterialDialog.OnCancelListener() {
 
             @Override
-            public void onCancel(DialogInterface dialog) {
+            public void onCancel (DialogInterface dialog) {
                 act.finish();
             }
         });
     }
 
-    private void loadWallsList(Context context) {
+    private void loadWallsList (Context context) {
         if (mPrefs.getWallsListLoaded()) {
             WallpapersList.clearList();
             mPrefs.setWallsListLoaded(!mPrefs.getWallsListLoaded());
         }
         new WallpapersFragment.DownloadJSON(new WallsListInterface() {
             @Override
-            public void checkWallsListCreation(boolean result) {
+            public void checkWallsListCreation (boolean result) {
                 mPrefs.setWallsListLoaded(result);
                 if (WallpapersFragment.mSwipeRefreshLayout != null) {
                     WallpapersFragment.mSwipeRefreshLayout.setEnabled(false);
@@ -668,18 +664,18 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
     }
 
     @Override
-    public void onFolderSelection(@NonNull File folder) {
+    public void onFolderSelection (@NonNull File folder) {
         mPrefs.setDownloadsFolder(folder.getAbsolutePath());
         SettingsFragment.changeWallsFolderValue(this, mPrefs);
     }
 
     @Override
-    protected int getFragmentId() {
+    protected int getFragmentId () {
         return R.id.main;
     }
 
     @Override
-    protected void iconsLoaded(List<IconItem> previewIcons, List<IconsCategory> categoryList) {
+    protected void iconsLoaded (List<IconItem> previewIcons, List<IconsCategory> categoryList) {
         Fragment fragment = getCurrentFragment();
         if (fragment instanceof MainFragment) {
             Timber.d("Setting up icons");
@@ -691,16 +687,16 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
     }
 
     @Override
-    protected HashMap<DrawerType, Integer> getDrawerMap() {
+    protected HashMap<DrawerType, Integer> getDrawerMap () {
         return mDrawerMap;
     }
 
     public interface WallsListInterface {
 
-        void checkWallsListCreation(boolean result);
+        void checkWallsListCreation (boolean result);
     }
 
-    private DrawerType drawerKeyToType(String s) {
+    private DrawerType drawerKeyToType (String s) {
         switch (s.toLowerCase()) {
             case "previews":
                 return DrawerType.PREVIEWS;
@@ -723,12 +719,12 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
     }
 
     @SuppressWarnings("ResourceAsColor")
-    private void setupDrawer(final Toolbar toolbar, Bundle savedInstanceState) {
+    private void setupDrawer (final Toolbar toolbar, Bundle savedInstanceState) {
         mDrawerItems = new ArrayList<>();
         mDrawerItems.add(DrawerType.HOME);
 
         //Convert keys to enums
-        String[] configurePrimaryDrawerItems = getResources().getStringArray(R.array.primary_drawer_items);
+        String[] configurePrimaryDrawerItems = getResources().getStringArray(R.array.drawer_sections);
 
         for (String s : configurePrimaryDrawerItems) {
             mDrawerItems.add(drawerKeyToType(s));
@@ -743,7 +739,7 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
 
                     @Override
-                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                    public boolean onItemClick (View view, int position, IDrawerItem drawerItem) {
                         if (drawerItem != null) {
                             drawerItemClick(drawerItem.getIdentifier());
                         }
@@ -792,20 +788,24 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
 
         drawerBuilder.withAccountHeader(drawerHeader);
 
+        /*
+        TODO: Get drawer header name and email text views, then apply the style "DrawerTextsWithShadow"
+        */
+
         drawer = drawerBuilder.build();
 
     }
 
-    private void drawerItemSelectAndClick(long id) {
+    private void drawerItemSelectAndClick (long id) {
         drawer.setSelection(id);
         drawerItemClick(id);
     }
 
-    private void drawerItemClick(long id) {
+    private void drawerItemClick (long id) {
         switchFragment(id, mDrawerItems.get((int) id), context);
     }
 
-    private void getAction() {
+    private void getAction () {
         String action;
         try {
             action = getIntent().getAction();
@@ -838,7 +838,7 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
         }
     }
 
-    public void setupIcons() {
+    public void setupIcons () {
 
         if (mPreviewIconList == null) return;
 
@@ -875,7 +875,7 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
 
     }
 
-    public void animateIcons(int delay) {
+    public void animateIcons (int delay) {
 
         if (!iconsPicker && !wallsPicker) {
             switch (numOfIcons) {
@@ -947,7 +947,7 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
-                public void run() {
+                public void run () {
                     playIconsAnimations(anim);
                 }
             }, delay);
@@ -955,7 +955,7 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
 
     }
 
-    private void playIconsAnimations(Animation anim) {
+    private void playIconsAnimations (Animation anim) {
 
         icon1.startAnimation(anim);
         icon2.startAnimation(anim);
@@ -976,7 +976,7 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
         }
     }
 
-    public static void setupToolbarHeader(Context context, ImageView toolbarHeader) {
+    public static void setupToolbarHeader (Context context, ImageView toolbarHeader) {
 
         if (Config.get().userWallpaperInToolbar() && mPrefs.getWallpaperAsToolbarHeaderEnabled()) {
             WallpaperManager wm = WallpaperManager.getInstance(context);
@@ -1022,31 +1022,31 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
         toolbarHeader.setVisibility(View.VISIBLE);
     }
 
-    private boolean isPremium() {
+    private boolean isPremium () {
         return mIsPremium;
     }
 
-    public void setSettingsDialog(MaterialDialog settingsDialog) {
+    public void setSettingsDialog (MaterialDialog settingsDialog) {
         this.settingsDialog = settingsDialog;
     }
 
-    public Toolbar getToolbar() {
+    public Toolbar getToolbar () {
         return toolbar;
     }
 
-    public AppBarLayout getAppbar() {
+    public AppBarLayout getAppbar () {
         return appbar;
     }
 
-    public ImageView getToolbarHeader() {
+    public ImageView getToolbarHeader () {
         return toolbarHeader;
     }
 
-    public Drawer getDrawer() {
+    public Drawer getDrawer () {
         return drawer;
     }
 
-    private void setupDonations() {
+    private void setupDonations () {
         //donations stuff
 
         if (installedFromPlayStore) {
@@ -1058,14 +1058,12 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
 
         //google
         if (DONATIONS_GOOGLE) {
-            GOOGLE_CATALOG_FREE = getResources().getStringArray(R.array.nonconsumable_google_donation_items);
-            GOOGLE_CATALOG_PRO = getResources().getStringArray(R.array.consumable_google_donation_items);
-            mGoogleCatalog = GOOGLE_CATALOG_FREE;
+            GOOGLE_CATALOG = getResources().getStringArray(R.array.google_donations_items);
+            mGoogleCatalog = GOOGLE_CATALOG;
             GOOGLE_CATALOG_VALUES = getResources().getStringArray(R.array.google_donations_catalog);
 
             try {
-                if (!(GOOGLE_PUBKEY.length() > 50) || !(GOOGLE_CATALOG_VALUES.length > 0) || !(GOOGLE_CATALOG_FREE.length == GOOGLE_CATALOG_PRO.length) || !
-                        (GOOGLE_CATALOG_FREE.length == GOOGLE_CATALOG_VALUES.length)) {
+                if (!(GOOGLE_PUBKEY.length() > 50) || !(GOOGLE_CATALOG_VALUES.length > 0) || !(GOOGLE_CATALOG.length == GOOGLE_CATALOG_VALUES.length)) {
                     DONATIONS_GOOGLE = false; //google donations setup is incorrect
                 }
             } catch (Exception e) {
@@ -1076,7 +1074,7 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
 
         //paypal
         if (DONATIONS_PAYPAL) {
-            PAYPAL_USER = getResources().getString(R.string.paypal_user);
+            PAYPAL_USER = getResources().getString(R.string.paypal_email);
             PAYPAL_CURRENCY_CODE = getResources().getString(R.string.paypal_currency_code);
             if (!(PAYPAL_USER.length() > 5) || !(PAYPAL_CURRENCY_CODE.length() > 1)) {
                 DONATIONS_PAYPAL = false; //paypal content incorrect

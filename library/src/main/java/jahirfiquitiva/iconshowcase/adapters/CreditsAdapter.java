@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016.  Jahir Fiquitiva
+ * Copyright (c) 2016 Jahir Fiquitiva
  *
  * Licensed under the CreativeCommons Attribution-ShareAlike
  * 4.0 International License. You may not use this file except in compliance
@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Big thanks to the project contributors. Check them in the repository.
- *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
 package jahirfiquitiva.iconshowcase.adapters;
@@ -51,7 +51,7 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private ArrayList<CreditsItem> credits;
     private Context context;
 
-    public CreditsAdapter(Context context) {
+    public CreditsAdapter (Context context) {
         this.context = context;
 
         Resources r = context.getResources();
@@ -89,6 +89,16 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 "http://play.google.com/store/apps/dev?id=7438639276314720952"
         };
 
+
+        //TODO: Allan, add the buttons and links you want.
+        final String[] allanBtns = {
+                r.getString(R.string.google_plus)
+        };
+
+        final String[] allanLinks = {
+                "https://plus.google.com/+AllanWPitchedApps"
+        };
+
         detailedCredits.add(new DetailedCreditsItem(r.getString(R.string.dashboard_author_banner),
                 r.getString(R.string.dashboard_author_photo),
                 r.getString(R.string.dashboard_author_name),
@@ -96,6 +106,13 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 jahirBtns,
                 jahirLinks));
 
+        detailedCredits.add(new DetailedCreditsItem(
+                r.getString(R.string.allan_banner),
+                r.getString(R.string.allan_photo),
+                r.getString(R.string.allan),
+                r.getString(R.string.allan_description),
+                allanBtns,
+                allanLinks));
 
         final String[] extraCreditsTitles = r.getStringArray(R.array.more_credits_titles);
         final String[] extraCreditsDrawablesNames = r.getStringArray(R.array.credits_drawables);
@@ -106,7 +123,7 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     }
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int position) {
+    public RecyclerView.ViewHolder onCreateViewHolder (ViewGroup parent, int position) {
         int n = 0;
 
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
@@ -125,7 +142,7 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder (RecyclerView.ViewHolder holder, int position) {
         int n = 0;
         if (detailedCredits != null) n = detailedCredits.size();
 
@@ -155,7 +172,7 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             for (int i = 0; i < detailedCreditsHolder.buttons.getChildCount(); i++)
                 detailedCreditsHolder.buttons.getChildAt(i).setOnClickListener(new DebouncedClickListener() {
                     @Override
-                    public void onDebouncedClick(View view) {
+                    public void onDebouncedClick (View view) {
                         if (view.getTag() instanceof String) {
                             try {
                                 Utils.openLinkInChromeCustomTab(context, (String) view.getTag());
@@ -179,14 +196,14 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     @Override
-    public int getItemCount() {
+    public int getItemCount () {
         int count = credits.size();
         if (detailedCredits != null) count += detailedCredits.size();
         return count;
     }
 
     @Override
-    public int getItemViewType(int position) {
+    public int getItemViewType (int position) {
         return position;
     }
 
@@ -196,14 +213,14 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         private TextView text;
         private ImageView icon;
 
-        public CreditsHolder(View itemView, final int position) {
+        public CreditsHolder (View itemView, final int position) {
             super(itemView);
             view = itemView;
             text = (TextView) view.findViewById(R.id.title);
             icon = (ImageView) view.findViewById(R.id.icon);
             view.setOnClickListener(new DebouncedClickListener() {
                 @Override
-                public void onDebouncedClick(View v) {
+                public void onDebouncedClick (View v) {
                     switch (position) {
                         case 0:
                             ISDialogs.showSherryDialog(context);
@@ -236,7 +253,7 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         private ImageView photo, banner;
         private SplitButtonsLayout buttons;
 
-        public DetailedCreditsHolder(View itemView) {
+        public DetailedCreditsHolder (View itemView) {
             super(itemView);
             view = itemView;
             title = (TextView) view.findViewById(R.id.title);
@@ -247,7 +264,7 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
-    private Drawable getTintedDrawable(String name) {
+    private Drawable getTintedDrawable (String name) {
         final int light = ContextCompat.getColor(context, R.color.drawable_tint_dark);
         final int dark = ContextCompat.getColor(context, R.color.drawable_tint_light);
 

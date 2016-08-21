@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016.  Jahir Fiquitiva
+ * Copyright (c) 2016 Jahir Fiquitiva
  *
  * Licensed under the CreativeCommons Attribution-ShareAlike
  * 4.0 International License. You may not use this file except in compliance
@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Big thanks to the project contributors. Check them in the repository.
- *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
+
 package jahirfiquitiva.iconshowcase.tasks;
 
 import android.content.ComponentName;
@@ -52,9 +53,7 @@ import jahirfiquitiva.iconshowcase.models.AppFilterItem;
 import jahirfiquitiva.iconshowcase.models.RequestItem;
 import jahirfiquitiva.iconshowcase.models.RequestList;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
-import jahirfiquitiva.iconshowcase.utilities.Utils;
 import timber.log.Timber;
-
 
 public class LoadRequestList extends AsyncTask<Void, String, Boolean> {
 
@@ -66,7 +65,7 @@ public class LoadRequestList extends AsyncTask<Void, String, Boolean> {
     private final long startTime;
     private long endTime;
 
-    public LoadRequestList(Context context) {
+    public LoadRequestList (Context context) {
         this.context = new WeakReference<>(context);
         this.pm = context.getPackageManager();
         this.startTime = System.currentTimeMillis();
@@ -76,7 +75,7 @@ public class LoadRequestList extends AsyncTask<Void, String, Boolean> {
     }
 
     @Override
-    protected Boolean doInBackground(Void... voids) {
+    protected Boolean doInBackground (Void... voids) {
 
         appsToTheme = new ArrayList<>();
 
@@ -154,7 +153,7 @@ public class LoadRequestList extends AsyncTask<Void, String, Boolean> {
             appsToTheme.removeAll(themedApps);
             Collections.sort(appsToTheme, new Comparator<RequestItem>() {
                 @Override
-                public int compare(RequestItem a, RequestItem b) {
+                public int compare (RequestItem a, RequestItem b) {
                     return a.getAppName().compareToIgnoreCase(b.getAppName());
                 }
             });
@@ -167,7 +166,7 @@ public class LoadRequestList extends AsyncTask<Void, String, Boolean> {
     }
 
     @Override
-    protected void onPostExecute(Boolean worked) {
+    protected void onPostExecute (Boolean worked) {
         Preferences mPrefs = new Preferences(context.get());
         mPrefs.setIfAppsToRequestLoaded(worked);
         RequestList.setRequestList(appsToTheme);
@@ -181,13 +180,13 @@ public class LoadRequestList extends AsyncTask<Void, String, Boolean> {
         }
     }
 
-    private Intent getAllActivitiesIntent() {
+    private Intent getAllActivitiesIntent () {
         Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
         mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
         return mainIntent;
     }
 
-    private ResolveInfo getResolveInfo(String componentString) {
+    private ResolveInfo getResolveInfo (String componentString) {
         Intent intent = new Intent();
 
         // Example format:
@@ -208,7 +207,7 @@ public class LoadRequestList extends AsyncTask<Void, String, Boolean> {
         }
     }
 
-    private String[] getSplitComponent(String componentString) {
+    private String[] getSplitComponent (String componentString) {
         String[] split;
         try {
             split = componentString.split("/");
@@ -218,11 +217,11 @@ public class LoadRequestList extends AsyncTask<Void, String, Boolean> {
         return split;
     }
 
-    private Drawable getHiResAppIcon(ResolveInfo info) {
+    private Drawable getHiResAppIcon (ResolveInfo info) {
         return getHiResAppIcon(info.activityInfo);
     }
 
-    private Drawable getHiResAppIcon(ActivityInfo info) {
+    private Drawable getHiResAppIcon (ActivityInfo info) {
         Resources resources;
         try {
             resources = context.get().getPackageManager().getResourcesForApplication(info.applicationInfo);
@@ -239,7 +238,7 @@ public class LoadRequestList extends AsyncTask<Void, String, Boolean> {
     }
 
     @SuppressWarnings("deprecation")
-    private Drawable getHiResAppIcon(Resources resources, int iconId) {
+    private Drawable getHiResAppIcon (Resources resources, int iconId) {
         Drawable d;
         try {
             int iconDpi;
@@ -267,7 +266,7 @@ public class LoadRequestList extends AsyncTask<Void, String, Boolean> {
         return (d != null) ? d : getAppDefaultActivityIcon();
     }
 
-    private Drawable getNormalIcon(ResolveInfo info, PackageManager pm) {
+    private Drawable getNormalIcon (ResolveInfo info, PackageManager pm) {
         if (info != null) {
             if (info.loadIcon(pm) != null) {
                 return info.loadIcon(pm);
@@ -279,7 +278,7 @@ public class LoadRequestList extends AsyncTask<Void, String, Boolean> {
         }
     }
 
-    public Drawable getNormalIcon(Context context, String pkg) {
+    public Drawable getNormalIcon (Context context, String pkg) {
         final ApplicationInfo ai = getAppInfo(context, pkg);
         if (ai != null) {
             return ai.loadIcon(pm);
@@ -289,7 +288,7 @@ public class LoadRequestList extends AsyncTask<Void, String, Boolean> {
     }
 
     @Nullable
-    public ApplicationInfo getAppInfo(Context context, String pkg) {
+    public ApplicationInfo getAppInfo (Context context, String pkg) {
         try {
             return context.getPackageManager().getApplicationInfo(pkg, 0);
         } catch (PackageManager.NameNotFoundException e) {
@@ -297,11 +296,11 @@ public class LoadRequestList extends AsyncTask<Void, String, Boolean> {
         }
     }
 
-    private Drawable getAppDefaultActivityIcon() {
+    private Drawable getAppDefaultActivityIcon () {
         return getHiResAppIcon(Resources.getSystem(), android.R.mipmap.sym_def_app_icon);
     }
 
-    private void showAppFilterErrors() {
+    private void showAppFilterErrors () {
         Timber.d("----- START OF APPFILTER DEBUG -----");
         for (AppFilterItem error : appFilterItems) {
             String iconName = error.getIconName();
@@ -334,7 +333,7 @@ public class LoadRequestList extends AsyncTask<Void, String, Boolean> {
         }
     }
 
-    private void showDuplicatedComponentsInLog() {
+    private void showDuplicatedComponentsInLog () {
         SimpleArrayMap<String, Integer> occurrences = new SimpleArrayMap<>();
         String[] components = new String[appFilterItems.size()];
         for (int i = 0; i < appFilterItems.size(); i++) {

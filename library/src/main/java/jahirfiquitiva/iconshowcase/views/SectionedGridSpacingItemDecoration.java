@@ -1,9 +1,20 @@
 /*
- * Copyright (c) 2016. Jahir Fiquitiva. Android Developer. All rights reserved.
- */
-
-/*
+ * Copyright (c) 2016 Jahir Fiquitiva
  *
+ * Licensed under the CreativeCommons Attribution-ShareAlike
+ * 4.0 International License. You may not use this file except in compliance
+ * with the License. You may obtain a copy of the License at
+ *
+ *    http://creativecommons.org/licenses/by-sa/4.0/legalcode
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
 package jahirfiquitiva.iconshowcase.views;
@@ -14,7 +25,6 @@ import android.view.View;
 
 import jahirfiquitiva.iconshowcase.adapters.KustomAdapter;
 
-
 public class SectionedGridSpacingItemDecoration extends RecyclerView.ItemDecoration {
 
     private final int spanCount;
@@ -22,8 +32,8 @@ public class SectionedGridSpacingItemDecoration extends RecyclerView.ItemDecorat
     private final boolean includeEdge;
     private final KustomAdapter adapter;
 
-    public SectionedGridSpacingItemDecoration(int spanCount, int spacing, boolean includeEdge,
-                                              KustomAdapter adapter) {
+    public SectionedGridSpacingItemDecoration (int spanCount, int spacing, boolean includeEdge,
+                                               KustomAdapter adapter) {
         this.spanCount = spanCount;
         this.spacing = spacing;
         this.includeEdge = includeEdge;
@@ -31,7 +41,7 @@ public class SectionedGridSpacingItemDecoration extends RecyclerView.ItemDecorat
     }
 
     @Override
-    public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+    public void getItemOffsets (Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         super.getItemOffsets(outRect, view, parent, state);
 
         int position = ((RecyclerView.LayoutParams) view.getLayoutParams()).getViewAdapterPosition();

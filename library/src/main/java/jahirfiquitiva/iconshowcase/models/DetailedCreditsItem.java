@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016.  Jahir Fiquitiva
+ * Copyright (c) 2016 Jahir Fiquitiva
  *
  * Licensed under the CreativeCommons Attribution-ShareAlike
  * 4.0 International License. You may not use this file except in compliance
@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Big thanks to the project contributors. Check them in the repository.
- *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
 package jahirfiquitiva.iconshowcase.models;
@@ -23,7 +23,7 @@ public class DetailedCreditsItem {
 
     private final String bannerLink, photoLink, title, content, btnTexts[], btnLinks[];
 
-    public DetailedCreditsItem(String bannerLink, String photoLink, String title, String content, String[] btnTexts, String[] btnLinks) {
+    public DetailedCreditsItem (String bannerLink, String photoLink, String title, String content, String[] btnTexts, String[] btnLinks) {
         this.bannerLink = bannerLink;
         this.photoLink = photoLink;
         this.title = title;
@@ -32,27 +32,27 @@ public class DetailedCreditsItem {
         this.btnLinks = btnLinks;
     }
 
-    public String getBannerLink() {
+    public String getBannerLink () {
         return bannerLink;
     }
 
-    public String getPhotoLink() {
+    public String getPhotoLink () {
         return photoLink;
     }
 
-    public String getTitle() {
+    public String getTitle () {
         return title;
     }
 
-    public String getContent() {
+    public String getContent () {
         return content;
     }
 
-    public String[] getBtnTexts() {
+    public String[] getBtnTexts () {
         return btnTexts;
     }
 
-    public String[] getBtnLinks() {
+    public String[] getBtnLinks () {
         return btnLinks;
     }
 }

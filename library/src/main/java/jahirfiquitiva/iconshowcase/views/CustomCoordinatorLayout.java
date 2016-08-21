@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016.  Jahir Fiquitiva
+ * Copyright (c) 2016 Jahir Fiquitiva
  *
  * Licensed under the CreativeCommons Attribution-ShareAlike
  * 4.0 International License. You may not use this file except in compliance
@@ -13,12 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Big thanks to the project contributors. Check them in the repository.
- *
- */
-
-/*
- *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
 package jahirfiquitiva.iconshowcase.views;
@@ -33,29 +29,29 @@ public class CustomCoordinatorLayout extends CoordinatorLayout {
 
     private boolean allowScroll = true;
 
-    public CustomCoordinatorLayout(Context context) {
+    public CustomCoordinatorLayout (Context context) {
         super(context);
     }
 
-    public CustomCoordinatorLayout(Context context, AttributeSet attrs) {
+    public CustomCoordinatorLayout (Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
     @Override
-    public boolean onStartNestedScroll(View child, View target, int nestedScrollAxes) {
+    public boolean onStartNestedScroll (View child, View target, int nestedScrollAxes) {
         return allowScroll && super.onStartNestedScroll(child, target, nestedScrollAxes);
     }
 
     @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
+    public boolean onInterceptTouchEvent (MotionEvent ev) {
         return allowScroll && super.onInterceptTouchEvent(ev);
     }
 
-    public boolean isScrollAllowed() {
+    public boolean isScrollAllowed () {
         return allowScroll;
     }
 
-    public void setScrollAllowed(boolean allowScroll) {
+    public void setScrollAllowed (boolean allowScroll) {
         this.allowScroll = allowScroll;
     }
 }

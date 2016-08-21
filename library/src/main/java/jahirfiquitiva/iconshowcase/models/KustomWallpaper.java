@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016.  Jahir Fiquitiva
+ * Copyright (c) 2016 Jahir Fiquitiva
  *
  * Licensed under the CreativeCommons Attribution-ShareAlike
  * 4.0 International License. You may not use this file except in compliance
@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Big thanks to the project contributors. Check them in the repository.
- *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
 package jahirfiquitiva.iconshowcase.models;
@@ -24,28 +24,27 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
-
 public class KustomWallpaper {
 
     private final String wallpaperName;
     private String previewPath;
     private String previewPathLand;
 
-    public KustomWallpaper(String wallpaperName, String previewPath, String previewPathLand) {
+    public KustomWallpaper (String wallpaperName, String previewPath, String previewPathLand) {
         this.wallpaperName = wallpaperName;
         this.previewPath = previewPath;
         this.previewPathLand = previewPathLand;
     }
 
-    public String getPreviewPath() {
+    public String getPreviewPath () {
         return previewPath;
     }
 
-    public String getPreviewPathLand() {
+    public String getPreviewPathLand () {
         return previewPathLand;
     }
 
-    public Intent getKLWPIntent(Context context) {
+    public Intent getKLWPIntent (Context context) {
         Intent klwpIntent = new Intent();
         klwpIntent.setComponent(new ComponentName("org.kustom.wallpaper", "org.kustom.lib.editor.WpAdvancedEditorActivity"));
         klwpIntent.setData(Uri.parse("kfile://" + context.getPackageName() + "/wallpapers/" + wallpaperName));

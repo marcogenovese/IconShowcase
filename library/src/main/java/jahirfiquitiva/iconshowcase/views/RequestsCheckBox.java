@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016.  Jahir Fiquitiva
+ * Copyright (c) 2016 Jahir Fiquitiva
  *
  * Licensed under the CreativeCommons Attribution-ShareAlike
  * 4.0 International License. You may not use this file except in compliance
@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Big thanks to the project contributors. Check them in the repository.
- *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
 package jahirfiquitiva.iconshowcase.views;
@@ -30,22 +30,22 @@ import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 
 public class RequestsCheckBox extends AppCompatCheckBox {
 
-    public RequestsCheckBox(Context context, AttributeSet attrs, int defStyleAttr) {
+    public RequestsCheckBox (Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         setProperTint(context);
     }
 
-    public RequestsCheckBox(Context context) {
+    public RequestsCheckBox (Context context) {
         super(context);
         setProperTint(context);
     }
 
-    public RequestsCheckBox(Context context, AttributeSet attrs) {
+    public RequestsCheckBox (Context context, AttributeSet attrs) {
         super(context, attrs);
         setProperTint(context);
     }
 
-    private void setProperTint(Context context) {
+    private void setProperTint (Context context) {
         MDTintHelper.setTint(this, ColorUtils.getCheckBoxColor(context,
                 ColorUtils.getMaterialTertiaryColor(ThemeUtils.darkTheme)));
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016.  Jahir Fiquitiva
+ * Copyright (c) 2016 Jahir Fiquitiva
  *
  * Licensed under the CreativeCommons Attribution-ShareAlike
  * 4.0 International License. You may not use this file except in compliance
@@ -13,12 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Big thanks to the project contributors. Check them in the repository.
- *
- */
-
-/*
- *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
 package jahirfiquitiva.iconshowcase.views;
@@ -43,15 +39,15 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
     private int mOrientation = -1;
 
-    private DividerItemDecoration(Context context, AttributeSet attrs) {
+    private DividerItemDecoration (Context context, AttributeSet attrs) {
         final TypedArray a = context
                 .obtainStyledAttributes(attrs, new int[]{android.R.attr.listDivider});
         mDivider = a.getDrawable(0);
         a.recycle();
     }
 
-    public DividerItemDecoration(Context context, AttributeSet attrs, int height, boolean showFirstDivider,
-                                 boolean showLastDivider) {
+    public DividerItemDecoration (Context context, AttributeSet attrs, int height, boolean showFirstDivider,
+                                  boolean showLastDivider) {
         this(context, attrs);
         this.height = height;
         mShowFirstDivider = showFirstDivider;
@@ -59,8 +55,8 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
     }
 
     @Override
-    public void getItemOffsets(Rect outRect, View view, RecyclerView parent,
-                               RecyclerView.State state) {
+    public void getItemOffsets (Rect outRect, View view, RecyclerView parent,
+                                RecyclerView.State state) {
         super.getItemOffsets(outRect, view, parent, state);
         if (mDivider == null) {
             return;
@@ -92,7 +88,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
     }
 
     @Override
-    public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
+    public void onDrawOver (Canvas c, RecyclerView parent, RecyclerView.State state) {
         if (mDivider == null) {
             super.onDrawOver(c, parent, state);
             return;
@@ -150,7 +146,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
         }
     }
 
-    private int getOrientation(RecyclerView parent) {
+    private int getOrientation (RecyclerView parent) {
         if (mOrientation == -1) {
             if (parent.getLayoutManager() instanceof LinearLayoutManager) {
                 LinearLayoutManager layoutManager = (LinearLayoutManager) parent.getLayoutManager();

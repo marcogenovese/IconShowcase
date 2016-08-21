@@ -1,3 +1,22 @@
+/*
+ * Copyright (c) 2016 Jahir Fiquitiva
+ *
+ * Licensed under the CreativeCommons Attribution-ShareAlike
+ * 4.0 International License. You may not use this file except in compliance
+ * with the License. You may obtain a copy of the License at
+ *
+ *    http://creativecommons.org/licenses/by-sa/4.0/legalcode
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
+ */
+
 package jahirfiquitiva.iconshowcase.utilities;
 
 import android.content.Context;
@@ -26,28 +45,28 @@ public class ChangelogXmlParser {
         private final String mTitle;
         private final ArrayList<String> mPoints;
 
-        public ChangelogItem(String name) {
+        public ChangelogItem (String name) {
             mTitle = name;
             mPoints = new ArrayList<>();
         }
 
-        public String getTitle() {
+        public String getTitle () {
             return mTitle;
         }
 
-        public List<String> getItems() {
+        public List<String> getItems () {
             return mPoints;
         }
 
-        public void addItem(String s) {
+        public void addItem (String s) {
             mPoints.add(s);
         }
 
-        public int size() {
+        public int size () {
             return mPoints.size();
         }
 
-        protected ChangelogItem(Parcel in) {
+        protected ChangelogItem (Parcel in) {
             mTitle = in.readString();
             if (in.readByte() == 0x01) {
                 mPoints = new ArrayList<>();
@@ -58,12 +77,12 @@ public class ChangelogXmlParser {
         }
 
         @Override
-        public int describeContents() {
+        public int describeContents () {
             return 0;
         }
 
         @Override
-        public void writeToParcel(Parcel dest, int flags) {
+        public void writeToParcel (Parcel dest, int flags) {
             dest.writeString(mTitle);
             if (mPoints == null) {
                 dest.writeByte((byte) (0x00));
@@ -76,18 +95,18 @@ public class ChangelogXmlParser {
         @SuppressWarnings("unused")
         public static final Creator<ChangelogItem> CREATOR = new Creator<ChangelogItem>() {
             @Override
-            public ChangelogItem createFromParcel(Parcel in) {
+            public ChangelogItem createFromParcel (Parcel in) {
                 return new ChangelogItem(in);
             }
 
             @Override
-            public ChangelogItem[] newArray(int size) {
+            public ChangelogItem[] newArray (int size) {
                 return new ChangelogItem[size];
             }
         };
     }
 
-    public static ArrayList<ChangelogItem> parse(@NonNull Context context, @XmlRes int xmlRes) {
+    public static ArrayList<ChangelogItem> parse (@NonNull Context context, @XmlRes int xmlRes) {
         ChangelogItem mCurrentChangelogItem = null;
         ArrayList<ChangelogItem> mChangelogItems = new ArrayList<>();
 

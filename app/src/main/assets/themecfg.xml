@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) 2016.  Jahir Fiquitiva
+  ~ Copyright (c) 2016 Jahir Fiquitiva
   ~
   ~ Licensed under the CreativeCommons Attribution-ShareAlike
   ~ 4.0 International License. You may not use this file except in compliance
@@ -14,18 +14,16 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   ~
-  ~ Big thanks to the project contributors. Check them in the repository.
-  ~
-  -->
-
-<!--
-  ~
+  ~ Special thanks to the project contributors and collaborators
+  ~ 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
   -->
 
 <theme>
     <version>1.0</version>
     <themeName>IconShowcase Dashboard</themeName>
-    <themeInfo>IconShowcase is a Material Design based Icon Pack dashboard template. Free and open source.</themeInfo>
+    <themeInfo>IconShowcase is a Material Design based Icon Pack dashboard template. Free and open
+        source.
+    </themeInfo>
     <preview img1="preview1"/>
     <preview img2="preview2"/>
 </theme>

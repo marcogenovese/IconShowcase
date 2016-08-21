@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016.  Jahir Fiquitiva
+ * Copyright (c) 2016 Jahir Fiquitiva
  *
  * Licensed under the CreativeCommons Attribution-ShareAlike
  * 4.0 International License. You may not use this file except in compliance
@@ -13,18 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Big thanks to the project contributors. Check them in the repository.
- *
- */
-
-/*
- *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
 package jahirfiquitiva.iconshowcase.models;
 
 import android.graphics.drawable.Drawable;
-
 
 public class RequestItem {
 
@@ -32,8 +27,8 @@ public class RequestItem {
     private final Drawable normalIcon, hiResIcon;
     private boolean selected = false;
 
-    public RequestItem(String appName, String packageName, String className,
-                       Drawable normalIcon, Drawable hiResIcon) {
+    public RequestItem (String appName, String packageName, String className,
+                        Drawable normalIcon, Drawable hiResIcon) {
         this.appName = appName;
         this.packageName = packageName;
         this.className = className;
@@ -41,31 +36,31 @@ public class RequestItem {
         this.hiResIcon = hiResIcon;
     }
 
-    public String getClassName() {
+    public String getClassName () {
         return className;
     }
 
-    public String getAppName() {
+    public String getAppName () {
         return appName;
     }
 
-    public String getPackageName() {
+    public String getPackageName () {
         return packageName;
     }
 
-    public Drawable getNormalIcon() {
+    public Drawable getNormalIcon () {
         return normalIcon;
     }
 
-    public Drawable getHiResIcon() {
+    public Drawable getHiResIcon () {
         return hiResIcon;
     }
 
-    public boolean isSelected() {
+    public boolean isSelected () {
         return selected;
     }
 
-    public void setSelected(boolean selected) {
+    public void setSelected (boolean selected) {
         this.selected = selected;
     }
 
@@ -73,10 +68,11 @@ public class RequestItem {
      * Used to compare object to object
      *
      * @param other
+     *
      * @return
      */
     @Override
-    public boolean equals(Object other) {
+    public boolean equals (Object other) {
         if (!(other instanceof RequestItem)) {
             return false;
         }

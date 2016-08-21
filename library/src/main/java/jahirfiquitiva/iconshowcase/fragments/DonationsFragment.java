@@ -1,3 +1,22 @@
+/*
+ * Copyright (c) 2016 Jahir Fiquitiva
+ *
+ * Licensed under the CreativeCommons Attribution-ShareAlike
+ * 4.0 International License. You may not use this file except in compliance
+ * with the License. You may obtain a copy of the License at
+ *
+ *    http://creativecommons.org/licenses/by-sa/4.0/legalcode
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
+ */
+
 package jahirfiquitiva.iconshowcase.fragments;
 /*
  * Copyright (C) 2011-2015 Dominik Schürmann <dominik@dominikschuermann.de>
@@ -49,7 +68,6 @@ import org.sufficientlysecure.donations.google.util.Purchase;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 import timber.log.Timber;
-
 
 public class DonationsFragment extends NoFabBaseFragment {
 
@@ -114,12 +132,13 @@ public class DonationsFragment extends NoFabBaseFragment {
      * @param paypalItemName      Display item name on PayPal, like "Donation for NTPSync"
      * @param flattrEnabled       Enable Flattr donations
      * @param bitcoinEnabled      Enable bitcoin donations
+     *
      * @return DonationsFragment
      */
-    public static DonationsFragment newInstance(boolean googleEnabled, String googlePubkey, String[] googleCatalog,
-                                                String[] googleCatalogValues, boolean paypalEnabled, String paypalUser,
-                                                String paypalCurrencyCode, String paypalItemName, boolean flattrEnabled,
-                                                boolean bitcoinEnabled) {
+    public static DonationsFragment newInstance (boolean googleEnabled, String googlePubkey, String[] googleCatalog,
+                                                 String[] googleCatalogValues, boolean paypalEnabled, String paypalUser,
+                                                 String paypalCurrencyCode, String paypalItemName, boolean flattrEnabled,
+                                                 boolean bitcoinEnabled) {
         DonationsFragment donationsFragment = new DonationsFragment();
         Bundle args = new Bundle();
 
@@ -147,7 +166,7 @@ public class DonationsFragment extends NoFabBaseFragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         //TODO remove debug and all other bundle vars and use Config
@@ -172,13 +191,13 @@ public class DonationsFragment extends NoFabBaseFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         return inflater.inflate(R.layout.donations__fragment, container, false);
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
+    public void onActivityCreated (Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         /* Flattr */
@@ -216,7 +235,7 @@ public class DonationsFragment extends NoFabBaseFragment {
                     R.id.donations__google_android_market_donate_button);
             btGoogle.setOnClickListener(new DebouncedClickListener() {
                 @Override
-                public void onDebouncedClick(View v) {
+                public void onDebouncedClick (View v) {
                     donateGoogleOnClick();
                 }
             });
@@ -234,7 +253,7 @@ public class DonationsFragment extends NoFabBaseFragment {
             if (mDebug)
                 Timber.d("Starting setup.");
             mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
-                public void onIabSetupFinished(IabResult result) {
+                public void onIabSetupFinished (IabResult result) {
                     if (mDebug)
                         Timber.d("Setup finished.");
 
@@ -259,7 +278,7 @@ public class DonationsFragment extends NoFabBaseFragment {
                     R.id.donations__paypal_donate_button);
             btPayPal.setOnClickListener(new DebouncedClickListener() {
                 @Override
-                public void onDebouncedClick(View v) {
+                public void onDebouncedClick (View v) {
                     donatePayPalOnClick();
                 }
             });
@@ -274,14 +293,14 @@ public class DonationsFragment extends NoFabBaseFragment {
             Button btBitcoin = (Button) getActivity().findViewById(R.id.donations__bitcoin_button);
             btBitcoin.setOnClickListener(new DebouncedClickListener() {
                 @Override
-                public void onDebouncedClick(View v) {
+                public void onDebouncedClick (View v) {
                     donateBitcoinOnClick(v);
                 }
             });
             btBitcoin.setOnLongClickListener(new View.OnLongClickListener() {
 
                 @Override
-                public boolean onLongClick(View v) {
+                public boolean onLongClick (View v) {
                     // http://stackoverflow.com/a/11012443/832776
                     if (Build.VERSION.SDK_INT >= 11) {
                         ClipboardManager clipboard =
@@ -304,7 +323,7 @@ public class DonationsFragment extends NoFabBaseFragment {
     /**
      * Open dialog
      */
-    private void openDialog(int icon, int title, String message) {
+    private void openDialog (int icon, int title, String message) {
         new MaterialDialog.Builder(getActivity())
                 .icon(ContextCompat.getDrawable(getActivity(), icon))
                 .title(title)
@@ -317,7 +336,7 @@ public class DonationsFragment extends NoFabBaseFragment {
     /**
      * Donate button executes donations based on selection in spinner
      */
-    private void donateGoogleOnClick() {
+    private void donateGoogleOnClick () {
         final int index;
         index = mGoogleSpinner.getSelectedItemPosition();
         if (mDebug)
@@ -337,7 +356,7 @@ public class DonationsFragment extends NoFabBaseFragment {
 
     // Callback for when a purchase is finished
     private final IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
-        public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
+        public void onIabPurchaseFinished (IabResult result, Purchase purchase) {
             if (mDebug)
                 Timber.d("Purchase finished: " + result + ", purchase: " + purchase);
 
@@ -360,7 +379,7 @@ public class DonationsFragment extends NoFabBaseFragment {
 
     // Called when consumption is complete
     private final IabHelper.OnConsumeFinishedListener mConsumeFinishedListener = new IabHelper.OnConsumeFinishedListener() {
-        public void onConsumeFinished(Purchase purchase, IabResult result) {
+        public void onConsumeFinished (Purchase purchase, IabResult result) {
             if (mDebug)
                 Timber.d("Consumption finished. Purchase: " + purchase + ", result: " + result);
 
@@ -377,7 +396,7 @@ public class DonationsFragment extends NoFabBaseFragment {
     };
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult (int requestCode, int resultCode, Intent data) {
         if (mDebug)
             Timber.d("onActivityResult(" + requestCode + "," + resultCode + "," + data);
         if (mHelper == null) return;
@@ -398,7 +417,7 @@ public class DonationsFragment extends NoFabBaseFragment {
      * Donate button with PayPal by opening browser with defined URL For possible parameters see:
      * https://developer.paypal.com/webapps/developer/docs/classic/paypal-payments-standard/integration-guide/Appx_websitestandard_htmlvariables/
      */
-    private void donatePayPalOnClick() {
+    private void donatePayPalOnClick () {
         Uri.Builder uriBuilder = new Uri.Builder();
         uriBuilder.scheme("https").authority("www.paypal.com").path("cgi-bin/webscr");
         uriBuilder.appendQueryParameter("cmd", "_donations");
@@ -427,7 +446,7 @@ public class DonationsFragment extends NoFabBaseFragment {
     /**
      * Donate with bitcoin by opening a bitcoin: intent if available.
      */
-    private void donateBitcoinOnClick(View view) {
+    private void donateBitcoinOnClick (View view) {
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse("bitcoin:" + mBitcoinAddress));
 
@@ -447,7 +466,7 @@ public class DonationsFragment extends NoFabBaseFragment {
      */
     @SuppressLint({"SetJavaScriptEnabled", "SetTextI18n"})
     @TargetApi(11)
-    private void buildFlattrView() {
+    private void buildFlattrView () {
         final FrameLayout mLoadingFrame;
         final WebView mFlattrWebview;
 
@@ -465,7 +484,7 @@ public class DonationsFragment extends NoFabBaseFragment {
              * Open all links in browser, not in webview
              */
             @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String urlNewString) {
+            public boolean shouldOverrideUrlLoading (WebView view, String urlNewString) {
                 try {
                     view.getContext().startActivity(
                             new Intent(Intent.ACTION_VIEW, Uri.parse(urlNewString)));
@@ -483,7 +502,7 @@ public class DonationsFragment extends NoFabBaseFragment {
              * -browser
              */
             @Override
-            public void onLoadResource(WebView view, String url) {
+            public void onLoadResource (WebView view, String url) {
                 if (url.contains("flattr")) {
                     WebView.HitTestResult result = view.getHitTestResult();
                     if (result != null && result.getType() > 0) {
@@ -503,7 +522,7 @@ public class DonationsFragment extends NoFabBaseFragment {
              * After loading is done, remove frame with progress circle
              */
             @Override
-            public void onPageFinished(WebView view, String url) {
+            public void onPageFinished (WebView view, String url) {
                 // remove loading frame, show webview
                 if (mLoadingFrame.getVisibility() == View.VISIBLE) {
                     mLoadingFrame.setVisibility(View.GONE);
@@ -554,7 +573,7 @@ public class DonationsFragment extends NoFabBaseFragment {
         // disable scroll on touch
         mFlattrWebview.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
+            public boolean onTouch (View view, MotionEvent motionEvent) {
                 // already handled (returns true) when moving
                 return (motionEvent.getAction() == MotionEvent.ACTION_MOVE);
             }

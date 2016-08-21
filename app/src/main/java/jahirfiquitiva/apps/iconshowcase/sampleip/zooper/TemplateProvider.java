@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016.  Jahir Fiquitiva
+ * Copyright (c) 2016 Jahir Fiquitiva
  *
  * Licensed under the CreativeCommons Attribution-ShareAlike
  * 4.0 International License. You may not use this file except in compliance
@@ -13,12 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Big thanks to the project contributors. Check them in the repository.
- *
- */
-
-/*
- *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
 package jahirfiquitiva.apps.iconshowcase.sampleip.zooper;
@@ -35,23 +31,23 @@ import java.io.FileNotFoundException;
 
 public class TemplateProvider extends ContentProvider {
 
-    public int delete(@NonNull Uri paramUri, String paramString, String[] paramArrayOfString) {
+    public int delete (@NonNull Uri paramUri, String paramString, String[] paramArrayOfString) {
         return 0;
     }
 
-    public String getType(@NonNull Uri paramUri) {
+    public String getType (@NonNull Uri paramUri) {
         return null;
     }
 
-    public Uri insert(@NonNull Uri paramUri, ContentValues paramContentValues) {
+    public Uri insert (@NonNull Uri paramUri, ContentValues paramContentValues) {
         return null;
     }
 
-    public boolean onCreate() {
+    public boolean onCreate () {
         return false;
     }
 
-    public AssetFileDescriptor openAssetFile(@NonNull Uri paramUri, @NonNull String paramString)
+    public AssetFileDescriptor openAssetFile (@NonNull Uri paramUri, @NonNull String paramString)
             throws FileNotFoundException {
         if (paramUri.getPathSegments().size() > 0)
             try {
@@ -64,7 +60,7 @@ public class TemplateProvider extends ContentProvider {
         return null;
     }
 
-    public Cursor query(@NonNull Uri paramUri, String[] paramArrayOfString1, String paramString1, String[] paramArrayOfString2, String paramString2) {
+    public Cursor query (@NonNull Uri paramUri, String[] paramArrayOfString1, String paramString1, String[] paramArrayOfString2, String paramString2) {
         MatrixCursor cursor = new MatrixCursor(new String[]{"string"});
         try {
             if (getContext() == null) return cursor;
@@ -82,7 +78,7 @@ public class TemplateProvider extends ContentProvider {
         return cursor;
     }
 
-    public int update(@NonNull Uri paramUri, ContentValues paramContentValues, String paramString, String[] paramArrayOfString) {
+    public int update (@NonNull Uri paramUri, ContentValues paramContentValues, String paramString, String[] paramArrayOfString) {
         return 0;
     }
 }

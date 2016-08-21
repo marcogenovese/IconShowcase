@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016.  Jahir Fiquitiva
+ * Copyright (c) 2016 Jahir Fiquitiva
  *
  * Licensed under the CreativeCommons Attribution-ShareAlike
  * 4.0 International License. You may not use this file except in compliance
@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Big thanks to the project contributors. Check them in the repository.
- *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
 package jahirfiquitiva.iconshowcase.fragments.base;
@@ -28,28 +28,28 @@ class ScrollerCustomDuration extends Scroller {
 
     private double mScrollFactor = 1;
 
-    public ScrollerCustomDuration(Context context) {
+    public ScrollerCustomDuration (Context context) {
         super(context);
     }
 
-    public ScrollerCustomDuration(Context context, Interpolator interpolator) {
+    public ScrollerCustomDuration (Context context, Interpolator interpolator) {
         super(context, interpolator);
     }
 
     @SuppressLint("NewApi")
-    public ScrollerCustomDuration(Context context, Interpolator interpolator, boolean flywheel) {
+    public ScrollerCustomDuration (Context context, Interpolator interpolator, boolean flywheel) {
         super(context, interpolator, flywheel);
     }
 
     /**
      * Set the factor by which the duration will change
      */
-    public void setScrollDurationFactor(double scrollFactor) {
+    public void setScrollDurationFactor (double scrollFactor) {
         mScrollFactor = scrollFactor;
     }
 
     @Override
-    public void startScroll(int startX, int startY, int dx, int dy, int duration) {
+    public void startScroll (int startX, int startY, int dx, int dy, int duration) {
         super.startScroll(startX, startY, dx, dy, (int) (duration * mScrollFactor));
     }
 

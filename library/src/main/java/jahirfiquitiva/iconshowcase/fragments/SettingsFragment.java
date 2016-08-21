@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016.  Jahir Fiquitiva
+ * Copyright (c) 2016 Jahir Fiquitiva
  *
  * Licensed under the CreativeCommons Attribution-ShareAlike
  * 4.0 International License. You may not use this file except in compliance
@@ -13,12 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Big thanks to the project contributors. Check them in the repository.
- *
- */
-
-/*
- *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
 package jahirfiquitiva.iconshowcase.fragments;
@@ -45,8 +41,8 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import java.io.File;
 
 import jahirfiquitiva.iconshowcase.R;
-import jahirfiquitiva.iconshowcase.activities.base.BaseActivity;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
+import jahirfiquitiva.iconshowcase.activities.base.BaseActivity;
 import jahirfiquitiva.iconshowcase.adapters.FeaturesAdapter;
 import jahirfiquitiva.iconshowcase.config.Config;
 import jahirfiquitiva.iconshowcase.dialogs.FolderSelectorDialog;
@@ -58,9 +54,8 @@ import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 
-
 public class SettingsFragment extends PreferenceFragment implements
-        PermissionUtils.OnPermissionResultListener {
+                                                         PermissionUtils.OnPermissionResultListener {
 
     private Preferences mPrefs;
     private PackageManager p;
@@ -70,7 +65,7 @@ public class SettingsFragment extends PreferenceFragment implements
     private boolean shouldShowFolderChooserDialog = false;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         BaseActivity.hideFab(getActivity());
 
@@ -124,7 +119,7 @@ public class SettingsFragment extends PreferenceFragment implements
         if (Config.get().userWallpaperInToolbar()) {
             wallHeaderCheck.setChecked(mPrefs.getWallpaperAsToolbarHeaderEnabled());
             wallHeaderCheck.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                public boolean onPreferenceChange (Preference preference, Object newValue) {
                     mPrefs.setWallpaperAsToolbarHeaderEnabled(newValue.toString().equals("true"));
                     ShowcaseActivity.setupToolbarHeader(
                             getActivity(),
@@ -143,7 +138,7 @@ public class SettingsFragment extends PreferenceFragment implements
         SwitchPreference animations = (SwitchPreference) findPreference("animations");
         animations.setChecked(mPrefs.getAnimationsEnabled());
         animations.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
+            public boolean onPreferenceChange (Preference preference, Object newValue) {
                 mPrefs.setAnimationsEnabled(newValue.toString().equals("true"));
                 return true;
             }
@@ -153,10 +148,10 @@ public class SettingsFragment extends PreferenceFragment implements
         data.setSummary(getResources().getString(R.string.pref_summary_cache, cacheSize));
         data.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
-            public boolean onPreferenceClick(Preference preference) {
+            public boolean onPreferenceClick (Preference preference) {
                 MaterialDialog.SingleButtonCallback positiveCallback = new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+                    public void onClick (@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
                         clearApplicationDataAndCache(getActivity());
                         changeValues(getActivity());
                     }
@@ -168,7 +163,7 @@ public class SettingsFragment extends PreferenceFragment implements
 
         findPreference("wallsSaveLocation").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
-            public boolean onPreferenceClick(Preference preference) {
+            public boolean onPreferenceClick (Preference preference) {
                 if (!PermissionUtils.canAccessStorage(getContext())) {
                     PermissionUtils.requestStoragePermission(getActivity(), SettingsFragment.this);
                 } else {
@@ -188,7 +183,7 @@ public class SettingsFragment extends PreferenceFragment implements
             final String finalComponentName = componentNameString;
 
             hideIcon.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                public boolean onPreferenceChange (Preference preference, Object newValue) {
                     if (finalClassName != null) {
                         componentName = new ComponentName(
                                 Utils.getAppPackageName(getActivity().getApplicationContext()),
@@ -196,7 +191,7 @@ public class SettingsFragment extends PreferenceFragment implements
                         if (newValue.toString().equals("true")) {
                             MaterialDialog.SingleButtonCallback positive = new MaterialDialog.SingleButtonCallback() {
                                 @Override
-                                public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+                                public void onClick (@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
                                     if (mPrefs.getLauncherIconShown()) {
                                         mPrefs.setIconShown(false);
                                         p.setComponentEnabledSetting(componentName,
@@ -210,14 +205,14 @@ public class SettingsFragment extends PreferenceFragment implements
 
                             MaterialDialog.SingleButtonCallback negative = new MaterialDialog.SingleButtonCallback() {
                                 @Override
-                                public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+                                public void onClick (@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
                                     hideIcon.setChecked(false);
                                 }
                             };
 
                             DialogInterface.OnDismissListener dismissListener = new DialogInterface.OnDismissListener() {
                                 @Override
-                                public void onDismiss(DialogInterface dialog) {
+                                public void onDismiss (DialogInterface dialog) {
                                     if (mPrefs.getLauncherIconShown()) {
                                         hideIcon.setChecked(false);
                                     }
@@ -248,7 +243,7 @@ public class SettingsFragment extends PreferenceFragment implements
     }
 
     @Override
-    public void onResume() {
+    public void onResume () {
         super.onResume();
         Utils.collapseToolbar(getActivity());
         if (shouldShowFolderChooserDialog) {
@@ -257,7 +252,7 @@ public class SettingsFragment extends PreferenceFragment implements
         }
     }
 
-    private void setupDevOptions(PreferenceScreen mainPrefs, final Context context) {
+    private void setupDevOptions (PreferenceScreen mainPrefs, final Context context) {
         if (getResources().getBoolean(R.bool.dev_options)) {
 
             Preference moarOptions;
@@ -272,7 +267,7 @@ public class SettingsFragment extends PreferenceFragment implements
             drawerHeaderTexts.setChecked(mPrefs.getDevDrawerTexts());
             drawerHeaderTexts.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                public boolean onPreferenceChange (Preference preference, Object newValue) {
                     mPrefs.setDevDrawerTexts(newValue.toString().equals("true"));
                     mPrefs.setSettingsModified(true);
                     ThemeUtils.restartActivity((Activity) context);
@@ -283,7 +278,7 @@ public class SettingsFragment extends PreferenceFragment implements
             listsCards.setChecked(mPrefs.getDevListsCards());
             listsCards.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                public boolean onPreferenceChange (Preference preference, Object newValue) {
                     mPrefs.setDevListsCards(newValue.toString().equals("true"));
                     mPrefs.setSettingsModified(true);
                     ThemeUtils.restartActivity((Activity) context);
@@ -293,7 +288,7 @@ public class SettingsFragment extends PreferenceFragment implements
 
             moarOptions.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
-                public boolean onPreferenceClick(Preference preference) {
+                public boolean onPreferenceClick (Preference preference) {
                     new MaterialDialog.Builder(context)
                             .title(R.string.dev_more_options_title)
                             .adapter(new FeaturesAdapter(context, R.array.dev_extra_features), null)
@@ -309,7 +304,7 @@ public class SettingsFragment extends PreferenceFragment implements
         }
     }
 
-    private void changeValues(Context context) {
+    private void changeValues (Context context) {
         if (mPrefs.getDownloadsFolder() != null) {
             location = mPrefs.getDownloadsFolder();
         } else {
@@ -321,7 +316,7 @@ public class SettingsFragment extends PreferenceFragment implements
         data.setSummary(context.getResources().getString(R.string.pref_summary_cache, cacheSize));
     }
 
-    public static void changeWallsFolderValue(Context context, Preferences mPrefs) {
+    public static void changeWallsFolderValue (Context context, Preferences mPrefs) {
         String location;
         if (mPrefs.getDownloadsFolder() != null) {
             location = mPrefs.getDownloadsFolder();
@@ -332,7 +327,7 @@ public class SettingsFragment extends PreferenceFragment implements
         WSL.setSummary(context.getResources().getString(R.string.pref_summary_wsl, location));
     }
 
-    private void clearApplicationDataAndCache(Context context) {
+    private void clearApplicationDataAndCache (Context context) {
         File cache = context.getCacheDir();
         File appDir = new File(cache.getParent());
         if (appDir.exists()) {
@@ -350,7 +345,7 @@ public class SettingsFragment extends PreferenceFragment implements
         mPrefs.setWallsDialogDismissed(false);
     }
 
-    private static void clearCache(Context context) {
+    private static void clearCache (Context context) {
         try {
             File dir = context.getCacheDir();
             if (dir != null && dir.isDirectory()) {
@@ -361,7 +356,7 @@ public class SettingsFragment extends PreferenceFragment implements
         }
     }
 
-    private static boolean deleteDir(File dir) {
+    private static boolean deleteDir (File dir) {
         if (dir != null && dir.isDirectory()) {
             String[] children = dir.list();
             for (String aChildren : children) {
@@ -376,7 +371,7 @@ public class SettingsFragment extends PreferenceFragment implements
     }
 
     @SuppressLint("DefaultLocale")
-    private static String fullCacheDataSize(Context context) {
+    private static String fullCacheDataSize (Context context) {
         String finalSize;
 
         long cache = 0;
@@ -423,7 +418,7 @@ public class SettingsFragment extends PreferenceFragment implements
         return finalSize;
     }
 
-    private static long dirSize(File dir) {
+    private static long dirSize (File dir) {
         if (dir.exists()) {
             long result = 0;
             File[] fileList = dir.listFiles();
@@ -439,7 +434,7 @@ public class SettingsFragment extends PreferenceFragment implements
         return 0;
     }
 
-    private void changeNotifsUpdate(Context context) {
+    private void changeNotifsUpdate (Context context) {
 
         String num;
 
@@ -475,12 +470,12 @@ public class SettingsFragment extends PreferenceFragment implements
         notifsUpdateInterval.setSummary(part1 + part2);
     }
 
-    public void showFolderChooserDialog() {
+    public void showFolderChooserDialog () {
         new FolderSelectorDialog().show((AppCompatActivity) getActivity());
     }
 
     @Override
-    public void onStoragePermissionGranted() {
+    public void onStoragePermissionGranted () {
         shouldShowFolderChooserDialog = true;
     }
 

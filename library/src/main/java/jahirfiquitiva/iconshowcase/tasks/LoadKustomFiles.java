@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016.  Jahir Fiquitiva
+ * Copyright (c) 2016 Jahir Fiquitiva
  *
  * Licensed under the CreativeCommons Attribution-ShareAlike
  * 4.0 International License. You may not use this file except in compliance
@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Big thanks to the project contributors. Check them in the repository.
- *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
 package jahirfiquitiva.iconshowcase.tasks;
@@ -41,7 +41,6 @@ import jahirfiquitiva.iconshowcase.models.KustomWidget;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import timber.log.Timber;
 
-
 public class LoadKustomFiles extends AsyncTask<Void, String, Boolean> {
 
     private final WeakReference<Context> context;
@@ -50,18 +49,18 @@ public class LoadKustomFiles extends AsyncTask<Void, String, Boolean> {
     public final static ArrayList<KustomWidget> widgets = new ArrayList<>();
     private long startTime, endTime;
 
-    public LoadKustomFiles(Context context) {
+    public LoadKustomFiles (Context context) {
         this.context = new WeakReference<>(context);
     }
 
     @Override
-    protected void onPreExecute() {
+    protected void onPreExecute () {
         startTime = System.currentTimeMillis();
     }
 
     @Override
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    protected Boolean doInBackground(Void... params) {
+    protected Boolean doInBackground (Void... params) {
 
         boolean worked = false;
 
@@ -84,7 +83,7 @@ public class LoadKustomFiles extends AsyncTask<Void, String, Boolean> {
     }
 
     @Override
-    protected void onPostExecute(Boolean worked) {
+    protected void onPostExecute (Boolean worked) {
         if (worked) {
             if (KustomFragment.kustomAdapter != null) {
                 KustomFragment.kustomAdapter.setLists(widgets,
@@ -95,7 +94,7 @@ public class LoadKustomFiles extends AsyncTask<Void, String, Boolean> {
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    private boolean readKustomFiles(AssetManager assetManager, String folder) {
+    private boolean readKustomFiles (AssetManager assetManager, String folder) {
         try {
             String[] kustomFiles = assetManager.list(folder);
 
@@ -143,10 +142,10 @@ public class LoadKustomFiles extends AsyncTask<Void, String, Boolean> {
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    private String[] getWidgetPreviewPathFromZip(String name,
-                                                 String folder,
-                                                 InputStream in,
-                                                 File previewsFolder, File widgetPreviewFile) {
+    private String[] getWidgetPreviewPathFromZip (String name,
+                                                  String folder,
+                                                  InputStream in,
+                                                  File previewsFolder, File widgetPreviewFile) {
         OutputStream out;
 
         name.replaceAll(".komp", "");

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016.  Jahir Fiquitiva
+ * Copyright (c) 2016 Jahir Fiquitiva
  *
  * Licensed under the CreativeCommons Attribution-ShareAlike
  * 4.0 International License. You may not use this file except in compliance
@@ -13,12 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Big thanks to the project contributors. Check them in the repository.
- *
- */
-
-/*
- *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
 package jahirfiquitiva.iconshowcase.tasks;
@@ -50,11 +46,11 @@ import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 import timber.log.Timber;
 
-
 public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
 
     public interface ApplyCallback {
-        void afterApplied();
+
+        void afterApplied ();
     }
 
     private WeakReference<Context> context;
@@ -68,8 +64,8 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
     private volatile boolean wasCancelled = false;
     private ApplyCallback afterApplied;
 
-    public ApplyWallpaper(Context context, MaterialDialog dialog, Bitmap resource, boolean isPicker,
-                          View layout, ApplyCallback afterApplied) {
+    public ApplyWallpaper (Context context, MaterialDialog dialog, Bitmap resource, boolean isPicker,
+                           View layout, ApplyCallback afterApplied) {
         this.context = new WeakReference<>(context);
         this.dialog = dialog;
         this.resource = resource;
@@ -78,8 +74,8 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
         this.afterApplied = afterApplied;
     }
 
-    public ApplyWallpaper(Activity activity, MaterialDialog dialog, Bitmap resource,
-                          View layout, LinearLayout toHide1, LinearLayout toHide2) {
+    public ApplyWallpaper (Activity activity, MaterialDialog dialog, Bitmap resource,
+                           View layout, LinearLayout toHide1, LinearLayout toHide2) {
         this.wrActivity = new WeakReference<>(activity);
         this.dialog = dialog;
         this.resource = resource;
@@ -90,7 +86,7 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
     }
 
     @Override
-    protected void onPreExecute() {
+    protected void onPreExecute () {
         if (wrActivity != null) {
             activity = wrActivity.get();
         } else if (context != null) {
@@ -99,7 +95,7 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
     }
 
     @Override
-    protected Boolean doInBackground(Void... params) {
+    protected Boolean doInBackground (Void... params) {
         Boolean worked;
         if ((!wasCancelled) && (activity != null)) {
             WallpaperManager wm = WallpaperManager.getInstance(activity);
@@ -121,12 +117,12 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
     }
 
     @Override
-    protected void onCancelled() {
+    protected void onCancelled () {
         wasCancelled = true;
     }
 
     @Override
-    protected void onPostExecute(Boolean worked) {
+    protected void onPostExecute (Boolean worked) {
         if (!wasCancelled) {
             if (worked) {
                 dialog.dismiss();
@@ -152,7 +148,7 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
                     longSnackbar.show();
                     longSnackbar.setCallback(new Snackbar.Callback() {
                         @Override
-                        public void onDismissed(Snackbar snackbar, int event) {
+                        public void onDismissed (Snackbar snackbar, int event) {
                             super.onDismissed(snackbar, event);
                             if (toHide1 != null && toHide2 != null) {
                                 toHide1.setVisibility(View.VISIBLE);
@@ -171,7 +167,7 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
         }
     }
 
-    private Bitmap scaleToActualAspectRatio(Bitmap bitmap) {
+    private Bitmap scaleToActualAspectRatio (Bitmap bitmap) {
         if (bitmap != null) {
             boolean flag = true;
 
@@ -215,13 +211,13 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
         return bitmap;
     }
 
-    private void showRetrySnackbar() {
+    private void showRetrySnackbar () {
         String retry = activity.getResources().getString(R.string.retry);
         Snackbar snackbar = Snackbar
                 .make(layout, R.string.error, Snackbar.LENGTH_INDEFINITE)
                 .setAction(retry.toUpperCase(), new DebouncedClickListener() {
                     @Override
-                    public void onDebouncedClick(View view) {
+                    public void onDebouncedClick (View view) {
                         new ApplyWallpaper(activity, dialog, resource, isPicker, layout,
                                 afterApplied);
                     }

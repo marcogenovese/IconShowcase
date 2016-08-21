@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) 2016.  Jahir Fiquitiva
+  ~ Copyright (c) 2016 Jahir Fiquitiva
   ~
   ~ Licensed under the CreativeCommons Attribution-ShareAlike
   ~ 4.0 International License. You may not use this file except in compliance
@@ -14,8 +14,8 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   ~
-  ~ Big thanks to the project contributors. Check them in the repository.
-  ~
+  ~ Special thanks to the project contributors and collaborators
+  ~ 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
@@ -193,9 +193,10 @@
 
     <string name="faqs_section">FAQs</string>
 
-    <string name="dashboard_author">Dashboard App Development</string>
     <string name="dashboard_author_copyright">I am a 19-year-old Android development enthusiast and the developer of the dashboard.\n\nShared from Colombia to the world, under CreativeCommons Attribution-ShareAlike License.\nCopyright © 2016.</string>
-    <string name="iconpack_author">Designer Info</string>
+
+    <!-- TODO: Allan, set the description you want in your card in credits -->
+    <string name="allan_description">I am an android developer.\nI have helped with part of this dashboard\'s development.</string>
 
     <string name="fork_on_github">Fork on GitHub</string>
     <string name="visit_website">Website</string>

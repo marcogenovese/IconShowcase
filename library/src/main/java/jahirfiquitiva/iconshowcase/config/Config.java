@@ -1,3 +1,22 @@
+/*
+ * Copyright (c) 2016 Jahir Fiquitiva
+ *
+ * Licensed under the CreativeCommons Attribution-ShareAlike
+ * 4.0 International License. You may not use this file except in compliance
+ * with the License. You may obtain a copy of the License at
+ *
+ *    http://creativecommons.org/licenses/by-sa/4.0/legalcode
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
+ */
+
 package jahirfiquitiva.iconshowcase.config;
 
 import android.content.Context;
@@ -21,7 +40,7 @@ import jahirfiquitiva.iconshowcase.R;
  */
 public class Config implements IConfig {
 
-    private Config(@Nullable Context context) {
+    private Config (@Nullable Context context) {
         mR = null;
         mContext = context;
         if (context != null)
@@ -32,11 +51,11 @@ public class Config implements IConfig {
     private Context mContext;
     private Resources mR;
 
-    public static void init(@NonNull Context context) {
+    public static void init (@NonNull Context context) {
         mConfig = new Config(context);
     }
 
-    public static void setContext(Context context) {
+    public static void setContext (Context context) {
         if (mConfig != null) {
             mConfig.mContext = context;
             if (context != null)
@@ -44,13 +63,13 @@ public class Config implements IConfig {
         }
     }
 
-    private void destroy() {
+    private void destroy () {
         mContext = null;
         mR = null;
     }
 
     //TODO deinit Config when Showcase is destroyed
-    public static void deinit() {
+    public static void deinit () {
         if (mConfig != null) {
             mConfig.destroy();
             mConfig = null;
@@ -58,117 +77,117 @@ public class Config implements IConfig {
     }
 
     @NonNull
-    public static IConfig get() {
+    public static IConfig get () {
         if (mConfig == null)
             return new Config(null); // shouldn't ever happen, but avoid crashes
         return mConfig;
     }
 
     @NonNull
-    public static IConfig get(@NonNull Context context) {
+    public static IConfig get (@NonNull Context context) {
         if (mConfig == null)
             return new Config(context);
         return mConfig;
     }
-    
+
     // Getters
 
-    private Preference prefs() {
+    private Preference prefs () {
         return new Preference(mContext);
     }
 
     @Override
-    public boolean bool(@BoolRes int id) {
+    public boolean bool (@BoolRes int id) {
         return mR != null && mR.getBoolean(id);
     }
 
     @Override
     @Nullable
-    public String string(@StringRes int id) {
+    public String string (@StringRes int id) {
         if (mR == null) return null;
         return mR.getString(id);
     }
 
     @Override
     @Nullable
-    public String[] stringArray(@ArrayRes int id) {
+    public String[] stringArray (@ArrayRes int id) {
         if (mR == null) return null;
         return mR.getStringArray(id);
     }
 
     @Override
-    public int integer(@IntegerRes int id) {
+    public int integer (@IntegerRes int id) {
         if (mR == null) return 0;
         return mR.getInteger(id);
     }
 
     @Override
-    public boolean hasString(@StringRes int id) {
+    public boolean hasString (@StringRes int id) {
         String s = string(id);
         return (s != null && !s.isEmpty());
     }
 
     @Override
-    public boolean hasArray(@ArrayRes int id) {
+    public boolean hasArray (@ArrayRes int id) {
         String[] s = stringArray(id);
         return (s != null && s.length != 0);
     }
 
     @Override
-    public boolean allowDebugging() {
+    public boolean allowDebugging () {
         return BuildConfig.DEBUG || mR == null || mR.getBoolean(R.bool.debugging);
     }
 
     @Override
-    public int appTheme() {
+    public int appTheme () {
         return integer(R.integer.app_theme);
     }
 
     @Override
-    public boolean hasDonations() {
+    public boolean hasDonations () {
         return hasGoogleDonations() || hasPaypal();
     }
 
     @Override
-    public boolean hasGoogleDonations() { //Also check donation key from java
-        return hasArray(R.array.google_donations_catalog) && hasArray(R.array.consumable_google_donation_items) && hasArray(R.array.nonconsumable_google_donation_items);
+    public boolean hasGoogleDonations () { //Also check donation key from java
+        return hasArray(R.array.google_donations_catalog) && hasArray(R.array.google_donations_items);
     }
 
     @Override
-    public boolean hasPaypal() {
-        return hasString(R.string.paypal_user);
+    public boolean hasPaypal () {
+        return hasString(R.string.paypal_email);
     }
 
     @NonNull
     @Override
-    public String getPaypalCurrency() {
+    public String getPaypalCurrency () {
         String s = string(R.string.paypal_currency_code);
         if (s == null || s.length() != 3) return "USD"; //TODO log currency issue
         return s;
     }
 
     @Override
-    public boolean devOptions() {
+    public boolean devOptions () {
         return bool(R.bool.dev_options);
     }
 
     @Override
-    public boolean shuffleToolbarIcons() {
+    public boolean shuffleToolbarIcons () {
         return bool(R.bool.shuffle_toolbar_icons);
     }
 
     @Override
-    public boolean userWallpaperInToolbar() {
+    public boolean userWallpaperInToolbar () {
         return bool(R.bool.enable_user_wallpaper_in_toolbar);
     }
 
     @Override
-    public boolean hidePackInfo() {
+    public boolean hidePackInfo () {
         return bool(R.bool.hide_pack_info);
     }
 
     @Override
-    public int getIconResId(String iconName) {
+    public int getIconResId (String iconName) {
         if (mContext == null) return 0;
         return mR.getIdentifier(iconName, "drawable", mContext.getPackageName());
     }

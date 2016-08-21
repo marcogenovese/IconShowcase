@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016.  Jahir Fiquitiva
+ * Copyright (c) 2016 Jahir Fiquitiva
  *
  * Licensed under the CreativeCommons Attribution-ShareAlike
  * 4.0 International License. You may not use this file except in compliance
@@ -13,12 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Big thanks to the project contributors. Check them in the repository.
- *
- */
-
-/*
- *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
 package jahirfiquitiva.iconshowcase.fragments;
@@ -80,7 +76,6 @@ import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 import timber.log.Timber;
 
-
 public class WallpapersFragment extends NoFabBaseFragment {
 
     private static ViewGroup layout;
@@ -96,7 +91,7 @@ public class WallpapersFragment extends NoFabBaseFragment {
     private static MaterialDialog dialogApply;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView (LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
         setHasOptionsMenu(true);
@@ -154,19 +149,19 @@ public class WallpapersFragment extends NoFabBaseFragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu (Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.wallpapers, menu);
     }
 
-    private static void setupLayout(final Context context) {
+    private static void setupLayout (final Context context) {
         if (WallpapersList.getWallpapersList() != null && WallpapersList.getWallpapersList().size() > 0) {
 
             mAdapter = new WallpapersAdapter(context,
                     new WallpapersAdapter.ClickListener() {
                         @Override
-                        public void onClick(WallpapersAdapter.WallsHolder view,
-                                            int position, boolean longClick) {
+                        public void onClick (WallpapersAdapter.WallsHolder view,
+                                             int position, boolean longClick) {
                             if ((longClick && !ShowcaseActivity.wallsPicker) || ShowcaseActivity.wallsPicker) {
                                 showApplyWallpaperDialog(context,
                                         WallpapersList.getWallpapersList().get(position));
@@ -229,16 +224,16 @@ public class WallpapersFragment extends NoFabBaseFragment {
 
                 runOnUIThread(context, new Runnable() {
                     @Override
-                    public void run() {
+                    public void run () {
                         if (layout != null) {
                             noConnection.setVisibility(View.GONE);
                             Timer timer = new Timer();
                             timer.schedule(new TimerTask() {
                                 @Override
-                                public void run() {
+                                public void run () {
                                     runOnUIThread(context, new Runnable() {
                                         @Override
-                                        public void run() {
+                                        public void run () {
                                             if (WallpapersList.getWallpapersList().size() <= 0) {
                                                 noConnection.setImageDrawable(ColorUtils.getTintedIcon(
                                                         context, R.drawable.ic_no_connection,
@@ -258,15 +253,15 @@ public class WallpapersFragment extends NoFabBaseFragment {
         }
     }
 
-    private static Handler handler(Context context) {
+    private static Handler handler (Context context) {
         return new Handler(context.getMainLooper());
     }
 
-    private static void runOnUIThread(Context context, Runnable r) {
+    private static void runOnUIThread (Context context, Runnable r) {
         handler(context).post(r);
     }
 
-    private static void hideStuff(ImageView noConnection) {
+    private static void hideStuff (ImageView noConnection) {
         if (mRecyclerView.getAdapter() != null) {
             fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
             fastScroller.attachRecyclerView(mRecyclerView);
@@ -281,7 +276,7 @@ public class WallpapersFragment extends NoFabBaseFragment {
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
-    private static void showProgressBar() {
+    private static void showProgressBar () {
         if (mProgress != null) {
             if (mProgress.getVisibility() != View.VISIBLE) {
                 mProgress.setVisibility(View.VISIBLE);
@@ -289,7 +284,7 @@ public class WallpapersFragment extends NoFabBaseFragment {
         }
     }
 
-    private static void hideProgressBar() {
+    private static void hideProgressBar () {
         if (mProgress != null) {
             if (mProgress.getVisibility() != View.GONE) {
                 mProgress.setVisibility(View.GONE);
@@ -297,7 +292,7 @@ public class WallpapersFragment extends NoFabBaseFragment {
         }
     }
 
-    private static void setupRecyclerView(boolean updating, int newColumns) {
+    private static void setupRecyclerView (boolean updating, int newColumns) {
 
         Preferences mPrefs = new Preferences(context);
         if (updating && gridSpacing != null) {
@@ -330,7 +325,7 @@ public class WallpapersFragment extends NoFabBaseFragment {
         }
     }
 
-    public static void updateRecyclerView(int newColumns) {
+    public static void updateRecyclerView (int newColumns) {
         mRecyclerView.setVisibility(View.GONE);
         fastScroller.setVisibility(View.GONE);
         showProgressBar();
@@ -338,7 +333,7 @@ public class WallpapersFragment extends NoFabBaseFragment {
         hideProgressBar();
     }
 
-    public static void refreshWalls(Context context) {
+    public static void refreshWalls (Context context) {
         hideProgressBar();
         mRecyclerView.setVisibility(View.GONE);
         fastScroller.setVisibility(View.GONE);
@@ -352,13 +347,13 @@ public class WallpapersFragment extends NoFabBaseFragment {
         mSwipeRefreshLayout.setEnabled(true);
         mSwipeRefreshLayout.post(new Runnable() {
             @Override
-            public void run() {
+            public void run () {
                 mSwipeRefreshLayout.setRefreshing(true);
             }
         });
     }
 
-    private void showWallsAdviceDialog(Context context) {
+    private void showWallsAdviceDialog (Context context) {
         final Preferences mPrefs = new Preferences(context);
         if (!mPrefs.getWallsDialogDismissed()) {
             new MaterialDialog.Builder(context)
@@ -368,13 +363,13 @@ public class WallpapersFragment extends NoFabBaseFragment {
                     .neutralText(R.string.dontshow)
                     .onPositive(new MaterialDialog.SingleButtonCallback() {
                         @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        public void onClick (@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             mPrefs.setWallsDialogDismissed(false);
                         }
                     })
                     .onNeutral(new MaterialDialog.SingleButtonCallback() {
                         @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        public void onClick (@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             mPrefs.setWallsDialogDismissed(true);
                         }
                     })
@@ -382,7 +377,7 @@ public class WallpapersFragment extends NoFabBaseFragment {
         }
     }
 
-    private static void showApplyWallpaperDialog(final Context context, final WallpaperItem item) {
+    private static void showApplyWallpaperDialog (final Context context, final WallpaperItem item) {
 
         new MaterialDialog.Builder(context)
                 .title(R.string.apply)
@@ -391,7 +386,7 @@ public class WallpapersFragment extends NoFabBaseFragment {
                 .negativeText(android.R.string.cancel)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull final DialogAction dialogAction) {
+                    public void onClick (@NonNull MaterialDialog materialDialog, @NonNull final DialogAction dialogAction) {
                         if (dialogApply != null) {
                             dialogApply.dismiss();
                         }
@@ -406,7 +401,7 @@ public class WallpapersFragment extends NoFabBaseFragment {
                                 .cancelable(false)
                                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                                     @Override
-                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    public void onClick (@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                         if (applyTask[0] != null) {
                                             applyTask[0].cancel(true);
                                         }
@@ -421,7 +416,7 @@ public class WallpapersFragment extends NoFabBaseFragment {
                                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                                 .into(new SimpleTarget<Bitmap>() {
                                     @Override
-                                    public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                                    public void onResourceReady (final Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                                         if (resource != null && dialogApply.isShowing()) {
                                             enteredApplyTask[0] = true;
 
@@ -443,10 +438,10 @@ public class WallpapersFragment extends NoFabBaseFragment {
                         Timer timer = new Timer();
                         timer.schedule(new TimerTask() {
                             @Override
-                            public void run() {
+                            public void run () {
                                 runOnUIThread(context, new Runnable() {
                                     @Override
-                                    public void run() {
+                                    public void run () {
                                         if (!enteredApplyTask[0]) {
                                             String newContent = context.getString(R.string.downloading_wallpaper)
                                                     + "\n"
@@ -472,18 +467,18 @@ public class WallpapersFragment extends NoFabBaseFragment {
 
         long startTime, endTime;
 
-        public DownloadJSON(ShowcaseActivity.WallsListInterface wi, Context context) {
+        public DownloadJSON (ShowcaseActivity.WallsListInterface wi, Context context) {
             this.wi = wi;
             this.taskContext = new WeakReference<>(context);
         }
 
         @Override
-        protected void onPreExecute() {
+        protected void onPreExecute () {
             startTime = System.currentTimeMillis();
         }
 
         @Override
-        protected Boolean doInBackground(Void... params) {
+        protected Boolean doInBackground (Void... params) {
 
             boolean worked;
 
@@ -553,7 +548,7 @@ public class WallpapersFragment extends NoFabBaseFragment {
         }
 
         @Override
-        protected void onPostExecute(Boolean worked) {
+        protected void onPostExecute (Boolean worked) {
             Timber.d("Walls Task completed in: %d milliseconds", (endTime - startTime));
 
             if (layout != null) {

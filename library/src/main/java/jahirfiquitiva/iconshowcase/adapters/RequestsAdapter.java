@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016.  Jahir Fiquitiva
+ * Copyright (c) 2016 Jahir Fiquitiva
  *
  * Licensed under the CreativeCommons Attribution-ShareAlike
  * 4.0 International License. You may not use this file except in compliance
@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Big thanks to the project contributors. Check them in the repository.
- *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
 package jahirfiquitiva.iconshowcase.adapters;
@@ -42,11 +42,11 @@ import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 import jahirfiquitiva.iconshowcase.views.RequestsCheckBox;
 
-
 public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.RequestsHolder> {
 
     public interface ClickListener {
-        void onClick(int index);
+
+        void onClick (int index);
     }
 
     public final ArrayList<RequestItem> appsList;
@@ -55,14 +55,14 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
     private final ClickListener mCallback;
     private AppIconFetchingQueue mAppIconFetchingQueue;
 
-    public RequestsAdapter(final Context context, final ArrayList<RequestItem> appsList,
-                           final Preferences mPrefs) {
+    public RequestsAdapter (final Context context, final ArrayList<RequestItem> appsList,
+                            final Preferences mPrefs) {
         this.context = context;
         this.mPrefs = new Preferences(context);
         this.appsList = appsList;
         this.mCallback = new ClickListener() {
             @Override
-            public void onClick(int position) {
+            public void onClick (int position) {
                 int limit = mPrefs.getRequestsLeft();
                 if (limit < 0) {
                     changeAppSelectedState(position);
@@ -93,7 +93,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
     }
 
     @Override
-    public RequestsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RequestsHolder onCreateViewHolder (ViewGroup parent, int viewType) {
         boolean listsCards;
         if (context.getResources().getBoolean(R.bool.dev_options)) {
             listsCards = mPrefs.getDevListsCards();
@@ -108,7 +108,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
     }
 
     @Override
-    public void onBindViewHolder(RequestsHolder holder, int position) {
+    public void onBindViewHolder (RequestsHolder holder, int position) {
         RequestItem requestsItem = appsList.get(position);
         holder.txtName.setTextColor(ColorUtils.getMaterialPrimaryTextColor(ThemeUtils.darkTheme));
         holder.txtName.setText(requestsItem.getAppName());
@@ -128,7 +128,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
     }
 
     @Override
-    public int getItemCount() {
+    public int getItemCount () {
         return appsList == null ? 0 : appsList.size();
     }
 
@@ -140,7 +140,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
         final TextView txtName;
         final RequestsCheckBox chkSelected;
 
-        public RequestsHolder(View v) {
+        public RequestsHolder (View v) {
             super(v);
             imgIcon = (ImageView) v.findViewById(R.id.imgIcon);
             txtName = (TextView) v.findViewById(R.id.txtName);
@@ -155,7 +155,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
                 cardView = (CardView) v.findViewById(R.id.requestCard);
                 cardView.setOnClickListener(new DebouncedClickListener() {
                     @Override
-                    public void onDebouncedClick(View v) {
+                    public void onDebouncedClick (View v) {
                         if (v.getTag() != null) {
                             int index = (int) v.getTag();
                             mCallback.onClick(index);
@@ -166,7 +166,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
                 view = (LinearLayout) v.findViewById(R.id.requestCard);
                 view.setOnClickListener(new DebouncedClickListener() {
                     @Override
-                    public void onDebouncedClick(View v) {
+                    public void onDebouncedClick (View v) {
                         if (v.getTag() != null) {
                             int index = (int) v.getTag();
                             mCallback.onClick(index);
@@ -178,7 +178,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
 
     }
 
-    public void selectOrDeselectAll(boolean select, Preferences mPrefs) {
+    public void selectOrDeselectAll (boolean select, Preferences mPrefs) {
 
         boolean showDialog = false, showTimeLimitDialog = false;
 
@@ -220,7 +220,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
 
     }
 
-    private void selectApp(int position) {
+    private void selectApp (int position) {
         RequestItem requestsItem = appsList.get(position);
         if (!requestsItem.isSelected()) {
             requestsItem.setSelected(true);
@@ -229,7 +229,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
         }
     }
 
-    private void deselectApp(int position) {
+    private void deselectApp (int position) {
         RequestItem requestsItem = appsList.get(position);
         if (requestsItem.isSelected()) {
             requestsItem.setSelected(false);
@@ -238,7 +238,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
         }
     }
 
-    public void deselectAllApps() {
+    public void deselectAllApps () {
         for (int i = 0; i < appsList.size(); i++) {
             RequestItem requestsItem = appsList.get(i);
             if (requestsItem.isSelected()) {
@@ -249,14 +249,14 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
         }
     }
 
-    private void changeAppSelectedState(int position) {
+    private void changeAppSelectedState (int position) {
         RequestItem requestsItem = appsList.get(position);
         requestsItem.setSelected(!requestsItem.isSelected());
         appsList.set(position, requestsItem);
         notifyItemChanged(position);
     }
 
-    public int getSelectedApps() {
+    public int getSelectedApps () {
         int selected = 0;
         for (int i = 0; i < appsList.size(); i++) {
             if (appsList.get(i).isSelected()) {
@@ -266,15 +266,15 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
         return selected;
     }
 
-    private boolean isSelected(int i) {
+    private boolean isSelected (int i) {
         return appsList.get(i).isSelected();
     }
 
-    public void startIconFetching(RecyclerView view) {
+    public void startIconFetching (RecyclerView view) {
         mAppIconFetchingQueue = new AppIconFetchingQueue(view);
     }
 
-    public void stopAppIconFetching() {
+    public void stopAppIconFetching () {
         if (mAppIconFetchingQueue != null) {
             mAppIconFetchingQueue.stop();
         }
@@ -285,12 +285,12 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
         int mIconsRemaining;
         final RecyclerView mRecyclerView;
 
-        AppIconFetchingQueue(RecyclerView recyclerView) {
+        AppIconFetchingQueue (RecyclerView recyclerView) {
             mRecyclerView = recyclerView;
             mIconsRemaining = appsList != null ? appsList.size() : 0;
         }
 
-        public void stop() {
+        public void stop () {
             // Avoids calling stop on thread, which will cause crash.
             mIconsRemaining = 0;
         }

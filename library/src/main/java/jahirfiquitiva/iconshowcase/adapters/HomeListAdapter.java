@@ -1,3 +1,22 @@
+/*
+ * Copyright (c) 2016 Jahir Fiquitiva
+ *
+ * Licensed under the CreativeCommons Attribution-ShareAlike
+ * 4.0 International License. You may not use this file except in compliance
+ * with the License. You may obtain a copy of the License at
+ *
+ *    http://creativecommons.org/licenses/by-sa/4.0/legalcode
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
+ */
+
 package jahirfiquitiva.iconshowcase.adapters;
 
 import android.content.Context;
@@ -26,7 +45,6 @@ import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 
-
 public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final Context context;
@@ -35,7 +53,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private final ArrayList<HomeCard> homeCards;
     private boolean hasAppsList = false;
 
-    public HomeListAdapter(ArrayList<HomeCard> homeCards, Context context, boolean hasAppsList) {
+    public HomeListAdapter (ArrayList<HomeCard> homeCards, Context context, boolean hasAppsList) {
         this.context = context;
         this.homeCards = homeCards;
         this.hasAppsList = hasAppsList;
@@ -48,7 +66,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public RecyclerView.ViewHolder onCreateViewHolder (ViewGroup viewGroup, int i) {
         switch (i) {
             case 0:
                 View welcomeCard = LayoutInflater.from(
@@ -78,17 +96,17 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder (RecyclerView.ViewHolder holder, int position) {
 
     }
 
     @Override
-    public int getItemCount() {
+    public int getItemCount () {
         return homeCards.size() + cards;
     }
 
     @Override
-    public int getItemViewType(int position) {
+    public int getItemViewType (int position) {
         return position;
     }
 
@@ -98,7 +116,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         final AppCompatButton ratebtn;
         final AppCompatButton moreappsbtn;
 
-        public WelcomeCard(View itemView) {
+        public WelcomeCard (View itemView) {
             super(itemView);
             buttons = (LinearLayout) itemView.findViewById(R.id.buttons);
             if (hasAppsList) {
@@ -109,7 +127,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             ratebtn = (AppCompatButton) itemView.findViewById(R.id.rate_button);
             ratebtn.setOnClickListener(new DebouncedClickListener() {
                 @Override
-                public void onDebouncedClick(View v) {
+                public void onDebouncedClick (View v) {
                     Intent rate = new Intent(Intent.ACTION_VIEW,
                             Uri.parse("https://play.google.com/store/apps/details?id=" + context.getPackageName()));
                     context.startActivity(rate);
@@ -118,7 +136,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             moreappsbtn = (AppCompatButton) itemView.findViewById(R.id.more_apps_button);
             moreappsbtn.setOnClickListener(new DebouncedClickListener() {
                 @Override
-                public void onDebouncedClick(View v) {
+                public void onDebouncedClick (View v) {
                     Utils.openLink(context, context.getResources().getString(R.string.iconpack_author_playstore));
                 }
             });
@@ -140,7 +158,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         final TextView iconsT, wallsT, widgetsT;
         LinearLayout widgets;
 
-        public AppInfoCard(View itemView) {
+        public AppInfoCard (View itemView) {
             super(itemView);
 
             iconsIV = (ImageView) itemView.findViewById(R.id.icon_themed_icons);
@@ -165,8 +183,8 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    private void setupIcons(Context context, ImageView iconsIV, ImageView wallsIV,
-                            ImageView widgetsIV) {
+    private void setupIcons (Context context, ImageView iconsIV, ImageView wallsIV,
+                             ImageView widgetsIV) {
         final int light = ContextCompat.getColor(context, R.color.drawable_tint_dark);
         final int dark = ContextCompat.getColor(context, R.color.drawable_tint_light);
 
@@ -198,7 +216,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         final TextView desc;
         final ImageView icon;
 
-        public MoreAppsCard(View itemView) {
+        public MoreAppsCard (View itemView) {
             super(itemView);
             view = itemView;
             lly = (LinearLayout) itemView.findViewById(R.id.more_apps);
@@ -211,7 +229,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     ThemeUtils.darkTheme ? light : dark));
             lly.setOnClickListener(new DebouncedClickListener() {
                 @Override
-                public void onDebouncedClick(View v) {
+                public void onDebouncedClick (View v) {
                     Utils.openLink(context, context.getResources().getString(R.string.iconpack_author_playstore));
                 }
             });
@@ -224,7 +242,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         final TextView cardTitle, cardDesc;
         final ImageView cardIcon;
 
-        public AppCard(View itemView, int i) {
+        public AppCard (View itemView, int i) {
             super(itemView);
             view = itemView;
 
@@ -234,7 +252,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             view.setOnClickListener(new DebouncedClickListener() {
                 @Override
-                public void onDebouncedClick(View v) {
+                public void onDebouncedClick (View v) {
                     if (homeCards.get(pos - cards).isInstalled && homeCards.get(pos - cards).intent != null) {
                         context.startActivity(homeCards.get(pos - cards).intent);
                     } else if (view.getVisibility() == View.VISIBLE) {
