@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016.  Jahir Fiquitiva
+ * Copyright (c) 2016 Jahir Fiquitiva
  *
  * Licensed under the CreativeCommons Attribution-ShareAlike
  * 4.0 International License. You may not use this file except in compliance
@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Big thanks to the project contributors. Check them in the repository.
- *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
 package jahirfiquitiva.iconshowcase.fragments;
@@ -35,7 +35,6 @@ import jahirfiquitiva.iconshowcase.adapters.IconsAdapter;
 import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.models.IconsCategory;
 
-
 public class IconsFragment extends NoFabBaseFragment {
 
     private IconsAdapter mAdapter;
@@ -43,7 +42,7 @@ public class IconsFragment extends NoFabBaseFragment {
 
     @Override
     @SuppressWarnings("unchecked")
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
         View layout = inflater.inflate(R.layout.icons_grid, container, false);
@@ -74,7 +73,7 @@ public class IconsFragment extends NoFabBaseFragment {
         return layout;
     }
 
-    public static IconsFragment newInstance(IconsCategory icons) {
+    public static IconsFragment newInstance (IconsCategory icons) {
         IconsFragment fragment = new IconsFragment();
         Bundle args = new Bundle();
         args.putParcelable("icons", icons);
@@ -82,11 +81,11 @@ public class IconsFragment extends NoFabBaseFragment {
         return fragment;
     }
 
-    public void performSearch(String query) {
+    public void performSearch (String query) {
         filter(query, mAdapter);
     }
 
-    private synchronized void filter(CharSequence s, IconsAdapter adapter) {
+    private synchronized void filter (CharSequence s, IconsAdapter adapter) {
         if (iconsList != null && iconsList.size() > 0) {
             if (s == null || s.toString().trim().isEmpty()) {
                 filteredIconsList = null;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016.  Jahir Fiquitiva
+ * Copyright (c) 2016 Jahir Fiquitiva
  *
  * Licensed under the CreativeCommons Attribution-ShareAlike
  * 4.0 International License. You may not use this file except in compliance
@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Big thanks to the project contributors. Check them in the repository.
- *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
 package jahirfiquitiva.iconshowcase.adapters;
@@ -44,7 +44,6 @@ import jahirfiquitiva.iconshowcase.tasks.LoadKustomFiles;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 
-
 public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.KustomHolder> {
 
     private ArrayList<KustomWidget> widgets;
@@ -53,7 +52,7 @@ public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.Ku
     private final Context context;
     private final Drawable wallpaper;
 
-    public KustomAdapter(Context context, Drawable wallpaper) {
+    public KustomAdapter (Context context, Drawable wallpaper) {
         this.context = context;
 
         this.komponents = LoadKustomFiles.komponents;
@@ -63,9 +62,9 @@ public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.Ku
         this.wallpaper = wallpaper;
     }
 
-    public void setLists(ArrayList<KustomWidget> widgets,
-                         ArrayList<KustomKomponent> komponents,
-                         ArrayList<KustomWallpaper> kustomWalls) {
+    public void setLists (ArrayList<KustomWidget> widgets,
+                          ArrayList<KustomKomponent> komponents,
+                          ArrayList<KustomWallpaper> kustomWalls) {
         if (widgets != null) {
             this.widgets.addAll(widgets);
             this.notifyItemRangeInserted(0, widgets.size() - 1);
@@ -90,19 +89,19 @@ public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.Ku
     }
 
     @Override
-    public KustomHolder onCreateViewHolder(ViewGroup parent, int i) {
+    public KustomHolder onCreateViewHolder (ViewGroup parent, int i) {
         View view = LayoutInflater.from(parent.getContext()).inflate(i == VIEW_TYPE_HEADER ?
                 R.layout.kustom_section_header : R.layout.item_widget_preview, parent, false);
         return new KustomHolder(view);
     }
 
     @Override
-    public int getSectionCount() {
+    public int getSectionCount () {
         return 3;
     }
 
     @Override
-    public int getItemCount(int section) {
+    public int getItemCount (int section) {
         switch (section) {
             case 0:
                 return komponents != null ? komponents.size() : 0;
@@ -115,7 +114,7 @@ public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.Ku
         }
     }
 
-    public int getHeadersBeforePosition(int position) {
+    public int getHeadersBeforePosition (int position) {
         int headers = 0;
 
         for (int i = 0; i < position; i++) {
@@ -129,7 +128,7 @@ public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.Ku
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void onBindHeaderViewHolder(KustomHolder holder, int section) {
+    public void onBindHeaderViewHolder (KustomHolder holder, int section) {
         switch (section) {
             case 0:
                 holder.sectionTitle.setText("Komponents");
@@ -147,7 +146,7 @@ public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.Ku
     }
 
     @Override
-    public void onBindViewHolder(KustomHolder holder, int section, final int relativePosition, int absolutePosition) {
+    public void onBindViewHolder (KustomHolder holder, int section, final int relativePosition, int absolutePosition) {
         holder.background.setImageDrawable(wallpaper);
         String filePath;
         switch (section) {
@@ -157,7 +156,7 @@ public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.Ku
             case 1:
                 holder.itemView.setOnClickListener(new DebouncedClickListener() {
                     @Override
-                    public void onDebouncedClick(View v) {
+                    public void onDebouncedClick (View v) {
                         if (Utils.isAppInstalled(context, "org.kustom.wallpaper")) {
                             context.startActivity(kustomWalls.get(relativePosition).getKLWPIntent(context));
                         }
@@ -179,7 +178,7 @@ public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.Ku
             case 2:
                 holder.itemView.setOnClickListener(new DebouncedClickListener() {
                     @Override
-                    public void onDebouncedClick(View v) {
+                    public void onDebouncedClick (View v) {
                         if (Utils.isAppInstalled(context, "org.kustom.widget")) {
                             context.startActivity(widgets.get(relativePosition).getKWGTIntent(context));
                         }
@@ -216,7 +215,7 @@ public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.Ku
         final ImageView widget;
         final TextView sectionTitle;
 
-        public KustomHolder(View itemView) {
+        public KustomHolder (View itemView) {
             super(itemView);
             background = (ImageView) itemView.findViewById(R.id.wall);
             widget = (ImageView) itemView.findViewById(R.id.preview);

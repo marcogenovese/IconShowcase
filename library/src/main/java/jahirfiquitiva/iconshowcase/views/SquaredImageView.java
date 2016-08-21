@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016.  Jahir Fiquitiva
+ * Copyright (c) 2016 Jahir Fiquitiva
  *
  * Licensed under the CreativeCommons Attribution-ShareAlike
  * 4.0 International License. You may not use this file except in compliance
@@ -13,12 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Big thanks to the project contributors. Check them in the repository.
- *
- */
-
-/*
- *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
 package jahirfiquitiva.iconshowcase.views;
@@ -35,25 +31,25 @@ import android.widget.ImageView;
 
 public class SquaredImageView extends ImageView {
 
-    public SquaredImageView(Context context) {
+    public SquaredImageView (Context context) {
         super(context);
     }
 
-    public SquaredImageView(Context context, AttributeSet attrs) {
+    public SquaredImageView (Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public SquaredImageView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public SquaredImageView (Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public SquaredImageView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public SquaredImageView (Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
     @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    protected void onMeasure (int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         //noinspection SuspiciousNameCombination
         setMeasuredDimension(widthMeasureSpec, widthMeasureSpec);

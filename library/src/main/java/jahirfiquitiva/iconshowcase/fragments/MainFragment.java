@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016.  Jahir Fiquitiva
+ * Copyright (c) 2016 Jahir Fiquitiva
  *
  * Licensed under the CreativeCommons Attribution-ShareAlike
  * 4.0 International License. You may not use this file except in compliance
@@ -13,12 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Big thanks to the project contributors. Check them in the repository.
- *
- */
-
-/*
- *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
 package jahirfiquitiva.iconshowcase.fragments;
@@ -47,7 +43,6 @@ import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 import jahirfiquitiva.iconshowcase.views.DividerItemDecoration;
 import timber.log.Timber;
 
-
 public class MainFragment extends BaseFragment {
 
     private Context context;
@@ -56,7 +51,7 @@ public class MainFragment extends BaseFragment {
     private boolean hasAppsList = false;
 
     @Override
-    public void onFabClick(View v) {
+    public void onFabClick (View v) {
         Intent rate = new Intent(Intent.ACTION_VIEW,
                 Uri.parse("https://play.google.com/store/apps/details?id=" +
                         context.getPackageName()));
@@ -64,18 +59,18 @@ public class MainFragment extends BaseFragment {
     }
 
     @Override
-    int getFabIcon() {
+    int getFabIcon () {
         return R.drawable.ic_rate;
     }
 
     @Override
-    boolean hasFab() {
+    boolean hasFab () {
         return true;
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView (LayoutInflater inflater, final ViewGroup container,
+                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
         String[] listNames = getResources().getStringArray(R.array.home_list_titles);
@@ -104,7 +99,7 @@ public class MainFragment extends BaseFragment {
         iconsRow.setOnClickListener(new DebouncedClickListener() {
 
             @Override
-            public void onDebouncedClick(View v) {
+            public void onDebouncedClick (View v) {
                 ShowcaseActivity.SHUFFLE = true;
                 setupAndAnimateIcons(0);
             }
@@ -144,7 +139,7 @@ public class MainFragment extends BaseFragment {
         return layout;
     }
 
-    private void setupAndAnimateIcons(int delay) {
+    private void setupAndAnimateIcons (int delay) {
         ((ShowcaseActivity) getActivity()).setupIcons();
         ((ShowcaseActivity) getActivity()).animateIcons(delay);
     }

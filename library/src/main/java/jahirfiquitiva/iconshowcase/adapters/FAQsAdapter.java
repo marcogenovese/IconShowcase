@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016.  Jahir Fiquitiva
+ * Copyright (c) 2016 Jahir Fiquitiva
  *
  * Licensed under the CreativeCommons Attribution-ShareAlike
  * 4.0 International License. You may not use this file except in compliance
@@ -13,12 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Big thanks to the project contributors. Check them in the repository.
- *
- */
-
-/*
- *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
 package jahirfiquitiva.iconshowcase.adapters;
@@ -45,14 +41,14 @@ public class FAQsAdapter extends RecyclerView.Adapter<FAQsAdapter.FAQsHolder> {
     private final Context context;
     private final Preferences mPrefs;
 
-    public FAQsAdapter(List<FAQsItem> faqs, Context context) {
+    public FAQsAdapter (List<FAQsItem> faqs, Context context) {
         this.faqs = faqs;
         this.context = context;
         this.mPrefs = new Preferences(context);
     }
 
     @Override
-    public FAQsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public FAQsHolder onCreateViewHolder (ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         boolean listsCards;
         if (context.getResources().getBoolean(R.bool.dev_options)) {
@@ -68,7 +64,7 @@ public class FAQsAdapter extends RecyclerView.Adapter<FAQsAdapter.FAQsHolder> {
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(FAQsHolder holder, int position) {
+    public void onBindViewHolder (FAQsHolder holder, int position) {
 
         FAQsItem faq = faqs.get(position);
 
@@ -80,7 +76,7 @@ public class FAQsAdapter extends RecyclerView.Adapter<FAQsAdapter.FAQsHolder> {
     }
 
     @Override
-    public int getItemCount() {
+    public int getItemCount () {
         return faqs == null ? 0 : faqs.size();
     }
 
@@ -92,7 +88,7 @@ public class FAQsAdapter extends RecyclerView.Adapter<FAQsAdapter.FAQsHolder> {
         final TextView txtQuestion;
         final TextView txtAnswer;
 
-        FAQsHolder(View v) {
+        FAQsHolder (View v) {
             super(v);
             view = v;
 

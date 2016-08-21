@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) 2016.  Jahir Fiquitiva
+  ~ Copyright (c) 2016 Jahir Fiquitiva
   ~
   ~ Licensed under the CreativeCommons Attribution-ShareAlike
   ~ 4.0 International License. You may not use this file except in compliance
@@ -14,9 +14,10 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   ~
-  ~ Big thanks to the project contributors. Check them in the repository.
-  ~
+  ~ Special thanks to the project contributors and collaborators
+  ~ 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
   -->
+
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="24dp"
     android:height="24dp"
@@ -25,5 +26,5 @@
 
     <path
         android:fillColor="#ffffff"
-        android:pathData="M20,5.6L18.4,4L12,10.4L5.6,4L4,5.6l6.4,6.4L4,18.4L5.6,20l6.4-6.4l6.4,6.4l1.6-1.6L13.6,12L20,5.6z" />
+        android:pathData="M20,5.6L18.4,4L12,10.4L5.6,4L4,5.6l6.4,6.4L4,18.4L5.6,20l6.4-6.4l6.4,6.4l1.6-1.6L13.6,12L20,5.6z"/>
 </vector>

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016.  Jahir Fiquitiva
+ * Copyright (c) 2016 Jahir Fiquitiva
  *
  * Licensed under the CreativeCommons Attribution-ShareAlike
  * 4.0 International License. You may not use this file except in compliance
@@ -13,12 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Big thanks to the project contributors. Check them in the repository.
- *
- */
-
-/*
- *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
 package jahirfiquitiva.iconshowcase.models;
@@ -29,7 +25,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-
 
 public class RequestItem implements Parcelable {
 
@@ -49,19 +44,19 @@ public class RequestItem implements Parcelable {
         this.resolveInfo = resolveInfo;
     }
 
-    public String getClassName() {
+    public String getClassName () {
         return className;
     }
 
-    public String getAppName() {
+    public String getAppName () {
         return appName;
     }
 
-    public String getPackageName() {
+    public String getPackageName () {
         return packageName;
     }
 
-    public Drawable getNormalIcon() {
+    public Drawable getNormalIcon () {
         return normalIcon;
     }
 
@@ -69,11 +64,11 @@ public class RequestItem implements Parcelable {
         return resolveInfo;
     }
 
-    public boolean isSelected() {
+    public boolean isSelected () {
         return selected;
     }
 
-    public void setSelected(boolean selected) {
+    public void setSelected (boolean selected) {
         this.selected = selected;
     }
 
@@ -81,10 +76,11 @@ public class RequestItem implements Parcelable {
      * Used to compare object to object
      *
      * @param other
+     *
      * @return
      */
     @Override
-    public boolean equals(Object other) {
+    public boolean equals (Object other) {
         if (!(other instanceof RequestItem)) {
             return false;
         }

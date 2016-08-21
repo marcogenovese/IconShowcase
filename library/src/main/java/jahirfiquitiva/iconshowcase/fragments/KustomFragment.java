@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016.  Jahir Fiquitiva
+ * Copyright (c) 2016 Jahir Fiquitiva
  *
  * Licensed under the CreativeCommons Attribution-ShareAlike
  * 4.0 International License. You may not use this file except in compliance
@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Big thanks to the project contributors. Check them in the repository.
- *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
 package jahirfiquitiva.iconshowcase.fragments;
@@ -39,7 +39,6 @@ import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.views.SectionedGridSpacingItemDecoration;
 
-
 public class KustomFragment extends BaseFragment {
 
     private static Context context;
@@ -54,7 +53,7 @@ public class KustomFragment extends BaseFragment {
     //TODO check if extra FAB is necessary
 
     @Override
-    public void onFabClick(View v) {
+    public void onFabClick (View v) {
         ArrayList<String> apps = new ArrayList<>();
         if ((Config.get().bool(R.bool.includes_kustom_wallpapers))
                 && !Utils.isAppInstalled(context, KLWP_PKG)) {
@@ -75,17 +74,17 @@ public class KustomFragment extends BaseFragment {
     }
 
     @Override
-    int getFabIcon() {
+    int getFabIcon () {
         return R.drawable.ic_store_download;
     }
 
     @Override
-    boolean hasFab() {
+    boolean hasFab () {
         return true;
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView (LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         context = getActivity();
 
@@ -96,7 +95,7 @@ public class KustomFragment extends BaseFragment {
         return layout;
     }
 
-    private void setupRV(View layout) {
+    private void setupRV (View layout) {
         int gridSpacing = getResources().getDimensionPixelSize(R.dimen.lists_padding);
         final int columnsNumber = getResources().getInteger(R.integer.zooper_kustom_grid_width);
 
@@ -116,7 +115,7 @@ public class KustomFragment extends BaseFragment {
 
         gridManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
-            public int getSpanSize(int position) {
+            public int getSpanSize (int position) {
                 if (kustomAdapter.isHeader(position)) {
                     return columnsNumber;
                 } else {
@@ -133,7 +132,7 @@ public class KustomFragment extends BaseFragment {
         fastScroller.attachRecyclerView(mRecyclerView);
     }
 
-    private boolean areAppsInstalled() {
+    private boolean areAppsInstalled () {
         boolean installed = true;
 
         if ((context.getResources().getBoolean(R.bool.includes_kustom_wallpapers))) {

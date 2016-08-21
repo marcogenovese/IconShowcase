@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016.  Jahir Fiquitiva
+ * Copyright (c) 2016 Jahir Fiquitiva
  *
  * Licensed under the CreativeCommons Attribution-ShareAlike
  * 4.0 International License. You may not use this file except in compliance
@@ -13,12 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Big thanks to the project contributors. Check them in the repository.
- *
- */
-
-/*
- *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
 package jahirfiquitiva.iconshowcase.fragments;
@@ -30,8 +26,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.SearchView;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -46,18 +42,16 @@ import java.util.Locale;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.fragments.base.FragmentStatePagerAdapter;
-import jahirfiquitiva.iconshowcase.fragments.base.ViewPagerWithCustomScrollDuration;
 import jahirfiquitiva.iconshowcase.models.IconsCategory;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.utilities.color.ToolbarTinter;
 
-
 @SuppressWarnings("ResourceAsColor")
 public class PreviewsFragment extends NoFabBaseFragment {
 
     private int mLastSelected = 0;
-    private ViewPagerWithCustomScrollDuration mPager;
+    private ViewPager mPager;
     private String[] tabs;
     private TabLayout mTabs;
     private SearchView mSearchView;
@@ -66,7 +60,7 @@ public class PreviewsFragment extends NoFabBaseFragment {
 
     private static final String categoryListKey = "preview_categories";
 
-    public static PreviewsFragment newInstance(@Nullable ArrayList<IconsCategory> categories) {
+    public static PreviewsFragment newInstance (@Nullable ArrayList<IconsCategory> categories) {
         PreviewsFragment fragment = new PreviewsFragment();
         if (categories == null) return fragment;
         Bundle args = new Bundle();
@@ -74,22 +68,21 @@ public class PreviewsFragment extends NoFabBaseFragment {
         fragment.setArguments(args);
         return fragment;
     }
-    
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
         Bundle args = getArguments();
-        
+
         if (args == null || !args.containsKey(categoryListKey)) return loadingView(inflater, container);
         View layout = inflater.inflate(R.layout.icons_preview_section, container, false);
-        
+
         mCategories = args.getParcelableArrayList(categoryListKey);
 
-        mPager = (ViewPagerWithCustomScrollDuration) layout.findViewById(R.id.pager);
-        TypedValue factor = new TypedValue();
-        getResources().getValue(R.dimen.scroll_factor, factor, true);
-        mPager.setScrollDurationFactor(factor.getFloat());
+        //TODO Check if ViewPager is smooth enough
+        mPager = (ViewPager) layout.findViewById(R.id.pager);
+
         mPager.setAdapter(new IconsPagerAdapter(getChildFragmentManager()));
         mPager.setOffscreenPageLimit(mCategories.size() - 1 < 1 ? 1 : mCategories.size() - 1);
         mTabs = (TabLayout) getActivity().findViewById(R.id.tabs);
@@ -99,13 +92,13 @@ public class PreviewsFragment extends NoFabBaseFragment {
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate (@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated (View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         int iconsColor = ThemeUtils.darkTheme ?
@@ -119,14 +112,12 @@ public class PreviewsFragment extends NoFabBaseFragment {
         }
     }
 
-
-
-    private void createTabs() {
+    private void createTabs () {
         mTabs.removeAllTabs();
         mTabs.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mPager));
         mPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabs) {
             @Override
-            public void onPageSelected(int position) {
+            public void onPageSelected (int position) {
                 super.onPageSelected(position);
                 if (mLastSelected > -1) {
                     IconsFragment frag = (IconsFragment) getChildFragmentManager().findFragmentByTag("page:" + mLastSelected);
@@ -147,13 +138,13 @@ public class PreviewsFragment extends NoFabBaseFragment {
     }
 
     @Override
-    public void onDestroyView() {
+    public void onDestroyView () {
         super.onDestroyView();
         if (mTabs != null) mTabs.setVisibility(View.GONE);
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu (Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.search, menu);
         mSearchItem = menu.findItem(R.id.search);
@@ -162,18 +153,18 @@ public class PreviewsFragment extends NoFabBaseFragment {
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
             @Override
-            public boolean onQueryTextSubmit(String s) {
+            public boolean onQueryTextSubmit (String s) {
                 search(s);
                 return false;
             }
 
             @Override
-            public boolean onQueryTextChange(String s) {
+            public boolean onQueryTextChange (String s) {
                 search(s);
                 return false;
             }
 
-            private void search(String s) {
+            private void search (String s) {
                 IconsFragment frag =
                         (IconsFragment) getChildFragmentManager().findFragmentByTag("page:" +
                                 mPager.getCurrentItem());
@@ -198,7 +189,7 @@ public class PreviewsFragment extends NoFabBaseFragment {
 
     class IconsPagerAdapter extends FragmentStatePagerAdapter {
 
-        public IconsPagerAdapter(FragmentManager fm) {
+        public IconsPagerAdapter (FragmentManager fm) {
             super(fm);
             String[] tabsNames = new String[mCategories.size()];
             for (int i = 0; i < tabsNames.length; i++) {
@@ -208,30 +199,30 @@ public class PreviewsFragment extends NoFabBaseFragment {
         }
 
         @Override
-        public Fragment getItem(int position) {
+        public Fragment getItem (int position) {
             return IconsFragment.newInstance(mCategories.get(position));
         }
 
         @Override
-        public CharSequence getPageTitle(int position) {
+        public CharSequence getPageTitle (int position) {
             return tabs[position].toUpperCase(Locale.getDefault());
         }
 
         @Override
-        public int getCount() {
+        public int getCount () {
             return tabs.length;
         }
     }
 
     @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
+    public void onSaveInstanceState (Bundle savedInstanceState) {
         // Save current position
         savedInstanceState.putInt("lastSelected", mLastSelected);
         super.onSaveInstanceState(savedInstanceState);
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
+    public void onActivityCreated (Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null) {
             // Restore last selected position

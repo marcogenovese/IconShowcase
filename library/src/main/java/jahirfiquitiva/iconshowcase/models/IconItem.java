@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016.  Jahir Fiquitiva
+ * Copyright (c) 2016 Jahir Fiquitiva
  *
  * Licensed under the CreativeCommons Attribution-ShareAlike
  * 4.0 International License. You may not use this file except in compliance
@@ -13,12 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Big thanks to the project contributors. Check them in the repository.
- *
- */
-
-/*
- *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
 package jahirfiquitiva.iconshowcase.models;
@@ -31,40 +27,40 @@ public class IconItem implements Parcelable {
     private final String name;
     private final int resId;
 
-    public IconItem(String name, int resId) {
+    public IconItem (String name, int resId) {
         this.name = name;
         this.resId = resId;
     }
 
-    public String getName() {
+    public String getName () {
         return this.name;
     }
 
-    public int getResId() {
+    public int getResId () {
         return this.resId;
     }
 
     @Override
-    public int describeContents() {
+    public int describeContents () {
         return 0;
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel (Parcel dest, int flags) {
         dest.writeString(name);
         dest.writeInt(resId);
     }
 
     public static final Creator<IconItem> CREATOR = new Creator<IconItem>() {
         @Override
-        public IconItem createFromParcel(Parcel in) {
+        public IconItem createFromParcel (Parcel in) {
             String name = in.readString();
             int redId = in.readInt();
             return new IconItem(name, redId);
         }
 
         @Override
-        public IconItem[] newArray(int size) {
+        public IconItem[] newArray (int size) {
             return new IconItem[size];
         }
     };

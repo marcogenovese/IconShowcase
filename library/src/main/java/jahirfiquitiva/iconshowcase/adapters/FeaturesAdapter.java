@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016.  Jahir Fiquitiva
+ * Copyright (c) 2016 Jahir Fiquitiva
  *
  * Licensed under the CreativeCommons Attribution-ShareAlike
  * 4.0 International License. You may not use this file except in compliance
@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Big thanks to the project contributors. Check them in the repository.
- *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
 package jahirfiquitiva.iconshowcase.adapters;
@@ -29,12 +29,11 @@ import android.widget.TextView;
 
 import jahirfiquitiva.iconshowcase.R;
 
-
 public class FeaturesAdapter extends RecyclerView.Adapter<FeaturesAdapter.FeatureHolder> {
 
     private final String[][] mFeatures;
 
-    public FeaturesAdapter(Context context, int featuresArray) {
+    public FeaturesAdapter (Context context, int featuresArray) {
         // Populate the two-dimensional array
         TypedArray typedArray = context.getResources().obtainTypedArray(featuresArray);
         mFeatures = new String[typedArray.length()][];
@@ -48,13 +47,13 @@ public class FeaturesAdapter extends RecyclerView.Adapter<FeaturesAdapter.Featur
     }
 
     @Override
-    public FeatureHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public FeatureHolder onCreateViewHolder (ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         return new FeatureHolder(inflater.inflate(R.layout.features_content, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(FeatureHolder holder, int position) {
+    public void onBindViewHolder (FeatureHolder holder, int position) {
         String nameStr = mFeatures[position][0];
         String contentStr = "";
 
@@ -72,16 +71,17 @@ public class FeaturesAdapter extends RecyclerView.Adapter<FeaturesAdapter.Featur
     }
 
     @Override
-    public int getItemCount() {
+    public int getItemCount () {
         return mFeatures == null ? 0 : mFeatures.length;
     }
 
     class FeatureHolder extends RecyclerView.ViewHolder {
+
         final View view;
         final TextView title;
         final TextView content;
 
-        FeatureHolder(View v) {
+        FeatureHolder (View v) {
             super(v);
             view = v;
 

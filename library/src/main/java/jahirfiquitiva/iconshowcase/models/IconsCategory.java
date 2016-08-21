@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016.  Jahir Fiquitiva
+ * Copyright (c) 2016 Jahir Fiquitiva
  *
  * Licensed under the CreativeCommons Attribution-ShareAlike
  * 4.0 International License. You may not use this file except in compliance
@@ -13,12 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Big thanks to the project contributors. Check them in the repository.
- *
- */
-
-/*
- *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
 package jahirfiquitiva.iconshowcase.models;
@@ -34,14 +30,14 @@ public class IconsCategory implements Parcelable {
     private final String name;
     private final ArrayList<IconItem> iconsArray;
 
-    public IconsCategory(String name, @NonNull ArrayList<IconItem> iconsArray) {
+    public IconsCategory (String name, @NonNull ArrayList<IconItem> iconsArray) {
         this.name = name;
         this.iconsArray = iconsArray;
     }
 
     public static final Creator<IconsCategory> CREATOR = new Creator<IconsCategory>() {
         @Override
-        public IconsCategory createFromParcel(Parcel in) {
+        public IconsCategory createFromParcel (Parcel in) {
             String name = in.readString();
             ArrayList<IconItem> icons = new ArrayList<>();
             in.readTypedList(icons, IconItem.CREATOR);
@@ -49,26 +45,26 @@ public class IconsCategory implements Parcelable {
         }
 
         @Override
-        public IconsCategory[] newArray(int size) {
+        public IconsCategory[] newArray (int size) {
             return new IconsCategory[size];
         }
     };
 
-    public String getCategoryName() {
+    public String getCategoryName () {
         return this.name;
     }
 
-    public ArrayList<IconItem> getIconsArray() {
+    public ArrayList<IconItem> getIconsArray () {
         return iconsArray.size() > 0 ? this.iconsArray : null;
     }
 
     @Override
-    public int describeContents() {
+    public int describeContents () {
         return 0;
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel (Parcel dest, int flags) {
         dest.writeString(name);
         dest.writeTypedList(iconsArray);
     }

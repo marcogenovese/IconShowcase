@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016.  Jahir Fiquitiva
+ * Copyright (c) 2016 Jahir Fiquitiva
  *
  * Licensed under the CreativeCommons Attribution-ShareAlike
  * 4.0 International License. You may not use this file except in compliance
@@ -13,12 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Big thanks to the project contributors. Check them in the repository.
- *
- */
-
-/*
- *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
 package jahirfiquitiva.apps.iconshowcase.sampleip;
@@ -31,7 +27,6 @@ import android.support.v7.app.AppCompatActivity;
 
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import timber.log.Timber;
-
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -49,7 +44,7 @@ public class HomeActivity extends AppCompatActivity {
     private static final String GOOGLE_PUBLISHER_KEY = "insert_key_here";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         if (getIntent().getStringExtra("open_link") != null) {
@@ -84,11 +79,11 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-    private String getAppInstaller() {
+    private String getAppInstaller () {
         return getPackageManager().getInstallerPackageName(getPackageName());
     }
 
-    private int getAppCurrentVersionCode() {
+    private int getAppCurrentVersionCode () {
         try {
             PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
             return packageInfo.versionCode;

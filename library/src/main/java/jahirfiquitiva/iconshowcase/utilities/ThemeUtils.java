@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016.  Jahir Fiquitiva
+ * Copyright (c) 2016 Jahir Fiquitiva
  *
  * Licensed under the CreativeCommons Attribution-ShareAlike
  * 4.0 International License. You may not use this file except in compliance
@@ -13,12 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Big thanks to the project contributors. Check them in the repository.
- *
- */
-
-/*
- *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
 package jahirfiquitiva.iconshowcase.utilities;
@@ -34,7 +30,6 @@ import java.util.Calendar;
 
 import jahirfiquitiva.iconshowcase.R;
 
-
 @SuppressWarnings("ResourceAsColor")
 public class ThemeUtils {
 
@@ -46,7 +41,7 @@ public class ThemeUtils {
     public static boolean darkTheme;
     public static boolean transparent;
 
-    public static void onActivityCreateSetTheme(Activity activity) {
+    public static void onActivityCreateSetTheme (Activity activity) {
         final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
         int mTheme = sp.getInt("theme", (activity.getResources().getInteger(R.integer.app_theme) - 1));
         switch (mTheme) {
@@ -82,13 +77,13 @@ public class ThemeUtils {
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public static void onActivityCreateSetNavBar(Activity activity) {
+    public static void onActivityCreateSetNavBar (Activity activity) {
         activity.getWindow().setNavigationBarColor(darkTheme ?
                 ContextCompat.getColor(activity, R.color.dark_theme_navigation_bar) :
                 ContextCompat.getColor(activity, R.color.light_theme_navigation_bar));
     }
 
-    public static void restartActivity(Activity activity) {
+    public static void restartActivity (Activity activity) {
         activity.recreate();
     }
 

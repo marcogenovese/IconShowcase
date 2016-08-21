@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--
-  ~ Copyright (c) 2016.  Jahir Fiquitiva
+  ~ Copyright (c) 2016 Jahir Fiquitiva
   ~
   ~ Licensed under the CreativeCommons Attribution-ShareAlike
   ~ 4.0 International License. You may not use this file except in compliance
@@ -15,19 +15,18 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   ~
-  ~ Big thanks to the project contributors. Check them in the repository.
-  ~
+  ~ Special thanks to the project contributors and collaborators
+  ~ 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
   -->
 
 <resources>
-
-
 
     <style name="Test" parent="Widget.AppCompat.CompoundButton.CheckBox">
         <item name="colorControlActivated">#f0f</item>
         <item name="android:background">#f00</item>
 
     </style>
+
     <style name="Toolbar.Popup.AppCompat" parent="Theme.AppCompat.Light"/>
 
     <style name="Toolbar.AppCompat.Responsive.Light" parent="AppTheme.Base">
@@ -125,6 +124,15 @@
     </style>
 
     <style name="ToolbarSubtitleWithShadow" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Subtitle">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:shadowColor">@color/gradient_black</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">1</item>
+    </style>
+
+    <style name="DrawerTextsWithShadow">
+        <item name="android:textSize">@dimen/material_drawer_account_header_text</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:shadowColor">@color/gradient_black</item>
         <item name="android:shadowDx">0</item>

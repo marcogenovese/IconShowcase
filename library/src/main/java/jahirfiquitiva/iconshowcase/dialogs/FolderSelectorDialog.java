@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016.  Jahir Fiquitiva
+ * Copyright (c) 2016 Jahir Fiquitiva
  *
  * Licensed under the CreativeCommons Attribution-ShareAlike
  * 4.0 International License. You may not use this file except in compliance
@@ -13,12 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Big thanks to the project contributors. Check them in the repository.
- *
- */
-
-/*
- *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
 package jahirfiquitiva.iconshowcase.dialogs;
@@ -50,7 +46,6 @@ import java.util.List;
 
 import jahirfiquitiva.iconshowcase.R;
 
-
 public class FolderSelectorDialog extends DialogFragment implements MaterialDialog.ListCallback {
 
     private File parentFolder;
@@ -61,23 +56,23 @@ public class FolderSelectorDialog extends DialogFragment implements MaterialDial
 
     public interface FolderSelectionCallback {
 
-        void onFolderSelection(File folder);
+        void onFolderSelection (File folder);
     }
 
-    public FolderSelectorDialog() {
+    public FolderSelectorDialog () {
     }
 
-    public void setInitialPath(String path) {
+    public void setInitialPath (String path) {
         if (path == null)
             path = File.separator;
         initialPath = path;
     }
 
-    private String getInitialPath() {
+    private String getInitialPath () {
         return initialPath == null ? Environment.getExternalStorageDirectory().getAbsolutePath() : initialPath;
     }
 
-    private String[] getContentsArray() {
+    private String[] getContentsArray () {
         if (parentContents == null) return new String[]{};
         String[] results = new String[parentContents.length + (canGoUp ? 1 : 0)];
         if (canGoUp) results[0] = "...";
@@ -86,7 +81,7 @@ public class FolderSelectorDialog extends DialogFragment implements MaterialDial
         return results;
     }
 
-    private File[] listFiles() {
+    private File[] listFiles () {
         File[] contents = parentFolder.listFiles();
         List<File> results = new ArrayList<>();
         if (contents != null) {
@@ -102,7 +97,7 @@ public class FolderSelectorDialog extends DialogFragment implements MaterialDial
     @SuppressWarnings("ConstantConditions")
     @NonNull
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
+    public Dialog onCreateDialog (Bundle savedInstanceState) {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
                 ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) !=
@@ -122,20 +117,20 @@ public class FolderSelectorDialog extends DialogFragment implements MaterialDial
                     .itemsCallback(this)
                     .onPositive(new MaterialDialog.SingleButtonCallback() {
                         @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        public void onClick (@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             dialog.dismiss();
                             mCallback.onFolderSelection(parentFolder);
                         }
                     })
                     .onNegative(new MaterialDialog.SingleButtonCallback() {
                         @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        public void onClick (@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             dialog.dismiss();
                         }
                     })
                     .onNeutral(new MaterialDialog.SingleButtonCallback() {
                         @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        public void onClick (@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             createFolder(getActivity(), dialog, parentFolder.getAbsolutePath());
                         }
                     })
@@ -148,7 +143,7 @@ public class FolderSelectorDialog extends DialogFragment implements MaterialDial
     }
 
     @Override
-    public void onSelection(MaterialDialog materialDialog, View view, int i, CharSequence s) {
+    public void onSelection (MaterialDialog materialDialog, View view, int i, CharSequence s) {
         if (canGoUp && i == 0) {
             parentFolder = parentFolder.getParentFile();
             canGoUp = parentFolder.getParent() != null;
@@ -163,12 +158,12 @@ public class FolderSelectorDialog extends DialogFragment implements MaterialDial
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach (Context context) {
         super.onAttach(context);
         mCallback = (FolderSelectionCallback) ((Activity) context);
     }
 
-    public void show(AppCompatActivity context) {
+    public void show (AppCompatActivity context) {
         Fragment frag = context.getSupportFragmentManager().findFragmentByTag("FOLDER_SELECTOR");
         if (frag != null) {
             ((DialogFragment) frag).dismiss();
@@ -178,7 +173,7 @@ public class FolderSelectorDialog extends DialogFragment implements MaterialDial
         show(context.getSupportFragmentManager(), "FOLDER_SELECTOR");
     }
 
-    private void createFolder(Context context, final MaterialDialog folderChooserDialog, final String folderPath) {
+    private void createFolder (Context context, final MaterialDialog folderChooserDialog, final String folderPath) {
         new MaterialDialog.Builder(context)
                 .title(R.string.new_folder_title)
                 .content(R.string.new_folder_content)
@@ -189,7 +184,7 @@ public class FolderSelectorDialog extends DialogFragment implements MaterialDial
                 .negativeText(android.R.string.cancel)
                 .input(R.string.new_folder_hint, 0, false, new MaterialDialog.InputCallback() {
                     @Override
-                    public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                    public void onInput (@NonNull MaterialDialog dialog, CharSequence input) {
                         File folder = new File(folderPath + File.separator + input.toString());
                         if (!folder.exists()) {
                             //noinspection ResultOfMethodCallIgnored
@@ -205,7 +200,7 @@ public class FolderSelectorDialog extends DialogFragment implements MaterialDial
     private static class FolderSorter implements Comparator<File> {
 
         @Override
-        public int compare(File lhs, File rhs) {
+        public int compare (File lhs, File rhs) {
             return lhs.getName().compareTo(rhs.getName());
         }
     }

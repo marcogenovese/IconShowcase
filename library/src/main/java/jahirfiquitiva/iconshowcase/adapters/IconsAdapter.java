@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016.  Jahir Fiquitiva
+ * Copyright (c) 2016 Jahir Fiquitiva
  *
  * Licensed under the CreativeCommons Attribution-ShareAlike
  * 4.0 International License. You may not use this file except in compliance
@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Big thanks to the project contributors. Check them in the repository.
- *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
 package jahirfiquitiva.iconshowcase.adapters;
@@ -27,7 +27,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,7 +48,6 @@ import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 import timber.log.Timber;
 
-
 public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder> {
 
     private final Activity context;
@@ -58,21 +56,21 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
     private final Preferences mPrefs;
     private int lastPosition = -1;
 
-    public IconsAdapter(Activity context, ArrayList<IconItem> iconsList) {
+    public IconsAdapter (Activity context, ArrayList<IconItem> iconsList) {
         this.context = context;
         this.iconsList = iconsList;
         this.inChangelog = false;
         this.mPrefs = new Preferences(context);
     }
 
-    public IconsAdapter(Activity context, ArrayList<IconItem> iconsList, boolean inChangelog) {
+    public IconsAdapter (Activity context, ArrayList<IconItem> iconsList, boolean inChangelog) {
         this.context = context;
         this.iconsList = iconsList;
         this.inChangelog = inChangelog;
         this.mPrefs = new Preferences(context);
     }
 
-    public void setIcons(ArrayList<IconItem> iconsList) {
+    public void setIcons (ArrayList<IconItem> iconsList) {
         if (iconsList != null) {
             this.iconsList.addAll(iconsList);
             this.notifyItemRangeInserted(0, iconsList.size() - 1);
@@ -82,18 +80,18 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
         }
     }
 
-    public void clearIconsList() {
+    public void clearIconsList () {
         this.iconsList.clear();
     }
 
     @Override
-    public IconsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public IconsHolder onCreateViewHolder (ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         return new IconsHolder(inflater.inflate(R.layout.item_icon, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(final IconsHolder holder, int position) {
+    public void onBindViewHolder (final IconsHolder holder, int position) {
 
         if (position < 0) return;
 
@@ -106,7 +104,7 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
                 .asBitmap()
                 .into(new BitmapImageViewTarget(holder.icon) {
                     @Override
-                    protected void setResource(Bitmap resource) {
+                    protected void setResource (Bitmap resource) {
                         if ((!inChangelog && mPrefs.getAnimationsEnabled()) &&
                                 (holder.getAdapterPosition() > lastPosition)) {
                             holder.icon.setAlpha(0f);
@@ -121,7 +119,7 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
 
         holder.view.setOnClickListener(new DebouncedClickListener() {
             @Override
-            public void onDebouncedClick(View v) {
+            public void onDebouncedClick (View v) {
                 iconClick(holder.getAdapterPosition());
             }
         });
@@ -129,16 +127,16 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
     }
 
     @Override
-    public int getItemCount() {
+    public int getItemCount () {
         return iconsList == null ? 0 : iconsList.size();
     }
 
     @Override
-    public void onViewDetachedFromWindow(IconsHolder holder) {
+    public void onViewDetachedFromWindow (IconsHolder holder) {
         holder.clearAnimation();
     }
 
-    private void iconClick(int position) {
+    private void iconClick (int position) {
         int resId = iconsList.get(position).getResId();
         String name = iconsList.get(position).getName().toLowerCase(Locale.getDefault());
 
@@ -186,13 +184,13 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
         final View view;
         final ImageView icon;
 
-        IconsHolder(View v) {
+        IconsHolder (View v) {
             super(v);
             view = v;
             icon = (ImageView) v.findViewById(R.id.icon_img);
         }
 
-        private void clearAnimation() {
+        private void clearAnimation () {
             if (view != null) view.clearAnimation();
             if (icon != null) icon.clearAnimation();
         }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016.  Jahir Fiquitiva
+ * Copyright (c) 2016 Jahir Fiquitiva
  *
  * Licensed under the CreativeCommons Attribution-ShareAlike
  * 4.0 International License. You may not use this file except in compliance
@@ -13,12 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Big thanks to the project contributors. Check them in the repository.
- *
- */
-
-/*
- *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
 package jahirfiquitiva.iconshowcase.tasks;
@@ -42,7 +38,6 @@ import jahirfiquitiva.iconshowcase.models.IconsCategory;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import timber.log.Timber;
 
-
 public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
 
     private final WeakReference<Context> mContext;
@@ -52,27 +47,28 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
     private long startTime, endTime;
 
     public interface IIconList {
-        void onLoadComplete(ArrayList<IconItem> previewIcons, ArrayList<IconsCategory> categoryList);
+
+        void onLoadComplete (ArrayList<IconItem> previewIcons, ArrayList<IconsCategory> categoryList);
     }
 
     private IIconList mCallback;
 
-    public LoadIconsLists(Context context, @NonNull IIconList callback) {
+    public LoadIconsLists (Context context, @NonNull IIconList callback) {
         mContext = new WeakReference<>(context);
         mCallback = callback;
     }
 
-    public LoadIconsLists(Context context) {
+    public LoadIconsLists (Context context) {
         mContext = new WeakReference<>(context);
     }
 
     @Override
-    protected void onPreExecute() {
+    protected void onPreExecute () {
         startTime = System.currentTimeMillis();
     }
 
     @Override
-    protected Boolean doInBackground(Void... params) {
+    protected Boolean doInBackground (Void... params) {
 
         boolean worked;
 
@@ -145,7 +141,7 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
     }
 
     @Override
-    protected void onPostExecute(Boolean worked) {
+    protected void onPostExecute (Boolean worked) {
         //TODO onPostExecute only executes if task is not cancelled, worked boolean may not be necessary
         if (worked) {
             Timber.d("Load of icons task completed successfully in: %d milliseconds", (endTime - startTime));
@@ -155,13 +151,13 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
         }
     }
 
-    private List<String> sortList(String[] array) {
+    private List<String> sortList (String[] array) {
         List<String> list = new ArrayList<>(Arrays.asList(array));
         Collections.sort(list);
         return list;
     }
 
-    private ArrayList<IconItem> sortAndOrganizeList(Resources r, String p, String[] array) {
+    private ArrayList<IconItem> sortAndOrganizeList (Resources r, String p, String[] array) {
 
         List<String> list = sortList(array);
 
@@ -183,8 +179,8 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
         return sortedListArray;
     }
 
-    private ArrayList<IconItem> getAllIconsList(Resources r, String p,
-                                                ArrayList<IconItem> initialList) {
+    private ArrayList<IconItem> getAllIconsList (Resources r, String p,
+                                                 ArrayList<IconItem> initialList) {
 
         String[] allIconsNames = new String[initialList.size()];
 

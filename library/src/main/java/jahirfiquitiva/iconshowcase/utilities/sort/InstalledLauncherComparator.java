@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016.  Jahir Fiquitiva
+ * Copyright (c) 2016 Jahir Fiquitiva
  *
  * Licensed under the CreativeCommons Attribution-ShareAlike
  * 4.0 International License. You may not use this file except in compliance
@@ -13,12 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Big thanks to the project contributors. Check them in the repository.
- *
- */
-
-/*
- *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
 package jahirfiquitiva.iconshowcase.utilities.sort;
@@ -36,12 +32,12 @@ public class InstalledLauncherComparator implements Comparator<ApplyFragment.Lau
 
     private final Context context;
 
-    public InstalledLauncherComparator(Context context) {
+    public InstalledLauncherComparator (Context context) {
         this.context = context;
     }
 
     @Override
-    public int compare(ApplyFragment.Launcher lhs, ApplyFragment.Launcher rhs) {
+    public int compare (ApplyFragment.Launcher lhs, ApplyFragment.Launcher rhs) {
         if (!lhs.isInstalled(context) && rhs.isInstalled(context)) {
             // Left is not installed, right is, push left down towards the bottom.
             return 1;

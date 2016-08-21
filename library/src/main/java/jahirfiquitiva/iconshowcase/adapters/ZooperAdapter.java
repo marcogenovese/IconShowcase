@@ -1,5 +1,20 @@
 /*
- * Copyright (c) 2016. Jahir Fiquitiva. Android Developer. All rights reserved.
+ * Copyright (c) 2016 Jahir Fiquitiva
+ *
+ * Licensed under the CreativeCommons Attribution-ShareAlike
+ * 4.0 International License. You may not use this file except in compliance
+ * with the License. You may obtain a copy of the License at
+ *
+ *    http://creativecommons.org/licenses/by-sa/4.0/legalcode
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
 package jahirfiquitiva.iconshowcase.adapters;
@@ -37,7 +52,6 @@ import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 
-
 public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         implements PermissionUtils.OnPermissionResultListener {
 
@@ -49,8 +63,8 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private final boolean everythingInstalled;
     private final View layout;
 
-    public ZooperAdapter(Context context, View layout,
-                         Drawable wallpaper, boolean appsInstalled) {
+    public ZooperAdapter (Context context, View layout,
+                          Drawable wallpaper, boolean appsInstalled) {
         this.context = context;
 
         this.layout = layout;
@@ -74,7 +88,7 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     }
 
-    public void setWidgets(ArrayList<ZooperWidget> widgets) {
+    public void setWidgets (ArrayList<ZooperWidget> widgets) {
         if (widgets != null) {
             this.widgets.addAll(widgets);
             this.notifyItemRangeInserted(0, widgets.size() - 1);
@@ -85,7 +99,7 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int i) {
+    public RecyclerView.ViewHolder onCreateViewHolder (ViewGroup parent, int i) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         if (!everythingInstalled) {
             switch (i) {
@@ -104,7 +118,7 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder (RecyclerView.ViewHolder holder, int position) {
 
         String[] texts = new String[]{
                 Utils.getStringFromResources(context, R.string.install_apps),
@@ -140,17 +154,17 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     @Override
-    public int getItemCount() {
+    public int getItemCount () {
         return widgets != null ? widgets.size() + extraCards : extraCards;
     }
 
     @Override
-    public int getItemViewType(int position) {
+    public int getItemViewType (int position) {
         return position;
     }
 
     @Override
-    public void onStoragePermissionGranted() {
+    public void onStoragePermissionGranted () {
         installAssets();
     }
 
@@ -159,7 +173,7 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         final ImageView background;
         final ImageView widget;
 
-        public ZooperHolder(View itemView) {
+        public ZooperHolder (View itemView) {
             super(itemView);
             background = (ImageView) itemView.findViewById(R.id.wall);
             widget = (ImageView) itemView.findViewById(R.id.preview);
@@ -173,14 +187,14 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         final ImageView icon;
         final TextView text;
 
-        public ZooperButtonHolder(View itemView, final int position) {
+        public ZooperButtonHolder (View itemView, final int position) {
             super(itemView);
             card = (CardView) itemView.findViewById(R.id.zooper_btn_card);
             icon = (ImageView) itemView.findViewById(R.id.zooper_btn_icon);
             text = (TextView) itemView.findViewById(R.id.zooper_btn_title);
             card.setOnClickListener(new DebouncedClickListener() {
                 @Override
-                public void onDebouncedClick(View v) {
+                public void onDebouncedClick (View v) {
                     switch (position) {
                         case 0:
                             //Open dialog
@@ -222,7 +236,7 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     }
 
-    private boolean areAssetsInstalled() {
+    private boolean areAssetsInstalled () {
         boolean assetsInstalled = false;
 
         String fileToIgnore1 = "material-design-iconic-font-v2.2.0.ttf",
@@ -257,7 +271,7 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return assetsInstalled;
     }
 
-    private String getFolderName(String folder) {
+    private String getFolderName (String folder) {
         switch (folder) {
             case "fonts":
                 return "Fonts";
@@ -270,7 +284,7 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
-    private void installAssets() {
+    private void installAssets () {
         String[] folders = new String[]{"fonts", "iconsets", "bitmaps"};
 
         for (String folderName : folders) {

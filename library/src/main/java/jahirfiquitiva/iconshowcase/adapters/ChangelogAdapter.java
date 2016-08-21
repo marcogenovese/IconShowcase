@@ -1,3 +1,22 @@
+/*
+ * Copyright (c) 2016 Jahir Fiquitiva
+ *
+ * Licensed under the CreativeCommons Attribution-ShareAlike
+ * 4.0 International License. You may not use this file except in compliance
+ * with the License. You may obtain a copy of the License at
+ *
+ *    http://creativecommons.org/licenses/by-sa/4.0/legalcode
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
+ */
+
 package jahirfiquitiva.iconshowcase.adapters;
 
 import android.support.v7.widget.RecyclerView;
@@ -18,19 +37,19 @@ public class ChangelogAdapter extends RecyclerView.Adapter<ChangelogAdapter.Chan
 
     private final List<ChangelogXmlParser.ChangelogItem> mItems;
 
-    public ChangelogAdapter(List<ChangelogXmlParser.ChangelogItem> items) {
+    public ChangelogAdapter (List<ChangelogXmlParser.ChangelogItem> items) {
         mItems = items;
     }
 
     @Override
-    public ChangelogVH onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ChangelogVH onCreateViewHolder (ViewGroup parent, int viewType) {
         final View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.changelog_content, parent, false);
         return new ChangelogVH(view);
     }
 
     @Override
-    public void onBindViewHolder(ChangelogVH holder, int position) {
+    public void onBindViewHolder (ChangelogVH holder, int position) {
         ChangelogXmlParser.ChangelogItem item = mItems.get(position);
 
         String contentStr = "";
@@ -48,12 +67,12 @@ public class ChangelogAdapter extends RecyclerView.Adapter<ChangelogAdapter.Chan
     }
 
     @Override
-    public long getItemId(int position) {
+    public long getItemId (int position) {
         return position;
     }
 
     @Override
-    public int getItemCount() {
+    public int getItemCount () {
         return mItems != null ? mItems.size() : 0;
     }
 
@@ -61,7 +80,7 @@ public class ChangelogAdapter extends RecyclerView.Adapter<ChangelogAdapter.Chan
 
         final TextView title, content;
 
-        public ChangelogVH(View itemView) {
+        public ChangelogVH (View itemView) {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.changelog_title);
             content = (TextView) itemView.findViewById(R.id.changelog_content);

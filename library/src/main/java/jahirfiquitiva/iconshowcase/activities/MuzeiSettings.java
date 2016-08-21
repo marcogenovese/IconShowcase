@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016.  Jahir Fiquitiva
+ * Copyright (c) 2016 Jahir Fiquitiva
  *
  * Licensed under the CreativeCommons Attribution-ShareAlike
  * 4.0 International License. You may not use this file except in compliance
@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Big thanks to the project contributors. Check them in the repository.
- *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
 package jahirfiquitiva.iconshowcase.activities;
@@ -54,7 +54,6 @@ import jahirfiquitiva.iconshowcase.views.CustomCoordinatorLayout;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 import jahirfiquitiva.iconshowcase.views.FixedElevationAppBarLayout;
 
-
 @SuppressWarnings("ResourceAsColor")
 public class MuzeiSettings extends AppCompatActivity {
 
@@ -67,7 +66,7 @@ public class MuzeiSettings extends AppCompatActivity {
     private Toolbar toolbar;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate (Bundle savedInstanceState) {
 
         ThemeUtils.onActivityCreateSetTheme(this);
 
@@ -113,7 +112,7 @@ public class MuzeiSettings extends AppCompatActivity {
         if (mPrefs.areFeaturesEnabled()) {
             minute.setOnClickListener(new DebouncedClickListener() {
                 @Override
-                public void onDebouncedClick(View v) {
+                public void onDebouncedClick (View v) {
                     hour.setChecked(false);
                     minute.setChecked(true);
                 }
@@ -121,7 +120,7 @@ public class MuzeiSettings extends AppCompatActivity {
 
             hour.setOnClickListener(new DebouncedClickListener() {
                 @Override
-                public void onDebouncedClick(View v) {
+                public void onDebouncedClick (View v) {
                     minute.setChecked(false);
                     hour.setChecked(true);
                 }
@@ -142,7 +141,7 @@ public class MuzeiSettings extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu (Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.muzei, menu);
         MenuItem save = menu.findItem(R.id.save);
@@ -154,7 +153,7 @@ public class MuzeiSettings extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected (MenuItem item) {
         int i = item.getItemId();
         if (mPrefs.areFeaturesEnabled()) {
             if (i == R.id.save) {
@@ -187,13 +186,14 @@ public class MuzeiSettings extends AppCompatActivity {
     }
 
     @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
+    protected void onPostCreate (Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        mLastTheme = ThemeUtils.darkTheme;;
+        mLastTheme = ThemeUtils.darkTheme;
+        ;
     }
 
     @Override
-    protected void onResume() {
+    protected void onResume () {
         super.onResume();
         int iconsColor = ThemeUtils.darkTheme ?
                 ContextCompat.getColor(this, R.color.toolbar_text_dark) :
@@ -205,7 +205,7 @@ public class MuzeiSettings extends AppCompatActivity {
     }
 
     @Override
-    protected void onDestroy() {
+    protected void onDestroy () {
         super.onDestroy();
         if (mPrefs == null) {
             mPrefs = new Preferences(this);
@@ -213,7 +213,7 @@ public class MuzeiSettings extends AppCompatActivity {
         mPrefs.setActivityVisible(false);
     }
 
-    private void setDividerColor(NumberPicker picker) {
+    private void setDividerColor (NumberPicker picker) {
         java.lang.reflect.Field[] pickerFields = NumberPicker.class.getDeclaredFields();
         for (java.lang.reflect.Field pf : pickerFields) {
             if (pf.getName().equals("mSelectionDivider")) {
@@ -228,34 +228,34 @@ public class MuzeiSettings extends AppCompatActivity {
         }
     }
 
-    private void showNotLicensedDialog() {
+    private void showNotLicensedDialog () {
         ISDialogs.showLicenseFailDialog(this,
                 new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+                    public void onClick (@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
                         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Common.MARKET_URL + getPackageName()));
                         startActivity(browserIntent);
                     }
                 }, new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+                    public void onClick (@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
                         finish();
                     }
                 }, new MaterialDialog.OnDismissListener() {
 
                     @Override
-                    public void onDismiss(DialogInterface dialog) {
+                    public void onDismiss (DialogInterface dialog) {
                         finish();
                     }
                 }, new MaterialDialog.OnCancelListener() {
                     @Override
-                    public void onCancel(DialogInterface dialog) {
+                    public void onCancel (DialogInterface dialog) {
                         finish();
                     }
                 });
     }
 
-    private void showSnackBarAndFinish(View location, String text) {
+    private void showSnackBarAndFinish (View location, String text) {
         final int snackbarLight = ContextCompat.getColor(context, R.color.snackbar_light);
         final int snackbarDark = ContextCompat.getColor(context, R.color.snackbar_dark);
         Snackbar shortSnackbar = Snackbar.make(location, text,
@@ -264,7 +264,7 @@ public class MuzeiSettings extends AppCompatActivity {
         shortGroup.setBackgroundColor(ThemeUtils.darkTheme ? snackbarDark : snackbarLight);
         shortSnackbar.setCallback(new Snackbar.Callback() {
             @Override
-            public void onDismissed(Snackbar snackbar, int event) {
+            public void onDismissed (Snackbar snackbar, int event) {
                 super.onDismissed(snackbar, event);
                 finish();
             }

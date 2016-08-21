@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016.  Jahir Fiquitiva
+ * Copyright (c) 2016 Jahir Fiquitiva
  *
  * Licensed under the CreativeCommons Attribution-ShareAlike
  * 4.0 International License. You may not use this file except in compliance
@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Big thanks to the project contributors. Check them in the repository.
- *
+ * Special thanks to the project contributors and collaborators
+ * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
 package jahirfiquitiva.iconshowcase.fragments.base;
@@ -26,15 +26,14 @@ import android.view.animation.Interpolator;
 
 import java.lang.reflect.Field;
 
-
 public class ViewPagerWithCustomScrollDuration extends ViewPager {
 
-    public ViewPagerWithCustomScrollDuration(Context context) {
+    public ViewPagerWithCustomScrollDuration (Context context) {
         super(context);
         postInitViewPager();
     }
 
-    public ViewPagerWithCustomScrollDuration(Context context, AttributeSet attrs) {
+    public ViewPagerWithCustomScrollDuration (Context context, AttributeSet attrs) {
         super(context, attrs);
         postInitViewPager();
     }
@@ -45,7 +44,7 @@ public class ViewPagerWithCustomScrollDuration extends ViewPager {
      * Override the Scroller instance with our own class so we can change the
      * duration
      */
-    private void postInitViewPager() {
+    private void postInitViewPager () {
         try {
             Field scroller = ViewPager.class.getDeclaredField("mScroller");
             scroller.setAccessible(true);
@@ -63,7 +62,7 @@ public class ViewPagerWithCustomScrollDuration extends ViewPager {
     /**
      * Set the factor by which the duration will change
      */
-    public void setScrollDurationFactor(double scrollFactor) {
+    public void setScrollDurationFactor (double scrollFactor) {
         mScroller.setScrollDurationFactor(scrollFactor);
     }
 
