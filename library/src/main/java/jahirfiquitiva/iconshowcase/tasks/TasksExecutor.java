@@ -77,7 +77,7 @@ public class TasksExecutor {
          */
 
         if (justIcons) {
-            new LoadIconsLists(context).execute();
+//            new LoadIconsLists(context).execute();
         } else if (justWallpapers) {
             loadWallsList();
         } else {

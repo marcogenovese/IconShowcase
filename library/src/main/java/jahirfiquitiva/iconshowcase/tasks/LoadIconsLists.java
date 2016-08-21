@@ -23,9 +23,11 @@
 
 package jahirfiquitiva.iconshowcase.tasks;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -38,7 +40,6 @@ import java.util.Set;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.models.IconsCategory;
-import jahirfiquitiva.iconshowcase.models.IconsLists;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import timber.log.Timber;
 
@@ -50,13 +51,14 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
     private ArrayList<IconItem> mPreviewIcons = new ArrayList<>();
     private ArrayList<IconsCategory> mCategoryList = new ArrayList<>();
     private long startTime, endTime;
+
     public interface IIconList {
-        void onListSizeLoaded(int listSize);
-        void onLoadComplete(List<IconsLists> iconList, List<IconsCategory> categoryList);
+        void onLoadComplete(ArrayList<IconItem> previewIcons, ArrayList<IconsCategory> categoryList);
     }
+
     private IIconList mCallback;
 
-    public LoadIconsLists(Context context, IIconList callback) {
+    public LoadIconsLists(Context context, @NonNull IIconList callback) {
         mContext = new WeakReference<>(context);
         mCallback = callback;
     }
@@ -149,6 +151,7 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
         if (worked) {
             Timber.d("Load of icons task completed successfully in: %d milliseconds", (endTime - startTime));
         }
+        mCallback.onLoadComplete(mPreviewIcons, mCategoryList);
     }
 
     private List<String> sortList(String[] array) {

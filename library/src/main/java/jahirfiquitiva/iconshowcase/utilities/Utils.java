@@ -649,13 +649,13 @@ public class Utils {
                 !(KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK))) {
             //On-screen navigation bar
 
-            int resId = 0;
+            int resId ;
             int orientation = context.getResources().getConfiguration().orientation;
 
             if (isTablet(context)){
                 resId = context.getResources().getIdentifier(orientation == Configuration.ORIENTATION_PORTRAIT ? "navigation_bar_height" : "navigation_bar_height_landscape", "dimen", "android");
             }  else {
-                resId = context.getResources().getIdentifier(orientation == Configuration.ORIENTATION_PORTRAIT ? "navigation_bar_height" : "navigation_bar_width", "dimen", "android");
+                resId = context.getResources().getIdentifier("navigation_bar_height", "dimen", "android");
             }
 
             //int resId = context.getResources().getIdentifier("navigation_bar_height", "dimen", "android");

@@ -1,16 +1,15 @@
 package jahirfiquitiva.iconshowcase.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.DrawableRes;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import jahirfiquitiva.iconshowcase.activities.BaseActivity;
+import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.activities.base.BaseActivity;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 
 /**
@@ -50,6 +49,10 @@ public abstract class BaseFragment extends Fragment {
             hideFab();
         }
         return null;
+    }
+
+    protected View loadingView(LayoutInflater inflater, ViewGroup container) {
+        return inflater.inflate(R.layout.loading_section, container, false);
     }
 
 }

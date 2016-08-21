@@ -76,6 +76,7 @@ import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 import jahirfiquitiva.iconshowcase.views.TouchImageView;
+import timber.log.Timber;
 
 
 public class AltWallpaperViewerActivity extends AppCompatActivity {
@@ -127,9 +128,38 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
         saveFab = (FloatingActionButton) findViewById(R.id.saveFab);
         infoFab = (FloatingActionButton) findViewById(R.id.infoFab);
 
-        hideFab(applyFab);
-        hideFab(saveFab);
-        hideFab(infoFab);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            int navBarHeight = Utils.getNavigationBarHeight(context);
+            ImageView navbarGradient = (ImageView) findViewById(R.id.navbarGradient);
+            LinearLayout.LayoutParams p = (LinearLayout.LayoutParams) fab.getLayoutParams();
+            LinearLayout.LayoutParams mp = (LinearLayout.LayoutParams) infoFab.getLayoutParams();
+            int fabMargin = context.getResources().getDimensionPixelSize(R.dimen.fab_margin);
+            if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                if ((!(Utils.isTablet(context)))) {
+                    int miniFabMargin = context.getResources().getDimensionPixelSize(R.dimen.mini_fab_right_margin);
+                    navbarGradient.setVisibility(View.GONE);
+                    p.setMargins(0, 0, (fabMargin + navBarHeight), fabMargin);
+                    mp.setMargins(0, 0, (fabMargin + navBarHeight + miniFabMargin), fabMargin);
+                    infoFab.setLayoutParams(mp);
+                    applyFab.setLayoutParams(mp);
+                    saveFab.setLayoutParams(mp);
+                    hideFab(applyFab);
+                    hideFab(saveFab);
+                    hideFab(infoFab);
+                } else {
+                    p.setMargins(0, 0, fabMargin, (fabMargin + navBarHeight));
+                }
+            } else {
+                p.setMargins(0, 0, fabMargin, (fabMargin + navBarHeight));
+                if (navBarHeight <= 0) {
+                    navbarGradient.setVisibility(View.GONE);
+                } else {
+                    navbarGradient.getLayoutParams().height = navBarHeight;
+                    navbarGradient.requestLayout();
+                }
+            }
+            fab.setLayoutParams(p);
+        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -150,37 +180,6 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
 
         int tintLightLighter = ContextCompat.getColor(context, R.color.drawable_base_tint);
         int tintDark = ContextCompat.getColor(context, R.color.drawable_tint_dark);
-
-        int navBarHeight = Utils.getNavigationBarHeight(context);
-
-        ImageView navbarGradient = (ImageView) findViewById(R.id.navbarGradient);
-        if (navBarHeight <= 0) {
-            navbarGradient.setVisibility(View.GONE);
-        } else {
-            navbarGradient.getLayoutParams().height = navBarHeight;
-            navbarGradient.requestLayout();
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            LinearLayout.LayoutParams p = (LinearLayout.LayoutParams) fab.getLayoutParams();
-            LinearLayout.LayoutParams mp = (LinearLayout.LayoutParams) infoFab.getLayoutParams();
-            int fabMargin = context.getResources().getDimensionPixelSize(R.dimen.fab_margin);
-            if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                if ((!(Utils.isTablet(context)))) {
-                    int miniFabMargin = context.getResources().getDimensionPixelSize(R.dimen.mini_fab_right_margin);
-                    p.setMargins(0, 0, (fabMargin + navBarHeight), fabMargin);
-                    mp.setMargins(0, 0, (fabMargin + navBarHeight + miniFabMargin), fabMargin);
-                    infoFab.setLayoutParams(mp);
-                    applyFab.setLayoutParams(mp);
-                    saveFab.setLayoutParams(mp);
-                } else {
-                    p.setMargins(0, 0, fabMargin, (fabMargin + navBarHeight));
-                }
-            } else {
-                p.setMargins(0, 0, fabMargin, (fabMargin + navBarHeight));
-            }
-            fab.setLayoutParams(p);
-        }
 
         fab.setOnClickListener(new DebouncedClickListener() {
             @Override
@@ -549,9 +548,11 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
                         final int snackbarDark = ContextCompat.getColor(context, R.color.snackbar_dark);
                         ViewGroup snackbarView = (ViewGroup) longSnackbar.getView();
                         snackbarView.setBackgroundColor(ThemeUtils.darkTheme ? snackbarDark : snackbarLight);
-                        snackbarView.setPadding(snackbarView.getPaddingLeft(),
-                                snackbarView.getPaddingTop(), snackbarView.getPaddingRight(),
-                                Utils.getNavigationBarHeight(context));
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                            snackbarView.setPadding(snackbarView.getPaddingLeft(),
+                                    snackbarView.getPaddingTop(), snackbarView.getPaddingRight(),
+                                    Utils.getNavigationBarHeight(context));
+                        }
                         longSnackbar.show();
                         longSnackbar.setCallback(new Snackbar.Callback() {
                             @Override
@@ -674,9 +675,11 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
         final int snackbarDark = ContextCompat.getColor(context, R.color.snackbar_dark);
         ViewGroup snackbarView = (ViewGroup) notConnectedSnackBar.getView();
         snackbarView.setBackgroundColor(ThemeUtils.darkTheme ? snackbarDark : snackbarLight);
-        snackbarView.setPadding(snackbarView.getPaddingLeft(),
-                snackbarView.getPaddingTop(), snackbarView.getPaddingRight(),
-                Utils.getNavigationBarHeight(context));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            snackbarView.setPadding(snackbarView.getPaddingLeft(),
+                    snackbarView.getPaddingTop(), snackbarView.getPaddingRight(),
+                    Utils.getNavigationBarHeight(context));
+        }
         notConnectedSnackBar.show();
     }
 

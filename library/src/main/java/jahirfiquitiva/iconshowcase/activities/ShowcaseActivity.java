@@ -78,6 +78,7 @@ import java.util.Random;
 
 import jahirfiquitiva.iconshowcase.BuildConfig;
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.activities.base.TasksActivity;
 import jahirfiquitiva.iconshowcase.adapters.RequestsAdapter;
 import jahirfiquitiva.iconshowcase.config.Config;
 import jahirfiquitiva.iconshowcase.dialogs.ChangelogDialog;
@@ -97,8 +98,8 @@ import jahirfiquitiva.iconshowcase.fragments.WallpapersFragment;
 import jahirfiquitiva.iconshowcase.fragments.ZooperFragment;
 import jahirfiquitiva.iconshowcase.logging.CrashReportingTree;
 import jahirfiquitiva.iconshowcase.models.IconItem;
+import jahirfiquitiva.iconshowcase.models.IconsCategory;
 import jahirfiquitiva.iconshowcase.models.WallpapersList;
-import jahirfiquitiva.iconshowcase.tasks.LoadIconsLists;
 import jahirfiquitiva.iconshowcase.tasks.TasksExecutor;
 import jahirfiquitiva.iconshowcase.utilities.Common;
 import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
@@ -108,7 +109,7 @@ import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import timber.log.Timber;
 
-public class ShowcaseActivity extends BaseActivity implements FolderSelectorDialog.FolderSelectionCallback {
+public class ShowcaseActivity extends TasksActivity implements FolderSelectorDialog.FolderSelectionCallback {
 
     private static boolean
             WITH_LICENSE_CHECKER = false,
@@ -207,6 +208,9 @@ public class ShowcaseActivity extends BaseActivity implements FolderSelectorDial
 
         setContentView(R.layout.showcase_activity);
 
+        startTasks();
+
+        //Will be deprecated for TasksActivity
         TasksExecutor.with(context)
                 .loadJust((iconsPicker && mDrawerMap.containsKey(DrawerType.PREVIEWS)),
                         (wallsPicker && mPrefs.areFeaturesEnabled() && mDrawerMap.containsKey(DrawerType.WALLPAPERS)));
@@ -312,6 +316,73 @@ public class ShowcaseActivity extends BaseActivity implements FolderSelectorDial
         }
     }
 
+    private Fragment getCurrentFragment() {
+        return getSupportFragmentManager().findFragmentById(getFragmentId());
+    }
+
+    private void reloadCurrentFragment() {
+        DrawerType dt = mDrawerItems.get((int) currentItem);
+        FragmentTransaction fragmentTransaction = context.getSupportFragmentManager()
+                .beginTransaction();
+
+        fragmentTransaction.replace(getFragmentId(), drawerTypeToFragment(dt), dt.getName());
+
+        if (mPrefs.getAnimationsEnabled())
+            fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
+        fragmentTransaction.commit();
+    }
+
+    private Fragment drawerTypeToFragment(DrawerType dt) {
+        switch (dt) {
+            case DONATE:
+                return DonationsFragment.newInstance(DONATIONS_GOOGLE,
+                        GOOGLE_PUBKEY,
+                        mGoogleCatalog,
+                        GOOGLE_CATALOG_VALUES,
+                        DONATIONS_PAYPAL,
+                        PAYPAL_USER,
+                        PAYPAL_CURRENCY_CODE,
+                        context.getString(R.string.section_donate),
+                        DONATIONS_FLATTR,
+                        DONATIONS_BITCOIN);
+
+            case HOME:
+                return new MainFragment();
+
+            case PREVIEWS:
+                return PreviewsFragment.newInstance(mCategoryList);
+
+            case WALLPAPERS:
+                return new WallpapersFragment();
+
+            case REQUESTS:
+                return new RequestsFragment();
+
+            case APPLY:
+                return new ApplyFragment();
+
+            case FAQS:
+                return new FAQsFragment();
+
+            case ZOOPER:
+                return new ZooperFragment();
+
+            case KUSTOM:
+                return new KustomFragment();
+
+            case CREDITS:
+                return new CreditsFragment();
+
+            case SETTINGS:
+                return new SettingsFragment();
+
+            default:
+                //throw error
+                return new MainFragment();
+
+        }
+    }
+
     private void switchFragment(long itemId, DrawerType dt, AppCompatActivity context) {
 
         if (currentItem == itemId) {
@@ -337,57 +408,7 @@ public class ShowcaseActivity extends BaseActivity implements FolderSelectorDial
         FragmentTransaction fragmentTransaction = context.getSupportFragmentManager()
                 .beginTransaction();
 
-        Fragment fragment;
-
-        switch (dt) {
-            case DONATE:
-                fragment = DonationsFragment.newInstance(DONATIONS_GOOGLE,
-                        GOOGLE_PUBKEY,
-                        mGoogleCatalog,
-                        GOOGLE_CATALOG_VALUES,
-                        DONATIONS_PAYPAL,
-                        PAYPAL_USER,
-                        PAYPAL_CURRENCY_CODE,
-                        context.getString(R.string.section_donate),
-                        DONATIONS_FLATTR,
-                        DONATIONS_BITCOIN);
-                break;
-            case HOME:
-                fragment = new MainFragment();
-                break;
-            case PREVIEWS:
-                fragment = new PreviewsFragment();
-                break;
-            case WALLPAPERS:
-                fragment = new WallpapersFragment();
-                break;
-            case REQUESTS:
-                fragment = new RequestsFragment();
-                break;
-            case APPLY:
-                fragment = new ApplyFragment();
-                break;
-            case FAQS:
-                fragment = new FAQsFragment();
-                break;
-            case ZOOPER:
-                fragment = new ZooperFragment();
-                break;
-            case KUSTOM:
-                fragment = new KustomFragment();
-                break;
-            case CREDITS:
-                fragment = new CreditsFragment();
-                break;
-            case SETTINGS:
-                fragment = new SettingsFragment();
-                break;
-            default:
-                //throw error
-                fragment = new MainFragment();
-                break;
-        }
-        fragmentTransaction.replace(getFragmentId(), fragment, dt.getName());
+        fragmentTransaction.replace(getFragmentId(), drawerTypeToFragment(dt), dt.getName());
 
         if (mPrefs.getAnimationsEnabled())
             fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
@@ -657,6 +678,23 @@ public class ShowcaseActivity extends BaseActivity implements FolderSelectorDial
         return R.id.main;
     }
 
+    @Override
+    protected void iconsLoaded(List<IconItem> previewIcons, List<IconsCategory> categoryList) {
+        Fragment fragment = getCurrentFragment();
+        if (fragment instanceof MainFragment) {
+            Timber.d("Setting up icons");
+            setupIcons();
+        } else if (fragment instanceof PreviewsFragment) {
+            Timber.d("Reloading Previews");
+            reloadCurrentFragment();
+        }
+    }
+
+    @Override
+    protected HashMap<DrawerType, Integer> getDrawerMap() {
+        return mDrawerMap;
+    }
+
     public interface WallsListInterface {
 
         void checkWallsListCreation(boolean result);
@@ -784,7 +822,7 @@ public class ShowcaseActivity extends BaseActivity implements FolderSelectorDial
                 case Intent.ACTION_GET_CONTENT:
                     iconsPicker = true;
                     wallsPicker = false;
-                    break;
+
                 case Intent.ACTION_SET_WALLPAPER:
                     iconsPicker = false;
                     wallsPicker = true;
@@ -802,41 +840,35 @@ public class ShowcaseActivity extends BaseActivity implements FolderSelectorDial
 
     public void setupIcons() {
 
-        ArrayList<IconItem> icons = null;
-
-        if (LoadIconsLists.getIconsLists() != null) {
-            //noinspection ConstantConditions
-            icons = LoadIconsLists.getIconsLists().get(0).getIconsArray();
-        }
+        if (mPreviewIconList == null) return;
 
         ArrayList<IconItem> finalIconsList = new ArrayList<>();
 
-        if (icons != null && SHUFFLE && shuffleIcons) {
-            Collections.shuffle(icons);
+        if (SHUFFLE && shuffleIcons) {
+            //TODO rather than shuffle list, why not get a random index point x times?
+            Collections.shuffle(mPreviewIconList);
         }
 
         int i = 0;
 
-        if (icons != null) {
-            while (i < numOfIcons) {
-                finalIconsList.add(icons.get(i));
-                i++;
-            }
+        while (i < numOfIcons) {
+            finalIconsList.add(mPreviewIconList.get(i));
+            i++;
+        }
 
-            icon1.setImageResource(finalIconsList.get(0).getResId());
-            icon2.setImageResource(finalIconsList.get(1).getResId());
-            icon3.setImageResource(finalIconsList.get(2).getResId());
-            icon4.setImageResource(finalIconsList.get(3).getResId());
+        icon1.setImageResource(finalIconsList.get(0).getResId());
+        icon2.setImageResource(finalIconsList.get(1).getResId());
+        icon3.setImageResource(finalIconsList.get(2).getResId());
+        icon4.setImageResource(finalIconsList.get(3).getResId());
 
-            if (numOfIcons == 6) {
-                icon5.setImageResource(finalIconsList.get(4).getResId());
-                icon6.setImageResource(finalIconsList.get(5).getResId());
-            } else if (numOfIcons == 8) {
-                icon5.setImageResource(finalIconsList.get(4).getResId());
-                icon6.setImageResource(finalIconsList.get(5).getResId());
-                icon7.setImageResource(finalIconsList.get(6).getResId());
-                icon8.setImageResource(finalIconsList.get(7).getResId());
-            }
+        if (numOfIcons == 6) {
+            icon5.setImageResource(finalIconsList.get(4).getResId());
+            icon6.setImageResource(finalIconsList.get(5).getResId());
+        } else if (numOfIcons == 8) {
+            icon5.setImageResource(finalIconsList.get(4).getResId());
+            icon6.setImageResource(finalIconsList.get(5).getResId());
+            icon7.setImageResource(finalIconsList.get(6).getResId());
+            icon8.setImageResource(finalIconsList.get(7).getResId());
         }
 
         SHUFFLE = false;

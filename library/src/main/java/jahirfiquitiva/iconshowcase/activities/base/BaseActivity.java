@@ -1,16 +1,13 @@
-package jahirfiquitiva.iconshowcase.activities;
+package jahirfiquitiva.iconshowcase.activities.base;
 
 import android.content.Context;
 import android.support.annotation.IdRes;
-import android.support.annotation.LayoutRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
-import jahirfiquitiva.iconshowcase.BuildConfig;
-import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.fragments.BaseFragment;
 
 /**

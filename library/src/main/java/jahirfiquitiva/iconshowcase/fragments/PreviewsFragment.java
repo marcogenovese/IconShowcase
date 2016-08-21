@@ -24,6 +24,7 @@
 package jahirfiquitiva.iconshowcase.fragments;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -46,6 +47,7 @@ import java.util.Locale;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
+import jahirfiquitiva.iconshowcase.activities.base.TasksActivity;
 import jahirfiquitiva.iconshowcase.fragments.base.FragmentStatePagerAdapter;
 import jahirfiquitiva.iconshowcase.fragments.base.ViewPagerWithCustomScrollDuration;
 import jahirfiquitiva.iconshowcase.models.IconsCategory;
@@ -64,22 +66,38 @@ public class PreviewsFragment extends NoFabBaseFragment {
     private String[] tabs;
     private TabLayout mTabs;
     private SearchView mSearchView;
-    private ArrayList<IconsCategory> categories;
+    private ArrayList<IconsCategory> mCategories;
     private MenuItem mSearchItem;
 
+    public static final String CATEGORY_LIST_KEY = "preview_categories";
+
+    public static PreviewsFragment newInstance(@Nullable ArrayList<IconsCategory> categories) {
+        PreviewsFragment fragment = new PreviewsFragment();
+        if (categories == null) return fragment;
+        Bundle args = new Bundle();
+        args.putParcelableArrayList(CATEGORY_LIST_KEY, categories);
+        fragment.setArguments(args);
+        return fragment;
+    }
+    
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
+        Bundle args = getArguments();
+        
+        if (args == null || !args.containsKey(CATEGORY_LIST_KEY)) return loadingView(inflater, container);
         View layout = inflater.inflate(R.layout.icons_preview_section, container, false);
-        categories = LoadIconsLists.getIconsCategories();
+        
+        mCategories = args.getParcelableArrayList(CATEGORY_LIST_KEY);
 
         mPager = (ViewPagerWithCustomScrollDuration) layout.findViewById(R.id.pager);
         TypedValue factor = new TypedValue();
         getResources().getValue(R.dimen.scroll_factor, factor, true);
         mPager.setScrollDurationFactor(factor.getFloat());
         mPager.setAdapter(new IconsPagerAdapter(getChildFragmentManager()));
-        mPager.setOffscreenPageLimit(categories.size() - 1 < 1 ? 1 : categories.size() - 1);
+        mPager.setOffscreenPageLimit(mCategories.size() - 1 < 1 ? 1 : mCategories.size() - 1);
+        mTabs = (TabLayout) getActivity().findViewById(R.id.tabs);
         createTabs();
 
         return layout;
@@ -106,10 +124,10 @@ public class PreviewsFragment extends NoFabBaseFragment {
         }
     }
 
+
+
     private void createTabs() {
-        mTabs = (TabLayout) getActivity().findViewById(R.id.tabs);
         mTabs.removeAllTabs();
-        mTabs.setVisibility(View.VISIBLE);
         mTabs.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mPager));
         mPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabs) {
             @Override
@@ -127,9 +145,10 @@ public class PreviewsFragment extends NoFabBaseFragment {
                     getActivity().invalidateOptionsMenu();
             }
         });
-        for (IconsCategory category : categories) {
+        for (IconsCategory category : mCategories) {
             mTabs.addTab(mTabs.newTab().setText(category.getCategoryName()));
         }
+        mTabs.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -186,16 +205,16 @@ public class PreviewsFragment extends NoFabBaseFragment {
 
         public IconsPagerAdapter(FragmentManager fm) {
             super(fm);
-            String[] tabsNames = new String[categories.size()];
+            String[] tabsNames = new String[mCategories.size()];
             for (int i = 0; i < tabsNames.length; i++) {
-                tabsNames[i] = categories.get(i).getCategoryName();
+                tabsNames[i] = mCategories.get(i).getCategoryName();
             }
             tabs = tabsNames;
         }
 
         @Override
         public Fragment getItem(int position) {
-            return IconsFragment.newInstance(categories.get(position));
+            return IconsFragment.newInstance(mCategories.get(position));
         }
 
         @Override
