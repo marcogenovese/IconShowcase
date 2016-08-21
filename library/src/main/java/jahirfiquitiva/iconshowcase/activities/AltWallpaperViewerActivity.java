@@ -76,7 +76,6 @@ import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 import jahirfiquitiva.iconshowcase.views.TouchImageView;
-import timber.log.Timber;
 
 
 public class AltWallpaperViewerActivity extends AppCompatActivity {
@@ -128,6 +127,8 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
         saveFab = (FloatingActionButton) findViewById(R.id.saveFab);
         infoFab = (FloatingActionButton) findViewById(R.id.infoFab);
 
+
+        //TODO Find a way to properly set FAB margin. This code is a mess and doesn't work fine. Help REALLY needed :/
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             int navBarHeight = Utils.getNavigationBarHeight(context);
             ImageView navbarGradient = (ImageView) findViewById(R.id.navbarGradient);
@@ -135,17 +136,14 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
             LinearLayout.LayoutParams mp = (LinearLayout.LayoutParams) infoFab.getLayoutParams();
             int fabMargin = context.getResources().getDimensionPixelSize(R.dimen.fab_margin);
             if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                if ((!(Utils.isTablet(context)))) {
+                if (!(Utils.isTablet(context))) {
                     int miniFabMargin = context.getResources().getDimensionPixelSize(R.dimen.mini_fab_right_margin);
                     navbarGradient.setVisibility(View.GONE);
                     p.setMargins(0, 0, (fabMargin + navBarHeight), fabMargin);
-                    mp.setMargins(0, 0, (fabMargin + navBarHeight + miniFabMargin), fabMargin);
+                    mp.setMargins(0, 0, (fabMargin + navBarHeight + miniFabMargin), (fabMargin / 2));
                     infoFab.setLayoutParams(mp);
                     applyFab.setLayoutParams(mp);
                     saveFab.setLayoutParams(mp);
-                    hideFab(applyFab);
-                    hideFab(saveFab);
-                    hideFab(infoFab);
                 } else {
                     p.setMargins(0, 0, fabMargin, (fabMargin + navBarHeight));
                 }
@@ -160,6 +158,9 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
             }
             fab.setLayoutParams(p);
         }
+        hideFab(applyFab);
+        hideFab(saveFab);
+        hideFab(infoFab);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

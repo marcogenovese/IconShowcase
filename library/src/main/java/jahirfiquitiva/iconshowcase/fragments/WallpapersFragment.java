@@ -160,9 +160,8 @@ public class WallpapersFragment extends NoFabBaseFragment {
     }
 
     private static void setupLayout(final Context context) {
-
         if (WallpapersList.getWallpapersList() != null && WallpapersList.getWallpapersList().size() > 0) {
-            hideProgressBar();
+
             mAdapter = new WallpapersAdapter(context,
                     new WallpapersAdapter.ClickListener() {
                         @Override
@@ -226,7 +225,6 @@ public class WallpapersFragment extends NoFabBaseFragment {
                     fastScroller.setVisibility(View.VISIBLE);
                     mSwipeRefreshLayout.setEnabled(false);
                     mSwipeRefreshLayout.setRefreshing(false);
-                    hideProgressBar();
                 }
 
                 runOnUIThread(context, new Runnable() {
@@ -234,7 +232,6 @@ public class WallpapersFragment extends NoFabBaseFragment {
                     public void run() {
                         if (layout != null) {
                             noConnection.setVisibility(View.GONE);
-                            showProgressBar();
                             Timer timer = new Timer();
                             timer.schedule(new TimerTask() {
                                 @Override

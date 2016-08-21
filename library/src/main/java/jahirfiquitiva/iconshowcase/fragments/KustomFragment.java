@@ -21,11 +21,8 @@ package jahirfiquitiva.iconshowcase.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,9 +34,9 @@ import java.util.ArrayList;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.adapters.KustomAdapter;
+import jahirfiquitiva.iconshowcase.config.Config;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
-import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 import jahirfiquitiva.iconshowcase.views.SectionedGridSpacingItemDecoration;
 
 
@@ -58,7 +55,23 @@ public class KustomFragment extends BaseFragment {
 
     @Override
     public void onFabClick(View v) {
-
+        ArrayList<String> apps = new ArrayList<>();
+        if ((Config.get().bool(R.bool.includes_kustom_wallpapers))
+                && !Utils.isAppInstalled(context, KLWP_PKG)) {
+            apps.add("Kustom Live Wallpaper");
+        } else if ((Config.get().bool(R.bool.includes_kustom_widgets))
+                && !Utils.isAppInstalled(context, KWGT_PKG)) {
+            apps.add("Kustom Widget");
+        } else if ((Config.get().bool(R.bool.kustom_requires_kolorette)) &&
+                !Utils.isAppInstalled(context, KOLORETTE_PKG)) {
+            apps.add(Config.get().string(R.string.kolorette_app));
+        }
+        if (apps.size() > 0) {
+            ISDialogs.showKustomAppsDownloadDialog(context, apps);
+        } else {
+            hideFab();
+            //TODO: Show snackbar saying something like "Apps installed" although this shouldn't ever happen.
+        }
     }
 
     @Override
