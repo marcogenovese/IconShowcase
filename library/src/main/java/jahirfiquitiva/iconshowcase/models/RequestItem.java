@@ -19,21 +19,29 @@
 
 package jahirfiquitiva.iconshowcase.models;
 
+import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
-public class RequestItem {
+public class RequestItem implements Parcelable {
 
-    private String appName = null, packageName = null, className = null;
-    private final Drawable normalIcon, hiResIcon;
+    private String appName;
+    private String packageName;
+    private String className;
+    private final Drawable normalIcon;
+    private final ResolveInfo resolveInfo;
     private boolean selected = false;
 
-    public RequestItem (String appName, String packageName, String className,
-                        Drawable normalIcon, Drawable hiResIcon) {
+    public RequestItem(@NonNull String appName, @NonNull String packageName, @NonNull String className,
+                       @Nullable Drawable normalIcon, @Nullable ResolveInfo resolveInfo) {
         this.appName = appName;
         this.packageName = packageName;
         this.className = className;
         this.normalIcon = normalIcon;
-        this.hiResIcon = hiResIcon;
+        this.resolveInfo = resolveInfo;
     }
 
     public String getClassName () {
@@ -52,8 +60,8 @@ public class RequestItem {
         return normalIcon;
     }
 
-    public Drawable getHiResIcon () {
-        return hiResIcon;
+    public ResolveInfo getResolveInfo() {
+        return resolveInfo;
     }
 
     public boolean isSelected () {
@@ -81,4 +89,41 @@ public class RequestItem {
                 && this.packageName.equals(that.packageName)
                 && this.className.equals(that.className);
     }
+
+    protected RequestItem(Parcel in) {
+        appName = in.readString();
+        packageName = in.readString();
+        className = in.readString();
+        normalIcon = (Drawable) in.readParcelable(Drawable.class.getClassLoader());
+        resolveInfo = (ResolveInfo) in.readValue(ResolveInfo.class.getClassLoader());
+        selected = in.readByte() != 0x00;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(appName);
+        dest.writeString(packageName);
+        dest.writeString(className);
+        dest.writeValue(normalIcon);
+        dest.writeValue(resolveInfo);
+        dest.writeByte((byte) (selected ? 0x01 : 0x00));
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<RequestItem> CREATOR = new Parcelable.Creator<RequestItem>() {
+        @Override
+        public RequestItem createFromParcel(Parcel in) {
+            return new RequestItem(in);
+        }
+
+        @Override
+        public RequestItem[] newArray(int size) {
+            return new RequestItem[size];
+        }
+    };
 }

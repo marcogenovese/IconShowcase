@@ -204,7 +204,8 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
 
         setContentView(R.layout.showcase_activity);
 
-        startTasks();
+        startTasks((iconsPicker && mDrawerMap.containsKey(DrawerType.PREVIEWS)),
+                (wallsPicker && mPrefs.areFeaturesEnabled() && mDrawerMap.containsKey(DrawerType.WALLPAPERS)));
 
         //Will be deprecated for TasksActivity
         TasksExecutor.with(context)
@@ -316,8 +317,7 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
         return getSupportFragmentManager().findFragmentById(getFragmentId());
     }
 
-    private void reloadCurrentFragment () {
-        DrawerType dt = mDrawerItems.get((int) currentItem);
+    private void reloadFragment(DrawerType dt) {
         FragmentTransaction fragmentTransaction = context.getSupportFragmentManager()
                 .beginTransaction();
 
@@ -675,14 +675,21 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
     }
 
     @Override
-    protected void iconsLoaded (List<IconItem> previewIcons, List<IconsCategory> categoryList) {
+    protected void iconsLoaded() {
         Fragment fragment = getCurrentFragment();
         if (fragment instanceof MainFragment) {
             Timber.d("Setting up icons");
             setupIcons();
         } else if (fragment instanceof PreviewsFragment) {
             Timber.d("Reloading Previews");
-            reloadCurrentFragment();
+            reloadFragment(DrawerType.REQUESTS);
+        }
+    }
+
+    @Override
+    protected void requestListLoaded() {
+        if (getCurrentFragment() instanceof RequestsFragment) {
+            reloadFragment(DrawerType.REQUESTS);
         }
     }
 

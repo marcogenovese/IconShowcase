@@ -58,13 +58,13 @@ public class PreviewsFragment extends NoFabBaseFragment {
     private ArrayList<IconsCategory> mCategories;
     private MenuItem mSearchItem;
 
-    public static final String CATEGORY_LIST_KEY = "preview_categories";
+    private static final String categoryListKey = "preview_categories";
 
     public static PreviewsFragment newInstance (@Nullable ArrayList<IconsCategory> categories) {
         PreviewsFragment fragment = new PreviewsFragment();
         if (categories == null) return fragment;
         Bundle args = new Bundle();
-        args.putParcelableArrayList(CATEGORY_LIST_KEY, categories);
+        args.putParcelableArrayList(categoryListKey, categories);
         fragment.setArguments(args);
         return fragment;
     }
@@ -75,11 +75,10 @@ public class PreviewsFragment extends NoFabBaseFragment {
 
         Bundle args = getArguments();
 
-        if (args == null || !args.containsKey(CATEGORY_LIST_KEY))
-            return loadingView(inflater, container);
+        if (args == null || !args.containsKey(categoryListKey)) return loadingView(inflater, container);
         View layout = inflater.inflate(R.layout.icons_preview_section, container, false);
 
-        mCategories = args.getParcelableArrayList(CATEGORY_LIST_KEY);
+        mCategories = args.getParcelableArrayList(categoryListKey);
 
         //TODO Check if ViewPager is smooth enough
         mPager = (ViewPager) layout.findViewById(R.id.pager);

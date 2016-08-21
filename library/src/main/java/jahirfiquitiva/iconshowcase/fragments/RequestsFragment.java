@@ -46,6 +46,7 @@ import java.util.ArrayList;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.adapters.RequestsAdapter;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
+import jahirfiquitiva.iconshowcase.models.IconsCategory;
 import jahirfiquitiva.iconshowcase.models.RequestItem;
 import jahirfiquitiva.iconshowcase.models.RequestList;
 import jahirfiquitiva.iconshowcase.tasks.LoadRequestList;
@@ -69,6 +70,7 @@ public class RequestsFragment extends BaseFragment implements PermissionUtils.On
     private static ArrayList<RequestItem> requestList;
     private static TextView errorLayout;
     public static LoadRequestList loadAppsToRequest;
+    private static final String requestListKey = "request_list";
 
     DebouncedClickListener debouncedClickListener = new DebouncedClickListener() {
         @Override
@@ -94,6 +96,15 @@ public class RequestsFragment extends BaseFragment implements PermissionUtils.On
     @Override
     boolean hasFab () {
         return true;
+    }
+
+    public static RequestsFragment newInstance(@Nullable ArrayList<RequestItem> items) {
+        RequestsFragment fragment = new RequestsFragment();
+        if (items == null) return fragment;
+        Bundle args = new Bundle();
+        args.putParcelableArrayList(requestListKey, items);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
