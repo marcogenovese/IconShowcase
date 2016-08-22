@@ -76,13 +76,13 @@ public class PreviewsFragment extends NoFabBaseFragment {
         Bundle args = getArguments();
 
         if (args == null || !args.containsKey(categoryListKey)) return loadingView(inflater, container);
+
         View layout = inflater.inflate(R.layout.icons_preview_section, container, false);
 
         mCategories = args.getParcelableArrayList(categoryListKey);
 
         //TODO Check if ViewPager is smooth enough
         mPager = (ViewPager) layout.findViewById(R.id.pager);
-
         mPager.setAdapter(new IconsPagerAdapter(getChildFragmentManager()));
         mPager.setOffscreenPageLimit(mCategories.size() - 1 < 1 ? 1 : mCategories.size() - 1);
         mTabs = (TabLayout) getActivity().findViewById(R.id.tabs);

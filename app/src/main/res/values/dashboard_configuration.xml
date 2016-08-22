@@ -160,7 +160,7 @@
     <!-- WALLPAPERS SECTION CONFIGURATION -->
 
     <!-- Set this to true if you want the alternative wallpaper viewer. (The one with the FAB) -->
-    <bool name="alternative_viewer">false</bool>
+    <bool name="alternative_viewer">true</bool>
 
     <!-- APPLY SECTION CONFIGURATION -->
 
