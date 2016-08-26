@@ -195,10 +195,11 @@
 
     <string name="dashboard_author_copyright">I am a 19-year-old Android development enthusiast and the developer of the dashboard.\n\nShared from Colombia to the world, under CreativeCommons Attribution-ShareAlike License.\nCopyright © 2016.</string>
 
-    <!-- TODO: Allan, set the description you want in your card in credits -->
-    <string name="allan_description">I am an android developer.\nI have helped with part of this dashboard\'s development.</string>
+    <string name="allan_description">First an icon pack creator, then a themer; now also a developer.\nI have helped with part of this dashboard\'s development.</string>
 
     <string name="fork_on_github">Fork on GitHub</string>
+    <string name="github">GitHub</string>
+    <string name="xda">XDA</string>
     <string name="visit_website">Website</string>
     <string name="more_apps">More apps</string>
     <string name="more_apps_long">Check the other apps I have published in Google Play Store.</string>

@@ -29,9 +29,11 @@
     <string name="dashboard_github">https://github.com/jahirfiquitiva/IconShowcase</string>
     <string name="app_version">v %1$s</string>
 
-    <!-- TODO: Allan, set the photo and banner you want -->
-    <string name="allan_photo" formatted="false" tools:ignore="TypographyDashes">"https://goo.gl/KIwN39"</string>
-    <string name="allan_banner" formatted="false" tools:ignore="TypographyDashes">https://lh3.googleusercontent.com/-L3cOC9VJADU/Uyad2SUFtWI/AAAAAAAAAOo/2_EeaK8YYGYYriDO_e3idMaun5AF1taSQCL0B/w698-h558/asdf.jpg</string>
+    <string name="allan_photo" formatted="false" tools:ignore="TypographyDashes">https://raw.githubusercontent.com/AllanWang/Pitched-Wallpapers/master/Material_Glass_Storage/pitchedapps.jpg</string>
+    <string name="allan_banner" formatted="false" tools:ignore="TypographyDashes">https://raw.githubusercontent.com/AllanWang/Pitched-Wallpapers/master/Material_Glass_Storage/banner.jpg</string>
+    <string name="allan_github">https://github.com/AllanWang</string>
+    <string name="allan_gplus">https://plus.google.com/+AllanWPitchedApps</string>
+    <string name="allan_xda">http://forum.xda-developers.com/member.php?u=5230774</string>
 
     <string name="zooper_app">Zooper Widget Pro</string>
     <string name="mu_app">Media Utilities</string>
@@ -82,7 +84,7 @@
     <string name="heinrich">Heinrich Reimer</string>
     <string name="ahmed">Ahmed Rizwan</string>
     <string name="joaquin">Joaquin Cuitiño</string>
-    <string name="allan">Allan Wang</string>
+    <string name="allan">Allan Wang \u2022 Pitched Apps</string>
     <string name="sherry">Sherry Sabatine</string>
 
     <string-array name="contributors_names">

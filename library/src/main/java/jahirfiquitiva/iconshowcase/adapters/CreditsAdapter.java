@@ -92,11 +92,15 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         //TODO: Allan, add the buttons and links you want.
         final String[] allanBtns = {
-                r.getString(R.string.google_plus)
+                r.getString(R.string.github),
+                r.getString(R.string.google_plus),
+                r.getString(R.string.xda)
         };
 
         final String[] allanLinks = {
-                "https://plus.google.com/+AllanWPitchedApps"
+                r.getString(R.string.allan_github),
+                r.getString(R.string.allan_gplus),
+                r.getString(R.string.allan_xda)
         };
 
         detailedCredits.add(new DetailedCreditsItem(r.getString(R.string.dashboard_author_banner),
@@ -146,7 +150,7 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         int n = 0;
         if (detailedCredits != null) n = detailedCredits.size();
 
-        if (position < detailedCredits.size()) {
+        if (position < detailedCredits.size()) { //Allan TODO Fix null pointer
             DetailedCreditsItem item = detailedCredits.get(holder.getAdapterPosition());
             DetailedCreditsHolder detailedCreditsHolder = (DetailedCreditsHolder) holder;
 
@@ -187,7 +191,7 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         if (position >= n) {
             CreditsItem item = credits.get(holder.getAdapterPosition() - n);
-            CreditsHolder creditsHolder = (CreditsHolder) holder;
+            CreditsHolder creditsHolder = (CreditsHolder) holder; //Allan TODO check potential cast exception
 
             creditsHolder.text.setText(item.getText());
             creditsHolder.icon.setImageDrawable(item.getIcon());
@@ -264,7 +268,7 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
-    private Drawable getTintedDrawable (String name) {
+    private Drawable getTintedDrawable (String name) { //Allan TODO move this to Utils? I believe you are using this in a lot of files
         final int light = ContextCompat.getColor(context, R.color.drawable_tint_dark);
         final int dark = ContextCompat.getColor(context, R.color.drawable_tint_light);
 
