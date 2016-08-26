@@ -26,7 +26,7 @@ buildscript {
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 
-group = 'com.github.iconshowcase'
+group = 'com.github.jahirfiquitiva'
 
 ext {
     TARGET_SDK = 24
