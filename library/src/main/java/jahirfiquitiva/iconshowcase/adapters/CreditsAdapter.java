@@ -47,7 +47,7 @@ import jahirfiquitiva.iconshowcase.views.SplitButtonsLayout;
 
 public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private ArrayList<DetailedCreditsItem> detailedCredits;
+    private ArrayList<DetailedCreditsItem> detailedCredits = new ArrayList<>();
     private ArrayList<CreditsItem> credits;
     private Context context;
 
@@ -71,7 +71,6 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         for (int i = 0; i < buttonsLinks.length; i++)
             buttonsLinks2[i] = buttonsLinks[i].split("\\|");
 
-        detailedCredits = new ArrayList<>(titles.length);
         for (int i = 0; i < titles.length; i++) {
             detailedCredits.add(new DetailedCreditsItem(banners[i], photos[i], titles[i], contents[i],
                     buttonsNames2[i], buttonsLinks2[i]));
@@ -89,18 +88,16 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 "http://play.google.com/store/apps/dev?id=7438639276314720952"
         };
 
-
-        //TODO: Allan, add the buttons and links you want.
         final String[] allanBtns = {
                 r.getString(R.string.github),
                 r.getString(R.string.google_plus),
-                r.getString(R.string.xda)
+                r.getString(R.string.play_store)
         };
 
         final String[] allanLinks = {
                 r.getString(R.string.allan_github),
                 r.getString(R.string.allan_gplus),
-                r.getString(R.string.allan_xda)
+                r.getString(R.string.allan_play)
         };
 
         detailedCredits.add(new DetailedCreditsItem(r.getString(R.string.dashboard_author_banner),
@@ -128,18 +125,14 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder (ViewGroup parent, int position) {
-        int n = 0;
-
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
         if (position < detailedCredits.size()) {
             return new DetailedCreditsHolder(inflater.inflate(R.layout.item_detailed_credit, parent, false));
         }
 
-        if (detailedCredits != null) n = detailedCredits.size();
-
-        if (position >= n) {
-            return new CreditsHolder(inflater.inflate(R.layout.item_credit, parent, false), position - n);
+        if (position >= detailedCredits.size()) {
+            return new CreditsHolder(inflater.inflate(R.layout.item_credit, parent, false), position - detailedCredits.size());
         }
 
         return null;
@@ -147,10 +140,7 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public void onBindViewHolder (RecyclerView.ViewHolder holder, int position) {
-        int n = 0;
-        if (detailedCredits != null) n = detailedCredits.size();
-
-        if (position < detailedCredits.size()) { //Allan TODO Fix null pointer
+        if (position < detailedCredits.size()) {
             DetailedCreditsItem item = detailedCredits.get(holder.getAdapterPosition());
             DetailedCreditsHolder detailedCreditsHolder = (DetailedCreditsHolder) holder;
 
@@ -189,8 +179,8 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 });
         }
 
-        if (position >= n) {
-            CreditsItem item = credits.get(holder.getAdapterPosition() - n);
+        if (position >= detailedCredits.size()) {
+            CreditsItem item = credits.get(holder.getAdapterPosition() - detailedCredits.size());
             CreditsHolder creditsHolder = (CreditsHolder) holder; //Allan TODO check potential cast exception
 
             creditsHolder.text.setText(item.getText());
