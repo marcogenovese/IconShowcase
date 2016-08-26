@@ -17,8 +17,6 @@
  * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
-
-
 apply plugin: 'com.android.application'
 
 ext {
@@ -87,7 +85,7 @@ dependencies {
     //Firebase Notifications
     compile 'com.google.firebase:firebase-messaging:9.4.0'
 //    compile project(':library')
-    compile 'com.github.jahirfiquitiva:IconShowcase:5c844ed0b3'
+    compile 'com.github.jahirfiquitiva:IconShowcase:161e33bb92'
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -24,6 +24,9 @@ buildscript {
 }
 
 apply plugin: 'com.android.library'
+apply plugin: 'maven'
+
+group = 'com.github.iconshowcase'
 
 ext {
     TARGET_SDK = 24
@@ -144,4 +147,19 @@ dependencies {
 
     compile 'com.github.AllanWang:Butler:1524a84601'
 
+}
+
+// To specify a license in the pom:
+install {
+    repositories.mavenInstaller {
+        pom.project {
+            licenses {
+                license {
+                    name 'The Apache Software License, Version 2.0'
+                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    distribution 'repo'
+                }
+            }
+        }
+    }
 }
