@@ -86,7 +86,8 @@ dependencies {
     compile "com.android.support:appcompat-v7:$ANDROID_SUPPORT_LIBS"
     //Firebase Notifications
     compile 'com.google.firebase:firebase-messaging:9.4.0'
-    compile project(':library')
+//    compile project(':library')
+    compile 'com.github.jahirfiquitiva:IconShowcase:5c844ed0b3'
 }
 
 apply plugin: 'com.google.gms.google-services'
