@@ -29,6 +29,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.pitchedapps.capsule.library.fragments.CapsuleFragment;
 import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 
 import java.util.ArrayList;
@@ -36,12 +37,38 @@ import java.util.List;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.adapters.FAQsAdapter;
+import jahirfiquitiva.iconshowcase.enums.DrawerType;
 import jahirfiquitiva.iconshowcase.models.FAQsItem;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.views.DividerItemDecoration;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 
-public class FAQsFragment extends NoFabBaseFragment {
+public class FAQsFragment extends CapsuleFragment {
+
+    @Override
+    public void onFabClick(View v) {
+
+    }
+
+    @Override
+    public int getTitleId() {
+        return DrawerType.FAQS.getTitleID();
+    }
+
+    @Override
+    protected int getFabIcon() {
+        return 0;
+    }
+
+    /**
+     * Will hide the fab if false; the fab is still in the viewgroup and is used for various other tasks such as the snackbar
+     *
+     * @return
+     */
+    @Override
+    protected boolean hasFab() {
+        return false;
+    }
 
     @Override
     public View onCreateView (LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {

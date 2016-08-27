@@ -27,6 +27,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.pitchedapps.capsule.library.fragments.CapsuleFragment;
 import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 
 import java.util.ArrayList;
@@ -36,10 +37,11 @@ import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.adapters.KustomAdapter;
 import jahirfiquitiva.iconshowcase.config.Config;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
+import jahirfiquitiva.iconshowcase.enums.DrawerType;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.views.SectionedGridSpacingItemDecoration;
 
-public class KustomFragment extends BaseFragment {
+public class KustomFragment extends CapsuleFragment {
 
     private static Context context;
     private RecyclerView mRecyclerView;
@@ -74,12 +76,17 @@ public class KustomFragment extends BaseFragment {
     }
 
     @Override
-    int getFabIcon () {
+    public int getTitleId() {
+        return DrawerType.KUSTOM.getTitleID();
+    }
+
+    @Override
+    protected int getFabIcon () {
         return R.drawable.ic_store_download;
     }
 
     @Override
-    boolean hasFab () {
+    protected boolean hasFab () {
         return true;
     }
 

@@ -37,12 +37,12 @@ import android.util.Log;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.pitchedapps.capsule.library.activities.CapsuleActivity;
 
 import java.io.File;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
-import jahirfiquitiva.iconshowcase.activities.base.BaseActivity;
 import jahirfiquitiva.iconshowcase.adapters.FeaturesAdapter;
 import jahirfiquitiva.iconshowcase.config.Config;
 import jahirfiquitiva.iconshowcase.dialogs.FolderSelectorDialog;
@@ -67,7 +67,7 @@ public class SettingsFragment extends PreferenceFragment implements
     @Override
     public void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        BaseActivity.hideFab(getActivity());
+        CapsuleActivity.hideFab(getActivity());
 
         mPrefs = new Preferences(getActivity());
 

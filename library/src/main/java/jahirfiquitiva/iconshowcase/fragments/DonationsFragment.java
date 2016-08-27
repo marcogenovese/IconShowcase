@@ -60,16 +60,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.pitchedapps.capsule.library.fragments.CapsuleFragment;
 
 import org.sufficientlysecure.donations.google.util.IabHelper;
 import org.sufficientlysecure.donations.google.util.IabResult;
 import org.sufficientlysecure.donations.google.util.Purchase;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.enums.DrawerType;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 import timber.log.Timber;
 
-public class DonationsFragment extends NoFabBaseFragment {
+public class DonationsFragment extends CapsuleFragment {
 
     private static final String ARG_DEBUG = "debug";
 
@@ -188,6 +190,31 @@ public class DonationsFragment extends NoFabBaseFragment {
 
         mBitcoinEnabled = getArguments().getBoolean(ARG_BITCOIN_ENABLED);
         mBitcoinAddress = getArguments().getString(ARG_BITCOIN_ADDRESS);
+    }
+
+    @Override
+    public void onFabClick(View v) {
+
+    }
+
+    @Override
+    public int getTitleId() {
+        return DrawerType.DONATE.getTitleID();
+    }
+
+    @Override
+    protected int getFabIcon() {
+        return 0;
+    }
+
+    /**
+     * Will hide the fab if false; the fab is still in the viewgroup and is used for various other tasks such as the snackbar
+     *
+     * @return
+     */
+    @Override
+    protected boolean hasFab() {
+        return false;
     }
 
     @Override

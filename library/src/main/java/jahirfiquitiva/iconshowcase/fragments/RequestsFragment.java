@@ -24,9 +24,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import jahirfiquitiva.iconshowcase.R;
+import com.pitchedapps.capsule.library.fragments.CapsuleFragment;
 
-public class RequestsFragment extends BaseFragment {
+import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.enums.DrawerType;
+
+public class RequestsFragment extends CapsuleFragment {
 
     @Override
     public void onFabClick(View v) {
@@ -34,12 +37,17 @@ public class RequestsFragment extends BaseFragment {
     }
 
     @Override
-    int getFabIcon() {
+    public int getTitleId() {
+        return DrawerType.REQUESTS.getTitleID();
+    }
+
+    @Override
+    protected int getFabIcon() {
         return 0;
     }
 
     @Override
-    boolean hasFab() {
+    protected boolean hasFab() {
         return false;
     }
 

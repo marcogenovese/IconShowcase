@@ -36,11 +36,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 
+import com.pitchedapps.capsule.library.fragments.CapsuleFragment;
+
 import java.util.ArrayList;
 import java.util.Locale;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
+import jahirfiquitiva.iconshowcase.enums.DrawerType;
 import jahirfiquitiva.iconshowcase.fragments.base.FragmentStatePagerAdapter;
 import jahirfiquitiva.iconshowcase.models.IconsCategory;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
@@ -48,7 +51,7 @@ import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.utilities.color.ToolbarTinter;
 
 @SuppressWarnings("ResourceAsColor")
-public class PreviewsFragment extends NoFabBaseFragment {
+public class PreviewsFragment extends CapsuleFragment {
 
     private int mLastSelected = 0;
     private ViewPager mPager;
@@ -70,12 +73,37 @@ public class PreviewsFragment extends NoFabBaseFragment {
     }
 
     @Override
+    public void onFabClick(View v) {
+
+    }
+
+    @Override
+    public int getTitleId() {
+        return DrawerType.PREVIEWS.getTitleID();
+    }
+
+    @Override
+    protected int getFabIcon() {
+        return 0;
+    }
+
+    /**
+     * Will hide the fab if false; the fab is still in the viewgroup and is used for various other tasks such as the snackbar
+     *
+     * @return
+     */
+    @Override
+    protected boolean hasFab() {
+        return false;
+    }
+
+    @Override
     public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
         Bundle args = getArguments();
 
-        if (args == null || !args.containsKey(categoryListKey)) return loadingView(inflater, container);
+//        if (args == null || !args.containsKey(categoryListKey)) return loadingView(inflater, container); //TODO
 
         View layout = inflater.inflate(R.layout.icons_preview_section, container, false);
 

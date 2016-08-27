@@ -26,8 +26,10 @@ import android.support.annotation.CallSuper;
 import com.pitchedapps.butler.library.icon.request.App;
 import com.pitchedapps.butler.library.icon.request.AppsLoadCallback;
 import com.pitchedapps.butler.library.icon.request.AppsSelectionListener;
+import com.pitchedapps.butler.library.icon.request.IRUtils;
 import com.pitchedapps.butler.library.icon.request.IconRequest;
 import com.pitchedapps.butler.library.icon.request.RequestSendCallback;
+import com.pitchedapps.capsule.library.activities.CapsuleActivity;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -37,6 +39,7 @@ import java.util.Locale;
 
 import jahirfiquitiva.iconshowcase.BuildConfig;
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.config.Config;
 import jahirfiquitiva.iconshowcase.enums.DrawerType;
 import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.models.IconsCategory;
@@ -48,13 +51,11 @@ import timber.log.Timber;
 /**
  * Created by Allan Wang on 2016-08-20.
  */
-public abstract class TasksActivity extends BaseActivity implements LoadIconsLists.IIconList, LoadRequestList.IRequestList, AppsLoadCallback, RequestSendCallback, AppsSelectionListener {
+public abstract class TasksActivity extends CapsuleActivity implements LoadIconsLists.IIconList, AppsLoadCallback {
 
     protected ArrayList<IconItem> mPreviewIconList;
     protected ArrayList<IconsCategory> mCategoryList;
-    protected ArrayList<RequestItem> mRequestList;
     private boolean tasksExecuted = false;
-    private long start, end;
 
     protected abstract HashMap<DrawerType, Integer> getDrawerMap();
 
@@ -69,12 +70,6 @@ public abstract class TasksActivity extends BaseActivity implements LoadIconsLis
         iconsLoaded();
     }
 
-    @Override
-    public void onListLoaded(ArrayList<RequestItem> appList) {
-        mRequestList = appList;
-        requestListLoaded();
-    }
-
     //TODO fix up booleans
     protected void startTasks(boolean justIcons, boolean justWalls) {
         if (tasksExecuted)
@@ -84,25 +79,22 @@ public abstract class TasksActivity extends BaseActivity implements LoadIconsLis
 
         if (justIcons) new LoadIconsLists(this, this).execute();
         if (getDrawerMap().containsKey(DrawerType.REQUESTS)) {
-            if (false) {
-                start = System.currentTimeMillis();
-                Timber.e("HERE");
                 IconRequest request = IconRequest.start(this)
-                        .withHeader("Hey, testing Icon Request!")
+//                        .withHeader("Hey, testing Icon Request!")
                         .withFooter("%s Version: %s", getString(R.string.app_name), BuildConfig.VERSION_NAME)
-                        .withSubject("Icon Request - Just a Test")
-                        .toEmail("fake-email@fake-website.com")
-                        .saveDir(new File(Environment.getExternalStorageDirectory(), "Icons_Showcase/Icon_Request")) //TODO update
+                        .withSubject(s(R.string.request_title))
+                        .toEmail(s(R.string.email_id))
+                        .saveDir(new File(getString(R.string.request_save_location, Environment.getExternalStorageDirectory())))
                         .includeDeviceInfo(true) // defaults to true anyways
                         .generateAppFilterXml(true) // defaults to true anyways
                         .generateAppFilterJson(false)
                         .loadCallback(this)
-                        .sendCallback(this)
-                        .selectionCallback(this)
-                        .filterOff()
+//                        .sendCallback(this)
+//                        .selectionCallback(this) //TODO add this? and add max cap
+                        .debugMode(Config.get().allowDebugging())
+                        .filterOff() //TODO switch
                         .build();
                 request.loadApps();
-            }
         }
 
     }
@@ -113,33 +105,11 @@ public abstract class TasksActivity extends BaseActivity implements LoadIconsLis
 
     @Override
     public void onAppsLoaded(ArrayList<App> apps, Exception e) {
-        end = System.currentTimeMillis();
-        Timber.e("LOAD TIME %d MS", end - start);
         requestListLoaded();
     }
 
     @Override
     public void onAppsLoadProgress(int percent) {
-    }
-
-    @Override
-    public void onRequestPreparing() {
-
-    }
-
-    @Override
-    public void onRequestError(Exception e) {
-
-    }
-
-    @Override
-    public void onRequestSent() {
-
-    }
-
-    @Override
-    public void onAppSelectionChanged(int selectedCount) {
-
     }
 
     @Override

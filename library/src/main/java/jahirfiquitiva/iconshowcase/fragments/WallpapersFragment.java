@@ -48,6 +48,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.pitchedapps.capsule.library.fragments.CapsuleFragment;
 import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 
 import org.json.JSONArray;
@@ -65,6 +66,7 @@ import jahirfiquitiva.iconshowcase.activities.AltWallpaperViewerActivity;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.activities.WallpaperViewerActivity;
 import jahirfiquitiva.iconshowcase.adapters.WallpapersAdapter;
+import jahirfiquitiva.iconshowcase.enums.DrawerType;
 import jahirfiquitiva.iconshowcase.models.WallpaperItem;
 import jahirfiquitiva.iconshowcase.models.WallpapersList;
 import jahirfiquitiva.iconshowcase.tasks.ApplyWallpaper;
@@ -76,7 +78,7 @@ import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 import timber.log.Timber;
 
-public class WallpapersFragment extends NoFabBaseFragment {
+public class WallpapersFragment extends CapsuleFragment {
 
     private static ViewGroup layout;
     private static ProgressBar mProgress;
@@ -89,6 +91,31 @@ public class WallpapersFragment extends NoFabBaseFragment {
     private static GridSpacingItemDecoration gridSpacing;
     private static int light, dark;
     private static MaterialDialog dialogApply;
+
+    @Override
+    public void onFabClick(View v) {
+
+    }
+
+    @Override
+    public int getTitleId() {
+        return DrawerType.WALLPAPERS.getTitleID();
+    }
+
+    @Override
+    protected int getFabIcon() {
+        return 0;
+    }
+
+    /**
+     * Will hide the fab if false; the fab is still in the viewgroup and is used for various other tasks such as the snackbar
+     *
+     * @return
+     */
+    @Override
+    protected boolean hasFab() {
+        return false;
+    }
 
     @Override
     public View onCreateView (LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {

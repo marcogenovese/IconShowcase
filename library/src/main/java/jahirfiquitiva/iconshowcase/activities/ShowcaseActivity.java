@@ -200,8 +200,6 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
 
         getAction();
 
-        setContentView(R.layout.showcase_activity);
-
         startTasks((iconsPicker && mDrawerMap.containsKey(DrawerType.PREVIEWS)),
                 (wallsPicker && mPrefs.areFeaturesEnabled() && mDrawerMap.containsKey(DrawerType.WALLPAPERS)));
 
@@ -239,7 +237,6 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
         icon7 = (ImageView) findViewById(R.id.iconSeven);
         icon8 = (ImageView) findViewById(R.id.iconEight);
 
-        setupFab(R.id.fab);
         appbar = (AppBarLayout) findViewById(R.id.appbar);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbar);
@@ -495,9 +492,10 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
     }
 
     @Override
-    public void onRequestPermissionsResult (int requestCode, @NonNull String[] permissions, @NonNull int[] grantResult) {
+    public void onRequestPermissionsResult (int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == PermissionUtils.PERMISSION_REQUEST_CODE) {
-            if (permissionGranted(grantResult) && PermissionUtils.permissionReceived() != null) {
+            if (permissionGranted(grantResults) && PermissionUtils.permissionReceived() != null) {
                 PermissionUtils.permissionReceived().onStoragePermissionGranted();
             }
         }
@@ -670,6 +668,26 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
     @Override
     protected int getFragmentId () {
         return R.id.main;
+    }
+
+    /**
+     * Gets the fab ID
+     *
+     * @return fabID
+     */
+    @Override
+    protected int getFabId() {
+        return R.id.fab;
+    }
+
+    /**
+     * Gets your layout ID for the activity
+     *
+     * @return layoutID
+     */
+    @Override
+    protected int getContentViewId() {
+        return R.layout.showcase_activity;
     }
 
     @Override

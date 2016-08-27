@@ -28,15 +28,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.pitchedapps.capsule.library.fragments.CapsuleFragment;
 import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.adapters.ZooperAdapter;
+import jahirfiquitiva.iconshowcase.enums.DrawerType;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 
-public class ZooperFragment extends NoFabBaseFragment {
+public class ZooperFragment extends CapsuleFragment {
 
     private static ViewGroup layout;
     private static Context context;
@@ -44,6 +46,31 @@ public class ZooperFragment extends NoFabBaseFragment {
     private RecyclerView mRecyclerView;
     public static ZooperAdapter zooperAdapter;
     private GridSpacingItemDecoration space;
+
+    @Override
+    public void onFabClick(View v) {
+
+    }
+
+    @Override
+    public int getTitleId() {
+        return DrawerType.ZOOPER.getTitleID();
+    }
+
+    @Override
+    protected int getFabIcon() {
+        return 0;
+    }
+
+    /**
+     * Will hide the fab if false; the fab is still in the viewgroup and is used for various other tasks such as the snackbar
+     *
+     * @return
+     */
+    @Override
+    protected boolean hasFab() {
+        return false;
+    }
 
     @Override
     public View onCreateView (LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {

@@ -32,18 +32,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.pitchedapps.capsule.library.fragments.CapsuleFragment;
+
 import java.util.ArrayList;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.adapters.HomeListAdapter;
+import jahirfiquitiva.iconshowcase.enums.DrawerType;
 import jahirfiquitiva.iconshowcase.models.HomeCard;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 import jahirfiquitiva.iconshowcase.views.DividerItemDecoration;
 import timber.log.Timber;
 
-public class MainFragment extends BaseFragment {
+public class MainFragment extends CapsuleFragment {
 
     private Context context;
 
@@ -59,12 +62,17 @@ public class MainFragment extends BaseFragment {
     }
 
     @Override
-    int getFabIcon () {
+    public int getTitleId() {
+        return DrawerType.HOME.getTitleID();
+    }
+
+    @Override
+    protected int getFabIcon () {
         return R.drawable.ic_rate;
     }
 
     @Override
-    boolean hasFab () {
+    protected boolean hasFab () {
         return true;
     }
 

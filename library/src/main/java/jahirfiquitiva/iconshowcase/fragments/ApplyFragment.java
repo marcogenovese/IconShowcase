@@ -33,6 +33,7 @@ import android.view.ViewGroup;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.pitchedapps.capsule.library.fragments.CapsuleFragment;
 import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ import java.util.List;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.adapters.LaunchersAdapter;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
+import jahirfiquitiva.iconshowcase.enums.DrawerType;
 import jahirfiquitiva.iconshowcase.utilities.Common;
 import jahirfiquitiva.iconshowcase.utilities.LauncherIntents;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
@@ -49,13 +51,38 @@ import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.utilities.sort.InstalledLauncherComparator;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 
-public class ApplyFragment extends NoFabBaseFragment {
+public class ApplyFragment extends CapsuleFragment {
 
     private String intentString;
     private final List<Launcher> launchers = new ArrayList<>();
     private RecyclerView recyclerView;
 
     private Preferences mPrefs;
+
+    @Override
+    public void onFabClick(View v) {
+
+    }
+
+    @Override
+    public int getTitleId() {
+        return DrawerType.APPLY.getTitleID();
+    }
+
+    @Override
+    protected int getFabIcon() {
+        return 0;
+    }
+
+    /**
+     * Will hide the fab if false; the fab is still in the viewgroup and is used for various other tasks such as the snackbar
+     *
+     * @return
+     */
+    @Override
+    protected boolean hasFab() {
+        return false;
+    }
 
     @Override
     public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
