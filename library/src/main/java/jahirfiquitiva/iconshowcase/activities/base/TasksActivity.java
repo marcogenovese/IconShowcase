@@ -22,14 +22,15 @@ package jahirfiquitiva.iconshowcase.activities.base;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.CallSuper;
+import android.support.annotation.NonNull;
+import android.view.View;
 
-import com.pitchedapps.butler.library.icon.request.App;
-import com.pitchedapps.butler.library.icon.request.AppsLoadCallback;
-import com.pitchedapps.butler.library.icon.request.AppsSelectionListener;
-import com.pitchedapps.butler.library.icon.request.IRUtils;
+import com.pitchedapps.butler.library.icon.request.AppLoadedEvent;
 import com.pitchedapps.butler.library.icon.request.IconRequest;
-import com.pitchedapps.butler.library.icon.request.RequestSendCallback;
 import com.pitchedapps.capsule.library.activities.CapsuleActivity;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ import timber.log.Timber;
 /**
  * Created by Allan Wang on 2016-08-20.
  */
-public abstract class TasksActivity extends CapsuleActivity implements LoadIconsLists.IIconList, AppsLoadCallback {
+public abstract class TasksActivity extends CapsuleActivity implements LoadIconsLists.IIconList {
 
     protected ArrayList<IconItem> mPreviewIconList;
     protected ArrayList<IconsCategory> mCategoryList;
@@ -61,55 +62,52 @@ public abstract class TasksActivity extends CapsuleActivity implements LoadIcons
 
     protected abstract void iconsLoaded();
 
-    protected abstract void requestListLoaded();
-
     @Override
-    public void onLoadComplete (ArrayList<IconItem> previewIcons, ArrayList<IconsCategory> categoryList) {
+    public void onLoadComplete(ArrayList<IconItem> previewIcons, ArrayList<IconsCategory> categoryList) {
         mPreviewIconList = previewIcons;
         mCategoryList = categoryList;
         iconsLoaded();
     }
 
     //TODO fix up booleans
-    protected void startTasks(boolean justIcons, boolean justWalls) {
+    protected void startTasks() {
+        Timber.d("Starting tasks");
         if (tasksExecuted)
             Timber.w("startTasks() executed more than once; please remove duplicates");
         tasksExecuted = true;
-        HashMap<DrawerType, Integer> drawerMap = getDrawerMap();
-
-        if (justIcons) new LoadIconsLists(this, this).execute();
+        if (getDrawerMap().containsKey(DrawerType.PREVIEWS))
+            new LoadIconsLists(this, this).execute();
         if (getDrawerMap().containsKey(DrawerType.REQUESTS)) {
-                IconRequest request = IconRequest.start(this)
+            IconRequest.start(this)
 //                        .withHeader("Hey, testing Icon Request!")
-                        .withFooter("%s Version: %s", getString(R.string.app_name), BuildConfig.VERSION_NAME)
-                        .withSubject(s(R.string.request_title))
-                        .toEmail(s(R.string.email_id))
-                        .saveDir(new File(getString(R.string.request_save_location, Environment.getExternalStorageDirectory())))
-                        .includeDeviceInfo(true) // defaults to true anyways
-                        .generateAppFilterXml(true) // defaults to true anyways
-                        .generateAppFilterJson(false)
-                        .loadCallback(this)
+                    .withFooter("%s Version: %s", getString(R.string.app_name), BuildConfig.VERSION_NAME)
+                    .withSubject(s(R.string.request_title))
+                    .toEmail(s(R.string.email_id))
+                    .saveDir(new File(getString(R.string.request_save_location, Environment.getExternalStorageDirectory())))
+                    .includeDeviceInfo(true) // defaults to true anyways
+                    .generateAppFilterXml(true) // defaults to true anyways
+                    .generateAppFilterJson(false)
 //                        .sendCallback(this)
 //                        .selectionCallback(this) //TODO add this? and add max cap
-                        .debugMode(Config.get().allowDebugging())
-                        .filterOff() //TODO switch
-                        .build();
-                request.loadApps();
+                    .debugMode(Config.get().allowDebugging())
+                    .filterOff() //TODO switch
+                    .build().loadApps();
         }
 
     }
 
-    @Override
-    public void onLoadingFilter() {
+    @Subscribe
+    public void onAppsLoaded(AppLoadedEvent event) {
+        IconRequest.get().loadHighResIcons();
     }
 
     @Override
-    public void onAppsLoaded(ArrayList<App> apps, Exception e) {
-        requestListLoaded();
-    }
-
-    @Override
-    public void onAppsLoadProgress(int percent) {
+    @CallSuper
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
+        if (savedInstanceState != null)
+            IconRequest.restoreInstanceState(this, savedInstanceState);
     }
 
     @Override
@@ -117,6 +115,12 @@ public abstract class TasksActivity extends CapsuleActivity implements LoadIcons
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         IconRequest.saveInstanceState(outState);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
 }

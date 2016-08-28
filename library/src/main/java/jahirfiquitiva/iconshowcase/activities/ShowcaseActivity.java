@@ -200,13 +200,10 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
 
         getAction();
 
-        startTasks((iconsPicker && mDrawerMap.containsKey(DrawerType.PREVIEWS)),
-                (wallsPicker && mPrefs.areFeaturesEnabled() && mDrawerMap.containsKey(DrawerType.WALLPAPERS)));
-
         //Will be deprecated for TasksActivity
-        TasksExecutor.with(context)
-                .loadJust((iconsPicker && mDrawerMap.containsKey(DrawerType.PREVIEWS)),
-                        (wallsPicker && mPrefs.areFeaturesEnabled() && mDrawerMap.containsKey(DrawerType.WALLPAPERS)));
+//        TasksExecutor.with(context)
+//                .loadJust((iconsPicker && mDrawerMap.containsKey(DrawerType.PREVIEWS)),
+//                        (wallsPicker && mPrefs.areFeaturesEnabled() && mDrawerMap.containsKey(DrawerType.WALLPAPERS)));
 
         shuffleIcons = getResources().getBoolean(R.bool.shuffle_toolbar_icons);
 
@@ -306,6 +303,10 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
                 }
             }
         }
+
+        //Load last, load all other data first
+        startTasks(); //TODO check iconsPicker and wallsPicker booleans
+
     }
 
     private Fragment getCurrentFragment () {
@@ -698,13 +699,6 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
             setupIcons();
         } else if (fragment instanceof PreviewsFragment) {
             Timber.d("Reloading Previews");
-            reloadFragment(DrawerType.REQUESTS);
-        }
-    }
-
-    @Override
-    protected void requestListLoaded() {
-        if (getCurrentFragment() instanceof RequestsFragment) {
             reloadFragment(DrawerType.REQUESTS);
         }
     }
