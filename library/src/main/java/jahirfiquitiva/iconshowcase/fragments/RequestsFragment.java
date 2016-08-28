@@ -19,6 +19,7 @@
 
 package jahirfiquitiva.iconshowcase.fragments;
 
+import android.Manifest;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,28 +30,30 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.pitchedapps.butler.library.icon.request.AppLoadedEvent;
-import com.pitchedapps.butler.library.icon.request.AppLoadingEvent;
 import com.pitchedapps.butler.library.icon.request.IconRequest;
 import com.pitchedapps.capsule.library.fragments.CapsuleFragment;
+import com.pitchedapps.capsule.library.permissions.CPermissionCallback;
+import com.pitchedapps.capsule.library.permissions.PermissionResult;
 import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.adapters.RequestsAdapter;
 import jahirfiquitiva.iconshowcase.enums.DrawerType;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
+import timber.log.Timber;
 
 public class RequestsFragment extends CapsuleFragment {
 
     private ViewGroup mViewGroup;
     private RelativeLayout mLoadingView;
-    private  TextView mLoadingText;
+    private TextView mLoadingText;
     private RecyclerView mRecyclerView;
-    private RecyclerFastScroller mFastScroller;
-    private boolean loaded = false, subscribed = true;
-    private int maxApps = 0, minutesLimit = 0;
+    private boolean subscribed = true;
+    private int maxApps = 0, minutesLimit = 0; //TODO move to taskactivity
 
     @Override
     public void onStart() {
@@ -60,13 +63,18 @@ public class RequestsFragment extends CapsuleFragment {
 
     @Override
     public void onStop() {
-        if (subscribed) EventBus.getDefault().unregister(this);
+        if (EventBus.getDefault().isRegistered(this)) EventBus.getDefault().unregister(this);
         super.onStop();
     }
 
     @Override
     public void onFabClick(View v) {
-
+        getPermissions(new CPermissionCallback() {
+            @Override
+            public void onResult(PermissionResult result) {
+                if (result.isAllGranted()) IconRequest.get().send();
+            }
+        }, 987, Manifest.permission.WRITE_EXTERNAL_STORAGE);
     }
 
     @Override
@@ -84,6 +92,14 @@ public class RequestsFragment extends CapsuleFragment {
         return true;
     }
 
+//    public static RequestsFragment newInstance(boolean isLoaded) {
+//        RequestsFragment fragment = new RequestsFragment();
+//        Bundle args = new Bundle();
+//        args.putBoolean("is_loaded", isLoaded);
+//        fragment.setArguments(args);
+//        return fragment;
+//    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
@@ -100,12 +116,14 @@ public class RequestsFragment extends CapsuleFragment {
         mViewGroup = (ViewGroup) layout.findViewById(R.id.viewgroup);
         mLoadingView = (RelativeLayout) layout.findViewById(R.id.loading_view);
         mRecyclerView = (RecyclerView) layout.findViewById(R.id.appsToRequestList);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), columnsNumber));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), columnsNumber)); //TODO use linear manager for items?
+        mRecyclerView.setHasFixedSize(true);
         mRecyclerView.addItemDecoration(
                 new GridSpacingItemDecoration(columnsNumber,
                         gridSpacing,
                         true));
-        mFastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
+        RecyclerFastScroller mFastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
+        mFastScroller.attachRecyclerView(mRecyclerView);
 
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -118,39 +136,40 @@ public class RequestsFragment extends CapsuleFragment {
                 }
             }
         });
-
-        if (IconRequest.get().isLoaded()) {
+        if (!IconRequest.get().isLoading()) {
             switchToLoadedView();
             subscribed = false;
+            Timber.d("Requests already loaded");
         } else {
-            mLoadingText = (TextView) layout.findViewById(R.id.text);
+            mLoadingText = (TextView) layout.findViewById(R.id.loading_text);
+            Timber.d("Requests still loading; subscribing to events");
+//            AppLoadingEvent stickyEvent = EventBus.getDefault().removeStickyEvent(AppLoadingEvent.class);
+//            if (stickyEvent != null) onAppsLoading(stickyEvent);
         }
-
         return layout;
     }
 
-    @Subscribe
-    public void onAppsLoaded(AppLoadedEvent event) {
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onAppsLoaded(AppLoadedEvent event) { //TODO make use of exceptions provided in event
         switchToLoadedView();
+//        EventBus.getDefault().unregister(AppLoadingEvent.class);
     }
 
-    @Subscribe
-    public void onAppsLoading(AppLoadingEvent event) {
-        if (loaded) return;
-        mLoadingText.setText(event.getString());
-    }
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    public void onAppsLoading(AppLoadingEvent event) {
+//        EventBus.getDefault().removeStickyEvent(AppLoadingEvent.class);
+//        if (loaded) return;
+//        mLoadingText.setText(event.getString());
+//    }
 
     private void switchToLoadedView() {
-        loaded = true;
         mViewGroup.removeView(mLoadingView);
         mLoadingView = null;
         mLoadingText = null;
         mRecyclerView.setVisibility(View.VISIBLE);
         RequestsAdapter mAdapter = new RequestsAdapter();
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setItemAnimator(null);
-        mRecyclerView.setAnimation(null);
+//        mRecyclerView.setItemAnimator(null);
+//        mRecyclerView.setAnimation(null);
         mRecyclerView.setAdapter(mAdapter);
-        mFastScroller.attachRecyclerView(mRecyclerView);
     }
 }

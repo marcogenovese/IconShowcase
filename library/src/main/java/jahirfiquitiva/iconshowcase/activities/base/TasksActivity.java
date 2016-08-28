@@ -22,8 +22,6 @@ package jahirfiquitiva.iconshowcase.activities.base;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.CallSuper;
-import android.support.annotation.NonNull;
-import android.view.View;
 
 import com.pitchedapps.butler.library.icon.request.AppLoadedEvent;
 import com.pitchedapps.butler.library.icon.request.IconRequest;
@@ -35,8 +33,6 @@ import org.greenrobot.eventbus.Subscribe;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
 
 import jahirfiquitiva.iconshowcase.BuildConfig;
 import jahirfiquitiva.iconshowcase.R;
@@ -44,9 +40,7 @@ import jahirfiquitiva.iconshowcase.config.Config;
 import jahirfiquitiva.iconshowcase.enums.DrawerType;
 import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.models.IconsCategory;
-import jahirfiquitiva.iconshowcase.models.RequestItem;
 import jahirfiquitiva.iconshowcase.tasks.LoadIconsLists;
-import jahirfiquitiva.iconshowcase.tasks.LoadRequestList;
 import timber.log.Timber;
 
 /**
@@ -87,25 +81,23 @@ public abstract class TasksActivity extends CapsuleActivity implements LoadIcons
                     .includeDeviceInfo(true) // defaults to true anyways
                     .generateAppFilterXml(true) // defaults to true anyways
                     .generateAppFilterJson(false)
-//                        .sendCallback(this)
-//                        .selectionCallback(this) //TODO add this? and add max cap
                     .debugMode(Config.get().allowDebugging())
                     .filterOff() //TODO switch
+                    .maxSelectionCount(0) //TODO add? And make this toggleable
                     .build().loadApps();
         }
 
     }
 
-    @Subscribe
-    public void onAppsLoaded(AppLoadedEvent event) {
-        IconRequest.get().loadHighResIcons();
-    }
+//    @Subscribe
+//    public void onAppsLoaded(AppLoadedEvent event) {
+//        IconRequest.get().loadHighResIcons(); //Takes too much memory
+//    }
 
     @Override
     @CallSuper
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EventBus.getDefault().register(this);
         if (savedInstanceState != null)
             IconRequest.restoreInstanceState(this, savedInstanceState);
     }
@@ -117,10 +109,16 @@ public abstract class TasksActivity extends CapsuleActivity implements LoadIcons
         IconRequest.saveInstanceState(outState);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
-    }
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        EventBus.getDefault().register(this);
+//    }
+//
+//    @Override
+//    public void onStop() {
+//        EventBus.getDefault().unregister(this);
+//        super.onStop();
+//    }
 
 }

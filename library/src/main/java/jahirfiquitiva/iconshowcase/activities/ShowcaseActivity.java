@@ -348,6 +348,7 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
                 return new WallpapersFragment();
 
             case REQUESTS:
+//                return RequestsFragment.newInstance(isRequestsFullyLoaded());
                 return new RequestsFragment();
 
             case APPLY:

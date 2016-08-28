@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) 2016 Jahir Fiquitiva
+  ~ Copyright (c) 2016.  Jahir Fiquitiva
   ~
   ~ Licensed under the CreativeCommons Attribution-ShareAlike
   ~ 4.0 International License. You may not use this file except in compliance
@@ -14,15 +14,15 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   ~
-  ~ Special thanks to the project contributors and collaborators
-  ~ 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
+  ~ Big thanks to the project contributors. Check them in the repository.
+  ~
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/requestCard"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="80dp"
     android:background="?android:attr/selectableItemBackground"
     android:clickable="true"
     android:clipToPadding="false"
@@ -32,9 +32,8 @@
 
     <ImageView
         android:id="@+id/imgIcon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
         android:maxHeight="64dp"
         android:maxWidth="64dp"
         android:padding="@dimen/lists_padding"
@@ -59,7 +58,7 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             tools:text="App Name And Some Other Texts Im testing right now"/>
 
-        <jahirfiquitiva.iconshowcase.views.RequestsCheckBox
+        <android.support.v7.widget.AppCompatCheckBox
             android:id="@+id/chkSelected"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

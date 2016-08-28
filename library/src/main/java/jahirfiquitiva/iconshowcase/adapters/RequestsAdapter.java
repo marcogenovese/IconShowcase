@@ -16,7 +16,6 @@ import java.util.ArrayList;
 
 import jahirfiquitiva.iconshowcase.R;
 
-
 public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.RequestsHolder> {
 
     @Nullable
