@@ -461,8 +461,8 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
     public void onBackPressed () {
         if (drawer != null && drawer.isDrawerOpen()) {
             drawer.closeDrawer();
-        } else if (drawer != null && currentItem != 1 && !iconsPicker) {
-            drawer.setSelection(1);
+        } else if (drawer != null && currentItem != 0 && !iconsPicker) {
+            drawer.setSelection(0);
         } else if (drawer != null) {
             super.onBackPressed();
         } else {

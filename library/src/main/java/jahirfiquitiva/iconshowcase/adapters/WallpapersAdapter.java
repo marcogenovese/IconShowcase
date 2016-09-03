@@ -33,6 +33,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
 import java.util.ArrayList;
@@ -116,16 +118,21 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
             Glide.with(context)
                     .load(wallURL)
                     .asBitmap()
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .priority(Priority.HIGH)
                     .thumbnail(
                             Glide.with(context)
                                     .load(wallThumbURL)
                                     .asBitmap()
+                                    .priority(Priority.IMMEDIATE)
                                     .thumbnail(0.3f))
                     .into(target);
         } else {
             Glide.with(context)
                     .load(wallURL)
                     .asBitmap()
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .priority(Priority.HIGH)
                     .thumbnail(0.5f)
                     .into(target);
         }

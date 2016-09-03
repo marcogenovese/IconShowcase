@@ -34,6 +34,8 @@ import android.widget.ImageView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
 import java.util.ArrayList;
@@ -102,6 +104,8 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
         Glide.with(context)
                 .load(iconResource)
                 .asBitmap()
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .priority(Priority.HIGH)
                 .into(new BitmapImageViewTarget(holder.icon) {
                     @Override
                     protected void setResource (Bitmap resource) {

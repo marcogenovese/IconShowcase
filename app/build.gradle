@@ -69,7 +69,7 @@ android {
     buildTypes {
         release {
             minifyEnabled true
-            shrinkResources true
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         aaptOptions {
@@ -85,7 +85,6 @@ dependencies {
     //Firebase Notifications
     compile 'com.google.firebase:firebase-messaging:9.4.0'
     compile project(':library')
-//    compile 'com.github.jahirfiquitiva:IconShowcase:-SNAPSHOT'
 }
 
 apply plugin: 'com.google.gms.google-services'
