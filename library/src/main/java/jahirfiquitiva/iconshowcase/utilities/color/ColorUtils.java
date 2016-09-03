@@ -157,6 +157,16 @@ public class ColorUtils {
         return textColor;
     }
 
+
+    public static Drawable getTintedDrawable (@NonNull Context context, String name) {
+        final int light = ContextCompat.getColor(context, R.color.drawable_tint_dark);
+        final int dark = ContextCompat.getColor(context, R.color.drawable_tint_light);
+
+        return ColorUtils.getTintedIcon(context,
+                Utils.getIconResId(context.getResources(), context.getPackageName(), name),
+                ThemeUtils.darkTheme ? light : dark);
+    }
+
     public static Drawable getTintedIcon (@NonNull Context context, @DrawableRes int drawable, @ColorInt int color) {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

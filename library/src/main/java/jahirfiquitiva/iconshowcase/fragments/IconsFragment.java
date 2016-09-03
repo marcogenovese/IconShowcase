@@ -33,7 +33,7 @@ import java.util.ArrayList;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.adapters.IconsAdapter;
-import jahirfiquitiva.iconshowcase.enums.DrawerType;
+import jahirfiquitiva.iconshowcase.enums.DrawerItem;
 import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.models.IconsCategory;
 
@@ -43,17 +43,17 @@ public class IconsFragment extends CapsuleFragment {
     private ArrayList<IconItem> iconsList, filteredIconsList;
 
     @Override
-    public void onFabClick(View v) {
+    public void onFabClick (View v) {
 
     }
 
     @Override
-    public int getTitleId() {
-        return DrawerType.PREVIEWS.getTitleID();
+    public int getTitleId () {
+        return DrawerItem.PREVIEWS.getTitleID();
     }
 
     @Override
-    protected int getFabIcon() {
+    protected int getFabIcon () {
         return 0;
     }
 
@@ -63,7 +63,7 @@ public class IconsFragment extends CapsuleFragment {
      * @return
      */
     @Override
-    protected boolean hasFab() {
+    protected boolean hasFab () {
         return false;
     }
 

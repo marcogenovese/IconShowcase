@@ -33,6 +33,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.StyleRes;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
@@ -47,6 +48,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -79,7 +81,7 @@ import jahirfiquitiva.iconshowcase.config.Config;
 import jahirfiquitiva.iconshowcase.dialogs.ChangelogDialog;
 import jahirfiquitiva.iconshowcase.dialogs.FolderSelectorDialog;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
-import jahirfiquitiva.iconshowcase.enums.DrawerType;
+import jahirfiquitiva.iconshowcase.enums.DrawerItem;
 import jahirfiquitiva.iconshowcase.fragments.ApplyFragment;
 import jahirfiquitiva.iconshowcase.fragments.CreditsFragment;
 import jahirfiquitiva.iconshowcase.fragments.DonationsFragment;
@@ -94,8 +96,6 @@ import jahirfiquitiva.iconshowcase.fragments.ZooperFragment;
 import jahirfiquitiva.iconshowcase.logging.CrashReportingTree;
 import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.models.WallpapersList;
-import jahirfiquitiva.iconshowcase.tasks.TasksExecutor;
-import jahirfiquitiva.iconshowcase.utilities.Common;
 import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
@@ -155,8 +155,8 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
     public static ImageView toolbarHeader;
     public static Bitmap toolbarHeaderImage;
     public static Drawable wallpaperDrawable;
-    private List<DrawerType> mDrawerItems;
-    private HashMap<DrawerType, Integer> mDrawerMap = new HashMap<>();
+    private List<DrawerItem> mDrawerItems;
+    private HashMap<DrawerItem, Integer> mDrawerMap = new HashMap<>();
 
     private Drawer drawer;
 
@@ -201,17 +201,16 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
         getAction();
 
         //Will be deprecated for TasksActivity
-//        TasksExecutor.with(context)
-//                .loadJust((iconsPicker && mDrawerMap.containsKey(DrawerType.PREVIEWS)),
-//                        (wallsPicker && mPrefs.areFeaturesEnabled() && mDrawerMap.containsKey(DrawerType.WALLPAPERS)));
+        //        TasksExecutor.with(context)
+        //                .loadJust((iconsPicker && mDrawerMap.containsKey(DrawerItem.PREVIEWS)),
+        //                        (wallsPicker && mPrefs.areFeaturesEnabled() && mDrawerMap.containsKey(DrawerItem.WALLPAPERS)));
 
         shuffleIcons = getResources().getBoolean(R.bool.shuffle_toolbar_icons);
 
         mPrefs.setActivityVisible(true);
 
         try {
-            //TODO move theses strings to final
-            if (installer.matches("com.google.android.feedback") || installer.matches("com.android.vending")) {
+            if (installer.matches(Config.PLAY_STORE_INSTALLER) || installer.matches(Config.PLAY_STORE_PACKAGE)) {
                 installedFromPlayStore = true;
             }
         } catch (Exception e) {
@@ -287,11 +286,11 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
 
         if (savedInstanceState == null) {
             if (openWallpapers) {
-                drawerItemSelectAndClick(mDrawerMap.get(DrawerType.WALLPAPERS));
-            } else if (iconsPicker && mDrawerMap.containsKey(DrawerType.PREVIEWS)) {
-                drawerItemSelectAndClick(mDrawerMap.get(DrawerType.PREVIEWS));
-            } else if (wallsPicker && mPrefs.areFeaturesEnabled() && mDrawerMap.containsKey(DrawerType.WALLPAPERS)) {
-                drawerItemSelectAndClick(mDrawerMap.get(DrawerType.WALLPAPERS));
+                drawerItemSelectAndClick(mDrawerMap.get(DrawerItem.WALLPAPERS));
+            } else if (iconsPicker && mDrawerMap.containsKey(DrawerItem.PREVIEWS)) {
+                drawerItemSelectAndClick(mDrawerMap.get(DrawerItem.PREVIEWS));
+            } else if (wallsPicker && mPrefs.areFeaturesEnabled() && mDrawerMap.containsKey(DrawerItem.WALLPAPERS)) {
+                drawerItemSelectAndClick(mDrawerMap.get(DrawerItem.WALLPAPERS));
             } else {
                 if (mPrefs.getSettingsModified()) {
                     //TODO check this
@@ -313,7 +312,7 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
         return getSupportFragmentManager().findFragmentById(getFragmentId());
     }
 
-    private void reloadFragment(DrawerType dt) {
+    private void reloadFragment (DrawerItem dt) {
         FragmentTransaction fragmentTransaction = context.getSupportFragmentManager()
                 .beginTransaction();
 
@@ -324,7 +323,7 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
         fragmentTransaction.commit();
     }
 
-    private Fragment drawerTypeToFragment (DrawerType dt) {
+    private Fragment drawerTypeToFragment (DrawerItem dt) {
         switch (dt) {
             case DONATE:
                 return DonationsFragment.newInstance(DONATIONS_GOOGLE,
@@ -348,7 +347,7 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
                 return new WallpapersFragment();
 
             case REQUESTS:
-//                return RequestsFragment.newInstance(isRequestsFullyLoaded());
+                //                return RequestsFragment.newInstance(isRequestsFullyLoaded());
                 return new RequestsFragment();
 
             case APPLY:
@@ -376,7 +375,7 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
         }
     }
 
-    private void switchFragment (long itemId, DrawerType dt, AppCompatActivity context) {
+    private void switchFragment (long itemId, DrawerItem dt, AppCompatActivity context) {
 
         if (currentItem == itemId) {
             // Don't allow re-selection of the currently active item
@@ -384,13 +383,13 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
         }
         currentItem = itemId;
 
-        if (dt == DrawerType.HOME && !iconsPicker && !wallsPicker) {
+        if (dt == DrawerItem.HOME && !iconsPicker && !wallsPicker) {
             Utils.expandToolbar(this);
         } else {
             Utils.collapseToolbar(this);
         }
 
-        if (dt == DrawerType.HOME) {
+        if (dt == DrawerItem.HOME) {
             icon1.setVisibility(View.INVISIBLE);
             icon2.setVisibility(View.INVISIBLE);
             icon3.setVisibility(View.INVISIBLE);
@@ -485,6 +484,7 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
             mPrefs = new Preferences(this);
         }
         mPrefs.setActivityVisible(false);
+        Config.deinit();
     }
 
     @Override
@@ -514,16 +514,17 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
         if (i == R.id.changelog) {
             ChangelogDialog.show(this);
         } else if (i == R.id.refresh) {
+            //TODO: MAKE WALLPAPERS APPEAR AT FIRST. FOR SOME REASON ONLY APPEAR AFTER PRESSING "UPDATE" ICON IN TOOLBAR
             WallpapersFragment.refreshWalls(context);
             loadWallsList(this);
         } else if (i == R.id.columns) {
             ISDialogs.showColumnsSelectorDialog(context);
         } else if (i == R.id.select_all) {
-//            RequestsAdapter requestsAdapter = RequestsFragment.requestsAdapter;
-//            if (requestsAdapter != null && RequestsFragment.requestsAdapter.appsList.size() > 0) {
-//                RequestsFragment.requestsAdapter.selectOrDeselectAll(SELECT_ALL_APPS, mPrefs);
-//                SELECT_ALL_APPS = !SELECT_ALL_APPS;
-//            }
+            //            RequestsAdapter requestsAdapter = RequestsFragment.requestsAdapter;
+            //            if (requestsAdapter != null && RequestsFragment.requestsAdapter.appsList.size() > 0) {
+            //                RequestsFragment.requestsAdapter.selectOrDeselectAll(SELECT_ALL_APPS, mPrefs);
+            //                SELECT_ALL_APPS = !SELECT_ALL_APPS;
+            //            }
         }
         return true;
     }
@@ -532,12 +533,12 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
     protected void onActivityResult (int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-//        if (resultCode == RESULT_OK && requestCode == 2) {
-//            RequestsAdapter adapter = ((RequestsAdapter) RequestsFragment.mRecyclerView.getAdapter());
-//            if (adapter != null) {
-//                adapter.deselectAllApps();
-//            }
-//        }
+        //        if (resultCode == RESULT_OK && requestCode == 2) {
+        //            RequestsAdapter adapter = ((RequestsAdapter) RequestsFragment.mRecyclerView.getAdapter());
+        //            if (adapter != null) {
+        //                adapter.deselectAllApps();
+        //            }
+        //        }
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragment = fragmentManager.findFragmentByTag("donationsFragment");
@@ -618,7 +619,7 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
         ISDialogs.showLicenseFailDialog(act, new MaterialDialog.SingleButtonCallback() {
             @Override
             public void onClick (@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Common.MARKET_URL + act.getPackageName()));
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Config.MARKET_URL + act.getPackageName()));
                 act.startActivity(browserIntent);
             }
         }, new MaterialDialog.SingleButtonCallback() {
@@ -678,7 +679,7 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
      * @return fabID
      */
     @Override
-    protected int getFabId() {
+    protected int getFabId () {
         return R.id.fab;
     }
 
@@ -688,24 +689,24 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
      * @return layoutID
      */
     @Override
-    protected int getContentViewId() {
+    protected int getContentViewId () {
         return R.layout.showcase_activity;
     }
 
     @Override
-    protected void iconsLoaded() {
+    protected void iconsLoaded () {
         Fragment fragment = getCurrentFragment();
         if (fragment instanceof MainFragment) {
             Timber.d("Setting up icons");
             setupIcons();
         } else if (fragment instanceof PreviewsFragment) {
             Timber.d("Reloading Previews");
-            reloadFragment(DrawerType.REQUESTS);
+            reloadFragment(DrawerItem.REQUESTS);
         }
     }
 
     @Override
-    protected HashMap<DrawerType, Integer> getDrawerMap () {
+    protected HashMap<DrawerItem, Integer> getDrawerMap () {
         return mDrawerMap;
     }
 
@@ -714,22 +715,22 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
         void checkWallsListCreation (boolean result);
     }
 
-    private DrawerType drawerKeyToType (String s) {
+    private DrawerItem drawerKeyToType (String s) {
         switch (s.toLowerCase()) {
             case "previews":
-                return DrawerType.PREVIEWS;
+                return DrawerItem.PREVIEWS;
             case "wallpapers":
-                return DrawerType.WALLPAPERS;
+                return DrawerItem.WALLPAPERS;
             case "requests":
-                return DrawerType.REQUESTS;
+                return DrawerItem.REQUESTS;
             case "apply":
-                return DrawerType.APPLY;
+                return DrawerItem.APPLY;
             case "faqs":
-                return DrawerType.FAQS;
+                return DrawerItem.FAQS;
             case "zooper":
-                return DrawerType.ZOOPER;
+                return DrawerItem.ZOOPER;
             case "kustom":
-                return DrawerType.KUSTOM;
+                return DrawerItem.KUSTOM;
             default:
                 //TODO add better catch;
                 throw new RuntimeException("Invalid drawer key " + s + ".\nPlease check your primary_drawer_items array");
@@ -739,7 +740,7 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
     @SuppressWarnings("ResourceAsColor")
     private void setupDrawer (final Toolbar toolbar, Bundle savedInstanceState) {
         mDrawerItems = new ArrayList<>();
-        mDrawerItems.add(DrawerType.HOME);
+        mDrawerItems.add(DrawerItem.HOME);
 
         //Convert keys to enums
         String[] configurePrimaryDrawerItems = getResources().getStringArray(R.array.drawer_sections);
@@ -747,9 +748,9 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
         for (String s : configurePrimaryDrawerItems) {
             mDrawerItems.add(drawerKeyToType(s));
         }
-        mDrawerItems.add(DrawerType.CREDITS);
-        mDrawerItems.add(DrawerType.SETTINGS);
-        if (WITH_DONATIONS_SECTION) mDrawerItems.add(DrawerType.DONATE);
+        mDrawerItems.add(DrawerItem.CREDITS);
+        mDrawerItems.add(DrawerItem.SETTINGS);
+        if (WITH_DONATIONS_SECTION) mDrawerItems.add(DrawerItem.DONATE);
 
         DrawerBuilder drawerBuilder = new DrawerBuilder().withActivity(this)
                 .withToolbar(toolbar)
@@ -765,14 +766,15 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
                     }
                 });
 
-        for (int i = 0; i < mDrawerItems.size(); i++) {
-            DrawerType dt = mDrawerItems.get(i);
-            //TODO change; credits will always be the first secondary item
-            if (dt == DrawerType.CREDITS) {
+        for (int position = 0; position < mDrawerItems.size(); position++) {
+            DrawerItem item = mDrawerItems.get(position);
+            if (item == DrawerItem.CREDITS) {
                 drawerBuilder.addDrawerItems(new DividerDrawerItem());
             }
-            mDrawerMap.put(dt, i);
-            drawerBuilder.addDrawerItems(DrawerType.getDrawerItem(context, dt, i));
+            mDrawerMap.put(item, position);
+            drawerBuilder.addDrawerItems(
+                    !item.isSecondary() ? DrawerItem.getPrimaryDrawerItem(context, item, position) :
+                            DrawerItem.getSecondaryDrawerItem(context, item, position));
         }
 
         drawerBuilder.withSavedInstance(savedInstanceState);
@@ -781,11 +783,8 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
 
         boolean withDrawerTexts;
 
-        if (Config.get().devOptions()) {
-            withDrawerTexts = mPrefs.getDevDrawerTexts();
-        } else {
-            withDrawerTexts = getResources().getBoolean(R.bool.with_drawer_texts);
-        }
+        withDrawerTexts = Config.get().devOptions() ? mPrefs.getDevDrawerTexts() :
+                getResources().getBoolean(R.bool.with_drawer_texts);
 
         if (withDrawerTexts) {
             headerAppName = getResources().getString(R.string.app_long_name);
@@ -804,14 +803,16 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
                 .withSavedInstance(savedInstanceState)
                 .build();
 
+        TextView drawerTitle = (TextView)
+                drawerHeader.getView().findViewById(R.id.material_drawer_account_header_name);
+        TextView drawerSubtitle = (TextView)
+                drawerHeader.getView().findViewById(R.id.material_drawer_account_header_email);
+        setTextAppearance(drawerTitle, R.style.DrawerTextsWithShadow);
+        setTextAppearance(drawerSubtitle, R.style.DrawerTextsWithShadow);
+
         drawerBuilder.withAccountHeader(drawerHeader);
 
-        /*
-        TODO: Get drawer header name and email text views, then apply the style "DrawerTextsWithShadow"
-        */
-
         drawer = drawerBuilder.build();
-
     }
 
     private void drawerItemSelectAndClick (long id) {
@@ -821,6 +822,17 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
 
     private void drawerItemClick (long id) {
         switchFragment(id, mDrawerItems.get((int) id), context);
+    }
+
+    @SuppressWarnings("deprecation")
+    private void setTextAppearance (TextView text, @StyleRes int style) {
+        if (text != null) {
+            if (Build.VERSION.SDK_INT < 23) {
+                text.setTextAppearance(context, style);
+            } else {
+                text.setTextAppearance(style);
+            }
+        }
     }
 
     private void getAction () {

@@ -37,7 +37,7 @@ import java.util.List;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.adapters.FAQsAdapter;
-import jahirfiquitiva.iconshowcase.enums.DrawerType;
+import jahirfiquitiva.iconshowcase.enums.DrawerItem;
 import jahirfiquitiva.iconshowcase.models.FAQsItem;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.views.DividerItemDecoration;
@@ -46,17 +46,17 @@ import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 public class FAQsFragment extends CapsuleFragment {
 
     @Override
-    public void onFabClick(View v) {
+    public void onFabClick (View v) {
 
     }
 
     @Override
-    public int getTitleId() {
-        return DrawerType.FAQS.getTitleID();
+    public int getTitleId () {
+        return DrawerItem.FAQS.getTitleID();
     }
 
     @Override
-    protected int getFabIcon() {
+    protected int getFabIcon () {
         return 0;
     }
 
@@ -66,7 +66,7 @@ public class FAQsFragment extends CapsuleFragment {
      * @return
      */
     @Override
-    protected boolean hasFab() {
+    protected boolean hasFab () {
         return false;
     }
 

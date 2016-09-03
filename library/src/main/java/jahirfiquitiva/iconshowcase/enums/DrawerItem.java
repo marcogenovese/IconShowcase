@@ -32,7 +32,7 @@ import jahirfiquitiva.iconshowcase.utilities.Utils;
 /**
  * Created by Allan Wang on 2016-08-18.
  */
-public enum DrawerType {
+public enum DrawerItem {
 
     //    MAIN("Main", R.string.app_name),
     HOME("Home", R.string.section_home, R.drawable.ic_home),
@@ -51,13 +51,13 @@ public enum DrawerType {
     private int titleID, iconRes;
     private boolean isSecondary = false;
 
-    DrawerType (String name, @StringRes int titleID) {
+    DrawerItem (String name, @StringRes int titleID) {
         this.name = name;
         this.titleID = titleID;
         isSecondary = true;
     }
 
-    DrawerType (String name, @StringRes int titleID, @DrawableRes int iconRes) {
+    DrawerItem (String name, @StringRes int titleID, @DrawableRes int iconRes) {
         this.name = name;
         this.titleID = titleID;
         this.iconRes = iconRes;
@@ -84,20 +84,27 @@ public enum DrawerType {
 
     /**
      * @param context for resource retrieval
-     * @param dt      drawer type
+     * @param di      drawer type
      * @param i       identifier for drawer item
      *
      * @return
      */
-    public static PrimaryDrawerItem getDrawerItem (final Context context, DrawerType dt, int i) {
-        if (!dt.isSecondary()) {
-            return new PrimaryDrawerItem().withName(context.getResources().getString(dt.getTitleID()))
-                    .withIdentifier(i).withIcon(Utils.getVectorDrawable(context, dt.getIconRes()))
-                    .withIconTintingEnabled(true);
-        } else {
-            return new SecondaryDrawerItem().withName(context.getResources().getString(dt.getTitleID()))
-                    .withIdentifier(i);
-        }
+    public static PrimaryDrawerItem getPrimaryDrawerItem (final Context context, DrawerItem di, int i) {
+        return new PrimaryDrawerItem().withName(context.getResources().getString(di.getTitleID()))
+                .withIdentifier(i).withIcon(Utils.getVectorDrawable(context, di.getIconRes()))
+                .withIconTintingEnabled(true);
+    }
+
+    /**
+     * @param context for resource retrieval
+     * @param di      drawer type
+     * @param i       identifier for drawer item
+     *
+     * @return
+     */
+    public static SecondaryDrawerItem getSecondaryDrawerItem (final Context context, DrawerItem di, int i) {
+        return new SecondaryDrawerItem().withName(context.getResources().getString(di.getTitleID()))
+                .withIdentifier(i);
     }
 
     //    public abstract Fragment getFragment();

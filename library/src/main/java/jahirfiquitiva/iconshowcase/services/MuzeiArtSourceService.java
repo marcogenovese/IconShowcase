@@ -37,7 +37,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import jahirfiquitiva.iconshowcase.R;
-import jahirfiquitiva.iconshowcase.utilities.Common;
+import jahirfiquitiva.iconshowcase.config.Config;
 import jahirfiquitiva.iconshowcase.utilities.JSONParser;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
@@ -89,7 +89,7 @@ public class MuzeiArtSourceService extends RemoteMuzeiArtSource {
             shareWall.setType("text/plain");
             String wallName = currentArtwork.getTitle();
             String authorName = currentArtwork.getByline();
-            String storeUrl = Common.MARKET_URL + getPackageName();
+            String storeUrl = Config.MARKET_URL + getPackageName();
             String iconPackName = getString(R.string.app_name);
             shareWall.putExtra(Intent.EXTRA_TEXT,
                     getString(R.string.share_text, wallName, authorName, iconPackName, storeUrl));

@@ -42,7 +42,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.adapters.RequestsAdapter;
-import jahirfiquitiva.iconshowcase.enums.DrawerType;
+import jahirfiquitiva.iconshowcase.enums.DrawerItem;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 import timber.log.Timber;
 
@@ -56,52 +56,52 @@ public class RequestsFragment extends CapsuleFragment {
     private int maxApps = 0, minutesLimit = 0; //TODO move to taskactivity
 
     @Override
-    public void onStart() {
+    public void onStart () {
         super.onStart();
         if (subscribed) EventBus.getDefault().register(this);
     }
 
     @Override
-    public void onStop() {
+    public void onStop () {
         if (EventBus.getDefault().isRegistered(this)) EventBus.getDefault().unregister(this);
         super.onStop();
     }
 
     @Override
-    public void onFabClick(View v) {
+    public void onFabClick (View v) {
         getPermissions(new CPermissionCallback() {
             @Override
-            public void onResult(PermissionResult result) {
+            public void onResult (PermissionResult result) {
                 if (result.isAllGranted()) IconRequest.get().send();
             }
         }, 987, Manifest.permission.WRITE_EXTERNAL_STORAGE);
     }
 
     @Override
-    public int getTitleId() {
-        return DrawerType.REQUESTS.getTitleID();
+    public int getTitleId () {
+        return DrawerItem.REQUESTS.getTitleID();
     }
 
     @Override
-    protected int getFabIcon() {
+    protected int getFabIcon () {
         return R.drawable.ic_email;
     }
 
     @Override
-    protected boolean hasFab() {
+    protected boolean hasFab () {
         return true;
     }
 
-//    public static RequestsFragment newInstance(boolean isLoaded) {
-//        RequestsFragment fragment = new RequestsFragment();
-//        Bundle args = new Bundle();
-//        args.putBoolean("is_loaded", isLoaded);
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
+    //    public static RequestsFragment newInstance(boolean isLoaded) {
+    //        RequestsFragment fragment = new RequestsFragment();
+    //        Bundle args = new Bundle();
+    //        args.putBoolean("is_loaded", isLoaded);
+    //        fragment.setArguments(args);
+    //        return fragment;
+    //    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
         View layout = inflater.inflate(R.layout.icon_request_section, container, false);
@@ -116,7 +116,7 @@ public class RequestsFragment extends CapsuleFragment {
         mViewGroup = (ViewGroup) layout.findViewById(R.id.viewgroup);
         mLoadingView = (RelativeLayout) layout.findViewById(R.id.loading_view);
         mRecyclerView = (RecyclerView) layout.findViewById(R.id.appsToRequestList);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), columnsNumber)); //TODO use linear manager for items?
+        mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), columnsNumber));
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.addItemDecoration(
                 new GridSpacingItemDecoration(columnsNumber,
@@ -127,7 +127,7 @@ public class RequestsFragment extends CapsuleFragment {
 
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            public void onScrolled (RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 if (dy > 0) {
                     hideFab();
@@ -143,33 +143,33 @@ public class RequestsFragment extends CapsuleFragment {
         } else {
             mLoadingText = (TextView) layout.findViewById(R.id.loading_text);
             Timber.d("Requests still loading; subscribing to events");
-//            AppLoadingEvent stickyEvent = EventBus.getDefault().removeStickyEvent(AppLoadingEvent.class);
-//            if (stickyEvent != null) onAppsLoading(stickyEvent);
+            //            AppLoadingEvent stickyEvent = EventBus.getDefault().removeStickyEvent(AppLoadingEvent.class);
+            //            if (stickyEvent != null) onAppsLoading(stickyEvent);
         }
         return layout;
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onAppsLoaded(AppLoadedEvent event) { //TODO make use of exceptions provided in event
+    public void onAppsLoaded (AppLoadedEvent event) { //TODO make use of exceptions provided in event
         switchToLoadedView();
-//        EventBus.getDefault().unregister(AppLoadingEvent.class);
+        //        EventBus.getDefault().unregister(AppLoadingEvent.class);
     }
 
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    public void onAppsLoading(AppLoadingEvent event) {
-//        EventBus.getDefault().removeStickyEvent(AppLoadingEvent.class);
-//        if (loaded) return;
-//        mLoadingText.setText(event.getString());
-//    }
+    //    @Subscribe(threadMode = ThreadMode.MAIN)
+    //    public void onAppsLoading(AppLoadingEvent event) {
+    //        EventBus.getDefault().removeStickyEvent(AppLoadingEvent.class);
+    //        if (loaded) return;
+    //        mLoadingText.setText(event.getString());
+    //    }
 
-    private void switchToLoadedView() {
+    private void switchToLoadedView () {
         mViewGroup.removeView(mLoadingView);
         mLoadingView = null;
         mLoadingText = null;
         mRecyclerView.setVisibility(View.VISIBLE);
         RequestsAdapter mAdapter = new RequestsAdapter();
-//        mRecyclerView.setItemAnimator(null);
-//        mRecyclerView.setAnimation(null);
+        //        mRecyclerView.setItemAnimator(null);
+        //        mRecyclerView.setAnimation(null);
         mRecyclerView.setAdapter(mAdapter);
     }
 }

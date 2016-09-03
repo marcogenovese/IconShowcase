@@ -19,21 +19,21 @@ import jahirfiquitiva.iconshowcase.R;
 public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.RequestsHolder> {
 
     @Nullable
-    public ArrayList<App> getApps() {
+    public ArrayList<App> getApps () {
         if (IconRequest.get() != null)
             return IconRequest.get().getApps();
         return null;
     }
 
     @Override
-    public RequestsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RequestsHolder onCreateViewHolder (ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_app_to_request, parent, false);
         return new RequestsHolder(view, viewType);
     }
 
     @Override
-    public int getItemCount() {
+    public int getItemCount () {
         return getApps() != null ? getApps().size() : 0;
     }
 
@@ -43,7 +43,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
     }
 
     @Override
-    public void onBindViewHolder(RequestsHolder holder, int position) {
+    public void onBindViewHolder (RequestsHolder holder, int position) {
         //noinspection ConstantConditions
         final App app = getApps().get(position);
         app.loadIcon(holder.imgIcon);
@@ -60,7 +60,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
         final AppCompatCheckBox checkBox;
         final int position;
 
-        public RequestsHolder(View v, int i) {
+        public RequestsHolder (View v, int i) {
             super(v);
             imgIcon = (ImageView) v.findViewById(R.id.imgIcon);
             txtName = (TextView) v.findViewById(R.id.txtName);
@@ -70,7 +70,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
         }
 
         @Override
-        public void onClick(View view) {
+        public void onClick (View view) {
             final IconRequest ir = IconRequest.get();
             if (ir != null && ir.getApps() != null) {
                 final App app = ir.getApps().get(position);

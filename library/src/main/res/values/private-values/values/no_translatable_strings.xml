@@ -20,8 +20,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
     <string name="dashboard_author_name">Jahir Fiquitiva</string>
-    <string name="dashboard_author_photo" formatted="false" tools:ignore="TypographyDashes">http://www.jahirfiquitiva.net/asdqwer/pictures/Photo.png</string>
-    <string name="dashboard_author_banner" formatted="false" tools:ignore="TypographyDashes">http://www.jahirfiquitiva.net/asdqwer/pictures/Banner.png</string>
+    <string name="dashboard_author_photo" formatted="false" tools:ignore="TypographyDashes">https://github.com/jahirfiquitiva/Website-Resources/raw/master/myself/me-square-white.png</string>
+    <string name="dashboard_author_banner" formatted="false" tools:ignore="TypographyDashes">https://github.com/jahirfiquitiva/Website-Resources/raw/master/myself/Banner.png</string>
     <string name="dashboard_author_website">http://www.jahirfiquitiva.net/</string>
     <string name="dashboard_author_gplus">https://www.google.com/+JahirFiquitivaJDev</string>
     <string name="dashboard_author_insta">http://instagram.com/jahirfiquitiva</string>

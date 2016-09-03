@@ -117,21 +117,33 @@ dependencies {
     //Glide Library - Image Loading Lib
     compile 'com.github.bumptech.glide:glide:3.7.0'
 
+    //RecyclerView Fast Scroller
+    compile 'com.github.pluscubed:recycler-fast-scroll:0.3.2@aar'
+
     //Sectioned RecyclerView
     compile 'com.afollestad:sectioned-recyclerview:0.2.3'
-
-    //Muzei API
-    //noinspection GradleDynamicVersion
-    compile 'com.google.android.apps.muzei:muzei-api:2.0'
 
     //Circular Image View
     compile 'de.hdodenhof:circleimageview:2.1.0'
 
-    //RecyclerView Fast Scroller
-    compile 'com.github.pluscubed:recycler-fast-scroll:0.3.2@aar'
+    //Library for a "better" debug logging
+    compile 'com.jakewharton.timber:timber:4.3.0'
+
+    //Library for Requests
+    compile 'com.github.AllanWang:Butler:36c0caae3d'
+
+    //Library for UI framework
+    compile 'com.github.AllanWang:Capsule:08f761975c'
+
+    //BottomSheet (for a future feature)
+    //compile 'com.flipboard:bottomsheet-core:1.5.1'
 
     //Donations Lib
     compile 'org.sufficientlysecure:donations:2.4'
+
+    //Muzei API
+    //noinspection GradleDynamicVersion
+    compile 'com.google.android.apps.muzei:muzei-api:2.0'
 
     //License Checker Lib
     compile 'com.github.javiersantos:PiracyChecker:0.0.2'
@@ -139,14 +151,5 @@ dependencies {
     //Required for Kustom support.
     //noinspection GradleDynamicVersion
     compile 'org.bitbucket.frankmonza:kustomapi:+'
-
-    //Library for a "better" debug logging
-    compile 'com.jakewharton.timber:timber:4.3.0'
-
-    //BottomSheet (for a future feature)
-    //compile 'com.flipboard:bottomsheet-core:1.5.1'
-
-    compile 'com.github.AllanWang:Butler:36c0caae3d'
-    compile 'com.github.AllanWang:Capsule:08f761975c'
 
 }

@@ -24,8 +24,6 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -152,12 +150,12 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
                     sb.append("App Link: " + "https://play.google.com/store/apps/details?id=" + appsListFinal.get(i).getPackageName() + "\n");
                     sb.append("\n");
 
-//                    Bitmap bitmap = ((BitmapDrawable) (appsListFinal.get(i).getHiResIcon())).getBitmap();
+                    //                    Bitmap bitmap = ((BitmapDrawable) (appsListFinal.get(i).getHiResIcon())).getBitmap();
 
                     FileOutputStream fileOutputStream;
                     try {
                         fileOutputStream = new FileOutputStream(filesLocation + "/" + appsListFinal.get(i).getAppName().replace(" ", "_").toLowerCase() + ".png");
-//                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
+                        //                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
                         fileOutputStream.flush();
                         fileOutputStream.close();
                     } catch (IOException e) {

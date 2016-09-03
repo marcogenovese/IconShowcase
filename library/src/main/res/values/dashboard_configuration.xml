@@ -124,6 +124,17 @@
     -->
     <integer name="icons_amount">600</integer>
 
+    <!-- TODO: Improve tasks so the items amount is accurate -->
+    <!--
+    How many wallpapers does your app include?
+    -->
+    <integer name="wallpapers_amount">60</integer>
+
+    <!--
+    How many widgets does your app include?
+    -->
+    <integer name="widgets_amount">10</integer>
+
     <!-- These arrays are for the list of apps or links in main section. -->
     <string-array name="home_list_titles">
     </string-array>

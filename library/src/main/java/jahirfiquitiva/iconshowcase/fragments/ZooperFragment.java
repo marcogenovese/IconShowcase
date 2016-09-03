@@ -34,7 +34,7 @@ import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.adapters.ZooperAdapter;
-import jahirfiquitiva.iconshowcase.enums.DrawerType;
+import jahirfiquitiva.iconshowcase.enums.DrawerItem;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 
@@ -48,17 +48,17 @@ public class ZooperFragment extends CapsuleFragment {
     private GridSpacingItemDecoration space;
 
     @Override
-    public void onFabClick(View v) {
+    public void onFabClick (View v) {
 
     }
 
     @Override
-    public int getTitleId() {
-        return DrawerType.ZOOPER.getTitleID();
+    public int getTitleId () {
+        return DrawerItem.ZOOPER.getTitleID();
     }
 
     @Override
-    protected int getFabIcon() {
+    protected int getFabIcon () {
         return 0;
     }
 
@@ -68,7 +68,7 @@ public class ZooperFragment extends CapsuleFragment {
      * @return
      */
     @Override
-    protected boolean hasFab() {
+    protected boolean hasFab () {
         return false;
     }
 

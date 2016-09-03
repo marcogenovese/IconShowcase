@@ -37,7 +37,7 @@ import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.adapters.KustomAdapter;
 import jahirfiquitiva.iconshowcase.config.Config;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
-import jahirfiquitiva.iconshowcase.enums.DrawerType;
+import jahirfiquitiva.iconshowcase.enums.DrawerItem;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.views.SectionedGridSpacingItemDecoration;
 
@@ -76,8 +76,8 @@ public class KustomFragment extends CapsuleFragment {
     }
 
     @Override
-    public int getTitleId() {
-        return DrawerType.KUSTOM.getTitleID();
+    public int getTitleId () {
+        return DrawerItem.KUSTOM.getTitleID();
     }
 
     @Override

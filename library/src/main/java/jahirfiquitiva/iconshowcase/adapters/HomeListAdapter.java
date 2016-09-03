@@ -150,9 +150,11 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         //TODO: Improve tasks so the items amount is accurate
 
         final String availableWallpapers = String.valueOf(
-                WallpapersList.getWallpapersList() != null ? WallpapersList.getWallpapersList().size() : 0);
+                WallpapersList.getWallpapersList() != null ? WallpapersList.getWallpapersList().size() :
+                        context.getResources().getInteger(R.integer.wallpapers_amount) > 0 ? context.getResources().getInteger(R.integer.wallpapers_amount) : 0);
         final String includedWidgets = String.valueOf(
-                LoadZooperWidgets.widgets != null ? LoadZooperWidgets.widgets.size() : 0);
+                LoadZooperWidgets.widgets != null ? LoadZooperWidgets.widgets.size() :
+                        context.getResources().getInteger(R.integer.widgets_amount) > 0 ? context.getResources().getInteger(R.integer.widgets_amount) : 0);
 
         final ImageView iconsIV, wallsIV, widgetsIV;
         final TextView iconsT, wallsT, widgetsT;

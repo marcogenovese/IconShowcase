@@ -29,8 +29,7 @@
     <string name="artsource_name">@string/app_name</string>
     <string name="artsource_desc">Some cool wallpapers</string>
 
-    <string name="wallpapers_json_link">http://www.jahirfiquitiva.net/wallpapers/iconshowcase.json</string>
-    <string name="notifications_json_link">http://www.jahirfiquitiva.net/iconshowcase/notifs.json</string>
+    <string name="wallpapers_json_link">https://github.com/jahirfiquitiva/Website-Resources/raw/master/iconshowcase/iconshowcase.json</string>
 
     <!-- Icon Pack designer/owner e-mail -->
     <string name="email_id">someone@email.com</string>

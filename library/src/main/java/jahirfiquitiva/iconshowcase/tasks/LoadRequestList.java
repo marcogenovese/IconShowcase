@@ -48,11 +48,8 @@ import java.util.Comparator;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.config.Config;
-import jahirfiquitiva.iconshowcase.fragments.RequestsFragment;
 import jahirfiquitiva.iconshowcase.models.AppFilterItem;
 import jahirfiquitiva.iconshowcase.models.RequestItem;
-import jahirfiquitiva.iconshowcase.models.RequestList;
-import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import timber.log.Timber;
 
 public class LoadRequestList extends AsyncTask<Void, String, Boolean> {
@@ -67,10 +64,11 @@ public class LoadRequestList extends AsyncTask<Void, String, Boolean> {
     private IRequestList mCallback;
     
     public interface IRequestList {
-        void onListLoaded(ArrayList<RequestItem> appList);
+
+        void onListLoaded (ArrayList<RequestItem> appList);
     }
 
-    public LoadRequestList(Context context, IRequestList callback) {
+    public LoadRequestList (Context context, IRequestList callback) {
         this.context = new WeakReference<>(context);
         this.pm = context.getPackageManager();
         mCallback = callback;
@@ -96,7 +94,7 @@ public class LoadRequestList extends AsyncTask<Void, String, Boolean> {
                     info.activityInfo.name,
                     getNormalIcon(info, pm),
                     info));
-//                    getHiResAppIcon(info)));
+            //                    getHiResAppIcon(info)));
         }
 
         if (mAppsToTheme == null) return false;
@@ -143,9 +141,9 @@ public class LoadRequestList extends AsyncTask<Void, String, Boolean> {
                                         ri.activityInfo.name,
                                         //No Need to load these portions TODO check if other strings are all necessary
                                         null, null));
-//                                        getNormalIcon(ri, pm),
-//                                        ri));
-//                                        getHiResAppIcon(ri)));
+                                //                                        getNormalIcon(ri, pm),
+                                //                                        ri));
+                                //                                        getHiResAppIcon(ri)));
                             }
                         }
                     }
@@ -174,11 +172,11 @@ public class LoadRequestList extends AsyncTask<Void, String, Boolean> {
     }
 
     @Override
-    protected void onPostExecute(Boolean worked) {
+    protected void onPostExecute (Boolean worked) {
         mCallback.onListLoaded(mAppsToTheme);
         //TODO remove
-//        Preferences mPrefs = new Preferences(context.get());
-//        mPrefs.setIfAppsToRequestLoaded(worked);
+        //        Preferences mPrefs = new Preferences(context.get());
+        //        mPrefs.setIfAppsToRequestLoaded(worked);
         if (worked) {
             Timber.d("Load of request list completed in: %d milliseconds", (endTime - startTime));
         }

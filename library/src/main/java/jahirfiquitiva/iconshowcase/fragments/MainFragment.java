@@ -39,7 +39,7 @@ import java.util.ArrayList;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.adapters.HomeListAdapter;
-import jahirfiquitiva.iconshowcase.enums.DrawerType;
+import jahirfiquitiva.iconshowcase.enums.DrawerItem;
 import jahirfiquitiva.iconshowcase.models.HomeCard;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
@@ -62,8 +62,8 @@ public class MainFragment extends CapsuleFragment {
     }
 
     @Override
-    public int getTitleId() {
-        return DrawerType.HOME.getTitleID();
+    public int getTitleId () {
+        return DrawerItem.HOME.getTitleID();
     }
 
     @Override

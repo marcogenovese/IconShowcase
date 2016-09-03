@@ -21,8 +21,6 @@ package jahirfiquitiva.iconshowcase.adapters;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +30,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.ArrayList;
 
@@ -39,7 +39,6 @@ import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.models.CreditsItem;
 import jahirfiquitiva.iconshowcase.models.DetailedCreditsItem;
-import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
@@ -120,7 +119,8 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         credits = new ArrayList<>(extraCreditsTitles.length);
         for (int j = 0; j < extraCreditsTitles.length; j++)
-            credits.add(new CreditsItem(extraCreditsTitles[j], getTintedDrawable(extraCreditsDrawablesNames[j])));
+            credits.add(new CreditsItem(extraCreditsTitles[j],
+                    ColorUtils.getTintedDrawable(context, extraCreditsDrawablesNames[j])));
 
     }
     @Override
@@ -147,8 +147,10 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             detailedCreditsHolder.title.setText(item.getTitle());
             detailedCreditsHolder.content.setText(item.getContent());
 
-            Glide.with(context).load(item.getPhotoLink()).into(detailedCreditsHolder.photo);
-            Glide.with(context).load(item.getBannerLink()).into(detailedCreditsHolder.banner);
+            Glide.with(context).load(item.getPhotoLink()).diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .priority(Priority.HIGH).into(detailedCreditsHolder.photo);
+            Glide.with(context).load(item.getBannerLink()).diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .priority(Priority.HIGH).into(detailedCreditsHolder.banner);
 
             if (item.getBtnTexts().length > 0) {
                 detailedCreditsHolder.buttons.setButtonCount(item.getBtnTexts().length);
@@ -256,15 +258,6 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             banner = (ImageView) view.findViewById(R.id.banner);
             buttons = (SplitButtonsLayout) view.findViewById(R.id.buttons);
         }
-    }
-
-    private Drawable getTintedDrawable (String name) { //Allan TODO move this to Utils? I believe you are using this in a lot of files
-        final int light = ContextCompat.getColor(context, R.color.drawable_tint_dark);
-        final int dark = ContextCompat.getColor(context, R.color.drawable_tint_light);
-
-        return ColorUtils.getTintedIcon(context,
-                Utils.getIconResId(context.getResources(), context.getPackageName(), name),
-                ThemeUtils.darkTheme ? light : dark);
     }
 
 }

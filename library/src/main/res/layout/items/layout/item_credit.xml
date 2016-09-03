@@ -24,7 +24,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:foreground="?android:attr/selectableItemBackground"
+    android:foreground="?attr/selectableItemBackground"
     android:stateListAnimator="@anim/card_lift"
     app:cardUseCompatPadding="true"
     app:cardCornerRadius="@dimen/card_corner_radius"

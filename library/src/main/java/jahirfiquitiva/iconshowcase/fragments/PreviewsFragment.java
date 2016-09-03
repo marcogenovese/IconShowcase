@@ -43,7 +43,7 @@ import java.util.Locale;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
-import jahirfiquitiva.iconshowcase.enums.DrawerType;
+import jahirfiquitiva.iconshowcase.enums.DrawerItem;
 import jahirfiquitiva.iconshowcase.fragments.base.FragmentStatePagerAdapter;
 import jahirfiquitiva.iconshowcase.models.IconsCategory;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
@@ -73,17 +73,17 @@ public class PreviewsFragment extends CapsuleFragment {
     }
 
     @Override
-    public void onFabClick(View v) {
+    public void onFabClick (View v) {
 
     }
 
     @Override
-    public int getTitleId() {
-        return DrawerType.PREVIEWS.getTitleID();
+    public int getTitleId () {
+        return DrawerItem.PREVIEWS.getTitleID();
     }
 
     @Override
-    protected int getFabIcon() {
+    protected int getFabIcon () {
         return 0;
     }
 
@@ -93,7 +93,7 @@ public class PreviewsFragment extends CapsuleFragment {
      * @return
      */
     @Override
-    protected boolean hasFab() {
+    protected boolean hasFab () {
         return false;
     }
 
@@ -103,7 +103,7 @@ public class PreviewsFragment extends CapsuleFragment {
 
         Bundle args = getArguments();
 
-//        if (args == null || !args.containsKey(categoryListKey)) return loadingView(inflater, container); //TODO
+        //        if (args == null || !args.containsKey(categoryListKey)) return loadingView(inflater, container); //TODO
 
         View layout = inflater.inflate(R.layout.icons_preview_section, container, false);
 

@@ -23,12 +23,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.CallSuper;
 
-import com.pitchedapps.butler.library.icon.request.AppLoadedEvent;
 import com.pitchedapps.butler.library.icon.request.IconRequest;
 import com.pitchedapps.capsule.library.activities.CapsuleActivity;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -37,7 +33,7 @@ import java.util.HashMap;
 import jahirfiquitiva.iconshowcase.BuildConfig;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.config.Config;
-import jahirfiquitiva.iconshowcase.enums.DrawerType;
+import jahirfiquitiva.iconshowcase.enums.DrawerItem;
 import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.models.IconsCategory;
 import jahirfiquitiva.iconshowcase.tasks.LoadIconsLists;
@@ -52,28 +48,28 @@ public abstract class TasksActivity extends CapsuleActivity implements LoadIcons
     protected ArrayList<IconsCategory> mCategoryList;
     private boolean tasksExecuted = false;
 
-    protected abstract HashMap<DrawerType, Integer> getDrawerMap();
+    protected abstract HashMap<DrawerItem, Integer> getDrawerMap ();
 
-    protected abstract void iconsLoaded();
+    protected abstract void iconsLoaded ();
 
     @Override
-    public void onLoadComplete(ArrayList<IconItem> previewIcons, ArrayList<IconsCategory> categoryList) {
+    public void onLoadComplete (ArrayList<IconItem> previewIcons, ArrayList<IconsCategory> categoryList) {
         mPreviewIconList = previewIcons;
         mCategoryList = categoryList;
         iconsLoaded();
     }
 
     //TODO fix up booleans
-    protected void startTasks() {
+    protected void startTasks () {
         Timber.d("Starting tasks");
         if (tasksExecuted)
             Timber.w("startTasks() executed more than once; please remove duplicates");
         tasksExecuted = true;
-        if (getDrawerMap().containsKey(DrawerType.PREVIEWS))
+        if (getDrawerMap().containsKey(DrawerItem.PREVIEWS))
             new LoadIconsLists(this, this).execute();
-        if (getDrawerMap().containsKey(DrawerType.REQUESTS)) {
+        if (getDrawerMap().containsKey(DrawerItem.REQUESTS)) {
             IconRequest.start(this)
-//                        .withHeader("Hey, testing Icon Request!")
+                    //                        .withHeader("Hey, testing Icon Request!")
                     .withFooter("%s Version: %s", getString(R.string.app_name), BuildConfig.VERSION_NAME)
                     .withSubject(s(R.string.request_title))
                     .toEmail(s(R.string.email_id))
@@ -89,14 +85,14 @@ public abstract class TasksActivity extends CapsuleActivity implements LoadIcons
 
     }
 
-//    @Subscribe
-//    public void onAppsLoaded(AppLoadedEvent event) {
-//        IconRequest.get().loadHighResIcons(); //Takes too much memory
-//    }
+    //    @Subscribe
+    //    public void onAppsLoaded(AppLoadedEvent event) {
+    //        IconRequest.get().loadHighResIcons(); //Takes too much memory
+    //    }
 
     @Override
     @CallSuper
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null)
             IconRequest.restoreInstanceState(this, savedInstanceState);
@@ -104,21 +100,21 @@ public abstract class TasksActivity extends CapsuleActivity implements LoadIcons
 
     @Override
     @CallSuper
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState (Bundle outState) {
         super.onSaveInstanceState(outState);
         IconRequest.saveInstanceState(outState);
     }
 
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        EventBus.getDefault().register(this);
-//    }
-//
-//    @Override
-//    public void onStop() {
-//        EventBus.getDefault().unregister(this);
-//        super.onStop();
-//    }
+    //    @Override
+    //    public void onStart() {
+    //        super.onStart();
+    //        EventBus.getDefault().register(this);
+    //    }
+    //
+    //    @Override
+    //    public void onStop() {
+    //        EventBus.getDefault().unregister(this);
+    //        super.onStop();
+    //    }
 
 }

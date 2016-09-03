@@ -43,9 +43,9 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.config.Config;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.services.MuzeiArtSourceService;
-import jahirfiquitiva.iconshowcase.utilities.Common;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
@@ -233,7 +233,7 @@ public class MuzeiSettings extends AppCompatActivity {
                 new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick (@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
-                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Common.MARKET_URL + getPackageName()));
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Config.MARKET_URL + getPackageName()));
                         startActivity(browserIntent);
                     }
                 }, new MaterialDialog.SingleButtonCallback() {

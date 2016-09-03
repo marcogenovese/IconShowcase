@@ -35,8 +35,8 @@ public class RequestItem implements Parcelable {
     private final ResolveInfo resolveInfo;
     private boolean selected = false;
 
-    public RequestItem(@NonNull String appName, @NonNull String packageName, @NonNull String className,
-                       @Nullable Drawable normalIcon, @Nullable ResolveInfo resolveInfo) {
+    public RequestItem (@NonNull String appName, @NonNull String packageName, @NonNull String className,
+                        @Nullable Drawable normalIcon, @Nullable ResolveInfo resolveInfo) {
         this.appName = appName;
         this.packageName = packageName;
         this.className = className;
@@ -60,7 +60,7 @@ public class RequestItem implements Parcelable {
         return normalIcon;
     }
 
-    public ResolveInfo getResolveInfo() {
+    public ResolveInfo getResolveInfo () {
         return resolveInfo;
     }
 
@@ -90,7 +90,7 @@ public class RequestItem implements Parcelable {
                 && this.className.equals(that.className);
     }
 
-    protected RequestItem(Parcel in) {
+    protected RequestItem (Parcel in) {
         appName = in.readString();
         packageName = in.readString();
         className = in.readString();
@@ -100,12 +100,12 @@ public class RequestItem implements Parcelable {
     }
 
     @Override
-    public int describeContents() {
+    public int describeContents () {
         return 0;
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel (Parcel dest, int flags) {
         dest.writeString(appName);
         dest.writeString(packageName);
         dest.writeString(className);
@@ -117,12 +117,12 @@ public class RequestItem implements Parcelable {
     @SuppressWarnings("unused")
     public static final Parcelable.Creator<RequestItem> CREATOR = new Parcelable.Creator<RequestItem>() {
         @Override
-        public RequestItem createFromParcel(Parcel in) {
+        public RequestItem createFromParcel (Parcel in) {
             return new RequestItem(in);
         }
 
         @Override
-        public RequestItem[] newArray(int size) {
+        public RequestItem[] newArray (int size) {
             return new RequestItem[size];
         }
     };

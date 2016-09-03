@@ -42,9 +42,9 @@ import java.util.List;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.adapters.LaunchersAdapter;
+import jahirfiquitiva.iconshowcase.config.Config;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
-import jahirfiquitiva.iconshowcase.enums.DrawerType;
-import jahirfiquitiva.iconshowcase.utilities.Common;
+import jahirfiquitiva.iconshowcase.enums.DrawerItem;
 import jahirfiquitiva.iconshowcase.utilities.LauncherIntents;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
@@ -60,17 +60,17 @@ public class ApplyFragment extends CapsuleFragment {
     private Preferences mPrefs;
 
     @Override
-    public void onFabClick(View v) {
+    public void onFabClick (View v) {
 
     }
 
     @Override
-    public int getTitleId() {
-        return DrawerType.APPLY.getTitleID();
+    public int getTitleId () {
+        return DrawerItem.APPLY.getTitleID();
     }
 
     @Override
-    protected int getFabIcon() {
+    protected int getFabIcon () {
         return 0;
     }
 
@@ -80,7 +80,7 @@ public class ApplyFragment extends CapsuleFragment {
      * @return
      */
     @Override
-    protected boolean hasFab() {
+    protected boolean hasFab () {
         return false;
     }
 
@@ -164,7 +164,7 @@ public class ApplyFragment extends CapsuleFragment {
     }
 
     private void openInPlayStore (final Launcher launcher) {
-        intentString = Common.MARKET_URL + launcher.packageName;
+        intentString = Config.MARKET_URL + launcher.packageName;
         final String LauncherName = launcher.name;
         final String cmName = "CM Theme Engine";
         String dialogContent;
@@ -173,7 +173,7 @@ public class ApplyFragment extends CapsuleFragment {
             intentString = "http://download.cyanogenmod.org/";
         } else {
             dialogContent = getResources().getString(R.string.lni_content, launcher.name);
-            intentString = Common.MARKET_URL + launcher.packageName;
+            intentString = Config.MARKET_URL + launcher.packageName;
         }
         ISDialogs.showOpenInPlayStoreDialog(getContext(), launcher.name, dialogContent, new MaterialDialog.SingleButtonCallback() {
             @Override
@@ -217,7 +217,7 @@ public class ApplyFragment extends CapsuleFragment {
     }
 
     private void gnlDialog () {
-        final String appLink = Common.MARKET_URL + getResources().getString(R.string.extraapp);
+        final String appLink = Config.MARKET_URL + getResources().getString(R.string.extraapp);
         ISDialogs.showGoogleNowLauncherDialog(getContext(), new MaterialDialog.SingleButtonCallback() {
             @Override
             public void onClick (@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {

@@ -66,7 +66,7 @@ import jahirfiquitiva.iconshowcase.activities.AltWallpaperViewerActivity;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.activities.WallpaperViewerActivity;
 import jahirfiquitiva.iconshowcase.adapters.WallpapersAdapter;
-import jahirfiquitiva.iconshowcase.enums.DrawerType;
+import jahirfiquitiva.iconshowcase.enums.DrawerItem;
 import jahirfiquitiva.iconshowcase.models.WallpaperItem;
 import jahirfiquitiva.iconshowcase.models.WallpapersList;
 import jahirfiquitiva.iconshowcase.tasks.ApplyWallpaper;
@@ -93,17 +93,17 @@ public class WallpapersFragment extends CapsuleFragment {
     private static MaterialDialog dialogApply;
 
     @Override
-    public void onFabClick(View v) {
+    public void onFabClick (View v) {
 
     }
 
     @Override
-    public int getTitleId() {
-        return DrawerType.WALLPAPERS.getTitleID();
+    public int getTitleId () {
+        return DrawerItem.WALLPAPERS.getTitleID();
     }
 
     @Override
-    protected int getFabIcon() {
+    protected int getFabIcon () {
         return 0;
     }
 
@@ -113,7 +113,7 @@ public class WallpapersFragment extends CapsuleFragment {
      * @return
      */
     @Override
-    protected boolean hasFab() {
+    protected boolean hasFab () {
         return false;
     }
 
@@ -169,6 +169,7 @@ public class WallpapersFragment extends CapsuleFragment {
 
         mSwipeRefreshLayout.setEnabled(false);
 
+        //TODO: MAKE WALLPAPERS APPEAR AT FIRST. FOR SOME REASON ONLY APPEAR AFTER PRESSING "UPDATE" ICON IN TOOLBAR
         setupLayout(context);
 
         return layout;
@@ -182,8 +183,8 @@ public class WallpapersFragment extends CapsuleFragment {
     }
 
     private static void setupLayout (final Context context) {
+        //TODO: MAKE WALLPAPERS APPEAR AT FIRST. FOR SOME REASON ONLY APPEAR AFTER PRESSING "UPDATE" ICON IN TOOLBAR
         if (WallpapersList.getWallpapersList() != null && WallpapersList.getWallpapersList().size() > 0) {
-
             mAdapter = new WallpapersAdapter(context,
                     new WallpapersAdapter.ClickListener() {
                         @Override

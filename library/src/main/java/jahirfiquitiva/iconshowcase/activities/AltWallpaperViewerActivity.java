@@ -448,11 +448,14 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
 
         //TODO: Make sure the plus rotates to original state, while fab does NOT rotate
         if (fab != null) {
-            fab.show();
+            fab.show(new FloatingActionButton.OnVisibilityChangedListener() {
+                @Override
+                public void onShown (FloatingActionButton fab) {
+                    super.onShown(fab);
+                    fab.animate().rotation(0.0f).withLayer().setDuration(300).setInterpolator(new OvershootInterpolator(10.0F)).start();
+                }
+            });
             fab.setVisibility(View.VISIBLE);
-            if (fab.isShown()) {
-                fab.animate().rotation(0.0f).withLayer().setDuration(300).setInterpolator(new OvershootInterpolator(10.0F)).start();
-            }
         }
     }
 
