@@ -232,7 +232,8 @@ public class ColorUtils {
     }
 
     public static Palette.Swatch getPaletteSwatch (Bitmap bitmap) {
-        Palette palette = Palette.from(bitmap).generate();
+        //Test areas of 10 and 50*50
+        Palette palette = Palette.from(bitmap).resizeBitmapArea(50*50).generate();
         return getPaletteSwatch(palette);
     }
 

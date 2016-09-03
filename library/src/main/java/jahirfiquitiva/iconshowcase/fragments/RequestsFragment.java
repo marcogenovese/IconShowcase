@@ -24,6 +24,9 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -41,6 +44,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.adapters.RequestsAdapter;
 import jahirfiquitiva.iconshowcase.enums.DrawerItem;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
@@ -113,6 +117,8 @@ public class RequestsFragment extends CapsuleFragment {
 
         setHasOptionsMenu(true);
 
+        hideFab();
+
         mViewGroup = (ViewGroup) layout.findViewById(R.id.viewgroup);
         mLoadingView = (RelativeLayout) layout.findViewById(R.id.loading_view);
         mRecyclerView = (RecyclerView) layout.findViewById(R.id.appsToRequestList);
@@ -149,6 +155,12 @@ public class RequestsFragment extends CapsuleFragment {
         return layout;
     }
 
+    @Override
+    public void onCreateOptionsMenu (Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.requests, menu);
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onAppsLoaded (AppLoadedEvent event) { //TODO make use of exceptions provided in event
         switchToLoadedView();
@@ -171,5 +183,6 @@ public class RequestsFragment extends CapsuleFragment {
         //        mRecyclerView.setItemAnimator(null);
         //        mRecyclerView.setAnimation(null);
         mRecyclerView.setAdapter(mAdapter);
+        showFab();
     }
 }

@@ -137,7 +137,7 @@ public class MainFragment extends CapsuleFragment {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),
-                null, getResources().getDimensionPixelSize(R.dimen.dividers_height), false, true));
+                getResources().getDimensionPixelSize(R.dimen.dividers_height), false, true));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setHasFixedSize(true);
 

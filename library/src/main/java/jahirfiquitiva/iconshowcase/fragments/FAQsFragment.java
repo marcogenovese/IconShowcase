@@ -109,7 +109,7 @@ public class FAQsFragment extends CapsuleFragment {
                     true));
         } else {
             faqsList.setLayoutManager(new LinearLayoutManager(getActivity()));
-            faqsList.addItemDecoration(new DividerItemDecoration(getActivity(), null, cardsSpacing, false, false));
+            faqsList.addItemDecoration(new DividerItemDecoration(getActivity(), cardsSpacing, false, false));
         }
 
         faqsList.setItemAnimator(new DefaultItemAnimator());

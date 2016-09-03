@@ -78,7 +78,7 @@ public abstract class TasksActivity extends CapsuleActivity implements LoadIcons
                     .generateAppFilterXml(true) // defaults to true anyways
                     .generateAppFilterJson(false)
                     .debugMode(Config.get().allowDebugging())
-                    .filterOff() //TODO switch
+                    //.filterOff() //TODO switch
                     .maxSelectionCount(0) //TODO add? And make this toggleable
                     .build().loadApps();
         }

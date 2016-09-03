@@ -55,10 +55,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.KeyCharacterMap;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 
 import java.io.File;
@@ -639,51 +636,25 @@ public class Utils {
         bd = bd.setScale(places, RoundingMode.HALF_UP);
         return bd.doubleValue();
     }
-
-    public static int getSoftButtonsBarSizePort (Activity activity) {
+    
+    public static int getNavigationBarHeight (Activity activity) {
         // getRealMetrics is only available with API 17 and +
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             DisplayMetrics metrics = new DisplayMetrics();
             activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
-            int usableHeight = metrics.heightPixels;
+            int usableHeight = activity.getResources().getBoolean(R.bool.isTablet) ? metrics.heightPixels :
+                    activity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE ?
+                            metrics.widthPixels : metrics.heightPixels;
             activity.getWindowManager().getDefaultDisplay().getRealMetrics(metrics);
-            int realHeight = metrics.heightPixels;
+            int realHeight = activity.getResources().getBoolean(R.bool.isTablet) ? metrics.heightPixels :
+                    activity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE ?
+                            metrics.widthPixels : metrics.heightPixels;
             if (realHeight > usableHeight)
                 return realHeight - usableHeight;
             else
                 return 0;
         }
         return 0;
-    }
-
-    public static int getNavigationBarHeight (Context context) {
-        if (!(ViewConfiguration.get(context).hasPermanentMenuKey()) &&
-                !(KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK))) {
-            //On-screen navigation bar
-
-            int resId;
-            int orientation = context.getResources().getConfiguration().orientation;
-
-            if (isTablet(context)) {
-                resId = context.getResources().getIdentifier(orientation == Configuration.ORIENTATION_PORTRAIT ? "navigation_bar_height" : "navigation_bar_height_landscape", "dimen", "android");
-            } else {
-                resId = context.getResources().getIdentifier("navigation_bar_height", "dimen", "android");
-            }
-
-            //int resId = context.getResources().getIdentifier("navigation_bar_height", "dimen", "android");
-
-            return resId > 0 ? context.getResources().getDimensionPixelSize(resId) : 0;
-        } else {
-            //Hardware buttons
-            return 0;
-        }
-    }
-
-    public static boolean isTablet (Context context) {
-        //TODO Fix this because it's not working
-        return (context.getResources().getConfiguration().screenLayout
-                & Configuration.SCREENLAYOUT_SIZE_MASK)
-                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 
     public static void sendFirebaseNotification (Context context, Class mainActivity,

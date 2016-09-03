@@ -126,7 +126,7 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
                 snackbarView.setBackgroundColor(ThemeUtils.darkTheme ? snackbarDark : snackbarLight);
                 snackbarView.setPadding(snackbarView.getPaddingLeft(),
                         snackbarView.getPaddingTop(), snackbarView.getPaddingRight(),
-                        Utils.getNavigationBarHeight(context));
+                        Utils.getNavigationBarHeight((Activity) context));
                 snackbar.show();
                 snackbar.setCallback(new Snackbar.Callback() {
                     @Override

@@ -137,25 +137,26 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
         saveFab = (FloatingActionButton) findViewById(R.id.saveFab);
         infoFab = (FloatingActionButton) findViewById(R.id.infoFab);
 
-        //TODO Find a way to properly set FAB margin. This code is a mess and doesn't work fine. Help REALLY needed :/
+        //TODO Make sure mini FABs margins are properly applied
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            int navBarHeight = Utils.getSoftButtonsBarSizePort(this);
+            int navBarHeight = Utils.getNavigationBarHeight(this);
             ImageView navbarGradient = (ImageView) findViewById(R.id.navbarGradient);
             LinearLayout.LayoutParams p = (LinearLayout.LayoutParams) fab.getLayoutParams();
-            LinearLayout.LayoutParams mp = (LinearLayout.LayoutParams) infoFab.getLayoutParams();
+            LinearLayout.LayoutParams mp1 = (LinearLayout.LayoutParams) infoFab.getLayoutParams();
+            LinearLayout.LayoutParams mp2 = (LinearLayout.LayoutParams) applyFab.getLayoutParams();
+            LinearLayout.LayoutParams mp3 = (LinearLayout.LayoutParams) saveFab.getLayoutParams();
             int fabMargin = context.getResources().getDimensionPixelSize(R.dimen.fab_margin);
             if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                if (!(Utils.isTablet(context))) {
-                    int miniFabMargin = context.getResources().getDimensionPixelSize(R.dimen.mini_fab_right_margin);
-                    navbarGradient.setVisibility(View.GONE);
-                    p.setMargins(0, 0, (fabMargin + navBarHeight), fabMargin);
-                    mp.setMargins(0, 0, (fabMargin + navBarHeight + miniFabMargin), (fabMargin / 2));
-                    infoFab.setLayoutParams(mp);
-                    applyFab.setLayoutParams(mp);
-                    saveFab.setLayoutParams(mp);
-                } else {
-                    p.setMargins(0, 0, fabMargin, (fabMargin + navBarHeight));
-                }
+                int miniFabMargin = context.getResources().getDimensionPixelSize(R.dimen.mini_fab_right_margin);
+                navbarGradient.setVisibility(View.GONE);
+                p.setMargins(0, 0, (fabMargin + navBarHeight), fabMargin);
+                mp1.setMargins(0, 0, ((fabMargin + navBarHeight) + miniFabMargin), fabMargin);
+                mp2.setMargins(0, 0, ((fabMargin + navBarHeight) + miniFabMargin), fabMargin);
+                mp3.setMargins(0, 0, ((fabMargin + navBarHeight) + miniFabMargin), fabMargin);
+                infoFab.setLayoutParams(mp1);
+                applyFab.setLayoutParams(mp2);
+                saveFab.setLayoutParams(mp3);
             } else {
                 p.setMargins(0, 0, fabMargin, (fabMargin + navBarHeight));
                 if (navBarHeight <= 0) {

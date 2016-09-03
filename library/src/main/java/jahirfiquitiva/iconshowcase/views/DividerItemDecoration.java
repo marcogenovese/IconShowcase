@@ -24,6 +24,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -44,22 +45,26 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
     private int mOrientation = -1;
 
-    private DividerItemDecoration (Context context, AttributeSet attrs) {
+    private DividerItemDecoration (Context context) {
+        mDivider = new ColorDrawable(ContextCompat.getColor(context, ThemeUtils.darkTheme ? R.color.dark_theme_divider :
+                R.color.light_theme_divider));
+        /*
         final TypedArray a = context
                 .obtainStyledAttributes(attrs, new int[]{android.R.attr.listDivider});
         mDivider = a.getDrawable(0);
         if (mDivider != null) {
             mDivider.setColorFilter(
-                    ContextCompat.getColor(context, ThemeUtils.darkTheme ? R.color.light_theme_divider :
-                            R.color.dark_theme_divider),
+                    ContextCompat.getColor(context, ThemeUtils.darkTheme ? R.color.dark_theme_divider :
+                            R.color.light_theme_divider),
                     PorterDuff.Mode.SRC_ATOP);
         }
         a.recycle();
+        */
     }
 
-    public DividerItemDecoration (Context context, AttributeSet attrs, int height, boolean showFirstDivider,
+    public DividerItemDecoration (Context context, int height, boolean showFirstDivider,
                                   boolean showLastDivider) {
-        this(context, attrs);
+        this(context);
         this.height = height;
         mShowFirstDivider = showFirstDivider;
         mShowLastDivider = showLastDivider;

@@ -19,6 +19,7 @@
   -->
 
 <resources>
+    <bool name="isTablet">false</bool>
     <integer name="wallpapers_grid_width">2</integer>
     <integer name="icons_grid_width">@integer/icons_columns_normal_portrait</integer>
     <integer name="launchers_grid_width">@integer/launchers_columns_normal_portrait</integer>

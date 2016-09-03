@@ -383,6 +383,7 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
         }
         currentItem = itemId;
 
+        //TODO Make sure this works fine even after configuration changes
         if (dt == DrawerItem.HOME && !iconsPicker && !wallsPicker) {
             Utils.expandToolbar(this);
         } else {
@@ -520,11 +521,13 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
         } else if (i == R.id.columns) {
             ISDialogs.showColumnsSelectorDialog(context);
         } else if (i == R.id.select_all) {
-            //            RequestsAdapter requestsAdapter = RequestsFragment.requestsAdapter;
-            //            if (requestsAdapter != null && RequestsFragment.requestsAdapter.appsList.size() > 0) {
-            //                RequestsFragment.requestsAdapter.selectOrDeselectAll(SELECT_ALL_APPS, mPrefs);
-            //                SELECT_ALL_APPS = !SELECT_ALL_APPS;
-            //            }
+            // TODO Make sure this still works
+            /*RequestsAdapter requestsAdapter = RequestsFragment.requestsAdapter;
+            if (requestsAdapter != null && RequestsFragment.requestsAdapter.appsList.size() > 0) {
+                RequestsFragment.requestsAdapter.selectOrDeselectAll(SELECT_ALL_APPS, mPrefs);
+                SELECT_ALL_APPS = !SELECT_ALL_APPS;
+            }
+            */
         }
         return true;
     }

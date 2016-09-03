@@ -144,7 +144,7 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
                     snackbarView.setBackgroundColor(ThemeUtils.darkTheme ? snackbarDark : snackbarLight);
                     snackbarView.setPadding(snackbarView.getPaddingLeft(),
                             snackbarView.getPaddingTop(), snackbarView.getPaddingRight(),
-                            Utils.getNavigationBarHeight(context.get()));
+                            Utils.getNavigationBarHeight((Activity) context.get()));
                     longSnackbar.show();
                     longSnackbar.setCallback(new Snackbar.Callback() {
                         @Override
@@ -228,7 +228,7 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
         snackbarView.setBackgroundColor(ThemeUtils.darkTheme ? snackbarDark : snackbarLight);
         snackbarView.setPadding(snackbarView.getPaddingLeft(),
                 snackbarView.getPaddingTop(), snackbarView.getPaddingRight(),
-                Utils.getNavigationBarHeight(context.get()));
+                Utils.getNavigationBarHeight((Activity) context.get()));
         TypedValue typedValue = new TypedValue();
         Resources.Theme theme = activity.getTheme();
         theme.resolveAttribute(R.attr.accentColor, typedValue, true);

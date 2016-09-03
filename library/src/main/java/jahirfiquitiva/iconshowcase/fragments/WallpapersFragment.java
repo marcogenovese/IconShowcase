@@ -235,10 +235,6 @@ public class WallpapersFragment extends CapsuleFragment {
 
                 fastScroller.attachRecyclerView(mRecyclerView);
 
-                if (fastScroller.getVisibility() != View.VISIBLE) {
-                    fastScroller.setVisibility(View.VISIBLE);
-                }
-
                 noConnection = (ImageView) layout.findViewById(R.id.no_connected_icon);
 
                 if (Utils.hasNetwork(context)) {
@@ -254,7 +250,6 @@ public class WallpapersFragment extends CapsuleFragment {
                     @Override
                     public void run () {
                         if (layout != null) {
-                            noConnection.setVisibility(View.GONE);
                             Timer timer = new Timer();
                             timer.schedule(new TimerTask() {
                                 @Override
@@ -581,6 +576,8 @@ public class WallpapersFragment extends CapsuleFragment {
 
             if (layout != null) {
                 setupLayout(taskContext.get());
+            } else {
+                Timber.d("Wallpapers layout is null");
             }
 
             if (wi != null)
