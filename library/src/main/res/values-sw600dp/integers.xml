@@ -19,7 +19,7 @@
   -->
 
 <resources>
-
+    <bool name="isTablet">true</bool>
     <integer name="wallpapers_grid_width">3</integer>
     <integer name="icons_grid_width">@integer/icons_columns_tablet_portrait</integer>
     <integer name="launchers_grid_width">@integer/launchers_columns_tablet_portrait</integer>
@@ -28,5 +28,4 @@
     <integer name="zooper_kustom_grid_width">@integer/zooper_kustom_columns_tablet_portrait
     </integer>
     <integer name="credits_grid_width">2</integer>
-
 </resources>
