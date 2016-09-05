@@ -133,7 +133,7 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
                     } else {
                         ShowcaseActivity.setupToolbarHeader(activity, ShowcaseActivity.toolbarHeader);
                         ColorUtils.setupToolbarIconsAndTextsColors(activity,
-                                ShowcaseActivity.appbar, ShowcaseActivity.toolbar);
+                                ((ShowcaseActivity) activity).getAppbar(), ((ShowcaseActivity) activity).getToolbar());
                     }
 
                     Snackbar longSnackbar = Snackbar.make(layout,

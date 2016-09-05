@@ -17,7 +17,7 @@
   ~ 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
   -->
 
-<jahirfiquitiva.iconshowcase.views.CustomCoordinatorLayout
+<com.pitchedapps.capsule.library.custom.CapsuleCoordinatorLayout
     android:id="@+id/mainCoordinatorLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -126,4 +126,4 @@
         app:fabSize="normal"
         app:rippleColor="@color/semitransparent_white"/>
 
-</jahirfiquitiva.iconshowcase.views.CustomCoordinatorLayout>
+</com.pitchedapps.capsule.library.custom.CapsuleCoordinatorLayout>

@@ -245,7 +245,6 @@ public class SettingsFragment extends PreferenceFragment implements
     @Override
     public void onResume () {
         super.onResume();
-        Utils.collapseToolbar(getActivity());
         if (shouldShowFolderChooserDialog) {
             showFolderChooserDialog();
             shouldShowFolderChooserDialog = false;
@@ -261,7 +260,6 @@ public class SettingsFragment extends PreferenceFragment implements
             moarOptions = findPreference("moreOptions");
 
             drawerHeaderTexts = (SwitchPreference) findPreference("drawerHeaderTexts");
-            iconsChangelog = (SwitchPreference) findPreference("iconsChangelog");
             listsCards = (SwitchPreference) findPreference("listsCards");
 
             drawerHeaderTexts.setChecked(mPrefs.getDevDrawerTexts());

@@ -225,22 +225,6 @@ public class Utils {
         context.startActivity(Intent.createChooser(intent, (context.getResources().getString(R.string.send_title))));
     }
 
-    public static void collapseToolbar (Context context) {
-        Preferences mPrefs = new Preferences(context);
-        AppBarLayout appbar = (AppBarLayout) ((Activity) context).findViewById(R.id.appbar);
-        CustomCoordinatorLayout coordinatorLayout = (CustomCoordinatorLayout) ((Activity) context).findViewById(R.id.mainCoordinatorLayout);
-        appbar.setExpanded(false, mPrefs.getAnimationsEnabled());
-        coordinatorLayout.setScrollAllowed(false);
-    }
-
-    public static void expandToolbar (Context context) {
-        Preferences mPrefs = new Preferences(context);
-        AppBarLayout appbar = (AppBarLayout) ((Activity) context).findViewById(R.id.appbar);
-        CustomCoordinatorLayout coordinatorLayout = (CustomCoordinatorLayout) ((Activity) context).findViewById(R.id.mainCoordinatorLayout);
-        appbar.setExpanded(true, mPrefs.getAnimationsEnabled());
-        coordinatorLayout.setScrollAllowed(true);
-    }
-
     @SuppressWarnings("ResourceAsColor")
     public static void setupCollapsingToolbarTextColors (Context context,
                                                          CollapsingToolbarLayout collapsingToolbarLayout) {
