@@ -131,6 +131,7 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
     private static final String adw_action = "org.adw.launcher.icons.ACTION_PICK_ICON", turbo_action = "com.phonemetra.turbo.launcher.icons.ACTION_PICK_ICON",
             nova_action = "com.novalauncher.THEME";
 
+    //TODO check if these are necessary
     public static boolean iconsPicker, wallsPicker, SHUFFLE = true;
     private static boolean shuffleIcons = true;
 
@@ -140,7 +141,7 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
 
     public static long currentItem = -1;
 
-    private static int numOfIcons = 4, wallpaper = -1, curVersionCode = 0;
+    private int numOfIcons = 4, wallpaper = -1, curVersionCode = 0;
 
     private boolean mLastTheme;
     private static Preferences mPrefs;
@@ -150,7 +151,7 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
     private MaterialDialog settingsDialog;
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private ImageView icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8;
-    public static ImageView toolbarHeader;
+    public ImageView toolbarHeader;
     public static Bitmap toolbarHeaderImage;
     public static Drawable wallpaperDrawable;
     private List<DrawerItem> mDrawerItems;
@@ -185,6 +186,7 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
 
         curVersionCode = getIntent().getIntExtra("curVersionCode", -1);
 
+        //TODO remove all this; donations will exist if they are configured
         WITH_DONATIONS_SECTION = getIntent().getBooleanExtra("enableDonations", false);
         DONATIONS_GOOGLE = getIntent().getBooleanExtra("enableGoogleDonations", false);
         DONATIONS_PAYPAL = getIntent().getBooleanExtra("enablePayPalDonations", false);
@@ -424,7 +426,7 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
             mPrefs = new Preferences(this);
         }
         if (!iconsPicker && !wallsPicker) {
-            setupToolbarHeader(this, toolbarHeader);
+            setupToolbarHeader();
         }
         ColorUtils.setupToolbarIconsAndTextsColors(context, cAppBarLayout, cToolbar);
         //TODO check what this is
@@ -1003,10 +1005,10 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
         }
     }
 
-    public static void setupToolbarHeader(Context context, ImageView toolbarHeader) {
+    public void setupToolbarHeader() {
 
         if (Config.get().userWallpaperInToolbar() && mPrefs.getWallpaperAsToolbarHeaderEnabled()) {
-            WallpaperManager wm = WallpaperManager.getInstance(context);
+            WallpaperManager wm = WallpaperManager.getInstance(this);
 
             if (wm != null) {
                 Drawable currentWallpaper = wm.getFastDrawable();
@@ -1018,16 +1020,16 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
                 }
             }
         } else {
-            String[] wallpapers = context.getResources().getStringArray(R.array.wallpapers);
+            String[] wallpapers = getResources().getStringArray(R.array.wallpapers);
 
             if (wallpapers.length > 0) {
                 int res;
                 ArrayList<Integer> wallpapersArray = new ArrayList<>();
 
                 for (String wallpaper : wallpapers) {
-                    res = context.getResources().getIdentifier(wallpaper, "drawable", context.getPackageName());
+                    res = getResources().getIdentifier(wallpaper, "drawable", getPackageName());
                     if (res != 0) {
-                        final int thumbRes = context.getResources().getIdentifier(wallpaper, "drawable", context.getPackageName());
+                        final int thumbRes = getResources().getIdentifier(wallpaper, "drawable", getPackageName());
                         if (thumbRes != 0) {
                             wallpapersArray.add(thumbRes);
                         }
@@ -1040,9 +1042,9 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
                     wallpaper = random.nextInt(wallpapersArray.size());
                 }
 
-                wallpaperDrawable = ContextCompat.getDrawable(context, wallpapersArray.get(wallpaper));
+                wallpaperDrawable = ContextCompat.getDrawable(this, wallpapersArray.get(wallpaper));
                 toolbarHeader.setImageDrawable(wallpaperDrawable);
-                toolbarHeaderImage = Utils.drawableToBitmap(ContextCompat.getDrawable(context, wallpapersArray.get(wallpaper)));
+                toolbarHeaderImage = Utils.drawableToBitmap(ContextCompat.getDrawable(this, wallpapersArray.get(wallpaper)));
             }
         }
 
