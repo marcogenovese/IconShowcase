@@ -288,7 +288,7 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
             } else if (wallsPicker && mPrefs.areFeaturesEnabled() && mDrawerMap.containsKey(DrawerItem.WALLPAPERS)) {
                 drawerItemSelectAndClick(mDrawerMap.get(DrawerItem.WALLPAPERS));
             } else {
-                if (mPrefs.getSettingsModified()) {
+                if (mPrefs.getSettingsModified()) { //TODO remove this from preferences; this can be sent via bundle itself
                     //TODO check this
                     long settingsIdentifier = 0;
                     drawerItemSelectAndClick(settingsIdentifier);
@@ -404,9 +404,9 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
             fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
         fragmentTransaction.commit();
 
-        collapsingToolbarLayout.setTitle(getString(dt.getTitleID()));
+        collapsingToolbarLayout.setTitle(getString(dt.getTitleID())); //TODO verify
 
-        if (drawer != null) {
+        if (drawer != null) { //TODO check this
             drawer.setSelection(itemId);
         }
     }
@@ -414,15 +414,12 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        mLastTheme = ThemeUtils.darkTheme;
+        mLastTheme = ThemeUtils.darkTheme; //TODO what is this
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (mPrefs == null) {
-            mPrefs = new Preferences(this);
-        }
         if (!iconsPicker && !wallsPicker) {
             setupToolbarHeader();
         }
@@ -474,9 +471,6 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
         if (settingsDialog != null) {
             settingsDialog.dismiss();
             settingsDialog = null;
-        }
-        if (mPrefs == null) {
-            mPrefs = new Preferences(this);
         }
         mPrefs.setActivityVisible(false);
         Config.deinit();

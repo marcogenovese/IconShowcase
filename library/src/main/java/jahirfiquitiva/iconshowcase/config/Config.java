@@ -31,6 +31,7 @@ import android.support.annotation.StringRes;
 
 import jahirfiquitiva.iconshowcase.BuildConfig;
 import jahirfiquitiva.iconshowcase.R;
+import timber.log.Timber;
 
 /**
  * Created by Allan Wang on 2016-08-19.
@@ -72,7 +73,6 @@ public class Config implements IConfig {
         mR = null;
     }
 
-    //TODO deinit Config when Showcase is destroyed
     public static void deinit () {
         if (mConfig != null) {
             mConfig.destroy();
@@ -166,7 +166,10 @@ public class Config implements IConfig {
     @Override
     public String getPaypalCurrency () {
         String s = string(R.string.paypal_currency_code);
-        if (s == null || s.length() != 3) return "USD"; //TODO log currency issue
+        if (s == null || s.length() != 3) {
+            Timber.d("Invalid currency $s; switching to USD", s);
+            return "USD";
+        }
         return s;
     }
 
