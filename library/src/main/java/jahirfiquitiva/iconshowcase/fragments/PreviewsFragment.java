@@ -103,7 +103,7 @@ public class PreviewsFragment extends CapsuleFragment {
 
         Bundle args = getArguments();
 
-        //        if (args == null || !args.containsKey(categoryListKey)) return loadingView(inflater, container); //TODO
+//                if (args == null || !args.containsKey(categoryListKey)) return loadingView(inflater, container); //TODO
 
         View layout = inflater.inflate(R.layout.icons_preview_section, container, false);
 

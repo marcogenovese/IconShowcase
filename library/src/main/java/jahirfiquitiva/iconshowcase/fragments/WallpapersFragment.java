@@ -23,10 +23,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
@@ -44,22 +44,13 @@ import android.widget.ProgressBar;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.pitchedapps.capsule.library.fragments.CapsuleFragment;
 import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.FileOutputStream;
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -74,8 +65,6 @@ import jahirfiquitiva.iconshowcase.enums.DrawerItem;
 import jahirfiquitiva.iconshowcase.events.BlankEvent;
 import jahirfiquitiva.iconshowcase.models.WallpaperItem;
 import jahirfiquitiva.iconshowcase.models.WallpapersList;
-import jahirfiquitiva.iconshowcase.tasks.ApplyWallpaper;
-import jahirfiquitiva.iconshowcase.utilities.JSONParser;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
@@ -85,16 +74,16 @@ import timber.log.Timber;
 
 public class WallpapersFragment extends CapsuleFragment {
 
-    private static ViewGroup layout;
-    private static ProgressBar mProgress;
-    private static RecyclerView mRecyclerView;
-    private static RecyclerFastScroller fastScroller;
-    public static SwipeRefreshLayout mSwipeRefreshLayout;
-    public static WallpapersAdapter mAdapter;
-    private static ImageView noConnection;
-    private static Activity context;
-    private static GridSpacingItemDecoration gridSpacing;
-    private static int light, dark;
+    private ViewGroup layout;
+    private ProgressBar mProgress;
+    private RecyclerView mRecyclerView;
+    private RecyclerFastScroller fastScroller;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+    public WallpapersAdapter mAdapter;
+    private ImageView noConnection;
+    private Activity context;
+    private GridSpacingItemDecoration gridSpacing;
+    private int light, dark;
 
     @Override
     public void onStart() {
@@ -133,6 +122,17 @@ public class WallpapersFragment extends CapsuleFragment {
         return false;
     }
 
+    private static final String itemKey = "wallpaper_items";
+
+    public static PreviewsFragment newInstance(@Nullable ArrayList<WallpaperItem> items) {
+        PreviewsFragment fragment = new PreviewsFragment();
+        if (items == null || items.isEmpty()) return fragment;
+        Bundle args = new Bundle();
+        args.putParcelableArrayList(itemKey, items);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
@@ -140,17 +140,7 @@ public class WallpapersFragment extends CapsuleFragment {
         setHasOptionsMenu(true);
         context = getActivity();
 
-        if (layout != null) {
-            ViewGroup parent = (ViewGroup) layout.getParent();
-            if (parent != null) {
-                parent.removeView(layout);
-            }
-        }
-        try {
-            layout = (ViewGroup) inflater.inflate(R.layout.wallpapers_section, container, false);
-        } catch (InflateException e) {
-            // Do nothing
-        }
+        layout = (ViewGroup) inflater.inflate(R.layout.wallpapers_section, container, false);
 
         light = ContextCompat.getColor(context, R.color.drawable_tint_dark);
         dark = ContextCompat.getColor(context, R.color.drawable_tint_light);
@@ -179,14 +169,14 @@ public class WallpapersFragment extends CapsuleFragment {
         mSwipeRefreshLayout.setProgressBackgroundColorSchemeColor(ThemeUtils.darkTheme ? dark : light);
 
         mSwipeRefreshLayout.setColorSchemeResources(
-                ThemeUtils.darkTheme ? R.color.dark_theme_accent : R.color.light_theme_accent,
+                ThemeUtils.darkTheme ? R.color.dark_theme_accent : R.color.light_theme_accent, //TODO check if having three of the same colors makes a difference
                 ThemeUtils.darkTheme ? R.color.dark_theme_accent : R.color.light_theme_accent,
                 ThemeUtils.darkTheme ? R.color.dark_theme_accent : R.color.light_theme_accent);
 
         mSwipeRefreshLayout.setEnabled(false);
 
         //TODO: MAKE WALLPAPERS APPEAR AT FIRST. FOR SOME REASON ONLY APPEAR AFTER PRESSING "UPDATE" ICON IN TOOLBAR
-        setupLayout(new BlankEvent(99));
+        setupLayout();
 
         return layout;
 
@@ -198,9 +188,8 @@ public class WallpapersFragment extends CapsuleFragment {
         inflater.inflate(R.menu.wallpapers, menu);
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void setupLayout(BlankEvent event) {
-        if (event.getCode() != 99) return;
+    public void setupLayout() {
+
         //TODO: MAKE WALLPAPERS APPEAR AT FIRST. FOR SOME REASON ONLY APPEAR AFTER PRESSING "UPDATE" ICON IN TOOLBAR
         if (WallpapersList.getWallpapersList() != null && WallpapersList.getWallpapersList().size() > 0) {
             mAdapter = new WallpapersAdapter(context,
@@ -302,7 +291,7 @@ public class WallpapersFragment extends CapsuleFragment {
         handler(context).post(r);
     }
 
-    private static void hideStuff(ImageView noConnection) {
+    private void hideStuff(ImageView noConnection) {
         if (mRecyclerView.getAdapter() != null) {
             fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
             fastScroller.attachRecyclerView(mRecyclerView);
@@ -317,7 +306,7 @@ public class WallpapersFragment extends CapsuleFragment {
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
-    private static void showProgressBar() {
+    private void showProgressBar() {
         if (mProgress != null) {
             if (mProgress.getVisibility() != View.VISIBLE) {
                 mProgress.setVisibility(View.VISIBLE);
@@ -325,7 +314,7 @@ public class WallpapersFragment extends CapsuleFragment {
         }
     }
 
-    private static void hideProgressBar() {
+    private void hideProgressBar() {
         if (mProgress != null) {
             if (mProgress.getVisibility() != View.GONE) {
                 mProgress.setVisibility(View.GONE);
@@ -333,7 +322,7 @@ public class WallpapersFragment extends CapsuleFragment {
         }
     }
 
-    private static void setupRecyclerView(boolean updating, int newColumns) {
+    private void setupRecyclerView(boolean updating, int newColumns) {
 
         Preferences mPrefs = new Preferences(context);
         if (updating && gridSpacing != null) {
@@ -366,7 +355,13 @@ public class WallpapersFragment extends CapsuleFragment {
         }
     }
 
-    public static void updateRecyclerView(int newColumns) {
+    @Subscribe
+    public void asdf(BlankEvent event) {
+        if (event.getCode() > 5) return;
+        updateRecyclerView(event.getCode());
+    }
+
+    public void updateRecyclerView(int newColumns) {
         mRecyclerView.setVisibility(View.GONE);
         fastScroller.setVisibility(View.GONE);
         showProgressBar();
@@ -374,7 +369,7 @@ public class WallpapersFragment extends CapsuleFragment {
         hideProgressBar();
     }
 
-    public static void refreshWalls(Context context) {
+    public void refreshWalls(Context context) {
         hideProgressBar();
         mRecyclerView.setVisibility(View.GONE);
         fastScroller.setVisibility(View.GONE);
@@ -405,7 +400,7 @@ public class WallpapersFragment extends CapsuleFragment {
                     .onPositive(new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            mPrefs.setWallsDialogDismissed(false);
+                            mPrefs.setWallsDialogDismissed(false); //TODO what's the point of this if it already needs to be false just to get here
                         }
                     })
                     .onNeutral(new MaterialDialog.SingleButtonCallback() {
@@ -498,109 +493,6 @@ public class WallpapersFragment extends CapsuleFragment {
 //                    }
 //                })
 //                .show();
-    }
-
-    // DownloadJSON AsyncTask
-    public static class DownloadJSON extends AsyncTask<Void, Void, Boolean> {
-
-        final ShowcaseActivity.WallsListInterface wi;
-        private final ArrayList<WallpaperItem> walls = new ArrayList<>();
-        private final WeakReference<Context> taskContext;
-
-        long startTime, endTime;
-
-        public DownloadJSON(ShowcaseActivity.WallsListInterface wi, Context context) {
-            this.wi = wi;
-            this.taskContext = new WeakReference<>(context);
-        }
-
-        @Override
-        protected void onPreExecute() {
-            startTime = System.currentTimeMillis();
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-
-            boolean worked;
-
-            JSONObject json = JSONParser.getJSONFromURL(taskContext.get(),
-                    Utils.getStringFromResources(taskContext.get(),
-                            R.string.wallpapers_json_link));
-
-            if (json != null) {
-                try {
-                    // Locate the array name in JSON
-                    JSONArray jsonarray = json.getJSONArray("wallpapers");
-
-                    for (int i = 0; i < jsonarray.length(); i++) {
-                        json = jsonarray.getJSONObject(i);
-                        // Retrieve JSON Objects
-
-                        String thumbLink, dimens, copyright;
-                        boolean downloadable;
-
-                        try {
-                            thumbLink = json.getString("thumbnail");
-                        } catch (JSONException e) {
-                            thumbLink = "null";
-                        }
-
-                        try {
-                            dimens = json.getString("dimensions");
-                        } catch (JSONException e1) {
-                            dimens = "null";
-                        }
-
-                        try {
-                            copyright = json.getString("copyright");
-                        } catch (JSONException e2) {
-                            copyright = "null";
-                        }
-
-                        try {
-                            downloadable = json.getString("downloadable").equals("true");
-                        } catch (JSONException e3) {
-                            downloadable = true;
-                        }
-
-                        walls.add(new WallpaperItem(
-                                json.getString("name"),
-                                json.getString("author"),
-                                json.getString("url"),
-                                thumbLink,
-                                dimens,
-                                copyright,
-                                downloadable));
-
-                    }
-
-                    WallpapersList.createWallpapersList(walls);
-                    worked = true;
-                } catch (JSONException e) {
-                    worked = false;
-                }
-            } else {
-                worked = false;
-            }
-
-            endTime = System.currentTimeMillis();
-            return worked;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean worked) {
-            Timber.d("Walls Task completed in: %d milliseconds", (endTime - startTime));
-            EventBus.getDefault().post(new BlankEvent(99));
-//            if (layout != null) {
-//                setupLayout(taskContext.get());
-//            } else {
-//                Timber.d("Wallpapers layout is null");
-//            }
-
-            if (wi != null)
-                wi.checkWallsListCreation(worked);
-        }
     }
 
 }

@@ -32,10 +32,13 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.events.BlankEvent;
 import jahirfiquitiva.iconshowcase.fragments.WallpapersFragment;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
@@ -307,7 +310,8 @@ public final class ISDialogs {
                     public boolean onSelection (MaterialDialog dialog, View view, int position, CharSequence text) {
                         int newSelected = position + 1;
                         if (newSelected != current) {
-                            WallpapersFragment.updateRecyclerView(newSelected);
+                            EventBus.getDefault().post(new BlankEvent(newSelected));
+//                            WallpapersFragment.updateRecyclerView(newSelected);
                         }
                         return true;
                     }

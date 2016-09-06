@@ -96,6 +96,7 @@ import jahirfiquitiva.iconshowcase.fragments.ZooperFragment;
 import jahirfiquitiva.iconshowcase.logging.CrashReportingTree;
 import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.models.WallpapersList;
+import jahirfiquitiva.iconshowcase.tasks.DownloadJSON;
 import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
@@ -340,7 +341,7 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
                 return PreviewsFragment.newInstance(mCategoryList);
 
             case WALLPAPERS:
-                return new WallpapersFragment();
+                return WallpapersFragment.newInstance(mWallpaperList);
 
             case REQUESTS:
                 //                return RequestsFragment.newInstance(isRequestsFullyLoaded());
@@ -504,8 +505,13 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
             ChangelogDialog.show(this, R.xml.changelog);
         } else if (i == R.id.refresh) {
             //TODO: MAKE WALLPAPERS APPEAR AT FIRST. FOR SOME REASON ONLY APPEAR AFTER PRESSING "UPDATE" ICON IN TOOLBAR
-            WallpapersFragment.refreshWalls(this);
-            loadWallsList(this);
+            if (Utils.hasNetwork(this)) {
+                mWallpaperList = null;
+//                WallpapersFragment.refreshWalls(this);
+                new DownloadJSON(this).execute();
+            } else {
+                //TODO unavailable
+            }
         } else if (i == R.id.columns) {
             ISDialogs.showColumnsSelectorDialog(this);
         } else if (i == R.id.select_all) {
@@ -633,25 +639,6 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
         });
     }
 
-    private void loadWallsList(Context context) {
-        if (mPrefs.getWallsListLoaded()) {
-            WallpapersList.clearList();
-            mPrefs.setWallsListLoaded(!mPrefs.getWallsListLoaded());
-        }
-        new WallpapersFragment.DownloadJSON(new WallsListInterface() {
-            @Override
-            public void checkWallsListCreation(boolean result) {
-                mPrefs.setWallsListLoaded(result);
-                if (WallpapersFragment.mSwipeRefreshLayout != null) {
-                    WallpapersFragment.mSwipeRefreshLayout.setEnabled(false);
-                    WallpapersFragment.mSwipeRefreshLayout.setRefreshing(false);
-                }
-                if (WallpapersFragment.mAdapter != null) {
-                    WallpapersFragment.mAdapter.notifyDataSetChanged();
-                }
-            }
-        }, context).execute();
-    }
 
     @Override
     public void onFolderSelection(@NonNull File folder) {
@@ -693,6 +680,15 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
         } else if (fragment instanceof PreviewsFragment) {
             Timber.d("Reloading Previews");
             reloadFragment(DrawerItem.REQUESTS);
+        }
+    }
+
+    @Override
+    protected void wallsLoaded() {
+        Fragment fragment = getCurrentFragment();
+        if (fragment instanceof WallpapersFragment) {
+            Timber.d("Reloading Wallpapers");
+            reloadFragment(DrawerItem.WALLPAPERS);
         }
     }
 

@@ -133,7 +133,7 @@ dependencies {
     compile 'com.github.AllanWang:Butler:36c0caae3d'
 
     //Library for UI framework
-    compile 'com.github.AllanWang:Capsule:6f268a0884'
+    compile 'com.github.AllanWang:Capsule:4e4eb9a3e6'
 
     //BottomSheet (for a future feature)
     //compile 'com.flipboard:bottomsheet-core:1.5.1'

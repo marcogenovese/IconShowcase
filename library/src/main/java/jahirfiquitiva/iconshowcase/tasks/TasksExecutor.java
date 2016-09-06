@@ -110,23 +110,23 @@ public class TasksExecutor {
     }
 
     private void loadWallsList () {
-        if (mPrefs.getWallsListLoaded()) {
-            WallpapersList.clearList();
-            mPrefs.setWallsListLoaded(!mPrefs.getWallsListLoaded());
-        }
-        new WallpapersFragment.DownloadJSON(new ShowcaseActivity.WallsListInterface() {
-            @Override
-            public void checkWallsListCreation (boolean result) {
-                mPrefs.setWallsListLoaded(result);
-                if (WallpapersFragment.mSwipeRefreshLayout != null) {
-                    WallpapersFragment.mSwipeRefreshLayout.setEnabled(false);
-                    WallpapersFragment.mSwipeRefreshLayout.setRefreshing(false);
-                }
-                if (WallpapersFragment.mAdapter != null) {
-                    WallpapersFragment.mAdapter.notifyDataSetChanged();
-                }
-            }
-        }, context).execute();
+//        if (mPrefs.getWallsListLoaded()) {
+//            WallpapersList.clearList();
+//            mPrefs.setWallsListLoaded(!mPrefs.getWallsListLoaded());
+//        }
+//        new WallpapersFragment.DownloadJSON(new ShowcaseActivity.WallsListInterface() {
+//            @Override
+//            public void checkWallsListCreation (boolean result) {
+//                mPrefs.setWallsListLoaded(result);
+//                if (WallpapersFragment.mSwipeRefreshLayout != null) {
+//                    WallpapersFragment.mSwipeRefreshLayout.setEnabled(false);
+//                    WallpapersFragment.mSwipeRefreshLayout.setRefreshing(false);
+//                }
+//                if (WallpapersFragment.mAdapter != null) {
+//                    WallpapersFragment.mAdapter.notifyDataSetChanged();
+//                }
+//            }
+//        }, context).execute();
     }
 
     /**
