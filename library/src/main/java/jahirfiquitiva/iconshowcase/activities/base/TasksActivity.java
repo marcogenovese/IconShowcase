@@ -32,8 +32,10 @@ import java.util.HashMap;
 
 import jahirfiquitiva.iconshowcase.BuildConfig;
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.config.Config;
 import jahirfiquitiva.iconshowcase.enums.DrawerItem;
+import jahirfiquitiva.iconshowcase.fragments.WallpapersFragment;
 import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.models.IconsCategory;
 import jahirfiquitiva.iconshowcase.tasks.LoadIconsLists;
@@ -65,9 +67,9 @@ public abstract class TasksActivity extends CapsuleActivity implements LoadIcons
         if (tasksExecuted)
             Timber.w("startTasks() executed more than once; please remove duplicates");
         tasksExecuted = true;
-        if (getDrawerMap().containsKey(DrawerItem.PREVIEWS))
+        if (drawerHas(DrawerItem.PREVIEWS))
             new LoadIconsLists(this, this).execute();
-        if (getDrawerMap().containsKey(DrawerItem.REQUESTS)) {
+        if (drawerHas(DrawerItem.REQUESTS)) {
             IconRequest.start(this)
                     //                        .withHeader("Hey, testing Icon Request!")
                     .withFooter("%s Version: %s", getString(R.string.app_name), BuildConfig.VERSION_NAME)
@@ -82,7 +84,26 @@ public abstract class TasksActivity extends CapsuleActivity implements LoadIcons
                     .maxSelectionCount(0) //TODO add? And make this toggleable
                     .build().loadApps();
         }
+        if (drawerHas(DrawerItem.WALLPAPERS)) {
+            new WallpapersFragment.DownloadJSON(new ShowcaseActivity.WallsListInterface() {
+                @Override
+                public void checkWallsListCreation (boolean result) {
+                    if (WallpapersFragment.mSwipeRefreshLayout != null) {
+                        WallpapersFragment.mSwipeRefreshLayout.setEnabled(false);
+                        WallpapersFragment.mSwipeRefreshLayout.setRefreshing(false);
+                    }
+                    if (WallpapersFragment.mAdapter != null) {
+                        WallpapersFragment.mAdapter.notifyDataSetChanged();
+                    }
+                }
+            }, this).execute();
+        }
 
+
+    }
+
+    private boolean drawerHas(DrawerItem item) {
+        return getDrawerMap().containsKey(item);
     }
 
     //    @Subscribe

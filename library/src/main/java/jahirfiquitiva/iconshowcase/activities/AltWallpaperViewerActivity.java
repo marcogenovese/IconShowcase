@@ -615,39 +615,39 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
                                 })
                                 .show();
 
-                        Glide.with(context)
-                                .load(wallUrl)
-                                .asBitmap()
-                                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                                .into(new SimpleTarget<Bitmap>() {
-                                    @Override
-                                    public void onResourceReady (
-                                            final Bitmap resource,
-                                            GlideAnimation<? super Bitmap> glideAnimation) {
-                                        if (resource != null && dialogApply.isShowing()) {
-                                            enteredApplyTask[0] = true;
-
-                                            if (dialogApply != null) {
-                                                dialogApply.dismiss();
-                                            }
-
-                                            dialogApply = new MaterialDialog.Builder(context)
-                                                    .content(R.string.setting_wall_title)
-                                                    .progress(true, 0)
-                                                    .cancelable(false)
-                                                    .show();
-
-                                            applyTask[0] = new ApplyWallpaper(context, dialogApply,
-                                                    resource, false, layout, new ApplyWallpaper.ApplyCallback() {
-                                                @Override
-                                                public void afterApplied () {
-                                                    reshowFab(fab);
-                                                }
-                                            });
-                                            applyTask[0].execute();
-                                        }
-                                    }
-                                });
+//                        Glide.with(context)
+//                                .load(wallUrl)
+//                                .asBitmap()
+//                                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+//                                .into(new SimpleTarget<Bitmap>() {
+//                                    @Override
+//                                    public void onResourceReady (
+//                                            final Bitmap resource,
+//                                            GlideAnimation<? super Bitmap> glideAnimation) {
+//                                        if (resource != null && dialogApply.isShowing()) {
+//                                            enteredApplyTask[0] = true;
+//
+//                                            if (dialogApply != null) {
+//                                                dialogApply.dismiss();
+//                                            }
+//
+//                                            dialogApply = new MaterialDialog.Builder(context)
+//                                                    .content(R.string.setting_wall_title)
+//                                                    .progress(true, 0)
+//                                                    .cancelable(false)
+//                                                    .show();
+//
+//                                            applyTask[0] = new ApplyWallpaper(context, dialogApply,
+//                                                    resource, false, layout, new ApplyWallpaper.ApplyCallback() {
+//                                                @Override
+//                                                public void afterApplied () {
+//                                                    reshowFab(fab);
+//                                                }
+//                                            });
+//                                            applyTask[0].execute();
+//                                        }
+//                                    }
+//                                });
 
                         Timer timer = new Timer();
                         timer.schedule(new TimerTask() {
