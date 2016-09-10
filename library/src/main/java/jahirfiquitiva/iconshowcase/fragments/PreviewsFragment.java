@@ -44,7 +44,7 @@ import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.enums.DrawerItem;
 import jahirfiquitiva.iconshowcase.events.OnLoadEvent;
 import jahirfiquitiva.iconshowcase.fragments.base.FragmentStatePagerAdapter;
-import jahirfiquitiva.iconshowcase.holders.CategoryList;
+import jahirfiquitiva.iconshowcase.holders.FullListHolder;
 import jahirfiquitiva.iconshowcase.models.IconsCategory;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
@@ -89,11 +89,11 @@ public class PreviewsFragment extends EventBaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        if (!CategoryList.hasList()) return loadingView(inflater, container);
+        if (FullListHolder.get().preview().isEmpty()) return loadingView(inflater, container);
 
         View layout = inflater.inflate(R.layout.icons_preview_section, container, false);
 
-        mCategories = CategoryList.getList();
+        mCategories = FullListHolder.get().preview().getList();
 
         //TODO Check if ViewPager is smooth enough
         mPager = (ViewPager) layout.findViewById(R.id.pager);
@@ -108,7 +108,7 @@ public class PreviewsFragment extends EventBaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (CategoryList.hasList()) setHasOptionsMenu(true);
+        if (FullListHolder.get().preview().hasList()) setHasOptionsMenu(true);
     }
 
     @Override
@@ -164,7 +164,7 @@ public class PreviewsFragment extends EventBaseFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        if (!CategoryList.hasList()) return;
+        if (FullListHolder.get().preview().isEmpty()) return;
         inflater.inflate(R.menu.search, menu);
         mSearchItem = menu.findItem(R.id.search);
         mSearchView = (SearchView) MenuItemCompat.getActionView(mSearchItem);

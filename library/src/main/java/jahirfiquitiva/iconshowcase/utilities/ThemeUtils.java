@@ -24,8 +24,6 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.preference.PreferenceManager;
-import android.support.annotation.ColorInt;
-import android.support.annotation.ColorRes;
 import android.support.v4.content.ContextCompat;
 
 import java.util.Calendar;

@@ -26,23 +26,13 @@ import android.support.annotation.CallSuper;
 import com.pitchedapps.butler.library.icon.request.IconRequest;
 import com.pitchedapps.capsule.library.activities.CapsuleActivity;
 
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import jahirfiquitiva.iconshowcase.BuildConfig;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.config.Config;
 import jahirfiquitiva.iconshowcase.enums.DrawerItem;
-import jahirfiquitiva.iconshowcase.events.OnLoadEvent;
-import jahirfiquitiva.iconshowcase.events.WallJSONEvent;
-import jahirfiquitiva.iconshowcase.holders.CategoryList;
-import jahirfiquitiva.iconshowcase.models.IconItem;
-import jahirfiquitiva.iconshowcase.models.IconsCategory;
-import jahirfiquitiva.iconshowcase.models.WallpaperItem;
 import jahirfiquitiva.iconshowcase.tasks.DownloadJSON;
 import jahirfiquitiva.iconshowcase.tasks.LoadIconsLists;
 import timber.log.Timber;
@@ -75,6 +65,7 @@ public abstract class TasksActivity extends CapsuleActivity {
                     .generateAppFilterXml(true) // defaults to true anyways
                     .generateAppFilterJson(false)
                     .debugMode(Config.get().allowDebugging())
+                    .filterXmlId(R.xml.appfilter)
                     //.filterOff() //TODO switch
                     .maxSelectionCount(0) //TODO add? And make this toggleable
                     .build().loadApps();

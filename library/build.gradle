@@ -130,7 +130,7 @@ dependencies {
     compile 'com.jakewharton.timber:timber:4.3.0'
 
     //Library for Requests
-    compile 'com.github.AllanWang:Butler:36c0caae3d'
+    compile 'com.github.AllanWang:Butler:297596baac'
 
     //Library for UI framework
     compile 'com.github.AllanWang:Capsule:4e4eb9a3e6'

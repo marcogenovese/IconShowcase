@@ -21,21 +21,12 @@ package jahirfiquitiva.iconshowcase.tasks;
 
 import android.app.Activity;
 import android.app.WallpaperManager;
-import android.content.Context;
-import android.content.pm.ResolveInfo;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
-import android.util.TypedValue;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
@@ -46,13 +37,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 
-import jahirfiquitiva.iconshowcase.R;
-import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.events.WallpaperEvent;
-import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
-import jahirfiquitiva.iconshowcase.utilities.Utils;
-import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
-import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 import timber.log.Timber;
 
 public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {

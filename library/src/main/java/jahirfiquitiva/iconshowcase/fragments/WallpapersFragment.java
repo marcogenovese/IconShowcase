@@ -38,8 +38,6 @@ import android.widget.ProgressBar;
 
 import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 
-import org.greenrobot.eventbus.Subscribe;
-
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -49,10 +47,9 @@ import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.adapters.WallpapersAdapter;
 import jahirfiquitiva.iconshowcase.dialogs.AdviceDialog;
 import jahirfiquitiva.iconshowcase.enums.DrawerItem;
-import jahirfiquitiva.iconshowcase.events.BlankEvent;
 import jahirfiquitiva.iconshowcase.events.OnLoadEvent;
+import jahirfiquitiva.iconshowcase.holders.FullListHolder;
 import jahirfiquitiva.iconshowcase.models.WallpaperItem;
-import jahirfiquitiva.iconshowcase.holders.WallpapersList;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
@@ -112,7 +109,7 @@ public class WallpapersFragment extends EventBaseFragment {
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        if (!WallpapersList.hasList()) return loadingView(inflater, container);
+        if (FullListHolder.get().walls().isEmpty()) return loadingView(inflater, container);
 
         setHasOptionsMenu(true);
         context = getActivity();
@@ -168,9 +165,9 @@ public class WallpapersFragment extends EventBaseFragment {
     public void setupLayout() {
 
         //TODO: MAKE WALLPAPERS APPEAR AT FIRST. FOR SOME REASON ONLY APPEAR AFTER PRESSING "UPDATE" ICON IN TOOLBAR
-        if (WallpapersList.hasList()) {
+        if (FullListHolder.get().walls().hasList()) {
             mAdapter = new WallpapersAdapter(getActivity(),
-                    WallpapersList.getList());
+                    FullListHolder.get().walls().getList());
 
             if (layout != null) {
 
@@ -202,7 +199,7 @@ public class WallpapersFragment extends EventBaseFragment {
                                     runOnUIThread(context, new Runnable() {
                                         @Override
                                         public void run() {
-                                            if (WallpapersList.getList().size() <= 0) {
+                                            if (FullListHolder.get().walls().getList().size() <= 0) {
                                                 noConnection.setImageDrawable(ColorUtils.getTintedIcon(
                                                         context, R.drawable.ic_no_connection,
                                                         ThemeUtils.darkTheme ? light : dark));

@@ -22,7 +22,6 @@ package jahirfiquitiva.iconshowcase.tasks;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.AsyncTask;
-import android.support.annotation.NonNull;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -33,8 +32,7 @@ import java.util.List;
 import java.util.Set;
 
 import jahirfiquitiva.iconshowcase.R;
-import jahirfiquitiva.iconshowcase.holders.CategoryList;
-import jahirfiquitiva.iconshowcase.holders.HomePreviewList;
+import jahirfiquitiva.iconshowcase.holders.FullListHolder;
 import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.models.IconsCategory;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
@@ -136,8 +134,9 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
         if (worked) {
             Timber.d("Load of icons task completed successfully in: %d milliseconds", (endTime - startTime));
         }
-        CategoryList.createList(mCategoryList);
-        HomePreviewList.createList(mPreviewIcons);
+
+        FullListHolder.get().preview().createList(mCategoryList);
+        FullListHolder.get().home().createList(mPreviewIcons);
     }
 
     private List<String> sortList (String[] array) {

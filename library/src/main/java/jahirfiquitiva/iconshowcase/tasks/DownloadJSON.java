@@ -11,8 +11,8 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.holders.FullListHolder;
 import jahirfiquitiva.iconshowcase.models.WallpaperItem;
-import jahirfiquitiva.iconshowcase.holders.WallpapersList;
 import jahirfiquitiva.iconshowcase.utilities.JSONParser;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import timber.log.Timber;
@@ -104,7 +104,7 @@ public class DownloadJSON extends AsyncTask<Void, Void, Boolean> {
     @Override
     protected void onPostExecute(Boolean worked) {
         Timber.d("Walls Task completed in: %d milliseconds", (endTime - startTime));
-        WallpapersList.createList(walls);
+        FullListHolder.get().walls().createList(walls);
 //            if (layout != null) {
 //                setupLayout(taskContext.get());
 //            } else {

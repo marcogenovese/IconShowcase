@@ -32,8 +32,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.pitchedapps.capsule.library.fragments.CapsuleFragment;
-
 import java.util.ArrayList;
 
 import jahirfiquitiva.iconshowcase.R;

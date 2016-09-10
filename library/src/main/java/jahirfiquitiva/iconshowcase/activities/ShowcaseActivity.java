@@ -89,8 +89,7 @@ import jahirfiquitiva.iconshowcase.fragments.RequestsFragment;
 import jahirfiquitiva.iconshowcase.fragments.SettingsFragment;
 import jahirfiquitiva.iconshowcase.fragments.WallpapersFragment;
 import jahirfiquitiva.iconshowcase.fragments.ZooperFragment;
-import jahirfiquitiva.iconshowcase.holders.HomePreviewList;
-import jahirfiquitiva.iconshowcase.holders.WallpapersList;
+import jahirfiquitiva.iconshowcase.holders.FullListHolder;
 import jahirfiquitiva.iconshowcase.logging.CrashReportingTree;
 import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.tasks.DownloadJSON;
@@ -498,7 +497,7 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
         } else if (i == R.id.refresh) {
             //TODO: MAKE WALLPAPERS APPEAR AT FIRST. FOR SOME REASON ONLY APPEAR AFTER PRESSING "UPDATE" ICON IN TOOLBAR
             if (Utils.hasNetwork(this)) {
-                WallpapersList.clearList();
+                FullListHolder.get().walls().clearList();
 //                WallpapersFragment.refreshWalls(this);
                 new DownloadJSON(this).execute();
             } else {
@@ -812,19 +811,19 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
 
     public void setupIcons() {
 
-        if (!HomePreviewList.hasList()) return;
+        if (FullListHolder.get().home().isEmpty()) return;
 
         ArrayList<IconItem> finalIconsList = new ArrayList<>();
 
         if (allowShuffle && shuffleIcons) {
             //TODO rather than shuffle list, why not get a random index point x times?
-            Collections.shuffle(HomePreviewList.getList());
+            Collections.shuffle(FullListHolder.get().home().getList());
         }
 
         int i = 0;
 
         while (i < numOfIcons) {
-            finalIconsList.add(HomePreviewList.getList().get(i));
+            finalIconsList.add(FullListHolder.get().home().getList().get(i));
             i++;
         }
 

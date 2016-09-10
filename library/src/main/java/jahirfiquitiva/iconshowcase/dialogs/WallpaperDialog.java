@@ -21,36 +21,20 @@ package jahirfiquitiva.iconshowcase.dialogs;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import jahirfiquitiva.iconshowcase.R;
-import jahirfiquitiva.iconshowcase.adapters.ChangelogAdapter;
 import jahirfiquitiva.iconshowcase.events.WallpaperEvent;
 import jahirfiquitiva.iconshowcase.tasks.ApplyWallpaper;
-import jahirfiquitiva.iconshowcase.utilities.ChangelogXmlParser;
 
 /**
  * @author Allan Wang
