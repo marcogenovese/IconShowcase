@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.events.WallJSONEvent;
 import jahirfiquitiva.iconshowcase.models.WallpaperItem;
+import jahirfiquitiva.iconshowcase.models.WallpapersList;
 import jahirfiquitiva.iconshowcase.utilities.JSONParser;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import timber.log.Timber;
@@ -105,7 +106,7 @@ public class DownloadJSON extends AsyncTask<Void, Void, Boolean> {
     @Override
     protected void onPostExecute(Boolean worked) {
         Timber.d("Walls Task completed in: %d milliseconds", (endTime - startTime));
-        EventBus.getDefault().post(new WallJSONEvent(walls));
+        WallpapersList.createWallpapersList(walls);
 //            if (layout != null) {
 //                setupLayout(taskContext.get());
 //            } else {

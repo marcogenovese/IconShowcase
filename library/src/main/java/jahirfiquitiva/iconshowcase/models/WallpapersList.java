@@ -19,22 +19,33 @@
 
 package jahirfiquitiva.iconshowcase.models;
 
+import android.support.annotation.NonNull;
+
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
+
+import jahirfiquitiva.iconshowcase.events.WallJSONEvent;
 
 public class WallpapersList {
 
-    private static ArrayList<WallpaperItem> wallsList = new ArrayList<>();
+    private static ArrayList<WallpaperItem> wallsList;
 
-    public static void createWallpapersList (ArrayList<WallpaperItem> wallsList) {
+    public static void createWallpapersList(@NonNull ArrayList<WallpaperItem> wallsList) {
         WallpapersList.wallsList = wallsList;
+        EventBus.getDefault().post(new WallJSONEvent(wallsList));
     }
 
-    public static ArrayList<WallpaperItem> getWallpapersList () {
+    public static ArrayList<WallpaperItem> getWallpapersList() {
         return wallsList;
     }
 
-    public static void clearList () {
-        wallsList.clear();
+    public static void clearList() {
+        wallsList = null;
+    }
+
+    public static boolean hasList() {
+        return wallsList != null && !wallsList.isEmpty();
     }
 
 }

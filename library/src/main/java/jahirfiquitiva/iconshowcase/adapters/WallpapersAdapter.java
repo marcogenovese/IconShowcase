@@ -20,7 +20,10 @@
 package jahirfiquitiva.iconshowcase.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.graphics.Palette;
@@ -37,51 +40,46 @@ import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.activities.AltWallpaperViewerActivity;
+import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
+import jahirfiquitiva.iconshowcase.activities.WallpaperViewerActivity;
+import jahirfiquitiva.iconshowcase.dialogs.WallpaperDialog;
 import jahirfiquitiva.iconshowcase.models.WallpaperItem;
+import jahirfiquitiva.iconshowcase.models.WallpapersList;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
+import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
+import timber.log.Timber;
 
 public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.WallsHolder> {
 
-    public interface ClickListener {
-
-        void onClick (WallsHolder view, int index, boolean longClick);
-    }
-
-    private final Context context;
-    private final Preferences mPrefs;
+    private final FragmentActivity activity;
     private int lastPosition = -1;
-    private ArrayList<WallpaperItem> wallsList;
-    private final ClickListener mCallback;
+    private final ArrayList<WallpaperItem> wallsList;
+    private final boolean animationEnabled;
 
-    public WallpapersAdapter (Context context, ClickListener callback) {
-        this.context = context;
-        this.mCallback = callback;
-        this.mPrefs = new Preferences(context);
-    }
-
-    public void setData (ArrayList<WallpaperItem> wallsList) {
+    public WallpapersAdapter (FragmentActivity activity, ArrayList<WallpaperItem> wallsList) {
+        this.activity = activity;
         this.wallsList = wallsList;
-        notifyDataSetChanged();
+        animationEnabled = new Preferences(activity).getAnimationsEnabled();
     }
 
     @Override
     public WallsHolder onCreateViewHolder (ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(context);
-        return new WallsHolder(inflater.inflate(R.layout.item_wallpaper, parent, false));
+        return new WallsHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_wallpaper, parent, false));
     }
 
     @Override
     public void onBindViewHolder (final WallsHolder holder, int position) {
         holder.titleBg.setBackgroundColor(
                 ColorUtils.changeAlpha(
-                        ContextCompat.getColor(context,
-                                ThemeUtils.darkTheme ? R.color.card_light_background
-                                        : R.color.card_dark_background),
+                        ContextCompat.getColor(activity,
+                                ThemeUtils.darkOrLight(R.color.card_light_background, R.color.card_dark_background)),
                         0.65f));
         holder.name.setTextColor(ColorUtils.getMaterialPrimaryTextColor(!ThemeUtils.darkTheme));
         holder.authorName.setTextColor(ColorUtils.getMaterialSecondaryTextColor(!ThemeUtils.darkTheme));
@@ -99,7 +97,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
             @Override
             protected void setResource (Bitmap bitmap) {
                 Palette.Swatch wallSwatch = ColorUtils.getPaletteSwatch(bitmap);
-                if (mPrefs.getAnimationsEnabled() && (holder.getAdapterPosition() > lastPosition)) {
+                if (animationEnabled && (holder.getAdapterPosition() > lastPosition)) {
                     holder.wall.setAlpha(0f);
                     holder.titleBg.setAlpha(0f);
                     holder.wall.setImageBitmap(bitmap);
@@ -115,20 +113,20 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
         };
 
         if (!(wallThumbURL.equals("null"))) {
-            Glide.with(context)
+            Glide.with(activity)
                     .load(wallURL)
                     .asBitmap()
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .priority(Priority.HIGH)
                     .thumbnail(
-                            Glide.with(context)
+                            Glide.with(activity)
                                     .load(wallThumbURL)
                                     .asBitmap()
                                     .priority(Priority.IMMEDIATE)
                                     .thumbnail(0.3f))
                     .into(target);
         } else {
-            Glide.with(context)
+            Glide.with(activity)
                     .load(wallURL)
                     .asBitmap()
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
@@ -181,7 +179,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
             if (clickable) {
                 clickable = false;
                 onWallClick(false);
-                reset(); //comment to disable automatic reset
+                reset(); //comment to disable automatic reset //TODO shouldn't all clicks be paused when applying?
             }
 
         }
@@ -197,9 +195,39 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
         }
 
         private void onWallClick (boolean longClick) {
-            int index = getLayoutPosition();
-            if (mCallback != null)
-                mCallback.onClick(this, index, longClick);
+            final WallpaperItem item = wallsList.get(getLayoutPosition());
+
+            if (ShowcaseActivity.wallsPicker || longClick) {
+                WallpaperDialog.show(activity, item.getWallURL());
+            } else {
+                final Intent intent = new Intent(activity,
+                        activity.getResources().getBoolean(R.bool.alternative_viewer) ? AltWallpaperViewerActivity.class :
+                                WallpaperViewerActivity.class);
+
+                intent.putExtra("item", item);
+                intent.putExtra("transitionName", ViewCompat.getTransitionName(wall));
+
+                Bitmap bitmap;
+
+                if (wall.getDrawable() != null) {
+                    bitmap = Utils.drawableToBitmap(wall.getDrawable());
+
+                    try {
+                        String filename = "temp.png";
+                        FileOutputStream stream = activity.openFileOutput(filename, Context.MODE_PRIVATE);
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                        stream.close();
+                        intent.putExtra("image", filename);
+                    } catch (Exception e) {
+                        Timber.d("Error getting drawable", e.getLocalizedMessage());
+                    }
+
+                    ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, wall, ViewCompat.getTransitionName(wall));
+                    activity.startActivity(intent, options.toBundle());
+                } else {
+                    activity.startActivity(intent);
+                }
+            }
         }
 
         private void reset () {
