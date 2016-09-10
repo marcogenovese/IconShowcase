@@ -258,7 +258,7 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
         if (bmp != null) {
             colorFromCachedPic = ColorUtils.getPaletteSwatch(bmp).getBodyTextColor();
         } else {
-            colorFromCachedPic = ThemeUtils.darkTheme ? tintDark : tintLightLighter;
+            colorFromCachedPic = ThemeUtils.darkOrLight(tintDark, tintLightLighter);
         }
 
         final ProgressBar spinner = (ProgressBar) findViewById(R.id.progress);
@@ -561,7 +561,7 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
                         final int snackbarLight = ContextCompat.getColor(context, R.color.snackbar_light);
                         final int snackbarDark = ContextCompat.getColor(context, R.color.snackbar_dark);
                         ViewGroup snackbarView = (ViewGroup) longSnackbar.getView();
-                        snackbarView.setBackgroundColor(ThemeUtils.darkTheme ? snackbarDark : snackbarLight);
+                        snackbarView.setBackgroundColor(ThemeUtils.darkOrLight(snackbarDark, snackbarLight));
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                             snackbarView.setPadding(snackbarView.getPaddingLeft(),
                                     snackbarView.getPaddingTop(), snackbarView.getPaddingRight(),
@@ -688,7 +688,7 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
         final int snackbarLight = ContextCompat.getColor(context, R.color.snackbar_light);
         final int snackbarDark = ContextCompat.getColor(context, R.color.snackbar_dark);
         ViewGroup snackbarView = (ViewGroup) notConnectedSnackBar.getView();
-        snackbarView.setBackgroundColor(ThemeUtils.darkTheme ? snackbarDark : snackbarLight);
+        snackbarView.setBackgroundColor(ThemeUtils.darkOrLight(snackbarDark, snackbarLight));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             snackbarView.setPadding(snackbarView.getPaddingLeft(),
                     snackbarView.getPaddingTop(), snackbarView.getPaddingRight(),

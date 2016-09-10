@@ -130,7 +130,7 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
     private boolean mIsPremium = false, installedFromPlayStore = false;
 
     //TODO check if these are necessary
-    public static boolean iconsPicker, wallsPicker, allowShuffle = true;
+    public static boolean iconsPicker = false, wallsPicker = false, allowShuffle = true;
     private static boolean shuffleIcons = true;
 
     private static String thaAppName;
@@ -818,35 +818,19 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
     }
 
     private void getAction() {
-        String action;
-        try {
-            action = getIntent().getAction();
-        } catch (Exception e) {
-            action = "action";
-        }
+        if (getIntent() == null || getIntent().getAction() == null) return;
 
-        try {
-            switch (action) {
-                case Config.ADW_ACTION:
-                case Config.TURBO_ACTION:
-                case Config.NOVA_ACTION:
-                case Intent.ACTION_PICK:
-                case Intent.ACTION_GET_CONTENT:
-                    iconsPicker = true;
-                    wallsPicker = false;
-
-                case Intent.ACTION_SET_WALLPAPER:
-                    iconsPicker = false;
-                    wallsPicker = true;
-                    break;
-                default:
-                    iconsPicker = false;
-                    wallsPicker = false;
-                    break;
-            }
-        } catch (ActivityNotFoundException | NullPointerException e) {
-            iconsPicker = false;
-            wallsPicker = false;
+        switch (getIntent().getAction()) {
+            case Config.ADW_ACTION:
+            case Config.TURBO_ACTION:
+            case Config.NOVA_ACTION:
+            case Intent.ACTION_PICK:
+            case Intent.ACTION_GET_CONTENT:
+                iconsPicker = true;
+                break; //TODO check the breaks, I added this one
+            case Intent.ACTION_SET_WALLPAPER:
+                wallsPicker = true;
+                break;
         }
     }
 

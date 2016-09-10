@@ -44,6 +44,7 @@ import android.widget.ProgressBar;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.Theme;
 import com.pitchedapps.capsule.library.fragments.CapsuleFragment;
 import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 
@@ -157,7 +158,7 @@ public class WallpapersFragment extends CapsuleFragment {
 
         noConnection.setImageDrawable(ColorUtils.getTintedIcon(
                 context, R.drawable.ic_no_connection,
-                ThemeUtils.darkTheme ? light : dark));
+                ThemeUtils.darkOrLight(dark, light)));
         noConnection.setVisibility(View.GONE);
 
         showProgressBar();
@@ -169,9 +170,10 @@ public class WallpapersFragment extends CapsuleFragment {
         mSwipeRefreshLayout.setProgressBackgroundColorSchemeColor(ThemeUtils.darkTheme ? dark : light);
 
         mSwipeRefreshLayout.setColorSchemeResources(
-                ThemeUtils.darkTheme ? R.color.dark_theme_accent : R.color.light_theme_accent, //TODO check if having three of the same colors makes a difference
-                ThemeUtils.darkTheme ? R.color.dark_theme_accent : R.color.light_theme_accent,
-                ThemeUtils.darkTheme ? R.color.dark_theme_accent : R.color.light_theme_accent);
+                ThemeUtils.darkOrLight(R.color.dark_theme_accent, R.color.light_theme_accent),
+                ThemeUtils.darkOrLight(R.color.dark_theme_accent, R.color.light_theme_accent),
+                ThemeUtils.darkOrLight(R.color.dark_theme_accent, R.color.light_theme_accent)); //TODO check if having three of the same colors makes a difference
+
 
         mSwipeRefreshLayout.setEnabled(false);
 

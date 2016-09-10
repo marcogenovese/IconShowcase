@@ -24,6 +24,8 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.support.annotation.ColorInt;
+import android.support.annotation.ColorRes;
 import android.support.v4.content.ContextCompat;
 
 import java.util.Calendar;
@@ -40,6 +42,11 @@ public class ThemeUtils {
 
     public static boolean darkTheme;
     public static boolean transparent;
+
+    public static int darkOrLight(int dark, int light) { //TODO use this instead of ternary conditions
+        if (darkTheme) return dark;
+        return light;
+    }
 
     public static void onActivityCreateSetTheme (Activity activity) {
         final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
