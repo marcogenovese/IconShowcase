@@ -22,9 +22,6 @@ package jahirfiquitiva.iconshowcase.tasks;
 import android.content.Context;
 
 import jahirfiquitiva.iconshowcase.R;
-import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
-import jahirfiquitiva.iconshowcase.fragments.WallpapersFragment;
-import jahirfiquitiva.iconshowcase.models.WallpapersList;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 
 public class TasksExecutor {

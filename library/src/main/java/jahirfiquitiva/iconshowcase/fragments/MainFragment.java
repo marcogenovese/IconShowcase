@@ -40,13 +40,14 @@ import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.adapters.HomeListAdapter;
 import jahirfiquitiva.iconshowcase.enums.DrawerItem;
+import jahirfiquitiva.iconshowcase.events.OnLoadEvent;
 import jahirfiquitiva.iconshowcase.models.HomeCard;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 import jahirfiquitiva.iconshowcase.views.DividerItemDecoration;
 import timber.log.Timber;
 
-public class MainFragment extends CapsuleFragment {
+public class MainFragment extends EventBaseFragment {
 
     private Context context;
 
@@ -152,4 +153,14 @@ public class MainFragment extends CapsuleFragment {
         ((ShowcaseActivity) getActivity()).animateIcons(delay);
     }
 
+    @Override
+    protected OnLoadEvent.Type eventType() {
+        return OnLoadEvent.Type.HOMEPREVIEWS;
+    }
+
+    @Override
+    public void subscribed(OnLoadEvent event) {
+        if (event.type != eventType()) return;
+        ((ShowcaseActivity)getActivity()).setupIcons();
+    }
 }

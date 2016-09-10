@@ -17,7 +17,7 @@
  * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
-package jahirfiquitiva.iconshowcase.models;
+package jahirfiquitiva.iconshowcase.holders;
 
 import android.support.annotation.NonNull;
 
@@ -25,18 +25,19 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 
-import jahirfiquitiva.iconshowcase.events.WallJSONEvent;
+import jahirfiquitiva.iconshowcase.events.OnLoadEvent;
+import jahirfiquitiva.iconshowcase.models.WallpaperItem;
 
 public class WallpapersList {
 
     private static ArrayList<WallpaperItem> wallsList;
 
-    public static void createWallpapersList(@NonNull ArrayList<WallpaperItem> wallsList) {
+    public static void createList(@NonNull ArrayList<WallpaperItem> wallsList) {
         WallpapersList.wallsList = wallsList;
-        EventBus.getDefault().post(new WallJSONEvent(wallsList));
+        EventBus.getDefault().post(new OnLoadEvent(OnLoadEvent.Type.WALLPAPERS));
     }
 
-    public static ArrayList<WallpaperItem> getWallpapersList() {
+    public static ArrayList<WallpaperItem> getList() {
         return wallsList;
     }
 

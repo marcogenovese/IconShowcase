@@ -3,7 +3,6 @@ package jahirfiquitiva.iconshowcase.tasks;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,9 +11,8 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import jahirfiquitiva.iconshowcase.R;
-import jahirfiquitiva.iconshowcase.events.WallJSONEvent;
 import jahirfiquitiva.iconshowcase.models.WallpaperItem;
-import jahirfiquitiva.iconshowcase.models.WallpapersList;
+import jahirfiquitiva.iconshowcase.holders.WallpapersList;
 import jahirfiquitiva.iconshowcase.utilities.JSONParser;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import timber.log.Timber;
@@ -106,7 +104,7 @@ public class DownloadJSON extends AsyncTask<Void, Void, Boolean> {
     @Override
     protected void onPostExecute(Boolean worked) {
         Timber.d("Walls Task completed in: %d milliseconds", (endTime - startTime));
-        WallpapersList.createWallpapersList(walls);
+        WallpapersList.createList(walls);
 //            if (layout != null) {
 //                setupLayout(taskContext.get());
 //            } else {

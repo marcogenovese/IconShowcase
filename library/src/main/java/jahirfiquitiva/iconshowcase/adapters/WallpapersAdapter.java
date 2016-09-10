@@ -49,7 +49,6 @@ import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.activities.WallpaperViewerActivity;
 import jahirfiquitiva.iconshowcase.dialogs.WallpaperDialog;
 import jahirfiquitiva.iconshowcase.models.WallpaperItem;
-import jahirfiquitiva.iconshowcase.models.WallpapersList;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;

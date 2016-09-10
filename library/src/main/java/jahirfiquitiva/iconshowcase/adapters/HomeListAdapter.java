@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.models.HomeCard;
-import jahirfiquitiva.iconshowcase.models.WallpapersList;
+import jahirfiquitiva.iconshowcase.holders.WallpapersList;
 import jahirfiquitiva.iconshowcase.tasks.LoadZooperWidgets;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
@@ -150,7 +150,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         //TODO: Improve tasks so the items amount is accurate
 
         final String availableWallpapers = String.valueOf(
-                WallpapersList.getWallpapersList() != null ? WallpapersList.getWallpapersList().size() :
+                WallpapersList.getList() != null ? WallpapersList.getList().size() :
                         context.getResources().getInteger(R.integer.wallpapers_amount) > 0 ? context.getResources().getInteger(R.integer.wallpapers_amount) : 0);
         final String includedWidgets = String.valueOf(
                 LoadZooperWidgets.widgets != null ? LoadZooperWidgets.widgets.size() :

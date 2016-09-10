@@ -35,11 +35,11 @@ import java.util.HashMap;
 
 import jahirfiquitiva.iconshowcase.BuildConfig;
 import jahirfiquitiva.iconshowcase.R;
-import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.config.Config;
 import jahirfiquitiva.iconshowcase.enums.DrawerItem;
+import jahirfiquitiva.iconshowcase.events.OnLoadEvent;
 import jahirfiquitiva.iconshowcase.events.WallJSONEvent;
-import jahirfiquitiva.iconshowcase.fragments.WallpapersFragment;
+import jahirfiquitiva.iconshowcase.holders.CategoryList;
 import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.models.IconsCategory;
 import jahirfiquitiva.iconshowcase.models.WallpaperItem;
@@ -50,25 +50,11 @@ import timber.log.Timber;
 /**
  * Created by Allan Wang on 2016-08-20.
  */
-public abstract class TasksActivity extends CapsuleActivity implements LoadIconsLists.IIconList {
+public abstract class TasksActivity extends CapsuleActivity {
 
-    protected ArrayList<IconItem> mPreviewIconList;
-    protected ArrayList<IconsCategory> mCategoryList;
-    protected ArrayList<WallpaperItem> mWallpaperList;
     private boolean tasksExecuted = false;
 
     protected abstract HashMap<DrawerItem, Integer> getDrawerMap();
-
-    protected abstract void iconsLoaded();
-
-    protected abstract void wallsLoaded();
-
-    @Override
-    public void onLoadComplete(ArrayList<IconItem> previewIcons, ArrayList<IconsCategory> categoryList) {
-        mPreviewIconList = previewIcons;
-        mCategoryList = categoryList;
-        iconsLoaded();
-    }
 
     //TODO fix up booleans
     protected void startTasks() {
@@ -77,7 +63,7 @@ public abstract class TasksActivity extends CapsuleActivity implements LoadIcons
             Timber.w("startTasks() executed more than once; please remove duplicates");
         tasksExecuted = true;
         if (drawerHas(DrawerItem.PREVIEWS))
-            new LoadIconsLists(this, this).execute();
+            new LoadIconsLists(this).execute();
         if (drawerHas(DrawerItem.REQUESTS)) {
             IconRequest.start(this)
                     //                        .withHeader("Hey, testing Icon Request!")
@@ -148,12 +134,5 @@ public abstract class TasksActivity extends CapsuleActivity implements LoadIcons
     //        EventBus.getDefault().unregister(this);
     //        super.onStop();
     //    }
-
-
-    @Subscribe
-    public void setupLayout(WallJSONEvent event) {
-        mWallpaperList = event.walls;
-        wallsLoaded();
-    }
 
 }

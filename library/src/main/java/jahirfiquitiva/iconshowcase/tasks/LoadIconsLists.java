@@ -33,6 +33,8 @@ import java.util.List;
 import java.util.Set;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.holders.CategoryList;
+import jahirfiquitiva.iconshowcase.holders.HomePreviewList;
 import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.models.IconsCategory;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
@@ -45,18 +47,6 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
     private ArrayList<IconItem> mPreviewIcons = new ArrayList<>();
     private ArrayList<IconsCategory> mCategoryList = new ArrayList<>();
     private long startTime, endTime;
-
-    public interface IIconList {
-
-        void onLoadComplete (ArrayList<IconItem> previewIcons, ArrayList<IconsCategory> categoryList);
-    }
-
-    private IIconList mCallback;
-
-    public LoadIconsLists (Context context, @NonNull IIconList callback) {
-        mContext = new WeakReference<>(context);
-        mCallback = callback;
-    }
 
     public LoadIconsLists (Context context) {
         mContext = new WeakReference<>(context);
@@ -146,9 +136,8 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
         if (worked) {
             Timber.d("Load of icons task completed successfully in: %d milliseconds", (endTime - startTime));
         }
-        if (mCallback != null) {
-            mCallback.onLoadComplete(mPreviewIcons, mCategoryList);
-        }
+        CategoryList.createList(mCategoryList);
+        HomePreviewList.createList(mPreviewIcons);
     }
 
     private List<String> sortList (String[] array) {

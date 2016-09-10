@@ -21,12 +21,9 @@ package jahirfiquitiva.iconshowcase.activities;
 
 import android.app.Activity;
 import android.app.WallpaperManager;
-import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -40,7 +37,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -93,9 +89,10 @@ import jahirfiquitiva.iconshowcase.fragments.RequestsFragment;
 import jahirfiquitiva.iconshowcase.fragments.SettingsFragment;
 import jahirfiquitiva.iconshowcase.fragments.WallpapersFragment;
 import jahirfiquitiva.iconshowcase.fragments.ZooperFragment;
+import jahirfiquitiva.iconshowcase.holders.HomePreviewList;
+import jahirfiquitiva.iconshowcase.holders.WallpapersList;
 import jahirfiquitiva.iconshowcase.logging.CrashReportingTree;
 import jahirfiquitiva.iconshowcase.models.IconItem;
-import jahirfiquitiva.iconshowcase.models.WallpapersList;
 import jahirfiquitiva.iconshowcase.tasks.DownloadJSON;
 import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
@@ -334,10 +331,10 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
                 return new MainFragment();
 
             case PREVIEWS:
-                return PreviewsFragment.newInstance(mCategoryList);
+                return new PreviewsFragment();
 
             case WALLPAPERS:
-                return WallpapersFragment.newInstance(mWallpaperList);
+                return new WallpapersFragment();
 
             case REQUESTS:
                 //                return RequestsFragment.newInstance(isRequestsFullyLoaded());
@@ -501,7 +498,7 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
         } else if (i == R.id.refresh) {
             //TODO: MAKE WALLPAPERS APPEAR AT FIRST. FOR SOME REASON ONLY APPEAR AFTER PRESSING "UPDATE" ICON IN TOOLBAR
             if (Utils.hasNetwork(this)) {
-                mWallpaperList = null;
+                WallpapersList.clearList();
 //                WallpapersFragment.refreshWalls(this);
                 new DownloadJSON(this).execute();
             } else {
@@ -667,27 +664,6 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
     }
 
     @Override
-    protected void iconsLoaded() {
-        Fragment fragment = getCurrentFragment();
-        if (fragment instanceof MainFragment) {
-            Timber.d("Setting up icons");
-            setupIcons();
-        } else if (fragment instanceof PreviewsFragment) {
-            Timber.d("Reloading Previews");
-            reloadFragment(DrawerItem.REQUESTS);
-        }
-    }
-
-    @Override
-    protected void wallsLoaded() {
-        Fragment fragment = getCurrentFragment();
-        if (fragment instanceof WallpapersFragment) {
-            Timber.d("Reloading Wallpapers");
-            reloadFragment(DrawerItem.WALLPAPERS);
-        }
-    }
-
-    @Override
     protected HashMap<DrawerItem, Integer> getDrawerMap() {
         return mDrawerMap;
     }
@@ -836,19 +812,19 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
 
     public void setupIcons() {
 
-        if (mPreviewIconList == null) return;
+        if (!HomePreviewList.hasList()) return;
 
         ArrayList<IconItem> finalIconsList = new ArrayList<>();
 
         if (allowShuffle && shuffleIcons) {
             //TODO rather than shuffle list, why not get a random index point x times?
-            Collections.shuffle(mPreviewIconList);
+            Collections.shuffle(HomePreviewList.getList());
         }
 
         int i = 0;
 
         while (i < numOfIcons) {
-            finalIconsList.add(mPreviewIconList.get(i));
+            finalIconsList.add(HomePreviewList.getList().get(i));
             i++;
         }
 

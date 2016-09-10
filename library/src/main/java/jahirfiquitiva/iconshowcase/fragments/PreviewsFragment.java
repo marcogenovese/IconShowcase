@@ -36,54 +36,42 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 
-import com.pitchedapps.capsule.library.fragments.CapsuleFragment;
-
 import java.util.ArrayList;
 import java.util.Locale;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.enums.DrawerItem;
+import jahirfiquitiva.iconshowcase.events.OnLoadEvent;
 import jahirfiquitiva.iconshowcase.fragments.base.FragmentStatePagerAdapter;
+import jahirfiquitiva.iconshowcase.holders.CategoryList;
 import jahirfiquitiva.iconshowcase.models.IconsCategory;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.utilities.color.ToolbarTinter;
 
 @SuppressWarnings("ResourceAsColor")
-public class PreviewsFragment extends CapsuleFragment {
+public class PreviewsFragment extends EventBaseFragment {
 
     private int mLastSelected = 0;
     private ViewPager mPager;
-    private String[] tabs;
     private TabLayout mTabs;
     private SearchView mSearchView;
-    private ArrayList<IconsCategory> mCategories;
     private MenuItem mSearchItem;
-
-    private static final String categoryListKey = "preview_categories";
-
-    public static PreviewsFragment newInstance (@Nullable ArrayList<IconsCategory> categories) {
-        PreviewsFragment fragment = new PreviewsFragment();
-        if (categories == null) return fragment;
-        Bundle args = new Bundle();
-        args.putParcelableArrayList(categoryListKey, categories);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private ArrayList<IconsCategory> mCategories;
 
     @Override
-    public void onFabClick (View v) {
+    public void onFabClick(View v) {
 
     }
 
     @Override
-    public int getTitleId () {
+    public int getTitleId() {
         return DrawerItem.PREVIEWS.getTitleID();
     }
 
     @Override
-    protected int getFabIcon () {
+    protected int getFabIcon() {
         return 0;
     }
 
@@ -93,21 +81,19 @@ public class PreviewsFragment extends CapsuleFragment {
      * @return
      */
     @Override
-    protected boolean hasFab () {
+    protected boolean hasFab() {
         return false;
     }
 
     @Override
-    public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        Bundle args = getArguments();
-
-//                if (args == null || !args.containsKey(categoryListKey)) return loadingView(inflater, container); //TODO
+        if (!CategoryList.hasList()) return loadingView(inflater, container);
 
         View layout = inflater.inflate(R.layout.icons_preview_section, container, false);
 
-        mCategories = args.getParcelableArrayList(categoryListKey);
+        mCategories = CategoryList.getList();
 
         //TODO Check if ViewPager is smooth enough
         mPager = (ViewPager) layout.findViewById(R.id.pager);
@@ -120,13 +106,13 @@ public class PreviewsFragment extends CapsuleFragment {
     }
 
     @Override
-    public void onCreate (@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
+        if (CategoryList.hasList()) setHasOptionsMenu(true);
     }
 
     @Override
-    public void onViewCreated (View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         int iconsColor = ThemeUtils.darkTheme ?
@@ -140,12 +126,17 @@ public class PreviewsFragment extends CapsuleFragment {
         }
     }
 
-    private void createTabs () {
+    private String tabName(int i) {
+        if (mCategories == null) throw new RuntimeException("mCategories not loaded yet");
+        return mCategories.get(i).getCategoryName();
+    }
+
+    private void createTabs() {
         mTabs.removeAllTabs();
         mTabs.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mPager));
         mPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabs) {
             @Override
-            public void onPageSelected (int position) {
+            public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 if (mLastSelected > -1) {
                     IconsFragment frag = (IconsFragment) getChildFragmentManager().findFragmentByTag("page:" + mLastSelected);
@@ -154,9 +145,8 @@ public class PreviewsFragment extends CapsuleFragment {
                 }
                 mLastSelected = position;
                 if (mSearchView != null && getActivity() != null)
-                    mSearchView.setQueryHint(getString(R.string.search_x, tabs[mLastSelected]));
-                if (getActivity() != null)
-                    getActivity().invalidateOptionsMenu();
+                    mSearchView.setQueryHint(getString(R.string.search_x, tabName(mLastSelected)));
+                getActivity().invalidateOptionsMenu();
             }
         });
         for (IconsCategory category : mCategories) {
@@ -166,33 +156,34 @@ public class PreviewsFragment extends CapsuleFragment {
     }
 
     @Override
-    public void onDestroyView () {
+    public void onDestroyView() {
         super.onDestroyView();
         if (mTabs != null) mTabs.setVisibility(View.GONE);
     }
 
     @Override
-    public void onCreateOptionsMenu (Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
+        if (!CategoryList.hasList()) return;
         inflater.inflate(R.menu.search, menu);
         mSearchItem = menu.findItem(R.id.search);
         mSearchView = (SearchView) MenuItemCompat.getActionView(mSearchItem);
-        mSearchView.setQueryHint(getString(R.string.search_x, tabs[mLastSelected]));
+        mSearchView.setQueryHint(getString(R.string.search_x, tabName(mLastSelected)));
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
             @Override
-            public boolean onQueryTextSubmit (String s) {
+            public boolean onQueryTextSubmit(String s) {
                 search(s);
                 return false;
             }
 
             @Override
-            public boolean onQueryTextChange (String s) {
+            public boolean onQueryTextChange(String s) {
                 search(s);
                 return false;
             }
 
-            private void search (String s) {
+            private void search(String s) {
                 IconsFragment frag =
                         (IconsFragment) getChildFragmentManager().findFragmentByTag("page:" +
                                 mPager.getCurrentItem());
@@ -215,9 +206,16 @@ public class PreviewsFragment extends CapsuleFragment {
 
     }
 
+    @Override
+    protected OnLoadEvent.Type eventType() {
+        return OnLoadEvent.Type.PREVIEWS;
+    }
+
     class IconsPagerAdapter extends FragmentStatePagerAdapter {
 
-        public IconsPagerAdapter (FragmentManager fm) {
+        private String[] tabs;
+
+        public IconsPagerAdapter(FragmentManager fm) {
             super(fm);
             String[] tabsNames = new String[mCategories.size()];
             for (int i = 0; i < tabsNames.length; i++) {
@@ -227,30 +225,30 @@ public class PreviewsFragment extends CapsuleFragment {
         }
 
         @Override
-        public Fragment getItem (int position) {
+        public Fragment getItem(int position) {
             return IconsFragment.newInstance(mCategories.get(position));
         }
 
         @Override
-        public CharSequence getPageTitle (int position) {
+        public CharSequence getPageTitle(int position) {
             return tabs[position].toUpperCase(Locale.getDefault());
         }
 
         @Override
-        public int getCount () {
+        public int getCount() {
             return tabs.length;
         }
     }
 
     @Override
-    public void onSaveInstanceState (Bundle savedInstanceState) {
+    public void onSaveInstanceState(Bundle savedInstanceState) {
         // Save current position
         savedInstanceState.putInt("lastSelected", mLastSelected);
         super.onSaveInstanceState(savedInstanceState);
     }
 
     @Override
-    public void onActivityCreated (Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null) {
             // Restore last selected position

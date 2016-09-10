@@ -36,10 +36,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-import com.pitchedapps.capsule.library.fragments.CapsuleFragment;
 import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
@@ -50,18 +48,18 @@ import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.adapters.WallpapersAdapter;
 import jahirfiquitiva.iconshowcase.dialogs.AdviceDialog;
-import jahirfiquitiva.iconshowcase.dialogs.WallpaperDialog;
 import jahirfiquitiva.iconshowcase.enums.DrawerItem;
 import jahirfiquitiva.iconshowcase.events.BlankEvent;
+import jahirfiquitiva.iconshowcase.events.OnLoadEvent;
 import jahirfiquitiva.iconshowcase.models.WallpaperItem;
-import jahirfiquitiva.iconshowcase.models.WallpapersList;
+import jahirfiquitiva.iconshowcase.holders.WallpapersList;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 
-public class WallpapersFragment extends CapsuleFragment {
+public class WallpapersFragment extends EventBaseFragment {
 
     private ViewGroup layout;
     private ProgressBar mProgress;
@@ -73,18 +71,6 @@ public class WallpapersFragment extends CapsuleFragment {
     private Activity context;
     private GridSpacingItemDecoration gridSpacing;
     private int light, dark;
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onStop() {
-        EventBus.getDefault().unregister(this);
-        super.onStop();
-    }
 
     @Override
     public void onFabClick(View v) {
@@ -125,6 +111,8 @@ public class WallpapersFragment extends CapsuleFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+
+        if (!WallpapersList.hasList()) return loadingView(inflater, container);
 
         setHasOptionsMenu(true);
         context = getActivity();
@@ -182,7 +170,7 @@ public class WallpapersFragment extends CapsuleFragment {
         //TODO: MAKE WALLPAPERS APPEAR AT FIRST. FOR SOME REASON ONLY APPEAR AFTER PRESSING "UPDATE" ICON IN TOOLBAR
         if (WallpapersList.hasList()) {
             mAdapter = new WallpapersAdapter(getActivity(),
-                    WallpapersList.getWallpapersList());
+                    WallpapersList.getList());
 
             if (layout != null) {
 
@@ -214,7 +202,7 @@ public class WallpapersFragment extends CapsuleFragment {
                                     runOnUIThread(context, new Runnable() {
                                         @Override
                                         public void run() {
-                                            if (WallpapersList.getWallpapersList().size() <= 0) {
+                                            if (WallpapersList.getList().size() <= 0) {
                                                 noConnection.setImageDrawable(ColorUtils.getTintedIcon(
                                                         context, R.drawable.ic_no_connection,
                                                         ThemeUtils.darkTheme ? light : dark));
@@ -305,12 +293,6 @@ public class WallpapersFragment extends CapsuleFragment {
         }
     }
 
-    @Subscribe
-    public void asdf(BlankEvent event) {
-        if (event.getCode() > 5) return;
-        updateRecyclerView(event.getCode());
-    }
-
     public void updateRecyclerView(int newColumns) {
         mRecyclerView.setVisibility(View.GONE);
         fastScroller.setVisibility(View.GONE);
@@ -339,4 +321,8 @@ public class WallpapersFragment extends CapsuleFragment {
         });
     }
 
+    @Override
+    protected OnLoadEvent.Type eventType() {
+        return OnLoadEvent.Type.WALLPAPERS;
+    }
 }
