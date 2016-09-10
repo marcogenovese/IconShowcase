@@ -112,7 +112,12 @@ Thanks to her, IconShowcase is completely free and open-source.
 ### App Icon Creator
 - [Eduardo Pratti](https://plus.google.com/+EduardoPratti/posts)
 
-    
+
+# Library source
+
+When using the [library source](https://github.com/jahirfiquitiva/IconShowcase), in case you want to do some extra modifications and stuff, the result of such modifications (either success, errors, crashes, etc.) must be completely under your own risk and responsibility. We do **not** provide support when using library source. This source is here just for experienced people and/or developers. Finally, be sure to check the license terms before publishing your works.
+
+
 # License
 
 This app is shared under the CreativeCommons Attribution-ShareAlike license.
