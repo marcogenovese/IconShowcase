@@ -108,7 +108,7 @@ public class MainFragment extends CapsuleFragment {
 
             @Override
             public void onDebouncedClick (View v) {
-                ShowcaseActivity.SHUFFLE = true;
+                ShowcaseActivity.allowShuffle = true;
                 setupAndAnimateIcons(0);
             }
         });

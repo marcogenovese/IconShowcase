@@ -43,7 +43,10 @@ public class Config implements IConfig {
 
     public static final String MARKET_URL = "https://play.google.com/store/apps/details?id=",
             PLAY_STORE_INSTALLER = "com.google.android.feedback",
-            PLAY_STORE_PACKAGE = "com.android.vending";
+            PLAY_STORE_PACKAGE = "com.android.vending",
+    ADW_ACTION = "org.adw.launcher.icons.ACTION_PICK_ICON",
+            TURBO_ACTION = "com.phonemetra.turbo.launcher.icons.ACTION_PICK_ICON",
+            NOVA_ACTION = "com.novalauncher.THEME";
 
     private Config (@Nullable Context context) {
         mR = null;

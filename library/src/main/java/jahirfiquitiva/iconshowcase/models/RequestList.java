@@ -23,19 +23,19 @@ import java.util.ArrayList;
 
 public class RequestList {
 
-    private static ArrayList<RequestItem> appsToRequest;
+    private ArrayList<RequestItem> appsToRequest;
 
     public RequestList (ArrayList<RequestItem> appsToRequest) {
-        RequestList.appsToRequest = appsToRequest;
+        this.appsToRequest = appsToRequest;
     }
 
-    public static void setRequestList (ArrayList<RequestItem> appsToRequest) {
-        RequestList.appsToRequest = appsToRequest;
+    public void setRequestList (ArrayList<RequestItem> appsToRequest) {
+        this.appsToRequest = appsToRequest;
     }
 
-    public static ArrayList<RequestItem> getRequestList () {
-        return RequestList.appsToRequest != null ?
-                RequestList.appsToRequest.size() > 0 ? RequestList.appsToRequest : null
+    public ArrayList<RequestItem> getRequestList () {
+        return appsToRequest != null ?
+                appsToRequest.size() > 0 ? appsToRequest : null
                 : null;
     }
 

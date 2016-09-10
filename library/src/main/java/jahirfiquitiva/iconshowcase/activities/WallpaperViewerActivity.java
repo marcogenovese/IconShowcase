@@ -89,13 +89,13 @@ public class WallpaperViewerActivity extends AppCompatActivity {
     private WallpaperItem item;
 
     private RelativeLayout layout;
-    private static Preferences mPrefs;
-    private static File downloadsFolder;
+    private Preferences mPrefs;
+    private File downloadsFolder;
     private MaterialDialog dialogApply;
 
     private LinearLayout toHide1, toHide2;
 
-    private static MaterialDialog downloadDialog;
+    private MaterialDialog downloadDialog;
 
     private Activity context;
 
@@ -592,11 +592,11 @@ public class WallpaperViewerActivity extends AppCompatActivity {
         }
     }
 
-    private static Handler handler (Context context) {
+    private Handler handler (Context context) {
         return new Handler(context.getMainLooper());
     }
 
-    private static void runOnUIThread (Context context, Runnable r) {
+    private void runOnUIThread (Context context, Runnable r) {
         handler(context).post(r);
     }
 

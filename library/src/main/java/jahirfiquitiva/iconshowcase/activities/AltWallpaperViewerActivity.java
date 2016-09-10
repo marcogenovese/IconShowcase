@@ -94,10 +94,10 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
 
     private WallpaperItem item;
     private CoordinatorLayout layout;
-    private static Preferences mPrefs;
-    private static File downloadsFolder;
+    private Preferences mPrefs;
+    private File downloadsFolder;
     private MaterialDialog dialogApply;
-    private static MaterialDialog downloadDialog;
+    private MaterialDialog downloadDialog;
     private Activity context;
     private FloatingActionButton fab, applyFab, saveFab, infoFab;
 
@@ -615,39 +615,39 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
                                 })
                                 .show();
 
-//                        Glide.with(context)
-//                                .load(wallUrl)
-//                                .asBitmap()
-//                                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-//                                .into(new SimpleTarget<Bitmap>() {
-//                                    @Override
-//                                    public void onResourceReady (
-//                                            final Bitmap resource,
-//                                            GlideAnimation<? super Bitmap> glideAnimation) {
-//                                        if (resource != null && dialogApply.isShowing()) {
-//                                            enteredApplyTask[0] = true;
-//
-//                                            if (dialogApply != null) {
-//                                                dialogApply.dismiss();
-//                                            }
-//
-//                                            dialogApply = new MaterialDialog.Builder(context)
-//                                                    .content(R.string.setting_wall_title)
-//                                                    .progress(true, 0)
-//                                                    .cancelable(false)
-//                                                    .show();
-//
-//                                            applyTask[0] = new ApplyWallpaper(context, dialogApply,
-//                                                    resource, false, layout, new ApplyWallpaper.ApplyCallback() {
-//                                                @Override
-//                                                public void afterApplied () {
-//                                                    reshowFab(fab);
-//                                                }
-//                                            });
-//                                            applyTask[0].execute();
-//                                        }
-//                                    }
-//                                });
+                        //                        Glide.with(context)
+                        //                                .load(wallUrl)
+                        //                                .asBitmap()
+                        //                                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        //                                .into(new SimpleTarget<Bitmap>() {
+                        //                                    @Override
+                        //                                    public void onResourceReady (
+                        //                                            final Bitmap resource,
+                        //                                            GlideAnimation<? super Bitmap> glideAnimation) {
+                        //                                        if (resource != null && dialogApply.isShowing()) {
+                        //                                            enteredApplyTask[0] = true;
+                        //
+                        //                                            if (dialogApply != null) {
+                        //                                                dialogApply.dismiss();
+                        //                                            }
+                        //
+                        //                                            dialogApply = new MaterialDialog.Builder(context)
+                        //                                                    .content(R.string.setting_wall_title)
+                        //                                                    .progress(true, 0)
+                        //                                                    .cancelable(false)
+                        //                                                    .show();
+                        //
+                        //                                            applyTask[0] = new ApplyWallpaper(context, dialogApply,
+                        //                                                    resource, false, layout, new ApplyWallpaper.ApplyCallback() {
+                        //                                                @Override
+                        //                                                public void afterApplied () {
+                        //                                                    reshowFab(fab);
+                        //                                                }
+                        //                                            });
+                        //                                            applyTask[0].execute();
+                        //                                        }
+                        //                                    }
+                        //                                });
 
                         Timer timer = new Timer();
                         timer.schedule(new TimerTask() {
@@ -720,11 +720,11 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
         }
     }
 
-    private static Handler handler (Context context) {
+    private Handler handler (Context context) {
         return new Handler(context.getMainLooper());
     }
 
-    private static void runOnUIThread (Context context, Runnable r) {
+    private void runOnUIThread (Context context, Runnable r) {
         handler(context).post(r);
     }
 

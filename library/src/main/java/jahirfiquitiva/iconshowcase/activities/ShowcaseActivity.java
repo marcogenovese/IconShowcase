@@ -129,11 +129,8 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
 
     private boolean mIsPremium = false, installedFromPlayStore = false;
 
-    private static final String adw_action = "org.adw.launcher.icons.ACTION_PICK_ICON", turbo_action = "com.phonemetra.turbo.launcher.icons.ACTION_PICK_ICON",
-            nova_action = "com.novalauncher.THEME";
-
     //TODO check if these are necessary
-    public static boolean iconsPicker, wallsPicker, SHUFFLE = true;
+    public static boolean iconsPicker, wallsPicker, allowShuffle = true;
     private static boolean shuffleIcons = true;
 
     private static String thaAppName;
@@ -142,7 +139,6 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
 
     private int numOfIcons = 4, wallpaper = -1, curVersionCode = 0;
 
-    private boolean mLastTheme;
     private Preferences mPrefs;
 
     //TODO remove static variables if possible
@@ -152,7 +148,7 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
     //TODO perhaps dynamically load the imageviews rather than predefining 8
     private ImageView icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8;
     public ImageView toolbarHeader;
-    public static Bitmap toolbarHeaderImage;
+    //public static Bitmap toolbarHeaderImage;
     public static Drawable wallpaperDrawable;
     private List<DrawerItem> mDrawerItems;
     private HashMap<DrawerItem, Integer> mDrawerMap = new HashMap<>();
@@ -415,7 +411,6 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        mLastTheme = ThemeUtils.darkTheme; //TODO what is this
     }
 
     @Override
@@ -832,9 +827,9 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
 
         try {
             switch (action) {
-                case adw_action:
-                case turbo_action:
-                case nova_action:
+                case Config.ADW_ACTION:
+                case Config.TURBO_ACTION:
+                case Config.NOVA_ACTION:
                 case Intent.ACTION_PICK:
                 case Intent.ACTION_GET_CONTENT:
                     iconsPicker = true;
@@ -861,7 +856,7 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
 
         ArrayList<IconItem> finalIconsList = new ArrayList<>();
 
-        if (SHUFFLE && shuffleIcons) {
+        if (allowShuffle && shuffleIcons) {
             //TODO rather than shuffle list, why not get a random index point x times?
             Collections.shuffle(mPreviewIconList);
         }
@@ -888,7 +883,7 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
             icon8.setImageResource(finalIconsList.get(7).getResId());
         }
 
-        SHUFFLE = false;
+        allowShuffle = false;
 
     }
 
@@ -1004,7 +999,7 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
                     toolbarHeader.setAlpha(0.9f);
                     toolbarHeader.setImageDrawable(currentWallpaper);
                     wallpaperDrawable = currentWallpaper;
-                    toolbarHeaderImage = Utils.drawableToBitmap(currentWallpaper);
+                    //toolbarHeaderImage = Utils.drawableToBitmap(currentWallpaper);
                 }
             }
         } else {
@@ -1032,7 +1027,7 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
 
                 wallpaperDrawable = ContextCompat.getDrawable(this, wallpapersArray.get(wallpaper));
                 toolbarHeader.setImageDrawable(wallpaperDrawable);
-                toolbarHeaderImage = Utils.drawableToBitmap(ContextCompat.getDrawable(this, wallpapersArray.get(wallpaper)));
+                //toolbarHeaderImage = Utils.drawableToBitmap(ContextCompat.getDrawable(this, wallpapersArray.get(wallpaper)));
             }
         }
 

@@ -76,7 +76,7 @@ public class ChangelogAdapter extends RecyclerView.Adapter<ChangelogAdapter.Chan
         return mItems != null ? mItems.size() : 0;
     }
 
-    public static class ChangelogVH extends RecyclerView.ViewHolder {
+    public class ChangelogVH extends RecyclerView.ViewHolder {
 
         final TextView title, content;
 

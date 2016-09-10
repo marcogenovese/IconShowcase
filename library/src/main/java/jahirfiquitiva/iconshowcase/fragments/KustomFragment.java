@@ -43,7 +43,7 @@ import jahirfiquitiva.iconshowcase.views.SectionedGridSpacingItemDecoration;
 
 public class KustomFragment extends CapsuleFragment {
 
-    private static Context context;
+    private Context context;
     private RecyclerView mRecyclerView;
     public static KustomAdapter kustomAdapter;
     private SectionedGridSpacingItemDecoration space;
