@@ -90,7 +90,7 @@ import jahirfiquitiva.iconshowcase.views.TouchImageView;
 
 public class AltWallpaperViewerActivity extends AppCompatActivity {
 
-    private boolean mLastTheme, opened = false;
+    private boolean opened = false;
 
     private WallpaperItem item;
     private CoordinatorLayout layout;
@@ -317,15 +317,11 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
     @Override
     protected void onPostCreate (Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        mLastTheme = ThemeUtils.darkTheme;
     }
 
     @Override
     protected void onResume () {
         super.onResume();
-        if (mLastTheme != ThemeUtils.darkTheme) {
-            ThemeUtils.restartActivity(context);
-        }
     }
 
     @Override
@@ -446,8 +442,6 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
     }
 
     private void reshowFab (FloatingActionButton fab) {
-
-        //TODO: Make sure the plus rotates to original state, while fab does NOT rotate
         if (fab != null) {
             fab.show(new FloatingActionButton.OnVisibilityChangedListener() {
                 @Override

@@ -99,7 +99,7 @@ public class AdviceDialog extends DialogFragment {
                         });
                 break;
             default:
-                builder.content("Error"); //TODO put to R.string
+                builder.content(R.string.error); //TODO put to R.string
                 break;
         }
 

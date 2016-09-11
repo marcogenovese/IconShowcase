@@ -107,7 +107,7 @@ public class MainFragment extends EventBaseFragment {
 
             @Override
             public void onDebouncedClick (View v) {
-                ShowcaseActivity.allowShuffle = true;
+                ((ShowcaseActivity) getActivity()).setAllowShuffle( true);
                 setupAndAnimateIcons(0);
             }
         });
@@ -152,13 +152,13 @@ public class MainFragment extends EventBaseFragment {
     }
 
     @Override
-    protected OnLoadEvent.Type eventType() {
+    protected OnLoadEvent.Type eventType () {
         return OnLoadEvent.Type.HOMEPREVIEWS;
     }
 
     @Override
-    public void subscribed(OnLoadEvent event) {
+    public void subscribed (OnLoadEvent event) {
         if (event.type != eventType()) return;
-        ((ShowcaseActivity)getActivity()).setupIcons();
+        ((ShowcaseActivity) getActivity()).setupIcons();
     }
 }

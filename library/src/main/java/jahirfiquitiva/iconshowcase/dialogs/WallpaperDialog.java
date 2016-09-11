@@ -115,7 +115,7 @@ public class WallpaperDialog extends BaseEventDialog {
 
                 break;
             default:
-                builder.title("Error"); //TODO put to R.string
+                builder.title(R.string.error); //TODO put to R.string
                 break;
         }
 
@@ -123,7 +123,9 @@ public class WallpaperDialog extends BaseEventDialog {
     }
 
     private String getUrl() {
-        return getArguments().getString("wall_url", "error"); //TODO add default url in case of error?
+        return getArguments().getString("wall_url", "error");
+        //TODO add default url in case of error?
+        //TODO There won't be any default url, instead we could show an icon from resources, i.e. the one in drawer
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)

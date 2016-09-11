@@ -125,7 +125,7 @@ public class WallpapersFragment extends EventBaseFragment {
         fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
         mSwipeRefreshLayout = (SwipeRefreshLayout) layout.findViewById(R.id.swipeRefreshLayout);
 
-        if (!ShowcaseActivity.wallsPicker) {
+        if (!((ShowcaseActivity) getActivity()).isWallsPicker()) {
             AdviceDialog.show(getActivity(), AdviceDialog.Type.WALLPAPER);
         }
 
@@ -133,7 +133,7 @@ public class WallpapersFragment extends EventBaseFragment {
                 context, R.drawable.ic_no_connection,
                 ThemeUtils.darkOrLight(dark, light)));
 
-//        showProgressBar();
+        // showProgressBar();
 
         setupRecyclerView(false, 0);
 
@@ -218,11 +218,11 @@ public class WallpapersFragment extends EventBaseFragment {
         }
     }
 
-    private static Handler handler(Context context) {
+    private Handler handler(Context context) {
         return new Handler(context.getMainLooper());
     }
 
-    private static void runOnUIThread(Context context, Runnable r) {
+    private void runOnUIThread(Context context, Runnable r) {
         handler(context).post(r);
     }
 

@@ -283,7 +283,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    private static void deleteDirectory (File dir) {
+    private void deleteDirectory (File dir) {
         if (dir.exists()) {
             File[] files = dir.listFiles();
             for (File file : files) {
@@ -328,7 +328,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
         }
     }
 
-    private static void zipFile (final String zipFilesPath, final ZipOutputStream zipOutputStream, final String zipPath) throws IOException {
+    private void zipFile (final String zipFilesPath, final ZipOutputStream zipOutputStream, final String zipPath) throws IOException {
         final File file = new File(zipFilesPath);
 
         if (!file.exists()) {
@@ -361,7 +361,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
         }
     }
 
-    private static void zipFolder (File file, ZipOutputStream zipOutputStream) throws IOException {
+    private void zipFolder (File file, ZipOutputStream zipOutputStream) throws IOException {
         byte[] data = new byte[BUFFER];
         int read;
 

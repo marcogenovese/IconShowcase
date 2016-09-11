@@ -177,7 +177,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             widgetsT = (TextView) itemView.findViewById(R.id.text_included_widgets);
             widgetsT.setText(context.getResources().getString(R.string.included_widgets, includedWidgets));
 
-            if (!ShowcaseActivity.WITH_ZOOPER_SECTION) {
+            if (!((ShowcaseActivity) context).includesZooper()) {
                 widgets = (LinearLayout) itemView.findViewById(R.id.widgets);
                 widgets.setVisibility(View.GONE);
             }

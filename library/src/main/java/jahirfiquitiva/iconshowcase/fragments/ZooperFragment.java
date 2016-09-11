@@ -42,8 +42,6 @@ public class ZooperFragment extends CapsuleFragment {
 
     private static ViewGroup layout;
     private static Context context;
-
-    private RecyclerView mRecyclerView;
     public static ZooperAdapter zooperAdapter;
     private GridSpacingItemDecoration space;
 
@@ -100,7 +98,7 @@ public class ZooperFragment extends CapsuleFragment {
             int gridSpacing = getResources().getDimensionPixelSize(R.dimen.lists_padding);
             int columnsNumber = getResources().getInteger(R.integer.zooper_kustom_grid_width);
 
-            mRecyclerView = (RecyclerView) layout.findViewById(R.id.zooper_rv);
+            RecyclerView mRecyclerView = (RecyclerView) layout.findViewById(R.id.zooper_rv);
 
             if (space != null) {
                 mRecyclerView.removeItemDecoration(space);
@@ -117,7 +115,7 @@ public class ZooperFragment extends CapsuleFragment {
             RecyclerFastScroller fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
 
             zooperAdapter = new ZooperAdapter(context, layout,
-                    ShowcaseActivity.wallpaperDrawable, areAppsInstalled());
+                    ((ShowcaseActivity) context).getWallpaperDrawable(), areAppsInstalled());
 
             mRecyclerView.setAdapter(zooperAdapter);
 

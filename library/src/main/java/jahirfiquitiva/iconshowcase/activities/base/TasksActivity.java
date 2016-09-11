@@ -44,10 +44,10 @@ public abstract class TasksActivity extends CapsuleActivity {
 
     private boolean tasksExecuted = false;
 
-    protected abstract HashMap<DrawerItem, Integer> getDrawerMap();
+    protected abstract HashMap<DrawerItem, Integer> getDrawerMap ();
 
     //TODO fix up booleans
-    protected void startTasks() {
+    protected void startTasks () {
         Timber.d("Starting tasks");
         if (tasksExecuted)
             Timber.w("startTasks() executed more than once; please remove duplicates");
@@ -72,25 +72,24 @@ public abstract class TasksActivity extends CapsuleActivity {
         }
         if (drawerHas(DrawerItem.WALLPAPERS)) {
             new DownloadJSON(
-//                    new ShowcaseActivity.WallsListInterface() {
-//                @Override
-//                public void checkWallsListCreation(boolean result) {
-//                    if (WallpapersFragment.mSwipeRefreshLayout != null) {
-//                        WallpapersFragment.mSwipeRefreshLayout.setEnabled(false);
-//                        WallpapersFragment.mSwipeRefreshLayout.setRefreshing(false);
-//                    }
-//                    if (WallpapersFragment.mAdapter != null) {
-//                        WallpapersFragment.mAdapter.notifyDataSetChanged();
-//                    }
-//                }
-//            },
+                    //                    new ShowcaseActivity.WallsListInterface() {
+                    //                @Override
+                    //                public void checkWallsListCreation(boolean result) {
+                    //                    if (WallpapersFragment.mSwipeRefreshLayout != null) {
+                    //                        WallpapersFragment.mSwipeRefreshLayout.setEnabled(false);
+                    //                        WallpapersFragment.mSwipeRefreshLayout.setRefreshing(false);
+                    //                    }
+                    //                    if (WallpapersFragment.mAdapter != null) {
+                    //                        WallpapersFragment.mAdapter.notifyDataSetChanged();
+                    //                    }
+                    //                }
+                    //            },
                     this).execute();
         }
 
-
     }
 
-    private boolean drawerHas(DrawerItem item) {
+    private boolean drawerHas (DrawerItem item) {
         return getDrawerMap().containsKey(item);
     }
 
@@ -101,7 +100,7 @@ public abstract class TasksActivity extends CapsuleActivity {
 
     @Override
     @CallSuper
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null)
             IconRequest.restoreInstanceState(this, savedInstanceState);
@@ -109,7 +108,7 @@ public abstract class TasksActivity extends CapsuleActivity {
 
     @Override
     @CallSuper
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState (Bundle outState) {
         super.onSaveInstanceState(outState);
         IconRequest.saveInstanceState(outState);
     }

@@ -116,7 +116,7 @@ public class KustomFragment extends CapsuleFragment {
 
         RecyclerFastScroller fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
 
-        kustomAdapter = new KustomAdapter(context, ShowcaseActivity.wallpaperDrawable);
+        kustomAdapter = new KustomAdapter(context, ((ShowcaseActivity) context).getWallpaperDrawable());
 
         space = new SectionedGridSpacingItemDecoration(columnsNumber, gridSpacing, true, kustomAdapter);
 

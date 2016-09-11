@@ -196,7 +196,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
         private void onWallClick (boolean longClick) {
             final WallpaperItem item = wallsList.get(getLayoutPosition());
 
-            if (ShowcaseActivity.wallsPicker || longClick) {
+            if (((ShowcaseActivity) activity).isWallsPicker() || longClick) {
                 WallpaperDialog.show(activity, item.getWallURL());
             } else {
                 final Intent intent = new Intent(activity,
