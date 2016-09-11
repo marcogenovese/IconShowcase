@@ -105,7 +105,7 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
                 .load(iconResource)
                 .asBitmap()
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .priority(Priority.HIGH)
+                .priority(Priority.IMMEDIATE)
                 .into(new BitmapImageViewTarget(holder.icon) {
                     @Override
                     protected void setResource (Bitmap resource) {

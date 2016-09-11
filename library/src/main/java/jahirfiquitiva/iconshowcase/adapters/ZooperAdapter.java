@@ -35,6 +35,7 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
 
 import java.io.File;
 import java.io.IOException;
@@ -148,6 +149,7 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             zooperHolder.background.setImageDrawable(wallpaper);
             Glide.with(context)
                     .load(new File(widget.getPreviewPath()))
+                    .priority(Priority.HIGH)
                     .into(zooperHolder.widget);
         }
 

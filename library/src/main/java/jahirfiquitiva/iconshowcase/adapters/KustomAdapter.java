@@ -32,6 +32,7 @@ import android.widget.TextView;
 
 import com.afollestad.sectionedrecyclerview.SectionedRecyclerViewAdapter;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -205,6 +206,7 @@ public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.Ku
         if (filePath != null) {
             Glide.with(context)
                     .load(new File(filePath))
+                    .priority(Priority.HIGH)
                     .into(holder.widget);
         }
     }

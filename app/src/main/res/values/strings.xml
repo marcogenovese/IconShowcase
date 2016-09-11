@@ -66,7 +66,7 @@
     <string name="iconpack_author_twitter">twitter://user?screen_name=jahirfiquitiva</string>
     <string name="iconpack_author_twitter_alt">https://twitter.com/#!/jahirfiquitiva</string>
     <string name="iconpack_author_playstore">https://play.google.com/store/apps/dev?id=7438639276314720952</string>
-    <string name="iconpack_author_website">http://www.jahirfiquitiva.net/</string>
+    <string name="iconpack_author_website">https://www.jahirfiquitiva.me/</string>
     <string name="iconpack_author_youtube">https://www.youtube.com/channel/UCBTheBoZEA1p95HyjEHqouA</string>
 
     <string-array name="iconpack_author_sites">

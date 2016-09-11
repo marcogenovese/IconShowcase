@@ -33,6 +33,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
 
 import java.util.List;
 import java.util.Locale;
@@ -81,6 +82,7 @@ public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.Laun
                 .load(iconResource != 0 ?
                         iconResource :
                         Utils.getIconResId(context.getResources(), context.getPackageName(), "ic_na_launcher"))
+                .priority(Priority.HIGH)
                 .dontAnimate()
                 .into(holder.icon);
 

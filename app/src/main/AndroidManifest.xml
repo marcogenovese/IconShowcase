@@ -385,22 +385,6 @@
             android:name="jahirfiquitiva.iconshowcase.utilities.GlideConfiguration"
             android:value="GlideModule"/>
 
-        <!-- Notifications service -->
-        <service
-            android:name="jahirfiquitiva.iconshowcase.services.NotificationsService"
-            android:enabled="true"
-            android:exported="false"
-            android:icon="@mipmap/ic_launcher"/>
-        <receiver
-            android:name="jahirfiquitiva.iconshowcase.services.NotificationsReceiver"
-            android:enabled="true"
-            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-                <action android:name="android.intent.action.QUICKBOOT_POWERON"/>
-            </intent-filter>
-        </receiver>
-
     </application>
 
 </manifest>
