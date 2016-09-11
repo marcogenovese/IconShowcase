@@ -77,7 +77,7 @@ import timber.log.Timber;
  */
 public class Utils {
 
-    public static String getAppVersion (Context context) {
+    public static String getAppVersion(Context context) {
         try {
             return context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
         } catch (PackageManager.NameNotFoundException e) {
@@ -86,17 +86,17 @@ public class Utils {
         }
     }
 
-    public static String getAppPackageName (Context context) {
+    public static String getAppPackageName(Context context) {
         return context.getPackageName();
     }
 
-    public static boolean hasNetwork (Context context) {
+    public static boolean hasNetwork(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }
 
-    public static boolean isAppInstalled (Context context, String packageName) {
+    public static boolean isAppInstalled(Context context, String packageName) {
         final PackageManager pm = context.getPackageManager();
         boolean installed;
         try {
@@ -108,7 +108,7 @@ public class Utils {
         return installed;
     }
 
-    public static void showSimpleSnackbar (Context context, View location, String text) {
+    public static void showSimpleSnackbar(Context context, View location, String text) {
         final int snackbarLight = ContextCompat.getColor(context, R.color.snackbar_light);
         final int snackbarDark = ContextCompat.getColor(context, R.color.snackbar_dark);
         Snackbar shortSnackbar = Snackbar.make(location, text,
@@ -118,14 +118,14 @@ public class Utils {
         shortSnackbar.show();
     }
 
-    public static void openLink (Context context, String link) {
+    public static void openLink(Context context, String link) {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
 
     @SuppressWarnings("ResourceAsColor")
-    public static void openLinkInChromeCustomTab (Context context, String link) {
+    public static void openLinkInChromeCustomTab(Context context, String link) {
         final CustomTabsClient[] mClient = new CustomTabsClient[1];
         final CustomTabsSession[] mCustomTabsSession = new CustomTabsSession[1];
         CustomTabsServiceConnection mCustomTabsServiceConnection;
@@ -133,14 +133,14 @@ public class Utils {
 
         mCustomTabsServiceConnection = new CustomTabsServiceConnection() {
             @Override
-            public void onCustomTabsServiceConnected (ComponentName componentName, CustomTabsClient customTabsClient) {
+            public void onCustomTabsServiceConnected(ComponentName componentName, CustomTabsClient customTabsClient) {
                 mClient[0] = customTabsClient;
                 mClient[0].warmup(0L);
                 mCustomTabsSession[0] = mClient[0].newSession(null);
             }
 
             @Override
-            public void onServiceDisconnected (ComponentName name) {
+            public void onServiceDisconnected(ComponentName name) {
                 mClient[0] = null;
             }
         };
@@ -160,7 +160,7 @@ public class Utils {
         }
     }
 
-    public static void showLog (Context context, String s) {
+    public static void showLog(Context context, String s) {
         if (context != null) {
             if (context.getResources().getBoolean(R.bool.debugging)) {
                 String tag = "IconShowcase + " + context.getResources().getString(R.string.app_name);
@@ -169,7 +169,7 @@ public class Utils {
         }
     }
 
-    public static void showLog (Context context, boolean muzei, String s) {
+    public static void showLog(Context context, boolean muzei, String s) {
         if (context != null) {
             if (context.getResources().getBoolean(R.bool.debugging) && muzei) {
                 Log.d(context.getResources().getString(R.string.app_name) + " Muzei", s);
@@ -177,11 +177,11 @@ public class Utils {
         }
     }
 
-    public static String getStringFromResources (Context context, int id) {
+    public static String getStringFromResources(Context context, int id) {
         return context.getResources().getString(id);
     }
 
-    public static String makeTextReadable (String name) {
+    public static String makeTextReadable(String name) {
 
         String partialConvertedText = name.replaceAll("_", " ");
         String[] text = partialConvertedText.split("\\s+");
@@ -197,11 +197,11 @@ public class Utils {
 
     }
 
-    public static String capitalizeText (String text) {
+    public static String capitalizeText(String text) {
         return text.substring(0, 1).toUpperCase() + text.substring(1).toLowerCase();
     }
 
-    public static void sendEmailWithDeviceInfo (Context context) {
+    public static void sendEmailWithDeviceInfo(Context context) {
         StringBuilder emailBuilder = new StringBuilder();
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:" + context.getResources().getString(R.string.email_id)));
         intent.putExtra(Intent.EXTRA_SUBJECT, context.getResources().getString(R.string.email_subject));
@@ -224,8 +224,8 @@ public class Utils {
     }
 
     @SuppressWarnings("ResourceAsColor")
-    public static void setupCollapsingToolbarTextColors (Context context,
-                                                         CollapsingToolbarLayout collapsingToolbarLayout) {
+    public static void setupCollapsingToolbarTextColors(Context context,
+                                                        CollapsingToolbarLayout collapsingToolbarLayout) {
         int iconsColor = ThemeUtils.darkTheme ?
                 ContextCompat.getColor(context, R.color.toolbar_text_dark) :
                 ContextCompat.getColor(context, R.color.toolbar_text_light);
@@ -233,7 +233,7 @@ public class Utils {
         collapsingToolbarLayout.setCollapsedTitleTextColor(iconsColor);
     }
 
-    public static Bitmap drawableToBitmap (Drawable drawable) {
+    public static Bitmap drawableToBitmap(Drawable drawable) {
         Bitmap bitmap;
         if (drawable instanceof BitmapDrawable) {
             BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
@@ -253,7 +253,7 @@ public class Utils {
     }
 
     @SuppressWarnings("ConstantConditions")
-    public static Bitmap getWidgetPreview (@NonNull Bitmap bitmap, @ColorInt int colorToReplace) {
+    public static Bitmap getWidgetPreview(@NonNull Bitmap bitmap, @ColorInt int colorToReplace) {
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
         int[] pixels = new int[width * height];
@@ -292,15 +292,15 @@ public class Utils {
         return Bitmap.createBitmap(newBitmap, minX, minY, (maxX - minX) + 1, (maxY - minY) + 1);
     }
 
-    public static int convertMinutesToMillis (int minute) {
+    public static int convertMinutesToMillis(int minute) {
         return minute * 60 * 1000;
     }
 
-    public static int convertMillisToMinutes (int millis) {
+    public static int convertMillisToMinutes(int millis) {
         return millis / 60 / 1000;
     }
 
-    public static int getIconResId (Resources r, String p, String name) {
+    public static int getIconResId(Resources r, String p, String name) {
         int res = r.getIdentifier(name, "drawable", p);
         if (res != 0) {
             return res;
@@ -310,7 +310,7 @@ public class Utils {
     }
 
     @SuppressLint("DefaultLocale")
-    public static int canRequestXApps (Context context, int numOfMinutes, Preferences mPrefs) {
+    public static int canRequestXApps(Context context, int numOfMinutes, Preferences mPrefs) {
 
         Calendar c = Calendar.getInstance();
 
@@ -331,7 +331,7 @@ public class Utils {
     }
 
     @SuppressLint("DefaultLocale")
-    public static void saveCurrentTimeOfRequest (Preferences mPrefs, Calendar c) {
+    public static void saveCurrentTimeOfRequest(Preferences mPrefs, Calendar c) {
         String time = String.format("%02d", c.get(Calendar.HOUR_OF_DAY)) + ":" +
                 String.format("%02d", c.get(Calendar.MINUTE));
         String day = String.format("%02d", c.get(Calendar.DAY_OF_YEAR));
@@ -341,7 +341,7 @@ public class Utils {
     }
 
     @SuppressLint("DefaultLocale")
-    private static boolean timeHappened (int numOfMinutes, Preferences mPrefs, Calendar c) {
+    private static boolean timeHappened(int numOfMinutes, Preferences mPrefs, Calendar c) {
         float hours = (numOfMinutes + 1) / 60.0f;
         float hoursToDays = hours / 24.0f;
 
@@ -404,8 +404,8 @@ public class Utils {
     }
 
     @SuppressLint("DefaultLocale")
-    public static int getSecondsLeftToEnableRequest (Context context,
-                                                     int numOfMinutes, Preferences mPrefs) {
+    public static int getSecondsLeftToEnableRequest(Context context,
+                                                    int numOfMinutes, Preferences mPrefs) {
 
         int secondsHappened = 0;
 
@@ -474,7 +474,7 @@ public class Utils {
 
     }
 
-    public static String getTimeName (Context context, int minutes) {
+    public static String getTimeName(Context context, int minutes) {
         String text;
         if (minutes > 40320) {
             text = Utils.getStringFromResources(context, R.string.months).toLowerCase();
@@ -490,7 +490,7 @@ public class Utils {
         return text;
     }
 
-    public static String getTimeNameInSeconds (Context context, int secs) {
+    public static String getTimeNameInSeconds(Context context, int secs) {
         String text;
         if (secs > (40320 * 60)) {
             text = Utils.getStringFromResources(context, R.string.months).toLowerCase();
@@ -508,7 +508,7 @@ public class Utils {
         return text;
     }
 
-    public static float getExactMinutes (int minutes, boolean withSeconds) {
+    public static float getExactMinutes(int minutes, boolean withSeconds) {
         float time;
         if (minutes > 40320) {
             time = minutes / 40320.0f;
@@ -528,7 +528,7 @@ public class Utils {
         return time;
     }
 
-    public static long getNotifsUpdateIntervalInMillis (int interval) {
+    public static long getNotifsUpdateIntervalInMillis(int interval) {
         long millisInAnHour = 60 * 60 * 1000;
         int hours;
         switch (interval) {
@@ -562,7 +562,7 @@ public class Utils {
 
     }
 
-    public static Drawable getVectorDrawable (@NonNull Context context, @DrawableRes int drawable) {
+    public static Drawable getVectorDrawable(@NonNull Context context, @DrawableRes int drawable) {
         Drawable vectorDrawable;
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -583,7 +583,7 @@ public class Utils {
      * Methods for tasks
      */
 
-    public static void copyFiles (InputStream in, OutputStream out) throws IOException {
+    public static void copyFiles(InputStream in, OutputStream out) throws IOException {
         byte[] buffer = new byte[2048];
         int read;
         while ((read = in.read(buffer)) != -1) {
@@ -592,12 +592,12 @@ public class Utils {
         out.flush();
     }
 
-    public static String getFilenameWithoutExtension (String fileName) {
+    public static String getFilenameWithoutExtension(String fileName) {
         return fileName.substring(0, fileName.lastIndexOf("."));
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    public static int clean (File file) {
+    public static int clean(File file) {
         if (!file.exists()) return 0;
         int count = 0;
         if (file.isDirectory()) {
@@ -612,14 +612,14 @@ public class Utils {
         return count;
     }
 
-    public static double round (double value, int places) {
+    public static double round(double value, int places) {
         if (places < 0) throw new IllegalArgumentException();
         BigDecimal bd = new BigDecimal(value);
         bd = bd.setScale(places, RoundingMode.HALF_UP);
         return bd.doubleValue();
     }
-    
-    public static int getNavigationBarHeight (Activity activity) {
+
+    public static int getNavigationBarHeight(Activity activity) {
         // getRealMetrics is only available with API 17 and +
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             DisplayMetrics metrics = new DisplayMetrics();
@@ -639,8 +639,8 @@ public class Utils {
         return 0;
     }
 
-    public static void sendFirebaseNotification (Context context, Class mainActivity,
-                                                 Map<String, String> data, String title, String content) {
+    public static void sendFirebaseNotification(Context context, Class mainActivity,
+                                                Map<String, String> data, String title, String content) {
         Intent intent = new Intent(context, mainActivity);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 

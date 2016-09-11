@@ -56,8 +56,8 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
     private LinearLayout toHide1, toHide2;
     private volatile boolean wasCancelled = false;
 
-    public WallpaperToCrop (Activity activity, MaterialDialog dialog, Bitmap resource,
-                            View layout, String wallName, LinearLayout toHide1, LinearLayout toHide2) {
+    public WallpaperToCrop(Activity activity, MaterialDialog dialog, Bitmap resource,
+                           View layout, String wallName, LinearLayout toHide1, LinearLayout toHide2) {
         this.wrActivity = new WeakReference<>(activity);
         this.dialog = dialog;
         this.resource = resource;
@@ -67,8 +67,8 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
         this.toHide2 = toHide2;
     }
 
-    public WallpaperToCrop (Activity activity, MaterialDialog dialog, Bitmap resource,
-                            View layout, String wallName) {
+    public WallpaperToCrop(Activity activity, MaterialDialog dialog, Bitmap resource,
+                           View layout, String wallName) {
         this.wrActivity = new WeakReference<>(activity);
         this.dialog = dialog;
         this.resource = resource;
@@ -77,7 +77,7 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
     }
 
     @Override
-    protected void onPreExecute () {
+    protected void onPreExecute() {
         final Activity a = wrActivity.get();
         if (a != null) {
             this.context = a.getApplicationContext();
@@ -86,7 +86,7 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
     }
 
     @Override
-    protected Boolean doInBackground (Void... params) {
+    protected Boolean doInBackground(Void... params) {
         Boolean worked = false;
         if (!wasCancelled) {
             if (wallUri != null) {
@@ -103,7 +103,7 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
     }
 
     @Override
-    protected void onPostExecute (Boolean worked) {
+    protected void onPostExecute(Boolean worked) {
         if (!wasCancelled) {
             if (toHide1 != null && toHide2 != null) {
                 toHide1.setVisibility(View.GONE);
@@ -130,7 +130,7 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
                 snackbar.show();
                 snackbar.setCallback(new Snackbar.Callback() {
                     @Override
-                    public void onDismissed (Snackbar snackbar, int event) {
+                    public void onDismissed(Snackbar snackbar, int event) {
                         super.onDismissed(snackbar, event);
                         if (toHide1 != null && toHide2 != null) {
                             toHide1.setVisibility(View.VISIBLE);
@@ -143,11 +143,11 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
     }
 
     @Override
-    protected void onCancelled () {
+    protected void onCancelled() {
         wasCancelled = true;
     }
 
-    private Uri getImageUri (Context inContext, Bitmap inImage) {
+    private Uri getImageUri(Context inContext, Bitmap inImage) {
 
         Preferences mPrefs = new Preferences(inContext);
         File downloadsFolder;

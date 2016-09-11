@@ -32,8 +32,8 @@ public class SectionedGridSpacingItemDecoration extends RecyclerView.ItemDecorat
     private final boolean includeEdge;
     private final KustomAdapter adapter;
 
-    public SectionedGridSpacingItemDecoration (int spanCount, int spacing, boolean includeEdge,
-                                               KustomAdapter adapter) {
+    public SectionedGridSpacingItemDecoration(int spanCount, int spacing, boolean includeEdge,
+                                              KustomAdapter adapter) {
         this.spanCount = spanCount;
         this.spacing = spacing;
         this.includeEdge = includeEdge;
@@ -41,7 +41,7 @@ public class SectionedGridSpacingItemDecoration extends RecyclerView.ItemDecorat
     }
 
     @Override
-    public void getItemOffsets (Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+    public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         super.getItemOffsets(outRect, view, parent, state);
 
         int position = ((RecyclerView.LayoutParams) view.getLayoutParams()).getViewAdapterPosition();

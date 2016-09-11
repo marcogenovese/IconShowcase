@@ -28,15 +28,15 @@ public class ZooperWidget {
 
     private final String previewPath;
 
-    public ZooperWidget (String previewPath) {
+    public ZooperWidget(String previewPath) {
         this.previewPath = previewPath;
     }
 
-    public String getPreviewPath () {
+    public String getPreviewPath() {
         return this.previewPath;
     }
 
-    public static Bitmap getTransparentBackgroundPreview (Bitmap original) {
+    public static Bitmap getTransparentBackgroundPreview(Bitmap original) {
         return Utils.getWidgetPreview(original, Color.parseColor("#555555"));
     }
 

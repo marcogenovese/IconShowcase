@@ -23,16 +23,16 @@ public class AppFilterItem {
 
     private final String completeComponent, iconName;
 
-    public AppFilterItem (String completeComponent, String iconName) {
+    public AppFilterItem(String completeComponent, String iconName) {
         this.completeComponent = completeComponent;
         this.iconName = iconName;
     }
 
-    public String getIconName () {
+    public String getIconName() {
         return iconName;
     }
 
-    public String getCompleteComponent () {
+    public String getCompleteComponent() {
         return completeComponent;
     }
 

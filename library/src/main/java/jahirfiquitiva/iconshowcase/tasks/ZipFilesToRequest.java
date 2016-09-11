@@ -70,8 +70,8 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
     private final Preferences mPrefs;
     private File filesFolder;
 
-    public ZipFilesToRequest (Activity activity, MaterialDialog dialog,
-                              ArrayList<RequestItem> appsListFinal) {
+    public ZipFilesToRequest(Activity activity, MaterialDialog dialog,
+                             ArrayList<RequestItem> appsListFinal) {
         this.wrActivity = new WeakReference<>(activity);
         this.dialog = dialog;
         this.appsListFinal = appsListFinal;
@@ -79,7 +79,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
     }
 
     @Override
-    protected void onPreExecute () {
+    protected void onPreExecute() {
         final Activity act = wrActivity.get();
         this.filesFolder = null;
         if (act != null) {
@@ -90,7 +90,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @Override
-    protected Boolean doInBackground (Void... params) {
+    protected Boolean doInBackground(Void... params) {
         boolean worked;
 
         String zipLocation = context.get().getString(R.string.request_save_location,
@@ -245,7 +245,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @Override
-    protected void onPostExecute (Boolean worked) {
+    protected void onPostExecute(Boolean worked) {
 
         if (worked) {
 
@@ -283,7 +283,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    private void deleteDirectory (File dir) {
+    private void deleteDirectory(File dir) {
         if (dir.exists()) {
             File[] files = dir.listFiles();
             for (File file : files) {
@@ -301,7 +301,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
         }
     }
 
-    private void createZipFile (final String path, final String outputFile) {
+    private void createZipFile(final String path, final String outputFile) {
         final File filesFolder = new File(path);
 
         if (!filesFolder.canRead() || !filesFolder.canWrite()) {
@@ -328,7 +328,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
         }
     }
 
-    private void zipFile (final String zipFilesPath, final ZipOutputStream zipOutputStream, final String zipPath) throws IOException {
+    private void zipFile(final String zipFilesPath, final ZipOutputStream zipOutputStream, final String zipPath) throws IOException {
         final File file = new File(zipFilesPath);
 
         if (!file.exists()) {
@@ -361,7 +361,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
         }
     }
 
-    private void zipFolder (File file, ZipOutputStream zipOutputStream) throws IOException {
+    private void zipFolder(File file, ZipOutputStream zipOutputStream) throws IOException {
         byte[] data = new byte[BUFFER];
         int read;
 

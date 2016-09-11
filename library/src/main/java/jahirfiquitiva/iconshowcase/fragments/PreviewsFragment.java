@@ -89,11 +89,12 @@ public class PreviewsFragment extends EventBaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        if (FullListHolder.get().preview().isEmpty()) return loadingView(inflater, container);
+        if (FullListHolder.get().iconsCategories().isEmpty())
+            return loadingView(inflater, container);
 
         View layout = inflater.inflate(R.layout.icons_preview_section, container, false);
 
-        mCategories = FullListHolder.get().preview().getList();
+        mCategories = FullListHolder.get().iconsCategories().getList();
 
         //TODO Check if ViewPager is smooth enough
         mPager = (ViewPager) layout.findViewById(R.id.pager);
@@ -108,7 +109,7 @@ public class PreviewsFragment extends EventBaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (FullListHolder.get().preview().hasList()) setHasOptionsMenu(true);
+        if (FullListHolder.get().iconsCategories().hasList()) setHasOptionsMenu(true);
     }
 
     @Override
@@ -164,7 +165,7 @@ public class PreviewsFragment extends EventBaseFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        if (FullListHolder.get().preview().isEmpty()) return;
+        if (FullListHolder.get().iconsCategories().isEmpty()) return;
         inflater.inflate(R.menu.search, menu);
         mSearchItem = menu.findItem(R.id.search);
         mSearchView = (SearchView) MenuItemCompat.getActionView(mSearchItem);

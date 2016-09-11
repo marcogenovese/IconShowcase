@@ -35,6 +35,8 @@ import jahirfiquitiva.iconshowcase.config.Config;
 import jahirfiquitiva.iconshowcase.enums.DrawerItem;
 import jahirfiquitiva.iconshowcase.tasks.DownloadJSON;
 import jahirfiquitiva.iconshowcase.tasks.LoadIconsLists;
+import jahirfiquitiva.iconshowcase.tasks.LoadKustomFiles;
+import jahirfiquitiva.iconshowcase.tasks.LoadZooperWidgets;
 import timber.log.Timber;
 
 /**
@@ -44,32 +46,16 @@ public abstract class TasksActivity extends CapsuleActivity {
 
     private boolean tasksExecuted = false;
 
-    protected abstract HashMap<DrawerItem, Integer> getDrawerMap ();
+    protected abstract HashMap<DrawerItem, Integer> getDrawerMap();
 
     //TODO fix up booleans
-    protected void startTasks () {
+    protected void startTasks() {
         Timber.d("Starting tasks");
         if (tasksExecuted)
             Timber.w("startTasks() executed more than once; please remove duplicates");
         tasksExecuted = true;
         if (drawerHas(DrawerItem.PREVIEWS))
             new LoadIconsLists(this).execute();
-        if (drawerHas(DrawerItem.REQUESTS)) {
-            IconRequest.start(this)
-                    //                        .withHeader("Hey, testing Icon Request!")
-                    .withFooter("%s Version: %s", getString(R.string.app_name), BuildConfig.VERSION_NAME)
-                    .withSubject(s(R.string.request_title))
-                    .toEmail(s(R.string.email_id))
-                    .saveDir(new File(getString(R.string.request_save_location, Environment.getExternalStorageDirectory())))
-                    .includeDeviceInfo(true) // defaults to true anyways
-                    .generateAppFilterXml(true) // defaults to true anyways
-                    .generateAppFilterJson(false)
-                    .debugMode(Config.get().allowDebugging())
-                    .filterXmlId(R.xml.appfilter)
-                    //.filterOff() //TODO switch
-                    .maxSelectionCount(0) //TODO add? And make this toggleable
-                    .build().loadApps();
-        }
         if (drawerHas(DrawerItem.WALLPAPERS)) {
             new DownloadJSON(
                     //                    new ShowcaseActivity.WallsListInterface() {
@@ -86,10 +72,32 @@ public abstract class TasksActivity extends CapsuleActivity {
                     //            },
                     this).execute();
         }
+        if (drawerHas(DrawerItem.REQUESTS)) {
+            IconRequest.start(this)
+                    //                        .withHeader("Hey, testing Icon Request!")
+                    .withFooter("%s Version: %s", getString(R.string.app_name), BuildConfig.VERSION_NAME)
+                    .withSubject(s(R.string.request_title))
+                    .toEmail(s(R.string.email_id))
+                    .saveDir(new File(getString(R.string.request_save_location, Environment.getExternalStorageDirectory())))
+                    .includeDeviceInfo(true) // defaults to true anyways
+                    .generateAppFilterXml(true) // defaults to true anyways
+                    .generateAppFilterJson(false)
+                    .debugMode(Config.get().allowDebugging())
+                    .filterXmlId(R.xml.appfilter)
+                    //.filterOff() //TODO switch
+                    .maxSelectionCount(0) //TODO add? And make this toggleable
+                    .build().loadApps();
+        }
+        if (drawerHas(DrawerItem.ZOOPER)) {
+            new LoadZooperWidgets(this).execute();
+        }
+        if (drawerHas(DrawerItem.KUSTOM)) {
+            new LoadKustomFiles(this).execute();
+        }
 
     }
 
-    private boolean drawerHas (DrawerItem item) {
+    private boolean drawerHas(DrawerItem item) {
         return getDrawerMap().containsKey(item);
     }
 
@@ -100,7 +108,7 @@ public abstract class TasksActivity extends CapsuleActivity {
 
     @Override
     @CallSuper
-    protected void onCreate (Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null)
             IconRequest.restoreInstanceState(this, savedInstanceState);
@@ -108,7 +116,7 @@ public abstract class TasksActivity extends CapsuleActivity {
 
     @Override
     @CallSuper
-    protected void onSaveInstanceState (Bundle outState) {
+    protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         IconRequest.saveInstanceState(outState);
     }

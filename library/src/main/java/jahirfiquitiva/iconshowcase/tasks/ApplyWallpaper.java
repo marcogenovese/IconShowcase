@@ -42,7 +42,7 @@ import timber.log.Timber;
 
 public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
 
-//    private WeakReference<Context> wrContext;
+    //    private WeakReference<Context> wrContext;
     private String url;
     private boolean isPicker;
     private WeakReference<Activity> wrActivity;
@@ -253,6 +253,5 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
 //        snackbar.setActionTextColor(actionTextColor);
 //        snackbar.show();
     }
-
 
 }

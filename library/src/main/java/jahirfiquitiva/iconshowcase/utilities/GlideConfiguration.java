@@ -31,7 +31,7 @@ import com.bumptech.glide.module.GlideModule;
 public class GlideConfiguration implements GlideModule {
 
     @Override
-    public void applyOptions (Context context, GlideBuilder builder) {
+    public void applyOptions(Context context, GlideBuilder builder) {
         boolean runsMinSDK = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
 
         ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
@@ -51,7 +51,7 @@ public class GlideConfiguration implements GlideModule {
     }
 
     @Override
-    public void registerComponents (Context context, Glide glide) {
+    public void registerComponents(Context context, Glide glide) {
         // register ModelLoaders here.
     }
 }

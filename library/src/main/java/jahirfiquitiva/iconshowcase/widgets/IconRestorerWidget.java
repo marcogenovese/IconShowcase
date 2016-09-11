@@ -36,7 +36,7 @@ import jahirfiquitiva.iconshowcase.utilities.Utils;
 public class IconRestorerWidget extends AppWidgetProvider {
 
     @Override
-    public void onUpdate (Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         for (int appWidgetId : appWidgetIds) {
             try {
                 Intent intent = new Intent("android.intent.action.MAIN");
@@ -67,7 +67,7 @@ public class IconRestorerWidget extends AppWidgetProvider {
         }
     }
 
-    public void onReceive (Context context, Intent intent) {
+    public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
 
         if (AppWidgetManager.ACTION_APPWIDGET_UPDATE.equals(action)) {

@@ -62,19 +62,19 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
     private final ArrayList<WallpaperItem> wallsList;
     private final boolean animationEnabled;
 
-    public WallpapersAdapter (FragmentActivity activity, ArrayList<WallpaperItem> wallsList) {
+    public WallpapersAdapter(FragmentActivity activity, ArrayList<WallpaperItem> wallsList) {
         this.activity = activity;
         this.wallsList = wallsList;
         animationEnabled = new Preferences(activity).getAnimationsEnabled();
     }
 
     @Override
-    public WallsHolder onCreateViewHolder (ViewGroup parent, int viewType) {
+    public WallsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new WallsHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_wallpaper, parent, false));
     }
 
     @Override
-    public void onBindViewHolder (final WallsHolder holder, int position) {
+    public void onBindViewHolder(final WallsHolder holder, int position) {
         holder.titleBg.setBackgroundColor(
                 ColorUtils.changeAlpha(
                         ContextCompat.getColor(activity,
@@ -94,7 +94,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
 
         BitmapImageViewTarget target = new BitmapImageViewTarget(holder.wall) {
             @Override
-            protected void setResource (Bitmap bitmap) {
+            protected void setResource(Bitmap bitmap) {
                 Palette.Swatch wallSwatch = ColorUtils.getPaletteSwatch(bitmap);
                 if (animationEnabled && (holder.getAdapterPosition() > lastPosition)) {
                     holder.wall.setAlpha(0f);
@@ -136,7 +136,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
 
     }
 
-    private void setColors (int color, WallsHolder holder) {
+    private void setColors(int color, WallsHolder holder) {
         if (holder.titleBg != null && color != 0) {
             holder.titleBg.setBackgroundColor(color);
             if (holder.name != null) {
@@ -149,12 +149,12 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
     }
 
     @Override
-    public int getItemCount () {
+    public int getItemCount() {
         return wallsList == null ? 0 : wallsList.size();
     }
 
     public class WallsHolder extends RecyclerView.ViewHolder implements View.OnClickListener,
-                                                                        View.OnLongClickListener {
+            View.OnLongClickListener {
 
         public final View view;
         public final ImageView wall;
@@ -162,7 +162,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
         public final LinearLayout titleBg;
         private boolean clickable = true;
 
-        WallsHolder (View v) {
+        WallsHolder(View v) {
             super(v);
             view = v;
             wall = (ImageView) view.findViewById(R.id.wall);
@@ -174,7 +174,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
         }
 
         @Override
-        public void onClick (View v) {
+        public void onClick(View v) {
             if (clickable) {
                 clickable = false;
                 onWallClick(false);
@@ -184,7 +184,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
         }
 
         @Override
-        public boolean onLongClick (View v) {
+        public boolean onLongClick(View v) {
             if (clickable) {
                 clickable = false;
                 onWallClick(true);
@@ -193,7 +193,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
             return false;
         }
 
-        private void onWallClick (boolean longClick) {
+        private void onWallClick(boolean longClick) {
             final WallpaperItem item = wallsList.get(getLayoutPosition());
 
             if (((ShowcaseActivity) activity).isWallsPicker() || longClick) {
@@ -229,7 +229,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
             }
         }
 
-        private void reset () {
+        private void reset() {
             clickable = true;
         }
 

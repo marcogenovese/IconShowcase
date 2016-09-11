@@ -37,19 +37,19 @@ public class ChangelogAdapter extends RecyclerView.Adapter<ChangelogAdapter.Chan
 
     private final List<ChangelogXmlParser.ChangelogItem> mItems;
 
-    public ChangelogAdapter (List<ChangelogXmlParser.ChangelogItem> items) {
+    public ChangelogAdapter(List<ChangelogXmlParser.ChangelogItem> items) {
         mItems = items;
     }
 
     @Override
-    public ChangelogVH onCreateViewHolder (ViewGroup parent, int viewType) {
+    public ChangelogVH onCreateViewHolder(ViewGroup parent, int viewType) {
         final View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.changelog_content, parent, false);
         return new ChangelogVH(view);
     }
 
     @Override
-    public void onBindViewHolder (ChangelogVH holder, int position) {
+    public void onBindViewHolder(ChangelogVH holder, int position) {
         ChangelogXmlParser.ChangelogItem item = mItems.get(position);
 
         String contentStr = "";
@@ -67,12 +67,12 @@ public class ChangelogAdapter extends RecyclerView.Adapter<ChangelogAdapter.Chan
     }
 
     @Override
-    public long getItemId (int position) {
+    public long getItemId(int position) {
         return position;
     }
 
     @Override
-    public int getItemCount () {
+    public int getItemCount() {
         return mItems != null ? mItems.size() : 0;
     }
 
@@ -80,7 +80,7 @@ public class ChangelogAdapter extends RecyclerView.Adapter<ChangelogAdapter.Chan
 
         final TextView title, content;
 
-        public ChangelogVH (View itemView) {
+        public ChangelogVH(View itemView) {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.changelog_title);
             content = (TextView) itemView.findViewById(R.id.changelog_content);

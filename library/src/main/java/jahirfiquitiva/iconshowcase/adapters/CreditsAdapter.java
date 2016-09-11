@@ -50,7 +50,7 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private ArrayList<CreditsItem> credits;
     private Context context;
 
-    public CreditsAdapter (Context context) {
+    public CreditsAdapter(Context context) {
         this.context = context;
 
         Resources r = context.getResources();
@@ -123,8 +123,9 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     ColorUtils.getTintedDrawable(context, extraCreditsDrawablesNames[j])));
 
     }
+
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder (ViewGroup parent, int position) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int position) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
         if (position < detailedCredits.size()) {
@@ -139,7 +140,7 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder (RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (position < detailedCredits.size()) {
             DetailedCreditsItem item = detailedCredits.get(holder.getAdapterPosition());
             DetailedCreditsHolder detailedCreditsHolder = (DetailedCreditsHolder) holder;
@@ -168,7 +169,7 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             for (int i = 0; i < detailedCreditsHolder.buttons.getChildCount(); i++)
                 detailedCreditsHolder.buttons.getChildAt(i).setOnClickListener(new DebouncedClickListener() {
                     @Override
-                    public void onDebouncedClick (View view) {
+                    public void onDebouncedClick(View view) {
                         if (view.getTag() instanceof String) {
                             try {
                                 Utils.openLinkInChromeCustomTab(context, (String) view.getTag());
@@ -192,14 +193,14 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     @Override
-    public int getItemCount () {
+    public int getItemCount() {
         int count = credits.size();
         if (detailedCredits != null) count += detailedCredits.size();
         return count;
     }
 
     @Override
-    public int getItemViewType (int position) {
+    public int getItemViewType(int position) {
         return position;
     }
 
@@ -209,14 +210,14 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         private TextView text;
         private ImageView icon;
 
-        public CreditsHolder (View itemView, final int position) {
+        public CreditsHolder(View itemView, final int position) {
             super(itemView);
             view = itemView;
             text = (TextView) view.findViewById(R.id.title);
             icon = (ImageView) view.findViewById(R.id.icon);
             view.setOnClickListener(new DebouncedClickListener() {
                 @Override
-                public void onDebouncedClick (View v) {
+                public void onDebouncedClick(View v) {
                     switch (position) {
                         case 0:
                             ISDialogs.showSherryDialog(context);
@@ -249,7 +250,7 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         private ImageView photo, banner;
         private SplitButtonsLayout buttons;
 
-        public DetailedCreditsHolder (View itemView) {
+        public DetailedCreditsHolder(View itemView) {
             super(itemView);
             view = itemView;
             title = (TextView) view.findViewById(R.id.title);

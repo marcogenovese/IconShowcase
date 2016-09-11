@@ -26,12 +26,12 @@ public class WallpaperItem implements Parcelable {
 
     public static final Creator<WallpaperItem> CREATOR = new Creator<WallpaperItem>() {
         @Override
-        public WallpaperItem createFromParcel (Parcel in) {
+        public WallpaperItem createFromParcel(Parcel in) {
             return new WallpaperItem(in);
         }
 
         @Override
-        public WallpaperItem[] newArray (int size) {
+        public WallpaperItem[] newArray(int size) {
             return new WallpaperItem[size];
         }
     };
@@ -44,8 +44,8 @@ public class WallpaperItem implements Parcelable {
     private final String wallCopyright;
     private final boolean downloadable;
 
-    public WallpaperItem (String wallName, String wallAuthor, String wallUrl, String wallThumbUrl, String wallDimensions, String wallCopyright,
-                          boolean downloadable) {
+    public WallpaperItem(String wallName, String wallAuthor, String wallUrl, String wallThumbUrl, String wallDimensions, String wallCopyright,
+                         boolean downloadable) {
         this.wallName = wallName;
         this.wallAuthor = wallAuthor;
         this.wallUrl = wallUrl;
@@ -55,40 +55,40 @@ public class WallpaperItem implements Parcelable {
         this.downloadable = downloadable;
     }
 
-    public String getWallName () {
+    public String getWallName() {
         return wallName;
     }
 
-    public String getWallAuthor () {
+    public String getWallAuthor() {
         return wallAuthor;
     }
 
-    public String getWallURL () {
+    public String getWallURL() {
         return wallUrl;
     }
 
-    public String getWallThumbURL () {
+    public String getWallThumbURL() {
         return wallThumbUrl;
     }
 
-    public String getWallDimensions () {
+    public String getWallDimensions() {
         return wallDimensions;
     }
 
-    public String getWallCopyright () {
+    public String getWallCopyright() {
         return wallCopyright;
     }
 
-    public boolean isDownloadable () {
+    public boolean isDownloadable() {
         return downloadable;
     }
 
     @Override
-    public int describeContents () {
+    public int describeContents() {
         return 0;
     }
 
-    private WallpaperItem (Parcel in) {
+    private WallpaperItem(Parcel in) {
         wallName = in.readString();
         wallAuthor = in.readString();
         wallUrl = in.readString();
@@ -98,7 +98,7 @@ public class WallpaperItem implements Parcelable {
     }
 
     @Override
-    public void writeToParcel (Parcel dest, int flags) {
+    public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(wallName);
         dest.writeString(wallAuthor);
         dest.writeString(wallUrl);

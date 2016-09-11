@@ -58,7 +58,7 @@ public abstract class PreferenceFragment extends Fragment {
     @SuppressLint("HandlerLeak")
     private final Handler mHandler = new Handler() {
         @Override
-        public void handleMessage (Message msg) {
+        public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MSG_BIND_PREFERENCES:
                     bindPreferences();
@@ -76,7 +76,7 @@ public abstract class PreferenceFragment extends Fragment {
     private PreferenceManager mPreferenceManager;
 
     @Override
-    public void onCreate (Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try {
             Constructor<PreferenceManager> c = PreferenceManager.class.getDeclaredConstructor(Activity.class, int.class);
@@ -87,7 +87,7 @@ public abstract class PreferenceFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView (LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle savedInstanceState) {
         ListView listView = new ListView(getActivity());
         listView.setId(android.R.id.list);
         listView.setDividerHeight(0);
@@ -102,7 +102,7 @@ public abstract class PreferenceFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated (Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         if (mHavePrefs) {
@@ -122,7 +122,7 @@ public abstract class PreferenceFragment extends Fragment {
         }
     }
 
-    public void onStop () {
+    public void onStop() {
         super.onStop();
         try {
             Method m = PreferenceManager.class.getDeclaredMethod("dispatchActivityStop");
@@ -132,13 +132,13 @@ public abstract class PreferenceFragment extends Fragment {
         }
     }
 
-    public void onDestroyView () {
+    public void onDestroyView() {
         mList = null;
         mHandler.removeCallbacksAndMessages(null);
         super.onDestroyView();
     }
 
-    public void onDestroy () {
+    public void onDestroy() {
         super.onDestroy();
         try {
             Method m = PreferenceManager.class.getDeclaredMethod("dispatchActivityDestroy");
@@ -148,7 +148,7 @@ public abstract class PreferenceFragment extends Fragment {
         }
     }
 
-    public void onSaveInstanceState (Bundle outState) {
+    public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         PreferenceScreen preferenceScreen = getPreferenceScreen();
         if (preferenceScreen != null) {
@@ -158,7 +158,7 @@ public abstract class PreferenceFragment extends Fragment {
         }
     }
 
-    public void onActivityResult (int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         try {
             Method m = PreferenceManager.class.getDeclaredMethod("dispatchActivityResult", int.class, int.class, Intent.class);
@@ -168,11 +168,11 @@ public abstract class PreferenceFragment extends Fragment {
         }
     }
 
-    public PreferenceManager getPreferenceManager () {
+    public PreferenceManager getPreferenceManager() {
         return mPreferenceManager;
     }
 
-    private void setPreferenceScreen (PreferenceScreen screen) {
+    private void setPreferenceScreen(PreferenceScreen screen) {
         try {
             Method m = PreferenceManager.class.getDeclaredMethod("setPreferences", PreferenceScreen.class);
             m.setAccessible(true);
@@ -187,7 +187,7 @@ public abstract class PreferenceFragment extends Fragment {
         }
     }
 
-    private PreferenceScreen getPreferenceScreen () {
+    private PreferenceScreen getPreferenceScreen() {
         try {
             Method m = PreferenceManager.class.getDeclaredMethod("getPreferenceScreen");
             m.setAccessible(true);
@@ -197,7 +197,7 @@ public abstract class PreferenceFragment extends Fragment {
         }
     }
 
-    public void addPreferencesFromIntent (Intent intent) {
+    public void addPreferencesFromIntent(Intent intent) {
         requirePreferenceManager();
         try {
             Method m = PreferenceManager.class.getDeclaredMethod("inflateFromIntent", Intent.class, PreferenceScreen.class);
@@ -208,7 +208,7 @@ public abstract class PreferenceFragment extends Fragment {
         }
     }
 
-    protected void addPreferencesFromResource (int resId) {
+    protected void addPreferencesFromResource(int resId) {
         requirePreferenceManager();
         try {
             Method m = PreferenceManager.class.getDeclaredMethod("inflateFromResource", Context.class, int.class, PreferenceScreen.class);
@@ -219,38 +219,38 @@ public abstract class PreferenceFragment extends Fragment {
         }
     }
 
-    protected Preference findPreference (CharSequence key) {
+    protected Preference findPreference(CharSequence key) {
         if (mPreferenceManager == null) {
             return null;
         }
         return mPreferenceManager.findPreference(key);
     }
 
-    private void requirePreferenceManager () {
+    private void requirePreferenceManager() {
         if (this.mPreferenceManager == null) {
             throw new RuntimeException("This should be called after super.onCreate.");
         }
     }
 
-    private void postBindPreferences () {
+    private void postBindPreferences() {
         if (!mHandler.hasMessages(MSG_BIND_PREFERENCES)) {
             mHandler.sendEmptyMessage(MSG_BIND_PREFERENCES);
         }
     }
 
-    private void bindPreferences () {
+    private void bindPreferences() {
         final PreferenceScreen preferenceScreen = getPreferenceScreen();
         if (preferenceScreen != null) {
             preferenceScreen.bind(getListView());
         }
     }
 
-    private ListView getListView () {
+    private ListView getListView() {
         ensureList();
         return mList;
     }
 
-    private void ensureList () {
+    private void ensureList() {
         if (mList != null) {
             return;
         }

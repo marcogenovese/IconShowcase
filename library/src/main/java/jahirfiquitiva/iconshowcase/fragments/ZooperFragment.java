@@ -46,17 +46,17 @@ public class ZooperFragment extends CapsuleFragment {
     private GridSpacingItemDecoration space;
 
     @Override
-    public void onFabClick (View v) {
+    public void onFabClick(View v) {
 
     }
 
     @Override
-    public int getTitleId () {
+    public int getTitleId() {
         return DrawerItem.ZOOPER.getTitleID();
     }
 
     @Override
-    protected int getFabIcon () {
+    protected int getFabIcon() {
         return 0;
     }
 
@@ -66,12 +66,12 @@ public class ZooperFragment extends CapsuleFragment {
      * @return
      */
     @Override
-    protected boolean hasFab () {
+    protected boolean hasFab() {
         return false;
     }
 
     @Override
-    public View onCreateView (LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
         context = getActivity();
@@ -92,7 +92,7 @@ public class ZooperFragment extends CapsuleFragment {
         return layout;
     }
 
-    private void setupRV () {
+    private void setupRV() {
         if (layout != null) {
 
             int gridSpacing = getResources().getDimensionPixelSize(R.dimen.lists_padding);
@@ -124,21 +124,21 @@ public class ZooperFragment extends CapsuleFragment {
         }
     }
 
-    public static void showInstalledAppsSnackbar () {
+    public static void showInstalledAppsSnackbar() {
         if (layout != null && context != null) {
             Utils.showSimpleSnackbar(context, layout,
                     Utils.getStringFromResources(context, R.string.apps_installed));
         }
     }
 
-    public static void showInstalledAssetsSnackbar () {
+    public static void showInstalledAssetsSnackbar() {
         if (layout != null && context != null) {
             Utils.showSimpleSnackbar(context, layout,
                     Utils.getStringFromResources(context, R.string.assets_installed));
         }
     }
 
-    private boolean areAppsInstalled () {
+    private boolean areAppsInstalled() {
 
         boolean installed = Utils.isAppInstalled(context, "org.zooper.zwpro");
 

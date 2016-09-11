@@ -26,16 +26,16 @@ public class CreditsItem {
     private String text;
     private Drawable icon;
 
-    public CreditsItem (String text, Drawable icon) {
+    public CreditsItem(String text, Drawable icon) {
         this.text = text;
         this.icon = icon;
     }
 
-    public String getText () {
+    public String getText() {
         return text;
     }
 
-    public Drawable getIcon () {
+    public Drawable getIcon() {
         return icon;
     }
 }

@@ -29,29 +29,29 @@ public class CustomCoordinatorLayout extends CoordinatorLayout {
 
     private boolean allowScroll = true;
 
-    public CustomCoordinatorLayout (Context context) {
+    public CustomCoordinatorLayout(Context context) {
         super(context);
     }
 
-    public CustomCoordinatorLayout (Context context, AttributeSet attrs) {
+    public CustomCoordinatorLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
     @Override
-    public boolean onStartNestedScroll (View child, View target, int nestedScrollAxes) {
+    public boolean onStartNestedScroll(View child, View target, int nestedScrollAxes) {
         return allowScroll && super.onStartNestedScroll(child, target, nestedScrollAxes);
     }
 
     @Override
-    public boolean onInterceptTouchEvent (MotionEvent ev) {
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
         return allowScroll && super.onInterceptTouchEvent(ev);
     }
 
-    public boolean isScrollAllowed () {
+    public boolean isScrollAllowed() {
         return allowScroll;
     }
 
-    public void setScrollAllowed (boolean allowScroll) {
+    public void setScrollAllowed(boolean allowScroll) {
         this.allowScroll = allowScroll;
     }
 }

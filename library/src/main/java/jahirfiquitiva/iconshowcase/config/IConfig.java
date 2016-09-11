@@ -35,44 +35,44 @@ public interface IConfig {
 
     //General Functions
 
-    boolean bool (@BoolRes int id);
+    boolean bool(@BoolRes int id);
 
-    String string (@StringRes int id);
+    String string(@StringRes int id);
 
-    String[] stringArray (@ArrayRes int id);
+    String[] stringArray(@ArrayRes int id);
 
-    int integer (@IntegerRes int id);
+    int integer(@IntegerRes int id);
 
-    boolean hasString (@StringRes int id);
+    boolean hasString(@StringRes int id);
 
-    boolean hasArray (@ArrayRes int id);
+    boolean hasArray(@ArrayRes int id);
 
     //Main Configs
 
-    boolean allowDebugging ();
+    boolean allowDebugging();
 
-    int appTheme ();
+    int appTheme();
 
-    boolean hasDonations ();
+    boolean hasDonations();
 
-    boolean hasGoogleDonations ();
+    boolean hasGoogleDonations();
 
-    boolean hasPaypal ();
+    boolean hasPaypal();
 
     @NonNull
-    String getPaypalCurrency ();
+    String getPaypalCurrency();
 
-    boolean devOptions ();
+    boolean devOptions();
 
     //Home Configs
 
-    boolean shuffleToolbarIcons ();
+    boolean shuffleToolbarIcons();
 
-    boolean userWallpaperInToolbar ();
+    boolean userWallpaperInToolbar();
 
-    boolean hidePackInfo ();
+    boolean hidePackInfo();
 
-    int getIconResId (String iconName);
+    int getIconResId(String iconName);
 
     //TODO Amounts interface?
 

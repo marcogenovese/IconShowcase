@@ -46,17 +46,17 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
     private ArrayList<IconsCategory> mCategoryList = new ArrayList<>();
     private long startTime, endTime;
 
-    public LoadIconsLists (Context context) {
+    public LoadIconsLists(Context context) {
         mContext = new WeakReference<>(context);
     }
 
     @Override
-    protected void onPreExecute () {
+    protected void onPreExecute() {
         startTime = System.currentTimeMillis();
     }
 
     @Override
-    protected Boolean doInBackground (Void... params) {
+    protected Boolean doInBackground(Void... params) {
 
         boolean worked;
 
@@ -129,23 +129,23 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
     }
 
     @Override
-    protected void onPostExecute (Boolean worked) {
+    protected void onPostExecute(Boolean worked) {
         //TODO onPostExecute only executes if task is not cancelled, worked boolean may not be necessary
         if (worked) {
             Timber.d("Load of icons task completed successfully in: %d milliseconds", (endTime - startTime));
         }
 
-        FullListHolder.get().preview().createList(mCategoryList);
+        FullListHolder.get().iconsCategories().createList(mCategoryList);
         FullListHolder.get().home().createList(mPreviewIcons);
     }
 
-    private List<String> sortList (String[] array) {
+    private List<String> sortList(String[] array) {
         List<String> list = new ArrayList<>(Arrays.asList(array));
         Collections.sort(list);
         return list;
     }
 
-    private ArrayList<IconItem> sortAndOrganizeList (Resources r, String p, String[] array) {
+    private ArrayList<IconItem> sortAndOrganizeList(Resources r, String p, String[] array) {
 
         List<String> list = sortList(array);
 
@@ -167,8 +167,8 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
         return sortedListArray;
     }
 
-    private ArrayList<IconItem> getAllIconsList (Resources r, String p,
-                                                 ArrayList<IconItem> initialList) {
+    private ArrayList<IconItem> getAllIconsList(Resources r, String p,
+                                                ArrayList<IconItem> initialList) {
 
         String[] allIconsNames = new String[initialList.size()];
 

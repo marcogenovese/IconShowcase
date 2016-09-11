@@ -33,7 +33,7 @@ public class FeaturesAdapter extends RecyclerView.Adapter<FeaturesAdapter.Featur
 
     private final String[][] mFeatures;
 
-    public FeaturesAdapter (Context context, int featuresArray) {
+    public FeaturesAdapter(Context context, int featuresArray) {
         // Populate the two-dimensional array
         TypedArray typedArray = context.getResources().obtainTypedArray(featuresArray);
         mFeatures = new String[typedArray.length()][];
@@ -47,13 +47,13 @@ public class FeaturesAdapter extends RecyclerView.Adapter<FeaturesAdapter.Featur
     }
 
     @Override
-    public FeatureHolder onCreateViewHolder (ViewGroup parent, int viewType) {
+    public FeatureHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         return new FeatureHolder(inflater.inflate(R.layout.features_content, parent, false));
     }
 
     @Override
-    public void onBindViewHolder (FeatureHolder holder, int position) {
+    public void onBindViewHolder(FeatureHolder holder, int position) {
         String nameStr = mFeatures[position][0];
         String contentStr = "";
 
@@ -71,7 +71,7 @@ public class FeaturesAdapter extends RecyclerView.Adapter<FeaturesAdapter.Featur
     }
 
     @Override
-    public int getItemCount () {
+    public int getItemCount() {
         return mFeatures == null ? 0 : mFeatures.length;
     }
 
@@ -81,7 +81,7 @@ public class FeaturesAdapter extends RecyclerView.Adapter<FeaturesAdapter.Featur
         final TextView title;
         final TextView content;
 
-        FeatureHolder (View v) {
+        FeatureHolder(View v) {
             super(v);
             view = v;
 

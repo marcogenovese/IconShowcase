@@ -40,11 +40,11 @@ public final class PermissionUtils {
 
     public interface OnPermissionResultListener {
 
-        void onStoragePermissionGranted ();
+        void onStoragePermissionGranted();
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    public static boolean canAccessStorage (Context context) {
+    public static boolean canAccessStorage(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             return context.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
         } else {
@@ -52,24 +52,24 @@ public final class PermissionUtils {
         }
     }
 
-    public static void requestStoragePermission (Activity activity) {
+    public static void requestStoragePermission(Activity activity) {
         ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
     }
 
-    public static void requestStoragePermission (Activity activity, OnPermissionResultListener permissionResultListener) {
+    public static void requestStoragePermission(Activity activity, OnPermissionResultListener permissionResultListener) {
         onPermissionResultListener = permissionResultListener;
         requestStoragePermission(activity);
     }
 
-    public static OnPermissionResultListener permissionReceived () {
+    public static OnPermissionResultListener permissionReceived() {
         return onPermissionResultListener;
     }
 
-    public static void setViewerActivityAction (String viewerActivityAction) {
+    public static void setViewerActivityAction(String viewerActivityAction) {
         VIEWER_ACTIVITY_ACTION = viewerActivityAction;
     }
 
-    public static String getViewerActivityAction () {
+    public static String getViewerActivityAction() {
         return VIEWER_ACTIVITY_ACTION;
     }
 }

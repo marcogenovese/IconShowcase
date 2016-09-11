@@ -46,7 +46,7 @@ public class ThemeUtils {
         return light;
     }
 
-    public static void onActivityCreateSetTheme (Activity activity) {
+    public static void onActivityCreateSetTheme(Activity activity) {
         final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
         int mTheme = sp.getInt("theme", (activity.getResources().getInteger(R.integer.app_theme) - 1));
         switch (mTheme) {
@@ -82,13 +82,13 @@ public class ThemeUtils {
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public static void onActivityCreateSetNavBar (Activity activity) {
+    public static void onActivityCreateSetNavBar(Activity activity) {
         activity.getWindow().setNavigationBarColor(darkTheme ?
                 ContextCompat.getColor(activity, R.color.dark_theme_navigation_bar) :
                 ContextCompat.getColor(activity, R.color.light_theme_navigation_bar));
     }
 
-    public static void restartActivity (Activity activity) {
+    public static void restartActivity(Activity activity) {
         activity.recreate();
     }
 

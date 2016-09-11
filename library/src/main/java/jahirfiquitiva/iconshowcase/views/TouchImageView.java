@@ -104,22 +104,22 @@ public class TouchImageView extends ImageView {
     private OnTouchListener userTouchListener = null;
     private OnTouchImageViewListener touchImageViewListener = null;
 
-    public TouchImageView (Context context) {
+    public TouchImageView(Context context) {
         super(context);
         sharedConstructing(context);
     }
 
-    public TouchImageView (Context context, AttributeSet attrs) {
+    public TouchImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
         sharedConstructing(context);
     }
 
-    public TouchImageView (Context context, AttributeSet attrs, int defStyle) {
+    public TouchImageView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         sharedConstructing(context);
     }
 
-    private void sharedConstructing (Context context) {
+    private void sharedConstructing(Context context) {
         super.setClickable(true);
         this.context = context;
         mScaleDetector = new ScaleGestureDetector(context, new ScaleListener());
@@ -143,48 +143,48 @@ public class TouchImageView extends ImageView {
     }
 
     @Override
-    public void setOnTouchListener (OnTouchListener l) {
+    public void setOnTouchListener(OnTouchListener l) {
         userTouchListener = l;
     }
 
-    public void setOnTouchImageViewListener (OnTouchImageViewListener l) {
+    public void setOnTouchImageViewListener(OnTouchImageViewListener l) {
         touchImageViewListener = l;
     }
 
-    public void setOnDoubleTapListener (GestureDetector.OnDoubleTapListener l) {
+    public void setOnDoubleTapListener(GestureDetector.OnDoubleTapListener l) {
         doubleTapListener = l;
     }
 
     @Override
-    public void setImageResource (int resId) {
+    public void setImageResource(int resId) {
         super.setImageResource(resId);
         savePreviousImageValues();
         fitImageToView();
     }
 
     @Override
-    public void setImageBitmap (Bitmap bm) {
+    public void setImageBitmap(Bitmap bm) {
         super.setImageBitmap(bm);
         savePreviousImageValues();
         fitImageToView();
     }
 
     @Override
-    public void setImageDrawable (Drawable drawable) {
+    public void setImageDrawable(Drawable drawable) {
         super.setImageDrawable(drawable);
         savePreviousImageValues();
         fitImageToView();
     }
 
     @Override
-    public void setImageURI (Uri uri) {
+    public void setImageURI(Uri uri) {
         super.setImageURI(uri);
         savePreviousImageValues();
         fitImageToView();
     }
 
     @Override
-    public void setScaleType (ScaleType type) {
+    public void setScaleType(ScaleType type) {
         if (type == ScaleType.FIT_START || type == ScaleType.FIT_END) {
             throw new UnsupportedOperationException("TouchImageView does not support FIT_START or FIT_END");
         }
@@ -204,7 +204,7 @@ public class TouchImageView extends ImageView {
     }
 
     @Override
-    public ScaleType getScaleType () {
+    public ScaleType getScaleType() {
         return mScaleType;
     }
 
@@ -213,7 +213,7 @@ public class TouchImageView extends ImageView {
      *
      * @return true if image is zoomed
      */
-    private boolean isZoomed () {
+    private boolean isZoomed() {
         return normalizedScale != 1;
     }
 
@@ -222,7 +222,7 @@ public class TouchImageView extends ImageView {
      *
      * @return rect representing zoomed image
      */
-    public RectF getZoomedRect () {
+    public RectF getZoomedRect() {
         if (mScaleType == ScaleType.FIT_XY) {
             throw new UnsupportedOperationException("getZoomedRect() not supported with FIT_XY");
         }
@@ -237,7 +237,7 @@ public class TouchImageView extends ImageView {
      * Save the current matrix and view dimensions
      * in the prevMatrix and prevView variables.
      */
-    private void savePreviousImageValues () {
+    private void savePreviousImageValues() {
         if (matrix != null && viewHeight != 0 && viewWidth != 0) {
             matrix.getValues(m);
             prevMatrix.setValues(m);
@@ -249,7 +249,7 @@ public class TouchImageView extends ImageView {
     }
 
     @Override
-    public Parcelable onSaveInstanceState () {
+    public Parcelable onSaveInstanceState() {
         Bundle bundle = new Bundle();
         bundle.putParcelable("instanceState", super.onSaveInstanceState());
         bundle.putFloat("saveScale", normalizedScale);
@@ -264,7 +264,7 @@ public class TouchImageView extends ImageView {
     }
 
     @Override
-    public void onRestoreInstanceState (Parcelable state) {
+    public void onRestoreInstanceState(Parcelable state) {
         if (state instanceof Bundle) {
             Bundle bundle = (Bundle) state;
             normalizedScale = bundle.getFloat("saveScale");
@@ -282,7 +282,7 @@ public class TouchImageView extends ImageView {
     }
 
     @Override
-    protected void onDraw (Canvas canvas) {
+    protected void onDraw(Canvas canvas) {
         onDrawReady = true;
         imageRenderedAtLeastOnce = true;
         if (delayedZoomVariables != null) {
@@ -293,7 +293,7 @@ public class TouchImageView extends ImageView {
     }
 
     @Override
-    public void onConfigurationChanged (Configuration newConfig) {
+    public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         savePreviousImageValues();
     }
@@ -303,7 +303,7 @@ public class TouchImageView extends ImageView {
      *
      * @return max zoom multiplier.
      */
-    public float getMaxZoom () {
+    public float getMaxZoom() {
         return maxScale;
     }
 
@@ -312,7 +312,7 @@ public class TouchImageView extends ImageView {
      *
      * @param max max zoom multiplier.
      */
-    public void setMaxZoom (float max) {
+    public void setMaxZoom(float max) {
         maxScale = max;
         superMaxScale = SUPER_MAX_MULTIPLIER * maxScale;
     }
@@ -322,7 +322,7 @@ public class TouchImageView extends ImageView {
      *
      * @return min zoom multiplier.
      */
-    public float getMinZoom () {
+    public float getMinZoom() {
         return minScale;
     }
 
@@ -332,7 +332,7 @@ public class TouchImageView extends ImageView {
      *
      * @return current zoom multiplier.
      */
-    private float getCurrentZoom () {
+    private float getCurrentZoom() {
         return normalizedScale;
     }
 
@@ -341,7 +341,7 @@ public class TouchImageView extends ImageView {
      *
      * @param min min zoom multiplier.
      */
-    public void setMinZoom (float min) {
+    public void setMinZoom(float min) {
         minScale = min;
         superMinScale = SUPER_MIN_MULTIPLIER * minScale;
     }
@@ -349,7 +349,7 @@ public class TouchImageView extends ImageView {
     /**
      * Reset zoom and translation to initial state.
      */
-    private void resetZoom () {
+    private void resetZoom() {
         normalizedScale = 1;
         fitImageToView();
     }
@@ -359,7 +359,7 @@ public class TouchImageView extends ImageView {
      *
      * @param scale
      */
-    public void setZoom (float scale) {
+    public void setZoom(float scale) {
         setZoom(scale, 0.5f, 0.5f);
     }
 
@@ -373,7 +373,7 @@ public class TouchImageView extends ImageView {
      * @param focusX
      * @param focusY
      */
-    private void setZoom (float scale, float focusX, float focusY) {
+    private void setZoom(float scale, float focusX, float focusY) {
         setZoom(scale, focusX, focusY, mScaleType);
     }
 
@@ -388,7 +388,7 @@ public class TouchImageView extends ImageView {
      * @param focusY
      * @param scaleType
      */
-    private void setZoom (float scale, float focusX, float focusY, ScaleType scaleType) {
+    private void setZoom(float scale, float focusX, float focusY, ScaleType scaleType) {
         //
         // setZoom can be called before the image is on the screen, but at this point,
         // image and view sizes have not yet been calculated in onMeasure. Thus, we should
@@ -415,7 +415,7 @@ public class TouchImageView extends ImageView {
      * Set zoom parameters equal to another TouchImageView. Including scale, position,
      * and ScaleType.
      */
-    private void setZoom (TouchImageView img) {
+    private void setZoom(TouchImageView img) {
         PointF center = img.getScrollPosition();
         setZoom(img.getCurrentZoom(), center.x, center.y, img.getScaleType());
     }
@@ -428,7 +428,7 @@ public class TouchImageView extends ImageView {
      *
      * @return PointF representing the scroll position of the zoomed image.
      */
-    private PointF getScrollPosition () {
+    private PointF getScrollPosition() {
         Drawable drawable = getDrawable();
         if (drawable == null) {
             return null;
@@ -448,7 +448,7 @@ public class TouchImageView extends ImageView {
      * @param focusX
      * @param focusY
      */
-    public void setScrollPosition (float focusX, float focusY) {
+    public void setScrollPosition(float focusX, float focusY) {
         setZoom(normalizedScale, focusX, focusY);
     }
 
@@ -456,7 +456,7 @@ public class TouchImageView extends ImageView {
      * Performs boundary checking and fixes the image matrix if it
      * is out of bounds.
      */
-    private void fixTrans () {
+    private void fixTrans() {
         matrix.getValues(m);
         float transX = m[Matrix.MTRANS_X];
         float transY = m[Matrix.MTRANS_Y];
@@ -474,7 +474,7 @@ public class TouchImageView extends ImageView {
      * be centered incorrectly within the view. fixScaleTrans first calls fixTrans() and
      * then makes sure the image is centered correctly within the view.
      */
-    private void fixScaleTrans () {
+    private void fixScaleTrans() {
         fixTrans();
         matrix.getValues(m);
         if (getImageWidth() < viewWidth) {
@@ -486,7 +486,7 @@ public class TouchImageView extends ImageView {
         matrix.setValues(m);
     }
 
-    private float getFixTrans (float trans, float viewSize, float contentSize) {
+    private float getFixTrans(float trans, float viewSize, float contentSize) {
         float minTrans, maxTrans;
         if (contentSize <= viewSize) {
             minTrans = 0;
@@ -503,23 +503,23 @@ public class TouchImageView extends ImageView {
         return 0;
     }
 
-    private float getFixDragTrans (float delta, float viewSize, float contentSize) {
+    private float getFixDragTrans(float delta, float viewSize, float contentSize) {
         if (contentSize <= viewSize) {
             return 0;
         }
         return delta;
     }
 
-    private float getImageWidth () {
+    private float getImageWidth() {
         return matchViewWidth * normalizedScale;
     }
 
-    private float getImageHeight () {
+    private float getImageHeight() {
         return matchViewHeight * normalizedScale;
     }
 
     @Override
-    protected void onMeasure (int widthMeasureSpec, int heightMeasureSpec) {
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         Drawable drawable = getDrawable();
         if (drawable == null || drawable.getIntrinsicWidth() == 0 || drawable.getIntrinsicHeight() == 0) {
             setMeasuredDimension(0, 0);
@@ -549,7 +549,7 @@ public class TouchImageView extends ImageView {
      * it is made to fit the screen according to the dimensions of the previous image matrix. This
      * allows the image to maintain its zoom after rotation.
      */
-    private void fitImageToView () {
+    private void fitImageToView() {
         Drawable drawable = getDrawable();
         if (drawable == null || drawable.getIntrinsicWidth() == 0 || drawable.getIntrinsicHeight() == 0) {
             return;
@@ -647,10 +647,9 @@ public class TouchImageView extends ImageView {
      * @param mode
      * @param size
      * @param drawableWidth
-     *
      * @return
      */
-    private int setViewSize (int mode, int size, int drawableWidth) {
+    private int setViewSize(int mode, int size, int drawableWidth) {
         int viewSize;
         switch (mode) {
             case MeasureSpec.EXACTLY:
@@ -681,7 +680,7 @@ public class TouchImageView extends ImageView {
      * @param viewSize      width/height of view after rotation
      * @param drawableSize  width/height of drawable
      */
-    private void translateMatrixAfterRotate (int axis, float trans, float prevImageSize, float imageSize, int prevViewSize, int viewSize, int drawableSize) {
+    private void translateMatrixAfterRotate(int axis, float trans, float prevImageSize, float imageSize, int prevViewSize, int viewSize, int drawableSize) {
         if (imageSize < viewSize) {
             //
             // The width/height of image is less than the view's width/height. Center it.
@@ -705,16 +704,16 @@ public class TouchImageView extends ImageView {
         }
     }
 
-    private void setState (State state) {
+    private void setState(State state) {
         this.state = state;
     }
 
-    public boolean canScrollHorizontallyFroyo (int direction) {
+    public boolean canScrollHorizontallyFroyo(int direction) {
         return canScrollHorizontally(direction);
     }
 
     @Override
-    public boolean canScrollHorizontally (int direction) {
+    public boolean canScrollHorizontally(int direction) {
         matrix.getValues(m);
         float x = m[Matrix.MTRANS_X];
         if (getImageWidth() < viewWidth) {
@@ -738,7 +737,7 @@ public class TouchImageView extends ImageView {
     private class GestureListener extends GestureDetector.SimpleOnGestureListener {
 
         @Override
-        public boolean onSingleTapConfirmed (MotionEvent e) {
+        public boolean onSingleTapConfirmed(MotionEvent e) {
             if (doubleTapListener != null) {
                 return doubleTapListener.onSingleTapConfirmed(e);
             }
@@ -746,12 +745,12 @@ public class TouchImageView extends ImageView {
         }
 
         @Override
-        public void onLongPress (MotionEvent e) {
+        public void onLongPress(MotionEvent e) {
             performLongClick();
         }
 
         @Override
-        public boolean onFling (MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
             if (fling != null) {
                 //
                 // If a previous fling is still active, it should be cancelled so that two flings
@@ -765,7 +764,7 @@ public class TouchImageView extends ImageView {
         }
 
         @Override
-        public boolean onDoubleTap (MotionEvent e) {
+        public boolean onDoubleTap(MotionEvent e) {
             boolean consumed = false;
             if (doubleTapListener != null) {
                 consumed = doubleTapListener.onDoubleTap(e);
@@ -780,14 +779,14 @@ public class TouchImageView extends ImageView {
         }
 
         @Override
-        public boolean onDoubleTapEvent (MotionEvent e) {
+        public boolean onDoubleTapEvent(MotionEvent e) {
             return doubleTapListener != null && doubleTapListener.onDoubleTapEvent(e);
         }
     }
 
     public interface OnTouchImageViewListener {
 
-        void onMove ();
+        void onMove();
     }
 
     /**
@@ -804,7 +803,7 @@ public class TouchImageView extends ImageView {
         private final PointF last = new PointF();
 
         @Override
-        public boolean onTouch (View v, MotionEvent event) {
+        public boolean onTouch(View v, MotionEvent event) {
             mScaleDetector.onTouchEvent(event);
             mGestureDetector.onTouchEvent(event);
             PointF curr = new PointF(event.getX(), event.getY());
@@ -861,13 +860,13 @@ public class TouchImageView extends ImageView {
     private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
 
         @Override
-        public boolean onScaleBegin (ScaleGestureDetector detector) {
+        public boolean onScaleBegin(ScaleGestureDetector detector) {
             setState(State.ZOOM);
             return true;
         }
 
         @Override
-        public boolean onScale (ScaleGestureDetector detector) {
+        public boolean onScale(ScaleGestureDetector detector) {
             scaleImage(detector.getScaleFactor(), detector.getFocusX(), detector.getFocusY(), true);
             //
             // OnTouchImageViewListener is set: TouchImageView pinch zoomed by user.
@@ -879,7 +878,7 @@ public class TouchImageView extends ImageView {
         }
 
         @Override
-        public void onScaleEnd (ScaleGestureDetector detector) {
+        public void onScaleEnd(ScaleGestureDetector detector) {
             super.onScaleEnd(detector);
             setState(State.NONE);
             boolean animateToZoomBoundary = false;
@@ -899,7 +898,7 @@ public class TouchImageView extends ImageView {
         }
     }
 
-    private void scaleImage (double deltaScale, float focusX, float focusY, boolean stretchImageToSuper) {
+    private void scaleImage(double deltaScale, float focusX, float focusY, boolean stretchImageToSuper) {
         float lowerScale, upperScale;
         if (stretchImageToSuper) {
             lowerScale = superMinScale;
@@ -941,7 +940,7 @@ public class TouchImageView extends ImageView {
         private final PointF startTouch;
         private final PointF endTouch;
 
-        DoubleTapZoom (float targetZoom, float focusX, float focusY, boolean stretchImageToSuper) {
+        DoubleTapZoom(float targetZoom, float focusX, float focusY, boolean stretchImageToSuper) {
             setState(State.ANIMATE_ZOOM);
             startTime = System.currentTimeMillis();
             this.startZoom = normalizedScale;
@@ -958,7 +957,7 @@ public class TouchImageView extends ImageView {
         }
 
         @Override
-        public void run () {
+        public void run() {
             float t = interpolate();
             double deltaScale = calculateDeltaScale(t);
             scaleImage(deltaScale, bitmapX, bitmapY, stretchImageToSuper);
@@ -993,7 +992,7 @@ public class TouchImageView extends ImageView {
          *
          * @param t
          */
-        private void translateImageToCenterTouchPosition (float t) {
+        private void translateImageToCenterTouchPosition(float t) {
             float targetX = startTouch.x + t * (endTouch.x - startTouch.x);
             float targetY = startTouch.y + t * (endTouch.y - startTouch.y);
             PointF curr = transformCoordBitmapToTouch(bitmapX, bitmapY);
@@ -1005,7 +1004,7 @@ public class TouchImageView extends ImageView {
          *
          * @return
          */
-        private float interpolate () {
+        private float interpolate() {
             long currTime = System.currentTimeMillis();
             float elapsed = (currTime - startTime) / ZOOM_TIME;
             elapsed = Math.min(1f, elapsed);
@@ -1017,10 +1016,9 @@ public class TouchImageView extends ImageView {
          * from the current zoom.
          *
          * @param t
-         *
          * @return
          */
-        private double calculateDeltaScale (float t) {
+        private double calculateDeltaScale(float t) {
             double zoom = startZoom + t * (targetZoom - startZoom);
             return zoom / normalizedScale;
         }
@@ -1034,10 +1032,9 @@ public class TouchImageView extends ImageView {
      * @param y            y-coordinate of touch event
      * @param clipToBitmap Touch event may occur within view, but outside image content. True, to clip return value
      *                     to the bounds of the bitmap size.
-     *
      * @return Coordinates of the point touched, in the coordinate system of the original drawable.
      */
-    private PointF transformCoordTouchToBitmap (float x, float y, boolean clipToBitmap) {
+    private PointF transformCoordTouchToBitmap(float x, float y, boolean clipToBitmap) {
         matrix.getValues(m);
         float origW = getDrawable().getIntrinsicWidth();
         float origH = getDrawable().getIntrinsicHeight();
@@ -1058,10 +1055,9 @@ public class TouchImageView extends ImageView {
      *
      * @param bx x-coordinate in original bitmap coordinate system
      * @param by y-coordinate in original bitmap coordinate system
-     *
      * @return Coordinates of the point in the view's coordinate system.
      */
-    private PointF transformCoordBitmapToTouch (float bx, float by) {
+    private PointF transformCoordBitmapToTouch(float bx, float by) {
         matrix.getValues(m);
         float origW = getDrawable().getIntrinsicWidth();
         float origH = getDrawable().getIntrinsicHeight();
@@ -1084,7 +1080,7 @@ public class TouchImageView extends ImageView {
         CompatScroller scroller;
         int currX, currY;
 
-        Fling (int velocityX, int velocityY) {
+        Fling(int velocityX, int velocityY) {
             setState(State.FLING);
             scroller = new CompatScroller(context);
             matrix.getValues(m);
@@ -1111,7 +1107,7 @@ public class TouchImageView extends ImageView {
             currY = startY;
         }
 
-        public void cancelFling () {
+        public void cancelFling() {
             if (scroller != null) {
                 setState(State.NONE);
                 scroller.forceFinished(true);
@@ -1119,7 +1115,7 @@ public class TouchImageView extends ImageView {
         }
 
         @Override
-        public void run () {
+        public void run() {
             //
             // OnTouchImageViewListener is set: TouchImageView listener has been flung by user.
             // Listener runnable updated with each frame of fling animation.
@@ -1151,38 +1147,38 @@ public class TouchImageView extends ImageView {
 
         OverScroller overScroller;
 
-        public CompatScroller (Context context) {
+        public CompatScroller(Context context) {
             overScroller = new OverScroller(context);
         }
 
-        public void fling (int startX, int startY, int velocityX, int velocityY, int minX, int maxX, int minY, int maxY) {
+        public void fling(int startX, int startY, int velocityX, int velocityY, int minX, int maxX, int minY, int maxY) {
             overScroller.fling(startX, startY, velocityX, velocityY, minX, maxX, minY, maxY);
         }
 
-        public void forceFinished (boolean finished) {
+        public void forceFinished(boolean finished) {
             overScroller.forceFinished(finished);
         }
 
-        public boolean isFinished () {
+        public boolean isFinished() {
             return overScroller.isFinished();
         }
 
-        public boolean computeScrollOffset () {
+        public boolean computeScrollOffset() {
             overScroller.computeScrollOffset();
             return overScroller.computeScrollOffset();
         }
 
-        public int getCurrX () {
+        public int getCurrX() {
             return overScroller.getCurrX();
         }
 
-        public int getCurrY () {
+        public int getCurrY() {
             return overScroller.getCurrY();
         }
     }
 
     @TargetApi(VERSION_CODES.JELLY_BEAN)
-    private void compatPostOnAnimation (Runnable runnable) {
+    private void compatPostOnAnimation(Runnable runnable) {
         if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN) {
             postOnAnimation(runnable);
         } else {
@@ -1197,7 +1193,7 @@ public class TouchImageView extends ImageView {
         public final float focusY;
         public final ScaleType scaleType;
 
-        public ZoomVariables (float scale, float focusX, float focusY, ScaleType scaleType) {
+        public ZoomVariables(float scale, float focusX, float focusY, ScaleType scaleType) {
             this.scale = scale;
             this.focusX = focusX;
             this.focusY = focusY;
@@ -1205,7 +1201,7 @@ public class TouchImageView extends ImageView {
         }
     }
 
-    private void printMatrixInfo () {
+    private void printMatrixInfo() {
         float[] n = new float[9];
         matrix.getValues(n);
         Log.d(DEBUG, "Scale: " + n[Matrix.MSCALE_X] + " TransX: " + n[Matrix.MTRANS_X] + " TransY: " + n[Matrix.MTRANS_Y]);

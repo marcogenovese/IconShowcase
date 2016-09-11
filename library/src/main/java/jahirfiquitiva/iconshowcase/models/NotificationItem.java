@@ -25,19 +25,21 @@ public class NotificationItem {
     private final int type;
     private final int ID;
 
-    public NotificationItem (String text, int type, int ID) {
+    public NotificationItem(String text, int type, int ID) {
         this.text = text;
         this.type = type;
         this.ID = ID;
     }
 
-    public String getText () {
+    public String getText() {
         return text;
     }
-    public int getType () {
+
+    public int getType() {
         return type;
     }
-    public int getID () {
+
+    public int getID() {
         return ID;
     }
 }

@@ -18,7 +18,7 @@ import jahirfiquitiva.iconshowcase.events.OnLoadEvent;
  */
 public abstract class EventBaseFragment extends CapsuleFragment {
 
-    protected View loadingView (LayoutInflater inflater, ViewGroup container) {
+    protected View loadingView(LayoutInflater inflater, ViewGroup container) {
         return inflater.inflate(R.layout.loading_section, container, false);
     }
 

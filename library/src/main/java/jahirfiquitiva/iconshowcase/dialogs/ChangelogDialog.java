@@ -46,7 +46,7 @@ public class ChangelogDialog extends DialogFragment {
     private static final String changelog_items = "changelog_items";
     private static final String changelog_tag = "changelog_dialog";
 
-    public static void show (final AppCompatActivity context) {
+    public static void show(final AppCompatActivity context) {
         Fragment frag = context.getSupportFragmentManager().findFragmentByTag(changelog_tag);
         if (frag != null) {
             ((ChangelogDialog) frag).dismiss();
@@ -55,11 +55,11 @@ public class ChangelogDialog extends DialogFragment {
         final Handler mHandler = new Handler();
         new Thread(new Runnable() {
             @Override
-            public void run () {
+            public void run() {
                 final ArrayList<ChangelogXmlParser.ChangelogItem> items = ChangelogXmlParser.parse(context, R.xml.changelog);
                 mHandler.post(new TimerTask() {
                     @Override
-                    public void run () {
+                    public void run() {
                         ChangelogDialog.newInstance(items).show(context.getSupportFragmentManager(), changelog_tag);
                     }
                 });
@@ -68,7 +68,7 @@ public class ChangelogDialog extends DialogFragment {
 
     }
 
-    public static ChangelogDialog newInstance (final ArrayList<ChangelogXmlParser.ChangelogItem> items) {
+    public static ChangelogDialog newInstance(final ArrayList<ChangelogXmlParser.ChangelogItem> items) {
         ChangelogDialog f = new ChangelogDialog();
         if (!items.isEmpty()) {
             Bundle args = new Bundle();
@@ -81,7 +81,7 @@ public class ChangelogDialog extends DialogFragment {
     @SuppressLint("InflateParams")
     @NonNull
     @Override
-    public Dialog onCreateDialog (Bundle savedInstanceState) {
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
         MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity())
                 .title(R.string.changelog_dialog_title)
                 .positiveText(R.string.great);

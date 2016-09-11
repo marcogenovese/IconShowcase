@@ -37,11 +37,12 @@ public class DonationUtil {
 
     public interface OnPremiumListener {
 
-        void hasPurchase (String purchaseCatalogKey);
-        void hasNoPurchase ();
+        void hasPurchase(String purchaseCatalogKey);
+
+        void hasNoPurchase();
     }
 
-    public static void hasPurchase (final Context context, @Nullable String pubKey, final OnPremiumListener listener) {
+    public static void hasPurchase(final Context context, @Nullable String pubKey, final OnPremiumListener listener) {
         if (pubKey == null || pubKey.isEmpty() || !Config.get(context).hasGoogleDonations()) {
             listener.hasNoPurchase();
             return;
@@ -50,7 +51,7 @@ public class DonationUtil {
         final IabHelper mHelper = new IabHelper(context, pubKey);
         final IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
 
-            public void onQueryInventoryFinished (IabResult result, Inventory inventory) {
+            public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
                 if (inventory != null) {
                     Timber.i("IAP inventory exists");
                     for (String key : Config.get().stringArray(R.array.google_donations_items)) {

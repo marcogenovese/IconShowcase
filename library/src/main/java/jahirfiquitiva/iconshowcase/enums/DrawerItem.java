@@ -51,34 +51,34 @@ public enum DrawerItem {
     private int titleID, iconRes;
     private boolean isSecondary = false;
 
-    DrawerItem (String name, @StringRes int titleID) {
+    DrawerItem(String name, @StringRes int titleID) {
         this.name = name;
         this.titleID = titleID;
         isSecondary = true;
     }
 
-    DrawerItem (String name, @StringRes int titleID, @DrawableRes int iconRes) {
+    DrawerItem(String name, @StringRes int titleID, @DrawableRes int iconRes) {
         this.name = name;
         this.titleID = titleID;
         this.iconRes = iconRes;
     }
 
-    public int getTitleID () {
+    public int getTitleID() {
         return titleID;
     }
 
-    public int getIconRes () {
+    public int getIconRes() {
         if (isSecondary) {
             throw new RuntimeException("Secondary DrawerTypes do not have icons");
         }
         return iconRes;
     }
 
-    public String getName () {
+    public String getName() {
         return name;
     }
 
-    public boolean isSecondary () {
+    public boolean isSecondary() {
         return isSecondary;
     }
 
@@ -86,10 +86,9 @@ public enum DrawerItem {
      * @param context for resource retrieval
      * @param di      drawer type
      * @param i       identifier for drawer item
-     *
      * @return
      */
-    public static PrimaryDrawerItem getPrimaryDrawerItem (final Context context, DrawerItem di, int i) {
+    public static PrimaryDrawerItem getPrimaryDrawerItem(final Context context, DrawerItem di, int i) {
         return new PrimaryDrawerItem().withName(context.getResources().getString(di.getTitleID()))
                 .withIdentifier(i).withIcon(Utils.getVectorDrawable(context, di.getIconRes()))
                 .withIconTintingEnabled(true);
@@ -99,10 +98,9 @@ public enum DrawerItem {
      * @param context for resource retrieval
      * @param di      drawer type
      * @param i       identifier for drawer item
-     *
      * @return
      */
-    public static SecondaryDrawerItem getSecondaryDrawerItem (final Context context, DrawerItem di, int i) {
+    public static SecondaryDrawerItem getSecondaryDrawerItem(final Context context, DrawerItem di, int i) {
         return new SecondaryDrawerItem().withName(context.getResources().getString(di.getTitleID()))
                 .withIdentifier(i);
     }

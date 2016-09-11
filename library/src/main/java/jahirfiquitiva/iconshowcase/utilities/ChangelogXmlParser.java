@@ -45,28 +45,28 @@ public class ChangelogXmlParser {
         private final String mTitle;
         private final ArrayList<String> mPoints;
 
-        public ChangelogItem (String name) {
+        public ChangelogItem(String name) {
             mTitle = name;
             mPoints = new ArrayList<>();
         }
 
-        public String getTitle () {
+        public String getTitle() {
             return mTitle;
         }
 
-        public List<String> getItems () {
+        public List<String> getItems() {
             return mPoints;
         }
 
-        public void addItem (String s) {
+        public void addItem(String s) {
             mPoints.add(s);
         }
 
-        public int size () {
+        public int size() {
             return mPoints.size();
         }
 
-        protected ChangelogItem (Parcel in) {
+        protected ChangelogItem(Parcel in) {
             mTitle = in.readString();
             if (in.readByte() == 0x01) {
                 mPoints = new ArrayList<>();
@@ -77,12 +77,12 @@ public class ChangelogXmlParser {
         }
 
         @Override
-        public int describeContents () {
+        public int describeContents() {
             return 0;
         }
 
         @Override
-        public void writeToParcel (Parcel dest, int flags) {
+        public void writeToParcel(Parcel dest, int flags) {
             dest.writeString(mTitle);
             if (mPoints == null) {
                 dest.writeByte((byte) (0x00));
@@ -95,18 +95,18 @@ public class ChangelogXmlParser {
         @SuppressWarnings("unused")
         public static final Creator<ChangelogItem> CREATOR = new Creator<ChangelogItem>() {
             @Override
-            public ChangelogItem createFromParcel (Parcel in) {
+            public ChangelogItem createFromParcel(Parcel in) {
                 return new ChangelogItem(in);
             }
 
             @Override
-            public ChangelogItem[] newArray (int size) {
+            public ChangelogItem[] newArray(int size) {
                 return new ChangelogItem[size];
             }
         };
     }
 
-    public static ArrayList<ChangelogItem> parse (@NonNull Context context, @XmlRes int xmlRes) {
+    public static ArrayList<ChangelogItem> parse(@NonNull Context context, @XmlRes int xmlRes) {
         ChangelogItem mCurrentChangelogItem = null;
         ArrayList<ChangelogItem> mChangelogItems = new ArrayList<>();
 

@@ -44,11 +44,11 @@ public class Config implements IConfig {
     public static final String MARKET_URL = "https://play.google.com/store/apps/details?id=",
             PLAY_STORE_INSTALLER = "com.google.android.feedback",
             PLAY_STORE_PACKAGE = "com.android.vending",
-    ADW_ACTION = "org.adw.launcher.icons.ACTION_PICK_ICON",
+            ADW_ACTION = "org.adw.launcher.icons.ACTION_PICK_ICON",
             TURBO_ACTION = "com.phonemetra.turbo.launcher.icons.ACTION_PICK_ICON",
             NOVA_ACTION = "com.novalauncher.THEME";
 
-    private Config (@Nullable Context context) {
+    private Config(@Nullable Context context) {
         mR = null;
         mContext = context;
         if (context != null)
@@ -59,11 +59,11 @@ public class Config implements IConfig {
     private Context mContext;
     private Resources mR;
 
-    public static void init (@NonNull Context context) {
+    public static void init(@NonNull Context context) {
         mConfig = new Config(context);
     }
 
-    public static void setContext (Context context) {
+    public static void setContext(Context context) {
         if (mConfig != null) {
             mConfig.mContext = context;
             if (context != null)
@@ -71,12 +71,12 @@ public class Config implements IConfig {
         }
     }
 
-    private void destroy () {
+    private void destroy() {
         mContext = null;
         mR = null;
     }
 
-    public static void deinit () {
+    public static void deinit() {
         if (mConfig != null) {
             mConfig.destroy();
             mConfig = null;
@@ -84,14 +84,14 @@ public class Config implements IConfig {
     }
 
     @NonNull
-    public static IConfig get () {
+    public static IConfig get() {
         if (mConfig == null)
             return new Config(null); // shouldn't ever happen, but avoid crashes
         return mConfig;
     }
 
     @NonNull
-    public static IConfig get (@NonNull Context context) {
+    public static IConfig get(@NonNull Context context) {
         if (mConfig == null)
             return new Config(context);
         return mConfig;
@@ -99,75 +99,75 @@ public class Config implements IConfig {
 
     // Getters
 
-    private Preference prefs () {
+    private Preference prefs() {
         return new Preference(mContext);
     }
 
     @Override
-    public boolean bool (@BoolRes int id) {
+    public boolean bool(@BoolRes int id) {
         return mR != null && mR.getBoolean(id);
     }
 
     @Override
     @Nullable
-    public String string (@StringRes int id) {
+    public String string(@StringRes int id) {
         if (mR == null) return null;
         return mR.getString(id);
     }
 
     @Override
     @Nullable
-    public String[] stringArray (@ArrayRes int id) {
+    public String[] stringArray(@ArrayRes int id) {
         if (mR == null) return null;
         return mR.getStringArray(id);
     }
 
     @Override
-    public int integer (@IntegerRes int id) {
+    public int integer(@IntegerRes int id) {
         if (mR == null) return 0;
         return mR.getInteger(id);
     }
 
     @Override
-    public boolean hasString (@StringRes int id) {
+    public boolean hasString(@StringRes int id) {
         String s = string(id);
         return (s != null && !s.isEmpty());
     }
 
     @Override
-    public boolean hasArray (@ArrayRes int id) {
+    public boolean hasArray(@ArrayRes int id) {
         String[] s = stringArray(id);
         return (s != null && s.length != 0);
     }
 
     @Override
-    public boolean allowDebugging () {
+    public boolean allowDebugging() {
         return BuildConfig.DEBUG || mR == null || mR.getBoolean(R.bool.debugging);
     }
 
     @Override
-    public int appTheme () {
+    public int appTheme() {
         return integer(R.integer.app_theme);
     }
 
     @Override
-    public boolean hasDonations () {
+    public boolean hasDonations() {
         return hasGoogleDonations() || hasPaypal();
     }
 
     @Override
-    public boolean hasGoogleDonations () { //Also check donation key from java
+    public boolean hasGoogleDonations() { //Also check donation key from java
         return hasArray(R.array.google_donations_catalog) && hasArray(R.array.google_donations_items);
     }
 
     @Override
-    public boolean hasPaypal () {
+    public boolean hasPaypal() {
         return hasString(R.string.paypal_email);
     }
 
     @NonNull
     @Override
-    public String getPaypalCurrency () {
+    public String getPaypalCurrency() {
         String s = string(R.string.paypal_currency_code);
         if (s == null || s.length() != 3) {
             Timber.d("Invalid currency $s; switching to USD", s);
@@ -177,27 +177,27 @@ public class Config implements IConfig {
     }
 
     @Override
-    public boolean devOptions () {
+    public boolean devOptions() {
         return bool(R.bool.dev_options);
     }
 
     @Override
-    public boolean shuffleToolbarIcons () {
+    public boolean shuffleToolbarIcons() {
         return bool(R.bool.shuffle_toolbar_icons);
     }
 
     @Override
-    public boolean userWallpaperInToolbar () {
+    public boolean userWallpaperInToolbar() {
         return bool(R.bool.enable_user_wallpaper_in_toolbar);
     }
 
     @Override
-    public boolean hidePackInfo () {
+    public boolean hidePackInfo() {
         return bool(R.bool.hide_pack_info);
     }
 
     @Override
-    public int getIconResId (String iconName) {
+    public int getIconResId(String iconName) {
         if (mContext == null) return 0;
         return mR.getIdentifier(iconName, "drawable", mContext.getPackageName());
     }

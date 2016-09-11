@@ -37,26 +37,26 @@ public class TasksExecutor {
 
     private boolean justIcons, justWallpapers, includeZooper = false, includeKustom = false;
 
-    public static TasksExecutor with (Context context) {
+    public static TasksExecutor with(Context context) {
         if (singleton == null)
             singleton = new Builder(context).build();
         return singleton;
     }
 
-    public void loadJust (boolean loadIcons, boolean loadWallpapers) {
+    public void loadJust(boolean loadIcons, boolean loadWallpapers) {
         justIcons = loadIcons;
         justWallpapers = loadWallpapers;
     }
 
-    protected static TasksExecutor getInstance () {
+    protected static TasksExecutor getInstance() {
         return singleton;
     }
 
-    public static void setSingleton (TasksExecutor singleton) {
+    public static void setSingleton(TasksExecutor singleton) {
         TasksExecutor.singleton = singleton;
     }
 
-    private TasksExecutor (Context context, boolean justIcons, boolean justWallpapers) {
+    private TasksExecutor(Context context, boolean justIcons, boolean justWallpapers) {
         this.context = context;
         this.mPrefs = new Preferences(context);
         this.justIcons = justIcons;
@@ -72,7 +72,7 @@ public class TasksExecutor {
         executeTasks();
     }
 
-    private void executeTasks () {
+    private void executeTasks() {
 
         /*
         TODO: Optimize the order of execution and the moment these tasks are executed...
@@ -106,7 +106,7 @@ public class TasksExecutor {
         }
     }
 
-    private void loadWallsList () {
+    private void loadWallsList() {
 //        if (mPrefs.getWallsListLoaded()) {
 //            WallpapersList.clearList();
 //            mPrefs.setWallsListLoaded(!mPrefs.getWallsListLoaded());
@@ -137,19 +137,19 @@ public class TasksExecutor {
         /**
          * Start building a new {@link TasksExecutor} instance.
          */
-        public Builder (Context context) {
+        public Builder(Context context) {
             if (context == null)
                 throw new IllegalArgumentException("Context must not be null!");
 
             this.context = context.getApplicationContext();
         }
 
-        public Builder justIcons (boolean justIcons) {
+        public Builder justIcons(boolean justIcons) {
             this.justIcons = justIcons;
             return this;
         }
 
-        public Builder justWallpapers (boolean justWallpapers) {
+        public Builder justWallpapers(boolean justWallpapers) {
             this.justWallpapers = justWallpapers;
             return this;
         }
@@ -157,7 +157,7 @@ public class TasksExecutor {
         /**
          * Creates a {@link TasksExecutor} instance.
          */
-        public TasksExecutor build () {
+        public TasksExecutor build() {
             return new TasksExecutor(context, justIcons, justWallpapers);
         }
     }

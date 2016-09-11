@@ -30,22 +30,22 @@ import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 
 public class RequestsCheckBox extends AppCompatCheckBox {
 
-    public RequestsCheckBox (Context context, AttributeSet attrs, int defStyleAttr) {
+    public RequestsCheckBox(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         setProperTint(context);
     }
 
-    public RequestsCheckBox (Context context) {
+    public RequestsCheckBox(Context context) {
         super(context);
         setProperTint(context);
     }
 
-    public RequestsCheckBox (Context context, AttributeSet attrs) {
+    public RequestsCheckBox(Context context, AttributeSet attrs) {
         super(context, attrs);
         setProperTint(context);
     }
 
-    private void setProperTint (Context context) {
+    private void setProperTint(Context context) {
         MDTintHelper.setTint(this, ColorUtils.getCheckBoxColor(context,
                 ColorUtils.getMaterialTertiaryColor(ThemeUtils.darkTheme)));
     }

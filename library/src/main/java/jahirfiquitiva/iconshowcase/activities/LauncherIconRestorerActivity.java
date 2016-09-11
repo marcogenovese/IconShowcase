@@ -32,7 +32,7 @@ import jahirfiquitiva.iconshowcase.utilities.Utils;
 public class LauncherIconRestorerActivity extends Activity {
 
     @Override
-    protected void onCreate (Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Preferences mPrefs = new Preferences(LauncherIconRestorerActivity.this);

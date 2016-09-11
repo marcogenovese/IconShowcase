@@ -34,7 +34,7 @@ import jahirfiquitiva.iconshowcase.utilities.Utils;
 public class ClockWidget extends AppWidgetProvider {
 
     @Override
-    public void onReceive (Context context, Intent intent) {
+    public void onReceive(Context context, Intent intent) {
         PackageManager packageManager = context.getPackageManager();
         boolean foundApp = false;
 

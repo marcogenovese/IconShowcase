@@ -43,17 +43,17 @@ public class IconsFragment extends CapsuleFragment {
     private ArrayList<IconItem> iconsList, filteredIconsList;
 
     @Override
-    public void onFabClick (View v) {
+    public void onFabClick(View v) {
 
     }
 
     @Override
-    public int getTitleId () {
+    public int getTitleId() {
         return DrawerItem.PREVIEWS.getTitleID();
     }
 
     @Override
-    protected int getFabIcon () {
+    protected int getFabIcon() {
         return 0;
     }
 
@@ -63,13 +63,13 @@ public class IconsFragment extends CapsuleFragment {
      * @return
      */
     @Override
-    protected boolean hasFab () {
+    protected boolean hasFab() {
         return false;
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
         View layout = inflater.inflate(R.layout.icons_grid, container, false);
@@ -100,7 +100,7 @@ public class IconsFragment extends CapsuleFragment {
         return layout;
     }
 
-    public static IconsFragment newInstance (IconsCategory icons) {
+    public static IconsFragment newInstance(IconsCategory icons) {
         IconsFragment fragment = new IconsFragment();
         Bundle args = new Bundle();
         args.putParcelable("icons", icons);
@@ -108,11 +108,11 @@ public class IconsFragment extends CapsuleFragment {
         return fragment;
     }
 
-    public void performSearch (String query) {
+    public void performSearch(String query) {
         filter(query, mAdapter);
     }
 
-    private synchronized void filter (CharSequence s, IconsAdapter adapter) {
+    private synchronized void filter(CharSequence s, IconsAdapter adapter) {
         if (iconsList != null && iconsList.size() > 0) {
             if (s == null || s.toString().trim().isEmpty()) {
                 filteredIconsList = null;

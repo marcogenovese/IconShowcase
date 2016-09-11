@@ -46,17 +46,17 @@ import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 public class FAQsFragment extends CapsuleFragment {
 
     @Override
-    public void onFabClick (View v) {
+    public void onFabClick(View v) {
 
     }
 
     @Override
-    public int getTitleId () {
+    public int getTitleId() {
         return DrawerItem.FAQS.getTitleID();
     }
 
     @Override
-    protected int getFabIcon () {
+    protected int getFabIcon() {
         return 0;
     }
 
@@ -66,12 +66,12 @@ public class FAQsFragment extends CapsuleFragment {
      * @return
      */
     @Override
-    protected boolean hasFab () {
+    protected boolean hasFab() {
         return false;
     }
 
     @Override
-    public View onCreateView (LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
         Context context = getActivity();

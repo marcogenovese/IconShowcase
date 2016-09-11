@@ -55,7 +55,7 @@ public class KustomFragment extends CapsuleFragment {
     //TODO check if extra FAB is necessary
 
     @Override
-    public void onFabClick (View v) {
+    public void onFabClick(View v) {
         ArrayList<String> apps = new ArrayList<>();
         if ((Config.get().bool(R.bool.includes_kustom_wallpapers))
                 && !Utils.isAppInstalled(context, KLWP_PKG)) {
@@ -76,22 +76,22 @@ public class KustomFragment extends CapsuleFragment {
     }
 
     @Override
-    public int getTitleId () {
+    public int getTitleId() {
         return DrawerItem.KUSTOM.getTitleID();
     }
 
     @Override
-    protected int getFabIcon () {
+    protected int getFabIcon() {
         return R.drawable.ic_store_download;
     }
 
     @Override
-    protected boolean hasFab () {
+    protected boolean hasFab() {
         return true;
     }
 
     @Override
-    public View onCreateView (LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         context = getActivity();
 
@@ -102,7 +102,7 @@ public class KustomFragment extends CapsuleFragment {
         return layout;
     }
 
-    private void setupRV (View layout) {
+    private void setupRV(View layout) {
         int gridSpacing = getResources().getDimensionPixelSize(R.dimen.lists_padding);
         final int columnsNumber = getResources().getInteger(R.integer.zooper_kustom_grid_width);
 
@@ -122,7 +122,7 @@ public class KustomFragment extends CapsuleFragment {
 
         gridManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
-            public int getSpanSize (int position) {
+            public int getSpanSize(int position) {
                 if (kustomAdapter.isHeader(position)) {
                     return columnsNumber;
                 } else {
@@ -139,7 +139,7 @@ public class KustomFragment extends CapsuleFragment {
         fastScroller.attachRecyclerView(mRecyclerView);
     }
 
-    private boolean areAppsInstalled () {
+    private boolean areAppsInstalled() {
         boolean installed = true;
 
         if ((context.getResources().getBoolean(R.bool.includes_kustom_wallpapers))) {

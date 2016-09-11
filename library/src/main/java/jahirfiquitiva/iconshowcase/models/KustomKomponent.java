@@ -23,11 +23,11 @@ public class KustomKomponent {
 
     private String previewPath;
 
-    public KustomKomponent (String previewPath) {
+    public KustomKomponent(String previewPath) {
         this.previewPath = previewPath;
     }
 
-    public String getPreviewPath () {
+    public String getPreviewPath() {
         return previewPath;
     }
 

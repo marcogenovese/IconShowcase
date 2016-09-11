@@ -31,7 +31,7 @@ import okhttp3.Response;
 
 public class JSONParser {
 
-    public static JSONObject getJSONFromURL (Context context, String url) {
+    public static JSONObject getJSONFromURL(Context context, String url) {
         try {
 
             if (Utils.hasNetwork(context)) {

@@ -48,7 +48,7 @@ public class ToolbarColorizer {
      * @param toolbar           toolbar view being colored
      * @param toolbarIconsColor the target color of toolbar icons
      */
-    public static void colorizeToolbar (Toolbar toolbar, final int toolbarIconsColor) {
+    public static void colorizeToolbar(Toolbar toolbar, final int toolbarIconsColor) {
 
         final PorterDuffColorFilter colorFilter = new PorterDuffColorFilter(toolbarIconsColor, PorterDuff.Mode.SRC_IN);
 
@@ -75,7 +75,7 @@ public class ToolbarColorizer {
                                 //Won't work otherwise.
                                 innerView.post(new Runnable() {
                                     @Override
-                                    public void run () {
+                                    public void run() {
                                         ((ActionMenuItemView) innerView).getCompoundDrawables()[finalK].setColorFilter(colorFilter);
                                     }
                                 });
@@ -91,7 +91,7 @@ public class ToolbarColorizer {
         toolbar.setSubtitleTextColor(toolbarIconsColor);
     }
 
-    public static void tintSaveIcon (MenuItem item, Context context, int color) {
+    public static void tintSaveIcon(MenuItem item, Context context, int color) {
         item.setIcon(
                 ColorUtils.getTintedIcon(
                         context, R.drawable.ic_save,
@@ -102,8 +102,8 @@ public class ToolbarColorizer {
      * This code was created by Aidan Follestad. Complete credits to him.
      */
     @SuppressWarnings("PrivateResource")
-    public static void tintSearchView (Context context, @NonNull Toolbar toolbar, MenuItem item,
-                                       @NonNull SearchView searchView, @ColorInt int color) {
+    public static void tintSearchView(Context context, @NonNull Toolbar toolbar, MenuItem item,
+                                      @NonNull SearchView searchView, @ColorInt int color) {
         item.setIcon(ColorUtils.getTintedIcon(context, R.drawable.ic_search, color));
         final Class<?> searchViewClass = searchView.getClass();
         try {
@@ -137,7 +137,7 @@ public class ToolbarColorizer {
         }
     }
 
-    private static void hideSearchHintIcon (Context context, SearchView searchView) {
+    private static void hideSearchHintIcon(Context context, SearchView searchView) {
         if (context != null) {
             final Class<?> searchViewClass = searchView.getClass();
             try {
@@ -152,7 +152,7 @@ public class ToolbarColorizer {
         }
     }
 
-    private static void setCursorTint (@NonNull EditText editText, @ColorInt int color) {
+    private static void setCursorTint(@NonNull EditText editText, @ColorInt int color) {
         try {
             Field fCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");
             fCursorDrawableRes.setAccessible(true);
@@ -172,7 +172,7 @@ public class ToolbarColorizer {
         }
     }
 
-    private static void tintImageView (Object target, Field field, int tintColor) throws Exception {
+    private static void tintImageView(Object target, Field field, int tintColor) throws Exception {
         field.setAccessible(true);
         final ImageView imageView = (ImageView) field.get(target);
         if (imageView == null) return;

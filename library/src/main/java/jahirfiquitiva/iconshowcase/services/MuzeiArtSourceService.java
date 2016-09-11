@@ -53,12 +53,12 @@ public class MuzeiArtSourceService extends RemoteMuzeiArtSource {
     private static final String ARTSOURCE_NAME = "IconShowcase - MuzeiExtension";
     private static final int COMMAND_ID_SHARE = 1337;
 
-    public MuzeiArtSourceService () {
+    public MuzeiArtSourceService() {
         super(ARTSOURCE_NAME);
     }
 
     @Override
-    public int onStartCommand (Intent intent, int flags, int startId) {
+    public int onStartCommand(Intent intent, int flags, int startId) {
         String command = intent.getExtras().getString("service");
         if (command != null) {
             try {
@@ -71,7 +71,7 @@ public class MuzeiArtSourceService extends RemoteMuzeiArtSource {
     }
 
     @Override
-    public void onCreate () {
+    public void onCreate() {
         super.onCreate();
         mPrefs = new Preferences(MuzeiArtSourceService.this);
         ArrayList<UserCommand> commands = new ArrayList<>();
@@ -81,7 +81,7 @@ public class MuzeiArtSourceService extends RemoteMuzeiArtSource {
     }
 
     @Override
-    public void onCustomCommand (int id) {
+    public void onCustomCommand(int id) {
         super.onCustomCommand(id);
         if (id == COMMAND_ID_SHARE) {
             Artwork currentArtwork = getCurrentArtwork();
@@ -100,7 +100,7 @@ public class MuzeiArtSourceService extends RemoteMuzeiArtSource {
     }
 
     @Override
-    protected void onTryUpdate (int reason) throws RetryException {
+    protected void onTryUpdate(int reason) throws RetryException {
         if (mPrefs.areFeaturesEnabled()) {
             try {
                 new DownloadJSONAndSetWall(getApplicationContext()).execute();
@@ -112,7 +112,7 @@ public class MuzeiArtSourceService extends RemoteMuzeiArtSource {
 
     }
 
-    private void setImageForMuzei (String name, String author, String url) {
+    private void setImageForMuzei(String name, String author, String url) {
         publishArtwork(new Artwork.Builder()
                 .title(name)
                 .byline(author)
@@ -128,19 +128,19 @@ public class MuzeiArtSourceService extends RemoteMuzeiArtSource {
         public JSONArray wallInfo;
         private final WeakReference<Context> context;
 
-        public DownloadJSONAndSetWall (Context context) {
+        public DownloadJSONAndSetWall(Context context) {
             this.context = new WeakReference<>(context);
         }
 
         @Override
-        protected void onPreExecute () {
+        protected void onPreExecute() {
             names.clear();
             authors.clear();
             urls.clear();
         }
 
         @Override
-        protected Boolean doInBackground (Void... params) {
+        protected Boolean doInBackground(Void... params) {
             boolean worked;
             try {
                 mainObject = JSONParser.getJSONFromURL(getApplicationContext(),
@@ -170,7 +170,7 @@ public class MuzeiArtSourceService extends RemoteMuzeiArtSource {
         }
 
         @Override
-        protected void onPostExecute (Boolean worked) {
+        protected void onPostExecute(Boolean worked) {
             if (worked) {
                 int i;
                 try {

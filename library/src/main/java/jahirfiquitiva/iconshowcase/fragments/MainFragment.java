@@ -53,7 +53,7 @@ public class MainFragment extends EventBaseFragment {
     private boolean hasAppsList = false;
 
     @Override
-    public void onFabClick (View v) {
+    public void onFabClick(View v) {
         Intent rate = new Intent(Intent.ACTION_VIEW,
                 Uri.parse("https://play.google.com/store/apps/details?id=" +
                         context.getPackageName()));
@@ -61,23 +61,23 @@ public class MainFragment extends EventBaseFragment {
     }
 
     @Override
-    public int getTitleId () {
+    public int getTitleId() {
         return DrawerItem.HOME.getTitleID();
     }
 
     @Override
-    protected int getFabIcon () {
+    protected int getFabIcon() {
         return R.drawable.ic_rate;
     }
 
     @Override
-    protected boolean hasFab () {
+    protected boolean hasFab() {
         return true;
     }
 
     @Override
-    public View onCreateView (LayoutInflater inflater, final ViewGroup container,
-                              Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
+                             Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
         String[] listNames = getResources().getStringArray(R.array.home_list_titles);
@@ -106,8 +106,8 @@ public class MainFragment extends EventBaseFragment {
         iconsRow.setOnClickListener(new DebouncedClickListener() {
 
             @Override
-            public void onDebouncedClick (View v) {
-                ((ShowcaseActivity) getActivity()).setAllowShuffle( true);
+            public void onDebouncedClick(View v) {
+                ((ShowcaseActivity) getActivity()).setAllowShuffle(true);
                 setupAndAnimateIcons(0);
             }
         });
@@ -146,18 +146,18 @@ public class MainFragment extends EventBaseFragment {
         return layout;
     }
 
-    private void setupAndAnimateIcons (int delay) {
+    private void setupAndAnimateIcons(int delay) {
         ((ShowcaseActivity) getActivity()).setupIcons();
         ((ShowcaseActivity) getActivity()).animateIcons(delay);
     }
 
     @Override
-    protected OnLoadEvent.Type eventType () {
+    protected OnLoadEvent.Type eventType() {
         return OnLoadEvent.Type.HOMEPREVIEWS;
     }
 
     @Override
-    public void subscribed (OnLoadEvent event) {
+    public void subscribed(OnLoadEvent event) {
         if (event.type != eventType()) return;
         ((ShowcaseActivity) getActivity()).setupIcons();
     }

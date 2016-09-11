@@ -26,7 +26,7 @@ public abstract class DebouncedClickListener implements View.OnClickListener {
     private boolean clickable = true;
 
     @Override
-    public final void onClick (View v) {
+    public final void onClick(View v) {
         if (clickable) {
             clickable = false;
             onDebouncedClick(v);
@@ -41,12 +41,12 @@ public abstract class DebouncedClickListener implements View.OnClickListener {
      *
      * @param v
      */
-    public abstract void onDebouncedClick (View v);
+    public abstract void onDebouncedClick(View v);
 
     /**
      * Allows another click.
      */
-    private void reset () {
+    private void reset() {
         clickable = true;
     }
 

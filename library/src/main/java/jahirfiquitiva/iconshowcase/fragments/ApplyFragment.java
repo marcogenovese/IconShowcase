@@ -60,17 +60,17 @@ public class ApplyFragment extends CapsuleFragment {
     private Preferences mPrefs;
 
     @Override
-    public void onFabClick (View v) {
+    public void onFabClick(View v) {
 
     }
 
     @Override
-    public int getTitleId () {
+    public int getTitleId() {
         return DrawerItem.APPLY.getTitleID();
     }
 
     @Override
-    protected int getFabIcon () {
+    protected int getFabIcon() {
         return 0;
     }
 
@@ -80,12 +80,12 @@ public class ApplyFragment extends CapsuleFragment {
      * @return
      */
     @Override
-    protected boolean hasFab () {
+    protected boolean hasFab() {
         return false;
     }
 
     @Override
-    public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
         View layout = inflater.inflate(R.layout.apply_section, container, false);
@@ -107,7 +107,7 @@ public class ApplyFragment extends CapsuleFragment {
         return layout;
     }
 
-    private void updateLaunchersList (View layout) {
+    private void updateLaunchersList(View layout) {
 
         launchers.clear();
 
@@ -122,7 +122,7 @@ public class ApplyFragment extends CapsuleFragment {
         LaunchersAdapter adapter = new LaunchersAdapter(getActivity(), launchers,
                 new LaunchersAdapter.ClickListener() {
                     @Override
-                    public void onClick (int position) {
+                    public void onClick(int position) {
                         if (launchers.get(position).name.equals("Google Now")) {
                             gnlDialog();
                         } else if (launchers.get(position).name.equals("LG Home")) {
@@ -157,13 +157,13 @@ public class ApplyFragment extends CapsuleFragment {
         fastScroller.attachRecyclerView(recyclerView);
     }
 
-    private void openLauncher (String name) {
+    private void openLauncher(String name) {
         final String launcherName = Character.toUpperCase(name.charAt(0))
                 + name.substring(1).toLowerCase().replace(" ", "").replace("launcher", "");
         new LauncherIntents(getActivity(), launcherName);
     }
 
-    private void openInPlayStore (final Launcher launcher) {
+    private void openInPlayStore(final Launcher launcher) {
         intentString = Config.MARKET_URL + launcher.packageName;
         final String LauncherName = launcher.name;
         final String cmName = "CM Theme Engine";
@@ -177,7 +177,7 @@ public class ApplyFragment extends CapsuleFragment {
         }
         ISDialogs.showOpenInPlayStoreDialog(getContext(), launcher.name, dialogContent, new MaterialDialog.SingleButtonCallback() {
             @Override
-            public void onClick (@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+            public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(intentString));
                 startActivity(intent);
@@ -192,13 +192,13 @@ public class ApplyFragment extends CapsuleFragment {
         public final int launcherColor;
         private int isInstalled = -1;
 
-        public Launcher (String[] values, int color) {
+        public Launcher(String[] values, int color) {
             name = values[0];
             packageName = values[1];
             launcherColor = color;
         }
 
-        public boolean isInstalled (Context context) {
+        public boolean isInstalled(Context context) {
             if (isInstalled == -1) {
                 if (packageName.equals("org.cyanogenmod.theme.chooser")) {
                     if (Utils.isAppInstalled(context, "org.cyanogenmod.theme.chooser")
@@ -216,11 +216,11 @@ public class ApplyFragment extends CapsuleFragment {
 
     }
 
-    private void gnlDialog () {
+    private void gnlDialog() {
         final String appLink = Config.MARKET_URL + getResources().getString(R.string.extraapp);
         ISDialogs.showGoogleNowLauncherDialog(getContext(), new MaterialDialog.SingleButtonCallback() {
             @Override
-            public void onClick (@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+            public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(appLink));
                 startActivity(intent);
@@ -228,11 +228,11 @@ public class ApplyFragment extends CapsuleFragment {
         });
     }
 
-    private void showApplyAdviceDialog (Context dialogContext) {
+    private void showApplyAdviceDialog(Context dialogContext) {
         if (!mPrefs.getApplyDialogDismissed()) {
             MaterialDialog.SingleButtonCallback singleButtonCallback = new MaterialDialog.SingleButtonCallback() {
                 @Override
-                public void onClick (@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                     if (which.equals(DialogAction.POSITIVE)) {
                         mPrefs.setApplyDialogDismissed(false);
                     } else if (which.equals(DialogAction.NEUTRAL)) {

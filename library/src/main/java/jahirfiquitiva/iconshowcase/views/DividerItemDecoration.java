@@ -42,7 +42,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
     private int mOrientation = -1;
 
-    private DividerItemDecoration (Context context) {
+    private DividerItemDecoration(Context context) {
         mDivider = new ColorDrawable(ContextCompat.getColor(context, ThemeUtils.darkTheme ? R.color.dark_theme_divider :
                 R.color.light_theme_divider));
         /*
@@ -59,8 +59,8 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
         */
     }
 
-    public DividerItemDecoration (Context context, int height, boolean showFirstDivider,
-                                  boolean showLastDivider) {
+    public DividerItemDecoration(Context context, int height, boolean showFirstDivider,
+                                 boolean showLastDivider) {
         this(context);
         this.height = height;
         mShowFirstDivider = showFirstDivider;
@@ -68,8 +68,8 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
     }
 
     @Override
-    public void getItemOffsets (Rect outRect, View view, RecyclerView parent,
-                                RecyclerView.State state) {
+    public void getItemOffsets(Rect outRect, View view, RecyclerView parent,
+                               RecyclerView.State state) {
         super.getItemOffsets(outRect, view, parent, state);
         if (mDivider == null) {
             return;
@@ -101,7 +101,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
     }
 
     @Override
-    public void onDrawOver (Canvas c, RecyclerView parent, RecyclerView.State state) {
+    public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
         if (mDivider == null) {
             super.onDrawOver(c, parent, state);
             return;
@@ -159,7 +159,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
         }
     }
 
-    private int getOrientation (RecyclerView parent) {
+    private int getOrientation(RecyclerView parent) {
         if (mOrientation == -1) {
             if (parent.getLayoutManager() instanceof LinearLayoutManager) {
                 LinearLayoutManager layoutManager = (LinearLayoutManager) parent.getLayoutManager();

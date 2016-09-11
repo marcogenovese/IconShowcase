@@ -46,7 +46,7 @@ public class CopyFilesToStorage extends AsyncTask<Void, String, Boolean> {
     private final String folder;
     private final View layout;
 
-    public CopyFilesToStorage (Context context, View layout, MaterialDialog dialog, String folder) {
+    public CopyFilesToStorage(Context context, View layout, MaterialDialog dialog, String folder) {
         this.context = new WeakReference<>(context);
         this.layout = layout;
         this.dialog = dialog;
@@ -54,7 +54,7 @@ public class CopyFilesToStorage extends AsyncTask<Void, String, Boolean> {
     }
 
     @Override
-    protected Boolean doInBackground (Void... params) {
+    protected Boolean doInBackground(Void... params) {
         Boolean worked;
         try {
             AssetManager assetManager = context.get().getAssets();
@@ -87,7 +87,7 @@ public class CopyFilesToStorage extends AsyncTask<Void, String, Boolean> {
     }
 
     @Override
-    protected void onPostExecute (Boolean worked) {
+    protected void onPostExecute(Boolean worked) {
         dialog.dismiss();
         if (layout != null) {
             Snackbar longSnackbar = Snackbar.make(layout,
@@ -100,7 +100,7 @@ public class CopyFilesToStorage extends AsyncTask<Void, String, Boolean> {
         }
     }
 
-    private void copyFiles (InputStream in, OutputStream out) throws IOException {
+    private void copyFiles(InputStream in, OutputStream out) throws IOException {
         byte[] buffer = new byte[2048];
         int read;
         while ((read = in.read(buffer)) != -1) {
@@ -109,7 +109,7 @@ public class CopyFilesToStorage extends AsyncTask<Void, String, Boolean> {
         out.flush();
     }
 
-    private String getFolderName (String folder) {
+    private String getFolderName(String folder) {
         switch (folder) {
             case "fonts":
                 return "Fonts";

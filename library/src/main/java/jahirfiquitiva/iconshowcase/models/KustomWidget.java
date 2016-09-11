@@ -30,21 +30,21 @@ public class KustomWidget {
     private String previewPath;
     private String previewPathLand;
 
-    public KustomWidget (String widgetName, String previewPath, String previewPathLand) {
+    public KustomWidget(String widgetName, String previewPath, String previewPathLand) {
         this.widgetName = widgetName;
         this.previewPath = previewPath;
         this.previewPathLand = previewPathLand;
     }
 
-    public String getPreviewPath () {
+    public String getPreviewPath() {
         return previewPath;
     }
 
-    public String getPreviewPathLand () {
+    public String getPreviewPathLand() {
         return previewPathLand;
     }
 
-    public Intent getKWGTIntent (Context context) {
+    public Intent getKWGTIntent(Context context) {
         Intent kwgtIntent = new Intent();
         kwgtIntent.setComponent(new ComponentName("org.kustom.widget", "org.kustom.widget.picker.WidgetPicker"));
         kwgtIntent.setData(Uri.parse("kfile://" + context.getPackageName() + "/widgets/" + widgetName));

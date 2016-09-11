@@ -29,14 +29,14 @@ public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
     private final int spacing;
     private final boolean includeEdge;
 
-    public GridSpacingItemDecoration (int spanCount, int spacing, boolean includeEdge) {
+    public GridSpacingItemDecoration(int spanCount, int spacing, boolean includeEdge) {
         this.spanCount = spanCount;
         this.spacing = spacing;
         this.includeEdge = includeEdge;
     }
 
     @Override
-    public void getItemOffsets (Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+    public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         super.getItemOffsets(outRect, view, parent, state);
 
         int position = parent.getChildAdapterPosition(view); // item position

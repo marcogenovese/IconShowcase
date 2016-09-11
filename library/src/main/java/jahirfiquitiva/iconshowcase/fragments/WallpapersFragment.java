@@ -146,7 +146,6 @@ public class WallpapersFragment extends EventBaseFragment {
                 ThemeUtils.darkOrLight(R.color.dark_theme_accent, R.color.light_theme_accent),
                 ThemeUtils.darkOrLight(R.color.dark_theme_accent, R.color.light_theme_accent)); //TODO check if having three of the same colors makes a difference
 
-
         mSwipeRefreshLayout.setEnabled(false);
 
         //TODO: MAKE WALLPAPERS APPEAR AT FIRST. FOR SOME REASON ONLY APPEAR AFTER PRESSING "UPDATE" ICON IN TOOLBAR

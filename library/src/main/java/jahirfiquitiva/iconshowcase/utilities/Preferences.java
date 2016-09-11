@@ -58,224 +58,224 @@ public class Preferences {
 
     private final Context context;
 
-    public Preferences (Context context) {
+    public Preferences(Context context) {
         this.context = context;
     }
 
-    private SharedPreferences prefs () {
+    private SharedPreferences prefs() {
         return context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
     }
 
-    public void setFeaturesEnabled (boolean enable) {
+    public void setFeaturesEnabled(boolean enable) {
         prefs().edit().putBoolean(FEATURES_ENABLED, enable).apply();
     }
 
-    public boolean areFeaturesEnabled () {
+    public boolean areFeaturesEnabled() {
         return prefs().getBoolean(FEATURES_ENABLED, false);
     }
 
-    public void setRotateTime (int time) {
+    public void setRotateTime(int time) {
         prefs().edit().putInt(ROTATE_TIME, time).apply();
     }
 
-    public int getRotateTime () {
+    public int getRotateTime() {
         return prefs().getInt(ROTATE_TIME, 3 * 60 * 60 * 1000);
     }
 
-    public void setRotateMinute (boolean bool) {
+    public void setRotateMinute(boolean bool) {
         prefs().edit().putBoolean(ROTATE_MINUTE, bool).apply();
     }
 
-    public boolean isRotateMinute () {
+    public boolean isRotateMinute() {
         return prefs().getBoolean(ROTATE_MINUTE, false);
     }
 
-    public void setIconShown (boolean show) {
+    public void setIconShown(boolean show) {
         prefs().edit().putBoolean(LAUNCHER_ICON, show).apply();
     }
 
-    public boolean getLauncherIconShown () {
+    public boolean getLauncherIconShown() {
         return prefs().getBoolean(LAUNCHER_ICON, true);
     }
 
-    public void setDownloadsFolder (String folder) {
+    public void setDownloadsFolder(String folder) {
         prefs().edit().putString(WALLS_DOWNLOAD_FOLDER, folder).apply();
     }
 
-    public String getDownloadsFolder () {
+    public String getDownloadsFolder() {
         return prefs().getString(WALLS_DOWNLOAD_FOLDER, null);
     }
 
-    public void setIfAppsToRequestLoaded (boolean loaded) {
+    public void setIfAppsToRequestLoaded(boolean loaded) {
         prefs().edit().putBoolean(APPS_TO_REQUEST_LOADED, loaded).apply();
     }
 
-    public boolean didAppsToRequestLoad () {
+    public boolean didAppsToRequestLoad() {
         return prefs().getBoolean(APPS_TO_REQUEST_LOADED, false);
     }
 
-    public void setWallsListLoaded (boolean loaded) {
+    public void setWallsListLoaded(boolean loaded) {
         prefs().edit().putBoolean(WALLS_LIST_LOADED, loaded).apply();
     }
 
-    public boolean getWallsListLoaded () {
+    public boolean getWallsListLoaded() {
         return prefs().getBoolean(WALLS_LIST_LOADED, false);
     }
 
-    public void setSettingsModified (boolean loaded) {
+    public void setSettingsModified(boolean loaded) {
         prefs().edit().putBoolean(SETTINGS_MODIFIED, loaded).apply();
     }
 
-    public boolean getSettingsModified () {
+    public boolean getSettingsModified() {
         return prefs().getBoolean(SETTINGS_MODIFIED, false);
     }
 
-    public void setAnimationsEnabled (boolean animationsEnabled) {
+    public void setAnimationsEnabled(boolean animationsEnabled) {
         prefs().edit().putBoolean(ANIMATIONS_ENABLED, animationsEnabled).apply();
     }
 
-    public boolean getAnimationsEnabled () {
+    public boolean getAnimationsEnabled() {
         return prefs().getBoolean(ANIMATIONS_ENABLED, true);
     }
 
-    public void setWallpaperAsToolbarHeaderEnabled (boolean wallpaperAsToolbarHeader) {
+    public void setWallpaperAsToolbarHeaderEnabled(boolean wallpaperAsToolbarHeader) {
         prefs().edit().putBoolean(WALLPAPER_AS_TOOLBAR_HEADER, wallpaperAsToolbarHeader).apply();
     }
 
-    public boolean getWallpaperAsToolbarHeaderEnabled () {
+    public boolean getWallpaperAsToolbarHeaderEnabled() {
         return prefs().getBoolean(WALLPAPER_AS_TOOLBAR_HEADER, true);
     }
 
-    public void setApplyDialogDismissed (boolean applyDialogDismissed) {
+    public void setApplyDialogDismissed(boolean applyDialogDismissed) {
         prefs().edit().putBoolean(APPLY_DIALOG_DISMISSED, applyDialogDismissed).apply();
     }
 
-    public boolean getApplyDialogDismissed () {
+    public boolean getApplyDialogDismissed() {
         return prefs().getBoolean(APPLY_DIALOG_DISMISSED, false);
     }
 
-    public void setWallsDialogDismissed (boolean wallsDialogDismissed) {
+    public void setWallsDialogDismissed(boolean wallsDialogDismissed) {
         prefs().edit().putBoolean(WALLS_DIALOG_DISMISSED, wallsDialogDismissed).apply();
     }
 
-    public boolean getWallsDialogDismissed () {
+    public boolean getWallsDialogDismissed() {
         return prefs().getBoolean(WALLS_DIALOG_DISMISSED, false);
     }
 
-    public void setWallsColumnsNumber (int columnsNumber) {
+    public void setWallsColumnsNumber(int columnsNumber) {
         prefs().edit().putInt(WALLS_COLUMNS_NUMBER, columnsNumber).apply();
     }
 
-    public int getWallsColumnsNumber () {
+    public int getWallsColumnsNumber() {
         return prefs().getInt(WALLS_COLUMNS_NUMBER,
                 context.getResources().getInteger(R.integer.wallpapers_grid_width));
     }
 
-    public void setRequestHour (String hour) {
+    public void setRequestHour(String hour) {
         prefs().edit().putString(REQUEST_HOUR, hour).apply();
     }
 
-    public String getRequestHour () {
+    public String getRequestHour() {
         return prefs().getString(REQUEST_HOUR, "null");
     }
 
-    public void setRequestDay (int day) {
+    public void setRequestDay(int day) {
         prefs().edit().putInt(REQUEST_DAY, day).apply();
     }
 
-    public int getRequestDay () {
+    public int getRequestDay() {
         return prefs().getInt(REQUEST_DAY, 0);
     }
 
-    public void setRequestsCreated (boolean requestsCreated) {
+    public void setRequestsCreated(boolean requestsCreated) {
         prefs().edit().putBoolean(REQUESTS_CREATED, requestsCreated).apply();
     }
 
-    public boolean getRequestsCreated () {
+    public boolean getRequestsCreated() {
         return prefs().getBoolean(REQUESTS_CREATED, false);
     }
 
-    public int getRequestsLeft () {
+    public int getRequestsLeft() {
         return prefs().getInt(REQUESTS_LEFT, -1);
     }
 
-    public int getRequestsLeft (Context context) {
+    public int getRequestsLeft(Context context) {
         return prefs().getInt(REQUESTS_LEFT,
                 context.getResources().getInteger(R.integer.max_apps_to_request));
     }
 
-    public void setRequestsLeft (int requestsLeft) {
+    public void setRequestsLeft(int requestsLeft) {
         prefs().edit().putInt(REQUESTS_LEFT, requestsLeft).apply();
     }
 
-    public void resetRequestsLeft (Context context) {
+    public void resetRequestsLeft(Context context) {
         prefs().edit().putInt(REQUESTS_LEFT,
                 context.getResources().getInteger(R.integer.max_apps_to_request)).apply();
     }
 
     //NOTIFICATIONS:
 
-    public void setNotifsEnabled (boolean enabled) {
+    public void setNotifsEnabled(boolean enabled) {
         prefs().edit().putBoolean(NOTIFS_ENABLED, enabled).apply();
     }
 
-    public boolean getNotifsEnabled () {
+    public boolean getNotifsEnabled() {
         return prefs().getBoolean(NOTIFS_ENABLED, false);
     }
 
-    public void setNotifsLedEnabled (boolean enableLed) {
+    public void setNotifsLedEnabled(boolean enableLed) {
         prefs().edit().putBoolean(NOTIFS_LED_ENABLED, enableLed).apply();
     }
 
-    public boolean getNotifsLedEnabled () {
+    public boolean getNotifsLedEnabled() {
         return prefs().getBoolean(NOTIFS_LED_ENABLED, true);
     }
 
-    public void setNotifsVibrationEnabled (boolean vibrate) {
+    public void setNotifsVibrationEnabled(boolean vibrate) {
         prefs().edit().putBoolean(NOTIFS_VIBRATION_ENABLED, vibrate).apply();
     }
 
-    public boolean getNotifsVibrationEnabled () {
+    public boolean getNotifsVibrationEnabled() {
         return prefs().getBoolean(NOTIFS_VIBRATION_ENABLED, true);
     }
 
-    public void setNotifsUpdateInterval (int interval) {
+    public void setNotifsUpdateInterval(int interval) {
         prefs().edit().putInt(NOTIFS_UPDATE_INTERVAL, interval).apply();
     }
 
-    public int getNotifsUpdateInterval () {
+    public int getNotifsUpdateInterval() {
         return prefs().getInt(NOTIFS_UPDATE_INTERVAL, 4);
     }
 
-    public void setActivityVisible (boolean visible) {
+    public void setActivityVisible(boolean visible) {
         prefs().edit().putBoolean(ACTIVITY_VISIBLE, visible).apply();
     }
 
-    public boolean getActivityVisible () {
+    public boolean getActivityVisible() {
         return prefs().getBoolean(ACTIVITY_VISIBLE, true);
     }
 
-    public void setVersionCode (int versionCode) {
+    public void setVersionCode(int versionCode) {
         prefs().edit().putInt(VERSION_CODE, versionCode).apply();
     }
 
-    public int getVersionCode () {
+    public int getVersionCode() {
         return prefs().getInt(VERSION_CODE, 0);
     }
 
-    public void setDevDrawerTexts (boolean enable) {
+    public void setDevDrawerTexts(boolean enable) {
         prefs().edit().putBoolean(DEV_DRAWER_TEXTS, enable).apply();
     }
 
-    public boolean getDevDrawerTexts () {
+    public boolean getDevDrawerTexts() {
         return prefs().getBoolean(DEV_DRAWER_TEXTS, true);
     }
 
-    public void setDevListsCards (boolean enableCards) {
+    public void setDevListsCards(boolean enableCards) {
         prefs().edit().putBoolean(DEV_LISTS_CARDS, enableCards).apply();
     }
 
-    public boolean getDevListsCards () {
+    public boolean getDevListsCards() {
         return prefs().getBoolean(DEV_LISTS_CARDS, false);
     }
 

@@ -48,18 +48,18 @@ public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
     public final static ArrayList<ZooperWidget> widgets = new ArrayList<>();
     private long startTime, endTime;
 
-    public LoadZooperWidgets (Context context) {
+    public LoadZooperWidgets(Context context) {
         this.context = new WeakReference<>(context);
     }
 
     @Override
-    protected void onPreExecute () {
+    protected void onPreExecute() {
         startTime = System.currentTimeMillis();
     }
 
     @Override
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    protected Boolean doInBackground (Void... params) {
+    protected Boolean doInBackground(Void... params) {
 
         boolean worked = false;
 
@@ -92,7 +92,7 @@ public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
     }
 
     @Override
-    protected void onPostExecute (Boolean worked) {
+    protected void onPostExecute(Boolean worked) {
         if (worked) {
             if (ZooperFragment.zooperAdapter != null) {
                 ZooperFragment.zooperAdapter.setWidgets(widgets);
@@ -104,8 +104,8 @@ public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
     /**
      * This code was created by Aidan Follestad. Complete credits to him.
      */
-    private String getWidgetPreviewPathFromZip (WeakReference<Context> context, String name, InputStream in,
-                                                File previewsFolder, File widgetPreviewFile) {
+    private String getWidgetPreviewPathFromZip(WeakReference<Context> context, String name, InputStream in,
+                                               File previewsFolder, File widgetPreviewFile) {
         OutputStream out;
         File preview = new File(previewsFolder, name + ".png");
 
