@@ -82,7 +82,6 @@ public class MuzeiSettings extends AppCompatActivity {
         int iconsColor = ThemeUtils.darkOrLight(this, R.color.toolbar_text_dark, R.color.toolbar_text_light);
 
         setContentView(R.layout.muzei_settings);
-        mPrefs.setActivityVisible(true);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -191,15 +190,6 @@ public class MuzeiSettings extends AppCompatActivity {
         super.onResume();
         int iconsColor = ThemeUtils.darkOrLight(this, R.color.toolbar_text_dark, R.color.toolbar_text_light);
         ToolbarColorizer.colorizeToolbar(toolbar, iconsColor);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (mPrefs == null) {
-            mPrefs = new Preferences(this);
-        }
-        mPrefs.setActivityVisible(false);
     }
 
     private void setDividerColor(NumberPicker picker) {

@@ -36,7 +36,6 @@ public class LauncherIconRestorerActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         Preferences mPrefs = new Preferences(LauncherIconRestorerActivity.this);
-        mPrefs.setActivityVisible(true);
 
         PackageManager p = getPackageManager();
 
@@ -86,7 +85,6 @@ public class LauncherIconRestorerActivity extends Activity {
                     .show();
         }
 
-        mPrefs.setActivityVisible(false);
         finish();
 
     }

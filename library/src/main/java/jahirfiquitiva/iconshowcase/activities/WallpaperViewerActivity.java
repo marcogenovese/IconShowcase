@@ -115,8 +115,6 @@ public class WallpaperViewerActivity extends AppCompatActivity {
 
         mPrefs = new Preferences(context);
 
-        mPrefs.setActivityVisible(true);
-
         Intent intent = getIntent();
         String transitionName = intent.getStringExtra("transitionName");
 
@@ -279,15 +277,11 @@ public class WallpaperViewerActivity extends AppCompatActivity {
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         if (dialogApply != null) {
             dialogApply.dismiss();
             dialogApply = null;
         }
-        if (mPrefs == null) {
-            mPrefs = new Preferences(this);
-        }
-        mPrefs.setActivityVisible(false);
+        super.onDestroy();
     }
 
     @Override

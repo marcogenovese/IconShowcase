@@ -125,8 +125,6 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
 
         mPrefs = new Preferences(context);
 
-        mPrefs.setActivityVisible(true);
-
         Intent intent = getIntent();
         String transitionName = intent.getStringExtra("transitionName");
 
@@ -326,10 +324,6 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
             dialogApply.dismiss();
             dialogApply = null;
         }
-        if (mPrefs == null) {
-            mPrefs = new Preferences(this);
-        }
-        mPrefs.setActivityVisible(false);
         super.onDestroy();
     }
 

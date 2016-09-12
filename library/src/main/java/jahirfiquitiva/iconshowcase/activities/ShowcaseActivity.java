@@ -194,8 +194,6 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
 
         shuffleIcons = getResources().getBoolean(R.bool.shuffle_toolbar_icons);
 
-        mPrefs.setActivityVisible(true);
-
         try {
             if (installer.matches(Config.PLAY_STORE_INSTALLER) || installer.matches(Config.PLAY_STORE_PACKAGE)) {
                 installedFromPlayStore = true;
@@ -454,13 +452,12 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         if (settingsDialog != null) {
             settingsDialog.dismiss();
             settingsDialog = null;
         }
-        mPrefs.setActivityVisible(false);
         Config.deinit();
+        super.onDestroy();
     }
 
     @Override

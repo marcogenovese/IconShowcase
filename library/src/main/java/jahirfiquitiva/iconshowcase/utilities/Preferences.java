@@ -49,8 +49,7 @@ public class Preferences {
             NOTIFS_ENABLED = "notifs_enabled",
             NOTIFS_LED_ENABLED = "notifs_led_enabled",
             NOTIFS_VIBRATION_ENABLED = "notifs_vibration_enabled",
-            NOTIFS_UPDATE_INTERVAL = "notifs_update_interval",
-            ACTIVITY_VISIBLE = "activity_visible";
+            NOTIFS_UPDATE_INTERVAL = "notifs_update_interval";
 
     private static final String
             DEV_DRAWER_TEXTS = "dev_drawer_texts",
@@ -245,14 +244,6 @@ public class Preferences {
 
     public int getNotifsUpdateInterval() {
         return prefs().getInt(NOTIFS_UPDATE_INTERVAL, 4);
-    }
-
-    public void setActivityVisible(boolean visible) {
-        prefs().edit().putBoolean(ACTIVITY_VISIBLE, visible).apply();
-    }
-
-    public boolean getActivityVisible() {
-        return prefs().getBoolean(ACTIVITY_VISIBLE, true);
     }
 
     public void setVersionCode(int versionCode) {
