@@ -111,10 +111,12 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                     WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+
             getWindow().getDecorView().setSystemUiVisibility(
                     View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
             getWindow().setStatusBarColor(Color.TRANSPARENT);
+            getWindow().setNavigationBarColor(0x88ff0000);
         }
 
         super.onCreate(savedInstanceState);
@@ -139,38 +141,35 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
 
         //TODO Make sure mini FABs margins are properly applied
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            int navBarHeight = Utils.getNavigationBarHeight(this);
-            ImageView navbarGradient = (ImageView) findViewById(R.id.navbarGradient);
-            LinearLayout.LayoutParams p = (LinearLayout.LayoutParams) fab.getLayoutParams();
-            LinearLayout.LayoutParams mp1 = (LinearLayout.LayoutParams) infoFab.getLayoutParams();
-            LinearLayout.LayoutParams mp2 = (LinearLayout.LayoutParams) applyFab.getLayoutParams();
-            LinearLayout.LayoutParams mp3 = (LinearLayout.LayoutParams) saveFab.getLayoutParams();
-            int fabMargin = context.getResources().getDimensionPixelSize(R.dimen.fab_margin);
-            if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                int miniFabMargin = context.getResources().getDimensionPixelSize(R.dimen.mini_fab_right_margin);
-                navbarGradient.setVisibility(View.GONE);
-                p.setMargins(0, 0, (fabMargin + navBarHeight), fabMargin);
-                mp1.setMargins(0, 0, ((fabMargin + navBarHeight) + miniFabMargin), fabMargin);
-                mp2.setMargins(0, 0, ((fabMargin + navBarHeight) + miniFabMargin), fabMargin);
-                mp3.setMargins(0, 0, ((fabMargin + navBarHeight) + miniFabMargin), fabMargin);
-                infoFab.setLayoutParams(mp1);
-                applyFab.setLayoutParams(mp2);
-                saveFab.setLayoutParams(mp3);
-            } else {
-                p.setMargins(0, 0, fabMargin, (fabMargin + navBarHeight));
-                if (navBarHeight <= 0) {
-                    navbarGradient.setVisibility(View.GONE);
-                } else {
-                    navbarGradient.getLayoutParams().height = navBarHeight;
-                    navbarGradient.requestLayout();
-                }
-            }
-            fab.setLayoutParams(p);
-        }
-        hideFab(applyFab);
-        hideFab(saveFab);
-        hideFab(infoFab);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//            int navBarHeight = Utils.getNavigationBarHeight(this);
+//            ImageView navbarGradient = (ImageView) findViewById(R.id.navbarGradient);
+//            LinearLayout.LayoutParams p = (LinearLayout.LayoutParams) fab.getLayoutParams();
+//            LinearLayout.LayoutParams mp1 = (LinearLayout.LayoutParams) infoFab.getLayoutParams();
+//            LinearLayout.LayoutParams mp2 = (LinearLayout.LayoutParams) applyFab.getLayoutParams();
+//            LinearLayout.LayoutParams mp3 = (LinearLayout.LayoutParams) saveFab.getLayoutParams();
+//            int fabMargin = context.getResources().getDimensionPixelSize(R.dimen.fab_margin);
+//            if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+//                int miniFabMargin = context.getResources().getDimensionPixelSize(R.dimen.mini_fab_right_margin);
+//                navbarGradient.setVisibility(View.GONE);
+//                p.setMargins(0, 0, (fabMargin + navBarHeight), fabMargin);
+//                mp1.setMargins(0, 0, ((fabMargin + navBarHeight) + miniFabMargin), fabMargin);
+//                mp2.setMargins(0, 0, ((fabMargin + navBarHeight) + miniFabMargin), fabMargin);
+//                mp3.setMargins(0, 0, ((fabMargin + navBarHeight) + miniFabMargin), fabMargin);
+//                infoFab.setLayoutParams(mp1);
+//                applyFab.setLayoutParams(mp2);
+//                saveFab.setLayoutParams(mp3);
+//            } else {
+//                p.setMargins(0, 0, fabMargin, (fabMargin + navBarHeight));
+//                if (navBarHeight <= 0) {
+//                    navbarGradient.setVisibility(View.GONE);
+//                } else {
+//                    navbarGradient.getLayoutParams().height = navBarHeight;
+//                    navbarGradient.requestLayout();
+//                }
+//            }
+//            fab.setLayoutParams(p);
+//        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -323,7 +322,6 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         if (dialogApply != null) {
             dialogApply.dismiss();
             dialogApply = null;
@@ -332,6 +330,7 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
             mPrefs = new Preferences(this);
         }
         mPrefs.setActivityVisible(false);
+        super.onDestroy();
     }
 
     @Override

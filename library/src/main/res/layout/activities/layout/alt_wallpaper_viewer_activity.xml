@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2016 Jahir Fiquitiva
   ~
   ~ Licensed under the CreativeCommons Attribution-ShareAlike
@@ -18,137 +17,141 @@
   ~ 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
   -->
 
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/viewerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:background="#f0f"
+    android:fitsSystemWindows="true"
+    android:padding="50dp">
 
-    <FrameLayout
-        android:id="@+id/frameLayout"
+    <!--<FrameLayout-->
+    <!--android:id="@+id/frameLayout"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:clipChildren="false"-->
+    <!--android:fitsSystemWindows="true">-->
+
+    <jahirfiquitiva.iconshowcase.views.TouchImageView
+        android:id="@+id/big_wallpaper"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipChildren="false"
+        android:fitsSystemWindows="true"
+        android:scaleType="centerCrop" />
+
+    <ProgressBar
+        android:id="@+id/progress"
+        style="?android:progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:clickable="false"
+        android:focusable="false"
+        android:gravity="center" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:fitsSystemWindows="true">
 
-        <jahirfiquitiva.iconshowcase.views.TouchImageView
-            android:id="@+id/big_wallpaper"
+        <ImageView
+            android:id="@+id/navbarGradient"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="48.0dip"
+            android:layout_gravity="bottom"
+            android:background="@drawable/navbar_gradient"
             android:fitsSystemWindows="true"
-            android:scaleType="centerCrop"/>
+            tools:ignore="ContentDescription" />
+    </LinearLayout>
 
-        <ProgressBar
-            android:id="@+id/progress"
-            style="?android:progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:clickable="false"
-            android:focusable="false"
-            android:gravity="center"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
 
-        <LinearLayout
+        <ImageView
+            android:id="@+id/toolbarGradient"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fitsSystemWindows="true">
+            android:layout_height="112.0dip"
+            android:background="@drawable/toolbar_gradient"
+            android:fitsSystemWindows="true"
+            tools:ignore="ContentDescription" />
+    </LinearLayout>
 
-            <ImageView
-                android:id="@+id/navbarGradient"
-                android:layout_width="match_parent"
-                android:layout_height="48.0dip"
-                android:layout_gravity="bottom"
-                android:background="@drawable/navbar_gradient"
-                android:fitsSystemWindows="true"
-                tools:ignore="ContentDescription"/>
-        </LinearLayout>
+    <LinearLayout
+        android:id="@+id/fabContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fitsSystemWindows="true">
-
-            <ImageView
-                android:id="@+id/toolbarGradient"
-                android:layout_width="match_parent"
-                android:layout_height="112.0dip"
-                android:background="@drawable/toolbar_gradient"
-                android:fitsSystemWindows="true"
-                tools:ignore="ContentDescription"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/fabContainer"
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/saveFab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|bottom"
-            android:orientation="vertical">
+            android:layout_marginEnd="@dimen/mini_fab_right_margin"
+            android:layout_marginRight="@dimen/mini_fab_right_margin"
+            android:visibility="gone"
+            app:backgroundTint="?attr/fabTintColor"
+            app:fabSize="mini"
+            app:rippleColor="@color/semitransparent_white"
+            app:srcCompat="@drawable/ic_save" />
 
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/saveFab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end|bottom"
-                android:layout_marginEnd="@dimen/mini_fab_right_margin"
-                android:layout_marginRight="@dimen/mini_fab_right_margin"
-                app:backgroundTint="?attr/fabTintColor"
-                app:fabSize="mini"
-                app:rippleColor="@color/semitransparent_white"
-                app:srcCompat="@drawable/ic_save"/>
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/applyFab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_marginEnd="@dimen/mini_fab_right_margin"
+            android:layout_marginRight="@dimen/mini_fab_right_margin"
+            android:visibility="gone"
+            app:backgroundTint="?attr/fabTintColor"
+            app:fabSize="mini"
+            app:rippleColor="@color/semitransparent_white"
+            app:srcCompat="@drawable/ic_check" />
 
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/applyFab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end|bottom"
-                android:layout_marginEnd="@dimen/mini_fab_right_margin"
-                android:layout_marginRight="@dimen/mini_fab_right_margin"
-                app:backgroundTint="?attr/fabTintColor"
-                app:fabSize="mini"
-                app:rippleColor="@color/semitransparent_white"
-                app:srcCompat="@drawable/ic_check"/>
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/infoFab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_marginEnd="@dimen/mini_fab_right_margin"
+            android:layout_marginRight="@dimen/mini_fab_right_margin"
+            android:visibility="gone"
+            app:backgroundTint="?attr/fabTintColor"
+            app:fabSize="mini"
+            app:rippleColor="@color/semitransparent_white"
+            app:srcCompat="@drawable/ic_info" />
 
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/infoFab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end|bottom"
-                android:layout_marginEnd="@dimen/mini_fab_right_margin"
-                android:layout_marginRight="@dimen/mini_fab_right_margin"
-                app:backgroundTint="?attr/fabTintColor"
-                app:fabSize="mini"
-                app:rippleColor="@color/semitransparent_white"
-                app:srcCompat="@drawable/ic_info"/>
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_marginBottom="@dimen/fab_margin"
+            android:layout_marginEnd="@dimen/fab_margin"
+            android:layout_marginRight="@dimen/fab_margin"
+            app:backgroundTint="?attr/fabTintColor"
+            app:fabSize="normal"
+            app:layout_anchorGravity="end|bottom"
+            app:rippleColor="@color/semitransparent_white"
+            app:srcCompat="@drawable/ic_plus" />
+    </LinearLayout>
 
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/fab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end|bottom"
-                android:layout_marginBottom="@dimen/fab_margin"
-                android:layout_marginEnd="@dimen/fab_margin"
-                android:layout_marginRight="@dimen/fab_margin"
-                app:backgroundTint="?attr/fabTintColor"
-                app:fabSize="normal"
-                app:layout_anchorGravity="end|bottom"
-                app:rippleColor="@color/semitransparent_white"
-                app:srcCompat="@drawable/ic_plus"/>
-        </LinearLayout>
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="@android:color/transparent"
+        android:transitionName="actionBar"
+        app:contentInsetStart="@dimen/second_keyline"
+        app:popupTheme="@style/Toolbar.Popup.AppCompat"
+        app:theme="@style/Toolbar.AppCompat.Responsive.Light"
+        tools:ignore="UnusedAttribute" />
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:background="@android:color/transparent"
-            android:transitionName="actionBar"
-            app:contentInsetStart="@dimen/second_keyline"
-            app:popupTheme="@style/Toolbar.Popup.AppCompat"
-            app:theme="@style/Toolbar.AppCompat.Responsive.Light"
-            tools:ignore="UnusedAttribute"/>
-
-    </FrameLayout>
+    <!--</FrameLayout>-->
 
 </android.support.design.widget.CoordinatorLayout>
