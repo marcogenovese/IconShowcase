@@ -34,7 +34,6 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 
 import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 
@@ -59,7 +58,6 @@ import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 public class WallpapersFragment extends EventBaseFragment {
 
     private ViewGroup layout;
-    private ProgressBar mProgress;
     private RecyclerView mRecyclerView;
     private RecyclerFastScroller fastScroller;
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -67,7 +65,7 @@ public class WallpapersFragment extends EventBaseFragment {
     private ImageView noConnection;
     private Activity context;
     private GridSpacingItemDecoration gridSpacing;
-    private int light, dark;
+    private int tintColor;
 
     @Override
     public void onFabClick(View v) {
@@ -116,11 +114,9 @@ public class WallpapersFragment extends EventBaseFragment {
 
         layout = (ViewGroup) inflater.inflate(R.layout.wallpapers_section, container, false);
 
-        light = ContextCompat.getColor(context, R.color.drawable_tint_dark);
-        dark = ContextCompat.getColor(context, R.color.drawable_tint_light);
+        tintColor = ThemeUtils.darkOrLight(context, R.color.drawable_tint_dark, R.color.drawable_tint_light);
 
         noConnection = (ImageView) layout.findViewById(R.id.no_connected_icon);
-        mProgress = (ProgressBar) layout.findViewById(R.id.progress);
         mRecyclerView = (RecyclerView) layout.findViewById(R.id.wallsGrid);
         fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
         mSwipeRefreshLayout = (SwipeRefreshLayout) layout.findViewById(R.id.swipeRefreshLayout);
@@ -130,8 +126,7 @@ public class WallpapersFragment extends EventBaseFragment {
         }
 
         noConnection.setImageDrawable(ColorUtils.getTintedIcon(
-                context, R.drawable.ic_no_connection,
-                ThemeUtils.darkOrLight(dark, light)));
+                context, R.drawable.ic_no_connection, tintColor));
 
         // showProgressBar();
 
@@ -139,7 +134,7 @@ public class WallpapersFragment extends EventBaseFragment {
 
         mRecyclerView.setVisibility(View.GONE);
 
-        mSwipeRefreshLayout.setProgressBackgroundColorSchemeColor(ThemeUtils.darkOrLight(dark, light));
+        mSwipeRefreshLayout.setProgressBackgroundColorSchemeColor(tintColor);
 
         mSwipeRefreshLayout.setColorSchemeResources(
                 ThemeUtils.darkOrLight(R.color.dark_theme_accent, R.color.light_theme_accent),
@@ -179,7 +174,6 @@ public class WallpapersFragment extends EventBaseFragment {
                 noConnection = (ImageView) layout.findViewById(R.id.no_connected_icon);
 
                 if (Utils.hasNetwork(context)) {
-                    hideProgressBar();
                     noConnection.setVisibility(View.GONE);
                     mRecyclerView.setVisibility(View.VISIBLE);
                     fastScroller.setVisibility(View.VISIBLE);
@@ -201,10 +195,8 @@ public class WallpapersFragment extends EventBaseFragment {
                                             if (FullListHolder.get().walls().getList().size() <= 0) {
                                                 noConnection.setImageDrawable(ColorUtils.getTintedIcon(
                                                         context, R.drawable.ic_no_connection,
-                                                        ThemeUtils.darkTheme ? light : dark));
+                                                        tintColor));
                                                 hideStuff(noConnection);
-                                            } else {
-                                                hideProgressBar();
                                             }
                                         }
                                     });
@@ -230,7 +222,6 @@ public class WallpapersFragment extends EventBaseFragment {
             fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
             fastScroller.attachRecyclerView(mRecyclerView);
         }
-        hideProgressBar();
         if (noConnection != null) {
             noConnection.setVisibility(View.VISIBLE);
         }
@@ -238,22 +229,6 @@ public class WallpapersFragment extends EventBaseFragment {
         fastScroller.setVisibility(View.GONE);
         mSwipeRefreshLayout.setEnabled(false);
         mSwipeRefreshLayout.setRefreshing(false);
-    }
-
-    private void showProgressBar() {
-        if (mProgress != null) {
-            if (mProgress.getVisibility() != View.VISIBLE) {
-                mProgress.setVisibility(View.VISIBLE);
-            }
-        }
-    }
-
-    private void hideProgressBar() {
-        if (mProgress != null) {
-            if (mProgress.getVisibility() != View.GONE) {
-                mProgress.setVisibility(View.GONE);
-            }
-        }
     }
 
     private void setupRecyclerView(boolean updating, int newColumns) {
@@ -292,13 +267,10 @@ public class WallpapersFragment extends EventBaseFragment {
     public void updateRecyclerView(int newColumns) {
         mRecyclerView.setVisibility(View.GONE);
         fastScroller.setVisibility(View.GONE);
-        showProgressBar();
         setupRecyclerView(true, newColumns);
-        hideProgressBar();
     }
 
     public void refreshWalls(Context context) {
-        hideProgressBar();
         mRecyclerView.setVisibility(View.GONE);
         fastScroller.setVisibility(View.GONE);
         if (Utils.hasNetwork(context)) {

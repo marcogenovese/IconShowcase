@@ -76,10 +76,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
     @Override
     public void onBindViewHolder(final WallsHolder holder, int position) {
         holder.titleBg.setBackgroundColor(
-                ColorUtils.changeAlpha(
-                        ContextCompat.getColor(activity,
-                                ThemeUtils.darkOrLight(R.color.card_light_background, R.color.card_dark_background)),
-                        0.65f));
+                ColorUtils.changeAlpha(ThemeUtils.darkOrLight(activity, R.color.card_light_background, R.color.card_dark_background), 0.65f));
         holder.name.setTextColor(ColorUtils.getMaterialPrimaryTextColor(!ThemeUtils.darkTheme));
         holder.authorName.setTextColor(ColorUtils.getMaterialSecondaryTextColor(!ThemeUtils.darkTheme));
 

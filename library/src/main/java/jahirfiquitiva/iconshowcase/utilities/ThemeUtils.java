@@ -21,9 +21,12 @@ package jahirfiquitiva.iconshowcase.utilities;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.support.annotation.ColorRes;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 
 import java.util.Calendar;
@@ -41,9 +44,13 @@ public class ThemeUtils {
     public static boolean darkTheme;
     public static boolean transparent;
 
-    public static int darkOrLight(int dark, int light) { //TODO use this instead of ternary conditions
+    public static int darkOrLight(@ColorRes int dark, @ColorRes int light) { //TODO use this instead of ternary conditions
         if (darkTheme) return dark;
         return light;
+    }
+
+    public static int darkOrLight(@NonNull Context context, @ColorRes int dark, @ColorRes int light) {
+        return ContextCompat.getColor(context, darkOrLight(dark, light));
     }
 
     public static void onActivityCreateSetTheme(Activity activity) {

@@ -12,6 +12,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.events.OnLoadEvent;
+import timber.log.Timber;
 
 /**
  * Created by Allan Wang on 2016-09-10.
@@ -35,6 +36,7 @@ public abstract class EventBaseFragment extends CapsuleFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void subscribed(OnLoadEvent event) {
         if (event.type != eventType()) return;
+        Timber.d("Subscribe switch");
         getActivity().getSupportFragmentManager()
                 .beginTransaction().replace(R.id.main, this).commit();
 //        onLoadEvent(event);

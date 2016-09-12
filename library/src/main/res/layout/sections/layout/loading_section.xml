@@ -33,17 +33,4 @@
         android:layout_gravity="center"
         android:gravity="center"/>
 
-    <TextView
-        android:id="@+id/text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/progress"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:padding="@dimen/dialog_margin"
-        android:text="@string/requests_error"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textStyle="italic"/>
-
-
 </RelativeLayout>

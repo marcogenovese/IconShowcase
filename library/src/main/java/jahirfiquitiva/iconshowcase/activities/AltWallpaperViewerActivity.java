@@ -189,9 +189,6 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
             ToolbarColorizer.colorizeToolbar(toolbar, ContextCompat.getColor(context, android.R.color.white));
         }
 
-        int tintLightLighter = ContextCompat.getColor(context, R.color.drawable_base_tint);
-        int tintDark = ContextCompat.getColor(context, R.color.drawable_tint_dark);
-
         fab.setOnClickListener(new DebouncedClickListener() {
             @Override
             public void onDebouncedClick(View v) {
@@ -258,7 +255,7 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
         if (bmp != null) {
             colorFromCachedPic = ColorUtils.getPaletteSwatch(bmp).getBodyTextColor();
         } else {
-            colorFromCachedPic = ThemeUtils.darkOrLight(tintDark, tintLightLighter);
+            colorFromCachedPic = ThemeUtils.darkOrLight(context, R.color.drawable_tint_dark, R.color.drawable_base_tint);
         }
 
         final ProgressBar spinner = (ProgressBar) findViewById(R.id.progress);
@@ -550,12 +547,9 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         downloadDialog.dismiss();
-                        Snackbar longSnackbar = Snackbar.make(layout, finalSnackbarText,
+                        Snackbar longSnackbar = Utils.snackbar(context, layout, finalSnackbarText,
                                 Snackbar.LENGTH_LONG);
-                        final int snackbarLight = ContextCompat.getColor(context, R.color.snackbar_light);
-                        final int snackbarDark = ContextCompat.getColor(context, R.color.snackbar_dark);
                         ViewGroup snackbarView = (ViewGroup) longSnackbar.getView();
-                        snackbarView.setBackgroundColor(ThemeUtils.darkOrLight(snackbarDark, snackbarLight));
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                             snackbarView.setPadding(snackbarView.getPaddingLeft(),
                                     snackbarView.getPaddingTop(), snackbarView.getPaddingRight(),
@@ -676,13 +670,10 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
     }
 
     private void showNotConnectedSnackBar() {
-        Snackbar notConnectedSnackBar = Snackbar.make(layout, R.string.no_conn_title,
+        Snackbar notConnectedSnackBar = Utils.snackbar(context, layout, getString(R.string.no_conn_title),
                 Snackbar.LENGTH_LONG);
-
-        final int snackbarLight = ContextCompat.getColor(context, R.color.snackbar_light);
-        final int snackbarDark = ContextCompat.getColor(context, R.color.snackbar_dark);
+        
         ViewGroup snackbarView = (ViewGroup) notConnectedSnackBar.getView();
-        snackbarView.setBackgroundColor(ThemeUtils.darkOrLight(snackbarDark, snackbarLight));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             snackbarView.setPadding(snackbarView.getPaddingLeft(),
                     snackbarView.getPaddingTop(), snackbarView.getPaddingRight(),

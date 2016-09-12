@@ -79,9 +79,7 @@ public class MuzeiSettings extends AppCompatActivity {
 
         mPrefs = new Preferences(this);
 
-        int iconsColor = ThemeUtils.darkOrLight(
-                ContextCompat.getColor(this, R.color.toolbar_text_dark),
-                ContextCompat.getColor(this, R.color.toolbar_text_light));
+        int iconsColor = ThemeUtils.darkOrLight(this, R.color.toolbar_text_dark, R.color.toolbar_text_light);
 
         setContentView(R.layout.muzei_settings);
         mPrefs.setActivityVisible(true);
@@ -144,9 +142,7 @@ public class MuzeiSettings extends AppCompatActivity {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.muzei, menu);
         MenuItem save = menu.findItem(R.id.save);
-        int iconsColor = ThemeUtils.darkOrLight(
-                ContextCompat.getColor(this, R.color.toolbar_text_dark),
-                ContextCompat.getColor(this, R.color.toolbar_text_light));
+        int iconsColor = ThemeUtils.darkOrLight(this, R.color.toolbar_text_dark, R.color.toolbar_text_light);
         ToolbarColorizer.tintSaveIcon(save, this, iconsColor);
         return true;
     }
@@ -193,9 +189,7 @@ public class MuzeiSettings extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        int iconsColor = ThemeUtils.darkOrLight(
-                ContextCompat.getColor(this, R.color.toolbar_text_dark),
-                ContextCompat.getColor(this, R.color.toolbar_text_light));
+        int iconsColor = ThemeUtils.darkOrLight(this, R.color.toolbar_text_dark, R.color.toolbar_text_light);
         ToolbarColorizer.colorizeToolbar(toolbar, iconsColor);
     }
 
@@ -251,20 +245,14 @@ public class MuzeiSettings extends AppCompatActivity {
     }
 
     private void showSnackBarAndFinish(View location, String text) {
-        final int snackbarLight = ContextCompat.getColor(context, R.color.snackbar_light);
-        final int snackbarDark = ContextCompat.getColor(context, R.color.snackbar_dark);
-        Snackbar shortSnackbar = Snackbar.make(location, text,
-                Snackbar.LENGTH_LONG);
-        ViewGroup shortGroup = (ViewGroup) shortSnackbar.getView();
-        shortGroup.setBackgroundColor(ThemeUtils.darkOrLight(snackbarDark, snackbarLight));
-        shortSnackbar.setCallback(new Snackbar.Callback() {
+        Utils.snackbar(context, location, text,
+                Snackbar.LENGTH_LONG).setCallback(new Snackbar.Callback() {
             @Override
             public void onDismissed(Snackbar snackbar, int event) {
                 super.onDismissed(snackbar, event);
                 finish();
             }
-        });
-        shortSnackbar.show();
+        }).show();
     }
 
 }

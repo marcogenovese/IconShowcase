@@ -140,20 +140,13 @@ public class WallpaperViewerActivity extends AppCompatActivity {
         toHide1 = (LinearLayout) findViewById(R.id.iconsA);
         toHide2 = (LinearLayout) findViewById(R.id.iconsB);
 
-        int tintLightLighter = ContextCompat.getColor(context, R.color.drawable_base_tint);
-        int tintDark = ContextCompat.getColor(context, R.color.drawable_tint_dark);
+        int tintColor = ThemeUtils.darkOrLight(context, R.color.drawable_tint_dark, R.color.drawable_base_tint);
 
-        Drawable save = ColorUtils.getTintedIcon(context,
-                R.drawable.ic_save,
-                ThemeUtils.darkOrLight(tintDark, tintLightLighter));
+        Drawable save = ColorUtils.getTintedIcon(context, R.drawable.ic_save, tintColor);
 
-        Drawable apply = ColorUtils.getTintedIcon(context,
-                R.drawable.ic_apply_wallpaper,
-                ThemeUtils.darkOrLight(tintDark, tintLightLighter));
+        Drawable apply = ColorUtils.getTintedIcon(context, R.drawable.ic_apply_wallpaper, tintColor);
 
-        Drawable info = ColorUtils.getTintedIcon(context,
-                R.drawable.ic_info,
-                ThemeUtils.darkOrLight(tintDark, tintLightLighter));
+        Drawable info = ColorUtils.getTintedIcon(context, R.drawable.ic_info, tintColor);
 
         ImageView saveIV = (ImageView) findViewById(R.id.download);
         if (item.isDownloadable()) {
@@ -218,7 +211,7 @@ public class WallpaperViewerActivity extends AppCompatActivity {
         if (bmp != null) {
             colorFromCachedPic = ColorUtils.getPaletteSwatch(bmp).getTitleTextColor();
         } else {
-            colorFromCachedPic = ThemeUtils.darkOrLight(tintDark, tintLightLighter);
+            colorFromCachedPic = tintColor;
         }
 
         final ProgressBar spinner = (ProgressBar) findViewById(R.id.progress);
@@ -443,14 +436,8 @@ public class WallpaperViewerActivity extends AppCompatActivity {
                             toHide2.setVisibility(View.GONE);
                         }
 
-                        Snackbar longSnackbar = Snackbar.make(layout, finalSnackbarText,
-                                Snackbar.LENGTH_LONG);
-                        final int snackbarLight = ContextCompat.getColor(context, R.color.snackbar_light);
-                        final int snackbarDark = ContextCompat.getColor(context, R.color.snackbar_dark);
-                        ViewGroup snackbarView = (ViewGroup) longSnackbar.getView();
-                        snackbarView.setBackgroundColor(ThemeUtils.darkOrLight(snackbarDark, snackbarLight));
-                        longSnackbar.show();
-                        longSnackbar.setCallback(new Snackbar.Callback() {
+                        Utils.snackbar(context, layout, finalSnackbarText,
+                                Snackbar.LENGTH_LONG).setCallback(new Snackbar.Callback() {
                             @Override
                             public void onDismissed(Snackbar snackbar, int event) {
                                 super.onDismissed(snackbar, event);
@@ -459,7 +446,7 @@ public class WallpaperViewerActivity extends AppCompatActivity {
                                     toHide2.setVisibility(View.VISIBLE);
                                 }
                             }
-                        });
+                        }).show();
                     }
                 });
             }
@@ -554,14 +541,8 @@ public class WallpaperViewerActivity extends AppCompatActivity {
     }
 
     private void showNotConnectedSnackBar() {
-        Snackbar notConnectedSnackBar = Snackbar.make(layout, R.string.no_conn_title,
-                Snackbar.LENGTH_LONG);
-
-        final int snackbarLight = ContextCompat.getColor(context, R.color.snackbar_light);
-        final int snackbarDark = ContextCompat.getColor(context, R.color.snackbar_dark);
-        ViewGroup snackbarView = (ViewGroup) notConnectedSnackBar.getView();
-        snackbarView.setBackgroundColor(ThemeUtils.darkOrLight(snackbarDark, snackbarLight));
-        notConnectedSnackBar.show();
+        Utils.snackbar(context, layout, getString(R.string.no_conn_title),
+                Snackbar.LENGTH_LONG).show();
     }
 
     private void showDialogs(String action) {
