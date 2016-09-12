@@ -23,7 +23,6 @@
     android:id="@+id/viewerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f0f"
     android:fitsSystemWindows="true"
     android:padding="50dp">
 
@@ -94,7 +93,6 @@
             android:layout_gravity="end|bottom"
             android:layout_marginEnd="@dimen/mini_fab_right_margin"
             android:layout_marginRight="@dimen/mini_fab_right_margin"
-            android:visibility="gone"
             app:backgroundTint="?attr/fabTintColor"
             app:fabSize="mini"
             app:rippleColor="@color/semitransparent_white"
@@ -107,7 +105,6 @@
             android:layout_gravity="end|bottom"
             android:layout_marginEnd="@dimen/mini_fab_right_margin"
             android:layout_marginRight="@dimen/mini_fab_right_margin"
-            android:visibility="gone"
             app:backgroundTint="?attr/fabTintColor"
             app:fabSize="mini"
             app:rippleColor="@color/semitransparent_white"
@@ -120,7 +117,6 @@
             android:layout_gravity="end|bottom"
             android:layout_marginEnd="@dimen/mini_fab_right_margin"
             android:layout_marginRight="@dimen/mini_fab_right_margin"
-            android:visibility="gone"
             app:backgroundTint="?attr/fabTintColor"
             app:fabSize="mini"
             app:rippleColor="@color/semitransparent_white"

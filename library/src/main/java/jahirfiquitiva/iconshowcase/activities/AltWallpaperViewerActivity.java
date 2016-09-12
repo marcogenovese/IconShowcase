@@ -98,8 +98,9 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
     private File downloadsFolder;
     private MaterialDialog dialogApply;
     private MaterialDialog downloadDialog;
-    private Activity context;
     private FloatingActionButton fab, applyFab, saveFab, infoFab;
+
+    //TODO clean up context; I removed the variable and a lot of it isn't needed. This itself is already an activity
 
     @SuppressWarnings("ResourceAsColor")
     @Override
@@ -107,23 +108,22 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
 
         ThemeUtils.onActivityCreateSetTheme(this);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                    WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
-            getWindow().getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
-            getWindow().setStatusBarColor(Color.TRANSPARENT);
-            getWindow().setNavigationBarColor(0x88ff0000);
+        View decorView = getWindow().getDecorView();
+        decorView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            decorView.setSystemUiVisibility(decorView.getSystemUiVisibility()
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         }
 
         super.onCreate(savedInstanceState);
-
-        context = this;
-
-        mPrefs = new Preferences(context);
+        
+        mPrefs = new Preferences(this);
 
         Intent intent = getIntent();
         String transitionName = intent.getStringExtra("transitionName");
@@ -137,37 +137,9 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
         saveFab = (FloatingActionButton) findViewById(R.id.saveFab);
         infoFab = (FloatingActionButton) findViewById(R.id.infoFab);
 
-        //TODO Make sure mini FABs margins are properly applied
-
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-//            int navBarHeight = Utils.getNavigationBarHeight(this);
-//            ImageView navbarGradient = (ImageView) findViewById(R.id.navbarGradient);
-//            LinearLayout.LayoutParams p = (LinearLayout.LayoutParams) fab.getLayoutParams();
-//            LinearLayout.LayoutParams mp1 = (LinearLayout.LayoutParams) infoFab.getLayoutParams();
-//            LinearLayout.LayoutParams mp2 = (LinearLayout.LayoutParams) applyFab.getLayoutParams();
-//            LinearLayout.LayoutParams mp3 = (LinearLayout.LayoutParams) saveFab.getLayoutParams();
-//            int fabMargin = context.getResources().getDimensionPixelSize(R.dimen.fab_margin);
-//            if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-//                int miniFabMargin = context.getResources().getDimensionPixelSize(R.dimen.mini_fab_right_margin);
-//                navbarGradient.setVisibility(View.GONE);
-//                p.setMargins(0, 0, (fabMargin + navBarHeight), fabMargin);
-//                mp1.setMargins(0, 0, ((fabMargin + navBarHeight) + miniFabMargin), fabMargin);
-//                mp2.setMargins(0, 0, ((fabMargin + navBarHeight) + miniFabMargin), fabMargin);
-//                mp3.setMargins(0, 0, ((fabMargin + navBarHeight) + miniFabMargin), fabMargin);
-//                infoFab.setLayoutParams(mp1);
-//                applyFab.setLayoutParams(mp2);
-//                saveFab.setLayoutParams(mp3);
-//            } else {
-//                p.setMargins(0, 0, fabMargin, (fabMargin + navBarHeight));
-//                if (navBarHeight <= 0) {
-//                    navbarGradient.setVisibility(View.GONE);
-//                } else {
-//                    navbarGradient.getLayoutParams().height = navBarHeight;
-//                    navbarGradient.requestLayout();
-//                }
-//            }
-//            fab.setLayoutParams(p);
-//        }
+        hideFab(applyFab);
+        hideFab(saveFab);
+        hideFab(infoFab);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -183,7 +155,7 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
         }
 
         if (Build.VERSION.SDK_INT < 19) {
-            ToolbarColorizer.colorizeToolbar(toolbar, ContextCompat.getColor(context, android.R.color.white));
+            ToolbarColorizer.colorizeToolbar(toolbar, ContextCompat.getColor(this, android.R.color.white));
         }
 
         fab.setOnClickListener(new DebouncedClickListener() {
@@ -201,7 +173,7 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
         applyFab.setOnClickListener(new DebouncedClickListener() {
             @Override
             public void onDebouncedClick(View v) {
-                showApplyWallpaperDialog(context, item.getWallURL());
+                showApplyWallpaperDialog(AltWallpaperViewerActivity.this, item.getWallURL());
             }
         });
 
@@ -209,9 +181,9 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
             saveFab.setOnClickListener(new DebouncedClickListener() {
                 @Override
                 public void onDebouncedClick(View v) {
-                    if (!PermissionUtils.canAccessStorage(context)) {
+                    if (!PermissionUtils.canAccessStorage(AltWallpaperViewerActivity.this)) {
                         PermissionUtils.setViewerActivityAction("save");
-                        PermissionUtils.requestStoragePermission(context);
+                        PermissionUtils.requestStoragePermission(AltWallpaperViewerActivity.this);
                     } else {
                         showDialogs("save");
                     }
@@ -224,7 +196,7 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
         infoFab.setOnClickListener(new DebouncedClickListener() {
             @Override
             public void onDebouncedClick(View v) {
-                ISDialogs.showWallpaperDetailsDialog(context, item.getWallName(), item.getWallAuthor(), item.getWallDimensions(), item.getWallCopyright());
+                ISDialogs.showWallpaperDetailsDialog(AltWallpaperViewerActivity.this, item.getWallName(), item.getWallAuthor(), item.getWallDimensions(), item.getWallCopyright());
             }
         });
 
@@ -237,7 +209,7 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
         String filename = getIntent().getStringExtra("image");
         try {
             if (filename != null) {
-                FileInputStream is = context.openFileInput(filename);
+                FileInputStream is = openFileInput(filename);
                 bmp = BitmapFactory.decodeStream(is);
                 is.close();
             } else {
@@ -252,7 +224,7 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
         if (bmp != null) {
             colorFromCachedPic = ColorUtils.getPaletteSwatch(bmp).getBodyTextColor();
         } else {
-            colorFromCachedPic = ThemeUtils.darkOrLight(context, R.color.drawable_tint_dark, R.color.drawable_base_tint);
+            colorFromCachedPic = ThemeUtils.darkOrLight(this, R.color.drawable_tint_dark, R.color.drawable_base_tint);
         }
 
         final ProgressBar spinner = (ProgressBar) findViewById(R.id.progress);
@@ -263,11 +235,11 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
         if (bmp != null) {
             d = new GlideBitmapDrawable(getResources(), bmp);
         } else {
-            d = new ColorDrawable(ContextCompat.getColor(context, android.R.color.transparent));
+            d = new ColorDrawable(ContextCompat.getColor(this, android.R.color.transparent));
         }
 
         if (mPrefs.getAnimationsEnabled()) {
-            Glide.with(context)
+            Glide.with(this)
                     .load(item.getWallURL())
                     .placeholder(d)
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
@@ -286,7 +258,7 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
                     })
                     .into(mPhoto);
         } else {
-            Glide.with(context)
+            Glide.with(this)
                     .load(item.getWallURL())
                     .placeholder(d)
                     .dontAnimate()
@@ -389,7 +361,7 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
     @SuppressWarnings("deprecation")
     private void setTextAppearance(TextView text, @StyleRes int style) {
         if (Build.VERSION.SDK_INT < 23) {
-            text.setTextAppearance(context, style);
+            text.setTextAppearance(this, style);
         } else {
             text.setTextAppearance(style);
         }
@@ -458,7 +430,7 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
 
         final boolean[] enteredDownloadTask = {false};
 
-        downloadDialog = new MaterialDialog.Builder(context)
+        downloadDialog = new MaterialDialog.Builder(this)
                 .content(R.string.downloading_wallpaper)
                 .progress(true, 0)
                 .cancelable(false)
@@ -472,7 +444,7 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
                 })
                 .show();
 
-        Glide.with(context)
+        Glide.with(this)
                 .load(url)
                 .asBitmap()
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
@@ -481,7 +453,7 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
                     public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                         if (resource != null && downloadDialog.isShowing()) {
                             enteredDownloadTask[0] = true;
-                            saveWallpaper(context, name, downloadDialog, resource);
+                            saveWallpaper(AltWallpaperViewerActivity.this, name, downloadDialog, resource);
                         }
                     }
                 });
@@ -490,13 +462,13 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                runOnUIThread(context, new Runnable() {
+                runOnUIThread(AltWallpaperViewerActivity.this, new Runnable() {
                     @Override
                     public void run() {
                         if (!enteredDownloadTask[0]) {
-                            String newContent = context.getString(R.string.downloading_wallpaper)
+                            String newContent = getString(R.string.downloading_wallpaper)
                                     + "\n"
-                                    + context.getString(R.string.download_takes_longer);
+                                    + getString(R.string.download_takes_longer);
                             downloadDialog.setContent(newContent);
                             downloadDialog.setActionButton(DialogAction.POSITIVE, android.R.string.cancel);
                         }
@@ -540,13 +512,13 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         downloadDialog.dismiss();
-                        Snackbar longSnackbar = Utils.snackbar(context, layout, finalSnackbarText,
+                        Snackbar longSnackbar = Utils.snackbar(AltWallpaperViewerActivity.this, layout, finalSnackbarText,
                                 Snackbar.LENGTH_LONG);
                         ViewGroup snackbarView = (ViewGroup) longSnackbar.getView();
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                             snackbarView.setPadding(snackbarView.getPaddingLeft(),
                                     snackbarView.getPaddingTop(), snackbarView.getPaddingRight(),
-                                    Utils.getNavigationBarHeight(context));
+                                    Utils.getNavigationBarHeight(AltWallpaperViewerActivity.this));
                         }
                         longSnackbar.show();
                         longSnackbar.setCallback(new Snackbar.Callback() {
@@ -563,7 +535,7 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
     }
 
     private void showApplyWallpaperDialog(final Activity context, final String wallUrl) {
-        ISDialogs.showApplyWallpaperDialog(context,
+        ISDialogs.showApplyWallpaperDialog(this,
                 new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
@@ -581,7 +553,7 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
 
                         final boolean[] enteredApplyTask = {false};
 
-                        dialogApply = new MaterialDialog.Builder(context)
+                        dialogApply = new MaterialDialog.Builder(AltWallpaperViewerActivity.this)
                                 .content(R.string.downloading_wallpaper)
                                 .progress(true, 0)
                                 .cancelable(false)
@@ -596,7 +568,7 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
                                 })
                                 .show();
 
-                        //                        Glide.with(context)
+                        //                        Glide.with(this)
                         //                                .load(wallUrl)
                         //                                .asBitmap()
                         //                                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
@@ -612,13 +584,13 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
                         //                                                dialogApply.dismiss();
                         //                                            }
                         //
-                        //                                            dialogApply = new MaterialDialog.Builder(context)
+                        //                                            dialogApply = new MaterialDialog.Builder(this)
                         //                                                    .content(R.string.setting_wall_title)
                         //                                                    .progress(true, 0)
                         //                                                    .cancelable(false)
                         //                                                    .show();
                         //
-                        //                                            applyTask[0] = new ApplyWallpaper(context, dialogApply,
+                        //                                            applyTask[0] = new ApplyWallpaper(this, dialogApply,
                         //                                                    resource, false, layout, new ApplyWallpaper.ApplyCallback() {
                         //                                                @Override
                         //                                                public void afterApplied () {
@@ -634,7 +606,7 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
                         timer.schedule(new TimerTask() {
                             @Override
                             public void run() {
-                                runOnUIThread(context, new Runnable() {
+                                runOnUIThread(AltWallpaperViewerActivity.this, new Runnable() {
                                     @Override
                                     public void run() {
                                         if (!enteredApplyTask[0]) {
@@ -652,9 +624,9 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
                 }, new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
-                        if (!PermissionUtils.canAccessStorage(context)) {
+                        if (!PermissionUtils.canAccessStorage(AltWallpaperViewerActivity.this)) {
                             PermissionUtils.setViewerActivityAction("crop");
-                            PermissionUtils.requestStoragePermission(context);
+                            PermissionUtils.requestStoragePermission(AltWallpaperViewerActivity.this);
                         } else {
                             cropWallpaper(wallUrl);
                         }
@@ -663,30 +635,30 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
     }
 
     private void showNotConnectedSnackBar() {
-        Snackbar notConnectedSnackBar = Utils.snackbar(context, layout, getString(R.string.no_conn_title),
+        Snackbar notConnectedSnackBar = Utils.snackbar(this, layout, getString(R.string.no_conn_title),
                 Snackbar.LENGTH_LONG);
 
         ViewGroup snackbarView = (ViewGroup) notConnectedSnackBar.getView();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             snackbarView.setPadding(snackbarView.getPaddingLeft(),
                     snackbarView.getPaddingTop(), snackbarView.getPaddingRight(),
-                    Utils.getNavigationBarHeight(context));
+                    Utils.getNavigationBarHeight(this));
         }
         notConnectedSnackBar.show();
     }
 
     private void showDialogs(String action) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-                ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) !=
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) !=
                         PackageManager.PERMISSION_GRANTED) {
-            new MaterialDialog.Builder(context)
+            new MaterialDialog.Builder(this)
                     .title(R.string.md_error_label)
-                    .content(context.getResources().getString(R.string.md_storage_perm_error,
-                            context.getResources().getString(R.string.app_name)))
+                    .content(getString(R.string.md_storage_perm_error,
+                            getString(R.string.app_name)))
                     .positiveText(android.R.string.ok)
                     .show();
         } else {
-            if (Utils.hasNetwork(context)) {
+            if (Utils.hasNetwork(this)) {
                 switch (action) {
                     case "save":
                         saveWallpaperAction(item.getWallName(), item.getWallURL());
@@ -703,7 +675,7 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
     }
 
     private void runOnUIThread(Context context, Runnable r) {
-        handler(context).post(r);
+        handler(this).post(r);
     }
 
     private void cropWallpaper(String wallUrl) {
@@ -715,7 +687,7 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
 
         final boolean[] enteredCropTask = {false};
 
-        dialogApply = new MaterialDialog.Builder(context)
+        dialogApply = new MaterialDialog.Builder(this)
                 .content(R.string.downloading_wallpaper)
                 .progress(true, 0)
                 .cancelable(false)
@@ -730,7 +702,7 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
                 })
                 .show();
 
-        Glide.with(context)
+        Glide.with(this)
                 .load(wallUrl)
                 .asBitmap()
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
@@ -743,8 +715,8 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
                             if (dialogApply != null) {
                                 dialogApply.dismiss();
                             }
-                            dialogApply = new MaterialDialog.Builder(context)
-                                    .content(context.getString(R.string.preparing_wallpaper))
+                            dialogApply = new MaterialDialog.Builder(AltWallpaperViewerActivity.this)
+                                    .content(getString(R.string.preparing_wallpaper))
                                     .progress(true, 0)
                                     .cancelable(false)
                                     .onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -763,18 +735,18 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
                                 opened = false;
                             }
                             hideFab(fab);
-                            cropTask[0] = new WallpaperToCrop(context, dialogApply, resource,
+                            cropTask[0] = new WallpaperToCrop(AltWallpaperViewerActivity.this, dialogApply, resource,
                                     layout, item.getWallName());
                             cropTask[0].execute();
                             Timer timer = new Timer();
                             timer.schedule(new TimerTask() {
                                 @Override
                                 public void run() {
-                                    runOnUIThread(context, new Runnable() {
+                                    runOnUIThread(AltWallpaperViewerActivity.this, new Runnable() {
                                         @Override
                                         public void run() {
-                                            String content = context.getString(R.string.preparing_wallpaper)
-                                                    + "\n" + context.getString(R.string.download_takes_longer);
+                                            String content = getString(R.string.preparing_wallpaper)
+                                                    + "\n" + getString(R.string.download_takes_longer);
 
                                             dialogApply.setContent(content);
                                             dialogApply.setActionButton(DialogAction.POSITIVE, android.R.string.cancel);
@@ -790,13 +762,13 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                runOnUIThread(context, new Runnable() {
+                runOnUIThread(AltWallpaperViewerActivity.this, new Runnable() {
                     @Override
                     public void run() {
                         if (!enteredCropTask[0]) {
-                            String newContent = context.getString(R.string.downloading_wallpaper)
+                            String newContent = getString(R.string.downloading_wallpaper)
                                     + "\n"
-                                    + context.getString(R.string.download_takes_longer);
+                                    + getString(R.string.download_takes_longer);
                             dialogApply.setContent(newContent);
                             dialogApply.setActionButton(DialogAction.POSITIVE, android.R.string.cancel);
                         }
