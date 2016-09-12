@@ -56,4 +56,8 @@ public abstract class ListHolderFrame<T> {
     public boolean isEmpty() {
         return !hasList();
     }
+
+    public boolean isNull() {
+        return mList == null;
+    }
 }

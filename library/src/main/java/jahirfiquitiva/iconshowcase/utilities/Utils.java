@@ -108,14 +108,14 @@ public class Utils {
         return installed;
     }
 
+    public static Snackbar snackbar(@NonNull Context context, @NonNull View view, @NonNull CharSequence text, int duration) {
+        Snackbar snackbar = Snackbar.make(view, text, duration);
+        snackbar.getView().setBackgroundColor(ThemeUtils.darkOrLight(context, R.color.snackbar_dark, R.color.snackbar_light));
+        return snackbar;
+    }
+
     public static void showSimpleSnackbar(Context context, View location, String text) {
-        final int snackbarLight = ContextCompat.getColor(context, R.color.snackbar_light);
-        final int snackbarDark = ContextCompat.getColor(context, R.color.snackbar_dark);
-        Snackbar shortSnackbar = Snackbar.make(location, text,
-                Snackbar.LENGTH_SHORT);
-        ViewGroup shortGroup = (ViewGroup) shortSnackbar.getView();
-        shortGroup.setBackgroundColor(ThemeUtils.darkTheme ? snackbarDark : snackbarLight);
-        shortSnackbar.show();
+        snackbar(context, location, text, Snackbar.LENGTH_SHORT).show();
     }
 
     public static void openLink(Context context, String link) {
@@ -199,12 +199,6 @@ public class Utils {
 
     public static String capitalizeText(String text) {
         return text.substring(0, 1).toUpperCase() + text.substring(1).toLowerCase();
-    }
-
-    public static Snackbar snackbar(@NonNull Context context, @NonNull View view, @NonNull CharSequence text, int duration) {
-        Snackbar snackbar = Snackbar.make(view, text, duration);
-        snackbar.getView().setBackgroundColor(ThemeUtils.darkOrLight(context, R.color.snackbar_dark, R.color.snackbar_light));
-        return snackbar;
     }
 
     public static void sendEmailWithDeviceInfo(Context context) {

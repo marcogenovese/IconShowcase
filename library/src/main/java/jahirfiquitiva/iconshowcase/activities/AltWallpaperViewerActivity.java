@@ -672,7 +672,7 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
     private void showNotConnectedSnackBar() {
         Snackbar notConnectedSnackBar = Utils.snackbar(context, layout, getString(R.string.no_conn_title),
                 Snackbar.LENGTH_LONG);
-        
+
         ViewGroup snackbarView = (ViewGroup) notConnectedSnackBar.getView();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             snackbarView.setPadding(snackbarView.getPaddingLeft(),

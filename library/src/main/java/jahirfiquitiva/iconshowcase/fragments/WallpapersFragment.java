@@ -24,6 +24,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -57,7 +58,6 @@ import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 
 public class WallpapersFragment extends EventBaseFragment {
 
-    private ViewGroup layout;
     private RecyclerView mRecyclerView;
     private RecyclerFastScroller fastScroller;
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -92,27 +92,16 @@ public class WallpapersFragment extends EventBaseFragment {
         return false;
     }
 
-    private static final String itemKey = "wallpaper_items";
-
-    public static PreviewsFragment newInstance(@Nullable ArrayList<WallpaperItem> items) {
-        PreviewsFragment fragment = new PreviewsFragment();
-        if (items == null || items.isEmpty()) return fragment;
-        Bundle args = new Bundle();
-        args.putParcelableArrayList(itemKey, items);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        if (FullListHolder.get().walls().isEmpty()) return loadingView(inflater, container);
+        if (FullListHolder.get().walls().isNull()) return loadingView(inflater, container);
 
         setHasOptionsMenu(true);
         context = getActivity();
 
-        layout = (ViewGroup) inflater.inflate(R.layout.wallpapers_section, container, false);
+        View layout = inflater.inflate(R.layout.wallpapers_section, container, false);
 
         tintColor = ThemeUtils.darkOrLight(context, R.color.drawable_tint_dark, R.color.drawable_tint_light);
 
@@ -132,7 +121,7 @@ public class WallpapersFragment extends EventBaseFragment {
 
         setupRecyclerView(false, 0);
 
-        mRecyclerView.setVisibility(View.GONE);
+//        mRecyclerView.setVisibility(View.GONE);
 
         mSwipeRefreshLayout.setProgressBackgroundColorSchemeColor(tintColor);
 
@@ -144,7 +133,26 @@ public class WallpapersFragment extends EventBaseFragment {
         mSwipeRefreshLayout.setEnabled(false);
 
         //TODO: MAKE WALLPAPERS APPEAR AT FIRST. FOR SOME REASON ONLY APPEAR AFTER PRESSING "UPDATE" ICON IN TOOLBAR
-        setupLayout();
+        mAdapter = new WallpapersAdapter(getActivity(),
+                FullListHolder.get().walls().getList());
+
+        mRecyclerView.setAdapter(mAdapter);
+        fastScroller.attachRecyclerView(mRecyclerView);
+
+        if (Utils.hasNetwork(context)) {
+            noConnection.setVisibility(View.GONE);
+            mRecyclerView.setVisibility(View.VISIBLE);
+            fastScroller.setVisibility(View.VISIBLE);
+            mSwipeRefreshLayout.setEnabled(false);
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
+
+        if (FullListHolder.get().walls().getList().isEmpty()) {
+            noConnection.setImageDrawable(ColorUtils.getTintedIcon(
+                    context, R.drawable.ic_no_connection,
+                    tintColor));
+            hideStuff();
+        }
 
         return layout;
 
@@ -156,75 +164,8 @@ public class WallpapersFragment extends EventBaseFragment {
         inflater.inflate(R.menu.wallpapers, menu);
     }
 
-    public void setupLayout() {
-
-        //TODO: MAKE WALLPAPERS APPEAR AT FIRST. FOR SOME REASON ONLY APPEAR AFTER PRESSING "UPDATE" ICON IN TOOLBAR
-        if (FullListHolder.get().walls().hasList()) {
-            mAdapter = new WallpapersAdapter(getActivity(),
-                    FullListHolder.get().walls().getList());
-
-            if (layout != null) {
-
-                mRecyclerView.setAdapter(mAdapter);
-
-                fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
-
-                fastScroller.attachRecyclerView(mRecyclerView);
-
-                noConnection = (ImageView) layout.findViewById(R.id.no_connected_icon);
-
-                if (Utils.hasNetwork(context)) {
-                    noConnection.setVisibility(View.GONE);
-                    mRecyclerView.setVisibility(View.VISIBLE);
-                    fastScroller.setVisibility(View.VISIBLE);
-                    mSwipeRefreshLayout.setEnabled(false);
-                    mSwipeRefreshLayout.setRefreshing(false);
-                }
-
-                runOnUIThread(context, new Runnable() {
-                    @Override
-                    public void run() {
-                        if (layout != null) {
-                            Timer timer = new Timer();
-                            timer.schedule(new TimerTask() {
-                                @Override
-                                public void run() {
-                                    runOnUIThread(context, new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            if (FullListHolder.get().walls().getList().size() <= 0) {
-                                                noConnection.setImageDrawable(ColorUtils.getTintedIcon(
-                                                        context, R.drawable.ic_no_connection,
-                                                        tintColor));
-                                                hideStuff(noConnection);
-                                            }
-                                        }
-                                    });
-                                }
-                            }, 7500);
-                        }
-                    }
-                });
-            }
-        }
-    }
-
-    private Handler handler(Context context) {
-        return new Handler(context.getMainLooper());
-    }
-
-    private void runOnUIThread(Context context, Runnable r) {
-        handler(context).post(r);
-    }
-
-    private void hideStuff(ImageView noConnection) {
-        if (mRecyclerView.getAdapter() != null) {
-            fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
-            fastScroller.attachRecyclerView(mRecyclerView);
-        }
-        if (noConnection != null) {
-            noConnection.setVisibility(View.VISIBLE);
-        }
+    private void hideStuff() {
+        noConnection.setVisibility(View.VISIBLE);
         mRecyclerView.setVisibility(View.GONE);
         fastScroller.setVisibility(View.GONE);
         mSwipeRefreshLayout.setEnabled(false);
@@ -273,13 +214,15 @@ public class WallpapersFragment extends EventBaseFragment {
     public void refreshWalls(Context context) {
         mRecyclerView.setVisibility(View.GONE);
         fastScroller.setVisibility(View.GONE);
+        int stringId;
         if (Utils.hasNetwork(context)) {
-            Utils.showSimpleSnackbar(context, layout,
-                    context.getResources().getString(R.string.refreshing_walls));
+            stringId = R.string.refreshing_walls;
         } else {
-            Utils.showSimpleSnackbar(context, layout,
-                    context.getResources().getString(R.string.no_conn_title));
+            stringId = R.string.no_conn_title;
         }
+        Snackbar snackbar = snackbarCustom(getString(stringId), Snackbar.LENGTH_SHORT);
+        snackbar.getView().setBackgroundColor(ThemeUtils.darkOrLight(context, R.color.snackbar_dark, R.color.snackbar_light));
+        snackbar.show();
         mSwipeRefreshLayout.setEnabled(true);
         mSwipeRefreshLayout.post(new Runnable() {
             @Override
