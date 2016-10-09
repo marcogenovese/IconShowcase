@@ -27,26 +27,26 @@ import com.pitchedapps.butler.library.icon.request.IconRequest;
 import com.pitchedapps.capsule.library.activities.CapsuleActivity;
 
 import java.io.File;
-import java.util.HashMap;
+import java.util.EnumMap;
 
 import jahirfiquitiva.iconshowcase.BuildConfig;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.config.Config;
-import jahirfiquitiva.iconshowcase.enums.DrawerItem;
+import jahirfiquitiva.iconshowcase.logging.CrashReportingTree;
 import jahirfiquitiva.iconshowcase.tasks.DownloadJSON;
 import jahirfiquitiva.iconshowcase.tasks.LoadIconsLists;
 import jahirfiquitiva.iconshowcase.tasks.LoadKustomFiles;
 import jahirfiquitiva.iconshowcase.tasks.LoadZooperWidgets;
+import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import timber.log.Timber;
 
 /**
  * Created by Allan Wang on 2016-08-20.
  */
-public abstract class TasksActivity extends CapsuleActivity {
+public abstract class TasksActivity extends DrawerActivity {
 
     private boolean tasksExecuted = false;
-
-    protected abstract HashMap<DrawerItem, Integer> getDrawerMap();
+    protected Preferences mPrefs;
 
     //TODO fix up booleans
     protected void startTasks() {
@@ -98,7 +98,7 @@ public abstract class TasksActivity extends CapsuleActivity {
     }
 
     private boolean drawerHas(DrawerItem item) {
-        return getDrawerMap().containsKey(item);
+        return mDrawerMap.containsKey(item);
     }
 
     //    @Subscribe
@@ -110,6 +110,17 @@ public abstract class TasksActivity extends CapsuleActivity {
     @CallSuper
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Config.init(this);
+
+        if (BuildConfig.DEBUG || Config.get().allowDebugging()) {
+            Timber.plant(new Timber.DebugTree());
+        } else {
+            //Disable debug & verbose logging on release
+            Timber.plant(new CrashReportingTree());
+        }
+
+        mPrefs = new Preferences(this);
         if (savedInstanceState != null)
             IconRequest.restoreInstanceState(this, savedInstanceState);
     }
@@ -132,5 +143,11 @@ public abstract class TasksActivity extends CapsuleActivity {
     //        EventBus.getDefault().unregister(this);
     //        super.onStop();
     //    }
+
+    @Override
+    protected void onDestroy() {
+        Config.deinit();
+        super.onDestroy();
+    }
 
 }

@@ -67,31 +67,19 @@ import org.sufficientlysecure.donations.google.util.Inventory;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.EnumMap;
 import java.util.Random;
 
-import jahirfiquitiva.iconshowcase.BuildConfig;
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.activities.base.DrawerActivity;
 import jahirfiquitiva.iconshowcase.activities.base.TasksActivity;
 import jahirfiquitiva.iconshowcase.adapters.RequestsAdapter;
 import jahirfiquitiva.iconshowcase.config.Config;
 import jahirfiquitiva.iconshowcase.dialogs.FolderSelectorDialog;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
-import jahirfiquitiva.iconshowcase.enums.DrawerItem;
-import jahirfiquitiva.iconshowcase.fragments.ApplyFragment;
-import jahirfiquitiva.iconshowcase.fragments.CreditsFragment;
-import jahirfiquitiva.iconshowcase.fragments.DonationsFragment;
-import jahirfiquitiva.iconshowcase.fragments.FAQsFragment;
-import jahirfiquitiva.iconshowcase.fragments.KustomFragment;
-import jahirfiquitiva.iconshowcase.fragments.MainFragment;
-import jahirfiquitiva.iconshowcase.fragments.PreviewsFragment;
 import jahirfiquitiva.iconshowcase.fragments.RequestsFragment;
 import jahirfiquitiva.iconshowcase.fragments.SettingsFragment;
-import jahirfiquitiva.iconshowcase.fragments.WallpapersFragment;
-import jahirfiquitiva.iconshowcase.fragments.ZooperFragment;
 import jahirfiquitiva.iconshowcase.holders.FullListHolder;
-import jahirfiquitiva.iconshowcase.logging.CrashReportingTree;
 import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.tasks.DownloadJSON;
 import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
@@ -103,28 +91,10 @@ import timber.log.Timber;
 
 public class ShowcaseActivity extends TasksActivity implements FolderSelectorDialog.FolderSelectionCallback {
 
-    private boolean
-            WITH_LICENSE_CHECKER = false,
-            WITH_INSTALLED_FROM_AMAZON = false,
-            WITH_DONATIONS_SECTION = false,
-
-    //Donations stuff
-    DONATIONS_GOOGLE = false,
-            DONATIONS_PAYPAL = false,
-            DONATIONS_FLATTR = false,
-            DONATIONS_BITCOIN = false,
-
-    WITH_ZOOPER_SECTION = false, SELECT_ALL_APPS = true;
-
-    private String[] mGoogleCatalog = new String[0],
-            GOOGLE_CATALOG_VALUES = new String[0],
-            GOOGLE_CATALOG;
-
-    private String GOOGLE_PUBKEY = "", PAYPAL_USER = "", PAYPAL_CURRENCY_CODE = "", thaAppName;
-
     private IabHelper mHelper;
 
-    private boolean mIsPremium = false, installedFromPlayStore = false;
+    private Drawer drawer;
+
 
     //TODO check if these are necessary
     private boolean iconsPicker = false, wallsPicker = false, allowShuffle = true, shuffleIcons = true;
@@ -133,8 +103,6 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
 
     private int numOfIcons = 4, wallpaper = -1, curVersionCode = 0;
 
-    private Preferences mPrefs;
-
     //TODO do not save Dialog instance; use fragment tags
     private MaterialDialog settingsDialog;
     private CollapsingToolbarLayout collapsingToolbarLayout;
@@ -142,21 +110,9 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
     private ImageView icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8;
     private ImageView toolbarHeader;
     private Drawable wallpaperDrawable;
-    private List<DrawerItem> mDrawerItems;
-    private HashMap<DrawerItem, Integer> mDrawerMap = new HashMap<>();
-
-    private Drawer drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Config.init(this);
-
-        if (BuildConfig.DEBUG || Config.get().allowDebugging()) {
-            Timber.plant(new Timber.DebugTree());
-        } else {
-            //Disable debug & verbose logging on release
-            Timber.plant(new CrashReportingTree());
-        }
 
         ThemeUtils.onActivityCreateSetTheme(this);
 
@@ -165,8 +121,6 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
         }
 
         super.onCreate(savedInstanceState);
-
-        mPrefs = new Preferences(this);
 
         String installer = getIntent().getStringExtra("installer");
         boolean openWallpapers = getIntent().getBooleanExtra("open_wallpapers", false);
@@ -299,63 +253,87 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
         FragmentTransaction fragmentTransaction = getSupportFragmentManager()
                 .beginTransaction();
 
-        fragmentTransaction.replace(getFragmentId(), drawerTypeToFragment(dt), dt.getName());
+        fragmentTransaction.replace(getFragmentId(), dt.getFragment(), dt.getName());
 
         if (mPrefs.getAnimationsEnabled())
             fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
         fragmentTransaction.commit();
     }
 
-    private Fragment drawerTypeToFragment(DrawerItem dt) {
-        switch (dt) {
-            case DONATE:
-                return DonationsFragment.newInstance(DONATIONS_GOOGLE,
-                        GOOGLE_PUBKEY,
-                        mGoogleCatalog,
-                        GOOGLE_CATALOG_VALUES,
-                        DONATIONS_PAYPAL,
-                        PAYPAL_USER,
-                        PAYPAL_CURRENCY_CODE,
-                        getString(R.string.section_donate),
-                        DONATIONS_FLATTR,
-                        DONATIONS_BITCOIN);
+    @SuppressWarnings("ResourceAsColor")
+    private void setupDrawer(Bundle savedInstanceState) {
+       getDrawerItems();
 
-            case HOME:
-                return new MainFragment();
+        DrawerBuilder drawerBuilder = new DrawerBuilder().withActivity(this)
+                .withToolbar(cToolbar)
+                .withFireOnInitialOnClick(true)
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
 
-            case PREVIEWS:
-                return new PreviewsFragment();
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        if (drawerItem != null) {
+                            drawerItemClick(drawerItem.getIdentifier());
+                        }
+                        return false;
+                    }
+                });
 
-            case WALLPAPERS:
-                return new WallpapersFragment();
-
-            case REQUESTS:
-                //                return RequestsFragment.newInstance(isRequestsFullyLoaded());
-                return new RequestsFragment();
-
-            case APPLY:
-                return new ApplyFragment();
-
-            case FAQS:
-                return new FAQsFragment();
-
-            case ZOOPER:
-                return new ZooperFragment();
-
-            case KUSTOM:
-                return new KustomFragment();
-
-            case CREDITS:
-                return new CreditsFragment();
-
-            case SETTINGS:
-                return new SettingsFragment();
-
-            default:
-                //throw error
-                return new MainFragment();
-
+        for (int position = 0; position < mDrawerItems.size(); position++) {
+            DrawerItem item = mDrawerItems.get(position);
+            if (item == DrawerItem.CREDITS) {
+                drawerBuilder.addDrawerItems(new DividerDrawerItem());
+            }
+            mDrawerMap.put(item, position);
+            drawerBuilder.addDrawerItems(
+                    !item.isSecondary() ? DrawerItem.getPrimaryDrawerItem(this, item, position) :
+                            DrawerItem.getSecondaryDrawerItem(this, item, position));
         }
+
+        drawerBuilder.withSavedInstance(savedInstanceState);
+
+        String headerAppName = "", headerAppVersion = "";
+
+        boolean withDrawerTexts;
+
+        withDrawerTexts = Config.get().devOptions() ? mPrefs.getDevDrawerTexts() :
+                getResources().getBoolean(R.bool.with_drawer_texts);
+
+        if (withDrawerTexts) {
+            headerAppName = getResources().getString(R.string.app_long_name);
+            headerAppVersion = "v " + Utils.getAppVersion(this);
+        }
+
+        AccountHeader drawerHeader = new AccountHeaderBuilder().withActivity(this)
+                .withHeaderBackground(ThemeUtils.darkTheme ? ThemeUtils.transparent ? R.drawable
+                        .drawer_header_clear : R.drawable.drawer_header_dark : R.drawable.drawer_header_light)
+                .withSelectionFirstLine(headerAppName)
+                .withSelectionSecondLine(headerAppVersion)
+                .withProfileImagesClickable(false)
+                .withResetDrawerOnProfileListClick(false)
+                .withSelectionListEnabled(false)
+                .withSelectionListEnabledForSingleProfile(false)
+                .withSavedInstance(savedInstanceState)
+                .build();
+
+        TextView drawerTitle = (TextView)
+                drawerHeader.getView().findViewById(R.id.material_drawer_account_header_name);
+        TextView drawerSubtitle = (TextView)
+                drawerHeader.getView().findViewById(R.id.material_drawer_account_header_email);
+        setTextAppearance(drawerTitle, R.style.DrawerTextsWithShadow);
+        setTextAppearance(drawerSubtitle, R.style.DrawerTextsWithShadow);
+
+        drawerBuilder.withAccountHeader(drawerHeader);
+
+        drawer = drawerBuilder.build();
+    }
+
+    private void drawerItemSelectAndClick(long id) {
+        drawer.setSelection(id);
+        drawerItemClick(id);
+    }
+
+    private void drawerItemClick(long id) {
+        switchFragment(id, mDrawerItems.get((int) id));
     }
 
     private void switchFragment(long itemId, DrawerItem dt) {
@@ -385,7 +363,7 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
         FragmentTransaction fragmentTransaction = getSupportFragmentManager()
                 .beginTransaction();
 
-        fragmentTransaction.replace(getFragmentId(), drawerTypeToFragment(dt), dt.getName());
+        fragmentTransaction.replace(getFragmentId(), dt.getFragment(), dt.getName());
 
         if (mPrefs.getAnimationsEnabled())
             fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
@@ -455,8 +433,7 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
         if (settingsDialog != null) {
             settingsDialog.dismiss();
             settingsDialog = null;
-        }
-        Config.deinit();
+        } //TODO fix dialog
         super.onDestroy();
     }
 
@@ -652,123 +629,9 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
         return R.layout.showcase_activity;
     }
 
-    @Override
-    protected HashMap<DrawerItem, Integer> getDrawerMap() {
-        return mDrawerMap;
-    }
-
     public interface WallsListInterface {
 
         void checkWallsListCreation(boolean result);
-    }
-
-    private DrawerItem drawerKeyToType(String s) {
-        switch (s.toLowerCase()) {
-            case "previews":
-                return DrawerItem.PREVIEWS;
-            case "wallpapers":
-                return DrawerItem.WALLPAPERS;
-            case "requests":
-                return DrawerItem.REQUESTS;
-            case "apply":
-                return DrawerItem.APPLY;
-            case "faqs":
-                return DrawerItem.FAQS;
-            case "zooper":
-                return DrawerItem.ZOOPER;
-            case "kustom":
-                return DrawerItem.KUSTOM;
-            default:
-                //TODO add better catch;
-                throw new RuntimeException("Invalid drawer key " + s + ".\nPlease check your primary_drawer_items array");
-        }
-    }
-
-    @SuppressWarnings("ResourceAsColor")
-    private void setupDrawer(Bundle savedInstanceState) {
-        mDrawerItems = new ArrayList<>();
-        mDrawerItems.add(DrawerItem.HOME);
-
-        //Convert keys to enums
-        String[] configurePrimaryDrawerItems = getResources().getStringArray(R.array.drawer_sections);
-
-        for (String s : configurePrimaryDrawerItems) {
-            mDrawerItems.add(drawerKeyToType(s));
-        }
-        mDrawerItems.add(DrawerItem.CREDITS);
-        mDrawerItems.add(DrawerItem.SETTINGS);
-        if (WITH_DONATIONS_SECTION) mDrawerItems.add(DrawerItem.DONATE);
-
-        DrawerBuilder drawerBuilder = new DrawerBuilder().withActivity(this)
-                .withToolbar(cToolbar)
-                .withFireOnInitialOnClick(true)
-                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-
-                    @Override
-                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        if (drawerItem != null) {
-                            drawerItemClick(drawerItem.getIdentifier());
-                        }
-                        return false;
-                    }
-                });
-
-        for (int position = 0; position < mDrawerItems.size(); position++) {
-            DrawerItem item = mDrawerItems.get(position);
-            if (item == DrawerItem.CREDITS) {
-                drawerBuilder.addDrawerItems(new DividerDrawerItem());
-            }
-            mDrawerMap.put(item, position);
-            drawerBuilder.addDrawerItems(
-                    !item.isSecondary() ? DrawerItem.getPrimaryDrawerItem(this, item, position) :
-                            DrawerItem.getSecondaryDrawerItem(this, item, position));
-        }
-
-        drawerBuilder.withSavedInstance(savedInstanceState);
-
-        String headerAppName = "", headerAppVersion = "";
-
-        boolean withDrawerTexts;
-
-        withDrawerTexts = Config.get().devOptions() ? mPrefs.getDevDrawerTexts() :
-                getResources().getBoolean(R.bool.with_drawer_texts);
-
-        if (withDrawerTexts) {
-            headerAppName = getResources().getString(R.string.app_long_name);
-            headerAppVersion = "v " + Utils.getAppVersion(this);
-        }
-
-        AccountHeader drawerHeader = new AccountHeaderBuilder().withActivity(this)
-                .withHeaderBackground(ThemeUtils.darkTheme ? ThemeUtils.transparent ? R.drawable
-                        .drawer_header_clear : R.drawable.drawer_header_dark : R.drawable.drawer_header_light)
-                .withSelectionFirstLine(headerAppName)
-                .withSelectionSecondLine(headerAppVersion)
-                .withProfileImagesClickable(false)
-                .withResetDrawerOnProfileListClick(false)
-                .withSelectionListEnabled(false)
-                .withSelectionListEnabledForSingleProfile(false)
-                .withSavedInstance(savedInstanceState)
-                .build();
-
-        TextView drawerTitle = (TextView)
-                drawerHeader.getView().findViewById(R.id.material_drawer_account_header_name);
-        TextView drawerSubtitle = (TextView)
-                drawerHeader.getView().findViewById(R.id.material_drawer_account_header_email);
-        setTextAppearance(drawerTitle, R.style.DrawerTextsWithShadow);
-        setTextAppearance(drawerSubtitle, R.style.DrawerTextsWithShadow);
-
-        drawerBuilder.withAccountHeader(drawerHeader);
-
-        drawer = drawerBuilder.build();
-    }
-
-    private void drawerItemSelectAndClick(long id) {
-        drawer.setSelection(id);
-        drawerItemClick(id);
-    }
-
-    private void drawerItemClick(long id) {
-        switchFragment(id, mDrawerItems.get((int) id));
     }
 
     @SuppressWarnings("deprecation")

@@ -67,7 +67,7 @@ import org.sufficientlysecure.donations.google.util.IabResult;
 import org.sufficientlysecure.donations.google.util.Purchase;
 
 import jahirfiquitiva.iconshowcase.R;
-import jahirfiquitiva.iconshowcase.enums.DrawerItem;
+import jahirfiquitiva.iconshowcase.activities.base.DrawerActivity;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 import timber.log.Timber;
 
@@ -198,7 +198,7 @@ public class DonationsFragment extends CapsuleFragment {
 
     @Override
     public int getTitleId() {
-        return DrawerItem.DONATE.getTitleID();
+        return DrawerActivity.DrawerItem.DONATE.getTitleID();
     }
 
     @Override
