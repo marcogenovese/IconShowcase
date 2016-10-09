@@ -21,6 +21,7 @@ package jahirfiquitiva.iconshowcase.utilities;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Environment;
 
 import jahirfiquitiva.iconshowcase.R;
 
@@ -102,7 +103,7 @@ public class Preferences {
     }
 
     public String getDownloadsFolder() {
-        return prefs().getString(WALLS_DOWNLOAD_FOLDER, null);
+        return prefs().getString(WALLS_DOWNLOAD_FOLDER, Environment.getExternalStorageDirectory().getAbsolutePath());
     }
 
     public void setIfAppsToRequestLoaded(boolean loaded) {

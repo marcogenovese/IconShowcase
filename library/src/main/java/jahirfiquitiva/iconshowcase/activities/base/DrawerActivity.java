@@ -158,7 +158,7 @@ public abstract class DrawerActivity extends CapsuleActivity {
 
     private boolean isPremium() {
         return mIsPremium;
-    }
+    } //TODO move if needed
 
     /*
      * Drawer item enum class

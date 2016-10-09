@@ -51,7 +51,6 @@ public class FolderSelectorDialog extends DialogFragment implements MaterialDial
     private File parentFolder;
     private File[] parentContents;
     private boolean canGoUp = true;
-    private FolderSelectionCallback mCallback;
     private String initialPath;
 
     public interface FolderSelectionCallback {
@@ -104,7 +103,7 @@ public class FolderSelectorDialog extends DialogFragment implements MaterialDial
                         PackageManager.PERMISSION_GRANTED) {
             return new MaterialDialog.Builder(getActivity())
                     .title(R.string.md_error_label)
-                    .content(getResources().getString(R.string.md_storage_perm_error, R.string.app_name))
+                    .content(getString(R.string.md_storage_perm_error, getString(R.string.app_name)))
                     .positiveText(android.R.string.ok)
                     .build();
         } else {
@@ -119,7 +118,8 @@ public class FolderSelectorDialog extends DialogFragment implements MaterialDial
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             dialog.dismiss();
-                            mCallback.onFolderSelection(parentFolder);
+                            FolderSelectionCallback callback = (FolderSelectionCallback) getTargetFragment();
+                            callback.onFolderSelection(parentFolder);
                         }
                     })
                     .onNegative(new MaterialDialog.SingleButtonCallback() {
@@ -157,19 +157,14 @@ public class FolderSelectorDialog extends DialogFragment implements MaterialDial
         dialog.setItems(getContentsArray());
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        mCallback = (FolderSelectionCallback) ((Activity) context);
-    }
-
-    public void show(AppCompatActivity context) {
+    public <T extends Fragment & FolderSelectionCallback> void show(AppCompatActivity context, T fragment) {
         Fragment frag = context.getSupportFragmentManager().findFragmentByTag("FOLDER_SELECTOR");
         if (frag != null) {
             ((DialogFragment) frag).dismiss();
             context.getSupportFragmentManager().beginTransaction()
                     .remove(frag).commit();
         }
+        setTargetFragment(fragment, 1);
         show(context.getSupportFragmentManager(), "FOLDER_SELECTOR");
     }
 

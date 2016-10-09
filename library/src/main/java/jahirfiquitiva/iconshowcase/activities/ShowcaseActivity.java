@@ -89,7 +89,7 @@ import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import timber.log.Timber;
 
-public class ShowcaseActivity extends TasksActivity implements FolderSelectorDialog.FolderSelectionCallback {
+public class ShowcaseActivity extends TasksActivity {
 
     private IabHelper mHelper;
 
@@ -596,12 +596,6 @@ public class ShowcaseActivity extends TasksActivity implements FolderSelectorDia
                 act.finish();
             }
         });
-    }
-
-    @Override
-    public void onFolderSelection(@NonNull File folder) {
-        mPrefs.setDownloadsFolder(folder.getAbsolutePath());
-        SettingsFragment.changeWallsFolderValue(this, mPrefs);
     }
 
     @Override

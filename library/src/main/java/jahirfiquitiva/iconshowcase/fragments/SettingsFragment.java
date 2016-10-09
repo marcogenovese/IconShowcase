@@ -55,12 +55,12 @@ import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 
 public class SettingsFragment extends PreferenceFragment implements
-        PermissionUtils.OnPermissionResultListener {
+        PermissionUtils.OnPermissionResultListener, FolderSelectorDialog.FolderSelectionCallback {
 
     private Preferences mPrefs;
     private PackageManager p;
     private ComponentName componentName;
-    private static Preference WSL, data, notifsUpdateInterval;
+    private Preference WSL, data, notifsUpdateInterval;
     private String location, cacheSize;
     private boolean shouldShowFolderChooserDialog = false;
 
@@ -71,14 +71,9 @@ public class SettingsFragment extends PreferenceFragment implements
 
         mPrefs = new Preferences(getActivity());
 
-        mPrefs.setSettingsModified(false);
+        mPrefs.setSettingsModified(false); //TODO remove this; change to bundle
 
-        if (mPrefs.getDownloadsFolder() != null) {
-            location = mPrefs.getDownloadsFolder();
-        } else {
-            location = getString(R.string.walls_save_location,
-                    Environment.getExternalStorageDirectory().getAbsolutePath());
-        }
+        location = mPrefs.getDownloadsFolder();
 
         cacheSize = fullCacheDataSize(getActivity().getApplicationContext());
 
@@ -301,26 +296,10 @@ public class SettingsFragment extends PreferenceFragment implements
     }
 
     private void changeValues(Context context) {
-        if (mPrefs.getDownloadsFolder() != null) {
-            location = mPrefs.getDownloadsFolder();
-        } else {
-            location = context.getString(R.string.walls_save_location,
-                    Environment.getExternalStorageDirectory().getAbsolutePath());
-        }
+        location = mPrefs.getDownloadsFolder();
         WSL.setSummary(context.getResources().getString(R.string.pref_summary_wsl, location));
         cacheSize = fullCacheDataSize(context);
         data.setSummary(context.getResources().getString(R.string.pref_summary_cache, cacheSize));
-    }
-
-    public static void changeWallsFolderValue(Context context, Preferences mPrefs) {
-        String location;
-        if (mPrefs.getDownloadsFolder() != null) {
-            location = mPrefs.getDownloadsFolder();
-        } else {
-            location = context.getString(R.string.walls_save_location,
-                    Environment.getExternalStorageDirectory().getAbsolutePath());
-        }
-        WSL.setSummary(context.getResources().getString(R.string.pref_summary_wsl, location));
     }
 
     private void clearApplicationDataAndCache(Context context) {
@@ -341,7 +320,7 @@ public class SettingsFragment extends PreferenceFragment implements
         mPrefs.setWallsDialogDismissed(false);
     }
 
-    private static void clearCache(Context context) {
+    private void clearCache(Context context) {
         try {
             File dir = context.getCacheDir();
             if (dir != null && dir.isDirectory()) {
@@ -352,14 +331,11 @@ public class SettingsFragment extends PreferenceFragment implements
         }
     }
 
-    private static boolean deleteDir(File dir) {
+    private boolean deleteDir(File dir) {
         if (dir != null && dir.isDirectory()) {
             String[] children = dir.list();
             for (String aChildren : children) {
-                boolean success = deleteDir(new File(dir, aChildren));
-                if (!success) {
-                    return false;
-                }
+                if (!deleteDir(new File(dir, aChildren))) return false;
             }
         }
 
@@ -367,7 +343,7 @@ public class SettingsFragment extends PreferenceFragment implements
     }
 
     @SuppressLint("DefaultLocale")
-    private static String fullCacheDataSize(Context context) {
+    private String fullCacheDataSize(Context context) { //TODO add permission check?
         String finalSize;
 
         long cache = 0;
@@ -414,7 +390,7 @@ public class SettingsFragment extends PreferenceFragment implements
         return finalSize;
     }
 
-    private static long dirSize(File dir) {
+    private long dirSize(File dir) {
         if (dir.exists()) {
             long result = 0;
             File[] fileList = dir.listFiles();
@@ -467,7 +443,7 @@ public class SettingsFragment extends PreferenceFragment implements
     }
 
     public void showFolderChooserDialog() {
-        new FolderSelectorDialog().show((AppCompatActivity) getActivity());
+        new FolderSelectorDialog().show((AppCompatActivity) getActivity(), this);
     }
 
     @Override
@@ -475,4 +451,10 @@ public class SettingsFragment extends PreferenceFragment implements
         shouldShowFolderChooserDialog = true;
     }
 
+    @Override
+    public void onFolderSelection(File folder) {
+        location = folder.getAbsolutePath();
+        mPrefs.setDownloadsFolder(location);
+        WSL.setSummary(getString(R.string.pref_summary_wsl, location));
+    }
 }
