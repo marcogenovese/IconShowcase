@@ -78,13 +78,15 @@ Help making IconShowcase available in more languages. [Click here to go to the t
 # Developed By
 
 * Jahir Fiquitiva
-* Web: https://www.jahirfiquitiva.me/
-* Google+: https://plus.google.com/+JahirFiquitivaJDev/
-* [Donate](https://pledgie.com/campaigns/32739)
+	* Web: https://www.jahirfiquitiva.me/
+	* Google+: https://plus.google.com/+JahirFiquitivaJDev/
+	* [Donate](https://pledgie.com/campaigns/32739)
+
+
 
 * Allan Wang
-* Web: http://allanwang.ca/dev/
-* Google+: https://plus.google.com/+AllanWPitchedApps/
+	* Web: http://allanwang.ca/dev/
+	* Google+: https://plus.google.com/+AllanWPitchedApps/
 
 
 # Special Thanks
