@@ -41,10 +41,10 @@ import java.util.Collections;
 import java.util.List;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.activities.base.DrawerActivity;
 import jahirfiquitiva.iconshowcase.adapters.LaunchersAdapter;
 import jahirfiquitiva.iconshowcase.config.Config;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
-import jahirfiquitiva.iconshowcase.enums.DrawerItem;
 import jahirfiquitiva.iconshowcase.utilities.LauncherIntents;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
@@ -66,7 +66,7 @@ public class ApplyFragment extends CapsuleFragment {
 
     @Override
     public int getTitleId() {
-        return DrawerItem.APPLY.getTitleID();
+        return DrawerActivity.DrawerItem.APPLY.getTitleID();
     }
 
     @Override

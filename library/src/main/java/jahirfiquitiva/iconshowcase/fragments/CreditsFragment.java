@@ -32,8 +32,8 @@ import com.pitchedapps.capsule.library.fragments.CapsuleFragment;
 import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.activities.base.DrawerActivity;
 import jahirfiquitiva.iconshowcase.adapters.CreditsAdapter;
-import jahirfiquitiva.iconshowcase.enums.DrawerItem;
 
 public class CreditsFragment extends CapsuleFragment {
 
@@ -46,7 +46,7 @@ public class CreditsFragment extends CapsuleFragment {
 
     @Override
     public int getTitleId() {
-        return DrawerItem.CREDITS.getTitleID();
+        return DrawerActivity.DrawerItem.CREDITS.getTitleID();
     }
 
     @Override

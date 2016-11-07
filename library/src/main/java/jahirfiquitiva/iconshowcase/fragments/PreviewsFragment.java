@@ -41,7 +41,7 @@ import java.util.Locale;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
-import jahirfiquitiva.iconshowcase.enums.DrawerItem;
+import jahirfiquitiva.iconshowcase.activities.base.DrawerActivity;
 import jahirfiquitiva.iconshowcase.events.OnLoadEvent;
 import jahirfiquitiva.iconshowcase.fragments.base.FragmentStatePagerAdapter;
 import jahirfiquitiva.iconshowcase.holders.FullListHolder;
@@ -67,7 +67,7 @@ public class PreviewsFragment extends EventBaseFragment {
 
     @Override
     public int getTitleId() {
-        return DrawerItem.PREVIEWS.getTitleID();
+        return DrawerActivity.DrawerItem.PREVIEWS.getTitleID();
     }
 
     @Override

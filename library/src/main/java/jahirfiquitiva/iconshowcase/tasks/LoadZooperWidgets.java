@@ -48,8 +48,11 @@ public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
     public final static ArrayList<ZooperWidget> widgets = new ArrayList<>();
     private long startTime, endTime;
 
-    public LoadZooperWidgets(Context context) {
+    private ZooperFragment mFragment;
+
+    public LoadZooperWidgets(Context context, ZooperFragment mFragment) {
         this.context = new WeakReference<>(context);
+        this.mFragment = mFragment;
     }
 
     @Override
@@ -94,8 +97,8 @@ public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
     @Override
     protected void onPostExecute(Boolean worked) {
         if (worked) {
-            if (ZooperFragment.zooperAdapter != null) {
-                ZooperFragment.zooperAdapter.setWidgets(widgets);
+            if(mFragment!=null && mFragment.getAdapter() != null) {
+                mFragment.getAdapter().setWidgets(widgets);
             }
             Timber.d("Load of widgets task completed successfully in: %d milliseconds", (endTime - startTime));
         }

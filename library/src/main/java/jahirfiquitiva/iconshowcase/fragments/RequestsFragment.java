@@ -20,7 +20,6 @@
 package jahirfiquitiva.iconshowcase.fragments;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -34,9 +33,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.pitchedapps.butler.library.icon.request.AppLoadedEvent;
 import com.pitchedapps.butler.library.icon.request.IconRequest;
 import com.pitchedapps.capsule.library.fragments.CapsuleFragment;
@@ -49,10 +46,9 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.Calendar;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.activities.base.DrawerActivity;
 import jahirfiquitiva.iconshowcase.adapters.RequestsAdapter;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
-import jahirfiquitiva.iconshowcase.enums.DrawerItem;
-import jahirfiquitiva.iconshowcase.tasks.ZipFilesToRequest;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
@@ -62,7 +58,7 @@ public class RequestsFragment extends CapsuleFragment {
 
     private ViewGroup mViewGroup;
     private RelativeLayout mLoadingView;
-    private TextView mLoadingText;
+    //private TextView mLoadingText;
     private RecyclerView mRecyclerView;
     public static RequestsAdapter mAdapter;
     private boolean subscribed = true;
@@ -87,7 +83,7 @@ public class RequestsFragment extends CapsuleFragment {
 
     @Override
     public int getTitleId() {
-        return DrawerItem.REQUESTS.getTitleID();
+        return DrawerActivity.DrawerItem.REQUESTS.getTitleID();
     }
 
     @Override
@@ -151,7 +147,7 @@ public class RequestsFragment extends CapsuleFragment {
             subscribed = false;
             Timber.d("Requests already loaded");
         } else {
-            mLoadingText = (TextView) layout.findViewById(R.id.loading_text);
+            //mLoadingText = (TextView) layout.findViewById(R.id.loading_text);
             Timber.d("Requests still loading; subscribing to events");
             //            AppLoadingEvent stickyEvent = EventBus.getDefault().removeStickyEvent(AppLoadingEvent.class);
             //            if (stickyEvent != null) onAppsLoading(stickyEvent);
@@ -181,7 +177,7 @@ public class RequestsFragment extends CapsuleFragment {
     private void switchToLoadedView() {
         mViewGroup.removeView(mLoadingView);
         mLoadingView = null;
-        mLoadingText = null;
+        //mLoadingText = null;
         mRecyclerView.setVisibility(View.VISIBLE);
         mAdapter = new RequestsAdapter();
         //        mRecyclerView.setItemAnimator(null);

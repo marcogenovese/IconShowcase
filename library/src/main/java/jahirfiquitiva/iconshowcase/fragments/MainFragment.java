@@ -36,8 +36,8 @@ import java.util.ArrayList;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
+import jahirfiquitiva.iconshowcase.activities.base.DrawerActivity;
 import jahirfiquitiva.iconshowcase.adapters.HomeListAdapter;
-import jahirfiquitiva.iconshowcase.enums.DrawerItem;
 import jahirfiquitiva.iconshowcase.events.OnLoadEvent;
 import jahirfiquitiva.iconshowcase.models.HomeCard;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
@@ -62,7 +62,7 @@ public class MainFragment extends EventBaseFragment {
 
     @Override
     public int getTitleId() {
-        return DrawerItem.HOME.getTitleID();
+        return DrawerActivity.DrawerItem.HOME.getTitleID();
     }
 
     @Override

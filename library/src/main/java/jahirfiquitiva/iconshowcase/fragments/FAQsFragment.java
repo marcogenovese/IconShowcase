@@ -36,8 +36,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.activities.base.DrawerActivity;
 import jahirfiquitiva.iconshowcase.adapters.FAQsAdapter;
-import jahirfiquitiva.iconshowcase.enums.DrawerItem;
 import jahirfiquitiva.iconshowcase.models.FAQsItem;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.views.DividerItemDecoration;
@@ -52,7 +52,7 @@ public class FAQsFragment extends CapsuleFragment {
 
     @Override
     public int getTitleId() {
-        return DrawerItem.FAQS.getTitleID();
+        return DrawerActivity.DrawerItem.FAQS.getTitleID();
     }
 
     @Override

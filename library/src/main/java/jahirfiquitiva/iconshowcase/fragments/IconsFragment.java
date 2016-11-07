@@ -32,8 +32,8 @@ import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 import java.util.ArrayList;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.activities.base.DrawerActivity;
 import jahirfiquitiva.iconshowcase.adapters.IconsAdapter;
-import jahirfiquitiva.iconshowcase.enums.DrawerItem;
 import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.models.IconsCategory;
 
@@ -49,7 +49,7 @@ public class IconsFragment extends CapsuleFragment {
 
     @Override
     public int getTitleId() {
-        return DrawerItem.PREVIEWS.getTitleID();
+        return DrawerActivity.DrawerItem.PREVIEWS.getTitleID();
     }
 
     @Override

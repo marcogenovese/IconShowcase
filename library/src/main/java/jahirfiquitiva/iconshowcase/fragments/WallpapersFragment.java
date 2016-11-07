@@ -44,9 +44,9 @@ import java.util.TimerTask;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
+import jahirfiquitiva.iconshowcase.activities.base.DrawerActivity;
 import jahirfiquitiva.iconshowcase.adapters.WallpapersAdapter;
 import jahirfiquitiva.iconshowcase.dialogs.AdviceDialog;
-import jahirfiquitiva.iconshowcase.enums.DrawerItem;
 import jahirfiquitiva.iconshowcase.events.OnLoadEvent;
 import jahirfiquitiva.iconshowcase.holders.FullListHolder;
 import jahirfiquitiva.iconshowcase.models.WallpaperItem;
@@ -74,7 +74,7 @@ public class WallpapersFragment extends EventBaseFragment {
 
     @Override
     public int getTitleId() {
-        return DrawerItem.WALLPAPERS.getTitleID();
+        return DrawerActivity.DrawerItem.WALLPAPERS.getTitleID();
     }
 
     @Override

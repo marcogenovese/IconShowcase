@@ -17,13 +17,16 @@
  * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
+apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+
+group = 'com.github.jahirfiquitiva'
+
 buildscript {
     repositories {
         mavenCentral()
     }
 }
-
-apply plugin: 'com.android.library'
 
 repositories {
     mavenCentral()
@@ -31,9 +34,9 @@ repositories {
 }
 
 ext {
-    TARGET_SDK = 24
-    BUILD_TOOLS = "24.0.1"
-    ANDROID_SUPPORT_LIBS = "24.2.0"
+    TARGET_SDK = 25
+    BUILD_TOOLS = "25"
+    ANDROID_SUPPORT_LIBS = "25.0.0"
 }
 
 android {
@@ -46,7 +49,7 @@ android {
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 24
+        targetSdkVersion TARGET_SDK
         versionCode 10
         versionName "1.0"
         vectorDrawables.useSupportLibrary = true
@@ -104,15 +107,15 @@ dependencies {
     compile "com.android.support:customtabs:$ANDROID_SUPPORT_LIBS"
 
     //Material Dialogs
-    compile 'com.afollestad.material-dialogs:core:0.9.0.1'
+    compile 'com.afollestad.material-dialogs:core:0.9.1.0'
 
     //Material Drawer
-    compile('com.mikepenz:materialdrawer:5.6.0@aar') {
+    compile('com.mikepenz:materialdrawer:5.7.0@aar') {
         transitive = true
     }
 
     //OkHttp
-    compile 'com.squareup.okhttp3:okhttp:3.4.1'
+    compile 'com.squareup.okhttp3:okhttp:3.4.2'
 
     //Glide Library - Image Loading Lib
     compile 'com.github.bumptech.glide:glide:3.7.0'
@@ -127,16 +130,16 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.1.0'
 
     //Library for a "better" debug logging
-    compile 'com.jakewharton.timber:timber:4.3.0'
+    compile 'com.jakewharton.timber:timber:4.3.1'
 
     //Library for Requests
     compile 'com.github.AllanWang:Butler:297596baac'
 
     //Library for UI framework
-    compile 'com.github.AllanWang:Capsule:4e4eb9a3e6'
+    compile 'com.github.AllanWang:Capsule:ed5ad2792e'
 
-    //BottomSheet (for a future feature)
-    //compile 'com.flipboard:bottomsheet-core:1.5.1'
+    //BottomSheet
+    compile 'com.flipboard:bottomsheet-core:1.5.2'
 
     //Donations Lib
     compile 'org.sufficientlysecure:donations:2.4'

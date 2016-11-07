@@ -64,8 +64,10 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private final boolean everythingInstalled;
     private final View layout;
 
+    private ZooperFragment mFragment;
+
     public ZooperAdapter(Context context, View layout,
-                         Drawable wallpaper, boolean appsInstalled) {
+                         Drawable wallpaper, boolean appsInstalled, ZooperFragment mFragment) {
         this.context = context;
 
         this.layout = layout;
@@ -86,6 +88,8 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         this.icons[1] = ColorUtils.getTintedIcon(
                 context, R.drawable.ic_assets,
                 ThemeUtils.darkTheme ? light : dark);
+
+        this.mFragment = mFragment;
 
     }
 
@@ -215,7 +219,7 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                             if (apps.size() > 0) {
                                 ISDialogs.showZooperAppsDialog(context, apps);
                             } else {
-                                ZooperFragment.showInstalledAppsSnackbar();
+                                if (mFragment != null) mFragment.showInstalledAppsSnackbar();
                             }
                             break;
                         case 1:
@@ -228,7 +232,7 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                                     installAssets();
                                 }
                             } else {
-                                ZooperFragment.showInstalledAssetsSnackbar();
+                                if (mFragment != null) mFragment.showInstalledAssetsSnackbar();
                             }
                             break;
                     }

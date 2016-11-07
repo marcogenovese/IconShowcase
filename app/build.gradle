@@ -20,9 +20,9 @@
 apply plugin: 'com.android.application'
 
 ext {
-    TARGET_SDK = 24
-    BUILD_TOOLS = "24.0.1"
-    ANDROID_SUPPORT_LIBS = "24.2.0"
+    TARGET_SDK = 25
+    BUILD_TOOLS = "25"
+    ANDROID_SUPPORT_LIBS = "25.0.0"
 }
 
 android {
@@ -44,7 +44,7 @@ android {
     defaultConfig {
         applicationId "jahirfiquitiva.apps.iconshowcase.sampleip"
         minSdkVersion 16
-        targetSdkVersion 24
+        targetSdkVersion TARGET_SDK
         versionCode 10
         versionName "1.0"
         vectorDrawables.useSupportLibrary = true

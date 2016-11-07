@@ -33,16 +33,16 @@ import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
+import jahirfiquitiva.iconshowcase.activities.base.DrawerActivity;
 import jahirfiquitiva.iconshowcase.adapters.ZooperAdapter;
-import jahirfiquitiva.iconshowcase.enums.DrawerItem;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 
 public class ZooperFragment extends CapsuleFragment {
 
-    private static ViewGroup layout;
-    private static Context context;
-    public static ZooperAdapter zooperAdapter;
+    private ViewGroup layout;
+    private Context context;
+    public ZooperAdapter zooperAdapter;
     private GridSpacingItemDecoration space;
 
     @Override
@@ -52,7 +52,7 @@ public class ZooperFragment extends CapsuleFragment {
 
     @Override
     public int getTitleId() {
-        return DrawerItem.ZOOPER.getTitleID();
+        return DrawerActivity.DrawerItem.ZOOPER.getTitleID();
     }
 
     @Override
@@ -115,7 +115,7 @@ public class ZooperFragment extends CapsuleFragment {
             RecyclerFastScroller fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
 
             zooperAdapter = new ZooperAdapter(context, layout,
-                    ((ShowcaseActivity) context).getWallpaperDrawable(), areAppsInstalled());
+                    ((ShowcaseActivity) context).getWallpaperDrawable(), areAppsInstalled(), this);
 
             mRecyclerView.setAdapter(zooperAdapter);
 
@@ -124,14 +124,14 @@ public class ZooperFragment extends CapsuleFragment {
         }
     }
 
-    public static void showInstalledAppsSnackbar() {
+    public void showInstalledAppsSnackbar() {
         if (layout != null && context != null) {
             Utils.showSimpleSnackbar(context, layout,
                     Utils.getStringFromResources(context, R.string.apps_installed));
         }
     }
 
-    public static void showInstalledAssetsSnackbar() {
+    public void showInstalledAssetsSnackbar() {
         if (layout != null && context != null) {
             Utils.showSimpleSnackbar(context, layout,
                     Utils.getStringFromResources(context, R.string.assets_installed));
@@ -153,4 +153,7 @@ public class ZooperFragment extends CapsuleFragment {
         return installed;
     }
 
+    public ZooperAdapter getAdapter() {
+        return zooperAdapter;
+    }
 }

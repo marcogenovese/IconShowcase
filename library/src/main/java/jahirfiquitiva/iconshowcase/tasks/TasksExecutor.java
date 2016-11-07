@@ -93,7 +93,7 @@ public class TasksExecutor {
             new LoadIconsLists(context).execute();
             loadWallsList();
             if (includeZooper) {
-                new LoadZooperWidgets(context).execute();
+                new LoadZooperWidgets(context, null).execute();
             }
             if (includeKustom) {
                 new LoadKustomFiles(context).execute();

@@ -89,10 +89,10 @@ public abstract class TasksActivity extends DrawerActivity {
                     .build().loadApps();
         }
         if (drawerHas(DrawerItem.ZOOPER)) {
-            new LoadZooperWidgets(this).execute();
+            new LoadZooperWidgets(this, null).execute();
         }
         if (drawerHas(DrawerItem.KUSTOM)) {
-            new LoadKustomFiles(this).execute();
+            new LoadKustomFiles(this, null).execute();
         }
 
     }
