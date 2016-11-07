@@ -92,7 +92,7 @@ public abstract class TasksActivity extends DrawerActivity {
             new LoadZooperWidgets(this, null).execute();
         }
         if (drawerHas(DrawerItem.KUSTOM)) {
-            new LoadKustomFiles(this, null).execute();
+            new LoadKustomFiles(this).execute();
         }
 
     }
