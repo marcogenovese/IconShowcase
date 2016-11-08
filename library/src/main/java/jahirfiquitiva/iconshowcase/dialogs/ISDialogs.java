@@ -38,6 +38,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.activities.AltWallpaperViewerActivity;
 import jahirfiquitiva.iconshowcase.events.BlankEvent;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
@@ -102,7 +103,7 @@ public final class ISDialogs {
     WallpaperViewerActivity Dialogs
      */
 
-    public static void showApplyWallpaperDialog(Context context, MaterialDialog.SingleButtonCallback onPositive, MaterialDialog.SingleButtonCallback onNeutral) {
+    public static void showApplyWallpaperDialog(final Context context, MaterialDialog.SingleButtonCallback onPositive, MaterialDialog.SingleButtonCallback onNeutral) {
         new MaterialDialog.Builder(context)
                 .title(R.string.apply)
                 .content(R.string.confirm_apply)
@@ -111,6 +112,12 @@ public final class ISDialogs {
                 .negativeText(android.R.string.cancel)
                 .onPositive(onPositive)
                 .onNeutral(onNeutral)
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        ((AltWallpaperViewerActivity) context).setupFullScreen();
+                    }
+                })
                 .show();
     }
 
@@ -121,6 +128,14 @@ public final class ISDialogs {
         MaterialDialog dialog = new MaterialDialog.Builder(context).title(wallName)
                 .customView(R.layout.wallpaper_details, false)
                 .positiveText(context.getResources().getString(R.string.close))
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        if ((Activity) context instanceof AltWallpaperViewerActivity) {
+                            ((AltWallpaperViewerActivity) context).setupFullScreen();
+                        }
+                    }
+                })
                 .build();
 
         View v = dialog.getCustomView();

@@ -178,7 +178,8 @@ public class WallpaperViewerActivity extends AppCompatActivity {
         infoIV.setOnClickListener(new DebouncedClickListener() {
             @Override
             public void onDebouncedClick(View v) {
-                ISDialogs.showWallpaperDetailsDialog(context, item.getWallName(), item.getWallAuthor(), item.getWallDimensions(), item.getWallCopyright());
+                ISDialogs.showWallpaperDetailsDialog(context, item.getWallName(),
+                        item.getWallAuthor(), item.getWallDimensions(), item.getWallCopyright());
             }
         });
 

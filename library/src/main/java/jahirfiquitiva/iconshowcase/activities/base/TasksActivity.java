@@ -73,6 +73,7 @@ public abstract class TasksActivity extends DrawerActivity {
                     this).execute();
         }
         if (drawerHas(DrawerItem.REQUESTS)) {
+            //mPrefs.resetRequestsLeft(this);
             IconRequest.start(this)
                     //                        .withHeader("Hey, testing Icon Request!")
                     .withFooter("%s Version: %s", getString(R.string.app_name), BuildConfig.VERSION_NAME)

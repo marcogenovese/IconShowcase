@@ -215,7 +215,7 @@
     as many apps they want.
     -->
     <integer name="max_apps_to_request">-1</integer>
-    <integer name="limit_request_to_x_minutes">0</integer>
+    <integer name="limit_request_to_x_minutes">-1</integer>
 
     <!-- FAQS SECTION CONFIGURATION -->
 

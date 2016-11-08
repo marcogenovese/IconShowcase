@@ -160,7 +160,7 @@
     <!-- WALLPAPERS SECTION CONFIGURATION -->
 
     <!-- Set this to true if you want the alternative wallpaper viewer. (The one with the FAB) -->
-    <bool name="alternative_viewer">true</bool>
+    <bool name="alternative_viewer">false</bool>
 
     <!-- APPLY SECTION CONFIGURATION -->
 
@@ -203,8 +203,8 @@
     If the apps limit is -1, users can request as many times they want, and
     as many apps they want.
     -->
-    <integer name="max_apps_to_request">10</integer>
-    <integer name="limit_request_to_x_minutes">3</integer>
+    <integer name="max_apps_to_request">-1</integer>
+    <integer name="limit_request_to_x_minutes">-1</integer>
 
     <!-- FAQS SECTION CONFIGURATION -->
 

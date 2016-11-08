@@ -14,6 +14,7 @@ import com.pitchedapps.butler.library.icon.request.App;
 import com.pitchedapps.butler.library.icon.request.IconRequest;
 
 import java.util.ArrayList;
+import java.util.Timer;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
@@ -21,6 +22,7 @@ import jahirfiquitiva.iconshowcase.config.Config;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
+import timber.log.Timber;
 
 public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.RequestsHolder> {
 
@@ -142,14 +144,14 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
 
         if (ir != null && ir.getApps() != null) {
             if (limit >= -1) {
-                for (int i = 0; i < ir.getApps().size(); i++) {
+                for(App app : ir.getApps()){
                     if (select) {
                         if (limit < 0) {
-                            ir.selectApp(ir.getApps().get(i));
+                            ir.selectApp(app);
                         } else {
                             if (limit > 0) {
                                 if (ir.getSelectedApps().size() < limit) {
-                                    ir.selectApp(ir.getApps().get(i));
+                                    ir.selectApp(app);
                                 } else {
                                     showDialog = true;
                                     break;
@@ -157,11 +159,11 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
                             }
                         }
                     } else {
-                        ir.unselectApp(ir.getApps().get(i));
+                        ir.unselectApp(app);
                     }
-                    //TODO: Either keep this or find a way to set checked/unchecked checkboxes in holder
-                    notifyDataSetChanged();
                 }
+                //TODO: Either keep this or find a way to set checked/unchecked checkboxes in holder
+                notifyDataSetChanged();
             } else {
                 showTimeLimitDialog = limit == -2;
             }

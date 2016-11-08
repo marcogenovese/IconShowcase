@@ -24,11 +24,12 @@ import android.content.SharedPreferences;
 import android.os.Environment;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.config.Config;
 
 public class Preferences {
 
     private static final String
-            PREFERENCES_NAME = "DASHBOARD_PREFERENCES",
+            PREFERENCES_NAME = Config.get().string(R.string.app_name).toLowerCase() + "_preferences",
             FEATURES_ENABLED = "features_enabled",
             VERSION_CODE = "version_code",
             ROTATE_MINUTE = "rotate_time_minute",
@@ -209,8 +210,7 @@ public class Preferences {
     }
 
     public void resetRequestsLeft(Context context) {
-        prefs().edit().putInt(REQUESTS_LEFT,
-                context.getResources().getInteger(R.integer.max_apps_to_request)).apply();
+        prefs().edit().putInt(REQUESTS_LEFT, context.getResources().getInteger(R.integer.max_apps_to_request)).apply();
     }
 
     //NOTIFICATIONS:

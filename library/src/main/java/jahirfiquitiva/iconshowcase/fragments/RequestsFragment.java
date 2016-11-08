@@ -46,9 +46,12 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.Calendar;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.activities.AltWallpaperViewerActivity;
+import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.activities.base.DrawerActivity;
 import jahirfiquitiva.iconshowcase.adapters.RequestsAdapter;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
+import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
@@ -211,29 +214,32 @@ public class RequestsFragment extends CapsuleFragment {
     private void showRequestsFilesCreationDialog(Context context, Preferences mPrefs) {
 
         if (mAdapter.getSelectedApps() != null && mAdapter.getSelectedApps().size() > 0) {
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-                    ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) !=
-                            PackageManager.PERMISSION_GRANTED) {
-                ISDialogs.showPermissionNotGrantedDialog(context);
+            if (!PermissionUtils.canAccessStorage(context)) {
+                PermissionUtils.requestStoragePermission((ShowcaseActivity) context);
             } else {
-                if (getResources().getInteger(R.integer.max_apps_to_request) > -1) {
-                    if (maxApps < 0) {
-                        maxApps = 0;
-                    }
-                    if (mAdapter.getSelectedApps().size() <= mPrefs.getRequestsLeft()) {
-                        //TODO: Show loading dialog (ISDialogs.showBuildingRequestDialog(context);)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+                        ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) !=
+                                PackageManager.PERMISSION_GRANTED) {
+                    ISDialogs.showPermissionNotGrantedDialog(context);
+                } else {
+                    if (getResources().getInteger(R.integer.max_apps_to_request) > -1) {
+                        if (maxApps < 0) {
+                            maxApps = 0;
+                        }
+                        if (mAdapter.getSelectedApps().size() <= mPrefs.getRequestsLeft()) {
+                            IconRequest.get().send();
+                            Calendar c = Calendar.getInstance();
+                            Utils.saveCurrentTimeOfRequest(mPrefs, c);
+                            ISDialogs.showBuildingRequestDialog(context);
+                        } else {
+                            ISDialogs.showRequestLimitDialog(context, maxApps);
+                        }
+                    } else {
                         IconRequest.get().send();
                         Calendar c = Calendar.getInstance();
                         Utils.saveCurrentTimeOfRequest(mPrefs, c);
-                    } else {
-                        ISDialogs.showRequestLimitDialog(context, maxApps);
+                        ISDialogs.showBuildingRequestDialog(context);
                     }
-                } else {
-                    //TODO: Show loading dialog
-                    IconRequest.get().send();
-                    Calendar c = Calendar.getInstance();
-                    Utils.saveCurrentTimeOfRequest(mPrefs, c);
                 }
             }
         } else {
