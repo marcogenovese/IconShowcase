@@ -19,46 +19,46 @@
   -->
 
 <jahirfiquitiva.iconshowcase.views.IconShowcaseCardView
-    android:id="@+id/launcher_item"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:foreground="?attr/selectableItemBackground"
-    android:stateListAnimator="@anim/card_lift"
-    app:cardCornerRadius="@dimen/card_corner_radius"
-    app:cardElevation="@dimen/cards_elevation"
-    app:cardPreventCornerOverlap="false"
-    >
+        android:id="@+id/launcher_item"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foreground="?attr/selectableItemBackground"
+        android:stateListAnimator="@anim/card_lift"
+        app:cardCornerRadius="@dimen/card_corner_radius"
+        app:cardElevation="@dimen/cards_elevation"
+        app:cardPreventCornerOverlap="false"
+        >
 
     <LinearLayout
-        android:id="@+id/itemBG"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <jahirfiquitiva.iconshowcase.views.SquaredImageView
-            android:id="@+id/launcherIcon"
+            android:id="@+id/itemBG"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="?attr/colorCardBackground"
-            android:padding="@dimen/launchers_icons_padding"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_na_launcher"
-            tools:ignore="ContentDescription, UnusedAttribute"/>
+            android:orientation="vertical">
+
+        <jahirfiquitiva.iconshowcase.views.SquaredImageView
+                android:id="@+id/launcherIcon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?attr/colorCardBackground"
+                android:padding="@dimen/launchers_icons_padding"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_na_launcher"
+                tools:ignore="ContentDescription, UnusedAttribute"/>
 
         <TextView
-            android:id="@+id/launcherName"
-            style="@style/ListsContent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:ellipsize="end"
-            android:gravity="center"
-            android:maxLines="1"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            tools:text="Launcher Name"/>
+                android:id="@+id/launcherName"
+                style="@style/ListsContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="1"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                tools:text="Launcher Name"/>
 
     </LinearLayout>
 

@@ -14,7 +14,6 @@ import com.pitchedapps.butler.library.icon.request.App;
 import com.pitchedapps.butler.library.icon.request.IconRequest;
 
 import java.util.ArrayList;
-import java.util.Timer;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
@@ -22,7 +21,6 @@ import jahirfiquitiva.iconshowcase.config.Config;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
-import timber.log.Timber;
 
 public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.RequestsHolder> {
 
@@ -144,7 +142,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
 
         if (ir != null && ir.getApps() != null) {
             if (limit >= -1) {
-                for(App app : ir.getApps()){
+                for (App app : ir.getApps()) {
                     if (select) {
                         if (limit < 0) {
                             ir.selectApp(app);

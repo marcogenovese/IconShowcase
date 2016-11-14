@@ -76,7 +76,6 @@ public abstract class DrawerActivity extends CapsuleActivity {
     protected EnumMap<DrawerItem, Integer> mDrawerMap = new EnumMap<>(DrawerItem.class);
 
 
-
     protected DrawerItem drawerKeyToType(String s) {
         switch (s.toLowerCase()) {
             case "previews":
@@ -280,7 +279,6 @@ public abstract class DrawerActivity extends CapsuleActivity {
          * @param context for resource retrieval
          * @param di      drawer type
          * @param i       identifier for drawer item
-         * @return
          */
         public static PrimaryDrawerItem getPrimaryDrawerItem(final Context context, DrawerItem di, int i) {
             return new PrimaryDrawerItem().withName(context.getResources().getString(di.getTitleID()))
@@ -292,7 +290,6 @@ public abstract class DrawerActivity extends CapsuleActivity {
          * @param context for resource retrieval
          * @param di      drawer type
          * @param i       identifier for drawer item
-         * @return
          */
         public static SecondaryDrawerItem getSecondaryDrawerItem(final Context context, DrawerItem di, int i) {
             return new SecondaryDrawerItem().withName(context.getResources().getString(di.getTitleID()))

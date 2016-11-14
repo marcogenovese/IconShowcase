@@ -41,8 +41,7 @@ public class ViewPagerWithCustomScrollDuration extends ViewPager {
     private ScrollerCustomDuration mScroller = null;
 
     /**
-     * Override the Scroller instance with our own class so we can change the
-     * duration
+     * Override the Scroller instance with our own class so we can change the duration
      */
     private void postInitViewPager() {
         try {

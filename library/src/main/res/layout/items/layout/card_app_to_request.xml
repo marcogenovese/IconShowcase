@@ -19,63 +19,63 @@
   -->
 
 <jahirfiquitiva.iconshowcase.views.IconShowcaseCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/requestCard"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:foreground="?attr/selectableItemBackground"
-    android:stateListAnimator="@anim/card_lift"
-    app:cardCornerRadius="@dimen/card_corner_radius"
-    app:cardElevation="@dimen/cards_elevation"
-    app:cardPreventCornerOverlap="false"
-    >
-
-    <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/requestCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clipToPadding="false"
-        android:descendantFocusability="blocksDescendants"
-        android:gravity="center_vertical">
+        android:foreground="?attr/selectableItemBackground"
+        android:stateListAnimator="@anim/card_lift"
+        app:cardCornerRadius="@dimen/card_corner_radius"
+        app:cardElevation="@dimen/cards_elevation"
+        app:cardPreventCornerOverlap="false"
+        >
+
+    <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:descendantFocusability="blocksDescendants"
+            android:gravity="center_vertical">
 
         <ImageView
-            android:id="@+id/imgIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            android:maxHeight="64dp"
-            android:maxWidth="64dp"
-            android:padding="@dimen/lists_padding"
-            android:src="@drawable/ic_na_launcher"
-            tools:ignore="ContentDescription"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/txtName"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:padding="@dimen/lists_padding"
-                android:singleLine="true"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                tools:text="App Name And Some Other Texts Im testing right now"/>
-
-            <jahirfiquitiva.iconshowcase.views.RequestsCheckBox
-                android:id="@+id/chkSelected"
+                android:id="@+id/imgIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:clickable="false"
-                android:padding="@dimen/lists_padding"/>
+                android:adjustViewBounds="true"
+                android:maxHeight="64dp"
+                android:maxWidth="64dp"
+                android:padding="@dimen/lists_padding"
+                android:src="@drawable/ic_na_launcher"
+                tools:ignore="ContentDescription"/>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+            <TextView
+                    android:id="@+id/txtName"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:padding="@dimen/lists_padding"
+                    android:singleLine="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    tools:text="App Name And Some Other Texts Im testing right now"/>
+
+            <jahirfiquitiva.iconshowcase.views.RequestsCheckBox
+                    android:id="@+id/chkSelected"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:padding="@dimen/lists_padding"/>
 
         </LinearLayout>
 

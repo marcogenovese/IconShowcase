@@ -36,8 +36,7 @@ import timber.log.Timber;
 /**
  * Created by Allan Wang on 2016-08-19.
  * <p/>
- * With reference to Polar
- * https://github.com/afollestad/polar-dashboard/blob/master/app/src/main/java/com/afollestad/polar/config/Config.java
+ * With reference to Polar https://github.com/afollestad/polar-dashboard/blob/master/app/src/main/java/com/afollestad/polar/config/Config.java
  */
 public class Config implements IConfig {
 

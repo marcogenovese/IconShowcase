@@ -97,7 +97,7 @@ public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
     @Override
     protected void onPostExecute(Boolean worked) {
         if (worked) {
-            if(mFragment!=null && mFragment.getAdapter() != null) {
+            if (mFragment != null && mFragment.getAdapter() != null) {
                 mFragment.getAdapter().setWidgets(widgets);
             }
             Timber.d("Load of widgets task completed successfully in: %d milliseconds", (endTime - startTime));

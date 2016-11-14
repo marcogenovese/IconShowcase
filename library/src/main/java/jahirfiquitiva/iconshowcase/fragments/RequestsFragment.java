@@ -46,7 +46,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.Calendar;
 
 import jahirfiquitiva.iconshowcase.R;
-import jahirfiquitiva.iconshowcase.activities.AltWallpaperViewerActivity;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.activities.base.DrawerActivity;
 import jahirfiquitiva.iconshowcase.adapters.RequestsAdapter;

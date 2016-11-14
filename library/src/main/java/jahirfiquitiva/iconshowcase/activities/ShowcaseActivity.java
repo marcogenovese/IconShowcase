@@ -48,6 +48,7 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.flipboard.bottomsheet.BottomSheetLayout;
 import com.github.javiersantos.piracychecker.PiracyChecker;
 import com.github.javiersantos.piracychecker.enums.InstallerID;
 import com.github.javiersantos.piracychecker.enums.PiracyCheckerCallback;
@@ -64,21 +65,16 @@ import org.sufficientlysecure.donations.google.util.IabHelper;
 import org.sufficientlysecure.donations.google.util.IabResult;
 import org.sufficientlysecure.donations.google.util.Inventory;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.EnumMap;
 import java.util.Random;
 
 import jahirfiquitiva.iconshowcase.R;
-import jahirfiquitiva.iconshowcase.activities.base.DrawerActivity;
 import jahirfiquitiva.iconshowcase.activities.base.TasksActivity;
 import jahirfiquitiva.iconshowcase.adapters.RequestsAdapter;
 import jahirfiquitiva.iconshowcase.config.Config;
-import jahirfiquitiva.iconshowcase.dialogs.FolderSelectorDialog;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.fragments.RequestsFragment;
-import jahirfiquitiva.iconshowcase.fragments.SettingsFragment;
 import jahirfiquitiva.iconshowcase.holders.FullListHolder;
 import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.tasks.DownloadJSON;
@@ -94,7 +90,6 @@ public class ShowcaseActivity extends TasksActivity {
     private IabHelper mHelper;
 
     private Drawer drawer;
-
 
     //TODO check if these are necessary
     private boolean iconsPicker = false, wallsPicker = false, allowShuffle = true, shuffleIcons = true;
@@ -262,7 +257,7 @@ public class ShowcaseActivity extends TasksActivity {
 
     @SuppressWarnings("ResourceAsColor")
     private void setupDrawer(Bundle savedInstanceState) {
-       getDrawerItems();
+        getDrawerItems();
 
         DrawerBuilder drawerBuilder = new DrawerBuilder().withActivity(this)
                 .withToolbar(cToolbar)
@@ -514,29 +509,22 @@ public class ShowcaseActivity extends TasksActivity {
     }
 
     private void showChangelogDialog() {
-
         int prevVersionCode = mPrefs.getVersionCode();
-
         if ((curVersionCode > prevVersionCode) && (curVersionCode > -1)) {
             mPrefs.setVersionCode(curVersionCode);
             ChangelogDialog.show(this, R.xml.changelog);
         }
-
     }
 
     private void checkLicense(String licenseKey) { //TODO remove this from param
         PiracyChecker checker = new PiracyChecker(this);
-
         if ((licenseKey != null) && (!(licenseKey.isEmpty())) && (licenseKey.length() > 25)) {
             checker.enableGooglePlayLicensing(licenseKey);
         }
-
         checker.enableInstallerId(InstallerID.GOOGLE_PLAY);
-
         if (WITH_INSTALLED_FROM_AMAZON) {
             checker.enableInstallerId(InstallerID.AMAZON_APP_STORE);
         }
-
         checker.callback(new PiracyCheckerCallback() {
             @Override
             public void allow() {
@@ -566,7 +554,6 @@ public class ShowcaseActivity extends TasksActivity {
                 showNotLicensedDialog(ShowcaseActivity.this, mPrefs);
             }
         });
-
         checker.start();
     }
 
@@ -624,7 +611,6 @@ public class ShowcaseActivity extends TasksActivity {
     }
 
     public interface WallsListInterface {
-
         void checkWallsListCreation(boolean result);
     }
 

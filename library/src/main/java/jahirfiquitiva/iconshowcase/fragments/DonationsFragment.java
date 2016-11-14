@@ -207,9 +207,8 @@ public class DonationsFragment extends CapsuleFragment {
     }
 
     /**
-     * Will hide the fab if false; the fab is still in the viewgroup and is used for various other tasks such as the snackbar
-     *
-     * @return
+     * Will hide the fab if false; the fab is still in the viewgroup and is used for various other
+     * tasks such as the snackbar
      */
     @Override
     protected boolean hasFab() {
@@ -487,8 +486,7 @@ public class DonationsFragment extends CapsuleFragment {
     }
 
     /**
-     * Build view for Flattr. see Flattr API for more information:
-     * http://developers.flattr.net/button/
+     * Build view for Flattr. see Flattr API for more information: http://developers.flattr.net/button/
      */
     @SuppressLint({"SetJavaScriptEnabled", "SetTextI18n"})
     @TargetApi(11)

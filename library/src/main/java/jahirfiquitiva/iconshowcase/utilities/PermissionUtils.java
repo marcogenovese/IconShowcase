@@ -27,9 +27,8 @@ import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 
 /**
- * This Class was created by Patrick J
- * on 07.01.16. For more Details and Licensing
- * have a look at the README.md
+ * This Class was created by Patrick J on 07.01.16. For more Details and Licensing have a look at
+ * the README.md
  */
 
 public final class PermissionUtils {

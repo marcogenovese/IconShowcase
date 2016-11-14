@@ -61,9 +61,8 @@ public class ZooperFragment extends CapsuleFragment {
     }
 
     /**
-     * Will hide the fab if false; the fab is still in the viewgroup and is used for various other tasks such as the snackbar
-     *
-     * @return
+     * Will hide the fab if false; the fab is still in the viewgroup and is used for various other
+     * tasks such as the snackbar
      */
     @Override
     protected boolean hasFab() {

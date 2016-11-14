@@ -19,117 +19,117 @@
   -->
 
 <LinearLayout
-    android:id="@+id/appDetails"
-    style="@style/HomeCardContent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:clickable="false"
-    android:orientation="vertical">
+        android:id="@+id/appDetails"
+        style="@style/HomeCardContent"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:orientation="vertical">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start|center_vertical"
-        android:paddingBottom="16dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:paddingTop="16dp"
-        android:text="@string/icon_pack_in_numbers"
-        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:paddingBottom="16dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="16dp"
+            android:text="@string/icon_pack_in_numbers"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:clickable="false"
-        android:gravity="center_vertical"
-        android:minHeight="@dimen/md_listitem_height"
-        android:orientation="horizontal"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
-
-        <ImageView
-            android:id="@+id/icon_themed_icons"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            tools:ignore="ContentDescription"/>
-
-        <TextView
-            android:id="@+id/text_themed_icons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="24dp"
-            android:layout_marginStart="24dp"
+            android:clickable="false"
             android:gravity="center_vertical"
-            android:paddingBottom="8dp"
-            android:paddingTop="8dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
+            android:minHeight="@dimen/md_listitem_height"
+            android:orientation="horizontal"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+        <ImageView
+                android:id="@+id/icon_themed_icons"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                tools:ignore="ContentDescription"/>
+
+        <TextView
+                android:id="@+id/text_themed_icons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="24dp"
+                android:layout_marginStart="24dp"
+                android:gravity="center_vertical"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:clickable="false"
-        android:gravity="center_vertical"
-        android:minHeight="@dimen/md_listitem_height"
-        android:orientation="horizontal"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
-
-        <ImageView
-            android:id="@+id/icon_available_wallpapers"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            tools:ignore="ContentDescription"/>
-
-        <TextView
-            android:id="@+id/text_available_wallpapers"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="24dp"
-            android:layout_marginStart="24dp"
+            android:clickable="false"
             android:gravity="center_vertical"
-            android:paddingBottom="8dp"
-            android:paddingTop="8dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
+            android:minHeight="@dimen/md_listitem_height"
+            android:orientation="horizontal"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+        <ImageView
+                android:id="@+id/icon_available_wallpapers"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                tools:ignore="ContentDescription"/>
+
+        <TextView
+                android:id="@+id/text_available_wallpapers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="24dp"
+                android:layout_marginStart="24dp"
+                android:gravity="center_vertical"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
 
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/widgets"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:clickable="false"
-        android:gravity="center_vertical"
-        android:minHeight="@dimen/md_listitem_height"
-        android:orientation="horizontal"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
-
-        <ImageView
-            android:id="@+id/icon_included_widgets"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            tools:ignore="ContentDescription"/>
-
-        <TextView
-            android:id="@+id/text_included_widgets"
+            android:id="@+id/widgets"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="24dp"
-            android:layout_marginStart="24dp"
+            android:clickable="false"
             android:gravity="center_vertical"
-            android:paddingBottom="8dp"
-            android:paddingTop="8dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
+            android:minHeight="@dimen/md_listitem_height"
+            android:orientation="horizontal"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+        <ImageView
+                android:id="@+id/icon_included_widgets"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                tools:ignore="ContentDescription"/>
+
+        <TextView
+                android:id="@+id/text_included_widgets"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="24dp"
+                android:layout_marginStart="24dp"
+                android:gravity="center_vertical"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
 
     </LinearLayout>
 

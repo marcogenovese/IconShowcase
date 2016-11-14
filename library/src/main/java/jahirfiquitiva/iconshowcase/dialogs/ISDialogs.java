@@ -46,9 +46,8 @@ import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 
 /**
- * This Class was created by Patrick Jung
- * on 07.01.16. For more Details and Licensing
- * have a look at the README.md
+ * This Class was created by Patrick Jung on 07.01.16. For more Details and Licensing have a look at
+ * the README.md
  */
 
 public final class ISDialogs {

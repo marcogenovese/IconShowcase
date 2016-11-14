@@ -24,10 +24,8 @@ import android.os.Environment;
 import android.support.annotation.CallSuper;
 
 import com.pitchedapps.butler.library.icon.request.IconRequest;
-import com.pitchedapps.capsule.library.activities.CapsuleActivity;
 
 import java.io.File;
-import java.util.EnumMap;
 
 import jahirfiquitiva.iconshowcase.BuildConfig;
 import jahirfiquitiva.iconshowcase.R;
@@ -47,6 +45,7 @@ public abstract class TasksActivity extends DrawerActivity {
 
     private boolean tasksExecuted = false;
     protected Preferences mPrefs;
+    private DownloadJSON jsonTask;
 
     //TODO fix up booleans
     protected void startTasks() {
@@ -57,7 +56,7 @@ public abstract class TasksActivity extends DrawerActivity {
         if (drawerHas(DrawerItem.PREVIEWS))
             new LoadIconsLists(this).execute();
         if (drawerHas(DrawerItem.WALLPAPERS)) {
-            new DownloadJSON(
+            jsonTask = new DownloadJSON(
                     //                    new ShowcaseActivity.WallsListInterface() {
                     //                @Override
                     //                public void checkWallsListCreation(boolean result) {
@@ -70,7 +69,8 @@ public abstract class TasksActivity extends DrawerActivity {
                     //                    }
                     //                }
                     //            },
-                    this).execute();
+                    this);
+            jsonTask.execute();
         }
         if (drawerHas(DrawerItem.REQUESTS)) {
             //mPrefs.resetRequestsLeft(this);
@@ -100,6 +100,19 @@ public abstract class TasksActivity extends DrawerActivity {
 
     private boolean drawerHas(DrawerItem item) {
         return mDrawerMap.containsKey(item);
+    }
+
+    private void executeWallpapersTaskAgain() {
+        if (drawerHas(DrawerItem.WALLPAPERS)) {
+            if(jsonTask!=null){
+                jsonTask.cancel(false);
+                jsonTask.execute();
+            }
+        }
+    }
+
+    public DownloadJSON getJsonTask(){
+        return jsonTask;
     }
 
     //    @Subscribe

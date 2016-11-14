@@ -19,14 +19,14 @@
 
 package jahirfiquitiva.iconshowcase.services;
 
+import com.google.android.apps.muzei.api.Artwork;
+import com.google.android.apps.muzei.api.RemoteMuzeiArtSource;
+import com.google.android.apps.muzei.api.UserCommand;
+
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
-
-import com.google.android.apps.muzei.api.Artwork;
-import com.google.android.apps.muzei.api.RemoteMuzeiArtSource;
-import com.google.android.apps.muzei.api.UserCommand;
 
 import org.json.JSONArray;
 import org.json.JSONException;

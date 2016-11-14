@@ -234,8 +234,7 @@ public class TouchImageView extends ImageView {
     }
 
     /**
-     * Save the current matrix and view dimensions
-     * in the prevMatrix and prevView variables.
+     * Save the current matrix and view dimensions in the prevMatrix and prevView variables.
      */
     private void savePreviousImageValues() {
         if (matrix != null && viewHeight != 0 && viewWidth != 0) {
@@ -327,8 +326,8 @@ public class TouchImageView extends ImageView {
     }
 
     /**
-     * Get the current zoom. This is the zoom relative to the initial
-     * scale, not the original resource.
+     * Get the current zoom. This is the zoom relative to the initial scale, not the original
+     * resource.
      *
      * @return current zoom multiplier.
      */
@@ -356,37 +355,26 @@ public class TouchImageView extends ImageView {
 
     /**
      * Set zoom to the specified scale. Image will be centered by default.
-     *
-     * @param scale
      */
     public void setZoom(float scale) {
         setZoom(scale, 0.5f, 0.5f);
     }
 
     /**
-     * Set zoom to the specified scale. Image will be centered around the point
-     * (focusX, focusY). These floats range from 0 to 1 and denote the focus point
-     * as a fraction from the left and top of the view. For example, the top left
-     * corner of the image would be (0, 0). And the bottom right corner would be (1, 1).
-     *
-     * @param scale
-     * @param focusX
-     * @param focusY
+     * Set zoom to the specified scale. Image will be centered around the point (focusX, focusY).
+     * These floats range from 0 to 1 and denote the focus point as a fraction from the left and top
+     * of the view. For example, the top left corner of the image would be (0, 0). And the bottom
+     * right corner would be (1, 1).
      */
     private void setZoom(float scale, float focusX, float focusY) {
         setZoom(scale, focusX, focusY, mScaleType);
     }
 
     /**
-     * Set zoom to the specified scale. Image will be centered around the point
-     * (focusX, focusY). These floats range from 0 to 1 and denote the focus point
-     * as a fraction from the left and top of the view. For example, the top left
-     * corner of the image would be (0, 0). And the bottom right corner would be (1, 1).
-     *
-     * @param scale
-     * @param focusX
-     * @param focusY
-     * @param scaleType
+     * Set zoom to the specified scale. Image will be centered around the point (focusX, focusY).
+     * These floats range from 0 to 1 and denote the focus point as a fraction from the left and top
+     * of the view. For example, the top left corner of the image would be (0, 0). And the bottom
+     * right corner would be (1, 1).
      */
     private void setZoom(float scale, float focusX, float focusY, ScaleType scaleType) {
         //
@@ -412,8 +400,8 @@ public class TouchImageView extends ImageView {
     }
 
     /**
-     * Set zoom parameters equal to another TouchImageView. Including scale, position,
-     * and ScaleType.
+     * Set zoom parameters equal to another TouchImageView. Including scale, position, and
+     * ScaleType.
      */
     private void setZoom(TouchImageView img) {
         PointF center = img.getScrollPosition();
@@ -421,10 +409,10 @@ public class TouchImageView extends ImageView {
     }
 
     /**
-     * Return the point at the center of the zoomed image. The PointF coordinates range
-     * in value between 0 and 1 and the focus point is denoted as a fraction from the left
-     * and top of the view. For example, the top left corner of the image would be (0, 0).
-     * And the bottom right corner would be (1, 1).
+     * Return the point at the center of the zoomed image. The PointF coordinates range in value
+     * between 0 and 1 and the focus point is denoted as a fraction from the left and top of the
+     * view. For example, the top left corner of the image would be (0, 0). And the bottom right
+     * corner would be (1, 1).
      *
      * @return PointF representing the scroll position of the zoomed image.
      */
@@ -444,17 +432,13 @@ public class TouchImageView extends ImageView {
     /**
      * Set the focus point of the zoomed image. The focus points are denoted as a fraction from the
      * left and top of the view. The focus points can range in value between 0 and 1.
-     *
-     * @param focusX
-     * @param focusY
      */
     public void setScrollPosition(float focusX, float focusY) {
         setZoom(normalizedScale, focusX, focusY);
     }
 
     /**
-     * Performs boundary checking and fixes the image matrix if it
-     * is out of bounds.
+     * Performs boundary checking and fixes the image matrix if it is out of bounds.
      */
     private void fixTrans() {
         matrix.getValues(m);
@@ -468,11 +452,11 @@ public class TouchImageView extends ImageView {
     }
 
     /**
-     * When transitioning from zooming from focus to zoom from center (or vice versa)
-     * the image can become unaligned within the view. This is apparent when zooming
-     * quickly. When the content size is less than the view size, the content will often
-     * be centered incorrectly within the view. fixScaleTrans first calls fixTrans() and
-     * then makes sure the image is centered correctly within the view.
+     * When transitioning from zooming from focus to zoom from center (or vice versa) the image can
+     * become unaligned within the view. This is apparent when zooming quickly. When the content
+     * size is less than the view size, the content will often be centered incorrectly within the
+     * view. fixScaleTrans first calls fixTrans() and then makes sure the image is centered
+     * correctly within the view.
      */
     private void fixScaleTrans() {
         fixTrans();
@@ -545,8 +529,8 @@ public class TouchImageView extends ImageView {
     }
 
     /**
-     * If the normalizedScale is equal to 1, then the image is made to fit the screen. Otherwise,
-     * it is made to fit the screen according to the dimensions of the previous image matrix. This
+     * If the normalizedScale is equal to 1, then the image is made to fit the screen. Otherwise, it
+     * is made to fit the screen according to the dimensions of the previous image matrix. This
      * allows the image to maintain its zoom after rotation.
      */
     private void fitImageToView() {
@@ -643,11 +627,6 @@ public class TouchImageView extends ImageView {
 
     /**
      * Set view dimensions based on layout params
-     *
-     * @param mode
-     * @param size
-     * @param drawableWidth
-     * @return
      */
     private int setViewSize(int mode, int size, int drawableWidth) {
         int viewSize;
@@ -670,7 +649,8 @@ public class TouchImageView extends ImageView {
 
     /**
      * After rotating, the matrix needs to be translated. This function finds the area of image
-     * which was previously centered and adjusts translations so that is again the center, post-rotation.
+     * which was previously centered and adjusts translations so that is again the center,
+     * post-rotation.
      *
      * @param axis          Matrix.MTRANS_X or Matrix.MTRANS_Y
      * @param trans         the value of trans in that axis before the rotation
@@ -729,8 +709,8 @@ public class TouchImageView extends ImageView {
     }
 
     /**
-     * Gesture Listener detects a single click or long click and passes that on
-     * to the view's listener.
+     * Gesture Listener detects a single click or long click and passes that on to the view's
+     * listener.
      *
      * @author Ortiz
      */
@@ -790,8 +770,8 @@ public class TouchImageView extends ImageView {
     }
 
     /**
-     * Responsible for all touch events. Handles the heavy lifting of drag and also sends
-     * touch events to Scale Detector and Gesture Detector.
+     * Responsible for all touch events. Handles the heavy lifting of drag and also sends touch
+     * events to Scale Detector and Gesture Detector.
      *
      * @author Ortiz
      */
@@ -922,8 +902,8 @@ public class TouchImageView extends ImageView {
     }
 
     /**
-     * DoubleTapZoom calls a series of runnables which apply
-     * an animated zoom in/out graphic to the image.
+     * DoubleTapZoom calls a series of runnables which apply an animated zoom in/out graphic to the
+     * image.
      *
      * @author Ortiz
      */
@@ -986,11 +966,8 @@ public class TouchImageView extends ImageView {
         }
 
         /**
-         * Interpolate between where the image should start and end in order to translate
-         * the image so that the point that is touched is what ends up centered at the end
-         * of the zoom.
-         *
-         * @param t
+         * Interpolate between where the image should start and end in order to translate the image
+         * so that the point that is touched is what ends up centered at the end of the zoom.
          */
         private void translateImageToCenterTouchPosition(float t) {
             float targetX = startTouch.x + t * (endTouch.x - startTouch.x);
@@ -1001,8 +978,6 @@ public class TouchImageView extends ImageView {
 
         /**
          * Use interpolator to get t
-         *
-         * @return
          */
         private float interpolate() {
             long currTime = System.currentTimeMillis();
@@ -1012,11 +987,7 @@ public class TouchImageView extends ImageView {
         }
 
         /**
-         * Interpolate the current targeted zoom and get the delta
-         * from the current zoom.
-         *
-         * @param t
-         * @return
+         * Interpolate the current targeted zoom and get the delta from the current zoom.
          */
         private double calculateDeltaScale(float t) {
             double zoom = startZoom + t * (targetZoom - startZoom);
@@ -1025,13 +996,13 @@ public class TouchImageView extends ImageView {
     }
 
     /**
-     * This function will transform the coordinates in the touch event to the coordinate
-     * system of the drawable that the imageview contain
+     * This function will transform the coordinates in the touch event to the coordinate system of
+     * the drawable that the imageview contain
      *
      * @param x            x-coordinate of touch event
      * @param y            y-coordinate of touch event
-     * @param clipToBitmap Touch event may occur within view, but outside image content. True, to clip return value
-     *                     to the bounds of the bitmap size.
+     * @param clipToBitmap Touch event may occur within view, but outside image content. True, to
+     *                     clip return value to the bounds of the bitmap size.
      * @return Coordinates of the point touched, in the coordinate system of the original drawable.
      */
     private PointF transformCoordTouchToBitmap(float x, float y, boolean clipToBitmap) {
@@ -1069,9 +1040,8 @@ public class TouchImageView extends ImageView {
     }
 
     /**
-     * Fling launches sequential runnables which apply
-     * the fling graphic to the image. The values for the translation
-     * are interpolated by the Scroller.
+     * Fling launches sequential runnables which apply the fling graphic to the image. The values
+     * for the translation are interpolated by the Scroller.
      *
      * @author Ortiz
      */

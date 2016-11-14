@@ -42,7 +42,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
 /**
- * A PreferenceFragment for the support library. Based on the platform's code with some removed features and a basic ListView layout.
+ * A PreferenceFragment for the support library. Based on the platform's code with some removed
+ * features and a basic ListView layout.
  *
  * @author Christophe Beyls
  */

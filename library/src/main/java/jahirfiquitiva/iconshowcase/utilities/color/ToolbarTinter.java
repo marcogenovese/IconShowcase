@@ -58,18 +58,12 @@ import android.widget.SearchView;
 import java.lang.reflect.Method;
 
 /**
- * <p>Apply colors and/or transparency to menu icons in a {@link Menu}.</p>
- * <p>
- * <p>Example usage:</p>
+ * <p>Apply colors and/or transparency to menu icons in a {@link Menu}.</p> <p> <p>Example
+ * usage:</p>
  * <p/>
- * <pre class="prettyprint">
- * public boolean onCreateOptionsMenu(Menu menu) {
- * ...
- * int color = getResources().getColor(R.color.your_awesome_color);
- * int alpha = 204; // 80% transparency
- * ToolbarTinter.on(menu).setMenuItemIconColor(color).setMenuItemIconAlpha(alpha).apply(this);
- * ...
- * }
+ * <pre class="prettyprint"> public boolean onCreateOptionsMenu(Menu menu) { ... int color =
+ * getResources().getColor(R.color.your_awesome_color); int alpha = 204; // 80% transparency
+ * ToolbarTinter.on(menu).setMenuItemIconColor(color).setMenuItemIconAlpha(alpha).apply(this); ... }
  * </pre>
  */
 public class ToolbarTinter {
@@ -255,12 +249,9 @@ public class ToolbarTinter {
 
     /**
      * <p>Sets a ColorFilter and/or alpha on all the {@link MenuItem}s in the menu, including the
-     * OverflowMenuButton.</p>
-     * <p>
-     * <p>Call this method after inflating/creating your menu in
-     * {@link Activity#onCreateOptionsMenu(Menu)}.</p>
-     * <p>
-     * <p>Note: This is targeted for the native ActionBar/Toolbar, not AppCompat.</p>
+     * OverflowMenuButton.</p> <p> <p>Call this method after inflating/creating your menu in {@link
+     * Activity#onCreateOptionsMenu(Menu)}.</p> <p> <p>Note: This is targeted for the native
+     * ActionBar/Toolbar, not AppCompat.</p>
      *
      * @param activity the activity to apply the menu tinting on.
      */
@@ -332,10 +323,9 @@ public class ToolbarTinter {
 
     /**
      * <p>Sets a ColorFilter and/or alpha on all the {@link MenuItem}s in the menu, including the
-     * OverflowMenuButton.</p>
-     * <p>
-     * <p>This should only be called after calling {@link #apply(Activity)}. It is useful for when
-     * {@link MenuItem}s might be re-arranged due to an action view being collapsed or expanded.</p>
+     * OverflowMenuButton.</p> <p> <p>This should only be called after calling {@link
+     * #apply(Activity)}. It is useful for when {@link MenuItem}s might be re-arranged due to an
+     * action view being collapsed or expanded.</p>
      */
     private void reapply() {
 
@@ -482,14 +472,13 @@ public class ToolbarTinter {
         }
 
         /**
-         * <p>Sets an {@link OnActionExpandListener} on all {@link MenuItem}s with views, so when the
-         * menu is updated, the colors will be also.</p>
-         * <p>
-         * <p>This is useful when the overflow menu is showing icons and {@link MenuItem}s might be
-         * pushed to the overflow menu when a action view is expanded e.g. android.widget.SearchView.
-         * </p>
+         * <p>Sets an {@link OnActionExpandListener} on all {@link MenuItem}s with views, so when
+         * the menu is updated, the colors will be also.</p> <p> <p>This is useful when the overflow
+         * menu is showing icons and {@link MenuItem}s might be pushed to the overflow menu when a
+         * action view is expanded e.g. android.widget.SearchView. </p>
          *
-         * @param reapply {@code true} to set the listeners on all {@link MenuItem}s with action views.
+         * @param reapply {@code true} to set the listeners on all {@link MenuItem}s with action
+         *                views.
          * @return this Builder object to allow for chaining of calls to set methods
          */
         public Builder reapplyOnChange(boolean reapply) {
@@ -500,7 +489,8 @@ public class ToolbarTinter {
         /**
          * Specify a color for visible MenuItem icons, including the OverflowMenuButton.
          *
-         * @param color the color to apply on visible MenuItem icons, including the OverflowMenuButton.
+         * @param color the color to apply on visible MenuItem icons, including the
+         *              OverflowMenuButton.
          * @return this Builder object to allow for chaining of calls to set methods
          */
         public Builder setIconsColor(int color) {
@@ -511,7 +501,8 @@ public class ToolbarTinter {
         /**
          * Specify a color that is applied when an action view is expanded or collapsed.
          *
-         * @param color the color to apply on MenuItems when an action-view is expanded or collapsed.
+         * @param color the color to apply on MenuItems when an action-view is expanded or
+         *              collapsed.
          * @return this Builder object to allow for chaining of calls to set methods
          */
         public Builder setOriginalIconsColor(int color) {
@@ -547,12 +538,9 @@ public class ToolbarTinter {
 
         /**
          * <p>Sets a ColorFilter and/or alpha on all the MenuItems in the menu, including the
-         * OverflowMenuButton.</p>
-         * <p>
-         * <p>Call this method after inflating/creating your menu in</p>
-         * {@link Activity#onCreateOptionsMenu(Menu)}.</p>
-         * <p>
-         * <p>Note: This is targeted for the native ActionBar/Toolbar, not AppCompat.</p>
+         * OverflowMenuButton.</p> <p> <p>Call this method after inflating/creating your menu in</p>
+         * {@link Activity#onCreateOptionsMenu(Menu)}.</p> <p> <p>Note: This is targeted for the
+         * native ActionBar/Toolbar, not AppCompat.</p>
          */
         public void apply(Activity activity) {
             ToolbarTinter theme = new ToolbarTinter(this);
@@ -560,8 +548,7 @@ public class ToolbarTinter {
         }
 
         /**
-         * <p>Creates a {@link ToolbarTinter} with the arguments supplied to this builder.</p>
-         * <p>
+         * <p>Creates a {@link ToolbarTinter} with the arguments supplied to this builder.</p> <p>
          * <p>It does not apply the theme. Call {@link ToolbarTinter#apply(Activity)} to do so.</p>
          *
          * @see #apply(Activity)

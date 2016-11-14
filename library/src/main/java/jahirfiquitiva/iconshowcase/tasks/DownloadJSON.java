@@ -2,6 +2,7 @@ package jahirfiquitiva.iconshowcase.tasks;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.view.View;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -11,6 +12,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.fragments.WallpapersFragment;
 import jahirfiquitiva.iconshowcase.holders.FullListHolder;
 import jahirfiquitiva.iconshowcase.models.WallpaperItem;
 import jahirfiquitiva.iconshowcase.utilities.JSONParser;
@@ -24,8 +26,8 @@ public class DownloadJSON extends AsyncTask<Void, Void, Boolean> {
 
     private final ArrayList<WallpaperItem> walls = new ArrayList<>();
     private final WeakReference<Context> wrContext;
-
-    long startTime, endTime;
+    private WallpapersFragment fragment;
+    private View layout;
 
     public DownloadJSON(Context context) {
         wrContext = new WeakReference<>(context);
@@ -33,8 +35,6 @@ public class DownloadJSON extends AsyncTask<Void, Void, Boolean> {
 
     @Override
     protected void onPreExecute() {
-        Timber.d("Starting DownloadJSON");
-        startTime = System.currentTimeMillis();
     }
 
     @Override
@@ -96,19 +96,26 @@ public class DownloadJSON extends AsyncTask<Void, Void, Boolean> {
             } catch (JSONException e) { //TODO log
             }
         }
-
-        endTime = System.currentTimeMillis();
         return true;
     }
 
     @Override
     protected void onPostExecute(Boolean worked) {
-        Timber.d("Walls Task completed in: %d milliseconds", (endTime - startTime));
         FullListHolder.get().walls().createList(walls);
-//            if (layout != null) {
-//                setupLayout(taskContext.get());
-//            } else {
-//                Timber.d("Wallpapers layout is null");
-//            }
+        if (fragment != null) {
+            if (layout != null) {
+                fragment.setupContent();
+            } else {
+                Timber.d("Wallpapers layout is null");
+            }
+        } else {
+            Timber.d("Wallpapers fragment is null");
+        }
     }
+
+    public void setFragmentAndLayout(WallpapersFragment fragment, View layout) {
+        this.fragment = fragment;
+        this.layout = layout;
+    }
+
 }

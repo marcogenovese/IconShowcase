@@ -19,8 +19,8 @@
   -->
 
 <manifest
-    package="jahirfiquitiva.iconshowcase"
-    xmlns:tools="http://schemas.android.com/tools">
+        package="jahirfiquitiva.iconshowcase"
+        xmlns:tools="http://schemas.android.com/tools">
 
     <uses-sdk tools:overrideLibrary="org.kustom.api"/>
 

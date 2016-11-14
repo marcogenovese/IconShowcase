@@ -24,7 +24,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.RecyclerView;

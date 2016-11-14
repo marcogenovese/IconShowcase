@@ -74,9 +74,6 @@ public class RequestItem implements Parcelable {
 
     /**
      * Used to compare object to object
-     *
-     * @param other
-     * @return
      */
     @Override
     public boolean equals(Object other) {
