@@ -2,6 +2,7 @@ package jahirfiquitiva.iconshowcase.tasks;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.v4.app.Fragment;
 import android.view.View;
 
 import org.json.JSONArray;
@@ -19,9 +20,6 @@ import jahirfiquitiva.iconshowcase.utilities.JSONParser;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import timber.log.Timber;
 
-/**
- * Created by Allan Wang on 2016-09-06.
- */
 public class DownloadJSON extends AsyncTask<Void, Void, Boolean> {
 
     private final ArrayList<WallpaperItem> walls = new ArrayList<>();
@@ -35,6 +33,9 @@ public class DownloadJSON extends AsyncTask<Void, Void, Boolean> {
 
     @Override
     protected void onPreExecute() {
+        if (fragment != null) {
+            fragment.refreshContent(wrContext.get());
+        }
     }
 
     @Override
@@ -90,9 +91,7 @@ public class DownloadJSON extends AsyncTask<Void, Void, Boolean> {
                             dimens,
                             copyright,
                             downloadable));
-
                 }
-
             } catch (JSONException e) { //TODO log
             }
         }
@@ -103,19 +102,12 @@ public class DownloadJSON extends AsyncTask<Void, Void, Boolean> {
     protected void onPostExecute(Boolean worked) {
         FullListHolder.get().walls().createList(walls);
         if (fragment != null) {
-            if (layout != null) {
-                fragment.setupContent();
-            } else {
-                Timber.d("Wallpapers layout is null");
-            }
-        } else {
-            Timber.d("Wallpapers fragment is null");
+            fragment.setupContent();
         }
     }
 
-    public void setFragmentAndLayout(WallpapersFragment fragment, View layout) {
-        this.fragment = fragment;
-        this.layout = layout;
+    public void setFragmentAndLayout(Fragment fragment) {
+        this.fragment = fragment instanceof WallpapersFragment ? (WallpapersFragment) fragment : null;
     }
 
 }

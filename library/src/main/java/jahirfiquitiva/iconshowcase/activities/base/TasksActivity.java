@@ -104,15 +104,19 @@ public abstract class TasksActivity extends DrawerActivity {
 
     private void executeWallpapersTaskAgain() {
         if (drawerHas(DrawerItem.WALLPAPERS)) {
-            if(jsonTask!=null){
+            if (jsonTask != null) {
                 jsonTask.cancel(false);
                 jsonTask.execute();
             }
         }
     }
 
-    public DownloadJSON getJsonTask(){
+    public DownloadJSON getJsonTask() {
         return jsonTask;
+    }
+
+    public void setJsonTask(DownloadJSON jsonTask) {
+        this.jsonTask = jsonTask;
     }
 
     //    @Subscribe

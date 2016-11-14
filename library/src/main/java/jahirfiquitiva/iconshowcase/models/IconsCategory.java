@@ -30,6 +30,11 @@ public class IconsCategory implements Parcelable {
     private final String name;
     private final ArrayList<IconItem> iconsArray;
 
+    public IconsCategory(String name) {
+        this.name = name;
+        this.iconsArray = new ArrayList<>();
+    }
+
     public IconsCategory(String name, @NonNull ArrayList<IconItem> iconsArray) {
         this.name = name;
         this.iconsArray = iconsArray;
@@ -56,6 +61,11 @@ public class IconsCategory implements Parcelable {
 
     public ArrayList<IconItem> getIconsArray() {
         return iconsArray.size() > 0 ? this.iconsArray : null;
+    }
+
+    public void setIconsOfCategory(ArrayList<IconItem> icons) {
+        this.iconsArray.clear();
+        this.iconsArray.addAll(icons);
     }
 
     @Override

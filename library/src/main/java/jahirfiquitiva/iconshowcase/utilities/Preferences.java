@@ -29,7 +29,7 @@ import jahirfiquitiva.iconshowcase.config.Config;
 public class Preferences {
 
     private static final String
-            PREFERENCES_NAME = Config.get().string(R.string.app_name).toLowerCase() + "_preferences",
+            PREFERENCES_NAME = Config.get().string(R.string.app_name).toLowerCase().replaceAll(" ", "_") + "_preferences",
             FEATURES_ENABLED = "features_enabled",
             VERSION_CODE = "version_code",
             ROTATE_MINUTE = "rotate_time_minute",
@@ -104,7 +104,8 @@ public class Preferences {
     }
 
     public String getDownloadsFolder() {
-        return prefs().getString(WALLS_DOWNLOAD_FOLDER, Environment.getExternalStorageDirectory().getAbsolutePath());
+        return prefs().getString(WALLS_DOWNLOAD_FOLDER, Environment.getExternalStorageDirectory().getAbsolutePath() +
+                "/" + Config.get().string(R.string.app_name).replaceAll(" ", "") + "/Wallpapers");
     }
 
     public void setIfAppsToRequestLoaded(boolean loaded) {

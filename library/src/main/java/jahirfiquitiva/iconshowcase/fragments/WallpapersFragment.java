@@ -23,9 +23,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -62,19 +59,19 @@ public class WallpapersFragment extends EventBaseFragment {
     private ImageView noConnection;
     private Activity context;
     private GridSpacingItemDecoration gridSpacing;
-    private int tintColor;
+    private int tintColor,swipeToRefreshColor;
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        //if (FullListHolder.get().walls().isNull()) return loadingView(inflater, container);
-
         setHasOptionsMenu(true);
         context = getActivity();
+        ((ShowcaseActivity) context).getJsonTask().setFragmentAndLayout(this);
 
         View layout = inflater.inflate(R.layout.wallpapers_section, container, false);
 
+        swipeToRefreshColor = ThemeUtils.darkOrLight(context, R.color.drawable_tint_light, R.color.drawable_tint_dark);
         tintColor = ThemeUtils.darkOrLight(context, R.color.drawable_tint_dark, R.color.drawable_tint_light);
 
         noConnection = (ImageView) layout.findViewById(R.id.no_connected_icon);
@@ -93,9 +90,7 @@ public class WallpapersFragment extends EventBaseFragment {
 
         setupRecyclerView(false, 0);
 
-        ((ShowcaseActivity) context).getJsonTask().setFragmentAndLayout(this, layout);
-
-        mSwipeRefreshLayout.setProgressBackgroundColorSchemeColor(tintColor);
+        mSwipeRefreshLayout.setProgressBackgroundColorSchemeColor(swipeToRefreshColor);
 
         mSwipeRefreshLayout.setColorSchemeResources(
                 ThemeUtils.darkOrLight(R.color.dark_theme_accent, R.color.light_theme_accent),
@@ -117,45 +112,40 @@ public class WallpapersFragment extends EventBaseFragment {
         inflater.inflate(R.menu.wallpapers, menu);
     }
 
-    public void reset(){
-        FragmentManager manager = getActivity().getSupportFragmentManager();
-        FragmentTransaction ft = manager.beginTransaction();
-        Fragment newFragment = this;
-        this.onDestroy();
-        ft.remove(this);
-        ft.replace(R.id.main,newFragment);
-        //container is the ViewGroup of current fragment
-        ft.addToBackStack(null);
-        ft.commit();
-    }
-
     public void setupContent() {
         if (Utils.hasNetwork(context)) {
-            noConnection.setVisibility(View.GONE);
-            progress.setVisibility(View.VISIBLE);
-            mSwipeRefreshLayout.setEnabled(false);
-            mSwipeRefreshLayout.setRefreshing(false);
+            showProgressBar();
+            if (!(FullListHolder.get().walls().getList().isEmpty())) {
+                mAdapter = new WallpapersAdapter(getActivity(),
+                        FullListHolder.get().walls().getList());
 
-            mAdapter = new WallpapersAdapter(getActivity(),
-                    FullListHolder.get().walls().getList());
+                mRecyclerView.setAdapter(mAdapter);
+                fastScroller.attachRecyclerView(mRecyclerView);
 
-            mRecyclerView.setAdapter(mAdapter);
-            fastScroller.attachRecyclerView(mRecyclerView);
-
-            mRecyclerView.setVisibility(View.VISIBLE);
-            fastScroller.setVisibility(View.VISIBLE);
-        }
-
-        if (FullListHolder.get().walls().getList().isEmpty()) {
+                mRecyclerView.setVisibility(View.VISIBLE);
+                fastScroller.setVisibility(View.VISIBLE);
+                progress.setVisibility(View.GONE);
+            }
+        } else {
             noConnection.setImageDrawable(ColorUtils.getTintedIcon(
                     context, R.drawable.ic_no_connection,
                     tintColor));
-            hideStuff();
+            showNoConnectionPicture();
         }
     }
 
-    private void hideStuff() {
+    private void showNoConnectionPicture() {
         noConnection.setVisibility(View.VISIBLE);
+        progress.setVisibility(View.GONE);
+        mRecyclerView.setVisibility(View.GONE);
+        fastScroller.setVisibility(View.GONE);
+        mSwipeRefreshLayout.setEnabled(false);
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
+
+    private void showProgressBar() {
+        noConnection.setVisibility(View.GONE);
+        progress.setVisibility(View.VISIBLE);
         mRecyclerView.setVisibility(View.GONE);
         fastScroller.setVisibility(View.GONE);
         mSwipeRefreshLayout.setEnabled(false);
@@ -200,7 +190,7 @@ public class WallpapersFragment extends EventBaseFragment {
         setupRecyclerView(true, newColumns);
     }
 
-    public void refreshWalls(Context context) {
+    public void refreshContent(Context context) {
         mRecyclerView.setVisibility(View.GONE);
         fastScroller.setVisibility(View.GONE);
         int stringId;
@@ -212,6 +202,15 @@ public class WallpapersFragment extends EventBaseFragment {
         Snackbar snackbar = snackbarCustom(getString(stringId), Snackbar.LENGTH_SHORT);
         snackbar.getView().setBackgroundColor(ThemeUtils.darkOrLight(context, R.color.snackbar_dark, R.color.snackbar_light));
         snackbar.show();
+        /*
+        snackbar.setCallback(new Snackbar.Callback() {
+            @Override
+            public void onDismissed(Snackbar snackbar, int event) {
+                super.onDismissed(snackbar, event);
+                setupContent();
+            }
+        });
+        */
         mSwipeRefreshLayout.setEnabled(true);
         mSwipeRefreshLayout.post(new Runnable() {
             @Override

@@ -45,6 +45,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -74,6 +75,7 @@ import jahirfiquitiva.iconshowcase.adapters.RequestsAdapter;
 import jahirfiquitiva.iconshowcase.config.Config;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.fragments.RequestsFragment;
+import jahirfiquitiva.iconshowcase.fragments.WallpapersFragment;
 import jahirfiquitiva.iconshowcase.holders.FullListHolder;
 import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.tasks.DownloadJSON;
@@ -458,17 +460,20 @@ public class ShowcaseActivity extends TasksActivity {
         if (i == R.id.changelog) {
             ChangelogDialog.show(this, R.xml.changelog);
         } else if (i == R.id.refresh) {
-            //TODO: MAKE WALLPAPERS APPEAR AT FIRST. FOR SOME REASON ONLY APPEAR AFTER PRESSING "UPDATE" ICON IN TOOLBAR
-            if (Utils.hasNetwork(this)) {
-                FullListHolder.get().walls().clearList();
-                // TODO: Re-do this method so it can be called from here
-                // WallpapersFragment.refreshWalls(this);
-                new DownloadJSON(this).execute();
-            } else {
-                //TODO unavailable
+            FullListHolder.get().walls().clearList();
+            DownloadJSON jsonTask = new DownloadJSON(this);
+            jsonTask.setFragmentAndLayout(getCurrentFragment());
+            if (getJsonTask() != null) {
+                getJsonTask().cancel(true);
             }
+            setJsonTask(jsonTask);
+            jsonTask.execute();
         } else if (i == R.id.columns) {
-            ISDialogs.showColumnsSelectorDialog(this);
+            if (getCurrentFragment() instanceof WallpapersFragment) {
+                ISDialogs.showColumnsSelectorDialog(this, ((WallpapersFragment) getCurrentFragment()));
+            } else {
+                Toast.makeText(this, "Can't perform this action from here.", Toast.LENGTH_SHORT).show();
+            }
         } else if (i == R.id.select_all) {
             RequestsAdapter requestsAdapter = RequestsFragment.mAdapter;
             if (requestsAdapter != null && RequestsFragment.mAdapter.getItemCount() > 0) {

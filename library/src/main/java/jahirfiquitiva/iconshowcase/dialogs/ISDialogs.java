@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.AltWallpaperViewerActivity;
 import jahirfiquitiva.iconshowcase.events.BlankEvent;
+import jahirfiquitiva.iconshowcase.fragments.WallpapersFragment;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
@@ -311,7 +312,7 @@ public final class ISDialogs {
                 .show();
     }
 
-    public static void showColumnsSelectorDialog(final Context context) {
+    public static void showColumnsSelectorDialog(final Context context, final WallpapersFragment wallsFragment) {
         Preferences mPrefs = new Preferences(context);
         final int current = mPrefs.getWallsColumnsNumber();
         new MaterialDialog.Builder(context)
@@ -323,9 +324,8 @@ public final class ISDialogs {
                     public boolean onSelection(MaterialDialog dialog, View view, int position, CharSequence text) {
                         int newSelected = position + 1;
                         if (newSelected != current) {
-                            //TODO Make this work
                             EventBus.getDefault().post(new BlankEvent(newSelected));
-//                            WallpapersFragment.updateRecyclerView(newSelected);
+                            wallsFragment.updateRecyclerView(newSelected);
                         }
                         return true;
                     }

@@ -146,7 +146,8 @@ public class PreviewsFragment extends EventBaseFragment {
                 mLastSelected = position;
                 if (mSearchView != null && getActivity() != null)
                     mSearchView.setQueryHint(getString(R.string.search_x, tabName(mLastSelected)));
-                getActivity().invalidateOptionsMenu();
+                if (getActivity() != null)
+                    getActivity().invalidateOptionsMenu();
             }
         });
         for (IconsCategory category : mCategories) {
