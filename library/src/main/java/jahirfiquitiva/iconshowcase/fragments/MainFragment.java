@@ -20,6 +20,8 @@
 package jahirfiquitiva.iconshowcase.fragments;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -52,16 +54,10 @@ public class MainFragment extends EventBaseFragment {
 
     @Override
     public void onFabClick(View v) {
-        ((ShowcaseActivity) context).getBottomSheet()
-                .showWithSheetView(LayoutInflater.from(context)
-                        .inflate(R.layout.apply_section,
-                                ((ShowcaseActivity) context).getBottomSheet(), false));
-        /*
         Intent rate = new Intent(Intent.ACTION_VIEW,
                 Uri.parse("https://play.google.com/store/apps/details?id=" +
                         context.getPackageName()));
         context.startActivity(rate);
-        */
     }
 
     @Override
