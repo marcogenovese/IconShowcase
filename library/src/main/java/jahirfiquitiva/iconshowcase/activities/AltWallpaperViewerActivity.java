@@ -23,6 +23,7 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -183,7 +184,13 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
             public void onDebouncedClick(View v) {
                 ISDialogs.showWallpaperDetailsDialog(AltWallpaperViewerActivity.this,
                         item.getWallName(), item.getWallAuthor(), item.getWallDimensions(),
-                        item.getWallCopyright());
+                        item.getWallCopyright(), new DialogInterface.OnDismissListener() {
+                            @Override
+                            public void onDismiss(DialogInterface dialogInterface) {
+                                reshowFab(fab);
+                                setupFullScreen();
+                            }
+                        });
             }
         });
 
@@ -268,6 +275,7 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
     }
 
     public void setupFullScreen() {
+        makeStatusBarIconsWhite();
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         View decorView = getWindow().getDecorView();
@@ -289,6 +297,9 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        ProgressBar spinner = (ProgressBar) findViewById(R.id.progress);
+        if (spinner != null) spinner.setVisibility(View.GONE);
+        reshowFab(fab);
         setupFullScreen();
     }
 
@@ -334,10 +345,8 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1) {
-            reshowFab(fab);
-            setupFullScreen();
-        }
+        reshowFab(fab);
+        setupFullScreen();
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
@@ -486,7 +495,7 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
                     }
                 });
             }
-        }, 15000);
+        }, 10000);
     }
 
     private void saveWallpaper(final Activity context, final String wallName,
@@ -583,39 +592,58 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
                                 })
                                 .show();
 
-                        //                        Glide.with(this)
-                        //                                .load(wallUrl)
-                        //                                .asBitmap()
-                        //                                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                        //                                .into(new SimpleTarget<Bitmap>() {
-                        //                                    @Override
-                        //                                    public void onResourceReady (
-                        //                                            final Bitmap resource,
-                        //                                            GlideAnimation<? super Bitmap> glideAnimation) {
-                        //                                        if (resource != null && dialogApply.isShowing()) {
-                        //                                            enteredApplyTask[0] = true;
-                        //
-                        //                                            if (dialogApply != null) {
-                        //                                                dialogApply.dismiss();
-                        //                                            }
-                        //
-                        //                                            dialogApply = new MaterialDialog.Builder(this)
-                        //                                                    .content(R.string.setting_wall_title)
-                        //                                                    .progress(true, 0)
-                        //                                                    .cancelable(false)
-                        //                                                    .show();
-                        //
-                        //                                            applyTask[0] = new ApplyWallpaper(this, dialogApply,
-                        //                                                    resource, false, layout, new ApplyWallpaper.ApplyCallback() {
-                        //                                                @Override
-                        //                                                public void afterApplied () {
-                        //                                                    reshowFab(fab);
-                        //                                                }
-                        //                                            });
-                        //                                            applyTask[0].execute();
-                        //                                        }
-                        //                                    }
-                        //                                });
+                        Glide.with(context)
+                                .load(wallUrl)
+                                .asBitmap()
+                                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                                .into(new SimpleTarget<Bitmap>() {
+                                    @Override
+                                    public void onResourceReady(
+                                            final Bitmap resource,
+                                            GlideAnimation<? super Bitmap> glideAnimation) {
+                                        if (resource != null && dialogApply.isShowing()) {
+                                            enteredApplyTask[0] = true;
+
+                                            if (dialogApply != null) {
+                                                dialogApply.dismiss();
+                                            }
+
+                                            dialogApply = new MaterialDialog.Builder(context)
+                                                    .content(R.string.setting_wall_title)
+                                                    .progress(true, 0)
+                                                    .cancelable(false)
+                                                    .show();
+
+                                            applyTask[0] = new ApplyWallpaper(context, resource, new ApplyWallpaper.ApplyCallback() {
+                                                @Override
+                                                public void afterApplied() {
+                                                    runOnUIThread(context, new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            if (dialogApply != null) {
+                                                                dialogApply.dismiss();
+                                                            }
+
+                                                            dialogApply = new MaterialDialog.Builder(context)
+                                                                    .content(R.string.set_as_wall_done)
+                                                                    .positiveText(android.R.string.ok)
+                                                                    .show();
+
+                                                            dialogApply.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                                                @Override
+                                                                public void onDismiss(DialogInterface dialogInterface) {
+                                                                    reshowFab(fab);
+                                                                    setupFullScreen();
+                                                                }
+                                                            });
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                            applyTask[0].execute();
+                                        }
+                                    }
+                                });
 
                         Timer timer = new Timer();
                         timer.schedule(new TimerTask() {
@@ -634,7 +662,7 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
                                     }
                                 });
                             }
-                        }, 15000);
+                        }, 10000);
                     }
                 }, new MaterialDialog.SingleButtonCallback() {
                     @Override
@@ -645,6 +673,13 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
                         } else {
                             cropWallpaper(wallUrl);
                         }
+                    }
+                },
+                new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialogInterface) {
+                        reshowFab(fab);
+                        setupFullScreen();
                     }
                 });
     }
@@ -794,7 +829,15 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
                     }
                 });
             }
-        }, 15000);
+        }, 10000);
+    }
+
+    private void makeStatusBarIconsWhite() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            int flags = getWindow().getDecorView().getSystemUiVisibility();
+            flags &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            getWindow().getDecorView().setSystemUiVisibility(flags);
+        }
     }
 
 }

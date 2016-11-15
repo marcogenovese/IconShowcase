@@ -32,7 +32,11 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.events.WallpaperEvent;
 import jahirfiquitiva.iconshowcase.tasks.ApplyWallpaper;
 
@@ -75,11 +79,12 @@ public class WallpaperDialog extends BaseEventDialog {
         WallpaperEvent.Step step = (WallpaperEvent.Step) getArguments().getSerializable("wall_step");
         if (step == null) step = WallpaperEvent.Step.START;
 
-        final MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
+        final MaterialDialog.Builder[] builder = {new MaterialDialog.Builder(getActivity())};
+        final boolean[] enteredApplyTask = {false};
 
         switch (step) {
             case START:
-                builder.title(R.string.apply)
+                builder[0].title(R.string.apply)
                         .content(R.string.confirm_apply)
                         .positiveText(R.string.apply)
                         .negativeText(android.R.string.cancel)
@@ -92,10 +97,34 @@ public class WallpaperDialog extends BaseEventDialog {
                 break;
             case LOADING:
 
-                final ApplyWallpaper task = new ApplyWallpaper(getActivity(), getUrl());
-                task.execute(); //TODO check if it works multiple times
+                final ApplyWallpaper task = new ApplyWallpaper(getActivity(), getUrl(), new ApplyWallpaper.ApplyCallback() {
+                    @Override
+                    public void afterApplied() {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                dismiss();
+                                builder[0] = new MaterialDialog.Builder(getActivity());
+                                builder[0].content(R.string.set_as_wall_done)
+                                        .positiveText(android.R.string.ok)
+                                        .show();
+                                if (getActivity() instanceof ShowcaseActivity) {
+                                    if (((ShowcaseActivity) getActivity()).isWallsPicker()) {
+                                        getActivity().finish();
+                                    }
+                                }
+                            }
+                        });
+                    }
+                }, new ApplyWallpaper.DownloadCallback() {
+                    @Override
+                    public void afterDownloaded() {
+                        //TODO: Properly show the "Setting wallpaper..." dialog
+                        showBase(getActivity(), getUrl(), WallpaperEvent.Step.APPLYING);
+                    }
+                });
 
-                builder.content(R.string.downloading_wallpaper)
+                builder[0].content(R.string.downloading_wallpaper)
                         .progress(true, 0)
                         .cancelable(false)
                         .onPositive(new MaterialDialog.SingleButtonCallback() { //TODO set positive text?
@@ -105,21 +134,42 @@ public class WallpaperDialog extends BaseEventDialog {
                                 dismiss();
                             }
                         });
+
+                Timer timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        if (getActivity() != null) {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (!enteredApplyTask[0]) {
+                                        String newContent = getActivity().getString(R.string.downloading_wallpaper)
+                                                + "\n"
+                                                + getActivity().getString(R.string.download_takes_longer);
+                                        builder[0].content(newContent)
+                                                .positiveText(android.R.string.cancel);
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }, 10000);
+
+                task.execute();
+                enteredApplyTask[0] = true;
                 break;
-
             case APPLYING:
-
-                builder.content(R.string.setting_wall_title)
+                builder[0].content(R.string.setting_wall_title)
                         .progress(true, 0)
                         .cancelable(false);
-
                 break;
             default:
-                builder.title(R.string.error); //TODO put to R.string
+                builder[0].title(R.string.error); //TODO put to R.string
                 break;
         }
 
-        return builder.build();
+        return builder[0].build();
     }
 
     private String getUrl() {
@@ -142,4 +192,6 @@ public class WallpaperDialog extends BaseEventDialog {
 //                break;
 //        }
     }
+
+
 }

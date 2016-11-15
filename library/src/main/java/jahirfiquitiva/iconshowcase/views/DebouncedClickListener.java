@@ -30,7 +30,7 @@ public abstract class DebouncedClickListener implements View.OnClickListener {
         if (clickable) {
             clickable = false;
             onDebouncedClick(v);
-            reset(); //comment to disable automatic reset
+            reset();
         }
     }
 

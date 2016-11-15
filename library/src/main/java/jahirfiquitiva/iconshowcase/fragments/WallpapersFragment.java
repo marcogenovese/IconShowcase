@@ -59,7 +59,7 @@ public class WallpapersFragment extends EventBaseFragment {
     private ImageView noConnection;
     private Activity context;
     private GridSpacingItemDecoration gridSpacing;
-    private int tintColor,swipeToRefreshColor;
+    private int tintColor;
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
@@ -71,7 +71,6 @@ public class WallpapersFragment extends EventBaseFragment {
 
         View layout = inflater.inflate(R.layout.wallpapers_section, container, false);
 
-        swipeToRefreshColor = ThemeUtils.darkOrLight(context, R.color.drawable_tint_light, R.color.drawable_tint_dark);
         tintColor = ThemeUtils.darkOrLight(context, R.color.drawable_tint_dark, R.color.drawable_tint_light);
 
         noConnection = (ImageView) layout.findViewById(R.id.no_connected_icon);
@@ -90,20 +89,18 @@ public class WallpapersFragment extends EventBaseFragment {
 
         setupRecyclerView(false, 0);
 
-        mSwipeRefreshLayout.setProgressBackgroundColorSchemeColor(swipeToRefreshColor);
+        mSwipeRefreshLayout.setProgressBackgroundColorSchemeColor(
+                ThemeUtils.darkOrLight(context, R.color.drawable_tint_light,
+                        R.color.drawable_tint_dark));
 
-        mSwipeRefreshLayout.setColorSchemeResources(
-                ThemeUtils.darkOrLight(R.color.dark_theme_accent, R.color.light_theme_accent),
-                ThemeUtils.darkOrLight(R.color.dark_theme_accent, R.color.light_theme_accent),
-                ThemeUtils.darkOrLight(R.color.dark_theme_accent, R.color.light_theme_accent)); //TODO check if having three of the same colors makes a difference
+        int accent = ThemeUtils.darkOrLight(R.color.dark_theme_accent, R.color.light_theme_accent);
+
+        mSwipeRefreshLayout.setColorSchemeResources(accent);
 
         mSwipeRefreshLayout.setEnabled(false);
-
-        //TODO: MAKE WALLPAPERS APPEAR AT FIRST. FOR SOME REASON ONLY APPEAR AFTER PRESSING "UPDATE" ICON IN TOOLBAR
         setupContent();
 
         return layout;
-
     }
 
     @Override
@@ -202,15 +199,6 @@ public class WallpapersFragment extends EventBaseFragment {
         Snackbar snackbar = snackbarCustom(getString(stringId), Snackbar.LENGTH_SHORT);
         snackbar.getView().setBackgroundColor(ThemeUtils.darkOrLight(context, R.color.snackbar_dark, R.color.snackbar_light));
         snackbar.show();
-        /*
-        snackbar.setCallback(new Snackbar.Callback() {
-            @Override
-            public void onDismissed(Snackbar snackbar, int event) {
-                super.onDismissed(snackbar, event);
-                setupContent();
-            }
-        });
-        */
         mSwipeRefreshLayout.setEnabled(true);
         mSwipeRefreshLayout.post(new Runnable() {
             @Override

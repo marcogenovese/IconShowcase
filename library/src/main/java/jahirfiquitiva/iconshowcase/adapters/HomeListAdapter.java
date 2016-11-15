@@ -145,16 +145,11 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public class AppInfoCard extends RecyclerView.ViewHolder {
 
-        final String themedIcons = String.valueOf(context.getResources().getInteger(R.integer.icons_amount));
-
-        //TODO: Improve tasks so the items amount is accurate
-
+        final String themedIcons = String.valueOf(0);
         final String availableWallpapers = String.valueOf(
-                FullListHolder.get().walls().getList() != null ? FullListHolder.get().walls().getList().size() :
-                        context.getResources().getInteger(R.integer.wallpapers_amount) > 0 ? context.getResources().getInteger(R.integer.wallpapers_amount) : 0);
+                FullListHolder.get().walls().getList() != null ? FullListHolder.get().walls().getList().size() : 0);
         final String includedWidgets = String.valueOf(
-                LoadZooperWidgets.widgets != null ? LoadZooperWidgets.widgets.size() :
-                        context.getResources().getInteger(R.integer.widgets_amount) > 0 ? context.getResources().getInteger(R.integer.widgets_amount) : 0);
+                LoadZooperWidgets.widgets != null ? LoadZooperWidgets.widgets.size() : 0);
 
         final ImageView iconsIV, wallsIV, widgetsIV;
         final TextView iconsT, wallsT, widgetsT;

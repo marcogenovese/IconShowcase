@@ -73,15 +73,14 @@
     <bool name="light_statusbar_in_dark_theme">false</bool>
     <bool name="light_statusbar_in_clear_theme">false</bool>
 
-    <!-- DONATIONS CONFIGURATION -->
+
+    <!-- /*/*/*/*/*/*/*/*/*/*/*/*/ DONATIONS CONFIGURATION /*/*/*/*/*/*/*/*/*/*/*/*/ -->
+
     <!-- MAKE SURE THAT THE TWO ARRAYS BELOW ALL HAVE THE SAME NUMBER OF ITEMS,
     OR ELSE THIS WON'T WORK-->
-    <string-array name="google_donation_items">
+    <string-array name="google_donations_items">
         <!--
-        Put CONSUMABLE google items here
-        If one of the nonconsumable products is shown as purchased,
-        it will enable the pro boolean and will switch to here.
-        Preferably, this should be an exact replica of the previous list, but with consumable items
+        Put donation items ids here
         -->
     </string-array>
 
@@ -96,7 +95,8 @@
     <!-- Paypal currency code (ie USD, or CAD); make sure this is a valid code-->
     <string name="paypal_currency_code"></string>
 
-    <!-- HOME/MAIN SECTION CONFIGURATION -->
+
+    <!-- /*/*/*/*/*/*/*/*/*/*/*/*/ HOME/MAIN SECTION CONFIGURATION /*/*/*/*/*/*/*/*/*/*/*/*/-->
 
     <!--
     Do you want the icons in toolbar to be randomized?
@@ -119,11 +119,6 @@
     -->
     <bool name="hide_pack_info">false</bool>
 
-    <!--
-    How many icons does your app include?
-    -->
-    <integer name="icons_amount">600</integer>
-
     <!-- These arrays are for the list of apps or links in main section. -->
     <string-array name="home_list_titles">
     </string-array>
@@ -137,7 +132,8 @@
     <string-array name="home_list_links">
     </string-array>
 
-    <!-- ICONS/PREVIEWS SECTION CONFIGURATION -->
+
+    <!--  /*/*/*/*/*/*/*/*/*/*/*/*/ ICONS/PREVIEWS SECTION CONFIGURATION /*/*/*/*/*/*/*/*/*/*/*/*/ -->
 
     <!--
     Do you want the "ALL ICONS" tab to be generated automatically?
@@ -157,10 +153,11 @@
     <!-- TABLETS - LANDSCAPE MODE -->
     <integer name="icons_columns_tablet_landscape">12</integer>
 
-    <!-- WALLPAPERS SECTION CONFIGURATION -->
+
+    <!-- /*/*/*/*/*/*/*/*/*/*/*/*/ WALLPAPERS SECTION CONFIGURATION /*/*/*/*/*/*/*/*/*/*/*/*/ -->
 
     <!-- Set this to true if you want the alternative wallpaper viewer. (The one with the FAB) -->
-    <bool name="alternative_viewer">false</bool>
+    <bool name="alternative_viewer">true</bool>
 
     <!-- APPLY SECTION CONFIGURATION -->
 
@@ -176,7 +173,8 @@
     <!-- TABLETS - LANDSCAPE MODE -->
     <integer name="launchers_columns_tablet_landscape">8</integer>
 
-    <!-- REQUESTS SECTION CONFIGURATION -->
+
+    <!-- /*/*/*/*/*/*/*/*/*/*/*/*/ REQUESTS SECTION CONFIGURATION /*/*/*/*/*/*/*/*/*/*/*/*/ -->
 
     <!--
     Do you want request items as cards?
@@ -206,7 +204,8 @@
     <integer name="max_apps_to_request">-1</integer>
     <integer name="limit_request_to_x_minutes">-1</integer>
 
-    <!-- FAQS SECTION CONFIGURATION -->
+
+    <!-- /*/*/*/*/*/*/*/*/*/*/*/*/ FAQS SECTION CONFIGURATION /*/*/*/*/*/*/*/*/*/*/*/*/ -->
 
     <!--
     Do you want faqs items as cards?
@@ -215,7 +214,8 @@
     -->
     <bool name="faqs_cards">false</bool>
 
-    <!-- SETTINGS SECTION CONFIGURATION -->
+
+    <!-- /*/*/*/*/*/*/*/*/*/*/*/*/ SETTINGS SECTION CONFIGURATION /*/*/*/*/*/*/*/*/*/*/*/*/ -->
 
     <!--
     Do you want to allow users to hide the app icon?

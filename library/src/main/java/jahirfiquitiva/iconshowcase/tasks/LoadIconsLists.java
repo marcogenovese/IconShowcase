@@ -21,13 +21,8 @@ package jahirfiquitiva.iconshowcase.tasks;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.content.res.XmlResourceParser;
 import android.os.AsyncTask;
 
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-
-import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,9 +40,7 @@ import timber.log.Timber;
 public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
 
     private final WeakReference<Context> mContext;
-
     private ArrayList<IconItem> mPreviewIcons = new ArrayList<>();
-    private IconsCategory category;
     private ArrayList<IconsCategory> mCategoryList = new ArrayList<>();
     private long startTime, endTime;
 
@@ -74,67 +67,68 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
             }
         }
 
-        XmlResourceParser xmlParser = null;
+        String[] tabsNames = r.getStringArray(R.array.tabs);
+        ArrayList<IconItem> allIcons = new ArrayList<>();
 
-        ArrayList<IconItem> icons = new ArrayList<>();
-
-        try {
-            xmlParser = r.getXml(R.xml.drawable);
-
-            int event = xmlParser.getEventType();
-
-            while (event != XmlPullParser.END_DOCUMENT) {
-                String title = "";
-                switch (event) {
-                    case XmlPullParser.START_TAG:
-                        String name = xmlParser.getName();
-                        if (name.equals("category")) {
-                            if (category != null && icons.size() > 0) {
-                                category.setIconsOfCategory(sortIconsList(r, p, icons));
-                                mCategoryList.add(category);
-                            }
-                            title = xmlParser.getAttributeValue(null, "title");
-                            if (title.length() > 1) {
-                                category = new IconsCategory(title);
-                            }
-                            icons.clear();
-                        } else if (name.equals("item")) {
-                            if (category != null) {
-                                String iconName = xmlParser.getAttributeValue(null, "drawable");
-                                int iconResId = Utils.getIconResId(r, p, iconName);
-                                if (iconResId > 0) {
-                                    icons.add(new IconItem(iconName, iconResId));
-                                } else {
-                                    Timber.d("Icon: " + iconName + " could not be found." +
-                                            " Make sure you added it to resources.");
-                                }
-                            }
-                        }
-                        break;
+        for (String tabName : tabsNames) {
+            int arrayId = r.getIdentifier(tabName, "array", p);
+            String[] icons;
+            try {
+                icons = r.getStringArray(arrayId);
+                if (icons.length > 0) {
+                    ArrayList<IconItem> iconsArray = buildIconsListFromArray(r, p, icons);
+                    if (mContext.get().getResources().getBoolean(R.bool.auto_generate_all_icons)) {
+                        allIcons.addAll(iconsArray);
+                    }
+                    if (iconsArray.size() > 0) {
+                        mCategoryList.add(new IconsCategory(Utils.makeTextReadable(tabName),
+                                sortIconsList(r, p, iconsArray)));
+                    }
                 }
-                event = xmlParser.next();
+            } catch (Resources.NotFoundException e) {
+                Timber.d("Couldn't find array: " + tabName);
             }
-        } catch (XmlPullParserException | IOException ex) {
-            ex.printStackTrace();
-        } finally {
-            if (category != null && icons.size() > 0) {
-                category.setIconsOfCategory(sortIconsList(r, p, icons));
-                mCategoryList.add(category);
-            }
-            if (xmlParser != null)
-                xmlParser.close();
         }
+
+        if (mContext.get().getResources().getBoolean(R.bool.auto_generate_all_icons)) {
+            ArrayList<IconItem> allTheIcons = sortIconsList(r, p, allIcons);
+            if (allTheIcons.size() > 0) {
+                mCategoryList.add(new IconsCategory("All", allTheIcons));
+            }
+        } else {
+            String[] allIconsArray = r.getStringArray(R.array.icon_pack);
+            if (allIconsArray.length > 0) {
+                mCategoryList.add(
+                        new IconsCategory("All",
+                                sortIconsList(r, p,
+                                        buildIconsListFromArray(r, p, allIconsArray))));
+            }
+        }
+
         return (!(mPreviewIcons.isEmpty())) && (!(mCategoryList.isEmpty()));
     }
 
     @Override
     protected void onPostExecute(Boolean worked) {
-        //TODO onPostExecute only executes if task is not cancelled, worked boolean may not be necessary
         if (worked) {
             Timber.d("Load of icons task completed successfully in: %d milliseconds", (endTime - startTime));
             FullListHolder.get().home().createList(mPreviewIcons);
             FullListHolder.get().iconsCategories().createList(mCategoryList);
         }
+    }
+
+    private ArrayList<IconItem> buildIconsListFromArray(Resources r, String p, String[] icons) {
+        ArrayList<IconItem> list = new ArrayList<>();
+        for (String iconName : icons) {
+            int iconResId = Utils.getIconResId(r, p, iconName);
+            if (iconResId > 0) {
+                list.add(new IconItem(iconName, iconResId));
+            } else {
+                Timber.d("Icon \'" + iconName + "\' could not be found." +
+                        " Make sure you added it in resources.");
+            }
+        }
+        return list;
     }
 
     private ArrayList<IconItem> sortIconsList(Resources r, String p, ArrayList<IconItem> icons) {

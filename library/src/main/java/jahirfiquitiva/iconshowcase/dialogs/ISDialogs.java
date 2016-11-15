@@ -103,8 +103,11 @@ public final class ISDialogs {
     WallpaperViewerActivity Dialogs
      */
 
-    public static void showApplyWallpaperDialog(final Context context, MaterialDialog.SingleButtonCallback onPositive, MaterialDialog.SingleButtonCallback onNeutral) {
-        new MaterialDialog.Builder(context)
+    public static void showApplyWallpaperDialog(final Context context,
+                                                MaterialDialog.SingleButtonCallback onPositive,
+                                                MaterialDialog.SingleButtonCallback onNeutral,
+                                                MaterialDialog.OnDismissListener onDismiss) {
+        MaterialDialog dialog = new MaterialDialog.Builder(context)
                 .title(R.string.apply)
                 .content(R.string.confirm_apply)
                 .positiveText(R.string.apply)
@@ -118,25 +121,21 @@ public final class ISDialogs {
                         ((AltWallpaperViewerActivity) context).setupFullScreen();
                     }
                 })
-                .show();
+                .build();
+        dialog.setOnDismissListener(onDismiss);
+        dialog.show();
     }
 
     public static void showWallpaperDetailsDialog(final Context context, String wallName,
                                                   String wallAuthor, String wallDimensions,
-                                                  String wallCopyright) {
+                                                  String wallCopyright, MaterialDialog.OnDismissListener listener) {
 
         MaterialDialog dialog = new MaterialDialog.Builder(context).title(wallName)
                 .customView(R.layout.wallpaper_details, false)
                 .positiveText(context.getResources().getString(R.string.close))
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        if ((Activity) context instanceof AltWallpaperViewerActivity) {
-                            ((AltWallpaperViewerActivity) context).setupFullScreen();
-                        }
-                    }
-                })
                 .build();
+
+        dialog.setOnDismissListener(listener);
 
         View v = dialog.getCustomView();
 
@@ -230,7 +229,6 @@ public final class ISDialogs {
     /*
     Request Fragment Dialogs
      */
-
     public static void showPermissionNotGrantedDialog(Context context) {
         String appName = Utils.getStringFromResources(context, R.string.app_name);
         new MaterialDialog.Builder(context)

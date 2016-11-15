@@ -172,27 +172,22 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
         @Override
         public void onClick(View v) {
             if (clickable) {
-                clickable = false;
-                onWallClick(false);
+                //clickable = false;
+                onWallClick();
                 reset(); //comment to disable automatic reset //TODO shouldn't all clicks be paused when applying?
             }
-
         }
 
         @Override
         public boolean onLongClick(View v) {
-            if (clickable) {
-                clickable = false;
-                onWallClick(true);
-                reset(); //comment to disable automatic reset
-            }
+            WallpaperDialog.show(activity, wallsList.get(getLayoutPosition()).getWallURL());
             return false;
         }
 
-        private void onWallClick(boolean longClick) {
+        private void onWallClick() {
             final WallpaperItem item = wallsList.get(getLayoutPosition());
 
-            if (((ShowcaseActivity) activity).isWallsPicker() || longClick) {
+            if (((ShowcaseActivity) activity).isWallsPicker()) {
                 WallpaperDialog.show(activity, item.getWallURL());
             } else {
                 final Intent intent = new Intent(activity,
