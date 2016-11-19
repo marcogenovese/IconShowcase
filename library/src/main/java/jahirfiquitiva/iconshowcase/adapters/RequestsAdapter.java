@@ -76,6 +76,52 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
         holder.checkBox.setChecked(ir != null && ir.isAppSelected(app));
     }
 
+    public void selectOrDeselectAll(Context context, boolean select, Preferences mPrefs) {
+        boolean showDialog = false, showTimeLimitDialog = false;
+
+        final IconRequest ir = IconRequest.get();
+
+        int limit = Utils.canRequestXApps(context,
+                context.getResources().getInteger(R.integer.limit_request_to_x_minutes),
+                mPrefs);
+
+        if (ir != null && ir.getApps() != null) {
+            if (limit >= -1) {
+                for (App app : ir.getApps()) {
+                    if (select) {
+                        if (limit < 0) {
+                            ir.selectApp(app);
+                        } else {
+                            if (limit > 0) {
+                                if (ir.getSelectedApps().size() < limit) {
+                                    ir.selectApp(app);
+                                } else {
+                                    showDialog = true;
+                                    break;
+                                }
+                            }
+                        }
+                    } else {
+                        ir.unselectApp(app);
+                    }
+                }
+                //TODO: Either keep this or find a way to set checked/unchecked checkboxes in holder
+                notifyDataSetChanged();
+            } else {
+                showTimeLimitDialog = limit == -2;
+            }
+
+            if (showDialog) ISDialogs.showRequestLimitDialog(context, limit);
+
+            if (showTimeLimitDialog) {
+                ISDialogs.showRequestTimeLimitDialog(context,
+                        context.getResources().getInteger(R.integer.limit_request_to_x_minutes));
+                ir.unselectAllApps();
+                ((ShowcaseActivity) context).setSelectAllApps(false);
+            }
+        }
+    }
+
     public class RequestsHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         final ImageView imgIcon;
@@ -127,52 +173,6 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
                         }
                     }
                 }
-            }
-        }
-    }
-
-    public void selectOrDeselectAll(Context context, boolean select, Preferences mPrefs) {
-        boolean showDialog = false, showTimeLimitDialog = false;
-
-        final IconRequest ir = IconRequest.get();
-
-        int limit = Utils.canRequestXApps(context,
-                context.getResources().getInteger(R.integer.limit_request_to_x_minutes),
-                mPrefs);
-
-        if (ir != null && ir.getApps() != null) {
-            if (limit >= -1) {
-                for (int i = 0; i < ir.getApps().size(); i++) {
-                    if (select) {
-                        if (limit < 0) {
-                            ir.selectApp(ir.getApps().get(i));
-                        } else {
-                            if (limit > 0) {
-                                if (ir.getSelectedApps().size() < limit) {
-                                    ir.selectApp(ir.getApps().get(i));
-                                } else {
-                                    showDialog = true;
-                                    break;
-                                }
-                            }
-                        }
-                    } else {
-                        ir.unselectApp(ir.getApps().get(i));
-                    }
-                    //TODO: Either keep this or find a way to set checked/unchecked checkboxes in holder
-                    notifyDataSetChanged();
-                }
-            } else {
-                showTimeLimitDialog = limit == -2;
-            }
-
-            if (showDialog) ISDialogs.showRequestLimitDialog(context, limit);
-
-            if (showTimeLimitDialog) {
-                ISDialogs.showRequestTimeLimitDialog(context,
-                        context.getResources().getInteger(R.integer.limit_request_to_x_minutes));
-                ir.unselectAllApps();
-                ((ShowcaseActivity) context).setSelectAllApps(false);
             }
         }
     }

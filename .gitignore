@@ -87,3 +87,4 @@ proguard/
 .DS_Store
 /build
 /captures
+/projectFilesBackup

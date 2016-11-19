@@ -48,6 +48,9 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
     private WeakReference<Activity> wrActivity;
     private LinearLayout toHide1, toHide2;
     private volatile boolean wasCancelled = false;
+    private ApplyCallback callback;
+    private DownloadCallback downloadCallback;
+    private Bitmap resource;
 
 //    public ApplyWallpaper(Context context, MaterialDialog dialog, Bitmap resource, boolean isPicker,
 //                          View layout) {
@@ -58,9 +61,23 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
 //        this.layout = layout;
 //    }
 
-    public ApplyWallpaper(Activity activity, @NonNull String url) {
-        wrActivity = new WeakReference<>(activity);
+    public ApplyWallpaper(Activity activity, @NonNull String url, ApplyCallback callback) {
+        this.wrActivity = new WeakReference<>(activity);
         this.url = url;
+        this.callback = callback;
+    }
+
+    public ApplyWallpaper(Activity activity, @NonNull String url, ApplyCallback callback, DownloadCallback downloadCallback) {
+        this.wrActivity = new WeakReference<>(activity);
+        this.url = url;
+        this.callback = callback;
+        this.downloadCallback = downloadCallback;
+    }
+
+    public ApplyWallpaper(Activity activity, @NonNull Bitmap resource, ApplyCallback callback) {
+        this.wrActivity = new WeakReference<>(activity);
+        this.resource = resource;
+        this.callback = callback;
     }
 
 //    public ApplyWallpaper(Activity activity, MaterialDialog dialog, Bitmap resource,
@@ -86,21 +103,39 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
     @Override
     protected Boolean doInBackground(Void... params) {
 
-        Glide.with(wrActivity.get())
-                .load(url)
-                .asBitmap()
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .into(new SimpleTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                        if (resource != null) {
-                            EventBus.getDefault().post(new WallpaperEvent(url, true, WallpaperEvent.Step.APPLYING));
-                            applyWallpaper(resource);
-                        } else {
-                            cancel(true);
-                        }
-                    }
-                });
+        if (resource != null) {
+            EventBus.getDefault().post(new WallpaperEvent(url, true, WallpaperEvent.Step.APPLYING));
+            applyWallpaper(resource);
+        } else if (url != null) {
+            wrActivity.get().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Glide.with(wrActivity.get())
+                            .load(url)
+                            .asBitmap()
+                            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                            .into(new SimpleTarget<Bitmap>() {
+                                @Override
+                                public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                                    if (resource != null) {
+                                        if (downloadCallback != null) {
+                                            downloadCallback.afterDownloaded();
+                                        }
+                                        try {
+                                            Thread.sleep(500);
+                                            EventBus.getDefault().post(new WallpaperEvent(url, true, WallpaperEvent.Step.APPLYING));
+                                            applyWallpaper(resource);
+                                        } catch (InterruptedException ex) {
+                                            cancel(true);
+                                        }
+                                    } else {
+                                        cancel(true);
+                                    }
+                                }
+                            });
+                }
+            });
+        }
 
 //        Boolean worked;
 //        if ((!wasCancelled) && (activity != null)) {
@@ -128,6 +163,9 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
         try {
             wm.setBitmap(scaleToActualAspectRatio(resource));
             EventBus.getDefault().postSticky(new WallpaperEvent(url, true, WallpaperEvent.Step.FINISH));
+            if (callback != null) {
+                callback.afterApplied();
+            }
         } catch (OutOfMemoryError ex) {
             Timber.e("OutOfMemoryError %s", ex.getLocalizedMessage());
             showRetrySnackbar();
@@ -252,6 +290,14 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
 //        int actionTextColor = typedValue.data;
 //        snackbar.setActionTextColor(actionTextColor);
 //        snackbar.show();
+    }
+
+    public interface ApplyCallback {
+        void afterApplied();
+    }
+
+    public interface DownloadCallback {
+        void afterDownloaded();
     }
 
 }

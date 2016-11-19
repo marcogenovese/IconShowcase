@@ -102,21 +102,56 @@ public class DonationsFragment extends CapsuleFragment {
     private IabHelper mHelper;
 
     private boolean mDebug = false;
+    // Called when consumption is complete
+    private final IabHelper.OnConsumeFinishedListener mConsumeFinishedListener = new IabHelper.OnConsumeFinishedListener() {
+        public void onConsumeFinished(Purchase purchase, IabResult result) {
+            if (mDebug)
+                Timber.d("Consumption finished. Purchase: " + purchase + ", result: " + result);
 
+            // if we were disposed of in the meantime, quit.
+            if (mHelper == null) return;
+
+            if (result.isSuccess()) {
+                if (mDebug)
+                    Timber.d("Consumption successful. Provisioning.");
+            }
+            if (mDebug)
+                Timber.d("End consumption flow.");
+        }
+    };
+    // Callback for when a purchase is finished
+    private final IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
+        public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
+            if (mDebug)
+                Timber.d("Purchase finished: " + result + ", purchase: " + purchase);
+
+            // if we were disposed of in the meantime, quit.
+            if (mHelper == null) return;
+
+            if (result.isSuccess()) {
+                if (mDebug)
+                    Timber.d("Purchase successful.");
+
+                // directly consume in-app purchase, so that people can donate multiple times
+                mHelper.consumeAsync(purchase, mConsumeFinishedListener);
+
+                // show thanks openDialog
+                openDialog(android.R.drawable.ic_dialog_info, R.string.donations__thanks_dialog_title,
+                        getString(R.string.donations__thanks_dialog));
+            }
+        }
+    };
     private boolean mGoogleEnabled = false;
     private String mGooglePubkey = "";
     private String[] mGgoogleCatalog = new String[]{};
     private String[] mGoogleCatalogValues = new String[]{};
-
     private boolean mPaypalEnabled = false;
     private String mPaypalUser = "";
     private String mPaypalCurrencyCode = "";
     private String mPaypalItemName = "";
-
     private boolean mFlattrEnabled = false;
     private String mFlattrProjectUrl = "";
     private String mFlattrUrl = "";
-
     private boolean mBitcoinEnabled = false;
     private String mBitcoinAddress = "";
 
@@ -189,31 +224,6 @@ public class DonationsFragment extends CapsuleFragment {
 
         mBitcoinEnabled = getArguments().getBoolean(ARG_BITCOIN_ENABLED);
         mBitcoinAddress = getArguments().getString(ARG_BITCOIN_ADDRESS);
-    }
-
-    @Override
-    public void onFabClick(View v) {
-
-    }
-
-    @Override
-    public int getTitleId() {
-        return DrawerActivity.DrawerItem.DONATE.getTitleID();
-    }
-
-    @Override
-    protected int getFabIcon() {
-        return 0;
-    }
-
-    /**
-     * Will hide the fab if false; the fab is still in the viewgroup and is used for various other tasks such as the snackbar
-     *
-     * @return
-     */
-    @Override
-    protected boolean hasFab() {
-        return false;
     }
 
     @Override
@@ -346,6 +356,30 @@ public class DonationsFragment extends CapsuleFragment {
         }
     }
 
+    @Override
+    public void onFabClick(View v) {
+
+    }
+
+    @Override
+    public int getTitleId() {
+        return DrawerActivity.DrawerItem.DONATE.getTitleID();
+    }
+
+    @Override
+    protected int getFabIcon() {
+        return 0;
+    }
+
+    /**
+     * Will hide the fab if false; the fab is still in the viewgroup and is used for various other
+     * tasks such as the snackbar
+     */
+    @Override
+    protected boolean hasFab() {
+        return false;
+    }
+
     /**
      * Open dialog
      */
@@ -379,47 +413,6 @@ public class DonationsFragment extends CapsuleFragment {
                     0, mPurchaseFinishedListener, null);
         }
     }
-
-    // Callback for when a purchase is finished
-    private final IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
-        public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
-            if (mDebug)
-                Timber.d("Purchase finished: " + result + ", purchase: " + purchase);
-
-            // if we were disposed of in the meantime, quit.
-            if (mHelper == null) return;
-
-            if (result.isSuccess()) {
-                if (mDebug)
-                    Timber.d("Purchase successful.");
-
-                // directly consume in-app purchase, so that people can donate multiple times
-                mHelper.consumeAsync(purchase, mConsumeFinishedListener);
-
-                // show thanks openDialog
-                openDialog(android.R.drawable.ic_dialog_info, R.string.donations__thanks_dialog_title,
-                        getString(R.string.donations__thanks_dialog));
-            }
-        }
-    };
-
-    // Called when consumption is complete
-    private final IabHelper.OnConsumeFinishedListener mConsumeFinishedListener = new IabHelper.OnConsumeFinishedListener() {
-        public void onConsumeFinished(Purchase purchase, IabResult result) {
-            if (mDebug)
-                Timber.d("Consumption finished. Purchase: " + purchase + ", result: " + result);
-
-            // if we were disposed of in the meantime, quit.
-            if (mHelper == null) return;
-
-            if (result.isSuccess()) {
-                if (mDebug)
-                    Timber.d("Consumption successful. Provisioning.");
-            }
-            if (mDebug)
-                Timber.d("End consumption flow.");
-        }
-    };
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -487,8 +480,7 @@ public class DonationsFragment extends CapsuleFragment {
     }
 
     /**
-     * Build view for Flattr. see Flattr API for more information:
-     * http://developers.flattr.net/button/
+     * Build view for Flattr. see Flattr API for more information: http://developers.flattr.net/button/
      */
     @SuppressLint({"SetJavaScriptEnabled", "SetTextI18n"})
     @TargetApi(11)

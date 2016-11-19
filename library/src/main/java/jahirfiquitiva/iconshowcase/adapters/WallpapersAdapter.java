@@ -24,7 +24,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.RecyclerView;
@@ -58,9 +57,9 @@ import timber.log.Timber;
 public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.WallsHolder> {
 
     private final FragmentActivity activity;
-    private int lastPosition = -1;
     private final ArrayList<WallpaperItem> wallsList;
     private final boolean animationEnabled;
+    private int lastPosition = -1;
 
     public WallpapersAdapter(FragmentActivity activity, ArrayList<WallpaperItem> wallsList) {
         this.activity = activity;
@@ -133,18 +132,6 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
 
     }
 
-    private void setColors(int color, WallsHolder holder) {
-        if (holder.titleBg != null && color != 0) {
-            holder.titleBg.setBackgroundColor(color);
-            if (holder.name != null) {
-                holder.name.setTextColor(ColorUtils.getMaterialPrimaryTextColor(!ColorUtils.isLightColor(color)));
-            }
-            if (holder.authorName != null) {
-                holder.authorName.setTextColor(ColorUtils.getMaterialPrimaryTextColor(!ColorUtils.isLightColor(color)));
-            }
-        }
-    }
-
     @Override
     public int getItemCount() {
         return wallsList == null ? 0 : wallsList.size();
@@ -173,27 +160,22 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
         @Override
         public void onClick(View v) {
             if (clickable) {
-                clickable = false;
-                onWallClick(false);
+                //clickable = false;
+                onWallClick();
                 reset(); //comment to disable automatic reset //TODO shouldn't all clicks be paused when applying?
             }
-
         }
 
         @Override
         public boolean onLongClick(View v) {
-            if (clickable) {
-                clickable = false;
-                onWallClick(true);
-                reset(); //comment to disable automatic reset
-            }
+            WallpaperDialog.show(activity, wallsList.get(getLayoutPosition()).getWallURL());
             return false;
         }
 
-        private void onWallClick(boolean longClick) {
+        private void onWallClick() {
             final WallpaperItem item = wallsList.get(getLayoutPosition());
 
-            if (((ShowcaseActivity) activity).isWallsPicker() || longClick) {
+            if (((ShowcaseActivity) activity).isWallsPicker()) {
                 WallpaperDialog.show(activity, item.getWallURL());
             } else {
                 final Intent intent = new Intent(activity,
@@ -230,6 +212,18 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
             clickable = true;
         }
 
+    }
+
+    private void setColors(int color, WallsHolder holder) {
+        if (holder.titleBg != null && color != 0) {
+            holder.titleBg.setBackgroundColor(color);
+            if (holder.name != null) {
+                holder.name.setTextColor(ColorUtils.getMaterialPrimaryTextColor(!ColorUtils.isLightColor(color)));
+            }
+            if (holder.authorName != null) {
+                holder.authorName.setTextColor(ColorUtils.getMaterialPrimaryTextColor(!ColorUtils.isLightColor(color)));
+            }
+        }
     }
 
 }

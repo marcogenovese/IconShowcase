@@ -45,6 +45,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -64,24 +65,19 @@ import org.sufficientlysecure.donations.google.util.IabHelper;
 import org.sufficientlysecure.donations.google.util.IabResult;
 import org.sufficientlysecure.donations.google.util.Inventory;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.EnumMap;
 import java.util.Random;
 
 import jahirfiquitiva.iconshowcase.R;
-import jahirfiquitiva.iconshowcase.activities.base.DrawerActivity;
 import jahirfiquitiva.iconshowcase.activities.base.TasksActivity;
 import jahirfiquitiva.iconshowcase.adapters.RequestsAdapter;
 import jahirfiquitiva.iconshowcase.config.Config;
-import jahirfiquitiva.iconshowcase.dialogs.FolderSelectorDialog;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.fragments.RequestsFragment;
-import jahirfiquitiva.iconshowcase.fragments.SettingsFragment;
+import jahirfiquitiva.iconshowcase.fragments.WallpapersFragment;
 import jahirfiquitiva.iconshowcase.holders.FullListHolder;
 import jahirfiquitiva.iconshowcase.models.IconItem;
-import jahirfiquitiva.iconshowcase.tasks.DownloadJSON;
 import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
@@ -94,7 +90,6 @@ public class ShowcaseActivity extends TasksActivity {
     private IabHelper mHelper;
 
     private Drawer drawer;
-
 
     //TODO check if these are necessary
     private boolean iconsPicker = false, wallsPicker = false, allowShuffle = true, shuffleIcons = true;
@@ -245,7 +240,25 @@ public class ShowcaseActivity extends TasksActivity {
 
     }
 
-    private Fragment getCurrentFragment() {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!iconsPicker && !wallsPicker) {
+            setupToolbarHeader();
+        }
+        ColorUtils.setupToolbarIconsAndTextsColors(this, cAppBarLayout, cToolbar);
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (settingsDialog != null) {
+            settingsDialog.dismiss();
+            settingsDialog = null;
+        } //TODO fix dialog
+        super.onDestroy();
+    }
+
+    public Fragment getCurrentFragment() {
         return getSupportFragmentManager().findFragmentById(getFragmentId());
     }
 
@@ -262,7 +275,7 @@ public class ShowcaseActivity extends TasksActivity {
 
     @SuppressWarnings("ResourceAsColor")
     private void setupDrawer(Bundle savedInstanceState) {
-       getDrawerItems();
+        getDrawerItems();
 
         DrawerBuilder drawerBuilder = new DrawerBuilder().withActivity(this)
                 .withToolbar(cToolbar)
@@ -385,15 +398,6 @@ public class ShowcaseActivity extends TasksActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        if (!iconsPicker && !wallsPicker) {
-            setupToolbarHeader();
-        }
-        ColorUtils.setupToolbarIconsAndTextsColors(this, cAppBarLayout, cToolbar);
-    }
-
-    @Override
     protected void onSaveInstanceState(Bundle outState) {
         if (drawer != null) {
             outState = drawer.saveInstanceState(outState);
@@ -429,15 +433,6 @@ public class ShowcaseActivity extends TasksActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        if (settingsDialog != null) {
-            settingsDialog.dismiss();
-            settingsDialog = null;
-        } //TODO fix dialog
-        super.onDestroy();
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
@@ -464,17 +459,14 @@ public class ShowcaseActivity extends TasksActivity {
         if (i == R.id.changelog) {
             ChangelogDialog.show(this, R.xml.changelog);
         } else if (i == R.id.refresh) {
-            //TODO: MAKE WALLPAPERS APPEAR AT FIRST. FOR SOME REASON ONLY APPEAR AFTER PRESSING "UPDATE" ICON IN TOOLBAR
-            if (Utils.hasNetwork(this)) {
-                FullListHolder.get().walls().clearList();
-                // TODO: Re-do this method so it can be called from here
-                // WallpapersFragment.refreshWalls(this);
-                new DownloadJSON(this).execute();
-            } else {
-                //TODO unavailable
-            }
+            FullListHolder.get().walls().clearList();
+            executeWallpapersTaskAgain(getCurrentFragment());
         } else if (i == R.id.columns) {
-            ISDialogs.showColumnsSelectorDialog(this);
+            if (getCurrentFragment() instanceof WallpapersFragment) {
+                ISDialogs.showColumnsSelectorDialog(this, ((WallpapersFragment) getCurrentFragment()));
+            } else {
+                Toast.makeText(this, "Can't perform this action from here.", Toast.LENGTH_SHORT).show();
+            }
         } else if (i == R.id.select_all) {
             RequestsAdapter requestsAdapter = RequestsFragment.mAdapter;
             if (requestsAdapter != null && RequestsFragment.mAdapter.getItemCount() > 0) {
@@ -514,29 +506,22 @@ public class ShowcaseActivity extends TasksActivity {
     }
 
     private void showChangelogDialog() {
-
         int prevVersionCode = mPrefs.getVersionCode();
-
         if ((curVersionCode > prevVersionCode) && (curVersionCode > -1)) {
             mPrefs.setVersionCode(curVersionCode);
             ChangelogDialog.show(this, R.xml.changelog);
         }
-
     }
 
     private void checkLicense(String licenseKey) { //TODO remove this from param
         PiracyChecker checker = new PiracyChecker(this);
-
         if ((licenseKey != null) && (!(licenseKey.isEmpty())) && (licenseKey.length() > 25)) {
             checker.enableGooglePlayLicensing(licenseKey);
         }
-
         checker.enableInstallerId(InstallerID.GOOGLE_PLAY);
-
         if (WITH_INSTALLED_FROM_AMAZON) {
             checker.enableInstallerId(InstallerID.AMAZON_APP_STORE);
         }
-
         checker.callback(new PiracyCheckerCallback() {
             @Override
             public void allow() {
@@ -566,7 +551,6 @@ public class ShowcaseActivity extends TasksActivity {
                 showNotLicensedDialog(ShowcaseActivity.this, mPrefs);
             }
         });
-
         checker.start();
     }
 
@@ -621,11 +605,6 @@ public class ShowcaseActivity extends TasksActivity {
     @Override
     protected int getContentViewId() {
         return R.layout.showcase_activity;
-    }
-
-    public interface WallsListInterface {
-
-        void checkWallsListCreation(boolean result);
     }
 
     @SuppressWarnings("deprecation")
@@ -929,6 +908,10 @@ public class ShowcaseActivity extends TasksActivity {
 
     public Drawable getWallpaperDrawable() {
         return wallpaperDrawable;
+    }
+
+    public interface WallsListInterface {
+        void checkWallsListCreation(boolean result);
     }
 
 }

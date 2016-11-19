@@ -32,37 +32,12 @@ import com.pitchedapps.capsule.library.fragments.CapsuleFragment;
 import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.activities.base.DrawerActivity;
 import jahirfiquitiva.iconshowcase.adapters.CreditsAdapter;
-import jahirfiquitiva.iconshowcase.enums.DrawerItem;
 
 public class CreditsFragment extends CapsuleFragment {
 
     private Context context;
-
-    @Override
-    public void onFabClick(View v) {
-
-    }
-
-    @Override
-    public int getTitleId() {
-        return DrawerItem.CREDITS.getTitleID();
-    }
-
-    @Override
-    protected int getFabIcon() {
-        return 0;
-    }
-
-    /**
-     * Will hide the fab if false; the fab is still in the viewgroup and is used for various other tasks such as the snackbar
-     *
-     * @return
-     */
-    @Override
-    protected boolean hasFab() {
-        return false;
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -88,6 +63,30 @@ public class CreditsFragment extends CapsuleFragment {
         fastScroller.attachRecyclerView(recyclerView);
 
         return layout;
+    }
+
+    @Override
+    public void onFabClick(View v) {
+
+    }
+
+    @Override
+    public int getTitleId() {
+        return DrawerActivity.DrawerItem.CREDITS.getTitleID();
+    }
+
+    @Override
+    protected int getFabIcon() {
+        return 0;
+    }
+
+    /**
+     * Will hide the fab if false; the fab is still in the viewgroup and is used for various other
+     * tasks such as the snackbar
+     */
+    @Override
+    protected boolean hasFab() {
+        return false;
     }
 
 }

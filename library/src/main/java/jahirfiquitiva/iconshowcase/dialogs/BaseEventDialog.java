@@ -39,4 +39,5 @@ public class BaseEventDialog extends DialogFragment {
         EventBus.getDefault().unregister(this);
         super.onStop();
     }
+
 }

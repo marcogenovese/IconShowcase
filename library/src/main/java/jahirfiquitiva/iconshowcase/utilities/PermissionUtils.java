@@ -27,9 +27,8 @@ import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 
 /**
- * This Class was created by Patrick J
- * on 07.01.16. For more Details and Licensing
- * have a look at the README.md
+ * This Class was created by Patrick J on 07.01.16. For more Details and Licensing have a look at
+ * the README.md
  */
 
 public final class PermissionUtils {
@@ -37,11 +36,6 @@ public final class PermissionUtils {
     public static final int PERMISSION_REQUEST_CODE = 42;
     private static String VIEWER_ACTIVITY_ACTION;
     private static OnPermissionResultListener onPermissionResultListener;
-
-    public interface OnPermissionResultListener {
-
-        void onStoragePermissionGranted();
-    }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static boolean canAccessStorage(Context context) {
@@ -65,11 +59,15 @@ public final class PermissionUtils {
         return onPermissionResultListener;
     }
 
+    public static String getViewerActivityAction() {
+        return VIEWER_ACTIVITY_ACTION;
+    }
+
     public static void setViewerActivityAction(String viewerActivityAction) {
         VIEWER_ACTIVITY_ACTION = viewerActivityAction;
     }
 
-    public static String getViewerActivityAction() {
-        return VIEWER_ACTIVITY_ACTION;
+    public interface OnPermissionResultListener {
+        void onStoragePermissionGranted();
     }
 }

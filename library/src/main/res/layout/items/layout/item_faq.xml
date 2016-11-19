@@ -19,26 +19,26 @@
   -->
 
 <LinearLayout
-    android:id="@+id/faq_card"
-    style="@style/CardContent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="?attr/colorCardBackground">
-
-    <TextView
-        android:id="@+id/faq_question"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/faq_card"
+        style="@style/CardContent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        tools:text="Question"/>
+        android:background="?attr/colorCardBackground">
 
     <TextView
-        android:id="@+id/faq_answer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="@dimen/lists_padding"
-        tools:text="Answer"/>
+            android:id="@+id/faq_question"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            tools:text="Question"/>
+
+    <TextView
+            android:id="@+id/faq_answer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/lists_padding"
+            tools:text="Answer"/>
 
 </LinearLayout>

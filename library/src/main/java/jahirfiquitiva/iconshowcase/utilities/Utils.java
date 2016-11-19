@@ -55,7 +55,6 @@ import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 
 import java.io.File;
 import java.io.IOException;
@@ -314,9 +313,9 @@ public class Utils {
 
         Calendar c = Calendar.getInstance();
 
-        int requestsLeft = mPrefs.getRequestsLeft();
+        int requestsLeft = mPrefs.getRequestsLeft(context);
 
-        if (requestsLeft > 0) {
+        if (requestsLeft >= -1) {
             return requestsLeft;
         } else {
             boolean hasHappenedTheTime = timeHappened(numOfMinutes, mPrefs, c);

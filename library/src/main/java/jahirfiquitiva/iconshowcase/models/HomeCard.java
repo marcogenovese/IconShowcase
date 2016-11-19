@@ -30,10 +30,22 @@ import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 public class HomeCard implements Parcelable {
 
+    @SuppressWarnings("unused")
+    public static final Creator<HomeCard> CREATOR = new Creator<HomeCard>() {
+        @Override
+        public HomeCard createFromParcel(Parcel in) {
+            return new HomeCard(in);
+        }
+
+        @Override
+        public HomeCard[] newArray(int size) {
+            return new HomeCard[size];
+        }
+    };
     public final String title, desc;
-    public String onClickLink;
     public final Drawable img;
     public final boolean imgEnabled;
+    public String onClickLink;
     public boolean isInstalled;
     public Intent intent;
 
@@ -45,6 +57,28 @@ public class HomeCard implements Parcelable {
         this.onClickLink = builder.onClickLink;
         this.isInstalled = builder.isInstalled;
         this.intent = builder.intent;
+    }
+
+    private HomeCard(Parcel in) { //TODO correct parcel
+        title = in.readString();
+        desc = in.readString();
+        img = (Drawable) in.readValue(Drawable.class.getClassLoader());
+        imgEnabled = in.readByte() != 0x00;
+        onClickLink = (String) in.readValue(Object.class.getClassLoader());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(title);
+        dest.writeString(desc);
+        dest.writeValue(img);
+        dest.writeByte((byte) (imgEnabled ? 0x01 : 0x00));
+        dest.writeValue(onClickLink);
     }
 
     public static class Builder {
@@ -100,39 +134,4 @@ public class HomeCard implements Parcelable {
             return new HomeCard(this);
         }
     }
-
-    private HomeCard(Parcel in) { //TODO correct parcel
-        title = in.readString();
-        desc = in.readString();
-        img = (Drawable) in.readValue(Drawable.class.getClassLoader());
-        imgEnabled = in.readByte() != 0x00;
-        onClickLink = (String) in.readValue(Object.class.getClassLoader());
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(title);
-        dest.writeString(desc);
-        dest.writeValue(img);
-        dest.writeByte((byte) (imgEnabled ? 0x01 : 0x00));
-        dest.writeValue(onClickLink);
-    }
-
-    @SuppressWarnings("unused")
-    public static final Creator<HomeCard> CREATOR = new Creator<HomeCard>() {
-        @Override
-        public HomeCard createFromParcel(Parcel in) {
-            return new HomeCard(in);
-        }
-
-        @Override
-        public HomeCard[] newArray(int size) {
-            return new HomeCard[size];
-        }
-    };
 }

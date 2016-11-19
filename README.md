@@ -7,14 +7,14 @@
 <h4 align="center">Full-of-features, easy-to-customize, free and open source, Material Design based dashboard for icon packs.</h4>
 
 <p align="center">
-	<a target="_blank" href="https://github.com/jahirfiquitiva/IconShowcase/releases/tag/1.9.6.1"><img src="https://img.shields.io/badge/version-1.9.6.1-00C853.svg"></a>
-	<a target="_blank" href="http://creativecommons.org/licenses/by-sa/4.0/legalcode"><img src="https://img.shields.io/badge/license-CC%20BY%20SA-01579B.svg"></a>
+	<a target="_blank" href="https://jitpack.io/#jahirfiquitiva/IconShowcase/"><img src="https://img.shields.io/badge/JitPack-1.9.6.1-00C853.svg"></a>
+	<a target="_blank" href="http://creativecommons.org/licenses/by-sa/4.0/legalcode"><img src="https://img.shields.io/badge/License-CC%20BY%20SA-01579B.svg"></a>
 	<img src="https://img.shields.io/badge/API-16%2B-7ac143.svg">
-	<a target="_blank" href="http://bit.ly/DonateJahir1" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-FFC107.svg" /></a>
+	<a target="_blank" href="https://github.com/jahirfiquitiva/IconShowcase-Dashboard" title="Sample App"><img src="https://img.shields.io/badge/SAMPLE-APP-34bf49.svg" /></a>
 </p>
 
 <p align="center">
-	<a target="_blank" href="https://github.com/jahirfiquitiva/IconShowcase-Dashboard" title="Sample App"><img src="https://img.shields.io/badge/SAMPLE-APP-34bf49.svg" /></a>
+	<a href='https://pledgie.com/campaigns/32739'><img alt='Click here to lend your support to: Support Jahir Fiquitiva education and works and make a donation at pledgie.com !' src='https://pledgie.com/campaigns/32739.png?skin_name=chrome' border='0' ></a>
 </p>
 
 # Previews
@@ -78,8 +78,15 @@ Help making IconShowcase available in more languages. [Click here to go to the t
 # Developed By
 
 * Jahir Fiquitiva
-* Web: http://www.jahirfiquitiva.net/
-* Google+: https://plus.google.com/+JahirFiquitivaJDev/posts
+	* Web: https://www.jahirfiquitiva.me/
+	* Google+: https://plus.google.com/+JahirFiquitivaJDev/
+	* [Donate](https://pledgie.com/campaigns/32739)
+
+
+
+* Allan Wang
+	* Web: http://allanwang.ca/dev/
+	* Google+: https://plus.google.com/+AllanWPitchedApps/
 
 
 # Special Thanks
@@ -88,7 +95,6 @@ Help making IconShowcase available in more languages. [Click here to go to the t
 Thanks to her, IconShowcase is completely free and open-source.
 
 ### Development contributors
-- [Allan Wang](https://plus.google.com/+AllanWPitchedApps/posts)
 - [Joaquin Cuitiño](https://plus.google.com/+JoaquinCuitiñoF/posts)
 - [Patrick Jung](https://plus.google.com/+PatrickJung42/posts)
 - [Steve Albright](https://plus.google.com/111777412946608276908/auto)

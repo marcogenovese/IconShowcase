@@ -33,42 +33,17 @@ import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
+import jahirfiquitiva.iconshowcase.activities.base.DrawerActivity;
 import jahirfiquitiva.iconshowcase.adapters.ZooperAdapter;
-import jahirfiquitiva.iconshowcase.enums.DrawerItem;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 
 public class ZooperFragment extends CapsuleFragment {
 
-    private static ViewGroup layout;
-    private static Context context;
-    public static ZooperAdapter zooperAdapter;
+    public ZooperAdapter zooperAdapter;
+    private ViewGroup layout;
+    private Context context;
     private GridSpacingItemDecoration space;
-
-    @Override
-    public void onFabClick(View v) {
-
-    }
-
-    @Override
-    public int getTitleId() {
-        return DrawerItem.ZOOPER.getTitleID();
-    }
-
-    @Override
-    protected int getFabIcon() {
-        return 0;
-    }
-
-    /**
-     * Will hide the fab if false; the fab is still in the viewgroup and is used for various other tasks such as the snackbar
-     *
-     * @return
-     */
-    @Override
-    protected boolean hasFab() {
-        return false;
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
@@ -90,6 +65,30 @@ public class ZooperFragment extends CapsuleFragment {
 
         setupRV();
         return layout;
+    }
+
+    @Override
+    public void onFabClick(View v) {
+
+    }
+
+    @Override
+    public int getTitleId() {
+        return DrawerActivity.DrawerItem.ZOOPER.getTitleID();
+    }
+
+    @Override
+    protected int getFabIcon() {
+        return 0;
+    }
+
+    /**
+     * Will hide the fab if false; the fab is still in the viewgroup and is used for various other
+     * tasks such as the snackbar
+     */
+    @Override
+    protected boolean hasFab() {
+        return false;
     }
 
     private void setupRV() {
@@ -115,7 +114,7 @@ public class ZooperFragment extends CapsuleFragment {
             RecyclerFastScroller fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
 
             zooperAdapter = new ZooperAdapter(context, layout,
-                    ((ShowcaseActivity) context).getWallpaperDrawable(), areAppsInstalled());
+                    ((ShowcaseActivity) context).getWallpaperDrawable(), areAppsInstalled(), this);
 
             mRecyclerView.setAdapter(zooperAdapter);
 
@@ -124,14 +123,14 @@ public class ZooperFragment extends CapsuleFragment {
         }
     }
 
-    public static void showInstalledAppsSnackbar() {
+    public void showInstalledAppsSnackbar() {
         if (layout != null && context != null) {
             Utils.showSimpleSnackbar(context, layout,
                     Utils.getStringFromResources(context, R.string.apps_installed));
         }
     }
 
-    public static void showInstalledAssetsSnackbar() {
+    public void showInstalledAssetsSnackbar() {
         if (layout != null && context != null) {
             Utils.showSimpleSnackbar(context, layout,
                     Utils.getStringFromResources(context, R.string.assets_installed));
@@ -153,4 +152,7 @@ public class ZooperFragment extends CapsuleFragment {
         return installed;
     }
 
+    public ZooperAdapter getAdapter() {
+        return zooperAdapter;
+    }
 }

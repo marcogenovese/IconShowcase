@@ -19,10 +19,11 @@
   ~ 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
   -->
 
-<android.support.v7.widget.AppCompatButton xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    style="@style/Widget.AppCompat.Button.Borderless"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:textColor="?attr/accentColor"
-    tools:text="Button"/>
+<android.support.v7.widget.AppCompatButton
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="?attr/accentColor"
+        tools:text="Button"/>

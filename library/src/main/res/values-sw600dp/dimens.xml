@@ -19,6 +19,10 @@
 
 <resources>
 
+    <!-- Splash screen dimens -->
+    <dimen name="splash_logo_bottom">24dp</dimen>
+    <dimen name="splash_brand_bottom">56dp</dimen>
+
     <dimen name="first_keyline">24dp</dimen>
     <dimen name="second_keyline">80dp</dimen>
     <dimen name="toolbar_horizontal_padding">12dp</dimen>

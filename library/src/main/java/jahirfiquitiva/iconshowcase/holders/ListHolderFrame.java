@@ -32,7 +32,7 @@ import jahirfiquitiva.iconshowcase.events.OnLoadEvent;
  */
 public abstract class ListHolderFrame<T> {
 
-    private ArrayList<T> mList;
+    private ArrayList<T> mList = new ArrayList<>();
 
     public abstract OnLoadEvent.Type getEventType();
 

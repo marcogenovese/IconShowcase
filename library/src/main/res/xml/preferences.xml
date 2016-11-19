@@ -19,86 +19,86 @@
   -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    android:key="preferences">
+                  android:key="preferences">
 
     <PreferenceCategory
-        android:key="devPrefs"
-        android:title="@string/dev_prefs_title">
+            android:key="devPrefs"
+            android:title="@string/dev_prefs_title">
 
         <Preference
-            android:selectable="false"
-            android:enabled="false"
-            android:persistent="true"
-            android:summary="@string/dev_prefs_summary"/>
+                android:selectable="false"
+                android:enabled="false"
+                android:persistent="true"
+                android:summary="@string/dev_prefs_summary"/>
 
         <SwitchPreference
-            android:defaultValue="true"
-            android:key="drawerHeaderTexts"
-            android:persistent="true"
-            android:summary="@string/dev_drawer_header_texts_summary"
-            android:title="@string/dev_drawer_header_texts_title"/>
+                android:defaultValue="true"
+                android:key="drawerHeaderTexts"
+                android:persistent="true"
+                android:summary="@string/dev_drawer_header_texts_summary"
+                android:title="@string/dev_drawer_header_texts_title"/>
 
         <SwitchPreference
-            android:defaultValue="false"
-            android:key="listsCards"
-            android:persistent="true"
-            android:summary="@string/dev_lists_cards_summary"
-            android:title="@string/dev_lists_cards_title"/>
+                android:defaultValue="false"
+                android:key="listsCards"
+                android:persistent="true"
+                android:summary="@string/dev_lists_cards_summary"
+                android:title="@string/dev_lists_cards_title"/>
 
         <Preference
-            android:key="moreOptions"
-            android:persistent="true"
-            android:summary="@string/dev_more_options_summary"
-            android:title="@string/dev_more_options_title"/>
+                android:key="moreOptions"
+                android:persistent="true"
+                android:summary="@string/dev_more_options_summary"
+                android:title="@string/dev_more_options_title"/>
 
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:key="uiPreferences"
-        android:title="@string/pref_header_ui">
+            android:key="uiPreferences"
+            android:title="@string/pref_header_ui">
 
         <SwitchPreference
-            android:defaultValue="true"
-            android:key="animations"
-            android:persistent="true"
-            android:summary="@string/pref_summary_anims"
-            android:title="@string/pref_title_anims"/>
+                android:defaultValue="true"
+                android:key="animations"
+                android:persistent="true"
+                android:summary="@string/pref_summary_anims"
+                android:title="@string/pref_title_anims"/>
 
         <SwitchPreference
-            android:defaultValue="true"
-            android:key="wallHeader"
-            android:persistent="true"
-            android:summary="@string/pref_summary_wall_header"
-            android:title="@string/pref_title_wall_header"/>
+                android:defaultValue="true"
+                android:key="wallHeader"
+                android:persistent="true"
+                android:summary="@string/pref_summary_wall_header"
+                android:title="@string/pref_title_wall_header"/>
 
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_header_storage">
 
         <Preference
-            android:key="clearData"
-            android:persistent="true"
-            android:summary="@string/pref_summary_cache"
-            android:title="@string/pref_title_cache"/>
+                android:key="clearData"
+                android:persistent="true"
+                android:summary="@string/pref_summary_cache"
+                android:title="@string/pref_title_cache"/>
 
         <Preference
-            android:key="wallsSaveLocation"
-            android:persistent="true"
-            android:summary="@string/pref_summary_wsl"
-            android:title="@string/pref_title_wsl"/>
+                android:key="wallsSaveLocation"
+                android:persistent="true"
+                android:summary="@string/pref_summary_wsl"
+                android:title="@string/pref_title_wsl"/>
 
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:key="launcherIconPreference"
-        android:title="@string/pref_header_launcher_icon">
+            android:key="launcherIconPreference"
+            android:title="@string/pref_header_launcher_icon">
 
         <SwitchPreference
-            android:defaultValue="false"
-            android:key="launcherIcon"
-            android:persistent="true"
-            android:summary="@string/pref_summary_launcher_icon"
-            android:title="@string/pref_title_launcher_icon"/>
+                android:defaultValue="false"
+                android:key="launcherIcon"
+                android:persistent="true"
+                android:summary="@string/pref_summary_launcher_icon"
+                android:title="@string/pref_title_launcher_icon"/>
 
     </PreferenceCategory>
 

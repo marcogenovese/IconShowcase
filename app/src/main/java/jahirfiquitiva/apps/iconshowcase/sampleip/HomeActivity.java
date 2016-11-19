@@ -24,6 +24,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import timber.log.Timber;
@@ -44,11 +45,16 @@ public class HomeActivity extends AppCompatActivity {
     private static final String GOOGLE_PUBLISHER_KEY = "insert_key_here";
 
     @Override
-    protected void onCreate (Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         if (getIntent().getStringExtra("open_link") != null) {
             Utils.openLink(this, getIntent().getStringExtra("open_link"));
+        }else if (getIntent().getData() != null) {
+            // handle the URI with the data. You may have different logic than just
+            // getting the last path segment
+            String data = getIntent().getData().getLastPathSegment();
+            Toast.makeText(this, "Clicked: " + data, Toast.LENGTH_SHORT).show();
         } else {
             Intent intent = new Intent(HomeActivity.this, jahirfiquitiva.iconshowcase.activities.ShowcaseActivity.class);
 
@@ -79,11 +85,11 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-    private String getAppInstaller () {
+    private String getAppInstaller() {
         return getPackageManager().getInstallerPackageName(getPackageName());
     }
 
-    private int getAppCurrentVersionCode () {
+    private int getAppCurrentVersionCode() {
         try {
             PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
             return packageInfo.versionCode;

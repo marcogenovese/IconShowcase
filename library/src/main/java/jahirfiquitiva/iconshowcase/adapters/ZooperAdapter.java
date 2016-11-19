@@ -56,16 +56,17 @@ import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         implements PermissionUtils.OnPermissionResultListener {
 
-    private ArrayList<ZooperWidget> widgets;
     private final Drawable[] icons = new Drawable[2];
     private final Context context;
     private final Drawable wallpaper;
-    private int extraCards = 0;
     private final boolean everythingInstalled;
     private final View layout;
+    private ArrayList<ZooperWidget> widgets;
+    private int extraCards = 0;
+    private ZooperFragment mFragment;
 
     public ZooperAdapter(Context context, View layout,
-                         Drawable wallpaper, boolean appsInstalled) {
+                         Drawable wallpaper, boolean appsInstalled, ZooperFragment mFragment) {
         this.context = context;
 
         this.layout = layout;
@@ -86,6 +87,8 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         this.icons[1] = ColorUtils.getTintedIcon(
                 context, R.drawable.ic_assets,
                 ThemeUtils.darkTheme ? light : dark);
+
+        this.mFragment = mFragment;
 
     }
 
@@ -149,7 +152,7 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             zooperHolder.background.setImageDrawable(wallpaper);
             Glide.with(context)
                     .load(new File(widget.getPreviewPath()))
-                    .priority(Priority.HIGH)
+                    .priority(Priority.IMMEDIATE)
                     .into(zooperHolder.widget);
         }
 
@@ -168,74 +171,6 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public void onStoragePermissionGranted() {
         installAssets();
-    }
-
-    class ZooperHolder extends RecyclerView.ViewHolder {
-
-        final ImageView background;
-        final ImageView widget;
-
-        public ZooperHolder(View itemView) {
-            super(itemView);
-            background = (ImageView) itemView.findViewById(R.id.wall);
-            widget = (ImageView) itemView.findViewById(R.id.preview);
-        }
-
-    }
-
-    class ZooperButtonHolder extends RecyclerView.ViewHolder {
-
-        final CardView card;
-        final ImageView icon;
-        final TextView text;
-
-        public ZooperButtonHolder(View itemView, final int position) {
-            super(itemView);
-            card = (CardView) itemView.findViewById(R.id.zooper_btn_card);
-            icon = (ImageView) itemView.findViewById(R.id.zooper_btn_icon);
-            text = (TextView) itemView.findViewById(R.id.zooper_btn_title);
-            card.setOnClickListener(new DebouncedClickListener() {
-                @Override
-                public void onDebouncedClick(View v) {
-                    switch (position) {
-                        case 0:
-                            //Open dialog
-                            ArrayList<String> apps = new ArrayList<>();
-                            if (!Utils.isAppInstalled(context, "org.zooper.zwpro")) {
-                                apps.add(Utils.getStringFromResources(context, R.string.zooper_app));
-                            }
-                            if (context.getResources().getBoolean(R.bool.mu_needed) &&
-                                    !Utils.isAppInstalled(context, "com.batescorp.notificationmediacontrols.alpha")) {
-                                apps.add(Utils.getStringFromResources(context, R.string.mu_app));
-                            }
-                            if (context.getResources().getBoolean(R.bool.kolorette_needed) &&
-                                    !Utils.isAppInstalled(context, "com.arun.themeutil.kolorette")) {
-                                apps.add(Utils.getStringFromResources(context, R.string.kolorette_app));
-                            }
-                            if (apps.size() > 0) {
-                                ISDialogs.showZooperAppsDialog(context, apps);
-                            } else {
-                                ZooperFragment.showInstalledAppsSnackbar();
-                            }
-                            break;
-                        case 1:
-                            //Install assets
-                            if (!areAssetsInstalled()) {
-                                if (!PermissionUtils.canAccessStorage(context)) {
-                                    PermissionUtils.requestStoragePermission((Activity) context,
-                                            ZooperAdapter.this);
-                                } else {
-                                    installAssets();
-                                }
-                            } else {
-                                ZooperFragment.showInstalledAssetsSnackbar();
-                            }
-                            break;
-                    }
-                }
-            });
-        }
-
     }
 
     private boolean areAssetsInstalled() {
@@ -300,6 +235,74 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     .show();
             new CopyFilesToStorage(context, layout, dialog, folderName).execute();
         }
+    }
+
+    class ZooperHolder extends RecyclerView.ViewHolder {
+
+        final ImageView background;
+        final ImageView widget;
+
+        public ZooperHolder(View itemView) {
+            super(itemView);
+            background = (ImageView) itemView.findViewById(R.id.wall);
+            widget = (ImageView) itemView.findViewById(R.id.preview);
+        }
+
+    }
+
+    class ZooperButtonHolder extends RecyclerView.ViewHolder {
+
+        final CardView card;
+        final ImageView icon;
+        final TextView text;
+
+        public ZooperButtonHolder(View itemView, final int position) {
+            super(itemView);
+            card = (CardView) itemView.findViewById(R.id.zooper_btn_card);
+            icon = (ImageView) itemView.findViewById(R.id.zooper_btn_icon);
+            text = (TextView) itemView.findViewById(R.id.zooper_btn_title);
+            card.setOnClickListener(new DebouncedClickListener() {
+                @Override
+                public void onDebouncedClick(View v) {
+                    switch (position) {
+                        case 0:
+                            //Open dialog
+                            ArrayList<String> apps = new ArrayList<>();
+                            if (!Utils.isAppInstalled(context, "org.zooper.zwpro")) {
+                                apps.add(Utils.getStringFromResources(context, R.string.zooper_app));
+                            }
+                            if (context.getResources().getBoolean(R.bool.mu_needed) &&
+                                    !Utils.isAppInstalled(context, "com.batescorp.notificationmediacontrols.alpha")) {
+                                apps.add(Utils.getStringFromResources(context, R.string.mu_app));
+                            }
+                            if (context.getResources().getBoolean(R.bool.kolorette_needed) &&
+                                    !Utils.isAppInstalled(context, "com.arun.themeutil.kolorette")) {
+                                apps.add(Utils.getStringFromResources(context, R.string.kolorette_app));
+                            }
+                            if (apps.size() > 0) {
+                                ISDialogs.showZooperAppsDialog(context, apps);
+                            } else {
+                                if (mFragment != null) mFragment.showInstalledAppsSnackbar();
+                            }
+                            break;
+                        case 1:
+                            //Install assets
+                            if (!areAssetsInstalled()) {
+                                if (!PermissionUtils.canAccessStorage(context)) {
+                                    PermissionUtils.requestStoragePermission((Activity) context,
+                                            ZooperAdapter.this);
+                                } else {
+                                    installAssets();
+                                }
+                            } else {
+                                if (mFragment != null) mFragment.showInstalledAssetsSnackbar();
+                            }
+                            break;
+                    }
+                }
+            });
+        }
+
     }
 
 }

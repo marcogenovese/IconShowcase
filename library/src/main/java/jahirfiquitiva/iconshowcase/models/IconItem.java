@@ -24,6 +24,19 @@ import android.os.Parcelable;
 
 public class IconItem implements Parcelable {
 
+    public static final Creator<IconItem> CREATOR = new Creator<IconItem>() {
+        @Override
+        public IconItem createFromParcel(Parcel in) {
+            String name = in.readString();
+            int redId = in.readInt();
+            return new IconItem(name, redId);
+        }
+
+        @Override
+        public IconItem[] newArray(int size) {
+            return new IconItem[size];
+        }
+    };
     private final String name;
     private final int resId;
 
@@ -50,18 +63,4 @@ public class IconItem implements Parcelable {
         dest.writeString(name);
         dest.writeInt(resId);
     }
-
-    public static final Creator<IconItem> CREATOR = new Creator<IconItem>() {
-        @Override
-        public IconItem createFromParcel(Parcel in) {
-            String name = in.readString();
-            int redId = in.readInt();
-            return new IconItem(name, redId);
-        }
-
-        @Override
-        public IconItem[] newArray(int size) {
-            return new IconItem[size];
-        }
-    };
 }

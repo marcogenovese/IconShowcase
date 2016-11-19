@@ -19,13 +19,13 @@
   -->
 
 <android.support.v7.widget.RecyclerView
-    android:id="@+id/changelogRV"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:clipToPadding="false"
-    android:overScrollMode="never"
-    android:padding="@dimen/dialog_margin_bottom">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/changelogRV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        android:padding="@dimen/dialog_margin_bottom">
 
 </android.support.v7.widget.RecyclerView>

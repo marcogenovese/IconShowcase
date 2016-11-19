@@ -19,18 +19,18 @@
   -->
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+      xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/refresh"
-        android:icon="@drawable/ic_refresh"
-        android:title="@string/refresh"
-        app:showAsAction="always"/>
+            android:id="@+id/refresh"
+            android:icon="@drawable/ic_refresh"
+            android:title="@string/refresh"
+            app:showAsAction="always"/>
 
     <item
-        android:id="@+id/columns"
-        android:icon="@drawable/ic_columns"
-        android:title="@string/columns"
-        app:showAsAction="ifRoom"/>
+            android:id="@+id/columns"
+            android:icon="@drawable/ic_columns"
+            android:title="@string/columns"
+            app:showAsAction="ifRoom"/>
 
 </menu>

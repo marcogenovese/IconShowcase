@@ -40,72 +40,6 @@ import jahirfiquitiva.iconshowcase.R;
  */
 public class ChangelogXmlParser {
 
-    public static class ChangelogItem implements Parcelable {
-
-        private final String mTitle;
-        private final ArrayList<String> mPoints;
-
-        public ChangelogItem(String name) {
-            mTitle = name;
-            mPoints = new ArrayList<>();
-        }
-
-        public String getTitle() {
-            return mTitle;
-        }
-
-        public List<String> getItems() {
-            return mPoints;
-        }
-
-        public void addItem(String s) {
-            mPoints.add(s);
-        }
-
-        public int size() {
-            return mPoints.size();
-        }
-
-        protected ChangelogItem(Parcel in) {
-            mTitle = in.readString();
-            if (in.readByte() == 0x01) {
-                mPoints = new ArrayList<>();
-                in.readList(mPoints, String.class.getClassLoader());
-            } else {
-                mPoints = null;
-            }
-        }
-
-        @Override
-        public int describeContents() {
-            return 0;
-        }
-
-        @Override
-        public void writeToParcel(Parcel dest, int flags) {
-            dest.writeString(mTitle);
-            if (mPoints == null) {
-                dest.writeByte((byte) (0x00));
-            } else {
-                dest.writeByte((byte) (0x01));
-                dest.writeList(mPoints);
-            }
-        }
-
-        @SuppressWarnings("unused")
-        public static final Creator<ChangelogItem> CREATOR = new Creator<ChangelogItem>() {
-            @Override
-            public ChangelogItem createFromParcel(Parcel in) {
-                return new ChangelogItem(in);
-            }
-
-            @Override
-            public ChangelogItem[] newArray(int size) {
-                return new ChangelogItem[size];
-            }
-        };
-    }
-
     public static ArrayList<ChangelogItem> parse(@NonNull Context context, @XmlRes int xmlRes) {
         ChangelogItem mCurrentChangelogItem = null;
         ArrayList<ChangelogItem> mChangelogItems = new ArrayList<>();
@@ -140,5 +74,70 @@ public class ChangelogXmlParser {
                 parser.close();
         }
         return mChangelogItems;
+    }
+
+    public static class ChangelogItem implements Parcelable {
+
+        @SuppressWarnings("unused")
+        public static final Creator<ChangelogItem> CREATOR = new Creator<ChangelogItem>() {
+            @Override
+            public ChangelogItem createFromParcel(Parcel in) {
+                return new ChangelogItem(in);
+            }
+
+            @Override
+            public ChangelogItem[] newArray(int size) {
+                return new ChangelogItem[size];
+            }
+        };
+        private final String mTitle;
+        private final ArrayList<String> mPoints;
+
+        public ChangelogItem(String name) {
+            mTitle = name;
+            mPoints = new ArrayList<>();
+        }
+
+        protected ChangelogItem(Parcel in) {
+            mTitle = in.readString();
+            if (in.readByte() == 0x01) {
+                mPoints = new ArrayList<>();
+                in.readList(mPoints, String.class.getClassLoader());
+            } else {
+                mPoints = null;
+            }
+        }
+
+        public String getTitle() {
+            return mTitle;
+        }
+
+        public List<String> getItems() {
+            return mPoints;
+        }
+
+        public void addItem(String s) {
+            mPoints.add(s);
+        }
+
+        public int size() {
+            return mPoints.size();
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(mTitle);
+            if (mPoints == null) {
+                dest.writeByte((byte) (0x00));
+            } else {
+                dest.writeByte((byte) (0x01));
+                dest.writeList(mPoints);
+            }
+        }
     }
 }

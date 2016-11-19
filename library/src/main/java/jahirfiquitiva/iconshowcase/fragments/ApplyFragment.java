@@ -41,10 +41,10 @@ import java.util.Collections;
 import java.util.List;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.activities.base.DrawerActivity;
 import jahirfiquitiva.iconshowcase.adapters.LaunchersAdapter;
 import jahirfiquitiva.iconshowcase.config.Config;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
-import jahirfiquitiva.iconshowcase.enums.DrawerItem;
 import jahirfiquitiva.iconshowcase.utilities.LauncherIntents;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
@@ -53,36 +53,11 @@ import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 
 public class ApplyFragment extends CapsuleFragment {
 
-    private String intentString;
     private final List<Launcher> launchers = new ArrayList<>();
+    private String intentString;
     private RecyclerView recyclerView;
 
     private Preferences mPrefs;
-
-    @Override
-    public void onFabClick(View v) {
-
-    }
-
-    @Override
-    public int getTitleId() {
-        return DrawerItem.APPLY.getTitleID();
-    }
-
-    @Override
-    protected int getFabIcon() {
-        return 0;
-    }
-
-    /**
-     * Will hide the fab if false; the fab is still in the viewgroup and is used for various other tasks such as the snackbar
-     *
-     * @return
-     */
-    @Override
-    protected boolean hasFab() {
-        return false;
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -105,6 +80,30 @@ public class ApplyFragment extends CapsuleFragment {
         updateLaunchersList(layout);
 
         return layout;
+    }
+
+    @Override
+    public void onFabClick(View v) {
+
+    }
+
+    @Override
+    public int getTitleId() {
+        return DrawerActivity.DrawerItem.APPLY.getTitleID();
+    }
+
+    @Override
+    protected int getFabIcon() {
+        return 0;
+    }
+
+    /**
+     * Will hide the fab if false; the fab is still in the viewgroup and is used for various other
+     * tasks such as the snackbar
+     */
+    @Override
+    protected boolean hasFab() {
+        return false;
     }
 
     private void updateLaunchersList(View layout) {
@@ -185,6 +184,34 @@ public class ApplyFragment extends CapsuleFragment {
         });
     }
 
+    private void gnlDialog() {
+        final String appLink = Config.MARKET_URL + getResources().getString(R.string.extraapp);
+        ISDialogs.showGoogleNowLauncherDialog(getContext(), new MaterialDialog.SingleButtonCallback() {
+            @Override
+            public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(appLink));
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void showApplyAdviceDialog(Context dialogContext) {
+        if (!mPrefs.getApplyDialogDismissed()) {
+            MaterialDialog.SingleButtonCallback singleButtonCallback = new MaterialDialog.SingleButtonCallback() {
+                @Override
+                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    if (which.equals(DialogAction.POSITIVE)) {
+                        mPrefs.setApplyDialogDismissed(false);
+                    } else if (which.equals(DialogAction.NEUTRAL)) {
+                        mPrefs.setApplyDialogDismissed(true);
+                    }
+                }
+            };
+            ISDialogs.showApplyAdviceDialog(dialogContext, singleButtonCallback);
+        }
+    }
+
     public class Launcher {
 
         public final String name;
@@ -214,34 +241,6 @@ public class ApplyFragment extends CapsuleFragment {
             return isInstalled == 1;
         }
 
-    }
-
-    private void gnlDialog() {
-        final String appLink = Config.MARKET_URL + getResources().getString(R.string.extraapp);
-        ISDialogs.showGoogleNowLauncherDialog(getContext(), new MaterialDialog.SingleButtonCallback() {
-            @Override
-            public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse(appLink));
-                startActivity(intent);
-            }
-        });
-    }
-
-    private void showApplyAdviceDialog(Context dialogContext) {
-        if (!mPrefs.getApplyDialogDismissed()) {
-            MaterialDialog.SingleButtonCallback singleButtonCallback = new MaterialDialog.SingleButtonCallback() {
-                @Override
-                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                    if (which.equals(DialogAction.POSITIVE)) {
-                        mPrefs.setApplyDialogDismissed(false);
-                    } else if (which.equals(DialogAction.NEUTRAL)) {
-                        mPrefs.setApplyDialogDismissed(true);
-                    }
-                }
-            };
-            ISDialogs.showApplyAdviceDialog(dialogContext, singleButtonCallback);
-        }
     }
 
 }

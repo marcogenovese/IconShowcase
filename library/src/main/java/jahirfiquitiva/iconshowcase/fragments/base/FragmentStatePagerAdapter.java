@@ -38,10 +38,9 @@ import java.util.ArrayList;
 public abstract class FragmentStatePagerAdapter extends PagerAdapter {
 
     private final FragmentManager mFragmentManager;
-    private FragmentTransaction mCurTransaction = null;
-
     private final ArrayList<Fragment.SavedState> mSavedState = new ArrayList<>();
     private final ArrayList<Fragment> mFragments = new ArrayList<>();
+    private FragmentTransaction mCurTransaction = null;
     private Fragment mCurrentPrimaryItem = null;
 
     protected FragmentStatePagerAdapter(FragmentManager fm) {

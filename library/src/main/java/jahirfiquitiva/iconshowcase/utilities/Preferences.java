@@ -28,7 +28,7 @@ import jahirfiquitiva.iconshowcase.R;
 public class Preferences {
 
     private static final String
-            PREFERENCES_NAME = "DASHBOARD_PREFERENCES",
+            PREFERENCES_NAME = "dashboard_preferences",
             FEATURES_ENABLED = "features_enabled",
             VERSION_CODE = "version_code",
             ROTATE_MINUTE = "rotate_time_minute",
@@ -74,20 +74,20 @@ public class Preferences {
         return prefs().getBoolean(FEATURES_ENABLED, false);
     }
 
-    public void setRotateTime(int time) {
-        prefs().edit().putInt(ROTATE_TIME, time).apply();
-    }
-
     public int getRotateTime() {
         return prefs().getInt(ROTATE_TIME, 3 * 60 * 60 * 1000);
     }
 
-    public void setRotateMinute(boolean bool) {
-        prefs().edit().putBoolean(ROTATE_MINUTE, bool).apply();
+    public void setRotateTime(int time) {
+        prefs().edit().putInt(ROTATE_TIME, time).apply();
     }
 
     public boolean isRotateMinute() {
         return prefs().getBoolean(ROTATE_MINUTE, false);
+    }
+
+    public void setRotateMinute(boolean bool) {
+        prefs().edit().putBoolean(ROTATE_MINUTE, bool).apply();
     }
 
     public void setIconShown(boolean show) {
@@ -98,12 +98,17 @@ public class Preferences {
         return prefs().getBoolean(LAUNCHER_ICON, true);
     }
 
-    public void setDownloadsFolder(String folder) {
-        prefs().edit().putString(WALLS_DOWNLOAD_FOLDER, folder).apply();
+    public String getDownloadsFolder() {
+        String name = context != null ? context.getResources()
+                .getString(R.string.app_name).replaceAll(" ", "")
+                : "IconShowcase";
+        return prefs().getString(WALLS_DOWNLOAD_FOLDER,
+                Environment.getExternalStorageDirectory().getAbsolutePath() +
+                        "/" + name + "/Wallpapers");
     }
 
-    public String getDownloadsFolder() {
-        return prefs().getString(WALLS_DOWNLOAD_FOLDER, Environment.getExternalStorageDirectory().getAbsolutePath());
+    public void setDownloadsFolder(String folder) {
+        prefs().edit().putString(WALLS_DOWNLOAD_FOLDER, folder).apply();
     }
 
     public void setIfAppsToRequestLoaded(boolean loaded) {
@@ -114,56 +119,54 @@ public class Preferences {
         return prefs().getBoolean(APPS_TO_REQUEST_LOADED, false);
     }
 
-    public void setWallsListLoaded(boolean loaded) {
-        prefs().edit().putBoolean(WALLS_LIST_LOADED, loaded).apply();
-    }
-
     public boolean getWallsListLoaded() {
         return prefs().getBoolean(WALLS_LIST_LOADED, false);
     }
 
-    public void setSettingsModified(boolean loaded) {
-        prefs().edit().putBoolean(SETTINGS_MODIFIED, loaded).apply();
+    public void setWallsListLoaded(boolean loaded) {
+        prefs().edit().putBoolean(WALLS_LIST_LOADED, loaded).apply();
     }
 
     public boolean getSettingsModified() {
         return prefs().getBoolean(SETTINGS_MODIFIED, false);
     }
 
-    public void setAnimationsEnabled(boolean animationsEnabled) {
-        prefs().edit().putBoolean(ANIMATIONS_ENABLED, animationsEnabled).apply();
+    public void setSettingsModified(boolean loaded) {
+        prefs().edit().putBoolean(SETTINGS_MODIFIED, loaded).apply();
     }
 
     public boolean getAnimationsEnabled() {
         return prefs().getBoolean(ANIMATIONS_ENABLED, true);
     }
 
-    public void setWallpaperAsToolbarHeaderEnabled(boolean wallpaperAsToolbarHeader) {
-        prefs().edit().putBoolean(WALLPAPER_AS_TOOLBAR_HEADER, wallpaperAsToolbarHeader).apply();
+    public void setAnimationsEnabled(boolean animationsEnabled) {
+        prefs().edit().putBoolean(ANIMATIONS_ENABLED, animationsEnabled).apply();
     }
 
     public boolean getWallpaperAsToolbarHeaderEnabled() {
-        return prefs().getBoolean(WALLPAPER_AS_TOOLBAR_HEADER, true);
+        boolean value = context == null || context.getResources()
+                .getBoolean(R.bool.show_user_wallpaper_in_toolbar_by_default);
+        return prefs().getBoolean(WALLPAPER_AS_TOOLBAR_HEADER, value);
     }
 
-    public void setApplyDialogDismissed(boolean applyDialogDismissed) {
-        prefs().edit().putBoolean(APPLY_DIALOG_DISMISSED, applyDialogDismissed).apply();
+    public void setWallpaperAsToolbarHeaderEnabled(boolean wallpaperAsToolbarHeader) {
+        prefs().edit().putBoolean(WALLPAPER_AS_TOOLBAR_HEADER, wallpaperAsToolbarHeader).apply();
     }
 
     public boolean getApplyDialogDismissed() {
         return prefs().getBoolean(APPLY_DIALOG_DISMISSED, false);
     }
 
-    public void setWallsDialogDismissed(boolean wallsDialogDismissed) {
-        prefs().edit().putBoolean(WALLS_DIALOG_DISMISSED, wallsDialogDismissed).apply();
+    public void setApplyDialogDismissed(boolean applyDialogDismissed) {
+        prefs().edit().putBoolean(APPLY_DIALOG_DISMISSED, applyDialogDismissed).apply();
     }
 
     public boolean getWallsDialogDismissed() {
         return prefs().getBoolean(WALLS_DIALOG_DISMISSED, false);
     }
 
-    public void setWallsColumnsNumber(int columnsNumber) {
-        prefs().edit().putInt(WALLS_COLUMNS_NUMBER, columnsNumber).apply();
+    public void setWallsDialogDismissed(boolean wallsDialogDismissed) {
+        prefs().edit().putBoolean(WALLS_DIALOG_DISMISSED, wallsDialogDismissed).apply();
     }
 
     public int getWallsColumnsNumber() {
@@ -171,32 +174,40 @@ public class Preferences {
                 context.getResources().getInteger(R.integer.wallpapers_grid_width));
     }
 
-    public void setRequestHour(String hour) {
-        prefs().edit().putString(REQUEST_HOUR, hour).apply();
+    public void setWallsColumnsNumber(int columnsNumber) {
+        prefs().edit().putInt(WALLS_COLUMNS_NUMBER, columnsNumber).apply();
     }
 
     public String getRequestHour() {
         return prefs().getString(REQUEST_HOUR, "null");
     }
 
-    public void setRequestDay(int day) {
-        prefs().edit().putInt(REQUEST_DAY, day).apply();
+    public void setRequestHour(String hour) {
+        prefs().edit().putString(REQUEST_HOUR, hour).apply();
     }
 
     public int getRequestDay() {
         return prefs().getInt(REQUEST_DAY, 0);
     }
 
-    public void setRequestsCreated(boolean requestsCreated) {
-        prefs().edit().putBoolean(REQUESTS_CREATED, requestsCreated).apply();
+    public void setRequestDay(int day) {
+        prefs().edit().putInt(REQUEST_DAY, day).apply();
     }
 
     public boolean getRequestsCreated() {
         return prefs().getBoolean(REQUESTS_CREATED, false);
     }
 
+    public void setRequestsCreated(boolean requestsCreated) {
+        prefs().edit().putBoolean(REQUESTS_CREATED, requestsCreated).apply();
+    }
+
     public int getRequestsLeft() {
         return prefs().getInt(REQUESTS_LEFT, -1);
+    }
+
+    public void setRequestsLeft(int requestsLeft) {
+        prefs().edit().putInt(REQUESTS_LEFT, requestsLeft).apply();
     }
 
     public int getRequestsLeft(Context context) {
@@ -204,71 +215,66 @@ public class Preferences {
                 context.getResources().getInteger(R.integer.max_apps_to_request));
     }
 
-    public void setRequestsLeft(int requestsLeft) {
-        prefs().edit().putInt(REQUESTS_LEFT, requestsLeft).apply();
-    }
-
     public void resetRequestsLeft(Context context) {
-        prefs().edit().putInt(REQUESTS_LEFT,
-                context.getResources().getInteger(R.integer.max_apps_to_request)).apply();
+        prefs().edit().putInt(REQUESTS_LEFT, context.getResources().getInteger(R.integer.max_apps_to_request)).apply();
     }
 
     //NOTIFICATIONS:
-
-    public void setNotifsEnabled(boolean enabled) {
-        prefs().edit().putBoolean(NOTIFS_ENABLED, enabled).apply();
-    }
 
     public boolean getNotifsEnabled() {
         return prefs().getBoolean(NOTIFS_ENABLED, false);
     }
 
-    public void setNotifsLedEnabled(boolean enableLed) {
-        prefs().edit().putBoolean(NOTIFS_LED_ENABLED, enableLed).apply();
+    public void setNotifsEnabled(boolean enabled) {
+        prefs().edit().putBoolean(NOTIFS_ENABLED, enabled).apply();
     }
 
     public boolean getNotifsLedEnabled() {
         return prefs().getBoolean(NOTIFS_LED_ENABLED, true);
     }
 
-    public void setNotifsVibrationEnabled(boolean vibrate) {
-        prefs().edit().putBoolean(NOTIFS_VIBRATION_ENABLED, vibrate).apply();
+    public void setNotifsLedEnabled(boolean enableLed) {
+        prefs().edit().putBoolean(NOTIFS_LED_ENABLED, enableLed).apply();
     }
 
     public boolean getNotifsVibrationEnabled() {
         return prefs().getBoolean(NOTIFS_VIBRATION_ENABLED, true);
     }
 
-    public void setNotifsUpdateInterval(int interval) {
-        prefs().edit().putInt(NOTIFS_UPDATE_INTERVAL, interval).apply();
+    public void setNotifsVibrationEnabled(boolean vibrate) {
+        prefs().edit().putBoolean(NOTIFS_VIBRATION_ENABLED, vibrate).apply();
     }
 
     public int getNotifsUpdateInterval() {
         return prefs().getInt(NOTIFS_UPDATE_INTERVAL, 4);
     }
 
-    public void setVersionCode(int versionCode) {
-        prefs().edit().putInt(VERSION_CODE, versionCode).apply();
+    public void setNotifsUpdateInterval(int interval) {
+        prefs().edit().putInt(NOTIFS_UPDATE_INTERVAL, interval).apply();
     }
 
     public int getVersionCode() {
         return prefs().getInt(VERSION_CODE, 0);
     }
 
-    public void setDevDrawerTexts(boolean enable) {
-        prefs().edit().putBoolean(DEV_DRAWER_TEXTS, enable).apply();
+    public void setVersionCode(int versionCode) {
+        prefs().edit().putInt(VERSION_CODE, versionCode).apply();
     }
 
     public boolean getDevDrawerTexts() {
         return prefs().getBoolean(DEV_DRAWER_TEXTS, true);
     }
 
-    public void setDevListsCards(boolean enableCards) {
-        prefs().edit().putBoolean(DEV_LISTS_CARDS, enableCards).apply();
+    public void setDevDrawerTexts(boolean enable) {
+        prefs().edit().putBoolean(DEV_DRAWER_TEXTS, enable).apply();
     }
 
     public boolean getDevListsCards() {
         return prefs().getBoolean(DEV_LISTS_CARDS, false);
+    }
+
+    public void setDevListsCards(boolean enableCards) {
+        prefs().edit().putBoolean(DEV_LISTS_CARDS, enableCards).apply();
     }
 
 }

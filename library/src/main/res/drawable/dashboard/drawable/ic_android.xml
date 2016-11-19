@@ -19,14 +19,14 @@
   -->
 
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="24dp"
-    android:height="24dp"
-    android:viewportWidth="24"
-    android:viewportHeight="24">
+        android:width="24dp"
+        android:height="24dp"
+        android:viewportWidth="24"
+        android:viewportHeight="24">
 
     <path
-        android:fillColor="#000000"
-        android:pathData="M14.8,8.9c-0.5,0-0.9-0.4-0.9-0.9S14.3,7,14.8,7s0.9,0.4,0.9,0.9S15.3,8.9,14.8,8.9
+            android:fillColor="#000000"
+            android:pathData="M14.8,8.9c-0.5,0-0.9-0.4-0.9-0.9S14.3,7,14.8,7s0.9,0.4,0.9,0.9S15.3,8.9,14.8,8.9
 M9.2,8.9c-0.5,0-0.9-0.4-0.9-0.9 S8.7,7,9.2,7s0.9,0.4,0.9,0.9S9.7,8.9,9.2,8.9
 M15.9,4.5l1.6-1.6c0.2-0.2,0.2-0.6,0-0.8v0c-0.2-0.2-0.6-0.2-0.8,0l-1.8,1.8
 C14,3.5,13,3.2,12,3.2c-1.1,0-2,0.3-2.9,0.7L7.3,2.2c-0.2-0.2-0.6-0.2-0.8,0l0,0c-0.2,0.2-0.2,0.6,0,0.8l1.6,1.6

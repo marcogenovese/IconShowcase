@@ -19,17 +19,17 @@
   -->
 
 <LinearLayout
-    android:id="@+id/appWidget"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <ImageView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/appWidget"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/app_logo"
-        tools:ignore="ContentDescription"/>
+        android:orientation="vertical">
+
+    <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/app_logo"
+            tools:ignore="ContentDescription"/>
 
 </LinearLayout>

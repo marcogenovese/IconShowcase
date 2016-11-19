@@ -35,7 +35,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.NumberPicker;
 import android.widget.RadioButton;
 
@@ -137,6 +136,13 @@ public class MuzeiSettings extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        int iconsColor = ThemeUtils.darkOrLight(this, R.color.toolbar_text_dark, R.color.toolbar_text_light);
+        ToolbarColorizer.colorizeToolbar(toolbar, iconsColor);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.muzei, menu);
@@ -183,13 +189,6 @@ public class MuzeiSettings extends AppCompatActivity {
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         ;
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        int iconsColor = ThemeUtils.darkOrLight(this, R.color.toolbar_text_dark, R.color.toolbar_text_light);
-        ToolbarColorizer.colorizeToolbar(toolbar, iconsColor);
     }
 
     private void setDividerColor(NumberPicker picker) {

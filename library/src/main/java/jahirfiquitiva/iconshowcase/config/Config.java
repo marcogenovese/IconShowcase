@@ -36,8 +36,7 @@ import timber.log.Timber;
 /**
  * Created by Allan Wang on 2016-08-19.
  * <p/>
- * With reference to Polar
- * https://github.com/afollestad/polar-dashboard/blob/master/app/src/main/java/com/afollestad/polar/config/Config.java
+ * With reference to Polar https://github.com/afollestad/polar-dashboard/blob/master/app/src/main/java/com/afollestad/polar/config/Config.java
  */
 public class Config implements IConfig {
 
@@ -47,17 +46,15 @@ public class Config implements IConfig {
             ADW_ACTION = "org.adw.launcher.icons.ACTION_PICK_ICON",
             TURBO_ACTION = "com.phonemetra.turbo.launcher.icons.ACTION_PICK_ICON",
             NOVA_ACTION = "com.novalauncher.THEME";
-
+    private static Config mConfig;
+    private Context mContext;
+    private Resources mR;
     private Config(@Nullable Context context) {
         mR = null;
         mContext = context;
         if (context != null)
             mR = context.getResources();
     }
-
-    private static Config mConfig;
-    private Context mContext;
-    private Resources mR;
 
     public static void init(@NonNull Context context) {
         mConfig = new Config(context);
@@ -69,11 +66,6 @@ public class Config implements IConfig {
             if (context != null)
                 mConfig.mR = context.getResources();
         }
-    }
-
-    private void destroy() {
-        mContext = null;
-        mR = null;
     }
 
     public static void deinit() {
@@ -95,6 +87,11 @@ public class Config implements IConfig {
         if (mConfig == null)
             return new Config(context);
         return mConfig;
+    }
+
+    private void destroy() {
+        mContext = null;
+        mR = null;
     }
 
     // Getters

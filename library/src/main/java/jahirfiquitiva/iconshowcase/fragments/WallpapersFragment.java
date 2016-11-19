@@ -22,10 +22,7 @@ package jahirfiquitiva.iconshowcase.fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -35,21 +32,17 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 
-import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
+import jahirfiquitiva.iconshowcase.activities.base.DrawerActivity;
 import jahirfiquitiva.iconshowcase.adapters.WallpapersAdapter;
 import jahirfiquitiva.iconshowcase.dialogs.AdviceDialog;
-import jahirfiquitiva.iconshowcase.enums.DrawerItem;
 import jahirfiquitiva.iconshowcase.events.OnLoadEvent;
 import jahirfiquitiva.iconshowcase.holders.FullListHolder;
-import jahirfiquitiva.iconshowcase.models.WallpaperItem;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
@@ -58,48 +51,23 @@ import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 
 public class WallpapersFragment extends EventBaseFragment {
 
+    public WallpapersAdapter mAdapter;
     private RecyclerView mRecyclerView;
     private RecyclerFastScroller fastScroller;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    public WallpapersAdapter mAdapter;
+    private ProgressBar progress;
     private ImageView noConnection;
     private Activity context;
     private GridSpacingItemDecoration gridSpacing;
     private int tintColor;
 
     @Override
-    public void onFabClick(View v) {
-
-    }
-
-    @Override
-    public int getTitleId() {
-        return DrawerItem.WALLPAPERS.getTitleID();
-    }
-
-    @Override
-    protected int getFabIcon() {
-        return 0;
-    }
-
-    /**
-     * Will hide the fab if false; the fab is still in the viewgroup and is used for various other tasks such as the snackbar
-     *
-     * @return
-     */
-    @Override
-    protected boolean hasFab() {
-        return false;
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        if (FullListHolder.get().walls().isNull()) return loadingView(inflater, container);
-
         setHasOptionsMenu(true);
         context = getActivity();
+        ((ShowcaseActivity) context).getJsonTask().setFragment(this);
 
         View layout = inflater.inflate(R.layout.wallpapers_section, container, false);
 
@@ -110,6 +78,8 @@ public class WallpapersFragment extends EventBaseFragment {
         fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
         mSwipeRefreshLayout = (SwipeRefreshLayout) layout.findViewById(R.id.swipeRefreshLayout);
 
+        progress = (ProgressBar) layout.findViewById(R.id.progress);
+
         if (!((ShowcaseActivity) getActivity()).isWallsPicker()) {
             AdviceDialog.show(getActivity(), AdviceDialog.Type.WALLPAPER);
         }
@@ -117,45 +87,20 @@ public class WallpapersFragment extends EventBaseFragment {
         noConnection.setImageDrawable(ColorUtils.getTintedIcon(
                 context, R.drawable.ic_no_connection, tintColor));
 
-        // showProgressBar();
-
         setupRecyclerView(false, 0);
 
-//        mRecyclerView.setVisibility(View.GONE);
+        mSwipeRefreshLayout.setProgressBackgroundColorSchemeColor(
+                ThemeUtils.darkOrLight(context, R.color.drawable_tint_light,
+                        R.color.drawable_tint_dark));
 
-        mSwipeRefreshLayout.setProgressBackgroundColorSchemeColor(tintColor);
+        int accent = ThemeUtils.darkOrLight(R.color.dark_theme_accent, R.color.light_theme_accent);
 
-        mSwipeRefreshLayout.setColorSchemeResources(
-                ThemeUtils.darkOrLight(R.color.dark_theme_accent, R.color.light_theme_accent),
-                ThemeUtils.darkOrLight(R.color.dark_theme_accent, R.color.light_theme_accent),
-                ThemeUtils.darkOrLight(R.color.dark_theme_accent, R.color.light_theme_accent)); //TODO check if having three of the same colors makes a difference
+        mSwipeRefreshLayout.setColorSchemeResources(accent);
 
         mSwipeRefreshLayout.setEnabled(false);
-
-        //TODO: MAKE WALLPAPERS APPEAR AT FIRST. FOR SOME REASON ONLY APPEAR AFTER PRESSING "UPDATE" ICON IN TOOLBAR
-        mAdapter = new WallpapersAdapter(getActivity(),
-                FullListHolder.get().walls().getList());
-
-        mRecyclerView.setAdapter(mAdapter);
-        fastScroller.attachRecyclerView(mRecyclerView);
-
-        if (Utils.hasNetwork(context)) {
-            noConnection.setVisibility(View.GONE);
-            mRecyclerView.setVisibility(View.VISIBLE);
-            fastScroller.setVisibility(View.VISIBLE);
-            mSwipeRefreshLayout.setEnabled(false);
-            mSwipeRefreshLayout.setRefreshing(false);
-        }
-
-        if (FullListHolder.get().walls().getList().isEmpty()) {
-            noConnection.setImageDrawable(ColorUtils.getTintedIcon(
-                    context, R.drawable.ic_no_connection,
-                    tintColor));
-            hideStuff();
-        }
+        setupContent();
 
         return layout;
-
     }
 
     @Override
@@ -164,8 +109,40 @@ public class WallpapersFragment extends EventBaseFragment {
         inflater.inflate(R.menu.wallpapers, menu);
     }
 
-    private void hideStuff() {
+    public void setupContent() {
+        if (Utils.hasNetwork(context)) {
+            showProgressBar();
+            if (!(FullListHolder.get().walls().getList().isEmpty())) {
+                mAdapter = new WallpapersAdapter(getActivity(),
+                        FullListHolder.get().walls().getList());
+
+                mRecyclerView.setAdapter(mAdapter);
+                fastScroller.attachRecyclerView(mRecyclerView);
+
+                mRecyclerView.setVisibility(View.VISIBLE);
+                fastScroller.setVisibility(View.VISIBLE);
+                progress.setVisibility(View.GONE);
+            }
+        } else {
+            noConnection.setImageDrawable(ColorUtils.getTintedIcon(
+                    context, R.drawable.ic_no_connection,
+                    tintColor));
+            showNoConnectionPicture();
+        }
+    }
+
+    private void showNoConnectionPicture() {
         noConnection.setVisibility(View.VISIBLE);
+        progress.setVisibility(View.GONE);
+        mRecyclerView.setVisibility(View.GONE);
+        fastScroller.setVisibility(View.GONE);
+        mSwipeRefreshLayout.setEnabled(false);
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
+
+    private void showProgressBar() {
+        noConnection.setVisibility(View.GONE);
+        progress.setVisibility(View.VISIBLE);
         mRecyclerView.setVisibility(View.GONE);
         fastScroller.setVisibility(View.GONE);
         mSwipeRefreshLayout.setEnabled(false);
@@ -173,7 +150,6 @@ public class WallpapersFragment extends EventBaseFragment {
     }
 
     private void setupRecyclerView(boolean updating, int newColumns) {
-
         Preferences mPrefs = new Preferences(context);
         if (updating && gridSpacing != null) {
             mPrefs.setWallsColumnsNumber(newColumns);
@@ -211,7 +187,7 @@ public class WallpapersFragment extends EventBaseFragment {
         setupRecyclerView(true, newColumns);
     }
 
-    public void refreshWalls(Context context) {
+    public void refreshContent(Context context) {
         mRecyclerView.setVisibility(View.GONE);
         fastScroller.setVisibility(View.GONE);
         int stringId;
@@ -235,5 +211,29 @@ public class WallpapersFragment extends EventBaseFragment {
     @Override
     protected OnLoadEvent.Type eventType() {
         return OnLoadEvent.Type.WALLPAPERS;
+    }
+
+
+    @Override
+    public void onFabClick(View v) {
+    }
+
+    @Override
+    public int getTitleId() {
+        return DrawerActivity.DrawerItem.WALLPAPERS.getTitleID();
+    }
+
+    @Override
+    protected int getFabIcon() {
+        return 0;
+    }
+
+    /**
+     * Will hide the fab if false; the fab is still in the viewgroup and is used for various other
+     * tasks such as the snackbar
+     */
+    @Override
+    protected boolean hasFab() {
+        return false;
     }
 }

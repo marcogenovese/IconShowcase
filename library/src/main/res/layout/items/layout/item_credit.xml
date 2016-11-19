@@ -19,42 +19,43 @@
   ~ 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
   -->
 
-<jahirfiquitiva.iconshowcase.views.IconShowcaseCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:foreground="?attr/selectableItemBackground"
-    android:stateListAnimator="@anim/card_lift"
-    app:cardUseCompatPadding="true"
-    app:cardCornerRadius="@dimen/card_corner_radius"
-    app:cardElevation="@dimen/cards_elevation"
-    app:cardPreventCornerOverlap="false">
-
-    <LinearLayout
+<jahirfiquitiva.iconshowcase.views.IconShowcaseCardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:minHeight="@dimen/md_listitem_height"
-        android:orientation="horizontal"
-        android:padding="16dp">
+        android:foreground="?attr/selectableItemBackground"
+        android:stateListAnimator="@anim/card_lift"
+        app:cardUseCompatPadding="true"
+        app:cardCornerRadius="@dimen/card_corner_radius"
+        app:cardElevation="@dimen/cards_elevation"
+        app:cardPreventCornerOverlap="false">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:minHeight="@dimen/md_listitem_height"
+            android:orientation="horizontal"
+            android:padding="16dp">
 
         <ImageView
-            android:id="@+id/icon"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            tools:ignore="ContentDescription"/>
+                android:id="@+id/icon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                tools:ignore="ContentDescription"/>
 
         <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="24dp"
-            android:layout_marginStart="24dp"
-            android:paddingBottom="8dp"
-            android:paddingTop="8dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-            tools:text="Extra credit"/>
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="24dp"
+                android:layout_marginStart="24dp"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                tools:text="Extra credit"/>
 
     </LinearLayout>
 

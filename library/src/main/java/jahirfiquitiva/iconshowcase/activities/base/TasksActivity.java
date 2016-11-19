@@ -22,12 +22,11 @@ package jahirfiquitiva.iconshowcase.activities.base;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.CallSuper;
+import android.support.v4.app.Fragment;
 
 import com.pitchedapps.butler.library.icon.request.IconRequest;
-import com.pitchedapps.capsule.library.activities.CapsuleActivity;
 
 import java.io.File;
-import java.util.EnumMap;
 
 import jahirfiquitiva.iconshowcase.BuildConfig;
 import jahirfiquitiva.iconshowcase.R;
@@ -45,66 +44,9 @@ import timber.log.Timber;
  */
 public abstract class TasksActivity extends DrawerActivity {
 
-    private boolean tasksExecuted = false;
     protected Preferences mPrefs;
-
-    //TODO fix up booleans
-    protected void startTasks() {
-        Timber.d("Starting tasks");
-        if (tasksExecuted)
-            Timber.w("startTasks() executed more than once; please remove duplicates");
-        tasksExecuted = true;
-        if (drawerHas(DrawerItem.PREVIEWS))
-            new LoadIconsLists(this).execute();
-        if (drawerHas(DrawerItem.WALLPAPERS)) {
-            new DownloadJSON(
-                    //                    new ShowcaseActivity.WallsListInterface() {
-                    //                @Override
-                    //                public void checkWallsListCreation(boolean result) {
-                    //                    if (WallpapersFragment.mSwipeRefreshLayout != null) {
-                    //                        WallpapersFragment.mSwipeRefreshLayout.setEnabled(false);
-                    //                        WallpapersFragment.mSwipeRefreshLayout.setRefreshing(false);
-                    //                    }
-                    //                    if (WallpapersFragment.mAdapter != null) {
-                    //                        WallpapersFragment.mAdapter.notifyDataSetChanged();
-                    //                    }
-                    //                }
-                    //            },
-                    this).execute();
-        }
-        if (drawerHas(DrawerItem.REQUESTS)) {
-            IconRequest.start(this)
-                    //                        .withHeader("Hey, testing Icon Request!")
-                    .withFooter("%s Version: %s", getString(R.string.app_name), BuildConfig.VERSION_NAME)
-                    .withSubject(s(R.string.request_title))
-                    .toEmail(s(R.string.email_id))
-                    .saveDir(new File(getString(R.string.request_save_location, Environment.getExternalStorageDirectory())))
-                    .includeDeviceInfo(true) // defaults to true anyways
-                    .generateAppFilterXml(true) // defaults to true anyways
-                    .generateAppFilterJson(false)
-                    .debugMode(Config.get().allowDebugging())
-                    .filterXmlId(R.xml.appfilter)
-                    //.filterOff() //TODO switch
-                    .maxSelectionCount(0) //TODO add? And make this toggleable
-                    .build().loadApps();
-        }
-        if (drawerHas(DrawerItem.ZOOPER)) {
-            new LoadZooperWidgets(this).execute();
-        }
-        if (drawerHas(DrawerItem.KUSTOM)) {
-            new LoadKustomFiles(this).execute();
-        }
-
-    }
-
-    private boolean drawerHas(DrawerItem item) {
-        return mDrawerMap.containsKey(item);
-    }
-
-    //    @Subscribe
-    //    public void onAppsLoaded(AppLoadedEvent event) {
-    //        IconRequest.get().loadHighResIcons(); //Takes too much memory
-    //    }
+    private boolean tasksExecuted = false;
+    private DownloadJSON jsonTask;
 
     @Override
     @CallSuper
@@ -126,6 +68,92 @@ public abstract class TasksActivity extends DrawerActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        Config.deinit();
+        super.onDestroy();
+    }
+
+    //TODO fix up booleans
+    protected void startTasks() {
+        Timber.d("Starting tasks");
+        if (tasksExecuted)
+            Timber.w("startTasks() executed more than once; please remove duplicates");
+        tasksExecuted = true;
+        if (drawerHas(DrawerItem.PREVIEWS))
+            new LoadIconsLists(this).execute();
+        if (drawerHas(DrawerItem.WALLPAPERS)) {
+            jsonTask = new DownloadJSON(
+                    //                    new ShowcaseActivity.WallsListInterface() {
+                    //                @Override
+                    //                public void checkWallsListCreation(boolean result) {
+                    //                    if (WallpapersFragment.mSwipeRefreshLayout != null) {
+                    //                        WallpapersFragment.mSwipeRefreshLayout.setEnabled(false);
+                    //                        WallpapersFragment.mSwipeRefreshLayout.setRefreshing(false);
+                    //                    }
+                    //                    if (WallpapersFragment.mAdapter != null) {
+                    //                        WallpapersFragment.mAdapter.notifyDataSetChanged();
+                    //                    }
+                    //                }
+                    //            },
+                    this);
+            jsonTask.execute();
+        }
+        if (drawerHas(DrawerItem.REQUESTS)) {
+            //mPrefs.resetRequestsLeft(this);
+            IconRequest.start(this)
+                    //                        .withHeader("Hey, testing Icon Request!")
+                    .withFooter("%s Version: %s", getString(R.string.app_name), BuildConfig.VERSION_NAME)
+                    .withSubject(s(R.string.request_title))
+                    .toEmail(s(R.string.email_id))
+                    .saveDir(new File(getString(R.string.request_save_location, Environment.getExternalStorageDirectory())))
+                    .includeDeviceInfo(true) // defaults to true anyways
+                    .generateAppFilterXml(true) // defaults to true anyways
+                    .generateAppFilterJson(false)
+                    .debugMode(Config.get().allowDebugging())
+                    .filterXmlId(R.xml.appfilter)
+                    //.filterOff() //TODO switch
+                    .maxSelectionCount(0) //TODO add? And make this toggleable
+                    .build().loadApps();
+        }
+        if (drawerHas(DrawerItem.ZOOPER)) {
+            WITH_ZOOPER_SECTION = true;
+            new LoadZooperWidgets(this, null).execute();
+        }
+        if (drawerHas(DrawerItem.KUSTOM)) {
+            new LoadKustomFiles(this).execute();
+        }
+    }
+
+    private boolean drawerHas(DrawerItem item) {
+        return mDrawerMap.containsKey(item);
+    }
+
+    public DownloadJSON getJsonTask() {
+        return jsonTask;
+    }
+
+    public void setJsonTask(DownloadJSON jsonTask) {
+        this.jsonTask = jsonTask;
+    }
+
+    public void executeWallpapersTaskAgain(Fragment fragment) {
+        if (drawerHas(DrawerItem.WALLPAPERS)) {
+            if (this.jsonTask != null) {
+                this.jsonTask.cancel(true);
+            } else {
+                this.jsonTask = new DownloadJSON(this);
+            }
+            this.jsonTask.setFragment(fragment);
+            this.jsonTask.execute();
+        }
+    }
+
+    //    @Subscribe
+    //    public void onAppsLoaded(AppLoadedEvent event) {
+    //        IconRequest.get().loadHighResIcons(); //Takes too much memory
+    //    }
+
+    @Override
     @CallSuper
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -143,11 +171,5 @@ public abstract class TasksActivity extends DrawerActivity {
     //        EventBus.getDefault().unregister(this);
     //        super.onStop();
     //    }
-
-    @Override
-    protected void onDestroy() {
-        Config.deinit();
-        super.onDestroy();
-    }
 
 }

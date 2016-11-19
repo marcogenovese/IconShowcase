@@ -29,7 +29,7 @@
 
     <!-- Contacts App -->
     <AppIcon
-        name="com.android.contacts/com.android.contacts.DialtactsContactsEntryActivity"
-        image="people"/>
+            name="com.android.contacts/com.android.contacts.DialtactsContactsEntryActivity"
+            image="people"/>
 
 </Theme>

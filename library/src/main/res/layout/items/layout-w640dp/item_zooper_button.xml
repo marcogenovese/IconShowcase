@@ -19,44 +19,45 @@
   -->
 
 <jahirfiquitiva.iconshowcase.views.IconShowcaseCardView
-    android:id="@+id/zooper_btn_card"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:clickable="true"
-    android:foreground="?attr/selectableItemBackground"
-    android:stateListAnimator="@anim/card_lift"
-    app:cardPreventCornerOverlap="false"
-    >
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/zooper_btn_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:stateListAnimator="@anim/card_lift"
+        app:cardPreventCornerOverlap="false"
+        >
 
     <LinearLayout
-        style="@style/ZooperCardContent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:minHeight="@dimen/md_listitem_height"
-        android:orientation="vertical"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
-
-        <ImageView
-            android:id="@+id/zooper_btn_icon"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_gravity="center_horizontal"
-            tools:ignore="ContentDescription"/>
-
-        <TextView
-            android:id="@+id/zooper_btn_title"
+            style="@style/ZooperCardContent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center_horizontal"
-            android:paddingTop="@dimen/cards_padding"
-            android:singleLine="true"/>
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:minHeight="@dimen/md_listitem_height"
+            android:orientation="vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+        <ImageView
+                android:id="@+id/zooper_btn_icon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center_horizontal"
+                tools:ignore="ContentDescription"/>
+
+        <TextView
+                android:id="@+id/zooper_btn_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:paddingTop="@dimen/cards_padding"
+                android:maxLines="1"
+                android:ellipsize="end"/>
 
     </LinearLayout>
 

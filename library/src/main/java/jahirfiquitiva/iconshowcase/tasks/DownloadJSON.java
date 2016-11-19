@@ -2,6 +2,8 @@ package jahirfiquitiva.iconshowcase.tasks;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.v4.app.Fragment;
+import android.view.View;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -11,21 +13,21 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
+import jahirfiquitiva.iconshowcase.fragments.MainFragment;
+import jahirfiquitiva.iconshowcase.fragments.WallpapersFragment;
 import jahirfiquitiva.iconshowcase.holders.FullListHolder;
 import jahirfiquitiva.iconshowcase.models.WallpaperItem;
 import jahirfiquitiva.iconshowcase.utilities.JSONParser;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import timber.log.Timber;
 
-/**
- * Created by Allan Wang on 2016-09-06.
- */
 public class DownloadJSON extends AsyncTask<Void, Void, Boolean> {
 
     private final ArrayList<WallpaperItem> walls = new ArrayList<>();
     private final WeakReference<Context> wrContext;
-
-    long startTime, endTime;
+    private WallpapersFragment fragment;
+    private View layout;
 
     public DownloadJSON(Context context) {
         wrContext = new WeakReference<>(context);
@@ -33,8 +35,9 @@ public class DownloadJSON extends AsyncTask<Void, Void, Boolean> {
 
     @Override
     protected void onPreExecute() {
-        Timber.d("Starting DownloadJSON");
-        startTime = System.currentTimeMillis();
+        if (fragment != null) {
+            fragment.refreshContent(wrContext.get());
+        }
     }
 
     @Override
@@ -90,25 +93,32 @@ public class DownloadJSON extends AsyncTask<Void, Void, Boolean> {
                             dimens,
                             copyright,
                             downloadable));
-
                 }
-
             } catch (JSONException e) { //TODO log
             }
         }
-
-        endTime = System.currentTimeMillis();
         return true;
     }
 
     @Override
     protected void onPostExecute(Boolean worked) {
-        Timber.d("Walls Task completed in: %d milliseconds", (endTime - startTime));
-        FullListHolder.get().walls().createList(walls);
-//            if (layout != null) {
-//                setupLayout(taskContext.get());
-//            } else {
-//                Timber.d("Wallpapers layout is null");
-//            }
+        if (worked) {
+            FullListHolder.get().walls().createList(walls);
+            if (fragment != null) {
+                fragment.setupContent();
+            }
+            if (wrContext.get() instanceof ShowcaseActivity) {
+                if (((ShowcaseActivity) wrContext.get()).getCurrentFragment() instanceof MainFragment) {
+                    ((MainFragment) ((ShowcaseActivity) wrContext.get()).getCurrentFragment()).updateAppInfoData();
+                }
+            }
+        } else {
+            Timber.d("Something went really wrong while loading wallpapers.");
+        }
     }
+
+    public void setFragment(Fragment fragment) {
+        this.fragment = fragment instanceof WallpapersFragment ? (WallpapersFragment) fragment : null;
+    }
+
 }

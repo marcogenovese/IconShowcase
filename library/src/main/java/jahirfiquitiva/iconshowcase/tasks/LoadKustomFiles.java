@@ -34,7 +34,9 @@ import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.fragments.KustomFragment;
+import jahirfiquitiva.iconshowcase.fragments.MainFragment;
 import jahirfiquitiva.iconshowcase.models.KustomKomponent;
 import jahirfiquitiva.iconshowcase.models.KustomWallpaper;
 import jahirfiquitiva.iconshowcase.models.KustomWidget;
@@ -43,10 +45,10 @@ import timber.log.Timber;
 
 public class LoadKustomFiles extends AsyncTask<Void, String, Boolean> {
 
-    private final WeakReference<Context> context;
     public final static ArrayList<KustomKomponent> komponents = new ArrayList<>();
     public final static ArrayList<KustomWallpaper> wallpapers = new ArrayList<>();
     public final static ArrayList<KustomWidget> widgets = new ArrayList<>();
+    private final WeakReference<Context> context;
     private long startTime, endTime;
 
     public LoadKustomFiles(Context context) {
@@ -89,7 +91,14 @@ public class LoadKustomFiles extends AsyncTask<Void, String, Boolean> {
                 KustomFragment.kustomAdapter.setLists(widgets,
                         komponents, wallpapers);
             }
+            if (context.get() instanceof ShowcaseActivity) {
+                if (((ShowcaseActivity) context.get()).getCurrentFragment() instanceof MainFragment) {
+                    ((MainFragment) ((ShowcaseActivity) context.get()).getCurrentFragment()).updateAppInfoData();
+                }
+            }
             Timber.d("Load of kustom files task completed successfully in: %d milliseconds", (endTime - startTime));
+        } else {
+            Timber.d("Something went really wrong while loading Kustom files");
         }
     }
 

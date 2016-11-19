@@ -28,11 +28,23 @@ import android.support.annotation.Nullable;
 
 public class RequestItem implements Parcelable {
 
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<RequestItem> CREATOR = new Parcelable.Creator<RequestItem>() {
+        @Override
+        public RequestItem createFromParcel(Parcel in) {
+            return new RequestItem(in);
+        }
+
+        @Override
+        public RequestItem[] newArray(int size) {
+            return new RequestItem[size];
+        }
+    };
+    private final Drawable normalIcon;
+    private final ResolveInfo resolveInfo;
     private String appName;
     private String packageName;
     private String className;
-    private final Drawable normalIcon;
-    private final ResolveInfo resolveInfo;
     private boolean selected = false;
 
     public RequestItem(@NonNull String appName, @NonNull String packageName, @NonNull String className,
@@ -42,6 +54,15 @@ public class RequestItem implements Parcelable {
         this.className = className;
         this.normalIcon = normalIcon;
         this.resolveInfo = resolveInfo;
+    }
+
+    protected RequestItem(Parcel in) {
+        appName = in.readString();
+        packageName = in.readString();
+        className = in.readString();
+        normalIcon = (Drawable) in.readParcelable(Drawable.class.getClassLoader());
+        resolveInfo = (ResolveInfo) in.readValue(ResolveInfo.class.getClassLoader());
+        selected = in.readByte() != 0x00;
     }
 
     public String getClassName() {
@@ -74,9 +95,6 @@ public class RequestItem implements Parcelable {
 
     /**
      * Used to compare object to object
-     *
-     * @param other
-     * @return
      */
     @Override
     public boolean equals(Object other) {
@@ -87,15 +105,6 @@ public class RequestItem implements Parcelable {
         return this.appName.equals(that.appName)
                 && this.packageName.equals(that.packageName)
                 && this.className.equals(that.className);
-    }
-
-    protected RequestItem(Parcel in) {
-        appName = in.readString();
-        packageName = in.readString();
-        className = in.readString();
-        normalIcon = (Drawable) in.readParcelable(Drawable.class.getClassLoader());
-        resolveInfo = (ResolveInfo) in.readValue(ResolveInfo.class.getClassLoader());
-        selected = in.readByte() != 0x00;
     }
 
     @Override
@@ -112,17 +121,4 @@ public class RequestItem implements Parcelable {
         dest.writeValue(resolveInfo);
         dest.writeByte((byte) (selected ? 0x01 : 0x00));
     }
-
-    @SuppressWarnings("unused")
-    public static final Parcelable.Creator<RequestItem> CREATOR = new Parcelable.Creator<RequestItem>() {
-        @Override
-        public RequestItem createFromParcel(Parcel in) {
-            return new RequestItem(in);
-        }
-
-        @Override
-        public RequestItem[] newArray(int size) {
-            return new RequestItem[size];
-        }
-    };
 }

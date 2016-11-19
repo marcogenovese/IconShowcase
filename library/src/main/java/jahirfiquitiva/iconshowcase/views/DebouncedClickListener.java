@@ -30,16 +30,13 @@ public abstract class DebouncedClickListener implements View.OnClickListener {
         if (clickable) {
             clickable = false;
             onDebouncedClick(v);
-            reset(); //comment to disable automatic reset
+            reset();
         }
     }
 
     /**
-     * Override this function to handle clicks.
-     * reset() must be called after each click for this function to be called
-     * again.
-     *
-     * @param v
+     * Override this function to handle clicks. reset() must be called after each click for this
+     * function to be called again.
      */
     public abstract void onDebouncedClick(View v);
 

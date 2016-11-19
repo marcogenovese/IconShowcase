@@ -25,13 +25,14 @@ import android.os.AsyncTask;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
+import jahirfiquitiva.iconshowcase.fragments.MainFragment;
 import jahirfiquitiva.iconshowcase.holders.FullListHolder;
 import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.models.IconsCategory;
@@ -41,7 +42,6 @@ import timber.log.Timber;
 public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
 
     private final WeakReference<Context> mContext;
-
     private ArrayList<IconItem> mPreviewIcons = new ArrayList<>();
     private ArrayList<IconsCategory> mCategoryList = new ArrayList<>();
     private long startTime, endTime;
@@ -58,19 +58,13 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
     @Override
     protected Boolean doInBackground(Void... params) {
 
-        boolean worked;
-
         Resources r = mContext.get().getResources();
         String p = mContext.get().getPackageName();
 
-        int iconResId;
-
-        String[] prev = r.getStringArray(R.array.preview);
-        List<String> previewIconsL = sortList(prev);
-
-        for (String icon : previewIconsL) {
-            iconResId = Utils.getIconResId(r, p, icon);
-            if (iconResId != 0) {
+        String[] previews = r.getStringArray(R.array.preview);
+        for (String icon : previews) {
+            int iconResId = Utils.getIconResId(r, p, icon);
+            if (iconResId > 0) {
                 mPreviewIcons.add(new IconItem(icon, iconResId));
             }
         }
@@ -80,103 +74,90 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
 
         for (String tabName : tabsNames) {
             int arrayId = r.getIdentifier(tabName, "array", p);
-            String[] icons = null;
-
+            String[] icons;
             try {
                 icons = r.getStringArray(arrayId);
-            } catch (Resources.NotFoundException e) {
-                Timber.d("Couldn't find array: " + tabName);
-            }
-
-            if (icons != null && icons.length > 0) {
-                List<String> iconsList = sortList(icons);
-
-                ArrayList<IconItem> iconsArray = new ArrayList<>();
-
-                for (int j = 0; j < iconsList.size(); j++) {
-                    iconResId = Utils.getIconResId(r, p, iconsList.get(j));
-                    if (iconResId != 0) {
-                        iconsArray.add(new IconItem(iconsList.get(j), iconResId));
-                        if (mContext.get().getResources().getBoolean(R.bool.auto_generate_all_icons)) {
-                            allIcons.add(new IconItem(iconsList.get(j), iconResId));
-                        }
+                if (icons.length > 0) {
+                    ArrayList<IconItem> iconsArray = buildIconsListFromArray(r, p, icons);
+                    if (mContext.get().getResources().getBoolean(R.bool.auto_generate_all_icons)) {
+                        allIcons.addAll(iconsArray);
+                    }
+                    if (iconsArray.size() > 0) {
+                        mCategoryList.add(new IconsCategory(Utils.makeTextReadable(tabName),
+                                sortIconsList(r, p, iconsArray)));
                     }
                 }
-
-                mCategoryList.add(new IconsCategory(Utils.makeTextReadable(tabName), iconsArray));
+            } catch (Resources.NotFoundException e) {
+                Timber.d("Couldn't find array: " + tabName);
             }
         }
 
         if (mContext.get().getResources().getBoolean(R.bool.auto_generate_all_icons)) {
-            ArrayList<IconItem> allTheIcons = getAllIconsList(r, p, allIcons);
+            ArrayList<IconItem> allTheIcons = sortIconsList(r, p, allIcons);
             if (allTheIcons.size() > 0) {
                 mCategoryList.add(new IconsCategory("All", allTheIcons));
-                worked = true;
-            } else {
-                worked = false;
             }
         } else {
             String[] allIconsArray = r.getStringArray(R.array.icon_pack);
             if (allIconsArray.length > 0) {
-                mCategoryList.add(new IconsCategory("All", sortAndOrganizeList(r, p, allIconsArray)));
-                worked = true;
-            } else {
-                worked = false;
+                mCategoryList.add(
+                        new IconsCategory("All",
+                                sortIconsList(r, p,
+                                        buildIconsListFromArray(r, p, allIconsArray))));
             }
         }
-        endTime = System.currentTimeMillis();
-        return worked;
+
+        return (!(mPreviewIcons.isEmpty())) && (!(mCategoryList.isEmpty()));
     }
 
     @Override
     protected void onPostExecute(Boolean worked) {
-        //TODO onPostExecute only executes if task is not cancelled, worked boolean may not be necessary
         if (worked) {
+            FullListHolder.get().home().createList(mPreviewIcons);
+            FullListHolder.get().iconsCategories().createList(mCategoryList);
+            if (mContext.get() instanceof ShowcaseActivity) {
+                if (((ShowcaseActivity) mContext.get()).getCurrentFragment() instanceof MainFragment) {
+                    ((MainFragment) ((ShowcaseActivity) mContext.get()).getCurrentFragment()).updateAppInfoData();
+                }
+            }
             Timber.d("Load of icons task completed successfully in: %d milliseconds", (endTime - startTime));
+        } else {
+            Timber.d("Something went really wrong while loading icons.");
         }
-
-        FullListHolder.get().iconsCategories().createList(mCategoryList);
-        FullListHolder.get().home().createList(mPreviewIcons);
     }
 
-    private List<String> sortList(String[] array) {
-        List<String> list = new ArrayList<>(Arrays.asList(array));
-        Collections.sort(list);
+    private ArrayList<IconItem> buildIconsListFromArray(Resources r, String p, String[] icons) {
+        ArrayList<IconItem> list = new ArrayList<>();
+        for (String iconName : icons) {
+            int iconResId = Utils.getIconResId(r, p, iconName);
+            if (iconResId > 0) {
+                list.add(new IconItem(iconName, iconResId));
+            } else {
+                Timber.d("Icon \'" + iconName + "\' could not be found." +
+                        " Make sure you added it in resources.");
+            }
+        }
         return list;
     }
 
-    private ArrayList<IconItem> sortAndOrganizeList(Resources r, String p, String[] array) {
-
-        List<String> list = sortList(array);
-
+    private ArrayList<IconItem> sortIconsList(Resources r, String p, ArrayList<IconItem> icons) {
+        List<String> list = new ArrayList<>();
+        for (IconItem icon : icons) {
+            list.add(icon.getName());
+        }
+        Collections.sort(list);
         Set<String> noDuplicates = new HashSet<>();
         noDuplicates.addAll(list);
         list.clear();
         list.addAll(noDuplicates);
-        Collections.sort(list);
-
-        ArrayList<IconItem> sortedListArray = new ArrayList<>();
-
-        for (int j = 0; j < list.size(); j++) {
-            int resId = Utils.getIconResId(r, p, list.get(j));
-            if (resId != 0) {
-                sortedListArray.add(new IconItem(list.get(j), resId));
+        ArrayList<IconItem> nIcons = new ArrayList<>();
+        for (String iconName : list) {
+            int iconResId = Utils.getIconResId(r, p, iconName);
+            if (iconResId > 0) {
+                nIcons.add(new IconItem(iconName, iconResId));
             }
         }
-
-        return sortedListArray;
-    }
-
-    private ArrayList<IconItem> getAllIconsList(Resources r, String p,
-                                                ArrayList<IconItem> initialList) {
-
-        String[] allIconsNames = new String[initialList.size()];
-
-        for (int i = 0; i < initialList.size(); i++) {
-            allIconsNames[i] = initialList.get(i).getName();
-        }
-
-        return sortAndOrganizeList(r, p, allIconsNames);
+        return nIcons;
     }
 
 }

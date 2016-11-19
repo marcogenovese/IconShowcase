@@ -19,11 +19,11 @@
 
 <resources>
 
-    <style name="AppTheme" parent="AppTheme.Base" />
+    <style name="AppTheme" parent="AppTheme.Base"/>
 
-    <style name="AppThemeDark" parent="AppTheme.Base.Dark" />
+    <style name="AppThemeDark" parent="AppTheme.Base.Dark"/>
 
-    <style name="AppThemeClear" parent="AppTheme.Base.Clear" />
+    <style name="AppThemeClear" parent="AppTheme.Base.Clear"/>
 
     <style name="AppTheme.Base" parent="MaterialDrawerTheme.Light.DarkToolbar">
         <item name="colorPrimary">@color/light_theme_primary</item>

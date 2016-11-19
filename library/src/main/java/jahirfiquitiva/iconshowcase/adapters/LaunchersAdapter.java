@@ -46,15 +46,9 @@ import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 
 public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.LauncherHolder> {
 
-    public interface ClickListener {
-
-        void onClick(int index);
-    }
-
     private final Context context;
     private final List<ApplyFragment.Launcher> launchers;
     private final ClickListener mCallback;
-
     public LaunchersAdapter(Context context, List<ApplyFragment.Launcher> launchers, ClickListener callback) {
         this.context = context;
         this.launchers = launchers;
@@ -82,7 +76,7 @@ public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.Laun
                 .load(iconResource != 0 ?
                         iconResource :
                         Utils.getIconResId(context.getResources(), context.getPackageName(), "ic_na_launcher"))
-                .priority(Priority.HIGH)
+                .priority(Priority.IMMEDIATE)
                 .dontAnimate()
                 .into(holder.icon);
 
@@ -116,6 +110,16 @@ public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.Laun
         return launchers == null ? 0 : launchers.size();
     }
 
+    private ColorFilter bnwFilter() {
+        ColorMatrix matrix = new ColorMatrix();
+        matrix.setSaturation(0);
+        return new ColorMatrixColorFilter(matrix);
+    }
+
+    public interface ClickListener {
+        void onClick(int index);
+    }
+
     class LauncherHolder extends RecyclerView.ViewHolder {
 
         final View view;
@@ -130,12 +134,6 @@ public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.Laun
             icon = (ImageView) view.findViewById(R.id.launcherIcon);
             launcherName = (TextView) view.findViewById(R.id.launcherName);
         }
-    }
-
-    private ColorFilter bnwFilter() {
-        ColorMatrix matrix = new ColorMatrix();
-        matrix.setSaturation(0);
-        return new ColorMatrixColorFilter(matrix);
     }
 
 }

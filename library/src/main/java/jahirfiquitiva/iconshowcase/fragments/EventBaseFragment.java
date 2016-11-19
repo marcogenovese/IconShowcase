@@ -19,14 +19,20 @@ import timber.log.Timber;
  */
 public abstract class EventBaseFragment extends CapsuleFragment {
 
-    protected View loadingView(LayoutInflater inflater, ViewGroup container) {
-        return inflater.inflate(R.layout.loading_section, container, false);
-    }
-
     @Override
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        eventUnregister();
+        super.onStop();
+    }
+
+    protected View loadingView(LayoutInflater inflater, ViewGroup container) {
+        return inflater.inflate(R.layout.loading_section, container, false);
     }
 
     protected void eventUnregister() {
@@ -45,11 +51,5 @@ public abstract class EventBaseFragment extends CapsuleFragment {
     protected abstract OnLoadEvent.Type eventType();
 
 //    protected abstract void onLoadEvent(OnLoadEvent event);
-
-    @Override
-    public void onStop() {
-        eventUnregister();
-        super.onStop();
-    }
 
 }

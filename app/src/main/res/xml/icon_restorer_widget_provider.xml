@@ -19,6 +19,6 @@
   -->
 
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-    android:initialLayout="@layout/icon_restorer_widget"
-    android:minHeight="48dp"
-    android:minWidth="48dp"/>
+                    android:initialLayout="@layout/icon_restorer_widget"
+                    android:minHeight="48dp"
+                    android:minWidth="48dp"/>

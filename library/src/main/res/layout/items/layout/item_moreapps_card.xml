@@ -19,58 +19,58 @@
   -->
 
 <LinearLayout
-    android:id="@+id/more_apps"
-    style="@style/HomeCardContent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="?attr/selectableItemBackground"
-    android:clickable="true"
-    android:orientation="vertical">
-
-    <TextView
-        android:id="@+id/more_apps_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start|center_vertical"
-        android:paddingBottom="16dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:paddingTop="16dp"
-        android:text="@string/more_apps"
-        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
-
-    <LinearLayout
-        android:id="@+id/more_apps_sub_layout"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/more_apps"
+        style="@style/HomeCardContent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:clickable="false"
-        android:gravity="center_vertical"
-        android:minHeight="@dimen/md_listitem_height"
-        android:orientation="horizontal"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/more_apps_icon"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            tools:ignore="ContentDescription"/>
+    <TextView
+            android:id="@+id/more_apps_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:paddingBottom="16dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="16dp"
+            android:text="@string/more_apps"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
 
-        <TextView
-            android:id="@+id/more_apps_description"
+    <LinearLayout
+            android:id="@+id/more_apps_sub_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="24dp"
-            android:layout_marginStart="24dp"
+            android:clickable="false"
             android:gravity="center_vertical"
-            android:paddingBottom="8dp"
-            android:paddingTop="8dp"
-            android:text="@string/more_apps_long"
-            android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
+            android:minHeight="@dimen/md_listitem_height"
+            android:orientation="horizontal"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+        <ImageView
+                android:id="@+id/more_apps_icon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                tools:ignore="ContentDescription"/>
+
+        <TextView
+                android:id="@+id/more_apps_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="24dp"
+                android:layout_marginStart="24dp"
+                android:gravity="center_vertical"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp"
+                android:text="@string/more_apps_long"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
 
     </LinearLayout>
 

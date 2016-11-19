@@ -76,7 +76,6 @@ public abstract class DrawerActivity extends CapsuleActivity {
     protected EnumMap<DrawerItem, Integer> mDrawerMap = new EnumMap<>(DrawerItem.class);
 
 
-
     protected DrawerItem drawerKeyToType(String s) {
         switch (s.toLowerCase()) {
             case "previews":
@@ -257,6 +256,27 @@ public abstract class DrawerActivity extends CapsuleActivity {
             }
         }
 
+        /**
+         * @param context for resource retrieval
+         * @param di      drawer type
+         * @param i       identifier for drawer item
+         */
+        public static PrimaryDrawerItem getPrimaryDrawerItem(final Context context, DrawerItem di, int i) {
+            return new PrimaryDrawerItem().withName(context.getResources().getString(di.getTitleID()))
+                    .withIdentifier(i).withIcon(Utils.getVectorDrawable(context, di.getIconRes()))
+                    .withIconTintingEnabled(true);
+        }
+
+        /**
+         * @param context for resource retrieval
+         * @param di      drawer type
+         * @param i       identifier for drawer item
+         */
+        public static SecondaryDrawerItem getSecondaryDrawerItem(final Context context, DrawerItem di, int i) {
+            return new SecondaryDrawerItem().withName(context.getResources().getString(di.getTitleID()))
+                    .withIdentifier(i);
+        }
+
         public int getTitleID() {
             return titleID;
         }
@@ -274,29 +294,6 @@ public abstract class DrawerActivity extends CapsuleActivity {
 
         public boolean isSecondary() {
             return isSecondary;
-        }
-
-        /**
-         * @param context for resource retrieval
-         * @param di      drawer type
-         * @param i       identifier for drawer item
-         * @return
-         */
-        public static PrimaryDrawerItem getPrimaryDrawerItem(final Context context, DrawerItem di, int i) {
-            return new PrimaryDrawerItem().withName(context.getResources().getString(di.getTitleID()))
-                    .withIdentifier(i).withIcon(Utils.getVectorDrawable(context, di.getIconRes()))
-                    .withIconTintingEnabled(true);
-        }
-
-        /**
-         * @param context for resource retrieval
-         * @param di      drawer type
-         * @param i       identifier for drawer item
-         * @return
-         */
-        public static SecondaryDrawerItem getSecondaryDrawerItem(final Context context, DrawerItem di, int i) {
-            return new SecondaryDrawerItem().withName(context.getResources().getString(di.getTitleID()))
-                    .withIdentifier(i);
         }
 
         public abstract Fragment getFragment();

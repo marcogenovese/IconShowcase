@@ -20,7 +20,6 @@
 package jahirfiquitiva.iconshowcase.fragments;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -34,9 +33,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.pitchedapps.butler.library.icon.request.AppLoadedEvent;
 import com.pitchedapps.butler.library.icon.request.IconRequest;
 import com.pitchedapps.capsule.library.fragments.CapsuleFragment;
@@ -49,10 +46,11 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.Calendar;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
+import jahirfiquitiva.iconshowcase.activities.base.DrawerActivity;
 import jahirfiquitiva.iconshowcase.adapters.RequestsAdapter;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
-import jahirfiquitiva.iconshowcase.enums.DrawerItem;
-import jahirfiquitiva.iconshowcase.tasks.ZipFilesToRequest;
+import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
@@ -60,53 +58,13 @@ import timber.log.Timber;
 
 public class RequestsFragment extends CapsuleFragment {
 
+    public static RequestsAdapter mAdapter;
     private ViewGroup mViewGroup;
     private RelativeLayout mLoadingView;
-    private TextView mLoadingText;
+    //private TextView mLoadingText;
     private RecyclerView mRecyclerView;
-    public static RequestsAdapter mAdapter;
     private boolean subscribed = true;
     private int maxApps = 0, minutesLimit = 0; //TODO move to taskactivity
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (subscribed) EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onStop() {
-        if (EventBus.getDefault().isRegistered(this)) EventBus.getDefault().unregister(this);
-        super.onStop();
-    }
-
-    @Override
-    public void onFabClick(View v) {
-        startRequestProcess();
-    }
-
-    @Override
-    public int getTitleId() {
-        return DrawerItem.REQUESTS.getTitleID();
-    }
-
-    @Override
-    protected int getFabIcon() {
-        return R.drawable.ic_email;
-    }
-
-    @Override
-    protected boolean hasFab() {
-        return true;
-    }
-
-    //    public static RequestsFragment newInstance(boolean isLoaded) {
-    //        RequestsFragment fragment = new RequestsFragment();
-    //        Bundle args = new Bundle();
-    //        args.putBoolean("is_loaded", isLoaded);
-    //        fragment.setArguments(args);
-    //        return fragment;
-    //    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -151,13 +109,53 @@ public class RequestsFragment extends CapsuleFragment {
             subscribed = false;
             Timber.d("Requests already loaded");
         } else {
-            mLoadingText = (TextView) layout.findViewById(R.id.loading_text);
+            //mLoadingText = (TextView) layout.findViewById(R.id.loading_text);
             Timber.d("Requests still loading; subscribing to events");
             //            AppLoadingEvent stickyEvent = EventBus.getDefault().removeStickyEvent(AppLoadingEvent.class);
             //            if (stickyEvent != null) onAppsLoading(stickyEvent);
         }
         return layout;
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (subscribed) EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        if (EventBus.getDefault().isRegistered(this)) EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    @Override
+    public void onFabClick(View v) {
+        startRequestProcess();
+    }
+
+    @Override
+    public int getTitleId() {
+        return DrawerActivity.DrawerItem.REQUESTS.getTitleID();
+    }
+
+    @Override
+    protected int getFabIcon() {
+        return R.drawable.ic_email;
+    }
+
+    @Override
+    protected boolean hasFab() {
+        return true;
+    }
+
+    //    public static RequestsFragment newInstance(boolean isLoaded) {
+    //        RequestsFragment fragment = new RequestsFragment();
+    //        Bundle args = new Bundle();
+    //        args.putBoolean("is_loaded", isLoaded);
+    //        fragment.setArguments(args);
+    //        return fragment;
+    //    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -181,7 +179,7 @@ public class RequestsFragment extends CapsuleFragment {
     private void switchToLoadedView() {
         mViewGroup.removeView(mLoadingView);
         mLoadingView = null;
-        mLoadingText = null;
+        //mLoadingText = null;
         mRecyclerView.setVisibility(View.VISIBLE);
         mAdapter = new RequestsAdapter();
         //        mRecyclerView.setItemAnimator(null);
@@ -215,29 +213,32 @@ public class RequestsFragment extends CapsuleFragment {
     private void showRequestsFilesCreationDialog(Context context, Preferences mPrefs) {
 
         if (mAdapter.getSelectedApps() != null && mAdapter.getSelectedApps().size() > 0) {
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-                    ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) !=
-                            PackageManager.PERMISSION_GRANTED) {
-                ISDialogs.showPermissionNotGrantedDialog(context);
+            if (!PermissionUtils.canAccessStorage(context)) {
+                PermissionUtils.requestStoragePermission((ShowcaseActivity) context);
             } else {
-                if (getResources().getInteger(R.integer.max_apps_to_request) > -1) {
-                    if (maxApps < 0) {
-                        maxApps = 0;
-                    }
-                    if (mAdapter.getSelectedApps().size() <= mPrefs.getRequestsLeft()) {
-                        //TODO: Show loading dialog (ISDialogs.showBuildingRequestDialog(context);)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+                        ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) !=
+                                PackageManager.PERMISSION_GRANTED) {
+                    ISDialogs.showPermissionNotGrantedDialog(context);
+                } else {
+                    if (getResources().getInteger(R.integer.max_apps_to_request) > -1) {
+                        if (maxApps < 0) {
+                            maxApps = 0;
+                        }
+                        if (mAdapter.getSelectedApps().size() <= mPrefs.getRequestsLeft()) {
+                            IconRequest.get().send();
+                            Calendar c = Calendar.getInstance();
+                            Utils.saveCurrentTimeOfRequest(mPrefs, c);
+                            ISDialogs.showBuildingRequestDialog(context);
+                        } else {
+                            ISDialogs.showRequestLimitDialog(context, maxApps);
+                        }
+                    } else {
                         IconRequest.get().send();
                         Calendar c = Calendar.getInstance();
                         Utils.saveCurrentTimeOfRequest(mPrefs, c);
-                    } else {
-                        ISDialogs.showRequestLimitDialog(context, maxApps);
+                        ISDialogs.showBuildingRequestDialog(context);
                     }
-                } else {
-                    //TODO: Show loading dialog
-                    IconRequest.get().send();
-                    Calendar c = Calendar.getInstance();
-                    Utils.saveCurrentTimeOfRequest(mPrefs, c);
                 }
             }
         } else {

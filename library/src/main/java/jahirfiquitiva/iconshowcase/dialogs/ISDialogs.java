@@ -38,16 +38,17 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.activities.AltWallpaperViewerActivity;
 import jahirfiquitiva.iconshowcase.events.BlankEvent;
+import jahirfiquitiva.iconshowcase.fragments.WallpapersFragment;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 
 /**
- * This Class was created by Patrick Jung
- * on 07.01.16. For more Details and Licensing
- * have a look at the README.md
+ * This Class was created by Patrick Jung on 07.01.16. For more Details and Licensing have a look at
+ * the README.md
  */
 
 public final class ISDialogs {
@@ -102,8 +103,11 @@ public final class ISDialogs {
     WallpaperViewerActivity Dialogs
      */
 
-    public static void showApplyWallpaperDialog(Context context, MaterialDialog.SingleButtonCallback onPositive, MaterialDialog.SingleButtonCallback onNeutral) {
-        new MaterialDialog.Builder(context)
+    public static void showApplyWallpaperDialog(final Context context,
+                                                MaterialDialog.SingleButtonCallback onPositive,
+                                                MaterialDialog.SingleButtonCallback onNeutral,
+                                                MaterialDialog.OnDismissListener onDismiss) {
+        MaterialDialog dialog = new MaterialDialog.Builder(context)
                 .title(R.string.apply)
                 .content(R.string.confirm_apply)
                 .positiveText(R.string.apply)
@@ -111,17 +115,27 @@ public final class ISDialogs {
                 .negativeText(android.R.string.cancel)
                 .onPositive(onPositive)
                 .onNeutral(onNeutral)
-                .show();
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        ((AltWallpaperViewerActivity) context).setupFullScreen();
+                    }
+                })
+                .build();
+        dialog.setOnDismissListener(onDismiss);
+        dialog.show();
     }
 
     public static void showWallpaperDetailsDialog(final Context context, String wallName,
                                                   String wallAuthor, String wallDimensions,
-                                                  String wallCopyright) {
+                                                  String wallCopyright, MaterialDialog.OnDismissListener listener) {
 
         MaterialDialog dialog = new MaterialDialog.Builder(context).title(wallName)
                 .customView(R.layout.wallpaper_details, false)
                 .positiveText(context.getResources().getString(R.string.close))
                 .build();
+
+        dialog.setOnDismissListener(listener);
 
         View v = dialog.getCustomView();
 
@@ -215,7 +229,6 @@ public final class ISDialogs {
     /*
     Request Fragment Dialogs
      */
-
     public static void showPermissionNotGrantedDialog(Context context) {
         String appName = Utils.getStringFromResources(context, R.string.app_name);
         new MaterialDialog.Builder(context)
@@ -297,7 +310,7 @@ public final class ISDialogs {
                 .show();
     }
 
-    public static void showColumnsSelectorDialog(final Context context) {
+    public static void showColumnsSelectorDialog(final Context context, final WallpapersFragment wallsFragment) {
         Preferences mPrefs = new Preferences(context);
         final int current = mPrefs.getWallsColumnsNumber();
         new MaterialDialog.Builder(context)
@@ -309,9 +322,8 @@ public final class ISDialogs {
                     public boolean onSelection(MaterialDialog dialog, View view, int position, CharSequence text) {
                         int newSelected = position + 1;
                         if (newSelected != current) {
-                            //TODO Make this work
                             EventBus.getDefault().post(new BlankEvent(newSelected));
-//                            WallpapersFragment.updateRecyclerView(newSelected);
+                            wallsFragment.updateRecyclerView(newSelected);
                         }
                         return true;
                     }

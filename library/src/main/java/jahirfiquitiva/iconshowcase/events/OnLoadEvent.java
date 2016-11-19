@@ -24,13 +24,13 @@ package jahirfiquitiva.iconshowcase.events;
  */
 public class OnLoadEvent {
 
-    public enum Type {
-        HOMEPREVIEWS, PREVIEWS, WALLPAPERS
-    }
-
     public final Type type;
 
     public OnLoadEvent(Type type) {
         this.type = type;
+    }
+
+    public enum Type {
+        HOMEPREVIEWS, PREVIEWS, WALLPAPERS
     }
 }

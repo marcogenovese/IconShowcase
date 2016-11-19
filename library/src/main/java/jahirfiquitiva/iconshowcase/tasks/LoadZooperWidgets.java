@@ -37,6 +37,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
+import jahirfiquitiva.iconshowcase.fragments.MainFragment;
 import jahirfiquitiva.iconshowcase.fragments.ZooperFragment;
 import jahirfiquitiva.iconshowcase.models.ZooperWidget;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
@@ -44,12 +46,15 @@ import timber.log.Timber;
 
 public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
 
-    private final WeakReference<Context> context;
     public final static ArrayList<ZooperWidget> widgets = new ArrayList<>();
+    private final WeakReference<Context> context;
     private long startTime, endTime;
 
-    public LoadZooperWidgets(Context context) {
+    private ZooperFragment mFragment;
+
+    public LoadZooperWidgets(Context context, ZooperFragment mFragment) {
         this.context = new WeakReference<>(context);
+        this.mFragment = mFragment;
     }
 
     @Override
@@ -94,11 +99,19 @@ public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
     @Override
     protected void onPostExecute(Boolean worked) {
         if (worked) {
-            if (ZooperFragment.zooperAdapter != null) {
-                ZooperFragment.zooperAdapter.setWidgets(widgets);
+            if (mFragment != null && mFragment.getAdapter() != null) {
+                mFragment.getAdapter().setWidgets(widgets);
+            }
+            if (context.get() instanceof ShowcaseActivity) {
+                if (((ShowcaseActivity) context.get()).getCurrentFragment() instanceof MainFragment) {
+                    ((MainFragment) ((ShowcaseActivity) context.get()).getCurrentFragment()).updateAppInfoData();
+                }
             }
             Timber.d("Load of widgets task completed successfully in: %d milliseconds", (endTime - startTime));
+        } else {
+            Timber.d("Something went really wrong while loading zooper widgets.");
         }
+
     }
 
     /**
