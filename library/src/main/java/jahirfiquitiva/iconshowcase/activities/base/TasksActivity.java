@@ -22,6 +22,7 @@ package jahirfiquitiva.iconshowcase.activities.base;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.CallSuper;
+import android.support.v4.app.Fragment;
 
 import com.pitchedapps.butler.library.icon.request.IconRequest;
 
@@ -115,25 +116,16 @@ public abstract class TasksActivity extends DrawerActivity {
                     .build().loadApps();
         }
         if (drawerHas(DrawerItem.ZOOPER)) {
+            WITH_ZOOPER_SECTION = false;
             new LoadZooperWidgets(this, null).execute();
         }
         if (drawerHas(DrawerItem.KUSTOM)) {
             new LoadKustomFiles(this).execute();
         }
-
     }
 
     private boolean drawerHas(DrawerItem item) {
         return mDrawerMap.containsKey(item);
-    }
-
-    private void executeWallpapersTaskAgain() {
-        if (drawerHas(DrawerItem.WALLPAPERS)) {
-            if (jsonTask != null) {
-                jsonTask.cancel(false);
-                jsonTask.execute();
-            }
-        }
     }
 
     public DownloadJSON getJsonTask() {
@@ -142,6 +134,18 @@ public abstract class TasksActivity extends DrawerActivity {
 
     public void setJsonTask(DownloadJSON jsonTask) {
         this.jsonTask = jsonTask;
+    }
+
+    public void executeWallpapersTaskAgain(Fragment fragment) {
+        if (drawerHas(DrawerItem.WALLPAPERS)) {
+            if (this.jsonTask != null) {
+                this.jsonTask.cancel(true);
+            } else {
+                this.jsonTask = new DownloadJSON(this);
+            }
+            this.jsonTask.setFragment(fragment);
+            this.jsonTask.execute();
+        }
     }
 
     //    @Subscribe

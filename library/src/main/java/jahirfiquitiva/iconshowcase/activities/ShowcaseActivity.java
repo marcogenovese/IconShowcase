@@ -78,7 +78,6 @@ import jahirfiquitiva.iconshowcase.fragments.RequestsFragment;
 import jahirfiquitiva.iconshowcase.fragments.WallpapersFragment;
 import jahirfiquitiva.iconshowcase.holders.FullListHolder;
 import jahirfiquitiva.iconshowcase.models.IconItem;
-import jahirfiquitiva.iconshowcase.tasks.DownloadJSON;
 import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
@@ -461,13 +460,7 @@ public class ShowcaseActivity extends TasksActivity {
             ChangelogDialog.show(this, R.xml.changelog);
         } else if (i == R.id.refresh) {
             FullListHolder.get().walls().clearList();
-            DownloadJSON jsonTask = new DownloadJSON(this);
-            jsonTask.setFragmentAndLayout(getCurrentFragment());
-            if (getJsonTask() != null) {
-                getJsonTask().cancel(true);
-            }
-            setJsonTask(jsonTask);
-            jsonTask.execute();
+            executeWallpapersTaskAgain(getCurrentFragment());
         } else if (i == R.id.columns) {
             if (getCurrentFragment() instanceof WallpapersFragment) {
                 ISDialogs.showColumnsSelectorDialog(this, ((WallpapersFragment) getCurrentFragment()));

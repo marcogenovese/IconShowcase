@@ -67,7 +67,7 @@ public class WallpapersFragment extends EventBaseFragment {
 
         setHasOptionsMenu(true);
         context = getActivity();
-        ((ShowcaseActivity) context).getJsonTask().setFragmentAndLayout(this);
+        ((ShowcaseActivity) context).getJsonTask().setFragment(this);
 
         View layout = inflater.inflate(R.layout.wallpapers_section, container, false);
 

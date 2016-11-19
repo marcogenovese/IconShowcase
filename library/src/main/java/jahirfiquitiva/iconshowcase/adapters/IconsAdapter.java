@@ -94,13 +94,9 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
 
     @Override
     public void onBindViewHolder(final IconsHolder holder, int position) {
-
         if (position < 0) return;
-
         int iconResource = iconsList.get(holder.getAdapterPosition()).getResId();
-
         if (iconResource == 0) return;
-
         Glide.with(context)
                 .load(iconResource)
                 .asBitmap()
@@ -127,7 +123,6 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
                 iconClick(holder.getAdapterPosition());
             }
         });
-
     }
 
     @Override

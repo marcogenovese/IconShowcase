@@ -105,7 +105,7 @@ public class DownloadJSON extends AsyncTask<Void, Void, Boolean> {
         }
     }
 
-    public void setFragmentAndLayout(Fragment fragment) {
+    public void setFragment(Fragment fragment) {
         this.fragment = fragment instanceof WallpapersFragment ? (WallpapersFragment) fragment : null;
     }
 
