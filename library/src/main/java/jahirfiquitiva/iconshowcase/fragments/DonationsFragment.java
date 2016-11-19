@@ -44,6 +44,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -60,6 +61,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.pitchedapps.capsule.library.event.CFabEvent;
 import com.pitchedapps.capsule.library.fragments.CapsuleFragment;
 
 import org.sufficientlysecure.donations.google.util.IabHelper;
@@ -357,27 +359,14 @@ public class DonationsFragment extends CapsuleFragment {
     }
 
     @Override
-    public void onFabClick(View v) {
-
-    }
-
-    @Override
     public int getTitleId() {
         return DrawerActivity.DrawerItem.DONATE.getTitleID();
     }
 
+    @Nullable
     @Override
-    protected int getFabIcon() {
-        return 0;
-    }
-
-    /**
-     * Will hide the fab if false; the fab is still in the viewgroup and is used for various other
-     * tasks such as the snackbar
-     */
-    @Override
-    protected boolean hasFab() {
-        return false;
+    protected CFabEvent updateFab() {
+        return new CFabEvent();
     }
 
     /**

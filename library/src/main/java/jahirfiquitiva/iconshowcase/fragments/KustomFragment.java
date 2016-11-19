@@ -21,12 +21,14 @@ package jahirfiquitiva.iconshowcase.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.pitchedapps.capsule.library.event.CFabEvent;
 import com.pitchedapps.capsule.library.fragments.CapsuleFragment;
 import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 
@@ -64,40 +66,35 @@ public class KustomFragment extends CapsuleFragment {
     }
 
     @Override
-    //TODO check if extra FAB is necessary
-    public void onFabClick(View v) {
-        ArrayList<String> apps = new ArrayList<>();
-        if ((Config.get().bool(R.bool.includes_kustom_wallpapers))
-                && !Utils.isAppInstalled(context, KLWP_PKG)) {
-            apps.add("Kustom Live Wallpaper");
-        } else if ((Config.get().bool(R.bool.includes_kustom_widgets))
-                && !Utils.isAppInstalled(context, KWGT_PKG)) {
-            apps.add("Kustom Widget");
-        } else if ((Config.get().bool(R.bool.kustom_requires_kolorette)) &&
-                !Utils.isAppInstalled(context, KOLORETTE_PKG)) {
-            apps.add(Config.get().string(R.string.kolorette_app));
-        }
-        if (apps.size() > 0) {
-            ISDialogs.showKustomAppsDownloadDialog(context, apps);
-        } else {
-            hideFab();
-            //TODO: Show snackbar saying something like "Apps installed" although this shouldn't ever happen.
-        }
-    }
-
-    @Override
     public int getTitleId() {
         return DrawerActivity.DrawerItem.KUSTOM.getTitleID();
     }
 
+    @Nullable
     @Override
-    protected int getFabIcon() {
-        return R.drawable.ic_store_download;
-    }
-
-    @Override
-    protected boolean hasFab() {
-        return true;
+    protected CFabEvent updateFab() {
+        return new CFabEvent(R.drawable.ic_store_download, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ArrayList<String> apps = new ArrayList<>();
+                if ((Config.get().bool(R.bool.includes_kustom_wallpapers))
+                        && !Utils.isAppInstalled(context, KLWP_PKG)) {
+                    apps.add("Kustom Live Wallpaper");
+                } else if ((Config.get().bool(R.bool.includes_kustom_widgets))
+                        && !Utils.isAppInstalled(context, KWGT_PKG)) {
+                    apps.add("Kustom Widget");
+                } else if ((Config.get().bool(R.bool.kustom_requires_kolorette)) &&
+                        !Utils.isAppInstalled(context, KOLORETTE_PKG)) {
+                    apps.add(Config.get().string(R.string.kolorette_app));
+                }
+                if (apps.size() > 0) {
+                    ISDialogs.showKustomAppsDownloadDialog(context, apps);
+                } else {
+                    hideFab();
+                    //TODO: Show snackbar saying something like "Apps installed" although this shouldn't ever happen.
+                }
+            }
+        });
     }
 
     private void setupRV(View layout) {

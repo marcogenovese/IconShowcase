@@ -24,6 +24,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -33,6 +34,7 @@ import android.view.ViewGroup;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.pitchedapps.capsule.library.event.CFabEvent;
 import com.pitchedapps.capsule.library.fragments.CapsuleFragment;
 import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 
@@ -83,27 +85,8 @@ public class ApplyFragment extends CapsuleFragment {
     }
 
     @Override
-    public void onFabClick(View v) {
-
-    }
-
-    @Override
     public int getTitleId() {
         return DrawerActivity.DrawerItem.APPLY.getTitleID();
-    }
-
-    @Override
-    protected int getFabIcon() {
-        return 0;
-    }
-
-    /**
-     * Will hide the fab if false; the fab is still in the viewgroup and is used for various other
-     * tasks such as the snackbar
-     */
-    @Override
-    protected boolean hasFab() {
-        return false;
     }
 
     private void updateLaunchersList(View layout) {
@@ -210,6 +193,12 @@ public class ApplyFragment extends CapsuleFragment {
             };
             ISDialogs.showApplyAdviceDialog(dialogContext, singleButtonCallback);
         }
+    }
+
+    @Nullable
+    @Override
+    protected CFabEvent updateFab() {
+        return new CFabEvent();
     }
 
     public class Launcher {

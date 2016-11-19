@@ -36,6 +36,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 
+import com.pitchedapps.capsule.library.event.CFabEvent;
+
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -118,27 +120,14 @@ public class PreviewsFragment extends EventBaseFragment {
     }
 
     @Override
-    public void onFabClick(View v) {
-
-    }
-
-    @Override
     public int getTitleId() {
         return DrawerActivity.DrawerItem.PREVIEWS.getTitleID();
     }
 
+    @Nullable
     @Override
-    protected int getFabIcon() {
-        return 0;
-    }
-
-    /**
-     * Will hide the fab if false; the fab is still in the viewgroup and is used for various other
-     * tasks such as the snackbar
-     */
-    @Override
-    protected boolean hasFab() {
-        return false;
+    protected CFabEvent updateFab() {
+        return new CFabEvent();
     }
 
     private String tabName(int i) {

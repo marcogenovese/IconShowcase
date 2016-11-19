@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -36,6 +37,7 @@ import android.widget.RelativeLayout;
 
 import com.pitchedapps.butler.library.icon.request.AppLoadedEvent;
 import com.pitchedapps.butler.library.icon.request.IconRequest;
+import com.pitchedapps.capsule.library.event.CFabEvent;
 import com.pitchedapps.capsule.library.fragments.CapsuleFragment;
 import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 
@@ -130,23 +132,19 @@ public class RequestsFragment extends CapsuleFragment {
     }
 
     @Override
-    public void onFabClick(View v) {
-        startRequestProcess();
-    }
-
-    @Override
     public int getTitleId() {
         return DrawerActivity.DrawerItem.REQUESTS.getTitleID();
     }
 
+    @Nullable
     @Override
-    protected int getFabIcon() {
-        return R.drawable.ic_email;
-    }
-
-    @Override
-    protected boolean hasFab() {
-        return true;
+    protected CFabEvent updateFab() {
+        return new CFabEvent(R.drawable.ic_email, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startRequestProcess();
+            }
+        });
     }
 
     //    public static RequestsFragment newInstance(boolean isLoaded) {
