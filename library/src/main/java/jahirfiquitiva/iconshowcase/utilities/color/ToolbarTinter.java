@@ -71,6 +71,25 @@ public class ToolbarTinter {
     private static final String TAG = "ToolbarTinter";
 
     private static Method nativeIsActionButton;
+    private final Menu menu;
+    private final Integer originalIconsColor;
+    private final Integer overflowDrawableId;
+    private final boolean reApplyOnChange;
+    private final boolean forceIcons;
+    private Integer iconsColor;
+    private Integer iconsAlpha;
+    private ImageView overflowButton;
+    private ViewGroup actionBarView;
+
+    private ToolbarTinter(Builder builder) {
+        menu = builder.menu;
+        originalIconsColor = builder.originalIconsColor;
+        iconsColor = builder.iconsColor;
+        iconsAlpha = builder.iconsAlpha;
+        overflowDrawableId = builder.overflowDrawableId;
+        reApplyOnChange = builder.reApplyOnChange;
+        forceIcons = builder.forceIcons;
+    }
 
     /**
      * Check if an item is showing (not in the overflow menu).
@@ -225,26 +244,6 @@ public class ToolbarTinter {
             }
         }
         return toolbar;
-    }
-
-    private final Menu menu;
-    private final Integer originalIconsColor;
-    private final Integer overflowDrawableId;
-    private final boolean reApplyOnChange;
-    private final boolean forceIcons;
-    private Integer iconsColor;
-    private Integer iconsAlpha;
-    private ImageView overflowButton;
-    private ViewGroup actionBarView;
-
-    private ToolbarTinter(Builder builder) {
-        menu = builder.menu;
-        originalIconsColor = builder.originalIconsColor;
-        iconsColor = builder.iconsColor;
-        iconsAlpha = builder.iconsAlpha;
-        overflowDrawableId = builder.overflowDrawableId;
-        reApplyOnChange = builder.reApplyOnChange;
-        forceIcons = builder.forceIcons;
     }
 
     /**

@@ -44,8 +44,8 @@ import timber.log.Timber;
 
 public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
 
-    private final WeakReference<Context> context;
     public final static ArrayList<ZooperWidget> widgets = new ArrayList<>();
+    private final WeakReference<Context> context;
     private long startTime, endTime;
 
     private ZooperFragment mFragment;

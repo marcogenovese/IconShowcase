@@ -274,11 +274,6 @@ public class WallpaperViewerActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
         makeStatusBarIconsWhite();
@@ -294,6 +289,11 @@ public class WallpaperViewerActivity extends AppCompatActivity {
             dialogApply = null;
         }
         super.onDestroy();
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
     }
 
     @Override

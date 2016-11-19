@@ -274,6 +274,24 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ProgressBar spinner = (ProgressBar) findViewById(R.id.progress);
+        if (spinner != null) spinner.setVisibility(View.GONE);
+        reshowFab(fab);
+        setupFullScreen();
+    }
+
+    @Override
+    public void onDestroy() {
+        if (dialogApply != null) {
+            dialogApply.dismiss();
+            dialogApply = null;
+        }
+        super.onDestroy();
+    }
+
     public void setupFullScreen() {
         makeStatusBarIconsWhite();
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
@@ -292,24 +310,6 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        ProgressBar spinner = (ProgressBar) findViewById(R.id.progress);
-        if (spinner != null) spinner.setVisibility(View.GONE);
-        reshowFab(fab);
-        setupFullScreen();
-    }
-
-    @Override
-    public void onDestroy() {
-        if (dialogApply != null) {
-            dialogApply.dismiss();
-            dialogApply = null;
-        }
-        super.onDestroy();
     }
 
     @Override

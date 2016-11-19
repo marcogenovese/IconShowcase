@@ -256,25 +256,6 @@ public abstract class DrawerActivity extends CapsuleActivity {
             }
         }
 
-        public int getTitleID() {
-            return titleID;
-        }
-
-        public int getIconRes() {
-            if (isSecondary) {
-                throw new RuntimeException("Secondary DrawerTypes do not have icons");
-            }
-            return iconRes;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public boolean isSecondary() {
-            return isSecondary;
-        }
-
         /**
          * @param context for resource retrieval
          * @param di      drawer type
@@ -294,6 +275,25 @@ public abstract class DrawerActivity extends CapsuleActivity {
         public static SecondaryDrawerItem getSecondaryDrawerItem(final Context context, DrawerItem di, int i) {
             return new SecondaryDrawerItem().withName(context.getResources().getString(di.getTitleID()))
                     .withIdentifier(i);
+        }
+
+        public int getTitleID() {
+            return titleID;
+        }
+
+        public int getIconRes() {
+            if (isSecondary) {
+                throw new RuntimeException("Secondary DrawerTypes do not have icons");
+            }
+            return iconRes;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public boolean isSecondary() {
+            return isSecondary;
         }
 
         public abstract Fragment getFragment();

@@ -40,10 +40,32 @@ import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 
 public class ZooperFragment extends CapsuleFragment {
 
+    public ZooperAdapter zooperAdapter;
     private ViewGroup layout;
     private Context context;
-    public ZooperAdapter zooperAdapter;
     private GridSpacingItemDecoration space;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+
+        context = getActivity();
+
+        if (layout != null) {
+            ViewGroup parent = (ViewGroup) layout.getParent();
+            if (parent != null) {
+                parent.removeView(layout);
+            }
+        }
+        try {
+            layout = (ViewGroup) inflater.inflate(R.layout.zooper_section, container, false);
+        } catch (InflateException e) {
+            //Do nothing
+        }
+
+        setupRV();
+        return layout;
+    }
 
     @Override
     public void onFabClick(View v) {
@@ -67,28 +89,6 @@ public class ZooperFragment extends CapsuleFragment {
     @Override
     protected boolean hasFab() {
         return false;
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-
-        context = getActivity();
-
-        if (layout != null) {
-            ViewGroup parent = (ViewGroup) layout.getParent();
-            if (parent != null) {
-                parent.removeView(layout);
-            }
-        }
-        try {
-            layout = (ViewGroup) inflater.inflate(R.layout.zooper_section, container, false);
-        } catch (InflateException e) {
-            //Do nothing
-        }
-
-        setupRV();
-        return layout;
     }
 
     private void setupRV() {

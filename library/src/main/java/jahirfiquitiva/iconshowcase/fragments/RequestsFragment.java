@@ -58,53 +58,13 @@ import timber.log.Timber;
 
 public class RequestsFragment extends CapsuleFragment {
 
+    public static RequestsAdapter mAdapter;
     private ViewGroup mViewGroup;
     private RelativeLayout mLoadingView;
     //private TextView mLoadingText;
     private RecyclerView mRecyclerView;
-    public static RequestsAdapter mAdapter;
     private boolean subscribed = true;
     private int maxApps = 0, minutesLimit = 0; //TODO move to taskactivity
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (subscribed) EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onStop() {
-        if (EventBus.getDefault().isRegistered(this)) EventBus.getDefault().unregister(this);
-        super.onStop();
-    }
-
-    @Override
-    public void onFabClick(View v) {
-        startRequestProcess();
-    }
-
-    @Override
-    public int getTitleId() {
-        return DrawerActivity.DrawerItem.REQUESTS.getTitleID();
-    }
-
-    @Override
-    protected int getFabIcon() {
-        return R.drawable.ic_email;
-    }
-
-    @Override
-    protected boolean hasFab() {
-        return true;
-    }
-
-    //    public static RequestsFragment newInstance(boolean isLoaded) {
-    //        RequestsFragment fragment = new RequestsFragment();
-    //        Bundle args = new Bundle();
-    //        args.putBoolean("is_loaded", isLoaded);
-    //        fragment.setArguments(args);
-    //        return fragment;
-    //    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -156,6 +116,46 @@ public class RequestsFragment extends CapsuleFragment {
         }
         return layout;
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (subscribed) EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        if (EventBus.getDefault().isRegistered(this)) EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    @Override
+    public void onFabClick(View v) {
+        startRequestProcess();
+    }
+
+    @Override
+    public int getTitleId() {
+        return DrawerActivity.DrawerItem.REQUESTS.getTitleID();
+    }
+
+    @Override
+    protected int getFabIcon() {
+        return R.drawable.ic_email;
+    }
+
+    @Override
+    protected boolean hasFab() {
+        return true;
+    }
+
+    //    public static RequestsFragment newInstance(boolean isLoaded) {
+    //        RequestsFragment fragment = new RequestsFragment();
+    //        Bundle args = new Bundle();
+    //        args.putBoolean("is_loaded", isLoaded);
+    //        fragment.setArguments(args);
+    //        return fragment;
+    //    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

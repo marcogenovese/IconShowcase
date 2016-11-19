@@ -32,12 +32,12 @@ public class ZooperWidget {
         this.previewPath = previewPath;
     }
 
-    public String getPreviewPath() {
-        return this.previewPath;
-    }
-
     public static Bitmap getTransparentBackgroundPreview(Bitmap original) {
         return Utils.getWidgetPreview(original, Color.parseColor("#555555"));
+    }
+
+    public String getPreviewPath() {
+        return this.previewPath;
     }
 
 }

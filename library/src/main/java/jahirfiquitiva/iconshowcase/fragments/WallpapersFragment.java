@@ -51,11 +51,11 @@ import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 
 public class WallpapersFragment extends EventBaseFragment {
 
+    public WallpapersAdapter mAdapter;
     private RecyclerView mRecyclerView;
     private RecyclerFastScroller fastScroller;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private ProgressBar progress;
-    public WallpapersAdapter mAdapter;
     private ImageView noConnection;
     private Activity context;
     private GridSpacingItemDecoration gridSpacing;

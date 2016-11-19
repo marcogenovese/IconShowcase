@@ -83,10 +83,10 @@ public class FAQsAdapter extends RecyclerView.Adapter<FAQsAdapter.FAQsHolder> {
     class FAQsHolder extends RecyclerView.ViewHolder {
 
         final View view;
-        LinearLayout layout;
-        CardView card;
         final TextView txtQuestion;
         final TextView txtAnswer;
+        LinearLayout layout;
+        CardView card;
 
         FAQsHolder(View v) {
             super(v);

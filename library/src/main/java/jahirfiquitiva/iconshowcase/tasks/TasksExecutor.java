@@ -26,35 +26,13 @@ import jahirfiquitiva.iconshowcase.utilities.Preferences;
 
 public class TasksExecutor {
 
-    // Context is always useful for some reason.
-    private final Context context;
-
-    // For storing & reading read data
-    private final Preferences mPrefs;
-
     // Global singleton instance
     private static TasksExecutor singleton = null;
-
+    // Context is always useful for some reason.
+    private final Context context;
+    // For storing & reading read data
+    private final Preferences mPrefs;
     private boolean justIcons, justWallpapers, includeZooper = false, includeKustom = false;
-
-    public static TasksExecutor with(Context context) {
-        if (singleton == null)
-            singleton = new Builder(context).build();
-        return singleton;
-    }
-
-    public void loadJust(boolean loadIcons, boolean loadWallpapers) {
-        justIcons = loadIcons;
-        justWallpapers = loadWallpapers;
-    }
-
-    protected static TasksExecutor getInstance() {
-        return singleton;
-    }
-
-    public static void setSingleton(TasksExecutor singleton) {
-        TasksExecutor.singleton = singleton;
-    }
 
     private TasksExecutor(Context context, boolean justIcons, boolean justWallpapers) {
         this.context = context;
@@ -70,6 +48,25 @@ public class TasksExecutor {
             }
         }
         executeTasks();
+    }
+
+    public static TasksExecutor with(Context context) {
+        if (singleton == null)
+            singleton = new Builder(context).build();
+        return singleton;
+    }
+
+    protected static TasksExecutor getInstance() {
+        return singleton;
+    }
+
+    public static void setSingleton(TasksExecutor singleton) {
+        TasksExecutor.singleton = singleton;
+    }
+
+    public void loadJust(boolean loadIcons, boolean loadWallpapers) {
+        justIcons = loadIcons;
+        justWallpapers = loadWallpapers;
     }
 
     private void executeTasks() {

@@ -59,15 +59,15 @@ import timber.log.Timber;
 @SuppressWarnings("StringConcatenationInsideStringBufferAppend")
 public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
 
+    private static final int BUFFER = 2048;
     private final MaterialDialog dialog;
     private final ArrayList<RequestItem> appsListFinal;
-    private static final int BUFFER = 2048;
+    private final Preferences mPrefs;
     private String zipFilePath;
     private WeakReference<Context> context;
     private StringBuilder emailContent = new StringBuilder();
     private WeakReference<Activity> wrActivity;
     private Activity activity;
-    private final Preferences mPrefs;
     private File filesFolder;
 
     public ZipFilesToRequest(Activity activity, MaterialDialog dialog,

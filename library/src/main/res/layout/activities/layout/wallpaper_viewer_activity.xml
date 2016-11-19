@@ -141,7 +141,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
                 android:ellipsize="end"
-                android:singleLine="true"
+                android:maxLines="1"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 tools:text="This is a super long text just to test how the app puts the ellipsis."/>
 

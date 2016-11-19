@@ -19,15 +19,16 @@
   ~ 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
   -->
 
-<jahirfiquitiva.iconshowcase.views.IconShowcaseCardView xmlns:android="http://schemas.android.com/apk/res/android"
-                                                        xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                        xmlns:tools="http://schemas.android.com/tools"
-                                                        android:id="@+id/card"
-                                                        android:layout_width="match_parent"
-                                                        android:layout_height="wrap_content"
-                                                        app:cardCornerRadius="@dimen/card_corner_radius"
-                                                        app:cardElevation="@dimen/cards_elevation"
-                                                        app:cardUseCompatPadding="true">
+<jahirfiquitiva.iconshowcase.views.IconShowcaseCardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/card_corner_radius"
+        app:cardElevation="@dimen/cards_elevation"
+        app:cardUseCompatPadding="true">
 
     <RelativeLayout
             android:layout_width="match_parent"
@@ -62,6 +63,8 @@
                 android:layout_marginTop="@dimen/cards_content_margin_small"
                 android:layout_toEndOf="@id/photo"
                 android:layout_toRightOf="@id/photo"
+                android:maxLines="1"
+                android:ellipsize="end"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 tools:text="Your name"/>
 

@@ -43,10 +43,10 @@ import timber.log.Timber;
 
 public class LoadKustomFiles extends AsyncTask<Void, String, Boolean> {
 
-    private final WeakReference<Context> context;
     public final static ArrayList<KustomKomponent> komponents = new ArrayList<>();
     public final static ArrayList<KustomWallpaper> wallpapers = new ArrayList<>();
     public final static ArrayList<KustomWidget> widgets = new ArrayList<>();
+    private final WeakReference<Context> context;
     private long startTime, endTime;
 
     public LoadKustomFiles(Context context) {

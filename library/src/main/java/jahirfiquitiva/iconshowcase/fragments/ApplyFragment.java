@@ -53,11 +53,34 @@ import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 
 public class ApplyFragment extends CapsuleFragment {
 
-    private String intentString;
     private final List<Launcher> launchers = new ArrayList<>();
+    private String intentString;
     private RecyclerView recyclerView;
 
     private Preferences mPrefs;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+
+        View layout = inflater.inflate(R.layout.apply_section, container, false);
+
+        mPrefs = new Preferences(getActivity());
+        showApplyAdviceDialog(getActivity());
+
+        recyclerView = (RecyclerView) layout.findViewById(R.id.launchersList);
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),
+                getResources().getInteger(R.integer.launchers_grid_width)));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(
+                new GridSpacingItemDecoration(getResources().getInteger(R.integer.launchers_grid_width),
+                        getResources().getDimensionPixelSize(R.dimen.lists_padding),
+                        true));
+
+        updateLaunchersList(layout);
+
+        return layout;
+    }
 
     @Override
     public void onFabClick(View v) {
@@ -81,29 +104,6 @@ public class ApplyFragment extends CapsuleFragment {
     @Override
     protected boolean hasFab() {
         return false;
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-
-        View layout = inflater.inflate(R.layout.apply_section, container, false);
-
-        mPrefs = new Preferences(getActivity());
-        showApplyAdviceDialog(getActivity());
-
-        recyclerView = (RecyclerView) layout.findViewById(R.id.launchersList);
-        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),
-                getResources().getInteger(R.integer.launchers_grid_width)));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(
-                new GridSpacingItemDecoration(getResources().getInteger(R.integer.launchers_grid_width),
-                        getResources().getDimensionPixelSize(R.dimen.lists_padding),
-                        true));
-
-        updateLaunchersList(layout);
-
-        return layout;
     }
 
     private void updateLaunchersList(View layout) {
@@ -184,6 +184,34 @@ public class ApplyFragment extends CapsuleFragment {
         });
     }
 
+    private void gnlDialog() {
+        final String appLink = Config.MARKET_URL + getResources().getString(R.string.extraapp);
+        ISDialogs.showGoogleNowLauncherDialog(getContext(), new MaterialDialog.SingleButtonCallback() {
+            @Override
+            public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(appLink));
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void showApplyAdviceDialog(Context dialogContext) {
+        if (!mPrefs.getApplyDialogDismissed()) {
+            MaterialDialog.SingleButtonCallback singleButtonCallback = new MaterialDialog.SingleButtonCallback() {
+                @Override
+                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    if (which.equals(DialogAction.POSITIVE)) {
+                        mPrefs.setApplyDialogDismissed(false);
+                    } else if (which.equals(DialogAction.NEUTRAL)) {
+                        mPrefs.setApplyDialogDismissed(true);
+                    }
+                }
+            };
+            ISDialogs.showApplyAdviceDialog(dialogContext, singleButtonCallback);
+        }
+    }
+
     public class Launcher {
 
         public final String name;
@@ -213,34 +241,6 @@ public class ApplyFragment extends CapsuleFragment {
             return isInstalled == 1;
         }
 
-    }
-
-    private void gnlDialog() {
-        final String appLink = Config.MARKET_URL + getResources().getString(R.string.extraapp);
-        ISDialogs.showGoogleNowLauncherDialog(getContext(), new MaterialDialog.SingleButtonCallback() {
-            @Override
-            public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse(appLink));
-                startActivity(intent);
-            }
-        });
-    }
-
-    private void showApplyAdviceDialog(Context dialogContext) {
-        if (!mPrefs.getApplyDialogDismissed()) {
-            MaterialDialog.SingleButtonCallback singleButtonCallback = new MaterialDialog.SingleButtonCallback() {
-                @Override
-                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                    if (which.equals(DialogAction.POSITIVE)) {
-                        mPrefs.setApplyDialogDismissed(false);
-                    } else if (which.equals(DialogAction.NEUTRAL)) {
-                        mPrefs.setApplyDialogDismissed(true);
-                    }
-                }
-            };
-            ISDialogs.showApplyAdviceDialog(dialogContext, singleButtonCallback);
-        }
     }
 
 }

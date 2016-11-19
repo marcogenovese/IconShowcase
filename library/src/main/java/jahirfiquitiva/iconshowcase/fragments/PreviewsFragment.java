@@ -61,27 +61,9 @@ public class PreviewsFragment extends EventBaseFragment {
     private ArrayList<IconsCategory> mCategories;
 
     @Override
-    public void onFabClick(View v) {
-
-    }
-
-    @Override
-    public int getTitleId() {
-        return DrawerActivity.DrawerItem.PREVIEWS.getTitleID();
-    }
-
-    @Override
-    protected int getFabIcon() {
-        return 0;
-    }
-
-    /**
-     * Will hide the fab if false; the fab is still in the viewgroup and is used for various other
-     * tasks such as the snackbar
-     */
-    @Override
-    protected boolean hasFab() {
-        return false;
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (FullListHolder.get().iconsCategories().hasList()) setHasOptionsMenu(true);
     }
 
     @Override
@@ -106,12 +88,6 @@ public class PreviewsFragment extends EventBaseFragment {
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (FullListHolder.get().iconsCategories().hasList()) setHasOptionsMenu(true);
-    }
-
-    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
@@ -124,6 +100,45 @@ public class PreviewsFragment extends EventBaseFragment {
                     ((ShowcaseActivity) getActivity()).getToolbar(), mSearchItem, mSearchView,
                     iconsColor);
         }
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null) {
+            // Restore last selected position
+            mLastSelected = savedInstanceState.getInt("lastSelected", 0);
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (mTabs != null) mTabs.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onFabClick(View v) {
+
+    }
+
+    @Override
+    public int getTitleId() {
+        return DrawerActivity.DrawerItem.PREVIEWS.getTitleID();
+    }
+
+    @Override
+    protected int getFabIcon() {
+        return 0;
+    }
+
+    /**
+     * Will hide the fab if false; the fab is still in the viewgroup and is used for various other
+     * tasks such as the snackbar
+     */
+    @Override
+    protected boolean hasFab() {
+        return false;
     }
 
     private String tabName(int i) {
@@ -154,12 +169,6 @@ public class PreviewsFragment extends EventBaseFragment {
             mTabs.addTab(mTabs.newTab().setText(category.getCategoryName()));
         }
         mTabs.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        if (mTabs != null) mTabs.setVisibility(View.GONE);
     }
 
     @Override
@@ -212,6 +221,13 @@ public class PreviewsFragment extends EventBaseFragment {
         return OnLoadEvent.Type.PREVIEWS;
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        // Save current position
+        savedInstanceState.putInt("lastSelected", mLastSelected);
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
     class IconsPagerAdapter extends FragmentStatePagerAdapter {
 
         private String[] tabs;
@@ -241,19 +257,4 @@ public class PreviewsFragment extends EventBaseFragment {
         }
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        // Save current position
-        savedInstanceState.putInt("lastSelected", mLastSelected);
-        super.onSaveInstanceState(savedInstanceState);
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (savedInstanceState != null) {
-            // Restore last selected position
-            mLastSelected = savedInstanceState.getInt("lastSelected", 0);
-        }
-    }
 }

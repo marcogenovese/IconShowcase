@@ -40,10 +40,6 @@ public class AdviceDialog extends DialogFragment {
 
     private static final String TAG = "advice_dialog";
 
-    public enum Type {
-        WALLPAPER, ERROR
-    }
-
     public static void show(final FragmentActivity context, final Type type) {
         Preferences prefs = new Preferences(context);
 
@@ -104,6 +100,10 @@ public class AdviceDialog extends DialogFragment {
         }
 
         return builder.build();
+    }
+
+    public enum Type {
+        WALLPAPER, ERROR
     }
 
 }

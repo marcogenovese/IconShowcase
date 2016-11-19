@@ -44,14 +44,12 @@ import jahirfiquitiva.iconshowcase.utilities.Utils;
 
 public class MuzeiArtSourceService extends RemoteMuzeiArtSource {
 
-    private Preferences mPrefs;
-
+    private static final String ARTSOURCE_NAME = "IconShowcase - MuzeiExtension";
+    private static final int COMMAND_ID_SHARE = 1337;
     private final ArrayList<String> names = new ArrayList<>();
     private final ArrayList<String> authors = new ArrayList<>();
     private final ArrayList<String> urls = new ArrayList<>();
-
-    private static final String ARTSOURCE_NAME = "IconShowcase - MuzeiExtension";
-    private static final int COMMAND_ID_SHARE = 1337;
+    private Preferences mPrefs;
 
     public MuzeiArtSourceService() {
         super(ARTSOURCE_NAME);
@@ -124,9 +122,9 @@ public class MuzeiArtSourceService extends RemoteMuzeiArtSource {
 
     public class DownloadJSONAndSetWall extends AsyncTask<Void, String, Boolean> {
 
+        private final WeakReference<Context> context;
         public JSONObject mainObject, wallItem;
         public JSONArray wallInfo;
-        private final WeakReference<Context> context;
 
         public DownloadJSONAndSetWall(Context context) {
             this.context = new WeakReference<>(context);

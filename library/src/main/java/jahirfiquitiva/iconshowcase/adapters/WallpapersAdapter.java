@@ -57,9 +57,9 @@ import timber.log.Timber;
 public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.WallsHolder> {
 
     private final FragmentActivity activity;
-    private int lastPosition = -1;
     private final ArrayList<WallpaperItem> wallsList;
     private final boolean animationEnabled;
+    private int lastPosition = -1;
 
     public WallpapersAdapter(FragmentActivity activity, ArrayList<WallpaperItem> wallsList) {
         this.activity = activity;

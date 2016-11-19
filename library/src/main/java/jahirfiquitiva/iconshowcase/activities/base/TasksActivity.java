@@ -43,9 +43,34 @@ import timber.log.Timber;
  */
 public abstract class TasksActivity extends DrawerActivity {
 
-    private boolean tasksExecuted = false;
     protected Preferences mPrefs;
+    private boolean tasksExecuted = false;
     private DownloadJSON jsonTask;
+
+    @Override
+    @CallSuper
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        Config.init(this);
+
+        if (BuildConfig.DEBUG || Config.get().allowDebugging()) {
+            Timber.plant(new Timber.DebugTree());
+        } else {
+            //Disable debug & verbose logging on release
+            Timber.plant(new CrashReportingTree());
+        }
+
+        mPrefs = new Preferences(this);
+        if (savedInstanceState != null)
+            IconRequest.restoreInstanceState(this, savedInstanceState);
+    }
+
+    @Override
+    protected void onDestroy() {
+        Config.deinit();
+        super.onDestroy();
+    }
 
     //TODO fix up booleans
     protected void startTasks() {
@@ -126,25 +151,6 @@ public abstract class TasksActivity extends DrawerActivity {
 
     @Override
     @CallSuper
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        Config.init(this);
-
-        if (BuildConfig.DEBUG || Config.get().allowDebugging()) {
-            Timber.plant(new Timber.DebugTree());
-        } else {
-            //Disable debug & verbose logging on release
-            Timber.plant(new CrashReportingTree());
-        }
-
-        mPrefs = new Preferences(this);
-        if (savedInstanceState != null)
-            IconRequest.restoreInstanceState(this, savedInstanceState);
-    }
-
-    @Override
-    @CallSuper
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         IconRequest.saveInstanceState(outState);
@@ -161,11 +167,5 @@ public abstract class TasksActivity extends DrawerActivity {
     //        EventBus.getDefault().unregister(this);
     //        super.onStop();
     //    }
-
-    @Override
-    protected void onDestroy() {
-        Config.deinit();
-        super.onDestroy();
-    }
 
 }

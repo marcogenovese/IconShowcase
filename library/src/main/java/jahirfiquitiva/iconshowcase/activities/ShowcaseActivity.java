@@ -241,6 +241,24 @@ public class ShowcaseActivity extends TasksActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!iconsPicker && !wallsPicker) {
+            setupToolbarHeader();
+        }
+        ColorUtils.setupToolbarIconsAndTextsColors(this, cAppBarLayout, cToolbar);
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (settingsDialog != null) {
+            settingsDialog.dismiss();
+            settingsDialog = null;
+        } //TODO fix dialog
+        super.onDestroy();
+    }
+
     private Fragment getCurrentFragment() {
         return getSupportFragmentManager().findFragmentById(getFragmentId());
     }
@@ -381,15 +399,6 @@ public class ShowcaseActivity extends TasksActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        if (!iconsPicker && !wallsPicker) {
-            setupToolbarHeader();
-        }
-        ColorUtils.setupToolbarIconsAndTextsColors(this, cAppBarLayout, cToolbar);
-    }
-
-    @Override
     protected void onSaveInstanceState(Bundle outState) {
         if (drawer != null) {
             outState = drawer.saveInstanceState(outState);
@@ -422,15 +431,6 @@ public class ShowcaseActivity extends TasksActivity {
         } else {
             super.onBackPressed();
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        if (settingsDialog != null) {
-            settingsDialog.dismiss();
-            settingsDialog = null;
-        } //TODO fix dialog
-        super.onDestroy();
     }
 
     @Override
@@ -612,10 +612,6 @@ public class ShowcaseActivity extends TasksActivity {
     @Override
     protected int getContentViewId() {
         return R.layout.showcase_activity;
-    }
-
-    public interface WallsListInterface {
-        void checkWallsListCreation(boolean result);
     }
 
     @SuppressWarnings("deprecation")
@@ -919,6 +915,10 @@ public class ShowcaseActivity extends TasksActivity {
 
     public Drawable getWallpaperDrawable() {
         return wallpaperDrawable;
+    }
+
+    public interface WallsListInterface {
+        void checkWallsListCreation(boolean result);
     }
 
 }

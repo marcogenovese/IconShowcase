@@ -37,11 +37,6 @@ public final class PermissionUtils {
     private static String VIEWER_ACTIVITY_ACTION;
     private static OnPermissionResultListener onPermissionResultListener;
 
-    public interface OnPermissionResultListener {
-
-        void onStoragePermissionGranted();
-    }
-
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static boolean canAccessStorage(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -64,11 +59,15 @@ public final class PermissionUtils {
         return onPermissionResultListener;
     }
 
+    public static String getViewerActivityAction() {
+        return VIEWER_ACTIVITY_ACTION;
+    }
+
     public static void setViewerActivityAction(String viewerActivityAction) {
         VIEWER_ACTIVITY_ACTION = viewerActivityAction;
     }
 
-    public static String getViewerActivityAction() {
-        return VIEWER_ACTIVITY_ACTION;
+    public interface OnPermissionResultListener {
+        void onStoragePermissionGranted();
     }
 }

@@ -53,9 +53,9 @@ import timber.log.Timber;
 public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder> {
 
     private final Activity context;
+    private final Preferences mPrefs;
     private boolean inChangelog = false;
     private ArrayList<IconItem> iconsList = new ArrayList<>();
-    private final Preferences mPrefs;
     private int lastPosition = -1;
 
     public IconsAdapter(Activity context, ArrayList<IconItem> iconsList) {

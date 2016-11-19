@@ -47,33 +47,9 @@ import timber.log.Timber;
 
 public class MainFragment extends EventBaseFragment {
 
-    private Context context;
-
     private final ArrayList<HomeCard> homeCards = new ArrayList<>();
+    private Context context;
     private boolean hasAppsList = false;
-
-    @Override
-    public void onFabClick(View v) {
-        Intent rate = new Intent(Intent.ACTION_VIEW,
-                Uri.parse("https://play.google.com/store/apps/details?id=" +
-                        context.getPackageName()));
-        context.startActivity(rate);
-    }
-
-    @Override
-    public int getTitleId() {
-        return DrawerActivity.DrawerItem.HOME.getTitleID();
-    }
-
-    @Override
-    protected int getFabIcon() {
-        return R.drawable.ic_rate;
-    }
-
-    @Override
-    protected boolean hasFab() {
-        return true;
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
@@ -144,6 +120,29 @@ public class MainFragment extends EventBaseFragment {
         mRecyclerView.setAdapter(mAdapter);
 
         return layout;
+    }
+
+    @Override
+    public void onFabClick(View v) {
+        Intent rate = new Intent(Intent.ACTION_VIEW,
+                Uri.parse("https://play.google.com/store/apps/details?id=" +
+                        context.getPackageName()));
+        context.startActivity(rate);
+    }
+
+    @Override
+    public int getTitleId() {
+        return DrawerActivity.DrawerItem.HOME.getTitleID();
+    }
+
+    @Override
+    protected int getFabIcon() {
+        return R.drawable.ic_rate;
+    }
+
+    @Override
+    protected boolean hasFab() {
+        return true;
     }
 
     private void setupAndAnimateIcons(int delay) {

@@ -19,10 +19,10 @@
   -->
 
 <jahirfiquitiva.iconshowcase.views.IconShowcaseCardView
-        android:id="@+id/faq_card"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/faq_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:stateListAnimator="@anim/card_lift"
@@ -32,9 +32,9 @@
         >
 
     <LinearLayout
-            style="@style/CardContent"
             xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
+            style="@style/CardContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 

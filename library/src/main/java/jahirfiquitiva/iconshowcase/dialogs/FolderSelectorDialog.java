@@ -52,22 +52,17 @@ public class FolderSelectorDialog extends DialogFragment implements MaterialDial
     private boolean canGoUp = true;
     private String initialPath;
 
-    public interface FolderSelectionCallback {
-
-        void onFolderSelection(File folder);
+    public FolderSelectorDialog() {
     }
 
-    public FolderSelectorDialog() {
+    private String getInitialPath() {
+        return initialPath == null ? Environment.getExternalStorageDirectory().getAbsolutePath() : initialPath;
     }
 
     public void setInitialPath(String path) {
         if (path == null)
             path = File.separator;
         initialPath = path;
-    }
-
-    private String getInitialPath() {
-        return initialPath == null ? Environment.getExternalStorageDirectory().getAbsolutePath() : initialPath;
     }
 
     private String[] getContentsArray() {
@@ -189,6 +184,10 @@ public class FolderSelectorDialog extends DialogFragment implements MaterialDial
                     }
                 }).show();
 
+    }
+
+    public interface FolderSelectionCallback {
+        void onFolderSelection(File folder);
     }
 
     private static class FolderSorter implements Comparator<File> {

@@ -27,19 +27,6 @@ import java.util.ArrayList;
 
 public class IconsCategory implements Parcelable {
 
-    private final String name;
-    private final ArrayList<IconItem> iconsArray;
-
-    public IconsCategory(String name) {
-        this.name = name;
-        this.iconsArray = new ArrayList<>();
-    }
-
-    public IconsCategory(String name, @NonNull ArrayList<IconItem> iconsArray) {
-        this.name = name;
-        this.iconsArray = iconsArray;
-    }
-
     public static final Creator<IconsCategory> CREATOR = new Creator<IconsCategory>() {
         @Override
         public IconsCategory createFromParcel(Parcel in) {
@@ -54,6 +41,18 @@ public class IconsCategory implements Parcelable {
             return new IconsCategory[size];
         }
     };
+    private final String name;
+    private final ArrayList<IconItem> iconsArray;
+
+    public IconsCategory(String name) {
+        this.name = name;
+        this.iconsArray = new ArrayList<>();
+    }
+
+    public IconsCategory(String name, @NonNull ArrayList<IconItem> iconsArray) {
+        this.name = name;
+        this.iconsArray = iconsArray;
+    }
 
     public String getCategoryName() {
         return this.name;

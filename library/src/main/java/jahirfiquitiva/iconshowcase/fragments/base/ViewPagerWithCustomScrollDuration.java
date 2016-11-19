@@ -28,6 +28,8 @@ import java.lang.reflect.Field;
 
 public class ViewPagerWithCustomScrollDuration extends ViewPager {
 
+    private ScrollerCustomDuration mScroller = null;
+
     public ViewPagerWithCustomScrollDuration(Context context) {
         super(context);
         postInitViewPager();
@@ -37,8 +39,6 @@ public class ViewPagerWithCustomScrollDuration extends ViewPager {
         super(context, attrs);
         postInitViewPager();
     }
-
-    private ScrollerCustomDuration mScroller = null;
 
     /**
      * Override the Scroller instance with our own class so we can change the duration

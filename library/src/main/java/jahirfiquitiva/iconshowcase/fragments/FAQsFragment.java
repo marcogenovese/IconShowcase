@@ -46,30 +46,6 @@ import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 public class FAQsFragment extends CapsuleFragment {
 
     @Override
-    public void onFabClick(View v) {
-
-    }
-
-    @Override
-    public int getTitleId() {
-        return DrawerActivity.DrawerItem.FAQS.getTitleID();
-    }
-
-    @Override
-    protected int getFabIcon() {
-        return 0;
-    }
-
-    /**
-     * Will hide the fab if false; the fab is still in the viewgroup and is used for various other
-     * tasks such as the snackbar
-     */
-    @Override
-    protected boolean hasFab() {
-        return false;
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
@@ -119,6 +95,30 @@ public class FAQsFragment extends CapsuleFragment {
         fastScroller.attachRecyclerView(faqsList);
 
         return layout;
+    }
+
+    @Override
+    public void onFabClick(View v) {
+
+    }
+
+    @Override
+    public int getTitleId() {
+        return DrawerActivity.DrawerItem.FAQS.getTitleID();
+    }
+
+    @Override
+    protected int getFabIcon() {
+        return 0;
+    }
+
+    /**
+     * Will hide the fab if false; the fab is still in the viewgroup and is used for various other
+     * tasks such as the snackbar
+     */
+    @Override
+    protected boolean hasFab() {
+        return false;
     }
 
 }

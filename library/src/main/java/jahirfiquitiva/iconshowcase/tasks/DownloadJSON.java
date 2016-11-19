@@ -18,7 +18,6 @@ import jahirfiquitiva.iconshowcase.holders.FullListHolder;
 import jahirfiquitiva.iconshowcase.models.WallpaperItem;
 import jahirfiquitiva.iconshowcase.utilities.JSONParser;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
-import timber.log.Timber;
 
 public class DownloadJSON extends AsyncTask<Void, Void, Boolean> {
 

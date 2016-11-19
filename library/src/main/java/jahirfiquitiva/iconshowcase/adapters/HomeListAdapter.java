@@ -48,9 +48,9 @@ import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final Context context;
+    private final ArrayList<HomeCard> homeCards;
     private View view;
     private int cards = 3;
-    private final ArrayList<HomeCard> homeCards;
     private boolean hasAppsList = false;
 
     public HomeListAdapter(ArrayList<HomeCard> homeCards, Context context, boolean hasAppsList) {
@@ -108,6 +108,28 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public int getItemViewType(int position) {
         return position;
+    }
+
+    private void setupIcons(Context context, ImageView iconsIV, ImageView wallsIV,
+                            ImageView widgetsIV) {
+        final int light = ContextCompat.getColor(context, R.color.drawable_tint_dark);
+        final int dark = ContextCompat.getColor(context, R.color.drawable_tint_light);
+
+        Drawable iconsDrawable = ColorUtils.getTintedIcon(
+                context, R.drawable.ic_android,
+                ThemeUtils.darkTheme ? light : dark);
+
+        Drawable wallsDrawable = ColorUtils.getTintedIcon(
+                context, R.drawable.ic_multiple_wallpapers,
+                ThemeUtils.darkTheme ? light : dark);
+
+        Drawable widgetsDrawable = ColorUtils.getTintedIcon(
+                context, R.drawable.ic_zooper_kustom,
+                ThemeUtils.darkTheme ? light : dark);
+
+        iconsIV.setImageDrawable(iconsDrawable);
+        wallsIV.setImageDrawable(wallsDrawable);
+        widgetsIV.setImageDrawable(widgetsDrawable);
     }
 
     public class WelcomeCard extends RecyclerView.ViewHolder {
@@ -178,28 +200,6 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }
 
         }
-    }
-
-    private void setupIcons(Context context, ImageView iconsIV, ImageView wallsIV,
-                            ImageView widgetsIV) {
-        final int light = ContextCompat.getColor(context, R.color.drawable_tint_dark);
-        final int dark = ContextCompat.getColor(context, R.color.drawable_tint_light);
-
-        Drawable iconsDrawable = ColorUtils.getTintedIcon(
-                context, R.drawable.ic_android,
-                ThemeUtils.darkTheme ? light : dark);
-
-        Drawable wallsDrawable = ColorUtils.getTintedIcon(
-                context, R.drawable.ic_multiple_wallpapers,
-                ThemeUtils.darkTheme ? light : dark);
-
-        Drawable widgetsDrawable = ColorUtils.getTintedIcon(
-                context, R.drawable.ic_zooper_kustom,
-                ThemeUtils.darkTheme ? light : dark);
-
-        iconsIV.setImageDrawable(iconsDrawable);
-        wallsIV.setImageDrawable(wallsDrawable);
-        widgetsIV.setImageDrawable(widgetsDrawable);
     }
 
     public class MoreAppsCard extends RecyclerView.ViewHolder {

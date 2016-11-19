@@ -19,10 +19,10 @@
   -->
 
 <LinearLayout
-        android:id="@+id/appDetails"
-        style="@style/HomeCardContent"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/appDetails"
+        style="@style/HomeCardContent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="false"

@@ -39,10 +39,10 @@ public class WallpaperItem implements Parcelable {
     private final String wallName;
     private final String wallAuthor;
     private final String wallUrl;
-    private String wallThumbUrl;
     private final String wallDimensions;
     private final String wallCopyright;
     private final boolean downloadable;
+    private String wallThumbUrl;
 
     public WallpaperItem(String wallName, String wallAuthor, String wallUrl, String wallThumbUrl, String wallDimensions, String wallCopyright,
                          boolean downloadable) {
@@ -53,6 +53,15 @@ public class WallpaperItem implements Parcelable {
         this.wallDimensions = wallDimensions;
         this.wallCopyright = wallCopyright;
         this.downloadable = downloadable;
+    }
+
+    private WallpaperItem(Parcel in) {
+        wallName = in.readString();
+        wallAuthor = in.readString();
+        wallUrl = in.readString();
+        wallDimensions = in.readString();
+        wallCopyright = in.readString();
+        downloadable = in.readInt() == 1;
     }
 
     public String getWallName() {
@@ -86,15 +95,6 @@ public class WallpaperItem implements Parcelable {
     @Override
     public int describeContents() {
         return 0;
-    }
-
-    private WallpaperItem(Parcel in) {
-        wallName = in.readString();
-        wallAuthor = in.readString();
-        wallUrl = in.readString();
-        wallDimensions = in.readString();
-        wallCopyright = in.readString();
-        downloadable = in.readInt() == 1;
     }
 
     @Override

@@ -159,7 +159,8 @@
     <!-- Set this to true if you want the alternative wallpaper viewer. (The one with the FAB) -->
     <bool name="alternative_viewer">true</bool>
 
-    <!-- APPLY SECTION CONFIGURATION -->
+
+    <!-- /*/*/*/*/*/*/*/*/*/*/*/*/ APPLY SECTION CONFIGURATION /*/*/*/*/*/*/*/*/*/*/*/*/ -->
 
     <!--
     Setup the columns amount you want in different sections
@@ -223,5 +224,13 @@
     False, means no.
     -->
     <bool name="allow_user_to_hide_app_icon">true</bool>
+
+    <!--
+    Default value to either use wallpaper in toolbar or not.
+    You must have set 'enable_user_wallpaper_in_toolbar' in line #113 to true for this to work.
+    True means used by default.
+    False means not used by default. (User must enable it in settings to be able to see it).
+    -->
+    <bool name="show_user_wallpaper_in_toolbar_by_default">true</bool>
 
 </resources>

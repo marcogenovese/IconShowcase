@@ -56,14 +56,13 @@ import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         implements PermissionUtils.OnPermissionResultListener {
 
-    private ArrayList<ZooperWidget> widgets;
     private final Drawable[] icons = new Drawable[2];
     private final Context context;
     private final Drawable wallpaper;
-    private int extraCards = 0;
     private final boolean everythingInstalled;
     private final View layout;
-
+    private ArrayList<ZooperWidget> widgets;
+    private int extraCards = 0;
     private ZooperFragment mFragment;
 
     public ZooperAdapter(Context context, View layout,
@@ -174,6 +173,70 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         installAssets();
     }
 
+    private boolean areAssetsInstalled() {
+        boolean assetsInstalled = false;
+
+        String fileToIgnore1 = "material-design-iconic-font-v2.2.0.ttf",
+                fileToIgnore2 = "materialdrawerfont.ttf",
+                fileToIgnore3 = "materialdrawerfont-font-v5.0.0.ttf";
+
+        AssetManager assetManager = context.getAssets();
+        String[] files = null;
+        String[] folders = new String[]{"fonts", "iconsets", "bitmaps"};
+
+        for (String folder : folders) {
+            try {
+                files = assetManager.list(folder);
+            } catch (IOException e) {
+                //Do nothing
+            }
+
+            if (files != null && files.length > 0) {
+                for (String filename : files) {
+                    if (filename.contains(".")) {
+                        if (!filename.equals(fileToIgnore1) && !filename.equals(fileToIgnore2)
+                                && !filename.equals(fileToIgnore3)) {
+                            File file = new File(Environment.getExternalStorageDirectory()
+                                    + "/ZooperWidget/" + getFolderName(folder) + "/" + filename);
+                            assetsInstalled = file.exists();
+                        }
+                    }
+                }
+            }
+        }
+
+        return assetsInstalled;
+    }
+
+    private String getFolderName(String folder) {
+        switch (folder) {
+            case "fonts":
+                return "Fonts";
+            case "iconsets":
+                return "IconSets";
+            case "bitmaps":
+                return "Bitmaps";
+            default:
+                return folder;
+        }
+    }
+
+    private void installAssets() {
+        String[] folders = new String[]{"fonts", "iconsets", "bitmaps"};
+
+        for (String folderName : folders) {
+            String dialogContent =
+                    context.getResources().getString(
+                            R.string.copying_assets, getFolderName(folderName));
+            MaterialDialog dialog = new MaterialDialog.Builder(context)
+                    .content(dialogContent)
+                    .progress(true, 0)
+                    .cancelable(false)
+                    .show();
+            new CopyFilesToStorage(context, layout, dialog, folderName).execute();
+        }
+    }
+
     class ZooperHolder extends RecyclerView.ViewHolder {
 
         final ImageView background;
@@ -240,70 +303,6 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             });
         }
 
-    }
-
-    private boolean areAssetsInstalled() {
-        boolean assetsInstalled = false;
-
-        String fileToIgnore1 = "material-design-iconic-font-v2.2.0.ttf",
-                fileToIgnore2 = "materialdrawerfont.ttf",
-                fileToIgnore3 = "materialdrawerfont-font-v5.0.0.ttf";
-
-        AssetManager assetManager = context.getAssets();
-        String[] files = null;
-        String[] folders = new String[]{"fonts", "iconsets", "bitmaps"};
-
-        for (String folder : folders) {
-            try {
-                files = assetManager.list(folder);
-            } catch (IOException e) {
-                //Do nothing
-            }
-
-            if (files != null && files.length > 0) {
-                for (String filename : files) {
-                    if (filename.contains(".")) {
-                        if (!filename.equals(fileToIgnore1) && !filename.equals(fileToIgnore2)
-                                && !filename.equals(fileToIgnore3)) {
-                            File file = new File(Environment.getExternalStorageDirectory()
-                                    + "/ZooperWidget/" + getFolderName(folder) + "/" + filename);
-                            assetsInstalled = file.exists();
-                        }
-                    }
-                }
-            }
-        }
-
-        return assetsInstalled;
-    }
-
-    private String getFolderName(String folder) {
-        switch (folder) {
-            case "fonts":
-                return "Fonts";
-            case "iconsets":
-                return "IconSets";
-            case "bitmaps":
-                return "Bitmaps";
-            default:
-                return folder;
-        }
-    }
-
-    private void installAssets() {
-        String[] folders = new String[]{"fonts", "iconsets", "bitmaps"};
-
-        for (String folderName : folders) {
-            String dialogContent =
-                    context.getResources().getString(
-                            R.string.copying_assets, getFolderName(folderName));
-            MaterialDialog dialog = new MaterialDialog.Builder(context)
-                    .content(dialogContent)
-                    .progress(true, 0)
-                    .cancelable(false)
-                    .show();
-            new CopyFilesToStorage(context, layout, dialog, folderName).execute();
-        }
     }
 
 }

@@ -19,8 +19,8 @@
   -->
 
 <RelativeLayout
-        android:id="@+id/gridParent"
         xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/gridParent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false">

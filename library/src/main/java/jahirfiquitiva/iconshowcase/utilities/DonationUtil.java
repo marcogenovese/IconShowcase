@@ -35,13 +35,6 @@ import timber.log.Timber;
  */
 public class DonationUtil {
 
-    public interface OnPremiumListener {
-
-        void hasPurchase(String purchaseCatalogKey);
-
-        void hasNoPurchase();
-    }
-
     public static void hasPurchase(final Context context, @Nullable String pubKey, final OnPremiumListener listener) {
         if (pubKey == null || pubKey.isEmpty() || !Config.get(context).hasGoogleDonations()) {
             listener.hasNoPurchase();
@@ -67,6 +60,12 @@ public class DonationUtil {
         };
 
         mHelper.queryInventoryAsync(mGotInventoryListener);
+    }
+
+    public interface OnPremiumListener {
+        void hasPurchase(String purchaseCatalogKey);
+
+        void hasNoPurchase();
     }
 
 }

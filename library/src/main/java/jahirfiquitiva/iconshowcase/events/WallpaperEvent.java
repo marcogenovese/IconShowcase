@@ -30,10 +30,6 @@ public class WallpaperEvent {
     private boolean success;
     private Step nextStep;
 
-    public enum Step {
-        START, LOADING, APPLYING, FINISH
-    }
-
     public WallpaperEvent(@NonNull String u, boolean b, Step s) {
         url = u;
         success = b;
@@ -50,6 +46,10 @@ public class WallpaperEvent {
 
     public Step getNextStep() {
         return nextStep;
+    }
+
+    public enum Step {
+        START, LOADING, APPLYING, FINISH
     }
 
 }

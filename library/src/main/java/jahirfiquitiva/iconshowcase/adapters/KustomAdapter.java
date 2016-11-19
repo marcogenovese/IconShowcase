@@ -47,11 +47,11 @@ import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 
 public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.KustomHolder> {
 
+    private final Context context;
+    private final Drawable wallpaper;
     private ArrayList<KustomWidget> widgets;
     private ArrayList<KustomKomponent> komponents;
     private ArrayList<KustomWallpaper> kustomWalls;
-    private final Context context;
-    private final Drawable wallpaper;
 
     public KustomAdapter(Context context, Drawable wallpaper) {
         this.context = context;

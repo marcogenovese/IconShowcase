@@ -43,18 +43,28 @@ import jahirfiquitiva.iconshowcase.views.SectionedGridSpacingItemDecoration;
 
 public class KustomFragment extends CapsuleFragment {
 
-    private Context context;
-    private RecyclerView mRecyclerView;
     public static KustomAdapter kustomAdapter;
-    private SectionedGridSpacingItemDecoration space;
-
     private final String KLWP_PKG = "org.kustom.wallpaper",
             KWGT_PKG = "org.kustom.widget",
             KOLORETTE_PKG = "com.arun.themeutil.kolorette";
-
-    //TODO check if extra FAB is necessary
+    private Context context;
+    private RecyclerView mRecyclerView;
+    private SectionedGridSpacingItemDecoration space;
 
     @Override
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+        context = getActivity();
+
+        View layout = inflater.inflate(R.layout.zooper_section, container, false);
+        setupRV(layout);
+        if (areAppsInstalled()) hideFab();
+
+        return layout;
+    }
+
+    @Override
+    //TODO check if extra FAB is necessary
     public void onFabClick(View v) {
         ArrayList<String> apps = new ArrayList<>();
         if ((Config.get().bool(R.bool.includes_kustom_wallpapers))
@@ -88,18 +98,6 @@ public class KustomFragment extends CapsuleFragment {
     @Override
     protected boolean hasFab() {
         return true;
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        context = getActivity();
-
-        View layout = inflater.inflate(R.layout.zooper_section, container, false);
-        setupRV(layout);
-        if (areAppsInstalled()) hideFab();
-
-        return layout;
     }
 
     private void setupRV(View layout) {

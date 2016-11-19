@@ -42,28 +42,12 @@ public class IconsFragment extends CapsuleFragment {
     private IconsAdapter mAdapter;
     private ArrayList<IconItem> iconsList, filteredIconsList;
 
-    @Override
-    public void onFabClick(View v) {
-
-    }
-
-    @Override
-    public int getTitleId() {
-        return DrawerActivity.DrawerItem.PREVIEWS.getTitleID();
-    }
-
-    @Override
-    protected int getFabIcon() {
-        return 0;
-    }
-
-    /**
-     * Will hide the fab if false; the fab is still in the viewgroup and is used for various other
-     * tasks such as the snackbar
-     */
-    @Override
-    protected boolean hasFab() {
-        return false;
+    public static IconsFragment newInstance(IconsCategory icons) {
+        IconsFragment fragment = new IconsFragment();
+        Bundle args = new Bundle();
+        args.putParcelable("icons", icons);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
@@ -99,12 +83,28 @@ public class IconsFragment extends CapsuleFragment {
         return layout;
     }
 
-    public static IconsFragment newInstance(IconsCategory icons) {
-        IconsFragment fragment = new IconsFragment();
-        Bundle args = new Bundle();
-        args.putParcelable("icons", icons);
-        fragment.setArguments(args);
-        return fragment;
+    @Override
+    public void onFabClick(View v) {
+
+    }
+
+    @Override
+    public int getTitleId() {
+        return DrawerActivity.DrawerItem.PREVIEWS.getTitleID();
+    }
+
+    @Override
+    protected int getFabIcon() {
+        return 0;
+    }
+
+    /**
+     * Will hide the fab if false; the fab is still in the viewgroup and is used for various other
+     * tasks such as the snackbar
+     */
+    @Override
+    protected boolean hasFab() {
+        return false;
     }
 
     public void performSearch(String query) {

@@ -48,11 +48,11 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
 
     private final MaterialDialog dialog;
     private final Bitmap resource;
-    private Uri wallUri;
-    private Context context;
     private final View layout;
     private final String wallName;
     private final WeakReference<Activity> wrActivity;
+    private Uri wallUri;
+    private Context context;
     private LinearLayout toHide1, toHide2;
     private volatile boolean wasCancelled = false;
 

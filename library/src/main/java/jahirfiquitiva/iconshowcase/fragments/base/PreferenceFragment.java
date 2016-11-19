@@ -55,7 +55,10 @@ public abstract class PreferenceFragment extends Fragment {
     private static final int MSG_REQUEST_FOCUS = 2;
     private static final String PREFERENCES_TAG = "android:preferences";
     private static double HC_HORIZONTAL_PADDING = 0.8; //5.33
-
+    private boolean mHavePrefs;
+    private boolean mInitDone;
+    private ListView mList;
+    private PreferenceManager mPreferenceManager;
     @SuppressLint("HandlerLeak")
     private final Handler mHandler = new Handler() {
         @Override
@@ -70,11 +73,6 @@ public abstract class PreferenceFragment extends Fragment {
             }
         }
     };
-
-    private boolean mHavePrefs;
-    private boolean mInitDone;
-    private ListView mList;
-    private PreferenceManager mPreferenceManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -173,6 +171,16 @@ public abstract class PreferenceFragment extends Fragment {
         return mPreferenceManager;
     }
 
+    private PreferenceScreen getPreferenceScreen() {
+        try {
+            Method m = PreferenceManager.class.getDeclaredMethod("getPreferenceScreen");
+            m.setAccessible(true);
+            return (PreferenceScreen) m.invoke(mPreferenceManager);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     private void setPreferenceScreen(PreferenceScreen screen) {
         try {
             Method m = PreferenceManager.class.getDeclaredMethod("setPreferences", PreferenceScreen.class);
@@ -185,16 +193,6 @@ public abstract class PreferenceFragment extends Fragment {
                 }
             }
         } catch (Exception ignored) {
-        }
-    }
-
-    private PreferenceScreen getPreferenceScreen() {
-        try {
-            Method m = PreferenceManager.class.getDeclaredMethod("getPreferenceScreen");
-            m.setAccessible(true);
-            return (PreferenceScreen) m.invoke(mPreferenceManager);
-        } catch (Exception e) {
-            return null;
         }
     }
 

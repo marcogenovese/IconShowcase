@@ -19,10 +19,10 @@
   -->
 
 <jahirfiquitiva.iconshowcase.views.IconShowcaseCardView
-        android:id="@+id/zooper_btn_card"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/zooper_btn_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="true"
@@ -56,7 +56,8 @@
                 android:layout_gravity="center_horizontal"
                 android:gravity="center_horizontal"
                 android:paddingTop="@dimen/cards_padding"
-                android:singleLine="true"/>
+                android:maxLines="1"
+                android:ellipsize="end"/>
 
     </LinearLayout>
 
