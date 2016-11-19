@@ -258,7 +258,7 @@ public class ShowcaseActivity extends TasksActivity {
         super.onDestroy();
     }
 
-    private Fragment getCurrentFragment() {
+    public Fragment getCurrentFragment() {
         return getSupportFragmentManager().findFragmentById(getFragmentId());
     }
 

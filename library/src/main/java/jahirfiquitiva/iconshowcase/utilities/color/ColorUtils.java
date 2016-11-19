@@ -232,11 +232,10 @@ public class ColorUtils {
 
     public static Palette.Swatch getPaletteSwatch(Bitmap bitmap) {
         //Test areas of 10 and 50*50
-        Palette palette = Palette.from(bitmap).resizeBitmapArea(50 * 50).generate();
-        return getPaletteSwatch(palette);
+        return getPaletteSwatch(Palette.from(bitmap).resizeBitmapArea(50 * 50).generate());
     }
 
-    public static Palette.Swatch getPaletteSwatch(Palette palette) {
+    private static Palette.Swatch getPaletteSwatch(Palette palette) {
         if (palette != null) {
             if (palette.getVibrantSwatch() != null) {
                 return palette.getVibrantSwatch();

@@ -160,6 +160,9 @@ public class LauncherIntents {
         if (Utils.isAppInstalled(context, "org.cyanogenmod.theme.chooser")) {
             intent.setComponent(new ComponentName("org.cyanogenmod.theme.chooser",
                     "org.cyanogenmod.theme.chooser.ChooserActivity"));
+        } else if (Utils.isAppInstalled(context, "org.cyanogenmod.theme.chooser2")) {
+            intent.setComponent(new ComponentName("org.cyanogenmod.theme.chooser2",
+                    "org.cyanogenmod.theme.chooser2.ChooserActivity"));
         } else if (Utils.isAppInstalled(context, "com.cyngn.theme.chooser")) {
             intent.setComponent(new ComponentName("com.cyngn.theme.chooser",
                     "com.cyngn.theme.chooser.ChooserActivity"));

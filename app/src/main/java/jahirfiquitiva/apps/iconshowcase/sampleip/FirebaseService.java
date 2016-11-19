@@ -27,7 +27,8 @@ import jahirfiquitiva.iconshowcase.utilities.Utils;
 public class FirebaseService extends FirebaseMessagingService {
 
     @Override
-    public void onMessageReceived (RemoteMessage remoteMessage) {
+    public void onMessageReceived(RemoteMessage remoteMessage) {
+        //TODO Do not send notifications if icon is hidden
         if (remoteMessage.getNotification() != null) {
             Utils.sendFirebaseNotification(this,
                     HomeActivity.class,

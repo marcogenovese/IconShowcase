@@ -206,7 +206,7 @@ public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.Ku
         if (filePath != null) {
             Glide.with(context)
                     .load(new File(filePath))
-                    .priority(Priority.HIGH)
+                    .priority(Priority.IMMEDIATE)
                     .into(holder.widget);
         }
     }

@@ -152,7 +152,7 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             zooperHolder.background.setImageDrawable(wallpaper);
             Glide.with(context)
                     .load(new File(widget.getPreviewPath()))
-                    .priority(Priority.HIGH)
+                    .priority(Priority.IMMEDIATE)
                     .into(zooperHolder.widget);
         }
 

@@ -69,7 +69,6 @@
     <string name="okhttp_web">http://square.github.io/okhttp/</string>
 
     <string name="rob_beane">Rob Beane</string>
-    <string name="dani_mahardika">Dani Mahardika</string>
     <string name="tim_bremer">Tim Bremer</string>
     <string name="steve_albright">Steve Albright</string>
     <string name="karim">Karim Abou Zeid</string>
@@ -98,7 +97,6 @@
         <item>Krystian Drożdżyński</item>
         <item>@string/materialdialogs_author</item>
         <item>@string/materialdrawer_author</item>
-        <item>@string/dani_mahardika</item>
     </string-array>
 
     <string-array name="contributors_links">
@@ -112,7 +110,6 @@
         <item>https://goo.gl/G4bVnV</item>
         <item>http://www.aidanfollestad.com/</item>
         <item>http://portfolio.mikepenz.com/</item>
-        <item>https://plus.google.com/+DaniMahardhika/posts</item>
     </string-array>
 
     <string-array name="ui_collaborators_names">
@@ -205,6 +202,7 @@
     <string name="twitter">Twitter</string>
     <string name="play_store">Play Store</string>
     <string name="facebook">Facebook</string>
+    <string name="github">GitHub</string>
 
     <string-array name="zooper_download_dialog_options">
         <item>@string/play_store</item>
@@ -234,5 +232,9 @@
         <item>@string/translators</item>
         <item>@string/implemented_libraries</item>
     </string-array>
+
+    <string name="apply_shortcut">apply_shortcut</string>
+    <string name="wallpapers_shortcut">wallpapers_shortcut</string>
+    <string name="request_shortcut">request_shortcut</string>
 
 </resources>

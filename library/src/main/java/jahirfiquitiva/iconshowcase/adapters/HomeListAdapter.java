@@ -272,13 +272,14 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    private void setupAppInfoAmounts() {
+    public void setupAppInfoAmounts() {
+        this.icons = 0;
+        this.wallpapers = 0;
+        this.widgets = 0;
         if (FullListHolder.get().iconsCategories().getList() != null) {
             for (IconsCategory category : FullListHolder.get().iconsCategories().getList()) {
                 this.icons += category.getIconsArray().size();
             }
-        } else {
-            this.icons = 0;
         }
         this.wallpapers = FullListHolder.get().walls().getList() != null
                 ? FullListHolder.get().walls().getList().size() : 0;
@@ -286,12 +287,14 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.widgets += LoadKustomFiles.widgets != null ? LoadKustomFiles.widgets.size() : 0;
     }
 
-    private void setupAppInfo() {
-        hldr.iconsT.setText(context.getResources().getString(R.string.themed_icons, String.valueOf(icons)));
-        hldr.wallsT.setText(context.getResources().getString(R.string.available_wallpapers, String.valueOf(wallpapers)));
-        hldr.widgetsT.setText(context.getResources().getString(R.string.included_widgets, String.valueOf(widgets)));
-        if (!((ShowcaseActivity) context).includesZooper()) {
-            hldr.widgets.setVisibility(View.GONE);
+    public void setupAppInfo() {
+        if (hldr != null) {
+            hldr.iconsT.setText(context.getResources().getString(R.string.themed_icons, String.valueOf(icons)));
+            hldr.wallsT.setText(context.getResources().getString(R.string.available_wallpapers, String.valueOf(wallpapers)));
+            hldr.widgetsT.setText(context.getResources().getString(R.string.included_widgets, String.valueOf(widgets)));
+            if (!((ShowcaseActivity) context).includesZooper()) {
+                hldr.widgets.setVisibility(View.GONE);
+            }
         }
     }
 

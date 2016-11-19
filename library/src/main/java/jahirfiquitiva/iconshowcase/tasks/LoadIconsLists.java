@@ -31,6 +31,8 @@ import java.util.List;
 import java.util.Set;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
+import jahirfiquitiva.iconshowcase.fragments.MainFragment;
 import jahirfiquitiva.iconshowcase.holders.FullListHolder;
 import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.models.IconsCategory;
@@ -111,9 +113,16 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
     @Override
     protected void onPostExecute(Boolean worked) {
         if (worked) {
-            Timber.d("Load of icons task completed successfully in: %d milliseconds", (endTime - startTime));
             FullListHolder.get().home().createList(mPreviewIcons);
             FullListHolder.get().iconsCategories().createList(mCategoryList);
+            if (mContext.get() instanceof ShowcaseActivity) {
+                if (((ShowcaseActivity) mContext.get()).getCurrentFragment() instanceof MainFragment) {
+                    ((MainFragment) ((ShowcaseActivity) mContext.get()).getCurrentFragment()).updateAppInfoData();
+                }
+            }
+            Timber.d("Load of icons task completed successfully in: %d milliseconds", (endTime - startTime));
+        } else {
+            Timber.d("Something went really wrong while loading icons.");
         }
     }
 

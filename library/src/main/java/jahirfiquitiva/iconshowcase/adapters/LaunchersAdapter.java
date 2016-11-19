@@ -76,7 +76,7 @@ public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.Laun
                 .load(iconResource != 0 ?
                         iconResource :
                         Utils.getIconResId(context.getResources(), context.getPackageName(), "ic_na_launcher"))
-                .priority(Priority.HIGH)
+                .priority(Priority.IMMEDIATE)
                 .dontAnimate()
                 .into(holder.icon);
 

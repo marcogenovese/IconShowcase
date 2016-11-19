@@ -49,6 +49,7 @@ public class MainFragment extends EventBaseFragment {
 
     private final ArrayList<HomeCard> homeCards = new ArrayList<>();
     private Context context;
+    private HomeListAdapter mAdapter;
     private boolean hasAppsList = false;
 
     @Override
@@ -116,7 +117,7 @@ public class MainFragment extends EventBaseFragment {
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setHasFixedSize(true);
 
-        HomeListAdapter mAdapter = new HomeListAdapter(homeCards, context, hasAppsList);
+        mAdapter = new HomeListAdapter(homeCards, context, hasAppsList);
         mRecyclerView.setAdapter(mAdapter);
 
         return layout;
@@ -160,4 +161,12 @@ public class MainFragment extends EventBaseFragment {
         if (event.type != eventType()) return;
         ((ShowcaseActivity) getActivity()).setupIcons();
     }
+
+    public void updateAppInfoData() {
+        if (mAdapter != null) {
+            mAdapter.setupAppInfoAmounts();
+            mAdapter.setupAppInfo();
+        }
+    }
+
 }

@@ -149,7 +149,7 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             detailedCreditsHolder.content.setText(item.getContent());
 
             Glide.with(context).load(item.getPhotoLink()).diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                    .priority(Priority.HIGH).into(detailedCreditsHolder.photo);
+                    .priority(Priority.IMMEDIATE).into(detailedCreditsHolder.photo);
             Glide.with(context).load(item.getBannerLink()).diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .priority(Priority.HIGH).into(detailedCreditsHolder.banner);
 

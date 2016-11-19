@@ -132,18 +132,6 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
 
     }
 
-    private void setColors(int color, WallsHolder holder) {
-        if (holder.titleBg != null && color != 0) {
-            holder.titleBg.setBackgroundColor(color);
-            if (holder.name != null) {
-                holder.name.setTextColor(ColorUtils.getMaterialPrimaryTextColor(!ColorUtils.isLightColor(color)));
-            }
-            if (holder.authorName != null) {
-                holder.authorName.setTextColor(ColorUtils.getMaterialPrimaryTextColor(!ColorUtils.isLightColor(color)));
-            }
-        }
-    }
-
     @Override
     public int getItemCount() {
         return wallsList == null ? 0 : wallsList.size();
@@ -224,6 +212,18 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
             clickable = true;
         }
 
+    }
+
+    private void setColors(int color, WallsHolder holder) {
+        if (holder.titleBg != null && color != 0) {
+            holder.titleBg.setBackgroundColor(color);
+            if (holder.name != null) {
+                holder.name.setTextColor(ColorUtils.getMaterialPrimaryTextColor(!ColorUtils.isLightColor(color)));
+            }
+            if (holder.authorName != null) {
+                holder.authorName.setTextColor(ColorUtils.getMaterialPrimaryTextColor(!ColorUtils.isLightColor(color)));
+            }
+        }
     }
 
 }
