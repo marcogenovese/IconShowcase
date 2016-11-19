@@ -116,7 +116,7 @@ public abstract class TasksActivity extends DrawerActivity {
                     .build().loadApps();
         }
         if (drawerHas(DrawerItem.ZOOPER)) {
-            WITH_ZOOPER_SECTION = false;
+            WITH_ZOOPER_SECTION = true;
             new LoadZooperWidgets(this, null).execute();
         }
         if (drawerHas(DrawerItem.KUSTOM)) {
