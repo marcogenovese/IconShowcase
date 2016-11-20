@@ -28,6 +28,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -105,6 +106,13 @@ public class Utils {
             installed = false;
         }
         return installed;
+    }
+
+    public static String getDefaultLauncherPackage(@NonNull Context context) {
+        final Intent intent = new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME);
+        final ResolveInfo resolveInfo = context.getPackageManager()
+                .resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY);
+        return resolveInfo.activityInfo.packageName;
     }
 
     public static Snackbar snackbar(@NonNull Context context, @NonNull View view, @NonNull CharSequence text, int duration) {

@@ -37,6 +37,8 @@ import java.io.OutputStream;
 import java.lang.ref.WeakReference;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
+import jahirfiquitiva.iconshowcase.activities.base.DrawerActivity;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 
 public class CopyFilesToStorage extends AsyncTask<Void, String, Boolean> {
@@ -66,13 +68,20 @@ public class CopyFilesToStorage extends AsyncTask<Void, String, Boolean> {
                     OutputStream out;
                     if (filename.contains(".")) {
                         try {
-                            in = assetManager.open(folder + "/" + filename);
-                            out = new FileOutputStream(
-                                    Environment.getExternalStorageDirectory().toString() +
-                                            "/ZooperWidget/" + getFolderName(folder) + "/" + filename);
-                            copyFiles(in, out);
-                            in.close();
-                            out.close();
+                            String fileToIgnore1 = "material-design-iconic-font-v2.2.0.ttf",
+                                    fileToIgnore2 = "materialdrawerfont.ttf",
+                                    fileToIgnore3 = "materialdrawerfont-font-v5.0.0.ttf",
+                                    fileToIgnore4 = "google-material-font-v2.2.0.1.original.ttf";
+                            if (!filename.equals(fileToIgnore1) && !filename.equals(fileToIgnore2)
+                                    && !filename.equals(fileToIgnore3) && !filename.equals(fileToIgnore4)) {
+                                in = assetManager.open(folder + "/" + filename);
+                                out = new FileOutputStream(
+                                        Environment.getExternalStorageDirectory().toString() +
+                                                "/ZooperWidget/" + getFolderName(folder) + "/" + filename);
+                                copyFiles(in, out);
+                                in.close();
+                                out.close();
+                            }
                         } catch (Exception e) {
                             //Do nothing
                         }
@@ -97,6 +106,9 @@ public class CopyFilesToStorage extends AsyncTask<Void, String, Boolean> {
             ViewGroup snackbarView = (ViewGroup) longSnackbar.getView();
             snackbarView.setBackgroundColor(ThemeUtils.darkTheme ? snackbarDark : snackbarLight);
             longSnackbar.show();
+            if (context.get() instanceof ShowcaseActivity) {
+                ((ShowcaseActivity) context.get()).resetFragment(DrawerActivity.DrawerItem.ZOOPER);
+            }
         }
     }
 

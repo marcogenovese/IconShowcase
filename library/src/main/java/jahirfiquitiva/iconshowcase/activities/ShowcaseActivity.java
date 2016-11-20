@@ -75,8 +75,12 @@ import jahirfiquitiva.iconshowcase.activities.base.TasksActivity;
 import jahirfiquitiva.iconshowcase.adapters.RequestsAdapter;
 import jahirfiquitiva.iconshowcase.config.Config;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
+import jahirfiquitiva.iconshowcase.fragments.KustomFragment;
+import jahirfiquitiva.iconshowcase.fragments.PreviewsFragment;
 import jahirfiquitiva.iconshowcase.fragments.RequestsFragment;
+import jahirfiquitiva.iconshowcase.fragments.SettingsFragment;
 import jahirfiquitiva.iconshowcase.fragments.WallpapersFragment;
+import jahirfiquitiva.iconshowcase.fragments.ZooperFragment;
 import jahirfiquitiva.iconshowcase.holders.FullListHolder;
 import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
@@ -380,14 +384,7 @@ public class ShowcaseActivity extends TasksActivity {
         }
 
         //Fragment Switcher
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager()
-                .beginTransaction();
-
-        fragmentTransaction.replace(getFragmentId(), dt.getFragment(), dt.getName());
-
-        if (mPrefs.getAnimationsEnabled())
-            fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
-        fragmentTransaction.commit();
+        reloadFragment(dt);
 
         //TODO verify
         collapsingToolbarLayout.setTitle(
@@ -448,20 +445,24 @@ public class ShowcaseActivity extends TasksActivity {
     @SuppressLint("MissingSuperCall")
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == PermissionUtils.PERMISSION_REQUEST_CODE) {
-            if (permissionGranted(grantResults) && PermissionUtils.permissionReceived() != null) {
-                Timber.d("Permission granted");
-                //PermissionUtils.permissionReceived().onStoragePermissionGranted();
-            }
-        }
-        /*
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == PermissionUtils.PERMISSION_REQUEST_CODE) {
-            if (permissionGranted(grantResults) && PermissionUtils.permissionReceived() != null) {
+            if (permissionGranted(grantResults)) {
+                if (getCurrentFragment() instanceof RequestsFragment) {
+                    ((RequestsFragment) getCurrentFragment()).startRequestProcess();
+                } else if (getCurrentFragment() instanceof SettingsFragment) {
+                    ((SettingsFragment) getCurrentFragment()).showFolderChooserDialog();
+                } else if (getCurrentFragment() instanceof ZooperFragment) {
+                    ((ZooperFragment) getCurrentFragment()).getAdapter().installAssets();
+                }
+            } else if (PermissionUtils.permissionReceived() != null) {
                 PermissionUtils.permissionReceived().onStoragePermissionGranted();
+            } else {
+                ISDialogs.showPermissionNotGrantedDialog(this);
             }
+        } else {
+            ISDialogs.showPermissionNotGrantedDialog(this);
         }
-        */
     }
 
     private boolean permissionGranted(int[] results) {
@@ -508,6 +509,26 @@ public class ShowcaseActivity extends TasksActivity {
         Fragment fragment = fragmentManager.findFragmentByTag("donationsFragment");
         if (fragment != null) {
             fragment.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    public void resetFragment(DrawerItem item) {
+        switch (item) {
+            case PREVIEWS:
+                if (getCurrentFragment() instanceof PreviewsFragment) {
+                    reloadFragment(item);
+                }
+                break;
+            case ZOOPER:
+                if (getCurrentFragment() instanceof ZooperFragment) {
+                    reloadFragment(item);
+                }
+                break;
+            case KUSTOM:
+                if (getCurrentFragment() instanceof KustomFragment) {
+                    reloadFragment(item);
+                }
+                break;
         }
     }
 

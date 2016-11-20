@@ -32,6 +32,7 @@ import java.util.Set;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
+import jahirfiquitiva.iconshowcase.activities.base.DrawerActivity;
 import jahirfiquitiva.iconshowcase.fragments.MainFragment;
 import jahirfiquitiva.iconshowcase.holders.FullListHolder;
 import jahirfiquitiva.iconshowcase.models.IconItem;
@@ -119,6 +120,7 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
                 if (((ShowcaseActivity) mContext.get()).getCurrentFragment() instanceof MainFragment) {
                     ((MainFragment) ((ShowcaseActivity) mContext.get()).getCurrentFragment()).updateAppInfoData();
                 }
+                ((ShowcaseActivity) mContext.get()).resetFragment(DrawerActivity.DrawerItem.PREVIEWS);
             }
             Timber.d("Load of icons task completed successfully in: %d milliseconds", (endTime - startTime));
         } else {
