@@ -75,6 +75,6 @@ public class CreditsFragment extends CapsuleFragment {
     @Nullable
     @Override
     protected CFabEvent updateFab() {
-        return new CFabEvent();
+        return new CFabEvent(false);
     }
 }

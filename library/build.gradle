@@ -136,7 +136,7 @@ dependencies {
     compile 'com.github.AllanWang:Butler:297596baac'
 
     //Library for UI framework
-    compile 'com.github.AllanWang:Capsule:c5cd3fdb63'
+    compile 'com.github.AllanWang:Capsule:0d69eb55f1'
 
     //Donations Lib
     compile 'org.sufficientlysecure:donations:2.4'

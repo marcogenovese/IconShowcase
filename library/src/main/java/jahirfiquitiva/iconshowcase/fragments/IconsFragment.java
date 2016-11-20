@@ -93,7 +93,7 @@ public class IconsFragment extends CapsuleFragment {
     @Nullable
     @Override
     protected CFabEvent updateFab() {
-        return new CFabEvent();
+        return new CFabEvent(false);
     }
 
     public void performSearch(String query) {
