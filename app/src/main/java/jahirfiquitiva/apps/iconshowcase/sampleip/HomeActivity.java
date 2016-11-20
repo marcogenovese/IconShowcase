@@ -54,7 +54,7 @@ public class HomeActivity extends AppCompatActivity {
             if ((getIntent().getDataString() != null && getIntent().getDataString().equals("apply_shortcut"))
                     && (Utils.getDefaultLauncherPackage(this) != null)) {
                 try {
-                    new LauncherIntents(this, Utils.getDefaultLauncherPackage(this), true);
+                    new LauncherIntents(this, Utils.getDefaultLauncherPackage(this));
                 } catch (IllegalArgumentException ex) {
                     runIntent();
                 }

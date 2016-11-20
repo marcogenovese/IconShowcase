@@ -39,6 +39,7 @@ import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.models.CreditsItem;
 import jahirfiquitiva.iconshowcase.models.DetailedCreditsItem;
+import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
@@ -49,9 +50,11 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private ArrayList<DetailedCreditsItem> detailedCredits = new ArrayList<>();
     private ArrayList<CreditsItem> credits;
     private Context context;
+    private Preferences mPrefs;
 
     public CreditsAdapter(Context context) {
         this.context = context;
+        this.mPrefs = new Preferences(context);
 
         Resources r = context.getResources();
 
@@ -148,10 +151,17 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             detailedCreditsHolder.title.setText(item.getTitle());
             detailedCreditsHolder.content.setText(item.getContent());
 
-            Glide.with(context).load(item.getPhotoLink()).diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                    .priority(Priority.IMMEDIATE).into(detailedCreditsHolder.photo);
-            Glide.with(context).load(item.getBannerLink()).diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                    .priority(Priority.HIGH).into(detailedCreditsHolder.banner);
+            if (mPrefs != null && mPrefs.getAnimationsEnabled()) {
+                Glide.with(context).load(item.getPhotoLink()).diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        .priority(Priority.IMMEDIATE).into(detailedCreditsHolder.photo);
+                Glide.with(context).load(item.getBannerLink()).diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        .priority(Priority.HIGH).into(detailedCreditsHolder.banner);
+            } else {
+                Glide.with(context).load(item.getPhotoLink()).dontAnimate().diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        .priority(Priority.IMMEDIATE).into(detailedCreditsHolder.photo);
+                Glide.with(context).load(item.getBannerLink()).dontAnimate().diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        .priority(Priority.HIGH).into(detailedCreditsHolder.banner);
+            }
 
             if (item.getBtnTexts().length > 0) {
                 detailedCreditsHolder.buttons.setButtonCount(item.getBtnTexts().length);

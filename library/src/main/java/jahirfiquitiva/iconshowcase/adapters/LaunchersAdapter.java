@@ -40,6 +40,7 @@ import java.util.Locale;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.fragments.ApplyFragment;
+import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
@@ -49,8 +50,11 @@ public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.Laun
     private final Context context;
     private final List<ApplyFragment.Launcher> launchers;
     private final ClickListener mCallback;
+    private Preferences mPrefs;
+
     public LaunchersAdapter(Context context, List<ApplyFragment.Launcher> launchers, ClickListener callback) {
         this.context = context;
+        this.mPrefs = new Preferences(context);
         this.launchers = launchers;
         this.mCallback = callback;
     }
@@ -72,13 +76,22 @@ public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.Laun
         final int textDark = ContextCompat.getColor(context, R.color.launcher_text_light);
         final int textLight = ContextCompat.getColor(context, R.color.launcher_text_dark);
 
-        Glide.with(context)
-                .load(iconResource != 0 ?
-                        iconResource :
-                        Utils.getIconResId(context.getResources(), context.getPackageName(), "ic_na_launcher"))
-                .priority(Priority.IMMEDIATE)
-                .dontAnimate()
-                .into(holder.icon);
+        if (mPrefs != null && mPrefs.getAnimationsEnabled()) {
+            Glide.with(context)
+                    .load(iconResource != 0 ?
+                            iconResource :
+                            Utils.getIconResId(context.getResources(), context.getPackageName(), "ic_na_launcher"))
+                    .priority(Priority.IMMEDIATE)
+                    .into(holder.icon);
+        } else {
+            Glide.with(context)
+                    .load(iconResource != 0 ?
+                            iconResource :
+                            Utils.getIconResId(context.getResources(), context.getPackageName(), "ic_na_launcher"))
+                    .priority(Priority.IMMEDIATE)
+                    .dontAnimate()
+                    .into(holder.icon);
+        }
 
         holder.launcherName.setText(launchers.get(position).name.toUpperCase(Locale.getDefault()));
 

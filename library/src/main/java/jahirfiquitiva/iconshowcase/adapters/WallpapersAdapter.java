@@ -68,13 +68,13 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
     private final FragmentActivity activity;
     private final ArrayList<WallpaperItem> wallsList;
     private MaterialDialog applyDialog;
-    private final boolean animationEnabled;
+    private Preferences mPrefs;
     private int lastPosition = -1;
 
     public WallpapersAdapter(FragmentActivity activity, ArrayList<WallpaperItem> wallsList) {
         this.activity = activity;
         this.wallsList = wallsList;
-        animationEnabled = new Preferences(activity).getAnimationsEnabled();
+        this.mPrefs = new Preferences(activity);
     }
 
     @Override
@@ -102,7 +102,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
             @Override
             protected void setResource(Bitmap bitmap) {
                 Palette.Swatch wallSwatch = ColorUtils.getPaletteSwatch(bitmap);
-                if (animationEnabled && (holder.getAdapterPosition() > lastPosition)) {
+                if ((mPrefs != null & mPrefs.getAnimationsEnabled()) && (holder.getAdapterPosition() > lastPosition)) {
                     holder.wall.setAlpha(0f);
                     holder.titleBg.setAlpha(0f);
                     holder.wall.setImageBitmap(bitmap);
@@ -117,27 +117,55 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
             }
         };
 
+        //TODO: Find a way to simplify the code when animations are disabled.
         if (!(wallThumbURL.equals("null"))) {
-            Glide.with(activity)
-                    .load(wallURL)
-                    .asBitmap()
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                    .priority(Priority.HIGH)
-                    .thumbnail(
-                            Glide.with(activity)
-                                    .load(wallThumbURL)
-                                    .asBitmap()
-                                    .priority(Priority.IMMEDIATE)
-                                    .thumbnail(0.3f))
-                    .into(target);
+            if (mPrefs != null && mPrefs.getAnimationsEnabled()) {
+                Glide.with(activity)
+                        .load(wallURL)
+                        .asBitmap()
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        .priority(Priority.HIGH)
+                        .thumbnail(
+                                Glide.with(activity)
+                                        .load(wallThumbURL)
+                                        .asBitmap()
+                                        .priority(Priority.IMMEDIATE)
+                                        .thumbnail(0.3f))
+                        .into(target);
+            } else {
+                Glide.with(activity)
+                        .load(wallURL)
+                        .asBitmap()
+                        .dontAnimate()
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        .priority(Priority.HIGH)
+                        .thumbnail(
+                                Glide.with(activity)
+                                        .load(wallThumbURL)
+                                        .asBitmap()
+                                        .priority(Priority.IMMEDIATE)
+                                        .thumbnail(0.3f))
+                        .into(target);
+            }
         } else {
-            Glide.with(activity)
-                    .load(wallURL)
-                    .asBitmap()
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                    .priority(Priority.HIGH)
-                    .thumbnail(0.5f)
-                    .into(target);
+            if (mPrefs.getAnimationsEnabled()) {
+                Glide.with(activity)
+                        .load(wallURL)
+                        .asBitmap()
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        .priority(Priority.HIGH)
+                        .thumbnail(0.5f)
+                        .into(target);
+            } else {
+                Glide.with(activity)
+                        .load(wallURL)
+                        .asBitmap()
+                        .dontAnimate()
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        .priority(Priority.HIGH)
+                        .thumbnail(0.5f)
+                        .into(target);
+            }
         }
 
     }
@@ -273,6 +301,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
                         Glide.with(context)
                                 .load(item.getWallURL())
                                 .asBitmap()
+                                .dontAnimate()
                                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                                 .into(new SimpleTarget<Bitmap>() {
                                     @Override

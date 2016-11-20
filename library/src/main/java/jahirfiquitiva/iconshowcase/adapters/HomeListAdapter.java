@@ -282,7 +282,9 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         resetAppInfoValues();
         if (FullListHolder.get().iconsCategories().getList() != null) {
             for (IconsCategory category : FullListHolder.get().iconsCategories().getList()) {
-                this.icons += category.getIconsArray().size();
+                if (category.getCategoryName().equals("All")) {
+                    this.icons += category.getIconsArray().size();
+                }
             }
             if (this.icons > 1) {
                 this.icons -= 1;

@@ -115,6 +115,7 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
                     Glide.with(wrActivity.get())
                             .load(url)
                             .asBitmap()
+                            .dontAnimate()
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .into(new SimpleTarget<Bitmap>() {
                                 @Override
@@ -181,18 +182,19 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
     @Override
     protected void onPostExecute(Boolean worked) {
         if (worked) {
-            if (dialog != null) {
-                dialog.dismiss();
-            }
-            dialog = new MaterialDialog.Builder(wrActivity.get())
-                    .content(R.string.set_as_wall_done)
-                    .positiveText(android.R.string.ok)
-                    .show();
-            if (isPicker) {
-                wrActivity.get().finish();
-            } else {
-                if (wrActivity.get() instanceof ShowcaseActivity)
+            if (wrActivity.get() instanceof ShowcaseActivity) {
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+                dialog = new MaterialDialog.Builder(wrActivity.get())
+                        .content(R.string.set_as_wall_done)
+                        .positiveText(android.R.string.ok)
+                        .show();
+                if (isPicker) {
+                    wrActivity.get().finish();
+                } else {
                     ((ShowcaseActivity) wrActivity.get()).setupToolbarHeader();
+                }
             }
         }
 //        if (!isCancelled()) {

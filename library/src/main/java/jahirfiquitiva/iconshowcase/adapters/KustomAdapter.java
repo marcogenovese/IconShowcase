@@ -42,6 +42,7 @@ import jahirfiquitiva.iconshowcase.models.KustomKomponent;
 import jahirfiquitiva.iconshowcase.models.KustomWallpaper;
 import jahirfiquitiva.iconshowcase.models.KustomWidget;
 import jahirfiquitiva.iconshowcase.tasks.LoadKustomFiles;
+import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 
@@ -49,17 +50,17 @@ public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.Ku
 
     private final Context context;
     private final Drawable wallpaper;
+    private Preferences mPrefs;
     private ArrayList<KustomWidget> widgets;
     private ArrayList<KustomKomponent> komponents;
     private ArrayList<KustomWallpaper> kustomWalls;
 
     public KustomAdapter(Context context, Drawable wallpaper) {
         this.context = context;
-
+        this.mPrefs = new Preferences(context);
         this.komponents = LoadKustomFiles.komponents;
         this.kustomWalls = LoadKustomFiles.wallpapers;
         this.widgets = LoadKustomFiles.widgets;
-
         this.wallpaper = wallpaper;
     }
 
@@ -117,13 +118,11 @@ public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.Ku
 
     public int getHeadersBeforePosition(int position) {
         int headers = 0;
-
         for (int i = 0; i < position; i++) {
             if (isHeader(i)) {
                 headers += 1;
             }
         }
-
         return headers;
     }
 
@@ -204,10 +203,18 @@ public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.Ku
         }
 
         if (filePath != null) {
-            Glide.with(context)
-                    .load(new File(filePath))
-                    .priority(Priority.IMMEDIATE)
-                    .into(holder.widget);
+            if (mPrefs != null && mPrefs.getAnimationsEnabled()) {
+                Glide.with(context)
+                        .load(new File(filePath))
+                        .priority(Priority.IMMEDIATE)
+                        .into(holder.widget);
+            } else {
+                Glide.with(context)
+                        .load(new File(filePath))
+                        .dontAnimate()
+                        .priority(Priority.IMMEDIATE)
+                        .into(holder.widget);
+            }
         }
     }
 

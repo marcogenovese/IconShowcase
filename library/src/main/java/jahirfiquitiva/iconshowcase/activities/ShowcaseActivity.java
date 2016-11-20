@@ -19,7 +19,6 @@
 
 package jahirfiquitiva.iconshowcase.activities;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.WallpaperManager;
 import android.content.DialogInterface;
@@ -83,6 +82,7 @@ import jahirfiquitiva.iconshowcase.fragments.WallpapersFragment;
 import jahirfiquitiva.iconshowcase.fragments.ZooperFragment;
 import jahirfiquitiva.iconshowcase.holders.FullListHolder;
 import jahirfiquitiva.iconshowcase.models.IconItem;
+import jahirfiquitiva.iconshowcase.tasks.DownloadJSON;
 import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
@@ -367,7 +367,8 @@ public class ShowcaseActivity extends TasksActivity {
 
         currentItem = itemId;
 
-        //TODO Make sure this works fine even after configuration changes
+        // TODO Make sure this works fine even after configuration changes
+        // TODO Add method to expand or collaps WITHOUT animation
         if (dt == DrawerItem.HOME
             //                && !iconsPicker && !wallsPicker
                 ) {
@@ -442,7 +443,6 @@ public class ShowcaseActivity extends TasksActivity {
         return true;
     }
 
-    @SuppressLint("MissingSuperCall")
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -477,7 +477,13 @@ public class ShowcaseActivity extends TasksActivity {
             ChangelogDialog.show(this, R.xml.changelog);
         } else if (i == R.id.refresh) {
             FullListHolder.get().walls().clearList();
-            executeWallpapersTaskAgain(getCurrentFragment());
+            DownloadJSON json = new DownloadJSON(this);
+            json.setFragment(getCurrentFragment());
+            if (getJsonTask() != null) {
+                getJsonTask().cancel(true);
+            }
+            setJsonTask(json);
+            json.execute();
         } else if (i == R.id.columns) {
             if (getCurrentFragment() instanceof WallpapersFragment) {
                 ISDialogs.showColumnsSelectorDialog(this, ((WallpapersFragment) getCurrentFragment()));

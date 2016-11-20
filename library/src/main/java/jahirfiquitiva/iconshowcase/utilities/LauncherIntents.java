@@ -30,159 +30,105 @@ import timber.log.Timber;
 
 public class LauncherIntents {
 
-    public LauncherIntents(Context context, String key, boolean isPackageName) throws IllegalArgumentException {
-        if (isPackageName) {
-            switch (key) {
-                case "com.actionlauncher.playstore":
-                    ActionLauncher(context);
-                    break;
-                case "org.adw.launcher":
-                    AdwLauncher(context);
-                    break;
-                case "org.adwfreak.launcher":
-                    AdwEXLauncher(context);
-                    break;
-                case "com.anddoes.launcher":
-                    ApexLauncher(context);
-                    break;
-                case "com.dlto.atom.launcher":
-                    AtomLauncher(context);
-                    break;
-                case "com.tul.aviate":
-                    AviateLauncher(context);
-                    break;
-                case "org.cyanogenmod.theme.chooser":
-                case "org.cyanogenmod.theme.chooser2":
-                case "com.cyngn.theme.chooser":
-                    CMThemeEngine(context);
-                    break;
-                case "com.gau.go.launcherex":
-                    GoLauncher(context);
-                    break;
-                case "com.mobint.hololauncher":
-                    HoloLauncher(context);
-                    break;
-                case "com.mobint.hololauncher.hd":
-                    HoloLauncherICS(context);
-                    break;
-                case "com.kk.launcher":
-                    KkLauncher(context);
-                    break;
-                case "com.lge.launcher2":
-                    LgHomeLauncher(context);
-                    break;
-                case "com.l.launcher":
-                    LLauncher(context);
-                    break;
-                case "com.powerpoint45.launcher":
-                    LucidLauncher(context);
-                    break;
-                case "com.jiubang.go.mini.launcher":
-                    MiniLauncher(context);
-                    break;
-                case "com.gtp.nextlauncher":
-                    NextLauncher(context);
-                    break;
-                case "com.teslacoilsw.launcher":
-                    NovaLauncher(context);
-                    break;
-                case "com.s.launcher":
-                    SLauncher(context);
-                    break;
-                case "ginlemon.flowerfree":
-                    SmartLauncher(context);
-                    break;
-                case "ginlemon.flowerpro":
-                    SmartLauncherPro(context);
-                    break;
-                case "home.solo.launcher.free":
-                    SoloLauncher(context);
-                    break;
-                case "com.tsf.shell":
-                    TsfLauncher(context);
-                    break;
-                case "sg.ruqqq.IconThemer":
-                    Unicon(context);
-                    break;
-                default:
-                    Timber.d("No method for package: ", key);
-                    throw new IllegalArgumentException("Couldn't find method for launcher with package: " + key);
-            }
-        } else {
-            switch (key) {
-                case "Action":
-                    ActionLauncher(context);
-                    break;
-                case "Adw":
-                    AdwLauncher(context);
-                    break;
-                case "Adwex":
-                    AdwEXLauncher(context);
-                    break;
-                case "Apex":
-                    ApexLauncher(context);
-                    break;
-                case "Atom":
-                    AtomLauncher(context);
-                    break;
-                case "Aviate":
-                    AviateLauncher(context);
-                    break;
-                case "Cmthemeengine":
-                    CMThemeEngine(context);
-                    break;
-                case "Go":
-                    GoLauncher(context);
-                    break;
-                case "Holo":
-                    HoloLauncher(context);
-                    break;
-                case "Holoics":
-                    HoloLauncherICS(context);
-                    break;
-                case "KK":
-                    KkLauncher(context);
-                    break;
-                case "Lghome":
-                    LgHomeLauncher(context);
-                    break;
-                case "L":
-                    LLauncher(context);
-                    break;
-                case "Lucid":
-                    LucidLauncher(context);
-                    break;
-                case "Mini":
-                    MiniLauncher(context);
-                    break;
-                case "Next":
-                    NextLauncher(context);
-                    break;
-                case "Nova":
-                    NovaLauncher(context);
-                    break;
-                case "S":
-                    SLauncher(context);
-                    break;
-                case "Smart":
-                    SmartLauncher(context);
-                    break;
-                case "Smartpro":
-                    SmartLauncherPro(context);
-                    break;
-                case "Solo":
-                    SoloLauncher(context);
-                    break;
-                case "Tsf":
-                    TsfLauncher(context);
-                    break;
-                case "Uniconpro":
-                    Unicon(context);
-                    break;
-                default:
-                    Timber.d("No method for launcher: ", key);
-                    break;
-            }
+    public LauncherIntents(Context context, String key) throws IllegalArgumentException {
+        switch (key) {
+            case "com.actionlauncher.playstore":
+            case "Action":
+                ActionLauncher(context);
+                break;
+            case "org.adw.launcher":
+            case "Adw":
+                AdwLauncher(context);
+                break;
+            case "org.adwfreak.launcher":
+            case "Adwex":
+                AdwEXLauncher(context);
+                break;
+            case "com.anddoes.launcher":
+            case "Apex":
+                ApexLauncher(context);
+                break;
+            case "com.dlto.atom.launcher":
+            case "Atom":
+                AtomLauncher(context);
+                break;
+            case "com.tul.aviate":
+            case "Aviate":
+                AviateLauncher(context);
+                break;
+            case "org.cyanogenmod.theme.chooser":
+            case "org.cyanogenmod.theme.chooser2":
+            case "com.cyngn.theme.chooser":
+            case "Cmthemeengine":
+                CMThemeEngine(context);
+                break;
+            case "com.gau.go.launcherex":
+            case "Go":
+                GoLauncher(context);
+                break;
+            case "com.mobint.hololauncher":
+            case "Holo":
+                HoloLauncher(context);
+                break;
+            case "com.mobint.hololauncher.hd":
+            case "Holoics":
+                HoloLauncherICS(context);
+                break;
+            case "com.kk.launcher":
+            case "KK":
+                KkLauncher(context);
+                break;
+            case "com.lge.launcher2":
+            case "Lghome":
+                LgHomeLauncher(context);
+                break;
+            case "com.l.launcher":
+            case "L":
+                LLauncher(context);
+                break;
+            case "com.powerpoint45.launcher":
+            case "Lucid":
+                LucidLauncher(context);
+                break;
+            case "com.jiubang.go.mini.launcher":
+            case "Mini":
+                MiniLauncher(context);
+                break;
+            case "com.gtp.nextlauncher":
+            case "Next":
+                NextLauncher(context);
+                break;
+            case "com.teslacoilsw.launcher":
+            case "Nova":
+                NovaLauncher(context);
+                break;
+            case "com.s.launcher":
+            case "S":
+                SLauncher(context);
+                break;
+            case "ginlemon.flowerfree":
+            case "Smart":
+                SmartLauncher(context);
+                break;
+            case "ginlemon.flowerpro":
+            case "Smartpro":
+                SmartLauncherPro(context);
+                break;
+            case "home.solo.launcher.free":
+            case "Solo":
+                SoloLauncher(context);
+                break;
+            case "com.tsf.shell":
+            case "Tsf":
+                TsfLauncher(context);
+                break;
+            case "sg.ruqqq.IconThemer":
+            case "Uniconpro":
+                Unicon(context);
+                break;
+            default:
+                Timber.d("No method for package or launcher: ", key);
+                throw new IllegalArgumentException("Couldn't find method for launcher or package: " + key);
         }
     }
 

@@ -137,18 +137,6 @@ public abstract class TasksActivity extends DrawerActivity {
         this.jsonTask = jsonTask;
     }
 
-    public void executeWallpapersTaskAgain(Fragment fragment) {
-        if (drawerHas(DrawerItem.WALLPAPERS)) {
-            if (this.jsonTask != null) {
-                this.jsonTask.cancel(true);
-            } else {
-                this.jsonTask = new DownloadJSON(this);
-            }
-            this.jsonTask.setFragment(fragment);
-            this.jsonTask.execute();
-        }
-    }
-
     //    @Subscribe
     //    public void onAppsLoaded(AppLoadedEvent event) {
     //        IconRequest.get().loadHighResIcons(); //Takes too much memory

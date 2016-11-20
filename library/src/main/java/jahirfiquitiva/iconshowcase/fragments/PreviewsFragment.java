@@ -130,15 +130,6 @@ public class PreviewsFragment extends EventBaseFragment {
         return new CFabEvent();
     }
 
-    public void setupContent(){
-        /*
-        if(getView()!=null) {
-            getView().getRootView()..removeAllViews();
-
-        }
-        */
-    }
-
     private String tabName(int i) {
         if (mCategories == null) throw new RuntimeException("mCategories not loaded yet");
         return mCategories.get(i).getCategoryName();

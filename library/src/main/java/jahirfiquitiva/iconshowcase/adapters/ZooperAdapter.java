@@ -48,6 +48,7 @@ import jahirfiquitiva.iconshowcase.models.ZooperWidget;
 import jahirfiquitiva.iconshowcase.tasks.CopyFilesToStorage;
 import jahirfiquitiva.iconshowcase.tasks.LoadZooperWidgets;
 import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
+import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
@@ -58,37 +59,31 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private final Drawable[] icons = new Drawable[2];
     private final Context context;
     private final Drawable wallpaper;
-    private final boolean everythingInstalled;
     private final View layout;
+    private final boolean everythingInstalled;
     private ArrayList<ZooperWidget> widgets;
-    private int extraCards = 0;
     private ZooperFragment mFragment;
+    private Preferences mPrefs;
+    private int extraCards = 0;
 
     public ZooperAdapter(Context context, View layout,
                          Drawable wallpaper, boolean appsInstalled, ZooperFragment mFragment) {
         this.context = context;
-
+        this.mPrefs = new Preferences(context);
         this.layout = layout;
-
         this.widgets = LoadZooperWidgets.widgets;
         this.wallpaper = wallpaper;
-
         this.everythingInstalled = (appsInstalled && areAssetsInstalled());
         this.extraCards = this.everythingInstalled ? 0 : 2;
-
         final int light = ContextCompat.getColor(context, R.color.drawable_tint_dark);
         final int dark = ContextCompat.getColor(context, R.color.drawable_tint_light);
-
         this.icons[0] = ColorUtils.getTintedIcon(
                 context, R.drawable.ic_store_download,
                 ThemeUtils.darkTheme ? light : dark);
-
         this.icons[1] = ColorUtils.getTintedIcon(
                 context, R.drawable.ic_assets,
                 ThemeUtils.darkTheme ? light : dark);
-
         this.mFragment = mFragment;
-
     }
 
     public void setWidgets(ArrayList<ZooperWidget> widgets) {
@@ -140,19 +135,37 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     ZooperWidget widget = widgets.get(position - 2);
                     ZooperHolder zooperHolder = (ZooperHolder) holder;
                     zooperHolder.background.setImageDrawable(wallpaper);
-                    Glide.with(context)
-                            .load(new File(widget.getPreviewPath()))
-                            .into(zooperHolder.widget);
+                    if (mPrefs != null && mPrefs.getAnimationsEnabled()) {
+                        Glide.with(context)
+                                .load(new File(widget.getPreviewPath()))
+                                .priority(Priority.IMMEDIATE)
+                                .into(zooperHolder.widget);
+                    } else {
+                        Glide.with(context)
+                                .load(new File(widget.getPreviewPath()))
+                                .priority(Priority.IMMEDIATE)
+                                .dontAnimate()
+                                .into(zooperHolder.widget);
+                    }
                     break;
             }
         } else {
             ZooperWidget widget = widgets.get(position);
             ZooperHolder zooperHolder = (ZooperHolder) holder;
             zooperHolder.background.setImageDrawable(wallpaper);
-            Glide.with(context)
-                    .load(new File(widget.getPreviewPath()))
-                    .priority(Priority.IMMEDIATE)
-                    .into(zooperHolder.widget);
+            if (mPrefs != null && mPrefs.getAnimationsEnabled()) {
+                Glide.with(context)
+                        .load(new File(widget.getPreviewPath()))
+                        .priority(Priority.IMMEDIATE)
+                        .into(zooperHolder.widget);
+            } else {
+                Glide.with(context)
+                        .load(new File(widget.getPreviewPath()))
+                        .priority(Priority.IMMEDIATE)
+                        .dontAnimate()
+                        .into(zooperHolder.widget);
+            }
+
         }
 
     }
