@@ -104,7 +104,6 @@ Thanks to her, IconShowcase is completely free and open-source.
 - [James Fenn](https://plus.google.com/+JamesFennJAFFA2157/posts)
 - [Aidan Follestad](http://www.aidanfollestad.com/)
 - [Mike Penz](http://portfolio.mikepenz.com/)
-- [Dani Mahardika](https://plus.google.com/+DaniMahardhika/posts)
 
 ### UI Design Collaborators
 - [Patryk Goworowski](https://plus.google.com/109304801957014561872/posts)

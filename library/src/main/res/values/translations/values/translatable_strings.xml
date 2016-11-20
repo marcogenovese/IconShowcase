@@ -32,7 +32,6 @@
     <string name="section_icon_request">Icon request</string>
     <string name="section_donate">Donate</string>
     <string name="section_about">About the app</string>
-    <string name="section_kustom">Kustom</string>
 
     <!-- Wallpapers Activity -->
     <string name="title_activity_detailed_wallpaper">Wallpaper viewer</string>

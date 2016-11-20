@@ -19,6 +19,7 @@
 
 package jahirfiquitiva.iconshowcase.activities;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.WallpaperManager;
 import android.content.DialogInterface;
@@ -118,7 +119,9 @@ public class ShowcaseActivity extends TasksActivity {
         super.onCreate(savedInstanceState);
 
         String installer = getIntent().getStringExtra("installer");
-        boolean openWallpapers = getIntent().getBooleanExtra("open_wallpapers", false);
+        String shortcut = getIntent().getStringExtra("shortcut");
+        boolean openWallpapers = getIntent().getBooleanExtra("open_wallpapers", false) ||
+                (shortcut != null && shortcut.equals("wallpapers_shortcut"));
 
         curVersionCode = getIntent().getIntExtra("curVersionCode", -1);
 
@@ -223,6 +226,10 @@ public class ShowcaseActivity extends TasksActivity {
                 drawerItemSelectAndClick(mDrawerMap.get(DrawerItem.PREVIEWS));
             } else if (wallsPicker && mPrefs.areFeaturesEnabled() && mDrawerMap.containsKey(DrawerItem.WALLPAPERS)) {
                 drawerItemSelectAndClick(mDrawerMap.get(DrawerItem.WALLPAPERS));
+            } else if ((shortcut != null && shortcut.equals("apply_shortcut")) && mDrawerMap.containsKey(DrawerItem.APPLY)) {
+                drawerItemSelectAndClick(mDrawerMap.get(DrawerItem.APPLY));
+            } else if ((shortcut != null && shortcut.equals("request_shortcut")) && mDrawerMap.containsKey(DrawerItem.REQUESTS)) {
+                drawerItemSelectAndClick(mDrawerMap.get(DrawerItem.REQUESTS));
             } else {
                 if (mPrefs.getSettingsModified()) { //TODO remove this from preferences; this can be sent via bundle itself
                     //TODO check this
@@ -438,14 +445,23 @@ public class ShowcaseActivity extends TasksActivity {
         return true;
     }
 
+    @SuppressLint("MissingSuperCall")
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == PermissionUtils.PERMISSION_REQUEST_CODE) {
+            if (permissionGranted(grantResults) && PermissionUtils.permissionReceived() != null) {
+                Timber.d("Permission granted");
+                //PermissionUtils.permissionReceived().onStoragePermissionGranted();
+            }
+        }
+        /*
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == PermissionUtils.PERMISSION_REQUEST_CODE) {
             if (permissionGranted(grantResults) && PermissionUtils.permissionReceived() != null) {
                 PermissionUtils.permissionReceived().onStoragePermissionGranted();
             }
         }
+        */
     }
 
     private boolean permissionGranted(int[] results) {
@@ -908,10 +924,6 @@ public class ShowcaseActivity extends TasksActivity {
 
     public Drawable getWallpaperDrawable() {
         return wallpaperDrawable;
-    }
-
-    public interface WallsListInterface {
-        void checkWallsListCreation(boolean result);
     }
 
 }

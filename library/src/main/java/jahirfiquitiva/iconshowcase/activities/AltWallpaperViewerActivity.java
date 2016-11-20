@@ -623,7 +623,6 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
                                                             if (dialogApply != null) {
                                                                 dialogApply.dismiss();
                                                             }
-
                                                             dialogApply = new MaterialDialog.Builder(context)
                                                                     .content(R.string.set_as_wall_done)
                                                                     .positiveText(android.R.string.ok)

@@ -102,6 +102,7 @@ public abstract class TasksActivity extends DrawerActivity {
             //mPrefs.resetRequestsLeft(this);
             IconRequest.start(this)
                     //                        .withHeader("Hey, testing Icon Request!")
+                    .withAppName(getString(R.string.app_name))
                     .withFooter("%s Version: %s", getString(R.string.app_name), BuildConfig.VERSION_NAME)
                     .withSubject(s(R.string.request_title))
                     .toEmail(s(R.string.email_id))

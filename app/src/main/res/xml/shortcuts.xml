@@ -23,38 +23,10 @@
 
     <!-- /*/*/*/*/*/  ONLY REPLACE "jahirfiquitiva.apps.iconshowcase.sampleip" with your app's package name  /*/*/*/*/*/ -->
 
-    <shortcut
-            android:icon="@drawable/ic_apply"
-            android:enabled="true"
-            android:shortcutId="static_apply_shortcut"
-            android:shortcutShortLabel="@string/section_apply"
-            android:shortcutLongLabel="@string/section_apply"
-            tools:targetApi="n_mr1">
-        <intent
-                android:targetPackage="jahirfiquitiva.apps.iconshowcase.sampleip"
-                android:action="android.intent.action.VIEW"
-                android:targetClass="jahirfiquitiva.apps.iconshowcase.sampleip.HomeActivity"
-                android:data="@string/apply_shortcut"/>
-        <categories android:name="android.shortcut.conversation"/>
-    </shortcut>
+    <!-- /*/*/*/*/*/ YOU CAN REMOVE SHORTCUTS, BUT YOU CAN NOT ADD NEW ONES, BECAUSE APP WON'T BE HANDLING THEM /*/*/*/*/ -->
 
     <shortcut
-            android:icon="@drawable/ic_wallpapers"
-            android:enabled="true"
-            android:shortcutId="static_wallpapers_shortcut"
-            android:shortcutShortLabel="@string/section_wallpapers"
-            android:shortcutLongLabel="@string/section_wallpapers"
-            tools:targetApi="n_mr1">
-        <intent
-                android:targetPackage="jahirfiquitiva.apps.iconshowcase.sampleip"
-                android:action="android.intent.action.VIEW"
-                android:targetClass="jahirfiquitiva.apps.iconshowcase.sampleip.HomeActivity"
-                android:data="@string/wallpapers_shortcut"/>
-        <categories android:name="android.shortcut.conversation"/>
-    </shortcut>
-
-    <shortcut
-            android:icon="@drawable/ic_request"
+            android:icon="@drawable/requests_shortcut"
             android:enabled="true"
             android:shortcutId="static_request_shortcut"
             android:shortcutShortLabel="@string/section_icon_request"
@@ -64,7 +36,37 @@
                 android:targetPackage="jahirfiquitiva.apps.iconshowcase.sampleip"
                 android:action="android.intent.action.VIEW"
                 android:targetClass="jahirfiquitiva.apps.iconshowcase.sampleip.HomeActivity"
-                android:data="@string/request_shortcut"/>
+                android:data="request_shortcut"/>
+        <categories android:name="android.shortcut.conversation"/>
+    </shortcut>
+
+    <shortcut
+            android:icon="@drawable/wallpapers_shortcut"
+            android:enabled="true"
+            android:shortcutId="static_wallpapers_shortcut"
+            android:shortcutShortLabel="@string/section_wallpapers"
+            android:shortcutLongLabel="@string/section_wallpapers"
+            tools:targetApi="n_mr1">
+        <intent
+                android:targetPackage="jahirfiquitiva.apps.iconshowcase.sampleip"
+                android:action="android.intent.action.VIEW"
+                android:targetClass="jahirfiquitiva.apps.iconshowcase.sampleip.HomeActivity"
+                android:data="wallpapers_shortcut"/>
+        <categories android:name="android.shortcut.conversation"/>
+    </shortcut>
+
+    <shortcut
+            android:icon="@drawable/apply_shortcut"
+            android:enabled="true"
+            android:shortcutId="static_apply_shortcut"
+            android:shortcutShortLabel="@string/section_apply"
+            android:shortcutLongLabel="@string/section_apply"
+            tools:targetApi="n_mr1">
+        <intent
+                android:targetPackage="jahirfiquitiva.apps.iconshowcase.sampleip"
+                android:action="android.intent.action.VIEW"
+                android:targetClass="jahirfiquitiva.apps.iconshowcase.sampleip.HomeActivity"
+                android:data="apply_shortcut"/>
         <categories android:name="android.shortcut.conversation"/>
     </shortcut>
 
