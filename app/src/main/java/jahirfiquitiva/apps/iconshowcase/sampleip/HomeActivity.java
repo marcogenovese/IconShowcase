@@ -24,7 +24,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
 
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import timber.log.Timber;
@@ -50,11 +49,6 @@ public class HomeActivity extends AppCompatActivity {
 
         if (getIntent().getStringExtra("open_link") != null) {
             Utils.openLink(this, getIntent().getStringExtra("open_link"));
-        }else if (getIntent().getData() != null) {
-            // handle the URI with the data. You may have different logic than just
-            // getting the last path segment
-            String data = getIntent().getData().getLastPathSegment();
-            Toast.makeText(this, "Clicked: " + data, Toast.LENGTH_SHORT).show();
         } else {
             Intent intent = new Intent(HomeActivity.this, jahirfiquitiva.iconshowcase.activities.ShowcaseActivity.class);
 
@@ -77,6 +71,10 @@ public class HomeActivity extends AppCompatActivity {
             intent.putExtra("enableAmazonInstalls", ENABLE_AMAZON_INSTALLS);
 
             intent.putExtra("googlePubKey", GOOGLE_PUBLISHER_KEY);
+
+            if (getIntent().getDataString() != null && getIntent().getDataString().contains("_shortcut")) {
+                intent.putExtra("shortcut", getIntent().getDataString());
+            }
 
             startActivity(intent);
         }

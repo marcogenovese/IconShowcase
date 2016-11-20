@@ -28,6 +28,7 @@
     <string name="dashboard_name">IconShowcase</string>
     <string name="dashboard_github">https://github.com/jahirfiquitiva/IconShowcase-Dashboard</string>
     <string name="app_version">v %1$s</string>
+    <string name="section_kustom">Kustom</string>
 
     <string name="allan_photo" formatted="false" tools:ignore="TypographyDashes">https://raw.githubusercontent.com/AllanWang/Pitched-Wallpapers/master/Material_Glass_Storage/pitchedapps.jpg</string>
     <string name="allan_banner" formatted="false" tools:ignore="TypographyDashes">https://raw.githubusercontent.com/AllanWang/Pitched-Wallpapers/master/Material_Glass_Storage/banner.jpg</string>
@@ -232,9 +233,5 @@
         <item>@string/translators</item>
         <item>@string/implemented_libraries</item>
     </string-array>
-
-    <string name="apply_shortcut">apply_shortcut</string>
-    <string name="wallpapers_shortcut">wallpapers_shortcut</string>
-    <string name="request_shortcut">request_shortcut</string>
 
 </resources>

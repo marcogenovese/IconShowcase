@@ -27,6 +27,7 @@ import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
 import android.widget.LinearLayout;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
@@ -37,12 +38,13 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 
+import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.events.WallpaperEvent;
 import timber.log.Timber;
 
 public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
 
-    //    private WeakReference<Context> wrContext;
     private String url;
     private boolean isPicker;
     private WeakReference<Activity> wrActivity;
@@ -51,15 +53,14 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
     private ApplyCallback callback;
     private DownloadCallback downloadCallback;
     private Bitmap resource;
+    private MaterialDialog dialog;
 
-//    public ApplyWallpaper(Context context, MaterialDialog dialog, Bitmap resource, boolean isPicker,
-//                          View layout) {
-//        this.wrContext = new WeakReference<>(context);
-////        this.dialog = dialog;
-////        this.resource = resource;
-//        this.isPicker = isPicker;
-//        this.layout = layout;
-//    }
+    public ApplyWallpaper(Activity activity, MaterialDialog dialog, Bitmap resource, boolean isPicker) {
+        this.wrActivity = new WeakReference<>(activity);
+        this.dialog = dialog;
+        this.resource = resource;
+        this.isPicker = isPicker;
+    }
 
     public ApplyWallpaper(Activity activity, @NonNull String url, ApplyCallback callback) {
         this.wrActivity = new WeakReference<>(activity);
@@ -102,8 +103,9 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
 
     @Override
     protected Boolean doInBackground(Void... params) {
-
-        if (resource != null) {
+        if (dialog != null) {
+            applyWallpaper(resource);
+        } else if (resource != null) {
             EventBus.getDefault().post(new WallpaperEvent(url, true, WallpaperEvent.Step.APPLYING));
             applyWallpaper(resource);
         } else if (url != null) {
@@ -178,6 +180,21 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
 
     @Override
     protected void onPostExecute(Boolean worked) {
+        if (worked) {
+            if (dialog != null) {
+                dialog.dismiss();
+            }
+            dialog = new MaterialDialog.Builder(wrActivity.get())
+                    .content(R.string.set_as_wall_done)
+                    .positiveText(android.R.string.ok)
+                    .show();
+            if (isPicker) {
+                wrActivity.get().finish();
+            } else {
+                if (wrActivity.get() instanceof ShowcaseActivity)
+                    ((ShowcaseActivity) wrActivity.get()).setupToolbarHeader();
+            }
+        }
 //        if (!isCancelled()) {
 //            if (worked) {
 //                dialog.dismiss();

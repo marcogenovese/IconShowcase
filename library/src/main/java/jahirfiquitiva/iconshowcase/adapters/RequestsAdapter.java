@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Priority;
 import com.pitchedapps.butler.library.icon.request.App;
 import com.pitchedapps.butler.library.icon.request.IconRequest;
 
@@ -67,7 +68,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
         this.holder = holder;
 
         final App app = getApps().get(position);
-        app.loadIcon(holder.imgIcon);
+        app.loadIcon(holder.imgIcon, Priority.IMMEDIATE);
 
         holder.txtName.setText(app.getName());
         final IconRequest ir = IconRequest.get();
