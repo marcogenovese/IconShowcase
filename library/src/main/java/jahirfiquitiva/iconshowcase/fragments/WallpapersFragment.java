@@ -22,6 +22,7 @@ package jahirfiquitiva.iconshowcase.fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -34,6 +35,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.pitchedapps.capsule.library.event.CFabEvent;
+import com.pitchedapps.capsule.library.event.SnackbarEvent;
 import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 
 import jahirfiquitiva.iconshowcase.R;
@@ -196,9 +199,8 @@ public class WallpapersFragment extends EventBaseFragment {
         } else {
             stringId = R.string.no_conn_title;
         }
-        Snackbar snackbar = snackbarCustom(getString(stringId), Snackbar.LENGTH_SHORT);
-        snackbar.getView().setBackgroundColor(ThemeUtils.darkOrLight(context, R.color.snackbar_dark, R.color.snackbar_light));
-        snackbar.show();
+        snackbar(new SnackbarEvent(stringId).setDuration(Snackbar.LENGTH_SHORT)
+                .setColor(ThemeUtils.darkOrLight(context, R.color.snackbar_dark, R.color.snackbar_light)));
         mSwipeRefreshLayout.setEnabled(true);
         mSwipeRefreshLayout.post(new Runnable() {
             @Override
@@ -213,27 +215,14 @@ public class WallpapersFragment extends EventBaseFragment {
         return OnLoadEvent.Type.WALLPAPERS;
     }
 
-
-    @Override
-    public void onFabClick(View v) {
-    }
-
     @Override
     public int getTitleId() {
         return DrawerActivity.DrawerItem.WALLPAPERS.getTitleID();
     }
 
+    @Nullable
     @Override
-    protected int getFabIcon() {
-        return 0;
-    }
-
-    /**
-     * Will hide the fab if false; the fab is still in the viewgroup and is used for various other
-     * tasks such as the snackbar
-     */
-    @Override
-    protected boolean hasFab() {
-        return false;
+    protected CFabEvent updateFab() {
+        return new CFabEvent();
     }
 }

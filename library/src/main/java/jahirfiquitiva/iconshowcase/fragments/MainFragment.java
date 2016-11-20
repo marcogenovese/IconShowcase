@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayout;
@@ -31,6 +32,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.pitchedapps.capsule.library.event.CFabEvent;
 
 import java.util.ArrayList;
 
@@ -124,26 +127,22 @@ public class MainFragment extends EventBaseFragment {
     }
 
     @Override
-    public void onFabClick(View v) {
-        Intent rate = new Intent(Intent.ACTION_VIEW,
-                Uri.parse("https://play.google.com/store/apps/details?id=" +
-                        context.getPackageName()));
-        context.startActivity(rate);
-    }
-
-    @Override
     public int getTitleId() {
         return DrawerActivity.DrawerItem.HOME.getTitleID();
     }
 
+    @Nullable
     @Override
-    protected int getFabIcon() {
-        return R.drawable.ic_rate;
-    }
-
-    @Override
-    protected boolean hasFab() {
-        return true;
+    protected CFabEvent updateFab() {
+        return new CFabEvent(R.drawable.ic_rate, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent rate = new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("https://play.google.com/store/apps/details?id=" +
+                                context.getPackageName()));
+                context.startActivity(rate);
+            }
+        });
     }
 
     private void setupAndAnimateIcons(int delay) {
