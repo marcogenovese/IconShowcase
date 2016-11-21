@@ -4,7 +4,7 @@
 	<img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/icon.png" width="144">
 </p>
 
-<h4 align="center">Full-of-features, easy-to-customize, free and open source, Material Design based dashboard for icon packs.</h4>
+<h4 align="center">Full-of-features, easy-to-customize, free and open source, Material Design dashboard for icon packs.</h4>
 
 <p align="center">
 	<a target="_blank" href="https://jitpack.io/#jahirfiquitiva/IconShowcase/"><img src="https://img.shields.io/badge/JitPack-1.9.6.1-00C853.svg"></a>
@@ -49,7 +49,7 @@ Everything you need to know can be found in the [Wiki site](https://github.com/j
 - Want more reasons? Check the features below.
 
 # Features:
-- Material Design inspired/based dashboard.
+- Material Design dashboard.
 - License Checker.
 - Changelog shown with every update.
 - Previews section, where user can see and search for themed icons which organized by categories.
