@@ -65,8 +65,6 @@ Everything you need to know can be found in the [Wiki site](https://github.com/j
 - Zooper and Kustom (widgets, wallpapers and komponents) support.
 - Credits section.
 - Settings section with these options:
-	[//]: # (-Option to change app theme (Light, Dark, Auto).)
-	[//]: # (- Option to color navigation bar (Lollipop+).)
 	- Option to clear app cache.
 	- Option to enable notifications (for new wallpapers and general news).
 	- Option to change where to download wallpapers.
@@ -79,6 +77,10 @@ Everything you need to know can be found in the [Wiki site](https://github.com/j
 - Dashboard texts are translated to more than 10 languages, and more will come with time.
 - Works with Android 4.1 and newer.
 
+<!--
+[comment]: <> (-Option to change app theme (Light, Dark, Auto).)
+[comment]: <> (-Option to color navigation bar (Lollipop+).)
+-->
 
 # Help translating
 
