@@ -42,8 +42,9 @@ import jahirfiquitiva.iconshowcase.activities.AltWallpaperViewerActivity;
 import jahirfiquitiva.iconshowcase.events.BlankEvent;
 import jahirfiquitiva.iconshowcase.fragments.WallpapersFragment;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
-import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
-import jahirfiquitiva.iconshowcase.utilities.Utils;
+import jahirfiquitiva.iconshowcase.utilities.utils.RequestUtils;
+import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
+import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 
 /**
@@ -272,18 +273,18 @@ public final class ISDialogs {
 
     public static void showRequestTimeLimitDialog(Context context, int minutes) {
         String minutesText =
-                new DecimalFormat("##.##").format(Utils.getExactMinutes(minutes, false)) +
-                        " " + Utils.getTimeName(context, minutes);
+                new DecimalFormat("##.##").format(RequestUtils.getExactMinutes(minutes, false)) +
+                        " " + RequestUtils.getTimeName(context, minutes);
 
-        int secs = Utils.getSecondsLeftToEnableRequest(context, minutes, new Preferences(context));
+        int secs = RequestUtils.getSecondsLeftToEnableRequest(context, minutes, new Preferences(context));
 
         String content = context.getResources().getString(R.string.apps_limit_dialog_day, minutesText);
 
         String contentExtra;
 
         if (secs > 60) {
-            String leftText = new DecimalFormat("##.##").format(Utils.getExactMinutes(minutes, true)) +
-                    " " + Utils.getTimeNameInSeconds(context, secs);
+            String leftText = new DecimalFormat("##.##").format(RequestUtils.getExactMinutes(minutes, true)) +
+                    " " + RequestUtils.getTimeNameInSeconds(context, secs);
             contentExtra = context.getResources().getString(
                     R.string.apps_limit_dialog_day_extra, leftText);
         } else {
@@ -466,20 +467,6 @@ public final class ISDialogs {
                     public void onSelection(MaterialDialog materialDialog, View view,
                                             final int i, CharSequence charSequence) {
                         Utils.openLinkInChromeCustomTab(context, contributorsLinks[i]);
-                    }
-                }).show();
-    }
-
-    public static void showDesignerLinksDialog(final Context context, final String[] designerLinks) {
-        new MaterialDialog.Builder(context)
-                .title(R.string.more)
-                .negativeText(R.string.close)
-                .items(R.array.iconpack_author_sites)
-                .itemsCallback(new MaterialDialog.ListCallback() {
-                    @Override
-                    public void onSelection(MaterialDialog materialDialog, View view,
-                                            final int i, CharSequence charSequence) {
-                        Utils.openLinkInChromeCustomTab(context, designerLinks[i]);
                     }
                 }).show();
     }

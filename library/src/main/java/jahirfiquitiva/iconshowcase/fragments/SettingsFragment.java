@@ -47,10 +47,10 @@ import jahirfiquitiva.iconshowcase.config.Config;
 import jahirfiquitiva.iconshowcase.dialogs.FolderSelectorDialog;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.fragments.base.PreferenceFragment;
-import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
+import jahirfiquitiva.iconshowcase.utilities.utils.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
-import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
-import jahirfiquitiva.iconshowcase.utilities.Utils;
+import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
+import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 
 public class SettingsFragment extends PreferenceFragment implements
@@ -403,42 +403,6 @@ public class SettingsFragment extends PreferenceFragment implements
             return result;
         }
         return 0;
-    }
-
-    private void changeNotifsUpdate(Context context) {
-
-        String num;
-
-        switch (mPrefs.getNotifsUpdateInterval()) {
-            case 1:
-                num = "1 " + context.getResources().getString(R.string.hours);
-                break;
-            case 2:
-                num = "6 " + context.getResources().getString(R.string.hours);
-                break;
-            case 3:
-                num = "12 " + context.getResources().getString(R.string.hours);
-                break;
-            case 4:
-                num = "1 " + context.getResources().getString(R.string.days);
-                break;
-            case 5:
-                num = "2 " + context.getResources().getString(R.string.days);
-                break;
-            case 6:
-                num = "4 " + context.getResources().getString(R.string.days);
-                break;
-            case 7:
-                num = "7 " + context.getResources().getString(R.string.days);
-                break;
-            default:
-                num = "1 " + context.getResources().getString(R.string.days);
-                break;
-        }
-
-        String part1 = context.getResources().getString(R.string.pref_summary_notifs_interval);
-        String part2 = "\n" + context.getResources().getString(R.string.pref_summary_notifs_interval_more, num.toLowerCase());
-        notifsUpdateInterval.setSummary(part1 + part2);
     }
 
     public void showFolderChooserDialog() {

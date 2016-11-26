@@ -53,7 +53,8 @@ import java.util.zip.ZipOutputStream;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.models.RequestItem;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
-import jahirfiquitiva.iconshowcase.utilities.Utils;
+import jahirfiquitiva.iconshowcase.utilities.utils.RequestUtils;
+import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 import timber.log.Timber;
 
 @SuppressWarnings("StringConcatenationInsideStringBufferAppend")
@@ -270,7 +271,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
                     }
                     activity.startActivityForResult(Intent.createChooser(sendIntent, "Send mail..."), 2);
                     Calendar c = Calendar.getInstance();
-                    Utils.saveCurrentTimeOfRequest(mPrefs, c);
+                    RequestUtils.saveCurrentTimeOfRequest(mPrefs, c);
                 } catch (ActivityNotFoundException e) {
                     //Do nothing
                 }

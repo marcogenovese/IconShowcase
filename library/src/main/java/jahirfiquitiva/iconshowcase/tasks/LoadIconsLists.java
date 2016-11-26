@@ -37,7 +37,7 @@ import jahirfiquitiva.iconshowcase.fragments.MainFragment;
 import jahirfiquitiva.iconshowcase.holders.FullListHolder;
 import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.models.IconsCategory;
-import jahirfiquitiva.iconshowcase.utilities.Utils;
+import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 import timber.log.Timber;
 
 public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
@@ -152,6 +152,7 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
         noDuplicates.addAll(list);
         list.clear();
         list.addAll(noDuplicates);
+        Collections.sort(list);
         ArrayList<IconItem> nIcons = new ArrayList<>();
         for (String iconName : list) {
             int iconResId = Utils.getIconResId(r, p, iconName);

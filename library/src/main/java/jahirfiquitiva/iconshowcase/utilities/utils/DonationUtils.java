@@ -17,7 +17,7 @@
  * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
-package jahirfiquitiva.iconshowcase.utilities;
+package jahirfiquitiva.iconshowcase.utilities.utils;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
@@ -33,7 +33,7 @@ import timber.log.Timber;
 /**
  * Created by Allan Wang on 2016-08-20.
  */
-public class DonationUtil {
+public class DonationUtils {
 
     public static void hasPurchase(final Context context, @Nullable String pubKey, final OnPremiumListener listener) {
         if (pubKey == null || pubKey.isEmpty() || !Config.get(context).hasGoogleDonations()) {

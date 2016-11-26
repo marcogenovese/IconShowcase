@@ -39,7 +39,7 @@ import java.lang.ref.WeakReference;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.activities.base.DrawerActivity;
-import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
+import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
 
 public class CopyFilesToStorage extends AsyncTask<Void, String, Boolean> {
 

@@ -21,7 +21,8 @@ import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.config.Config;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
-import jahirfiquitiva.iconshowcase.utilities.Utils;
+import jahirfiquitiva.iconshowcase.utilities.utils.RequestUtils;
+import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 
 public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.RequestsHolder> {
 
@@ -82,7 +83,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
 
         final IconRequest ir = IconRequest.get();
 
-        int limit = Utils.canRequestXApps(context,
+        int limit = RequestUtils.canRequestXApps(context,
                 context.getResources().getInteger(R.integer.limit_request_to_x_minutes),
                 mPrefs);
 
@@ -162,7 +163,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
                             checkBox.setChecked(ir.isAppSelected(app));
                         } else {
                             if (Config.get().integer(R.integer.max_apps_to_request) > -1) {
-                                if (Utils.canRequestXApps(view.getContext(),
+                                if (RequestUtils.canRequestXApps(view.getContext(),
                                         Config.get().integer(R.integer.limit_request_to_x_minutes),
                                         mPrefs) == -2) {
                                     ISDialogs.showRequestTimeLimitDialog(view.getContext(),

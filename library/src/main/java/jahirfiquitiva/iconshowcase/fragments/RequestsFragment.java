@@ -53,9 +53,10 @@ import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.activities.base.DrawerActivity;
 import jahirfiquitiva.iconshowcase.adapters.RequestsAdapter;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
-import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
+import jahirfiquitiva.iconshowcase.utilities.utils.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
-import jahirfiquitiva.iconshowcase.utilities.Utils;
+import jahirfiquitiva.iconshowcase.utilities.utils.RequestUtils;
+import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 import timber.log.Timber;
 
@@ -194,7 +195,7 @@ public class RequestsFragment extends CapsuleFragment {
                 if (mAdapter.getSelectedApps() != null) {
                     if (mAdapter.getSelectedApps().size() < mPrefs.getRequestsLeft()) {
                         showRequestsFilesCreationDialog(getActivity(), mPrefs);
-                    } else if ((Utils.canRequestXApps(getActivity(), minutesLimit, mPrefs) != -2)
+                    } else if ((RequestUtils.canRequestXApps(getActivity(), minutesLimit, mPrefs) != -2)
                             || (minutesLimit <= 0)) {
                         showRequestsFilesCreationDialog(getActivity(), mPrefs);
                     } else {
@@ -227,7 +228,7 @@ public class RequestsFragment extends CapsuleFragment {
                         if (mAdapter.getSelectedApps().size() <= mPrefs.getRequestsLeft()) {
                             dialog.show();
                             Calendar c = Calendar.getInstance();
-                            Utils.saveCurrentTimeOfRequest(mPrefs, c);
+                            RequestUtils.saveCurrentTimeOfRequest(mPrefs, c);
                             IconRequest.get().send(new IconRequest.RequestReadyCallback() {
                                 @Override
                                 public void onRequestReady() {
@@ -240,7 +241,7 @@ public class RequestsFragment extends CapsuleFragment {
                     } else {
                         dialog.show();
                         Calendar c = Calendar.getInstance();
-                        Utils.saveCurrentTimeOfRequest(mPrefs, c);
+                        RequestUtils.saveCurrentTimeOfRequest(mPrefs, c);
                         IconRequest.get().send(new IconRequest.RequestReadyCallback() {
                             @Override
                             public void onRequestReady() {

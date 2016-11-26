@@ -30,7 +30,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import jahirfiquitiva.iconshowcase.R;
-import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
+import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
 
 @SuppressWarnings("SameParameterValue")
 public class DividerItemDecoration extends RecyclerView.ItemDecoration {

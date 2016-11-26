@@ -29,14 +29,24 @@ import android.content.Intent;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
+import jahirfiquitiva.iconshowcase.BuildConfig;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.LauncherIconRestorerActivity;
-import jahirfiquitiva.iconshowcase.utilities.Utils;
+import jahirfiquitiva.iconshowcase.config.Config;
+import jahirfiquitiva.iconshowcase.logging.CrashReportingTree;
+import timber.log.Timber;
 
 public class IconRestorerWidget extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+        Config.init(context);
+        if (BuildConfig.DEBUG || Config.get().allowDebugging()) {
+            Timber.plant(new Timber.DebugTree());
+        } else {
+            //Disable debug & verbose logging on release
+            Timber.plant(new CrashReportingTree());
+        }
         for (int appWidgetId : appWidgetIds) {
             try {
                 Intent intent = new Intent("android.intent.action.MAIN");
@@ -56,7 +66,7 @@ public class IconRestorerWidget extends AppWidgetProvider {
                 appWidgetManager.updateAppWidget(appWidgetId, views);
 
             } catch (ActivityNotFoundException e) {
-                Utils.showLog(context, "App not found!");
+                Timber.d("App not found!");
                 String errorToastContent = context.getResources().getString(R.string.launcher_icon_restorer_error,
                         context.getResources().getString(R.string.app_name));
                 Toast.makeText(context,

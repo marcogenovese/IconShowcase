@@ -17,12 +17,9 @@
  * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
-package jahirfiquitiva.iconshowcase.utilities;
+package jahirfiquitiva.iconshowcase.utilities.utils;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -35,7 +32,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -50,11 +46,9 @@ import android.support.customtabs.CustomTabsSession;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.graphics.drawable.VectorDrawableCompat;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 
 import java.io.File;
@@ -63,14 +57,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Map;
 
 import jahirfiquitiva.iconshowcase.R;
-import timber.log.Timber;
 
 /**
  * With a little help from Aidan Follestad (afollestad)
@@ -164,23 +152,6 @@ public class Utils {
             customTabsIntent.launchUrl((Activity) context, Uri.parse(link));
         } catch (Exception ex) {
             openLink(context, link);
-        }
-    }
-
-    public static void showLog(Context context, String s) {
-        if (context != null) {
-            if (context.getResources().getBoolean(R.bool.debugging)) {
-                String tag = "IconShowcase + " + context.getResources().getString(R.string.app_name);
-                Log.d(tag, s);
-            }
-        }
-    }
-
-    public static void showLog(Context context, boolean muzei, String s) {
-        if (context != null) {
-            if (context.getResources().getBoolean(R.bool.debugging) && muzei) {
-                Log.d(context.getResources().getString(R.string.app_name) + " Muzei", s);
-            }
         }
     }
 
@@ -299,14 +270,6 @@ public class Utils {
         return Bitmap.createBitmap(newBitmap, minX, minY, (maxX - minX) + 1, (maxY - minY) + 1);
     }
 
-    public static int convertMinutesToMillis(int minute) {
-        return minute * 60 * 1000;
-    }
-
-    public static int convertMillisToMinutes(int millis) {
-        return millis / 60 / 1000;
-    }
-
     public static int getIconResId(Resources r, String p, String name) {
         int res = r.getIdentifier(name, "drawable", p);
         if (res != 0) {
@@ -314,259 +277,6 @@ public class Utils {
         } else {
             return 0;
         }
-    }
-
-    @SuppressLint("DefaultLocale")
-    public static int canRequestXApps(Context context, int numOfMinutes, Preferences mPrefs) {
-
-        Calendar c = Calendar.getInstance();
-
-        int requestsLeft = mPrefs.getRequestsLeft(context);
-
-        if (requestsLeft >= -1) {
-            return requestsLeft;
-        } else {
-            boolean hasHappenedTheTime = timeHappened(numOfMinutes, mPrefs, c);
-            if (!hasHappenedTheTime) {
-                return -2;
-            } else {
-                mPrefs.resetRequestsLeft(context);
-                return mPrefs.getRequestsLeft(context);
-            }
-        }
-
-    }
-
-    @SuppressLint("DefaultLocale")
-    public static void saveCurrentTimeOfRequest(Preferences mPrefs, Calendar c) {
-        String time = String.format("%02d", c.get(Calendar.HOUR_OF_DAY)) + ":" +
-                String.format("%02d", c.get(Calendar.MINUTE));
-        String day = String.format("%02d", c.get(Calendar.DAY_OF_YEAR));
-        mPrefs.setRequestHour(time);
-        mPrefs.setRequestDay(Integer.valueOf(day));
-        mPrefs.setRequestsCreated(true);
-    }
-
-    @SuppressLint("DefaultLocale")
-    private static boolean timeHappened(int numOfMinutes, Preferences mPrefs, Calendar c) {
-        float hours = (numOfMinutes + 1) / 60.0f;
-        float hoursToDays = hours / 24.0f;
-
-        String time = mPrefs.getRequestHour();
-        int dayNum = mPrefs.getRequestDay();
-
-        if (numOfMinutes <= 0) {
-            return true;
-        } else {
-            if (!(time.equals("null"))) {
-
-                String currentTime = String.format("%02d", c.get(Calendar.HOUR_OF_DAY)) + ":" +
-                        String.format("%02d", c.get(Calendar.MINUTE));
-                String currentDay = String.format("%02d", c.get(Calendar.DAY_OF_YEAR));
-
-                @SuppressLint("SimpleDateFormat")
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
-                Date startDate = null;
-                try {
-                    startDate = simpleDateFormat.parse(time);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                Date endDate = null;
-                try {
-                    endDate = simpleDateFormat.parse(currentTime);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
-                long difference = (endDate != null ? endDate.getTime() : 0) - (startDate != null ? startDate.getTime() : 0);
-                if (difference < 0) {
-                    Date dateMax = null;
-                    try {
-                        dateMax = simpleDateFormat.parse("24:00");
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    Date dateMin = null;
-                    try {
-                        dateMin = simpleDateFormat.parse("00:00");
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    difference = ((dateMax != null ? dateMax.getTime() : 0) - startDate.getTime()) + (endDate.getTime() - (dateMin != null ? dateMin.getTime() : 0));
-                }
-                int days = Integer.valueOf(currentDay) - dayNum;
-                int hoursHappened = (int) ((difference - (1000 * 60 * 60 * 24 * days)) / (1000 * 60 * 60));
-                int min = (int) (difference - (1000 * 60 * 60 * 24 * days) - (1000 * 60 * 60 * hoursHappened)) / (1000 * 60);
-
-                if (days >= hoursToDays) {
-                    return true;
-                } else {
-                    return hoursHappened >= hours || min >= numOfMinutes;
-                }
-            } else {
-                return true;
-            }
-        }
-    }
-
-    @SuppressLint("DefaultLocale")
-    public static int getSecondsLeftToEnableRequest(Context context,
-                                                    int numOfMinutes, Preferences mPrefs) {
-
-        int secondsHappened = 0;
-
-        Calendar c = Calendar.getInstance();
-
-        String time;
-        int dayNum;
-
-        if (mPrefs.getRequestsCreated()) {
-            time = mPrefs.getRequestHour();
-            dayNum = mPrefs.getRequestDay();
-
-            String currentTime = String.format("%02d", c.get(Calendar.HOUR_OF_DAY)) + ":" +
-                    String.format("%02d", c.get(Calendar.MINUTE));
-            String currentDay = String.format("%02d", c.get(Calendar.DAY_OF_YEAR));
-
-            @SuppressLint("SimpleDateFormat")
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
-            Date startDate = null;
-            try {
-                startDate = simpleDateFormat.parse(time);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            Date endDate = null;
-            try {
-                endDate = simpleDateFormat.parse(currentTime);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-            long difference = (endDate != null ? endDate.getTime() : 0) - (startDate != null ? startDate.getTime() : 0);
-            if (difference < 0) {
-                Date dateMax = null;
-                try {
-                    dateMax = simpleDateFormat.parse("24:00");
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                Date dateMin = null;
-                try {
-                    dateMin = simpleDateFormat.parse("00:00");
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                difference = ((dateMax != null ? dateMax.getTime() : 0) - startDate.getTime()) + (endDate.getTime() - (dateMin != null ? dateMin.getTime() : 0));
-            }
-            int days = Integer.valueOf(currentDay) - dayNum;
-            int hoursHappened = (int) ((difference - (1000 * 60 * 60 * 24 * days)) / (1000 * 60 * 60));
-
-            int minutes = (int) (difference - (1000 * 60 * 60 * 24 * days) -
-                    (1000 * 60 * 60 * hoursHappened)) / (1000 * 60);
-
-            secondsHappened = (int) (minutes * 60.0f);
-
-        }
-
-        int secondsLeft = (numOfMinutes * 60) - secondsHappened;
-
-        if (secondsHappened < 0 || numOfMinutes <= 0) {
-            mPrefs.resetRequestsLeft(context);
-            secondsLeft = 0;
-        }
-
-        return secondsLeft;
-
-    }
-
-    public static String getTimeName(Context context, int minutes) {
-        String text;
-        if (minutes > 40320) {
-            text = Utils.getStringFromResources(context, R.string.months).toLowerCase();
-        } else if (minutes > 10080) {
-            text = Utils.getStringFromResources(context, R.string.weeks).toLowerCase();
-        } else if (minutes > 1440) {
-            text = Utils.getStringFromResources(context, R.string.days).toLowerCase();
-        } else if (minutes > 60) {
-            text = Utils.getStringFromResources(context, R.string.hours).toLowerCase();
-        } else {
-            text = Utils.getStringFromResources(context, R.string.minutes).toLowerCase();
-        }
-        return text;
-    }
-
-    public static String getTimeNameInSeconds(Context context, int secs) {
-        String text;
-        if (secs > (40320 * 60)) {
-            text = Utils.getStringFromResources(context, R.string.months).toLowerCase();
-        } else if (secs > (10080 * 60)) {
-            text = Utils.getStringFromResources(context, R.string.weeks).toLowerCase();
-        } else if (secs > (1440 * 60)) {
-            text = Utils.getStringFromResources(context, R.string.days).toLowerCase();
-        } else if (secs > (60 * 60)) {
-            text = Utils.getStringFromResources(context, R.string.hours).toLowerCase();
-        } else if (secs > 60) {
-            text = Utils.getStringFromResources(context, R.string.minutes).toLowerCase();
-        } else {
-            text = Utils.getStringFromResources(context, R.string.seconds).toLowerCase();
-        }
-        return text;
-    }
-
-    public static float getExactMinutes(int minutes, boolean withSeconds) {
-        float time;
-        if (minutes > 40320) {
-            time = minutes / 40320.0f;
-        } else if (minutes > 10080) {
-            time = minutes / 10080.0f;
-        } else if (minutes > 1440) {
-            time = minutes / 1440.0f;
-        } else if (minutes > 60) {
-            time = minutes / 60.0f;
-        } else {
-            if (withSeconds) {
-                time = minutes / 60.0f;
-            } else {
-                time = minutes;
-            }
-        }
-        return time;
-    }
-
-    public static long getNotifsUpdateIntervalInMillis(int interval) {
-        long millisInAnHour = 60 * 60 * 1000;
-        int hours;
-        switch (interval) {
-            case 1:
-                hours = 1;
-                break;
-            case 2:
-                hours = 6;
-                break;
-            case 3:
-                hours = 12;
-                break;
-            case 4:
-                hours = 24;
-                break;
-            case 5:
-                hours = 48;
-                break;
-            case 6:
-                hours = 96;
-                break;
-            case 7:
-                hours = 168;
-                break;
-            default:
-                hours = 24;
-                break;
-        }
-
-        return hours * millisInAnHour;
-
     }
 
     public static Drawable getVectorDrawable(@NonNull Context context, @DrawableRes int drawable) {
@@ -646,42 +356,12 @@ public class Utils {
         return 0;
     }
 
-    public static void sendFirebaseNotification(Context context, Class mainActivity,
-                                                Map<String, String> data, String title, String content) {
-        Intent intent = new Intent(context, mainActivity);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+    public static int convertMinutesToMillis(int minute) {
+        return minute * 60 * 1000;
+    }
 
-        if (data != null) {
-            if (data.size() > 0) {
-                for (int i = 0; i < data.size(); i++) {
-                    String[] dataValue = data.toString().replace("{", "").replace("}", "").split(",")[i].split("=");
-                    Timber.d("Key: " + dataValue[0] + " Value: " + dataValue[1]);
-                    intent.putExtra(dataValue[0], dataValue[1]);
-                }
-            }
-        }
-
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0 /* Request code */, intent,
-                PendingIntent.FLAG_ONE_SHOT);
-
-        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
-                .setSmallIcon(R.drawable.ic_notifications)
-                .setContentTitle(title)
-                .setTicker(title)
-                .setContentText(content)
-                .setAutoCancel(true)
-                .setOngoing(false)
-                .setColor(ThemeUtils.darkTheme ?
-                        ContextCompat.getColor(context, jahirfiquitiva.iconshowcase.R.color.dark_theme_accent) :
-                        ContextCompat.getColor(context, jahirfiquitiva.iconshowcase.R.color.light_theme_accent))
-                .setSound(defaultSoundUri)
-                .setContentIntent(pendingIntent);
-
-        NotificationManager notificationManager =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+    public static int convertMillisToMinutes(int millis) {
+        return millis / 60 / 1000;
     }
 
 }

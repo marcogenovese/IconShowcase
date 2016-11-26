@@ -78,8 +78,7 @@
                 android:layout_marginRight="@dimen/cards_content_margin_small"
                 android:layout_marginTop="@dimen/cards_content_margin_mini"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                tools:text="I am a graphic designer, I love Android, and obviously, this awesome dashboard."
-                />
+                tools:text="I am a graphic designer, I love Android, and obviously, this awesome dashboard."/>
 
         <jahirfiquitiva.iconshowcase.views.SplitButtonsLayout
                 android:id="@+id/buttons"

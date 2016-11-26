@@ -25,7 +25,7 @@ import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 
 import jahirfiquitiva.iconshowcase.R;
-import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
+import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
 
 public class IconShowcaseCardView extends CardView {
 

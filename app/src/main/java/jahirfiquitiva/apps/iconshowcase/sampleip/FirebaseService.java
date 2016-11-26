@@ -22,15 +22,14 @@ package jahirfiquitiva.apps.iconshowcase.sampleip;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
-import jahirfiquitiva.iconshowcase.utilities.Utils;
+import jahirfiquitiva.iconshowcase.utilities.utils.NotificationUtils;
 
 public class FirebaseService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        //TODO Do not send notifications if icon is hidden
         if (remoteMessage.getNotification() != null) {
-            Utils.sendFirebaseNotification(this,
+            NotificationUtils.sendFirebaseNotification(this,
                     HomeActivity.class,
                     remoteMessage.getData(),
                     remoteMessage.getNotification().getTitle(),

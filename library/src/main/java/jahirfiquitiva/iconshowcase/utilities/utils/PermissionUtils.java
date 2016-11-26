@@ -17,7 +17,7 @@
  * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
-package jahirfiquitiva.iconshowcase.utilities;
+package jahirfiquitiva.iconshowcase.utilities.utils;
 
 import android.Manifest;
 import android.app.Activity;

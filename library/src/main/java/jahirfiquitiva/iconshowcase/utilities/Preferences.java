@@ -49,6 +49,7 @@ public class Preferences {
             REQUESTS_LEFT = "requests_left",
             NOTIFS_ENABLED = "notifs_enabled",
             NOTIFS_LED_ENABLED = "notifs_led_enabled",
+            NOTIFS_SOUND_ENABLED = "notifs_sound_enabled",
             NOTIFS_VIBRATION_ENABLED = "notifs_vibration_enabled",
             NOTIFS_UPDATE_INTERVAL = "notifs_update_interval";
 
@@ -99,12 +100,12 @@ public class Preferences {
     }
 
     public String getDownloadsFolder() {
-        String name = context != null ? context.getResources()
-                .getString(R.string.app_name).replaceAll(" ", "")
-                : "IconShowcase";
         return prefs().getString(WALLS_DOWNLOAD_FOLDER,
-                Environment.getExternalStorageDirectory().getAbsolutePath() +
-                        "/" + name + "/Wallpapers");
+                context != null
+                        ? context.getResources().getString(R.string.walls_save_location,
+                        Environment.getExternalStorageDirectory().getAbsolutePath())
+                        : Environment.getExternalStorageDirectory().getAbsolutePath()
+                        + "/IconShowcase/Wallpapers");
     }
 
     public void setDownloadsFolder(String folder) {
@@ -219,7 +220,16 @@ public class Preferences {
         prefs().edit().putInt(REQUESTS_LEFT, context.getResources().getInteger(R.integer.max_apps_to_request)).apply();
     }
 
-    //NOTIFICATIONS:
+    public int getVersionCode() {
+        return prefs().getInt(VERSION_CODE, 0);
+    }
+
+    public void setVersionCode(int versionCode) {
+        prefs().edit().putInt(VERSION_CODE, versionCode).apply();
+    }
+
+
+    /* NOTIFICATIONS */
 
     public boolean getNotifsEnabled() {
         return prefs().getBoolean(NOTIFS_ENABLED, false);
@@ -237,6 +247,14 @@ public class Preferences {
         prefs().edit().putBoolean(NOTIFS_LED_ENABLED, enableLed).apply();
     }
 
+    public boolean getNotifsSoundEnabled() {
+        return prefs().getBoolean(NOTIFS_SOUND_ENABLED, true);
+    }
+
+    public void setNotifsSoundEnabled(boolean enableLed) {
+        prefs().edit().putBoolean(NOTIFS_SOUND_ENABLED, enableLed).apply();
+    }
+
     public boolean getNotifsVibrationEnabled() {
         return prefs().getBoolean(NOTIFS_VIBRATION_ENABLED, true);
     }
@@ -245,21 +263,8 @@ public class Preferences {
         prefs().edit().putBoolean(NOTIFS_VIBRATION_ENABLED, vibrate).apply();
     }
 
-    public int getNotifsUpdateInterval() {
-        return prefs().getInt(NOTIFS_UPDATE_INTERVAL, 4);
-    }
 
-    public void setNotifsUpdateInterval(int interval) {
-        prefs().edit().putInt(NOTIFS_UPDATE_INTERVAL, interval).apply();
-    }
-
-    public int getVersionCode() {
-        return prefs().getInt(VERSION_CODE, 0);
-    }
-
-    public void setVersionCode(int versionCode) {
-        prefs().edit().putInt(VERSION_CODE, versionCode).apply();
-    }
+    /* DEV MODE PREFERENCES */
 
     public boolean getDevDrawerTexts() {
         return prefs().getBoolean(DEV_DRAWER_TEXTS, true);

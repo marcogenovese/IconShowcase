@@ -24,7 +24,7 @@
     <color name="light_theme_primary">#f5f5f5</color>
     <color name="light_theme_primary_dark">#e0e0e0</color>
     <color name="light_theme_accent">#00b0ff</color>
-    <color name="light_theme_navbar">@color/light_theme_primary_dark</color>
+    <color name="light_theme_navigation_bar">@color/light_theme_primary_dark</color>
     <color name="fab_background_tint_light_theme">@color/light_theme_accent</color>
     <color name="light_theme_divider">#1f000000</color>
     <color name="md_button_text_light">@color/light_theme_accent</color>
@@ -42,7 +42,7 @@
     <color name="dark_theme_primary">#212121</color>
     <color name="dark_theme_primary_dark">#000000</color>
     <color name="dark_theme_accent">#00b0ff</color>
-    <color name="dark_theme_navbar">@color/dark_theme_primary_dark</color>
+    <color name="dark_theme_navigation_bar">@color/dark_theme_primary_dark</color>
     <color name="fab_background_tint_dark_theme">@color/dark_theme_accent</color>
     <color name="dark_theme_divider">#1fffffff</color>
     <color name="md_button_text_dark">@color/dark_theme_accent</color>
@@ -72,7 +72,7 @@
     <color name="secondary_text_light">#8a000000</color>
     <color name="md_dialog_title_light">@color/primary_text_light</color>
     <color name="md_dialog_content_light">@color/secondary_text_light</color>
-    <color name="card_light_background">#fafafa</color>
+    <color name="card_light_background">#21f3f3</color>
     <color name="drawable_tint_light">#757575</color>
     <color name="light_bg">#fafafa</color>
     <color name="home_light_background">@color/card_light_background</color>
@@ -113,6 +113,5 @@
     <color name="white_highlight">#66ffffff</color>
     <color name="semitransparent_black">#66000000</color>
     <color name="drawable_base_tint">#616161</color>
-    <color name="divider">#757575</color>
 
 </resources>

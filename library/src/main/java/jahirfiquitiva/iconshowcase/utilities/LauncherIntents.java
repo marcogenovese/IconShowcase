@@ -26,6 +26,7 @@ import android.content.Intent;
 import android.widget.Toast;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 import timber.log.Timber;
 
 public class LauncherIntents {

@@ -53,6 +53,7 @@
     <string name="main_activity_name">HomeActivity</string>
     <string name="main_activity_fullname">com.packagename.appname.HomeActivity</string>
 
+
     <!-- TEXTS TO BE USED IN ABOUT SECTION -->
 
     <string name="iconpack_author_name">Your Name</string>
@@ -69,31 +70,6 @@
     <string name="iconpack_author_website">https://www.jahirfiquitiva.me/</string>
     <string name="iconpack_author_youtube">https://www.youtube.com/channel/UCBTheBoZEA1p95HyjEHqouA</string>
 
-    <string-array name="iconpack_author_sites">
-        <item>@string/facebook</item>
-        <item>@string/join_community</item>
-        <item>@string/youtube</item>
-        <item>@string/twitter</item>
-        <item>@string/play_store</item>
-    </string-array>
-
-    <string-array name="iconpack_author_links">
-        <item>@string/iconpack_author_fb_alt</item>
-        <item>@string/iconpack_author_gplus_community</item>
-        <item>@string/iconpack_author_youtube</item>
-        <item>@string/iconpack_author_twitter</item>
-        <item>@string/iconpack_author_playstore</item>
-    </string-array>
-
-    <!-- This array will only be used if you enable the List style in About section. -->
-    <string-array name="iconpack_author_sites_in_list">
-        <item>@string/facebook</item>
-        <item>@string/google_plus</item>
-        <item>@string/join_community</item>
-        <item>@string/youtube</item>
-        <item>@string/twitter</item>
-        <item>@string/play_store</item>
-    </string-array>
 
     <!-- PICTURES NAMES TO BE USED AS PREVIEWS FOR LAUNCHERS -->
 

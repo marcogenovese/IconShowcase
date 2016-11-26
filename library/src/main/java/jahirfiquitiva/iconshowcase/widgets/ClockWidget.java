@@ -29,7 +29,7 @@ import android.content.pm.PackageManager;
 import android.widget.RemoteViews;
 
 import jahirfiquitiva.iconshowcase.R;
-import jahirfiquitiva.iconshowcase.utilities.Utils;
+import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 
 public class ClockWidget extends AppWidgetProvider {
 

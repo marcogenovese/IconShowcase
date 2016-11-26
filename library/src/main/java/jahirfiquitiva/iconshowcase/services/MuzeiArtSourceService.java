@@ -36,11 +36,13 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Random;
 
+import jahirfiquitiva.iconshowcase.BuildConfig;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.config.Config;
+import jahirfiquitiva.iconshowcase.logging.CrashReportingTree;
 import jahirfiquitiva.iconshowcase.utilities.JSONParser;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
-import jahirfiquitiva.iconshowcase.utilities.Utils;
+import timber.log.Timber;
 
 public class MuzeiArtSourceService extends RemoteMuzeiArtSource {
 
@@ -62,7 +64,7 @@ public class MuzeiArtSourceService extends RemoteMuzeiArtSource {
             try {
                 onTryUpdate(UPDATE_REASON_USER_NEXT);
             } catch (RetryException e) {
-                Utils.showLog(getApplicationContext(), "Error updating Muzei: " + e.getLocalizedMessage());
+                Timber.d("Error updating Muzei: " + e.getLocalizedMessage());
             }
         }
         return super.onStartCommand(intent, flags, startId);
@@ -71,6 +73,13 @@ public class MuzeiArtSourceService extends RemoteMuzeiArtSource {
     @Override
     public void onCreate() {
         super.onCreate();
+        Config.init(this);
+        if (BuildConfig.DEBUG || Config.get().allowDebugging()) {
+            Timber.plant(new Timber.DebugTree());
+        } else {
+            //Disable debug & verbose logging on release
+            Timber.plant(new CrashReportingTree());
+        }
         mPrefs = new Preferences(MuzeiArtSourceService.this);
         ArrayList<UserCommand> commands = new ArrayList<>();
         commands.add(new UserCommand(BUILTIN_COMMAND_ID_NEXT_ARTWORK));
@@ -103,7 +112,7 @@ public class MuzeiArtSourceService extends RemoteMuzeiArtSource {
             try {
                 new DownloadJSONAndSetWall(getApplicationContext()).execute();
             } catch (Exception e) {
-                Utils.showLog(getApplicationContext(), "Error updating Muzei: " + e.getLocalizedMessage());
+                Timber.d("Error updating Muzei: " + e.getLocalizedMessage());
                 throw new RetryException();
             }
         }
@@ -155,14 +164,14 @@ public class MuzeiArtSourceService extends RemoteMuzeiArtSource {
                         worked = true;
                     } catch (JSONException e) {
                         worked = false;
-                        Utils.showLog(getApplicationContext(), "Error downloading JSON for Muzei: " + e.getLocalizedMessage());
+                        Timber.d("Error downloading JSON for Muzei: " + e.getLocalizedMessage());
                     }
                 } else {
                     worked = false;
                 }
             } catch (Exception e) {
                 worked = false;
-                Utils.showLog(getApplicationContext(), "Error in Muzei: " + e.getLocalizedMessage());
+                Timber.d("Error in Muzei: " + e.getLocalizedMessage());
             }
             return worked;
         }
@@ -174,9 +183,9 @@ public class MuzeiArtSourceService extends RemoteMuzeiArtSource {
                 try {
                     i = new Random().nextInt(names.size());
                     setImageForMuzei(names.get(i), authors.get(i), urls.get(i));
-                    Utils.showLog(MuzeiArtSourceService.this, true, "Setting picture: " + names.get(i));
+                    Timber.d("Setting picture: " + names.get(i));
                 } catch (IllegalArgumentException e) {
-                    Utils.showLog(MuzeiArtSourceService.this, true, "Muzei error: " + e.getLocalizedMessage());
+                    Timber.d("Muzei error: " + e.getLocalizedMessage());
                 }
 
             }

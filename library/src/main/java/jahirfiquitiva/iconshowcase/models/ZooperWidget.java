@@ -22,7 +22,7 @@ package jahirfiquitiva.iconshowcase.models;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 
-import jahirfiquitiva.iconshowcase.utilities.Utils;
+import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 
 public class ZooperWidget {
 
