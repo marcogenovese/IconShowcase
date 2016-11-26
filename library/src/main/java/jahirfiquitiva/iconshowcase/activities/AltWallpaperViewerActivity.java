@@ -467,6 +467,7 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
         Glide.with(this)
                 .load(url)
                 .asBitmap()
+                .dontAnimate()
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(new SimpleTarget<Bitmap>() {
                     @Override
@@ -595,6 +596,7 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
                         Glide.with(context)
                                 .load(wallUrl)
                                 .asBitmap()
+                                .dontAnimate()
                                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                                 .into(new SimpleTarget<Bitmap>() {
                                     @Override
@@ -756,6 +758,7 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
         Glide.with(this)
                 .load(wallUrl)
                 .asBitmap()
+                .dontAnimate()
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(new SimpleTarget<Bitmap>() {
                     @Override

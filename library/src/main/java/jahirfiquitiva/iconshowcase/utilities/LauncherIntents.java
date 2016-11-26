@@ -30,83 +30,105 @@ import timber.log.Timber;
 
 public class LauncherIntents {
 
-    public LauncherIntents(Context context, String launcherName) {
-        switch (launcherName) {
+    public LauncherIntents(Context context, String key) throws IllegalArgumentException {
+        switch (key) {
+            case "com.actionlauncher.playstore":
             case "Action":
                 ActionLauncher(context);
                 break;
+            case "org.adw.launcher":
             case "Adw":
                 AdwLauncher(context);
                 break;
+            case "org.adwfreak.launcher":
             case "Adwex":
                 AdwEXLauncher(context);
                 break;
+            case "com.anddoes.launcher":
             case "Apex":
                 ApexLauncher(context);
                 break;
+            case "com.dlto.atom.launcher":
             case "Atom":
                 AtomLauncher(context);
                 break;
+            case "com.tul.aviate":
             case "Aviate":
                 AviateLauncher(context);
                 break;
+            case "org.cyanogenmod.theme.chooser":
+            case "org.cyanogenmod.theme.chooser2":
+            case "com.cyngn.theme.chooser":
             case "Cmthemeengine":
                 CMThemeEngine(context);
                 break;
+            case "com.gau.go.launcherex":
             case "Go":
                 GoLauncher(context);
                 break;
+            case "com.mobint.hololauncher":
             case "Holo":
                 HoloLauncher(context);
                 break;
+            case "com.mobint.hololauncher.hd":
             case "Holoics":
                 HoloLauncherICS(context);
                 break;
+            case "com.kk.launcher":
             case "KK":
                 KkLauncher(context);
                 break;
+            case "com.lge.launcher2":
             case "Lghome":
                 LgHomeLauncher(context);
                 break;
+            case "com.l.launcher":
             case "L":
                 LLauncher(context);
                 break;
+            case "com.powerpoint45.launcher":
             case "Lucid":
                 LucidLauncher(context);
                 break;
+            case "com.jiubang.go.mini.launcher":
             case "Mini":
                 MiniLauncher(context);
                 break;
+            case "com.gtp.nextlauncher":
             case "Next":
                 NextLauncher(context);
                 break;
+            case "com.teslacoilsw.launcher":
             case "Nova":
                 NovaLauncher(context);
                 break;
+            case "com.s.launcher":
             case "S":
                 SLauncher(context);
                 break;
+            case "ginlemon.flowerfree":
             case "Smart":
                 SmartLauncher(context);
                 break;
+            case "ginlemon.flowerpro":
             case "Smartpro":
                 SmartLauncherPro(context);
                 break;
+            case "home.solo.launcher.free":
             case "Solo":
                 SoloLauncher(context);
                 break;
+            case "com.tsf.shell":
             case "Tsf":
                 TsfLauncher(context);
                 break;
+            case "sg.ruqqq.IconThemer":
             case "Uniconpro":
                 Unicon(context);
                 break;
-            case "Layers":
-                Layers(context);
-                break;
             default:
-                Timber.d("No method for:", launcherName);
-                break;
+                Timber.d("No method for package or launcher: ", key);
+                throw new IllegalArgumentException("Couldn't find method for launcher or package: " + key);
         }
     }
 
@@ -299,24 +321,6 @@ public class LauncherIntents {
         unicon.addCategory("android.intent.category.LAUNCHER");
         unicon.setPackage("sg.ruqqq.IconThemer");
         context.startActivity(unicon);
-    }
-
-    //for theme support
-    private void Layers(Context context) {
-        try {
-            Intent layers = new Intent("android.intent.action.MAIN");
-            layers.setComponent(new ComponentName("com.lovejoy777.rroandlayersmanager",
-                    "com.lovejoy777.rroandlayersmanager.menu"));
-            layers.putExtra("pkgName", context.getPackageName());
-            context.startActivity(layers);
-        } catch (Exception e) {
-            Intent layers = new Intent("android.intent.action.MAIN");
-            layers.setComponent(new ComponentName("com.lovejoy777.rroandlayersmanager",
-                    "com.lovejoy777.rroandlayersmanager.MainActivity"));
-            layers.putExtra("pkgName", context.getPackageName());
-            context.startActivity(layers);
-        }
-
     }
 
 }

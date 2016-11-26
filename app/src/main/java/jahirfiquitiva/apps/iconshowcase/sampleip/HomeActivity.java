@@ -25,6 +25,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import jahirfiquitiva.iconshowcase.utilities.LauncherIntents;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import timber.log.Timber;
 
@@ -50,37 +51,18 @@ public class HomeActivity extends AppCompatActivity {
         if (getIntent().getStringExtra("open_link") != null) {
             Utils.openLink(this, getIntent().getStringExtra("open_link"));
         } else {
-            Intent intent = new Intent(HomeActivity.this, jahirfiquitiva.iconshowcase.activities.ShowcaseActivity.class);
-
-            intent.putExtra("installer", getAppInstaller());
-
-            intent.putExtra("open_wallpapers",
-                    getIntent().getStringExtra("wallpapers_notif") != null &&
-                            getIntent().getStringExtra("wallpapers_notif").equals("true"));
-
-            intent.putExtra("curVersionCode", getAppCurrentVersionCode());
-
-            intent.putExtra("enableDonations", ENABLE_DONATIONS);
-            intent.putExtra("enableGoogleDonations", ENABLE_GOOGLE_DONATIONS);
-            intent.putExtra("enablePayPalDonations", ENABLE_PAYPAL_DONATIONS);
-            intent.putExtra("enableFlattrDonations", ENABLE_FLATTR_DONATIONS);
-            intent.putExtra("enableBitcoinDonations", ENABLE_BITCOIN_DONATIONS);
-
-            //noinspection PointlessBooleanExpression
-            intent.putExtra("enableLicenseCheck", (ENABLE_LICENSE_CHECK && !BuildConfig.DEBUG));
-            intent.putExtra("enableAmazonInstalls", ENABLE_AMAZON_INSTALLS);
-
-            intent.putExtra("googlePubKey", GOOGLE_PUBLISHER_KEY);
-
-            if (getIntent().getDataString() != null && getIntent().getDataString().contains("_shortcut")) {
-                intent.putExtra("shortcut", getIntent().getDataString());
+            if ((getIntent().getDataString() != null && getIntent().getDataString().equals("apply_shortcut"))
+                    && (Utils.getDefaultLauncherPackage(this) != null)) {
+                try {
+                    new LauncherIntents(this, Utils.getDefaultLauncherPackage(this));
+                } catch (IllegalArgumentException ex) {
+                    runIntent();
+                }
+            } else {
+                runIntent();
             }
-
-            startActivity(intent);
         }
-
         finish();
-
     }
 
     private String getAppInstaller() {
@@ -95,6 +77,36 @@ public class HomeActivity extends AppCompatActivity {
             Timber.d("Unable to get version code. Reason:", e.getLocalizedMessage());
             return -1;
         }
+    }
+
+    private void runIntent() {
+        Intent intent = new Intent(HomeActivity.this, jahirfiquitiva.iconshowcase.activities.ShowcaseActivity.class);
+
+        intent.putExtra("installer", getAppInstaller());
+
+        intent.putExtra("open_wallpapers",
+                getIntent().getStringExtra("wallpapers_notif") != null &&
+                        getIntent().getStringExtra("wallpapers_notif").equals("true"));
+
+        intent.putExtra("curVersionCode", getAppCurrentVersionCode());
+
+        intent.putExtra("enableDonations", ENABLE_DONATIONS);
+        intent.putExtra("enableGoogleDonations", ENABLE_GOOGLE_DONATIONS);
+        intent.putExtra("enablePayPalDonations", ENABLE_PAYPAL_DONATIONS);
+        intent.putExtra("enableFlattrDonations", ENABLE_FLATTR_DONATIONS);
+        intent.putExtra("enableBitcoinDonations", ENABLE_BITCOIN_DONATIONS);
+
+        //noinspection PointlessBooleanExpression
+        intent.putExtra("enableLicenseCheck", (ENABLE_LICENSE_CHECK && !BuildConfig.DEBUG));
+        intent.putExtra("enableAmazonInstalls", ENABLE_AMAZON_INSTALLS);
+
+        intent.putExtra("googlePubKey", GOOGLE_PUBLISHER_KEY);
+
+        if (getIntent().getDataString() != null && getIntent().getDataString().contains("_shortcut")) {
+            intent.putExtra("shortcut", getIntent().getDataString());
+        }
+
+        startActivity(intent);
     }
 
 }

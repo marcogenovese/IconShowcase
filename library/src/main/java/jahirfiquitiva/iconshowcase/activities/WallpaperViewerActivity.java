@@ -371,6 +371,7 @@ public class WallpaperViewerActivity extends AppCompatActivity {
         Glide.with(context)
                 .load(url)
                 .asBitmap()
+                .dontAnimate()
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(new SimpleTarget<Bitmap>() {
                     @Override
@@ -501,6 +502,7 @@ public class WallpaperViewerActivity extends AppCompatActivity {
                         Glide.with(context)
                                 .load(wallUrl)
                                 .asBitmap()
+                                .dontAnimate()
                                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                                 .into(new SimpleTarget<Bitmap>() {
                                     @Override
@@ -658,6 +660,7 @@ public class WallpaperViewerActivity extends AppCompatActivity {
         Glide.with(context)
                 .load(wallUrl)
                 .asBitmap()
+                .dontAnimate()
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(new SimpleTarget<Bitmap>() {
                     @Override

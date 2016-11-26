@@ -38,6 +38,7 @@ import java.util.zip.ZipFile;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
+import jahirfiquitiva.iconshowcase.activities.base.DrawerActivity;
 import jahirfiquitiva.iconshowcase.fragments.MainFragment;
 import jahirfiquitiva.iconshowcase.fragments.ZooperFragment;
 import jahirfiquitiva.iconshowcase.models.ZooperWidget;
@@ -106,6 +107,7 @@ public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
                 if (((ShowcaseActivity) context.get()).getCurrentFragment() instanceof MainFragment) {
                     ((MainFragment) ((ShowcaseActivity) context.get()).getCurrentFragment()).updateAppInfoData();
                 }
+                ((ShowcaseActivity) context.get()).resetFragment(DrawerActivity.DrawerItem.ZOOPER);
             }
             Timber.d("Load of widgets task completed successfully in: %d milliseconds", (endTime - startTime));
         } else {

@@ -272,19 +272,31 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    public void setupAppInfoAmounts() {
+    private void resetAppInfoValues() {
         this.icons = 0;
         this.wallpapers = 0;
         this.widgets = 0;
+    }
+
+    public void setupAppInfoAmounts() {
+        resetAppInfoValues();
         if (FullListHolder.get().iconsCategories().getList() != null) {
             for (IconsCategory category : FullListHolder.get().iconsCategories().getList()) {
-                this.icons += category.getIconsArray().size();
+                if (category.getCategoryName().equals("All")) {
+                    this.icons += category.getIconsArray().size();
+                }
+            }
+            if (this.icons > 1) {
+                this.icons -= 1;
             }
         }
         this.wallpapers = FullListHolder.get().walls().getList() != null
                 ? FullListHolder.get().walls().getList().size() : 0;
         this.widgets = LoadZooperWidgets.widgets != null ? LoadZooperWidgets.widgets.size() : 0;
         this.widgets += LoadKustomFiles.widgets != null ? LoadKustomFiles.widgets.size() : 0;
+        if (this.widgets > 1) {
+            this.widgets -= 1;
+        }
     }
 
     public void setupAppInfo() {

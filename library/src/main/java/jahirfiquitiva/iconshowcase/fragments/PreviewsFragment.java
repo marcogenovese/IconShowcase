@@ -81,9 +81,9 @@ public class PreviewsFragment extends EventBaseFragment {
 
         //TODO Check if ViewPager is smooth enough
         mPager = (ViewPager) layout.findViewById(R.id.pager);
+        mTabs = (TabLayout) getActivity().findViewById(R.id.tabs);
         mPager.setAdapter(new IconsPagerAdapter(getChildFragmentManager()));
         mPager.setOffscreenPageLimit(mCategories.size() - 1 < 1 ? 1 : mCategories.size() - 1);
-        mTabs = (TabLayout) getActivity().findViewById(R.id.tabs);
         createTabs();
 
         return layout;

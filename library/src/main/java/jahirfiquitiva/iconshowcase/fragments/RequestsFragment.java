@@ -35,6 +35,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.pitchedapps.butler.library.icon.request.AppLoadedEvent;
 import com.pitchedapps.butler.library.icon.request.IconRequest;
 import com.pitchedapps.capsule.library.event.CFabEvent;
@@ -186,7 +187,7 @@ public class RequestsFragment extends CapsuleFragment {
         showFab();
     }
 
-    private void startRequestProcess() {
+    public void startRequestProcess() {
         Preferences mPrefs = new Preferences(getActivity());
         if (getResources().getInteger(R.integer.max_apps_to_request) > -1) {
             if (mPrefs.getRequestsLeft() <= 0) {
@@ -209,7 +210,6 @@ public class RequestsFragment extends CapsuleFragment {
     }
 
     private void showRequestsFilesCreationDialog(Context context, Preferences mPrefs) {
-
         if (mAdapter.getSelectedApps() != null && mAdapter.getSelectedApps().size() > 0) {
             if (!PermissionUtils.canAccessStorage(context)) {
                 PermissionUtils.requestStoragePermission((ShowcaseActivity) context);
@@ -219,23 +219,34 @@ public class RequestsFragment extends CapsuleFragment {
                                 PackageManager.PERMISSION_GRANTED) {
                     ISDialogs.showPermissionNotGrantedDialog(context);
                 } else {
+                    final MaterialDialog dialog = ISDialogs.showBuildingRequestDialog(context);
                     if (getResources().getInteger(R.integer.max_apps_to_request) > -1) {
                         if (maxApps < 0) {
                             maxApps = 0;
                         }
                         if (mAdapter.getSelectedApps().size() <= mPrefs.getRequestsLeft()) {
-                            IconRequest.get().send();
+                            dialog.show();
                             Calendar c = Calendar.getInstance();
                             Utils.saveCurrentTimeOfRequest(mPrefs, c);
-                            ISDialogs.showBuildingRequestDialog(context);
+                            IconRequest.get().send(new IconRequest.RequestReadyCallback() {
+                                @Override
+                                public void onRequestReady() {
+                                    dialog.dismiss();
+                                }
+                            });
                         } else {
                             ISDialogs.showRequestLimitDialog(context, maxApps);
                         }
                     } else {
-                        IconRequest.get().send();
+                        dialog.show();
                         Calendar c = Calendar.getInstance();
                         Utils.saveCurrentTimeOfRequest(mPrefs, c);
-                        ISDialogs.showBuildingRequestDialog(context);
+                        IconRequest.get().send(new IconRequest.RequestReadyCallback() {
+                            @Override
+                            public void onRequestReady() {
+                                dialog.dismiss();
+                            }
+                        });
                     }
                 }
             }

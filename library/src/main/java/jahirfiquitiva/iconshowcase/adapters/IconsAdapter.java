@@ -97,25 +97,49 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
         if (position < 0) return;
         int iconResource = iconsList.get(holder.getAdapterPosition()).getResId();
         if (iconResource == 0) return;
-        Glide.with(context)
-                .load(iconResource)
-                .asBitmap()
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .priority(Priority.IMMEDIATE)
-                .into(new BitmapImageViewTarget(holder.icon) {
-                    @Override
-                    protected void setResource(Bitmap resource) {
-                        if ((!inChangelog && mPrefs.getAnimationsEnabled()) &&
-                                (holder.getAdapterPosition() > lastPosition)) {
-                            holder.icon.setAlpha(0f);
-                            holder.icon.setImageBitmap(resource);
-                            holder.icon.animate().setDuration(250).alpha(1f).start();
-                            lastPosition = holder.getAdapterPosition();
-                        } else {
-                            holder.icon.setImageBitmap(resource);
+
+        if (mPrefs != null && mPrefs.getAnimationsEnabled()) {
+            Glide.with(context)
+                    .load(iconResource)
+                    .asBitmap()
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .priority(Priority.IMMEDIATE)
+                    .into(new BitmapImageViewTarget(holder.icon) {
+                        @Override
+                        protected void setResource(Bitmap resource) {
+                            if ((!inChangelog && mPrefs.getAnimationsEnabled()) &&
+                                    (holder.getAdapterPosition() > lastPosition)) {
+                                holder.icon.setAlpha(0f);
+                                holder.icon.setImageBitmap(resource);
+                                holder.icon.animate().setDuration(250).alpha(1f).start();
+                                lastPosition = holder.getAdapterPosition();
+                            } else {
+                                holder.icon.setImageBitmap(resource);
+                            }
                         }
-                    }
-                });
+                    });
+        } else {
+            Glide.with(context)
+                    .load(iconResource)
+                    .asBitmap()
+                    .dontAnimate()
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .priority(Priority.IMMEDIATE)
+                    .into(new BitmapImageViewTarget(holder.icon) {
+                        @Override
+                        protected void setResource(Bitmap resource) {
+                            if ((!inChangelog && mPrefs.getAnimationsEnabled()) &&
+                                    (holder.getAdapterPosition() > lastPosition)) {
+                                holder.icon.setAlpha(0f);
+                                holder.icon.setImageBitmap(resource);
+                                holder.icon.animate().setDuration(250).alpha(1f).start();
+                                lastPosition = holder.getAdapterPosition();
+                            } else {
+                                holder.icon.setImageBitmap(resource);
+                            }
+                        }
+                    });
+        }
 
         holder.view.setOnClickListener(new DebouncedClickListener() {
             @Override

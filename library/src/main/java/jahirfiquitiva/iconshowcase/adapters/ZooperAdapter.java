@@ -19,7 +19,6 @@
 
 package jahirfiquitiva.iconshowcase.adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.drawable.Drawable;
@@ -42,54 +41,49 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.fragments.ZooperFragment;
 import jahirfiquitiva.iconshowcase.models.ZooperWidget;
 import jahirfiquitiva.iconshowcase.tasks.CopyFilesToStorage;
 import jahirfiquitiva.iconshowcase.tasks.LoadZooperWidgets;
 import jahirfiquitiva.iconshowcase.utilities.PermissionUtils;
+import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.Utils;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 
-public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
-        implements PermissionUtils.OnPermissionResultListener {
+public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final Drawable[] icons = new Drawable[2];
     private final Context context;
     private final Drawable wallpaper;
-    private final boolean everythingInstalled;
     private final View layout;
+    private final boolean everythingInstalled;
     private ArrayList<ZooperWidget> widgets;
-    private int extraCards = 0;
     private ZooperFragment mFragment;
+    private Preferences mPrefs;
+    private int extraCards = 0;
 
     public ZooperAdapter(Context context, View layout,
                          Drawable wallpaper, boolean appsInstalled, ZooperFragment mFragment) {
         this.context = context;
-
+        this.mPrefs = new Preferences(context);
         this.layout = layout;
-
         this.widgets = LoadZooperWidgets.widgets;
         this.wallpaper = wallpaper;
-
         this.everythingInstalled = (appsInstalled && areAssetsInstalled());
         this.extraCards = this.everythingInstalled ? 0 : 2;
-
         final int light = ContextCompat.getColor(context, R.color.drawable_tint_dark);
         final int dark = ContextCompat.getColor(context, R.color.drawable_tint_light);
-
         this.icons[0] = ColorUtils.getTintedIcon(
                 context, R.drawable.ic_store_download,
                 ThemeUtils.darkTheme ? light : dark);
-
         this.icons[1] = ColorUtils.getTintedIcon(
                 context, R.drawable.ic_assets,
                 ThemeUtils.darkTheme ? light : dark);
-
         this.mFragment = mFragment;
-
     }
 
     public void setWidgets(ArrayList<ZooperWidget> widgets) {
@@ -141,19 +135,37 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     ZooperWidget widget = widgets.get(position - 2);
                     ZooperHolder zooperHolder = (ZooperHolder) holder;
                     zooperHolder.background.setImageDrawable(wallpaper);
-                    Glide.with(context)
-                            .load(new File(widget.getPreviewPath()))
-                            .into(zooperHolder.widget);
+                    if (mPrefs != null && mPrefs.getAnimationsEnabled()) {
+                        Glide.with(context)
+                                .load(new File(widget.getPreviewPath()))
+                                .priority(Priority.IMMEDIATE)
+                                .into(zooperHolder.widget);
+                    } else {
+                        Glide.with(context)
+                                .load(new File(widget.getPreviewPath()))
+                                .priority(Priority.IMMEDIATE)
+                                .dontAnimate()
+                                .into(zooperHolder.widget);
+                    }
                     break;
             }
         } else {
             ZooperWidget widget = widgets.get(position);
             ZooperHolder zooperHolder = (ZooperHolder) holder;
             zooperHolder.background.setImageDrawable(wallpaper);
-            Glide.with(context)
-                    .load(new File(widget.getPreviewPath()))
-                    .priority(Priority.IMMEDIATE)
-                    .into(zooperHolder.widget);
+            if (mPrefs != null && mPrefs.getAnimationsEnabled()) {
+                Glide.with(context)
+                        .load(new File(widget.getPreviewPath()))
+                        .priority(Priority.IMMEDIATE)
+                        .into(zooperHolder.widget);
+            } else {
+                Glide.with(context)
+                        .load(new File(widget.getPreviewPath()))
+                        .priority(Priority.IMMEDIATE)
+                        .dontAnimate()
+                        .into(zooperHolder.widget);
+            }
+
         }
 
     }
@@ -168,17 +180,13 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return position;
     }
 
-    @Override
-    public void onStoragePermissionGranted() {
-        installAssets();
-    }
-
     private boolean areAssetsInstalled() {
         boolean assetsInstalled = false;
 
         String fileToIgnore1 = "material-design-iconic-font-v2.2.0.ttf",
                 fileToIgnore2 = "materialdrawerfont.ttf",
-                fileToIgnore3 = "materialdrawerfont-font-v5.0.0.ttf";
+                fileToIgnore3 = "materialdrawerfont-font-v5.0.0.ttf",
+                fileToIgnore4 = "google-material-font-v2.2.0.1.original.ttf";
 
         AssetManager assetManager = context.getAssets();
         String[] files = null;
@@ -195,7 +203,7 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 for (String filename : files) {
                     if (filename.contains(".")) {
                         if (!filename.equals(fileToIgnore1) && !filename.equals(fileToIgnore2)
-                                && !filename.equals(fileToIgnore3)) {
+                                && !filename.equals(fileToIgnore3) && !filename.equals(fileToIgnore4)) {
                             File file = new File(Environment.getExternalStorageDirectory()
                                     + "/ZooperWidget/" + getFolderName(folder) + "/" + filename);
                             assetsInstalled = file.exists();
@@ -221,19 +229,22 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
-    private void installAssets() {
-        String[] folders = new String[]{"fonts", "iconsets", "bitmaps"};
-
-        for (String folderName : folders) {
-            String dialogContent =
-                    context.getResources().getString(
-                            R.string.copying_assets, getFolderName(folderName));
-            MaterialDialog dialog = new MaterialDialog.Builder(context)
-                    .content(dialogContent)
-                    .progress(true, 0)
-                    .cancelable(false)
-                    .show();
-            new CopyFilesToStorage(context, layout, dialog, folderName).execute();
+    public void installAssets() {
+        if (!PermissionUtils.canAccessStorage(context)) {
+            PermissionUtils.requestStoragePermission((ShowcaseActivity) context);
+        } else {
+            String[] folders = new String[]{"fonts", "iconsets", "bitmaps"};
+            for (String folderName : folders) {
+                String dialogContent =
+                        context.getResources().getString(
+                                R.string.copying_assets, getFolderName(folderName));
+                MaterialDialog dialog = new MaterialDialog.Builder(context)
+                        .content(dialogContent)
+                        .progress(true, 0)
+                        .cancelable(false)
+                        .show();
+                new CopyFilesToStorage(context, layout, dialog, folderName).execute();
+            }
         }
     }
 
@@ -289,8 +300,7 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                             //Install assets
                             if (!areAssetsInstalled()) {
                                 if (!PermissionUtils.canAccessStorage(context)) {
-                                    PermissionUtils.requestStoragePermission((Activity) context,
-                                            ZooperAdapter.this);
+                                    PermissionUtils.requestStoragePermission((ShowcaseActivity) context);
                                 } else {
                                     installAssets();
                                 }
