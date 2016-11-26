@@ -37,6 +37,9 @@ import android.util.Log;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.pitchedapps.capsule.library.activities.CapsuleActivity;
+import com.pitchedapps.capsule.library.event.CFabEvent;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 
@@ -66,7 +69,7 @@ public class SettingsFragment extends PreferenceFragment implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        CapsuleActivity.hideFab(getActivity());
+        EventBus.getDefault().post(new CFabEvent(false)); //hide fab
 
         mPrefs = new Preferences(getActivity());
 

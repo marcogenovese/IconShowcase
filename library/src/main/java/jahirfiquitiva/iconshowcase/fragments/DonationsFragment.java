@@ -366,7 +366,7 @@ public class DonationsFragment extends CapsuleFragment {
     @Nullable
     @Override
     protected CFabEvent updateFab() {
-        return new CFabEvent();
+        return new CFabEvent(false);
     }
 
     /**

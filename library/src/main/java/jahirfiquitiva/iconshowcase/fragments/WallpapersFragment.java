@@ -223,6 +223,6 @@ public class WallpapersFragment extends EventBaseFragment {
     @Nullable
     @Override
     protected CFabEvent updateFab() {
-        return new CFabEvent();
+        return new CFabEvent(false);
     }
 }

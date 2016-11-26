@@ -34,7 +34,7 @@ repositories {
 
 ext {
     TARGET_SDK = 25
-    BUILD_TOOLS = "25"
+    BUILD_TOOLS = "25.0.1"
     ANDROID_SUPPORT_LIBS = "25.0.1"
 }
 
@@ -96,22 +96,15 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
     //Android Support Libraries
-    compile "com.android.support:appcompat-v7:$ANDROID_SUPPORT_LIBS"
-    compile "com.android.support:support-v4:$ANDROID_SUPPORT_LIBS"
-    compile "com.android.support:design:$ANDROID_SUPPORT_LIBS"
-    compile "com.android.support:cardview-v7:$ANDROID_SUPPORT_LIBS"
-    compile "com.android.support:recyclerview-v7:$ANDROID_SUPPORT_LIBS"
+    //In Capsule
+//    compile "com.android.support:appcompat-v7:$ANDROID_SUPPORT_LIBS"
+//    compile "com.android.support:support-v4:$ANDROID_SUPPORT_LIBS"
+//    compile "com.android.support:design:$ANDROID_SUPPORT_LIBS"
+//    compile "com.android.support:cardview-v7:$ANDROID_SUPPORT_LIBS"
+//    compile "com.android.support:recyclerview-v7:$ANDROID_SUPPORT_LIBS"
     compile "com.android.support:palette-v7:$ANDROID_SUPPORT_LIBS"
     compile "com.android.support:gridlayout-v7:$ANDROID_SUPPORT_LIBS"
     compile "com.android.support:customtabs:$ANDROID_SUPPORT_LIBS"
-
-    //Material Dialogs
-    compile 'com.afollestad.material-dialogs:core:0.9.1.0'
-
-    //Material Drawer
-    compile('com.mikepenz:materialdrawer:5.7.0@aar') {
-        transitive = true
-    }
 
     //OkHttp
     compile 'com.squareup.okhttp3:okhttp:3.4.2'
@@ -128,14 +121,11 @@ dependencies {
     //Circular Image View
     compile 'de.hdodenhof:circleimageview:2.1.0'
 
-    //Library for a "better" debug logging
-    compile 'com.jakewharton.timber:timber:4.3.1'
-
     //Library for Requests
     compile 'com.github.AllanWang:Butler:34db05a'
 
     //Library for UI framework
-    compile 'com.github.AllanWang:Capsule:c5cd3fdb63'
+    compile 'com.github.AllanWang:Capsule:v3.1'
 
     //Donations Lib
     compile 'org.sufficientlysecure:donations:2.4'
