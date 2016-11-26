@@ -49,8 +49,8 @@ import jahirfiquitiva.iconshowcase.config.Config;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.utilities.LauncherIntents;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
-import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 import jahirfiquitiva.iconshowcase.utilities.sort.InstalledLauncherComparator;
+import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 
 public class ApplyFragment extends CapsuleFragment {
@@ -62,7 +62,8 @@ public class ApplyFragment extends CapsuleFragment {
     private Preferences mPrefs;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
+            savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
         View layout = inflater.inflate(R.layout.apply_section, container, false);
@@ -75,7 +76,8 @@ public class ApplyFragment extends CapsuleFragment {
                 getResources().getInteger(R.integer.launchers_grid_width)));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(
-                new GridSpacingItemDecoration(getResources().getInteger(R.integer.launchers_grid_width),
+                new GridSpacingItemDecoration(getResources().getInteger(R.integer
+                        .launchers_grid_width),
                         getResources().getDimensionPixelSize(R.dimen.lists_padding),
                         true));
 
@@ -108,7 +110,8 @@ public class ApplyFragment extends CapsuleFragment {
                         if (launchers.get(position).name.equals("Google Now")) {
                             gnlDialog();
                         } else if (launchers.get(position).name.equals("LG Home")) {
-                            if (Utils.isAppInstalled(getActivity(), launchers.get(position).packageName)) {
+                            if (Utils.isAppInstalled(getActivity(), launchers.get(position)
+                                    .packageName)) {
                                 openLauncher(launchers.get(position).name);
                             } else {
                                 new MaterialDialog.Builder(getActivity())
@@ -120,12 +123,14 @@ public class ApplyFragment extends CapsuleFragment {
                             //TODO Make sure CM Theme Engine dialog appears in ROMs without it
                             if (Utils.isAppInstalled(getActivity(), "com.cyngn.theme.chooser")) {
                                 openLauncher("CM Theme Engine");
-                            } else if (Utils.isAppInstalled(getActivity(), launchers.get(position).packageName)) {
+                            } else if (Utils.isAppInstalled(getActivity(), launchers.get
+                                    (position).packageName)) {
                                 openLauncher(launchers.get(position).name);
                             } else {
                                 openInPlayStore(launchers.get(position));
                             }
-                        } else if (Utils.isAppInstalled(getActivity(), launchers.get(position).packageName)) {
+                        } else if (Utils.isAppInstalled(getActivity(), launchers.get(position)
+                                .packageName)) {
                             openLauncher(launchers.get(position).name);
                         } else {
                             openInPlayStore(launchers.get(position));
@@ -135,7 +140,8 @@ public class ApplyFragment extends CapsuleFragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
 
-        RecyclerFastScroller fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
+        RecyclerFastScroller fastScroller = (RecyclerFastScroller) layout.findViewById(R.id
+                .rvFastScroller);
         fastScroller.attachRecyclerView(recyclerView);
     }
 
@@ -157,21 +163,26 @@ public class ApplyFragment extends CapsuleFragment {
             dialogContent = getResources().getString(R.string.lni_content, launcher.name);
             intentString = Config.MARKET_URL + launcher.packageName;
         }
-        ISDialogs.showOpenInPlayStoreDialog(getContext(), launcher.name, dialogContent, new MaterialDialog.SingleButtonCallback() {
-            @Override
-            public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse(intentString));
-                startActivity(intent);
-            }
-        });
+        ISDialogs.showOpenInPlayStoreDialog(getContext(), launcher.name, dialogContent, new
+                MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull
+                            DialogAction
+                            dialogAction) {
+                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                        intent.setData(Uri.parse(intentString));
+                        startActivity(intent);
+                    }
+                });
     }
 
     private void gnlDialog() {
         final String appLink = Config.MARKET_URL + getResources().getString(R.string.extraapp);
-        ISDialogs.showGoogleNowLauncherDialog(getContext(), new MaterialDialog.SingleButtonCallback() {
+        ISDialogs.showGoogleNowLauncherDialog(getContext(), new MaterialDialog
+                .SingleButtonCallback() {
             @Override
-            public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+            public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction
+                    dialogAction) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(appLink));
                 startActivity(intent);
@@ -181,7 +192,8 @@ public class ApplyFragment extends CapsuleFragment {
 
     private void showApplyAdviceDialog(Context dialogContext) {
         if (!mPrefs.getApplyDialogDismissed()) {
-            MaterialDialog.SingleButtonCallback singleButtonCallback = new MaterialDialog.SingleButtonCallback() {
+            MaterialDialog.SingleButtonCallback singleButtonCallback = new MaterialDialog
+                    .SingleButtonCallback() {
                 @Override
                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                     if (which.equals(DialogAction.POSITIVE)) {

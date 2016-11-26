@@ -45,8 +45,8 @@ import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
-import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
+import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 import timber.log.Timber;
 
@@ -176,7 +176,8 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
             if (bitmap != null) {
                 intent.putExtra("icon", bitmap);
                 intent.putExtra("android.intent.extra.shortcut.ICON_RESOURCE", resId);
-                String bmUri = "android.resource://" + context.getPackageName() + "/" + String.valueOf(resId);
+                String bmUri = "android.resource://" + context.getPackageName() + "/" + String
+                        .valueOf(resId);
                 intent.setData(Uri.parse(bmUri));
                 context.setResult(Activity.RESULT_OK, intent);
             } else {
@@ -195,7 +196,8 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
                         .positiveColor(ColorUtils.getColorFromIcon(iconDrawable, context))
                         .show();
                 if (dialog.getCustomView() != null) {
-                    ImageView dialogIcon = (ImageView) dialog.getCustomView().findViewById(R.id.dialogicon);
+                    ImageView dialogIcon = (ImageView) dialog.getCustomView().findViewById(R.id
+                            .dialogicon);
                     dialogIcon.setImageResource(resId);
                 }
             }

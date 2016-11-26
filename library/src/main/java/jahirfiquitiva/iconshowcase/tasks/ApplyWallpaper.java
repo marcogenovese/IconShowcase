@@ -55,7 +55,8 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
     private Bitmap resource;
     private MaterialDialog dialog;
 
-    public ApplyWallpaper(Activity activity, MaterialDialog dialog, Bitmap resource, boolean isPicker) {
+    public ApplyWallpaper(Activity activity, MaterialDialog dialog, Bitmap resource, boolean
+            isPicker) {
         this.wrActivity = new WeakReference<>(activity);
         this.dialog = dialog;
         this.resource = resource;
@@ -68,7 +69,8 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
         this.callback = callback;
     }
 
-    public ApplyWallpaper(Activity activity, @NonNull String url, ApplyCallback callback, DownloadCallback downloadCallback) {
+    public ApplyWallpaper(Activity activity, @NonNull String url, ApplyCallback callback,
+                          DownloadCallback downloadCallback) {
         this.wrActivity = new WeakReference<>(activity);
         this.url = url;
         this.callback = callback;
@@ -119,14 +121,17 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .into(new SimpleTarget<Bitmap>() {
                                 @Override
-                                public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                                public void onResourceReady(final Bitmap resource,
+                                                            GlideAnimation<? super Bitmap>
+                                                                    glideAnimation) {
                                     if (resource != null) {
                                         if (downloadCallback != null) {
                                             downloadCallback.afterDownloaded();
                                         }
                                         try {
                                             Thread.sleep(500);
-                                            EventBus.getDefault().post(new WallpaperEvent(url, true, WallpaperEvent.Step.APPLYING));
+                                            EventBus.getDefault().post(new WallpaperEvent(url,
+                                                    true, WallpaperEvent.Step.APPLYING));
                                             applyWallpaper(resource);
                                         } catch (InterruptedException ex) {
                                             cancel(true);
@@ -165,7 +170,8 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
         WallpaperManager wm = WallpaperManager.getInstance(wrActivity.get());
         try {
             wm.setBitmap(scaleToActualAspectRatio(resource));
-            EventBus.getDefault().postSticky(new WallpaperEvent(url, true, WallpaperEvent.Step.FINISH));
+            EventBus.getDefault().postSticky(new WallpaperEvent(url, true, WallpaperEvent.Step
+                    .FINISH));
             if (callback != null) {
                 callback.afterApplied();
             }
@@ -207,15 +213,19 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
 //                    } else {
 //                        ((ShowcaseActivity) activity).setupToolbarHeader();
 //                        ColorUtils.setupToolbarIconsAndTextsColors(activity,
-//                                ((ShowcaseActivity) activity).getAppbar(), ((ShowcaseActivity) activity).getToolbar());
+//                                ((ShowcaseActivity) activity).getAppbar(), ((ShowcaseActivity)
+// activity).getToolbar());
 //                    }
 //
 //                    Snackbar longSnackbar = Snackbar.make(layout,
 //                            activity.getString(R.string.set_as_wall_done), Snackbar.LENGTH_LONG);
-//                    final int snackbarLight = ContextCompat.getColor(activity, R.color.snackbar_light);
-//                    final int snackbarDark = ContextCompat.getColor(activity, R.color.snackbar_dark);
+//                    final int snackbarLight = ContextCompat.getColor(activity, R.color
+// .snackbar_light);
+//                    final int snackbarDark = ContextCompat.getColor(activity, R.color
+// .snackbar_dark);
 //                    ViewGroup snackbarView = (ViewGroup) longSnackbar.getView();
-//                    snackbarView.setBackgroundColor(ThemeUtils.darkTheme ? snackbarDark : snackbarLight);
+//                    snackbarView.setBackgroundColor(ThemeUtils.darkTheme ? snackbarDark :
+// snackbarLight);
 //                    snackbarView.setPadding(snackbarView.getPaddingLeft(),
 //                            snackbarView.getPaddingTop(), snackbarView.getPaddingRight(),
 //                            Utils.getNavigationBarHeight((Activity) context.get()));

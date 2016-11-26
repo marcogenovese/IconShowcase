@@ -56,7 +56,8 @@ public class FolderSelectorDialog extends DialogFragment implements MaterialDial
     }
 
     private String getInitialPath() {
-        return initialPath == null ? Environment.getExternalStorageDirectory().getAbsolutePath() : initialPath;
+        return initialPath == null ? Environment.getExternalStorageDirectory().getAbsolutePath()
+                : initialPath;
     }
 
     public void setInitialPath(String path) {
@@ -93,11 +94,13 @@ public class FolderSelectorDialog extends DialogFragment implements MaterialDial
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-                ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) !=
+                ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission
+                        .READ_EXTERNAL_STORAGE) !=
                         PackageManager.PERMISSION_GRANTED) {
             return new MaterialDialog.Builder(getActivity())
                     .title(R.string.md_error_label)
-                    .content(getString(R.string.md_storage_perm_error, getString(R.string.app_name)))
+                    .content(getString(R.string.md_storage_perm_error, getString(R.string
+                            .app_name)))
                     .positiveText(android.R.string.ok)
                     .build();
         } else {
@@ -110,21 +113,25 @@ public class FolderSelectorDialog extends DialogFragment implements MaterialDial
                     .itemsCallback(this)
                     .onPositive(new MaterialDialog.SingleButtonCallback() {
                         @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction
+                                which) {
                             dialog.dismiss();
-                            FolderSelectionCallback callback = (FolderSelectionCallback) getTargetFragment();
+                            FolderSelectionCallback callback = (FolderSelectionCallback)
+                                    getTargetFragment();
                             callback.onFolderSelection(parentFolder);
                         }
                     })
                     .onNegative(new MaterialDialog.SingleButtonCallback() {
                         @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction
+                                which) {
                             dialog.dismiss();
                         }
                     })
                     .onNeutral(new MaterialDialog.SingleButtonCallback() {
                         @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction
+                                which) {
                             createFolder(getActivity(), dialog, parentFolder.getAbsolutePath());
                         }
                     })
@@ -151,7 +158,8 @@ public class FolderSelectorDialog extends DialogFragment implements MaterialDial
         dialog.setItems(getContentsArray());
     }
 
-    public <T extends Fragment & FolderSelectionCallback> void show(AppCompatActivity context, T fragment) {
+    public <T extends Fragment & FolderSelectionCallback> void show(AppCompatActivity context, T
+            fragment) {
         Fragment frag = context.getSupportFragmentManager().findFragmentByTag("FOLDER_SELECTOR");
         if (frag != null) {
             ((DialogFragment) frag).dismiss();
@@ -162,7 +170,8 @@ public class FolderSelectorDialog extends DialogFragment implements MaterialDial
         show(context.getSupportFragmentManager(), "FOLDER_SELECTOR");
     }
 
-    private void createFolder(Context context, final MaterialDialog folderChooserDialog, final String folderPath) {
+    private void createFolder(Context context, final MaterialDialog folderChooserDialog, final
+    String folderPath) {
         new MaterialDialog.Builder(context)
                 .title(R.string.new_folder_title)
                 .content(R.string.new_folder_content)

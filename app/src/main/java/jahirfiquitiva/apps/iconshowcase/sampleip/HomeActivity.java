@@ -26,8 +26,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import jahirfiquitiva.iconshowcase.utilities.LauncherIntents;
-import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 import jahirfiquitiva.iconshowcase.utilities.utils.NotificationUtils;
+import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 import timber.log.Timber;
 
 public class HomeActivity extends AppCompatActivity {
@@ -49,10 +49,12 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Class service = FirebaseService.class;
+        Bundle bundle = getIntent().getExtras();
         if (NotificationUtils.hasNotificationExtraKey(this, getIntent(), "open_link", service)) {
             Utils.openLink(this, getIntent().getStringExtra("open_link"));
         } else {
-            if ((getIntent().getDataString() != null && getIntent().getDataString().equals("apply_shortcut"))
+            if ((getIntent().getDataString() != null && getIntent().getDataString().equals
+                    ("apply_shortcut"))
                     && (Utils.getDefaultLauncherPackage(this) != null)) {
                 try {
                     new LauncherIntents(this, Utils.getDefaultLauncherPackage(this));
@@ -67,16 +69,12 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void runIntent(Class service) {
-        Intent intent = new Intent(HomeActivity.this, jahirfiquitiva.iconshowcase.activities.ShowcaseActivity.class);
+        Intent intent = new Intent(HomeActivity.this, jahirfiquitiva.iconshowcase.activities
+                .ShowcaseActivity.class);
 
-        if (NotificationUtils.hasNotificationExtraKey(this, getIntent(), "notification", service)) {
-            if (NotificationUtils.isNotificationExtraKeyTrue(this, getIntent(), "open_app", service)) {
-                intent.putExtra("open_wallpapers",
-                        NotificationUtils.isNotificationExtraKeyTrue(this, getIntent(), "open_walls", service));
-            } else {
-                finish();
-            }
-        }
+        intent.putExtra("open_wallpapers",
+                NotificationUtils.isNotificationExtraKeyTrue(this, getIntent(), "open_walls",
+                        service));
 
         intent.putExtra("installer", getAppInstaller());
 
@@ -94,7 +92,8 @@ public class HomeActivity extends AppCompatActivity {
 
         intent.putExtra("googlePubKey", GOOGLE_PUBLISHER_KEY);
 
-        if (getIntent().getDataString() != null && getIntent().getDataString().contains("_shortcut")) {
+        if (getIntent().getDataString() != null && getIntent().getDataString().contains
+                ("_shortcut")) {
             intent.putExtra("shortcut", getIntent().getDataString());
         }
 

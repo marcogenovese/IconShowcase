@@ -56,13 +56,15 @@ public class WallpaperDialog extends BaseEventDialog {
         if (frag != null) ((WallpaperDialog) frag).dismiss();
     }
 
-    private static void showBase(final FragmentActivity context, final String url, final WallpaperEvent.Step step) {
+    private static void showBase(final FragmentActivity context, final String url, final
+    WallpaperEvent.Step step) {
         Fragment frag = context.getSupportFragmentManager().findFragmentByTag(TAG);
         if (frag != null) ((WallpaperDialog) frag).dismiss();
         WallpaperDialog.newInstance(url, step).show(context.getSupportFragmentManager(), TAG);
     }
 
-    private static WallpaperDialog newInstance(@NonNull final String url, final WallpaperEvent.Step step) {
+    private static WallpaperDialog newInstance(@NonNull final String url, final WallpaperEvent
+            .Step step) {
         WallpaperDialog f = new WallpaperDialog();
         Bundle args = new Bundle();
         args.putString("wall_url", url);
@@ -76,7 +78,8 @@ public class WallpaperDialog extends BaseEventDialog {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        WallpaperEvent.Step step = (WallpaperEvent.Step) getArguments().getSerializable("wall_step");
+        WallpaperEvent.Step step = (WallpaperEvent.Step) getArguments().getSerializable
+                ("wall_step");
         if (step == null) step = WallpaperEvent.Step.START;
 
         final MaterialDialog.Builder[] builder = {new MaterialDialog.Builder(getActivity())};
@@ -90,33 +93,36 @@ public class WallpaperDialog extends BaseEventDialog {
                         .negativeText(android.R.string.cancel)
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
-                            public void onClick(@NonNull MaterialDialog materialDialog, @NonNull final DialogAction dialogAction) {
+                            public void onClick(@NonNull MaterialDialog materialDialog, @NonNull
+                            final DialogAction dialogAction) {
                                 showBase(getActivity(), getUrl(), WallpaperEvent.Step.LOADING);
                             }
                         });
                 break;
             case LOADING:
 
-                final ApplyWallpaper task = new ApplyWallpaper(getActivity(), getUrl(), new ApplyWallpaper.ApplyCallback() {
-                    @Override
-                    public void afterApplied() {
-                        getActivity().runOnUiThread(new Runnable() {
+                final ApplyWallpaper task = new ApplyWallpaper(getActivity(), getUrl(), new
+                        ApplyWallpaper.ApplyCallback() {
                             @Override
-                            public void run() {
-                                dismiss();
-                                builder[0] = new MaterialDialog.Builder(getActivity());
-                                builder[0].content(R.string.set_as_wall_done)
-                                        .positiveText(android.R.string.ok)
-                                        .show();
-                                if (getActivity() instanceof ShowcaseActivity) {
-                                    if (((ShowcaseActivity) getActivity()).isWallsPicker()) {
-                                        getActivity().finish();
+                            public void afterApplied() {
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        dismiss();
+                                        builder[0] = new MaterialDialog.Builder(getActivity());
+                                        builder[0].content(R.string.set_as_wall_done)
+                                                .positiveText(android.R.string.ok)
+                                                .show();
+                                        if (getActivity() instanceof ShowcaseActivity) {
+                                            if (((ShowcaseActivity) getActivity()).isWallsPicker
+                                                    ()) {
+                                                getActivity().finish();
+                                            }
+                                        }
                                     }
-                                }
+                                });
                             }
-                        });
-                    }
-                }, new ApplyWallpaper.DownloadCallback() {
+                        }, new ApplyWallpaper.DownloadCallback() {
                     @Override
                     public void afterDownloaded() {
                         //TODO: Properly show the "Setting wallpaper..." dialog
@@ -127,9 +133,11 @@ public class WallpaperDialog extends BaseEventDialog {
                 builder[0].content(R.string.downloading_wallpaper)
                         .progress(true, 0)
                         .cancelable(false)
-                        .onPositive(new MaterialDialog.SingleButtonCallback() { //TODO set positive text?
+                        .onPositive(new MaterialDialog.SingleButtonCallback() { //TODO set
+                            // positive text?
                             @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull
+                                    DialogAction which) {
                                 task.cancel(true);
                                 dismiss();
                             }
@@ -144,9 +152,11 @@ public class WallpaperDialog extends BaseEventDialog {
                                 @Override
                                 public void run() {
                                     if (!enteredApplyTask[0]) {
-                                        String newContent = getActivity().getString(R.string.downloading_wallpaper)
+                                        String newContent = getActivity().getString(R.string
+                                                .downloading_wallpaper)
                                                 + "\n"
-                                                + getActivity().getString(R.string.download_takes_longer);
+                                                + getActivity().getString(R.string
+                                                .download_takes_longer);
                                         builder[0].content(newContent)
                                                 .positiveText(android.R.string.cancel);
                                     }
@@ -175,7 +185,8 @@ public class WallpaperDialog extends BaseEventDialog {
     private String getUrl() {
         return getArguments().getString("wall_url", "error");
         //TODO add default url in case of error?
-        //TODO There won't be any default url, instead we could show an icon from resources, i.e. the one in drawer
+        //TODO There won't be any default url, instead we could show an icon from resources, i.e.
+        // the one in drawer
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)

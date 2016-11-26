@@ -34,7 +34,8 @@ public class GlideConfiguration implements GlideModule {
     public void applyOptions(Context context, GlideBuilder builder) {
         boolean runsMinSDK = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
 
-        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context
+                .ACTIVITY_SERVICE);
         boolean lowRAMDevice;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {

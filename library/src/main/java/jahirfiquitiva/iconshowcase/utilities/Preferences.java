@@ -217,7 +217,8 @@ public class Preferences {
     }
 
     public void resetRequestsLeft(Context context) {
-        prefs().edit().putInt(REQUESTS_LEFT, context.getResources().getInteger(R.integer.max_apps_to_request)).apply();
+        prefs().edit().putInt(REQUESTS_LEFT, context.getResources().getInteger(R.integer
+                .max_apps_to_request)).apply();
     }
 
     public int getVersionCode() {
@@ -232,7 +233,7 @@ public class Preferences {
     /* NOTIFICATIONS */
 
     public boolean getNotifsEnabled() {
-        return prefs().getBoolean(NOTIFS_ENABLED, false);
+        return prefs().getBoolean(NOTIFS_ENABLED, true);
     }
 
     public void setNotifsEnabled(boolean enabled) {

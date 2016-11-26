@@ -47,11 +47,11 @@ import jahirfiquitiva.iconshowcase.fragments.ZooperFragment;
 import jahirfiquitiva.iconshowcase.models.ZooperWidget;
 import jahirfiquitiva.iconshowcase.tasks.CopyFilesToStorage;
 import jahirfiquitiva.iconshowcase.tasks.LoadZooperWidgets;
-import jahirfiquitiva.iconshowcase.utilities.utils.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
+import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
+import jahirfiquitiva.iconshowcase.utilities.utils.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
-import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 
 public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -203,7 +203,8 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 for (String filename : files) {
                     if (filename.contains(".")) {
                         if (!filename.equals(fileToIgnore1) && !filename.equals(fileToIgnore2)
-                                && !filename.equals(fileToIgnore3) && !filename.equals(fileToIgnore4)) {
+                                && !filename.equals(fileToIgnore3) && !filename.equals
+                                (fileToIgnore4)) {
                             File file = new File(Environment.getExternalStorageDirectory()
                                     + "/ZooperWidget/" + getFolderName(folder) + "/" + filename);
                             assetsInstalled = file.exists();
@@ -280,15 +281,19 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                             //Open dialog
                             ArrayList<String> apps = new ArrayList<>();
                             if (!Utils.isAppInstalled(context, "org.zooper.zwpro")) {
-                                apps.add(Utils.getStringFromResources(context, R.string.zooper_app));
+                                apps.add(Utils.getStringFromResources(context, R.string
+                                        .zooper_app));
                             }
                             if (context.getResources().getBoolean(R.bool.mu_needed) &&
-                                    !Utils.isAppInstalled(context, "com.batescorp.notificationmediacontrols.alpha")) {
+                                    !Utils.isAppInstalled(context, "com.batescorp" +
+                                            ".notificationmediacontrols.alpha")) {
                                 apps.add(Utils.getStringFromResources(context, R.string.mu_app));
                             }
                             if (context.getResources().getBoolean(R.bool.kolorette_needed) &&
-                                    !Utils.isAppInstalled(context, "com.arun.themeutil.kolorette")) {
-                                apps.add(Utils.getStringFromResources(context, R.string.kolorette_app));
+                                    !Utils.isAppInstalled(context, "com.arun.themeutil" +
+                                            ".kolorette")) {
+                                apps.add(Utils.getStringFromResources(context, R.string
+                                        .kolorette_app));
                             }
                             if (apps.size() > 0) {
                                 ISDialogs.showZooperAppsDialog(context, apps);
@@ -300,7 +305,8 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                             //Install assets
                             if (!areAssetsInstalled()) {
                                 if (!PermissionUtils.canAccessStorage(context)) {
-                                    PermissionUtils.requestStoragePermission((ShowcaseActivity) context);
+                                    PermissionUtils.requestStoragePermission((ShowcaseActivity)
+                                            context);
                                 } else {
                                     installAssets();
                                 }

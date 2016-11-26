@@ -46,8 +46,10 @@ public class KustomWidget {
 
     public Intent getKWGTIntent(Context context) {
         Intent kwgtIntent = new Intent();
-        kwgtIntent.setComponent(new ComponentName("org.kustom.widget", "org.kustom.widget.picker.WidgetPicker"));
-        kwgtIntent.setData(Uri.parse("kfile://" + context.getPackageName() + "/widgets/" + widgetName));
+        kwgtIntent.setComponent(new ComponentName("org.kustom.widget", "org.kustom.widget.picker" +
+                ".WidgetPicker"));
+        kwgtIntent.setData(Uri.parse("kfile://" + context.getPackageName() + "/widgets/" +
+                widgetName));
         return kwgtIntent;
     }
 

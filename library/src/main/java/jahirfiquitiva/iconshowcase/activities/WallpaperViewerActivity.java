@@ -72,12 +72,12 @@ import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.models.WallpaperItem;
 import jahirfiquitiva.iconshowcase.tasks.ApplyWallpaper;
 import jahirfiquitiva.iconshowcase.tasks.WallpaperToCrop;
-import jahirfiquitiva.iconshowcase.utilities.utils.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
-import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
-import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
+import jahirfiquitiva.iconshowcase.utilities.utils.PermissionUtils;
+import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
+import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 import jahirfiquitiva.iconshowcase.views.TouchImageView;
 
@@ -135,16 +135,19 @@ public class WallpaperViewerActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
-        ToolbarColorizer.colorizeToolbar(toolbar, ContextCompat.getColor(context, android.R.color.white));
+        ToolbarColorizer.colorizeToolbar(toolbar, ContextCompat.getColor(context, android.R.color
+                .white));
 
         toHide1 = (LinearLayout) findViewById(R.id.iconsA);
         toHide2 = (LinearLayout) findViewById(R.id.iconsB);
 
-        int tintColor = ThemeUtils.darkOrLight(context, R.color.drawable_tint_dark, R.color.drawable_base_tint);
+        int tintColor = ThemeUtils.darkOrLight(context, R.color.drawable_tint_dark, R.color
+                .drawable_base_tint);
 
         Drawable save = ColorUtils.getTintedIcon(context, R.drawable.ic_save, tintColor);
 
-        Drawable apply = ColorUtils.getTintedIcon(context, R.drawable.ic_apply_wallpaper, tintColor);
+        Drawable apply = ColorUtils.getTintedIcon(context, R.drawable.ic_apply_wallpaper,
+                tintColor);
 
         Drawable info = ColorUtils.getTintedIcon(context, R.drawable.ic_info, tintColor);
 
@@ -181,7 +184,8 @@ public class WallpaperViewerActivity extends AppCompatActivity {
             @Override
             public void onDebouncedClick(View v) {
                 ISDialogs.showWallpaperDetailsDialog(context, item.getWallName(),
-                        item.getWallAuthor(), item.getWallDimensions(), item.getWallCopyright(), new DialogInterface.OnDismissListener() {
+                        item.getWallAuthor(), item.getWallDimensions(), item.getWallCopyright(),
+                        new DialogInterface.OnDismissListener() {
                             @Override
                             public void onDismiss(DialogInterface dialogInterface) {
                                 //Do nothing
@@ -239,12 +243,17 @@ public class WallpaperViewerActivity extends AppCompatActivity {
                     .fitCenter()
                     .listener(new RequestListener<String, GlideDrawable>() {
                         @Override
-                        public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        public boolean onException(Exception e, String model,
+                                                   Target<GlideDrawable> target, boolean
+                                                           isFirstResource) {
                             return false;
                         }
 
                         @Override
-                        public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        public boolean onResourceReady(GlideDrawable resource, String model,
+                                                       Target<GlideDrawable> target, boolean
+                                                               isFromMemoryCache, boolean
+                                                               isFirstResource) {
                             spinner.setVisibility(View.GONE);
                             return false;
                         }
@@ -259,12 +268,17 @@ public class WallpaperViewerActivity extends AppCompatActivity {
                     .fitCenter()
                     .listener(new RequestListener<String, GlideDrawable>() {
                         @Override
-                        public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        public boolean onException(Exception e, String model,
+                                                   Target<GlideDrawable> target, boolean
+                                                           isFirstResource) {
                             return false;
                         }
 
                         @Override
-                        public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        public boolean onResourceReady(GlideDrawable resource, String model,
+                                                       Target<GlideDrawable> target, boolean
+                                                               isFromMemoryCache, boolean
+                                                               isFirstResource) {
                             spinner.setVisibility(View.GONE);
                             return false;
                         }
@@ -312,7 +326,8 @@ public class WallpaperViewerActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResult) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResult) {
         if (requestCode == PermissionUtils.PERMISSION_REQUEST_CODE) {
             if (grantResult.length > 0 && grantResult[0] == PackageManager.PERMISSION_GRANTED) {
                 if (PermissionUtils.getViewerActivityAction().equals("crop")) {
@@ -360,7 +375,8 @@ public class WallpaperViewerActivity extends AppCompatActivity {
                 .cancelable(false)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction
+                            which) {
                         if (downloadDialog != null) {
                             downloadDialog.dismiss();
                         }
@@ -375,7 +391,8 @@ public class WallpaperViewerActivity extends AppCompatActivity {
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(new SimpleTarget<Bitmap>() {
                     @Override
-                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap>
+                            glideAnimation) {
                         if (resource != null && downloadDialog.isShowing()) {
                             enteredDownloadTask[0] = true;
                             saveWallpaper(context, name, downloadDialog, resource);
@@ -395,7 +412,8 @@ public class WallpaperViewerActivity extends AppCompatActivity {
                                     + "\n"
                                     + context.getString(R.string.download_takes_longer);
                             downloadDialog.setContent(newContent);
-                            downloadDialog.setActionButton(DialogAction.POSITIVE, android.R.string.cancel);
+                            downloadDialog.setActionButton(DialogAction.POSITIVE, android.R
+                                    .string.cancel);
                         }
                     }
                 });
@@ -464,7 +482,8 @@ public class WallpaperViewerActivity extends AppCompatActivity {
         ISDialogs.showApplyWallpaperDialog(this,
                 new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull
+                            DialogAction dialogAction) {
                         if (dialogApply != null) {
                             dialogApply.dismiss();
                         }
@@ -484,7 +503,8 @@ public class WallpaperViewerActivity extends AppCompatActivity {
                                 .cancelable(false)
                                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                                     @Override
-                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull
+                                            DialogAction which) {
                                         if (applyTask[0] != null) {
                                             applyTask[0].cancel(true);
                                         }
@@ -522,34 +542,46 @@ public class WallpaperViewerActivity extends AppCompatActivity {
                                                     .cancelable(false)
                                                     .show();
 
-                                            applyTask[0] = new ApplyWallpaper(context, resource, new ApplyWallpaper.ApplyCallback() {
-                                                @Override
-                                                public void afterApplied() {
-                                                    runOnUIThread(context, new Runnable() {
+                                            applyTask[0] = new ApplyWallpaper(context, resource,
+                                                    new ApplyWallpaper.ApplyCallback() {
                                                         @Override
-                                                        public void run() {
-                                                            if (dialogApply != null) {
-                                                                dialogApply.dismiss();
-                                                            }
-
-                                                            dialogApply = new MaterialDialog.Builder(context)
-                                                                    .content(R.string.set_as_wall_done)
-                                                                    .positiveText(android.R.string.ok)
-                                                                    .show();
-
-                                                            dialogApply.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                                        public void afterApplied() {
+                                                            runOnUIThread(context, new Runnable() {
                                                                 @Override
-                                                                public void onDismiss(DialogInterface dialogInterface) {
-                                                                    if (toHide1 != null && toHide2 != null) {
-                                                                        toHide1.setVisibility(View.VISIBLE);
-                                                                        toHide2.setVisibility(View.VISIBLE);
+                                                                public void run() {
+                                                                    if (dialogApply != null) {
+                                                                        dialogApply.dismiss();
                                                                     }
+
+                                                                    dialogApply = new MaterialDialog
+                                                                            .Builder(context)
+                                                                            .content(R.string
+                                                                                    .set_as_wall_done)
+                                                                            .positiveText(android.R
+                                                                                    .string.ok)
+                                                                            .show();
+
+                                                                    dialogApply
+                                                                            .setOnDismissListener
+                                                                                    (new DialogInterface.OnDismissListener() {
+                                                                        @Override
+                                                                        public void onDismiss
+                                                                                (DialogInterface
+                                                                                         dialogInterface) {
+                                                                            if (toHide1 != null &&
+                                                                                    toHide2 !=
+                                                                                            null) {
+                                                                                toHide1.setVisibility
+                                                                                        (View.VISIBLE);
+                                                                                toHide2.setVisibility
+                                                                                        (View.VISIBLE);
+                                                                            }
+                                                                        }
+                                                                    });
                                                                 }
                                                             });
                                                         }
                                                     });
-                                                }
-                                            });
                                             applyTask[0].execute();
                                         }
                                     }
@@ -563,11 +595,14 @@ public class WallpaperViewerActivity extends AppCompatActivity {
                                     @Override
                                     public void run() {
                                         if (!enteredApplyTask[0]) {
-                                            String newContent = context.getString(R.string.downloading_wallpaper)
+                                            String newContent = context.getString(R.string
+                                                    .downloading_wallpaper)
                                                     + "\n"
-                                                    + context.getString(R.string.download_takes_longer);
+                                                    + context.getString(R.string
+                                                    .download_takes_longer);
                                             dialogApply.setContent(newContent);
-                                            dialogApply.setActionButton(DialogAction.POSITIVE, android.R.string.cancel);
+                                            dialogApply.setActionButton(DialogAction.POSITIVE,
+                                                    android.R.string.cancel);
                                         }
                                     }
                                 });
@@ -576,7 +611,8 @@ public class WallpaperViewerActivity extends AppCompatActivity {
                     }
                 }, new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull
+                            DialogAction dialogAction) {
                         if (!PermissionUtils.canAccessStorage(WallpaperViewerActivity.this)) {
                             PermissionUtils.setViewerActivityAction("crop");
                             PermissionUtils.requestStoragePermission(WallpaperViewerActivity.this);
@@ -604,7 +640,8 @@ public class WallpaperViewerActivity extends AppCompatActivity {
 
     private void showDialogs(String action) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-                ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) !=
+                ActivityCompat.checkSelfPermission(context, Manifest.permission
+                        .READ_EXTERNAL_STORAGE) !=
                         PackageManager.PERMISSION_GRANTED) {
             new MaterialDialog.Builder(context)
                     .title(R.string.md_error_label)
@@ -648,7 +685,8 @@ public class WallpaperViewerActivity extends AppCompatActivity {
                 .cancelable(false)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction
+                            which) {
                         if (cropTask[0] != null) {
                             cropTask[0].cancel(true);
                         }
@@ -664,7 +702,8 @@ public class WallpaperViewerActivity extends AppCompatActivity {
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(new SimpleTarget<Bitmap>() {
                     @Override
-                    public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                    public void onResourceReady(final Bitmap resource, GlideAnimation<? super
+                            Bitmap> glideAnimation) {
                         if (resource != null && dialogApply.isShowing()) {
                             enteredCropTask[0] = true;
                             if (dialogApply != null) {
@@ -676,7 +715,8 @@ public class WallpaperViewerActivity extends AppCompatActivity {
                                     .cancelable(false)
                                     .onPositive(new MaterialDialog.SingleButtonCallback() {
                                         @Override
-                                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                        public void onClick(@NonNull MaterialDialog dialog,
+                                                            @NonNull DialogAction which) {
                                             if (cropTask[0] != null) {
                                                 cropTask[0].cancel(true);
                                             }
@@ -694,11 +734,14 @@ public class WallpaperViewerActivity extends AppCompatActivity {
                                     runOnUIThread(context, new Runnable() {
                                         @Override
                                         public void run() {
-                                            String content = context.getString(R.string.preparing_wallpaper)
-                                                    + "\n" + context.getString(R.string.download_takes_longer);
+                                            String content = context.getString(R.string
+                                                    .preparing_wallpaper)
+                                                    + "\n" + context.getString(R.string
+                                                    .download_takes_longer);
 
                                             dialogApply.setContent(content);
-                                            dialogApply.setActionButton(DialogAction.POSITIVE, android.R.string.cancel);
+                                            dialogApply.setActionButton(DialogAction.POSITIVE,
+                                                    android.R.string.cancel);
                                         }
                                     });
                                 }
@@ -719,7 +762,8 @@ public class WallpaperViewerActivity extends AppCompatActivity {
                                     + "\n"
                                     + context.getString(R.string.download_takes_longer);
                             dialogApply.setContent(newContent);
-                            dialogApply.setActionButton(DialogAction.POSITIVE, android.R.string.cancel);
+                            dialogApply.setActionButton(DialogAction.POSITIVE, android.R.string
+                                    .cancel);
                         }
                     }
                 });

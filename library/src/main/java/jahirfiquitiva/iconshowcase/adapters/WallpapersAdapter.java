@@ -58,9 +58,9 @@ import jahirfiquitiva.iconshowcase.dialogs.WallpaperDialog;
 import jahirfiquitiva.iconshowcase.models.WallpaperItem;
 import jahirfiquitiva.iconshowcase.tasks.ApplyWallpaper;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
+import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
-import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import timber.log.Timber;
 
 public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.WallsHolder> {
@@ -79,15 +79,18 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
 
     @Override
     public WallsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new WallsHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_wallpaper, parent, false));
+        return new WallsHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout
+                .item_wallpaper, parent, false));
     }
 
     @Override
     public void onBindViewHolder(final WallsHolder holder, int position) {
         holder.titleBg.setBackgroundColor(
-                ColorUtils.changeAlpha(ThemeUtils.darkOrLight(activity, R.color.card_light_background, R.color.card_dark_background), 0.65f));
+                ColorUtils.changeAlpha(ThemeUtils.darkOrLight(activity, R.color
+                        .card_light_background, R.color.card_dark_background), 0.65f));
         holder.name.setTextColor(ColorUtils.getMaterialPrimaryTextColor(!ThemeUtils.darkTheme));
-        holder.authorName.setTextColor(ColorUtils.getMaterialSecondaryTextColor(!ThemeUtils.darkTheme));
+        holder.authorName.setTextColor(ColorUtils.getMaterialSecondaryTextColor(!ThemeUtils
+                .darkTheme));
 
         final WallpaperItem wallItem = wallsList.get(holder.getAdapterPosition());
 
@@ -102,7 +105,8 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
             @Override
             protected void setResource(Bitmap bitmap) {
                 Palette.Swatch wallSwatch = ColorUtils.getPaletteSwatch(bitmap);
-                if ((mPrefs != null & mPrefs.getAnimationsEnabled()) && (holder.getAdapterPosition() > lastPosition)) {
+                if ((mPrefs != null & mPrefs.getAnimationsEnabled()) && (holder
+                        .getAdapterPosition() > lastPosition)) {
                     holder.wall.setAlpha(0f);
                     holder.titleBg.setAlpha(0f);
                     holder.wall.setImageBitmap(bitmap);
@@ -175,6 +179,115 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
         return wallsList == null ? 0 : wallsList.size();
     }
 
+    private void setColors(int color, WallsHolder holder) {
+        if (holder.titleBg != null && color != 0) {
+            holder.titleBg.setBackgroundColor(color);
+            if (holder.name != null) {
+                holder.name.setTextColor(ColorUtils.getMaterialPrimaryTextColor(!ColorUtils
+                        .isLightColor(color)));
+            }
+            if (holder.authorName != null) {
+                holder.authorName.setTextColor(ColorUtils.getMaterialPrimaryTextColor(!ColorUtils
+                        .isLightColor(color)));
+            }
+        }
+    }
+
+    private void showApplyWallpaperDialog(final Context context, final WallpaperItem item) {
+        new MaterialDialog.Builder(context)
+                .title(R.string.apply)
+                .content(R.string.confirm_apply)
+                .positiveText(R.string.apply)
+                .negativeText(android.R.string.cancel)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull final
+                    DialogAction dialogAction) {
+                        if (applyDialog != null) {
+                            applyDialog.dismiss();
+                        }
+                        final ApplyWallpaper[] applyTask = new ApplyWallpaper[1];
+                        final boolean[] enteredApplyTask = {false};
+                        applyDialog = new MaterialDialog.Builder(context)
+                                .content(R.string.downloading_wallpaper)
+                                .progress(true, 0)
+                                .cancelable(false)
+                                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull
+                                            DialogAction which) {
+                                        if (applyTask[0] != null) {
+                                            applyTask[0].cancel(true);
+                                        }
+                                        applyDialog.dismiss();
+                                    }
+                                })
+                                .show();
+
+                        Glide.with(context)
+                                .load(item.getWallURL())
+                                .asBitmap()
+                                .dontAnimate()
+                                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                                .into(new SimpleTarget<Bitmap>() {
+                                    @Override
+                                    public void onResourceReady(final Bitmap resource,
+                                                                GlideAnimation<? super Bitmap>
+                                                                        glideAnimation) {
+                                        if (resource != null && applyDialog.isShowing()) {
+                                            enteredApplyTask[0] = true;
+
+                                            if (applyDialog != null) {
+                                                applyDialog.dismiss();
+                                            }
+                                            applyDialog = new MaterialDialog.Builder(context)
+                                                    .content(R.string.setting_wall_title)
+                                                    .progress(true, 0)
+                                                    .cancelable(false)
+                                                    .show();
+
+                                            applyTask[0] = new ApplyWallpaper(((ShowcaseActivity)
+                                                    context), applyDialog, resource,
+                                                    ((ShowcaseActivity) context).isWallsPicker());
+                                            applyTask[0].execute();
+                                        }
+                                    }
+                                });
+
+                        Timer timer = new Timer();
+                        timer.schedule(new TimerTask() {
+                            @Override
+                            public void run() {
+                                runOnUIThread(context, new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (!enteredApplyTask[0]) {
+                                            String newContent = context.getString(R.string
+                                                    .downloading_wallpaper)
+                                                    + "\n"
+                                                    + context.getString(R.string
+                                                    .download_takes_longer);
+                                            applyDialog.setContent(newContent);
+                                            applyDialog.setActionButton(DialogAction.POSITIVE,
+                                                    android.R.string.cancel);
+                                        }
+                                    }
+                                });
+                            }
+                        }, 10000);
+                    }
+                })
+                .show();
+    }
+
+    private Handler handler(Context context) {
+        return new Handler(context.getMainLooper());
+    }
+
+    private void runOnUIThread(Context context, Runnable r) {
+        handler(context).post(r);
+    }
+
     public class WallsHolder extends RecyclerView.ViewHolder implements View.OnClickListener,
             View.OnLongClickListener {
 
@@ -222,7 +335,8 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
                 WallpaperDialog.show(activity, item.getWallURL());
             } else {
                 final Intent intent = new Intent(activity,
-                        activity.getResources().getBoolean(R.bool.alternative_viewer) ? AltWallpaperViewerActivity.class :
+                        activity.getResources().getBoolean(R.bool.alternative_viewer) ?
+                                AltWallpaperViewerActivity.class :
                                 WallpaperViewerActivity.class);
 
                 intent.putExtra("item", item);
@@ -235,7 +349,8 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
 
                     try {
                         String filename = "temp.png";
-                        FileOutputStream stream = activity.openFileOutput(filename, Context.MODE_PRIVATE);
+                        FileOutputStream stream = activity.openFileOutput(filename, Context
+                                .MODE_PRIVATE);
                         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
                         stream.close();
                         intent.putExtra("image", filename);
@@ -243,7 +358,9 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
                         Timber.d("Error getting drawable", e.getLocalizedMessage());
                     }
 
-                    ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, wall, ViewCompat.getTransitionName(wall));
+                    ActivityOptionsCompat options = ActivityOptionsCompat
+                            .makeSceneTransitionAnimation(activity, wall, ViewCompat
+                                    .getTransitionName(wall));
                     activity.startActivity(intent, options.toBundle());
                 } else {
                     activity.startActivity(intent);
@@ -255,105 +372,6 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
             clickable = true;
         }
 
-    }
-
-    private void setColors(int color, WallsHolder holder) {
-        if (holder.titleBg != null && color != 0) {
-            holder.titleBg.setBackgroundColor(color);
-            if (holder.name != null) {
-                holder.name.setTextColor(ColorUtils.getMaterialPrimaryTextColor(!ColorUtils.isLightColor(color)));
-            }
-            if (holder.authorName != null) {
-                holder.authorName.setTextColor(ColorUtils.getMaterialPrimaryTextColor(!ColorUtils.isLightColor(color)));
-            }
-        }
-    }
-
-    private void showApplyWallpaperDialog(final Context context, final WallpaperItem item) {
-        new MaterialDialog.Builder(context)
-                .title(R.string.apply)
-                .content(R.string.confirm_apply)
-                .positiveText(R.string.apply)
-                .negativeText(android.R.string.cancel)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull final DialogAction dialogAction) {
-                        if (applyDialog != null) {
-                            applyDialog.dismiss();
-                        }
-                        final ApplyWallpaper[] applyTask = new ApplyWallpaper[1];
-                        final boolean[] enteredApplyTask = {false};
-                        applyDialog = new MaterialDialog.Builder(context)
-                                .content(R.string.downloading_wallpaper)
-                                .progress(true, 0)
-                                .cancelable(false)
-                                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                    @Override
-                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                        if (applyTask[0] != null) {
-                                            applyTask[0].cancel(true);
-                                        }
-                                        applyDialog.dismiss();
-                                    }
-                                })
-                                .show();
-
-                        Glide.with(context)
-                                .load(item.getWallURL())
-                                .asBitmap()
-                                .dontAnimate()
-                                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                                .into(new SimpleTarget<Bitmap>() {
-                                    @Override
-                                    public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                                        if (resource != null && applyDialog.isShowing()) {
-                                            enteredApplyTask[0] = true;
-
-                                            if (applyDialog != null) {
-                                                applyDialog.dismiss();
-                                            }
-                                            applyDialog = new MaterialDialog.Builder(context)
-                                                    .content(R.string.setting_wall_title)
-                                                    .progress(true, 0)
-                                                    .cancelable(false)
-                                                    .show();
-
-                                            applyTask[0] = new ApplyWallpaper(((ShowcaseActivity) context), applyDialog, resource,
-                                                    ((ShowcaseActivity) context).isWallsPicker());
-                                            applyTask[0].execute();
-                                        }
-                                    }
-                                });
-
-                        Timer timer = new Timer();
-                        timer.schedule(new TimerTask() {
-                            @Override
-                            public void run() {
-                                runOnUIThread(context, new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        if (!enteredApplyTask[0]) {
-                                            String newContent = context.getString(R.string.downloading_wallpaper)
-                                                    + "\n"
-                                                    + context.getString(R.string.download_takes_longer);
-                                            applyDialog.setContent(newContent);
-                                            applyDialog.setActionButton(DialogAction.POSITIVE, android.R.string.cancel);
-                                        }
-                                    }
-                                });
-                            }
-                        }, 10000);
-                    }
-                })
-                .show();
-    }
-
-    private Handler handler(Context context) {
-        return new Handler(context.getMainLooper());
-    }
-
-    private void runOnUIThread(Context context, Runnable r) {
-        handler(context).post(r);
     }
 
 }

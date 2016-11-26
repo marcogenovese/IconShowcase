@@ -52,7 +52,8 @@ public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.Laun
     private final ClickListener mCallback;
     private Preferences mPrefs;
 
-    public LaunchersAdapter(Context context, List<ApplyFragment.Launcher> launchers, ClickListener callback) {
+    public LaunchersAdapter(Context context, List<ApplyFragment.Launcher> launchers,
+                            ClickListener callback) {
         this.context = context;
         this.mPrefs = new Preferences(context);
         this.launchers = launchers;
@@ -69,7 +70,8 @@ public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.Laun
     public void onBindViewHolder(LauncherHolder holder, int position) {
         // Turns Launcher name "Something Pro" to "ic_something_pro"
         String iconName = "ic_" + launchers.get(position).name.toLowerCase().replace(" ", "_");
-        int iconResource = Utils.getIconResId(context.getResources(), context.getPackageName(), iconName);
+        int iconResource = Utils.getIconResId(context.getResources(), context.getPackageName(),
+                iconName);
 
         final int dark = ContextCompat.getColor(context, R.color.launcher_tint_dark);
         final int light = ContextCompat.getColor(context, R.color.launcher_tint_light);
@@ -80,14 +82,16 @@ public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.Laun
             Glide.with(context)
                     .load(iconResource != 0 ?
                             iconResource :
-                            Utils.getIconResId(context.getResources(), context.getPackageName(), "ic_na_launcher"))
+                            Utils.getIconResId(context.getResources(), context.getPackageName(),
+                                    "ic_na_launcher"))
                     .priority(Priority.IMMEDIATE)
                     .into(holder.icon);
         } else {
             Glide.with(context)
                     .load(iconResource != 0 ?
                             iconResource :
-                            Utils.getIconResId(context.getResources(), context.getPackageName(), "ic_na_launcher"))
+                            Utils.getIconResId(context.getResources(), context.getPackageName(),
+                                    "ic_na_launcher"))
                     .priority(Priority.IMMEDIATE)
                     .dontAnimate()
                     .into(holder.icon);

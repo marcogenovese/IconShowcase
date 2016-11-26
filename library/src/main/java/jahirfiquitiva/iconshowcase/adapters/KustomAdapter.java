@@ -146,7 +146,8 @@ public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.Ku
     }
 
     @Override
-    public void onBindViewHolder(KustomHolder holder, int section, final int relativePosition, int absolutePosition) {
+    public void onBindViewHolder(KustomHolder holder, int section, final int relativePosition,
+                                 int absolutePosition) {
         holder.background.setImageDrawable(wallpaper);
         String filePath;
         switch (section) {
@@ -158,7 +159,8 @@ public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.Ku
                     @Override
                     public void onDebouncedClick(View v) {
                         if (Utils.isAppInstalled(context, "org.kustom.wallpaper")) {
-                            context.startActivity(kustomWalls.get(relativePosition).getKLWPIntent(context));
+                            context.startActivity(kustomWalls.get(relativePosition).getKLWPIntent
+                                    (context));
                         }
                     }
                 });
@@ -180,7 +182,8 @@ public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.Ku
                     @Override
                     public void onDebouncedClick(View v) {
                         if (Utils.isAppInstalled(context, "org.kustom.widget")) {
-                            context.startActivity(widgets.get(relativePosition).getKWGTIntent(context));
+                            context.startActivity(widgets.get(relativePosition).getKWGTIntent
+                                    (context));
                         }
                     }
                 });

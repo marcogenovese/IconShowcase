@@ -54,7 +54,8 @@ public class KustomFragment extends CapsuleFragment {
     private SectionedGridSpacingItemDecoration space;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle
+            savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         context = getActivity();
 
@@ -91,7 +92,8 @@ public class KustomFragment extends CapsuleFragment {
                     ISDialogs.showKustomAppsDownloadDialog(context, apps);
                 } else {
                     hideFab();
-                    //TODO: Show snackbar saying something like "Apps installed" although this shouldn't ever happen.
+                    //TODO: Show snackbar saying something like "Apps installed" although this
+                    // shouldn't ever happen.
                 }
             }
         });
@@ -109,11 +111,14 @@ public class KustomFragment extends CapsuleFragment {
 
         GridLayoutManager gridManager = new GridLayoutManager(context, columnsNumber);
 
-        RecyclerFastScroller fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
+        RecyclerFastScroller fastScroller = (RecyclerFastScroller) layout.findViewById(R.id
+                .rvFastScroller);
 
-        kustomAdapter = new KustomAdapter(context, ((ShowcaseActivity) context).getWallpaperDrawable());
+        kustomAdapter = new KustomAdapter(context, ((ShowcaseActivity) context)
+                .getWallpaperDrawable());
 
-        space = new SectionedGridSpacingItemDecoration(columnsNumber, gridSpacing, true, kustomAdapter);
+        space = new SectionedGridSpacingItemDecoration(columnsNumber, gridSpacing, true,
+                kustomAdapter);
 
         gridManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override

@@ -57,7 +57,8 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
     private volatile boolean wasCancelled = false;
 
     public WallpaperToCrop(Activity activity, MaterialDialog dialog, Bitmap resource,
-                           View layout, String wallName, LinearLayout toHide1, LinearLayout toHide2) {
+                           View layout, String wallName, LinearLayout toHide1, LinearLayout
+                                   toHide2) {
         this.wrActivity = new WeakReference<>(activity);
         this.dialog = dialog;
         this.resource = resource;
@@ -123,7 +124,8 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
                 final int snackbarLight = ContextCompat.getColor(context, R.color.snackbar_light);
                 final int snackbarDark = ContextCompat.getColor(context, R.color.snackbar_dark);
                 ViewGroup snackbarView = (ViewGroup) snackbar.getView();
-                snackbarView.setBackgroundColor(ThemeUtils.darkTheme ? snackbarDark : snackbarLight);
+                snackbarView.setBackgroundColor(ThemeUtils.darkTheme ? snackbarDark :
+                        snackbarLight);
                 snackbarView.setPadding(snackbarView.getPaddingLeft(),
                         snackbarView.getPaddingTop(), snackbarView.getPaddingRight(),
                         Utils.getNavigationBarHeight((Activity) context));

@@ -42,9 +42,9 @@ import jahirfiquitiva.iconshowcase.models.HomeCard;
 import jahirfiquitiva.iconshowcase.models.IconsCategory;
 import jahirfiquitiva.iconshowcase.tasks.LoadKustomFiles;
 import jahirfiquitiva.iconshowcase.tasks.LoadZooperWidgets;
+import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
-import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 
 public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -115,14 +115,16 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 @Override
                 public void onDebouncedClick(View v) {
                     Intent rate = new Intent(Intent.ACTION_VIEW,
-                            Uri.parse("https://play.google.com/store/apps/details?id=" + context.getPackageName()));
+                            Uri.parse("https://play.google.com/store/apps/details?id=" + context
+                                    .getPackageName()));
                     context.startActivity(rate);
                 }
             });
             whldr.moreappsbtn.setOnClickListener(new DebouncedClickListener() {
                 @Override
                 public void onDebouncedClick(View v) {
-                    Utils.openLink(context, context.getResources().getString(R.string.iconpack_author_playstore));
+                    Utils.openLink(context, context.getResources().getString(R.string
+                            .iconpack_author_playstore));
                 }
             });
         } else if (holder instanceof AppInfoCard) {
@@ -138,7 +140,8 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             mhldr.lly.setOnClickListener(new DebouncedClickListener() {
                 @Override
                 public void onDebouncedClick(View v) {
-                    Utils.openLink(context, context.getResources().getString(R.string.iconpack_author_playstore));
+                    Utils.openLink(context, context.getResources().getString(R.string
+                            .iconpack_author_playstore));
                 }
             });
         } else if (holder instanceof AppCard) {
@@ -147,7 +150,8 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             view.setOnClickListener(new DebouncedClickListener() {
                 @Override
                 public void onDebouncedClick(View v) {
-                    if (homeCards.get(ahldr.i - cards).isInstalled && homeCards.get(ahldr.i - cards).intent != null) {
+                    if (homeCards.get(ahldr.i - cards).isInstalled && homeCards.get(ahldr.i -
+                            cards).intent != null) {
                         context.startActivity(homeCards.get(ahldr.i - cards).intent);
                     } else if (view.getVisibility() == View.VISIBLE) {
                         Utils.openLink(context, homeCards.get(ahldr.i - cards).onClickLink);
@@ -203,6 +207,47 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         iconsIV.setImageDrawable(iconsDrawable);
         wallsIV.setImageDrawable(wallsDrawable);
         widgetsIV.setImageDrawable(widgetsDrawable);
+    }
+
+    private void resetAppInfoValues() {
+        this.icons = 0;
+        this.wallpapers = 0;
+        this.widgets = 0;
+    }
+
+    public void setupAppInfoAmounts() {
+        resetAppInfoValues();
+        if (FullListHolder.get().iconsCategories().getList() != null) {
+            for (IconsCategory category : FullListHolder.get().iconsCategories().getList()) {
+                if (category.getCategoryName().equals("All")) {
+                    this.icons += category.getIconsArray().size();
+                }
+            }
+            if (this.icons > 1) {
+                this.icons -= 1;
+            }
+        }
+        this.wallpapers = FullListHolder.get().walls().getList() != null
+                ? FullListHolder.get().walls().getList().size() : 0;
+        this.widgets = LoadZooperWidgets.widgets != null ? LoadZooperWidgets.widgets.size() : 0;
+        this.widgets += LoadKustomFiles.widgets != null ? LoadKustomFiles.widgets.size() : 0;
+        if (this.widgets > 1) {
+            this.widgets -= 1;
+        }
+    }
+
+    public void setupAppInfo() {
+        if (hldr != null) {
+            hldr.iconsT.setText(context.getResources().getString(R.string.themed_icons, String
+                    .valueOf(icons)));
+            hldr.wallsT.setText(context.getResources().getString(R.string.available_wallpapers,
+                    String.valueOf(wallpapers)));
+            hldr.widgetsT.setText(context.getResources().getString(R.string.included_widgets,
+                    String.valueOf(widgets)));
+            if (!((ShowcaseActivity) context).includesZooper()) {
+                hldr.widgets.setVisibility(View.GONE);
+            }
+        }
     }
 
     public class WelcomeCard extends RecyclerView.ViewHolder {
@@ -269,44 +314,6 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             cardDesc = (TextView) itemView.findViewById(R.id.home_card_description);
             cardIcon = (ImageView) itemView.findViewById(R.id.home_card_image);
             subLly = (LinearLayout) itemView.findViewById(R.id.home_card_sub_layout);
-        }
-    }
-
-    private void resetAppInfoValues() {
-        this.icons = 0;
-        this.wallpapers = 0;
-        this.widgets = 0;
-    }
-
-    public void setupAppInfoAmounts() {
-        resetAppInfoValues();
-        if (FullListHolder.get().iconsCategories().getList() != null) {
-            for (IconsCategory category : FullListHolder.get().iconsCategories().getList()) {
-                if (category.getCategoryName().equals("All")) {
-                    this.icons += category.getIconsArray().size();
-                }
-            }
-            if (this.icons > 1) {
-                this.icons -= 1;
-            }
-        }
-        this.wallpapers = FullListHolder.get().walls().getList() != null
-                ? FullListHolder.get().walls().getList().size() : 0;
-        this.widgets = LoadZooperWidgets.widgets != null ? LoadZooperWidgets.widgets.size() : 0;
-        this.widgets += LoadKustomFiles.widgets != null ? LoadKustomFiles.widgets.size() : 0;
-        if (this.widgets > 1) {
-            this.widgets -= 1;
-        }
-    }
-
-    public void setupAppInfo() {
-        if (hldr != null) {
-            hldr.iconsT.setText(context.getResources().getString(R.string.themed_icons, String.valueOf(icons)));
-            hldr.wallsT.setText(context.getResources().getString(R.string.available_wallpapers, String.valueOf(wallpapers)));
-            hldr.widgetsT.setText(context.getResources().getString(R.string.included_widgets, String.valueOf(widgets)));
-            if (!((ShowcaseActivity) context).includesZooper()) {
-                hldr.widgets.setVisibility(View.GONE);
-            }
         }
     }
 

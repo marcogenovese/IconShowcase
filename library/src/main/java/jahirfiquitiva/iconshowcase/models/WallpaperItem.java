@@ -44,7 +44,8 @@ public class WallpaperItem implements Parcelable {
     private final boolean downloadable;
     private String wallThumbUrl;
 
-    public WallpaperItem(String wallName, String wallAuthor, String wallUrl, String wallThumbUrl, String wallDimensions, String wallCopyright,
+    public WallpaperItem(String wallName, String wallAuthor, String wallUrl, String wallThumbUrl,
+                         String wallDimensions, String wallCopyright,
                          boolean downloadable) {
         this.wallName = wallName;
         this.wallAuthor = wallAuthor;

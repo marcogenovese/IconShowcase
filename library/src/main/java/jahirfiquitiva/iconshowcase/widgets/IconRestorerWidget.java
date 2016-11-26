@@ -67,7 +67,8 @@ public class IconRestorerWidget extends AppWidgetProvider {
 
             } catch (ActivityNotFoundException e) {
                 Timber.d("App not found!");
-                String errorToastContent = context.getResources().getString(R.string.launcher_icon_restorer_error,
+                String errorToastContent = context.getResources().getString(R.string
+                                .launcher_icon_restorer_error,
                         context.getResources().getString(R.string.app_name));
                 Toast.makeText(context,
                         errorToastContent, Toast.LENGTH_LONG)

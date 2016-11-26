@@ -73,7 +73,8 @@ public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
             AssetManager assetManager = context.get().getAssets();
             String[] templates = assetManager.list("templates");
 
-            File previewsFolder = new File(context.get().getExternalCacheDir(), "ZooperWidgetsPreviews");
+            File previewsFolder = new File(context.get().getExternalCacheDir(),
+                    "ZooperWidgetsPreviews");
 
             if (templates != null && templates.length > 0) {
                 Utils.clean(previewsFolder);
@@ -82,7 +83,8 @@ public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
                     File widgetPreviewFile = new File(previewsFolder, template);
                     String widgetName = Utils.getFilenameWithoutExtension(template);
                     String preview = getWidgetPreviewPathFromZip(context, widgetName,
-                            assetManager.open("templates/" + template), previewsFolder, widgetPreviewFile);
+                            assetManager.open("templates/" + template), previewsFolder,
+                            widgetPreviewFile);
                     widgets.add(new ZooperWidget(preview));
                     widgetPreviewFile.delete();
                 }
@@ -104,12 +106,15 @@ public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
                 mFragment.getAdapter().setWidgets(widgets);
             }
             if (context.get() instanceof ShowcaseActivity) {
-                if (((ShowcaseActivity) context.get()).getCurrentFragment() instanceof MainFragment) {
-                    ((MainFragment) ((ShowcaseActivity) context.get()).getCurrentFragment()).updateAppInfoData();
+                if (((ShowcaseActivity) context.get()).getCurrentFragment() instanceof
+                        MainFragment) {
+                    ((MainFragment) ((ShowcaseActivity) context.get()).getCurrentFragment())
+                            .updateAppInfoData();
                 }
                 ((ShowcaseActivity) context.get()).resetFragment(DrawerActivity.DrawerItem.ZOOPER);
             }
-            Timber.d("Load of widgets task completed successfully in: %d milliseconds", (endTime - startTime));
+            Timber.d("Load of widgets task completed successfully in: %d milliseconds", (endTime
+                    - startTime));
         } else {
             Timber.d("Something went really wrong while loading zooper widgets.");
         }
@@ -119,7 +124,8 @@ public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
     /**
      * This code was created by Aidan Follestad. Complete credits to him.
      */
-    private String getWidgetPreviewPathFromZip(WeakReference<Context> context, String name, InputStream in,
+    private String getWidgetPreviewPathFromZip(WeakReference<Context> context, String name,
+                                               InputStream in,
                                                File previewsFolder, File widgetPreviewFile) {
         OutputStream out;
         File preview = new File(previewsFolder, name + ".png");

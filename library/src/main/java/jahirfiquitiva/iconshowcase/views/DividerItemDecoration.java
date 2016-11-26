@@ -43,7 +43,8 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
     private int mOrientation = -1;
 
     private DividerItemDecoration(Context context) {
-        mDivider = new ColorDrawable(ContextCompat.getColor(context, ThemeUtils.darkTheme ? R.color.dark_theme_divider :
+        mDivider = new ColorDrawable(ContextCompat.getColor(context, ThemeUtils.darkTheme ? R
+                .color.dark_theme_divider :
                 R.color.light_theme_divider));
         /*
         final TypedArray a = context
@@ -51,7 +52,8 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
         mDivider = a.getDrawable(0);
         if (mDivider != null) {
             mDivider.setColorFilter(
-                    ContextCompat.getColor(context, ThemeUtils.darkTheme ? R.color.dark_theme_divider :
+                    ContextCompat.getColor(context, ThemeUtils.darkTheme ? R.color
+                    .dark_theme_divider :
                             R.color.light_theme_divider),
                     PorterDuff.Mode.SRC_ATOP);
         }
@@ -145,7 +147,8 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
         if (mShowLastDivider && childCount > 0) {
             View child = parent.getChildAt(childCount - 1);
             if (parent.getChildAdapterPosition(child) == (state.getItemCount() - 1)) {
-                RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
+                RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child
+                        .getLayoutParams();
                 if (orientation == LinearLayoutManager.VERTICAL) {
                     top = child.getBottom() + params.bottomMargin;
                     bottom = top + size;

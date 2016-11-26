@@ -46,8 +46,10 @@ public class KustomWallpaper {
 
     public Intent getKLWPIntent(Context context) {
         Intent klwpIntent = new Intent();
-        klwpIntent.setComponent(new ComponentName("org.kustom.wallpaper", "org.kustom.lib.editor.WpAdvancedEditorActivity"));
-        klwpIntent.setData(Uri.parse("kfile://" + context.getPackageName() + "/wallpapers/" + wallpaperName));
+        klwpIntent.setComponent(new ComponentName("org.kustom.wallpaper", "org.kustom.lib.editor" +
+                ".WpAdvancedEditorActivity"));
+        klwpIntent.setData(Uri.parse("kfile://" + context.getPackageName() + "/wallpapers/" +
+                wallpaperName));
         return klwpIntent;
     }
 

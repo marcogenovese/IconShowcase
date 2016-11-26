@@ -42,7 +42,8 @@ public class CreditsFragment extends CapsuleFragment {
     private Context context;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
+            savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         context = getActivity();
 
@@ -54,7 +55,8 @@ public class CreditsFragment extends CapsuleFragment {
         recyclerView.setLayoutManager(
                 new StaggeredGridLayoutManager(columnsNumber, StaggeredGridLayoutManager.VERTICAL));
 
-        RecyclerFastScroller fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
+        RecyclerFastScroller fastScroller = (RecyclerFastScroller) layout.findViewById(R.id
+                .rvFastScroller);
 
         CreditsAdapter adapter = new CreditsAdapter(context);
 

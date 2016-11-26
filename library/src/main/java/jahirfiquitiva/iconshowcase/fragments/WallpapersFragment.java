@@ -47,9 +47,9 @@ import jahirfiquitiva.iconshowcase.dialogs.AdviceDialog;
 import jahirfiquitiva.iconshowcase.events.OnLoadEvent;
 import jahirfiquitiva.iconshowcase.holders.FullListHolder;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
+import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
-import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 
 public class WallpapersFragment extends EventBaseFragment {
@@ -65,7 +65,8 @@ public class WallpapersFragment extends EventBaseFragment {
     private int tintColor;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle
+            savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
         setHasOptionsMenu(true);
@@ -74,7 +75,8 @@ public class WallpapersFragment extends EventBaseFragment {
 
         View layout = inflater.inflate(R.layout.wallpapers_section, container, false);
 
-        tintColor = ThemeUtils.darkOrLight(context, R.color.drawable_tint_dark, R.color.drawable_tint_light);
+        tintColor = ThemeUtils.darkOrLight(context, R.color.drawable_tint_dark, R.color
+                .drawable_tint_light);
 
         noConnection = (ImageView) layout.findViewById(R.id.no_connected_icon);
         mRecyclerView = (RecyclerView) layout.findViewById(R.id.wallsGrid);
@@ -200,7 +202,8 @@ public class WallpapersFragment extends EventBaseFragment {
             stringId = R.string.no_conn_title;
         }
         snackbar(new SnackbarEvent(stringId).setDuration(Snackbar.LENGTH_SHORT)
-                .setColor(ThemeUtils.darkOrLight(context, R.color.snackbar_dark, R.color.snackbar_light)));
+                .setColor(ThemeUtils.darkOrLight(context, R.color.snackbar_dark, R.color
+                        .snackbar_light)));
         mSwipeRefreshLayout.setEnabled(true);
         mSwipeRefreshLayout.post(new Runnable() {
             @Override

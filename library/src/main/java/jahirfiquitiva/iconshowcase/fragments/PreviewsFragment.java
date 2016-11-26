@@ -48,9 +48,9 @@ import jahirfiquitiva.iconshowcase.events.OnLoadEvent;
 import jahirfiquitiva.iconshowcase.fragments.base.FragmentStatePagerAdapter;
 import jahirfiquitiva.iconshowcase.holders.FullListHolder;
 import jahirfiquitiva.iconshowcase.models.IconsCategory;
-import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.utilities.color.ToolbarTinter;
+import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
 
 @SuppressWarnings("ResourceAsColor")
 public class PreviewsFragment extends EventBaseFragment {
@@ -69,7 +69,8 @@ public class PreviewsFragment extends EventBaseFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
+            savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
         if (FullListHolder.get().iconsCategories().isEmpty())
@@ -143,7 +144,8 @@ public class PreviewsFragment extends EventBaseFragment {
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 if (mLastSelected > -1) {
-                    IconsFragment frag = (IconsFragment) getChildFragmentManager().findFragmentByTag("page:" + mLastSelected);
+                    IconsFragment frag = (IconsFragment) getChildFragmentManager()
+                            .findFragmentByTag("page:" + mLastSelected);
                     if (frag != null)
                         frag.performSearch(null);
                 }

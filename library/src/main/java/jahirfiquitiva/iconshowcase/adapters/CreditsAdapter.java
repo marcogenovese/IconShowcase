@@ -40,8 +40,8 @@ import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.models.CreditsItem;
 import jahirfiquitiva.iconshowcase.models.DetailedCreditsItem;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
-import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
+import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 import jahirfiquitiva.iconshowcase.views.SplitButtonsLayout;
 
@@ -74,7 +74,8 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             buttonsLinks2[i] = buttonsLinks[i].split("\\|");
 
         for (int i = 0; i < titles.length; i++) {
-            detailedCredits.add(new DetailedCreditsItem(banners[i], photos[i], titles[i], contents[i],
+            detailedCredits.add(new DetailedCreditsItem(banners[i], photos[i], titles[i],
+                    contents[i],
                     buttonsNames2[i], buttonsLinks2[i]));
         }
 
@@ -132,11 +133,13 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
         if (position < detailedCredits.size()) {
-            return new DetailedCreditsHolder(inflater.inflate(R.layout.item_detailed_credit, parent, false));
+            return new DetailedCreditsHolder(inflater.inflate(R.layout.item_detailed_credit,
+                    parent, false));
         }
 
         if (position >= detailedCredits.size()) {
-            return new CreditsHolder(inflater.inflate(R.layout.item_credit, parent, false), position - detailedCredits.size());
+            return new CreditsHolder(inflater.inflate(R.layout.item_credit, parent, false),
+                    position - detailedCredits.size());
         }
 
         return null;
@@ -152,14 +155,18 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             detailedCreditsHolder.content.setText(item.getContent());
 
             if (mPrefs != null && mPrefs.getAnimationsEnabled()) {
-                Glide.with(context).load(item.getPhotoLink()).diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                Glide.with(context).load(item.getPhotoLink()).diskCacheStrategy(DiskCacheStrategy
+                        .SOURCE)
                         .priority(Priority.IMMEDIATE).into(detailedCreditsHolder.photo);
-                Glide.with(context).load(item.getBannerLink()).diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                Glide.with(context).load(item.getBannerLink()).diskCacheStrategy
+                        (DiskCacheStrategy.SOURCE)
                         .priority(Priority.HIGH).into(detailedCreditsHolder.banner);
             } else {
-                Glide.with(context).load(item.getPhotoLink()).dontAnimate().diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                Glide.with(context).load(item.getPhotoLink()).dontAnimate().diskCacheStrategy
+                        (DiskCacheStrategy.SOURCE)
                         .priority(Priority.IMMEDIATE).into(detailedCreditsHolder.photo);
-                Glide.with(context).load(item.getBannerLink()).dontAnimate().diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                Glide.with(context).load(item.getBannerLink()).dontAnimate().diskCacheStrategy
+                        (DiskCacheStrategy.SOURCE)
                         .priority(Priority.HIGH).into(detailedCreditsHolder.banner);
             }
 
@@ -168,9 +175,11 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 if (!detailedCreditsHolder.buttons.hasAllButtons()) {
                     if (item.getBtnTexts().length != item.getBtnLinks().length)
                         throw new IllegalStateException(
-                                "Button names and button links must have the same number of items.");
+                                "Button names and button links must have the same number of items" +
+                                        ".");
                     for (int i = 0; i < item.getBtnTexts().length; i++)
-                        detailedCreditsHolder.buttons.addButton(item.getBtnTexts()[i], item.getBtnLinks()[i]);
+                        detailedCreditsHolder.buttons.addButton(item.getBtnTexts()[i], item
+                                .getBtnLinks()[i]);
                 }
             } else {
                 detailedCreditsHolder.buttons.setVisibility(View.GONE);
@@ -184,7 +193,8 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                             try {
                                 Utils.openLinkInChromeCustomTab(context, (String) view.getTag());
                             } catch (Exception e) {
-                                Toast.makeText(context, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, e.getLocalizedMessage(), Toast
+                                        .LENGTH_SHORT).show();
                             }
                         }
 
@@ -194,7 +204,8 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         if (position >= detailedCredits.size()) {
             CreditsItem item = credits.get(holder.getAdapterPosition() - detailedCredits.size());
-            CreditsHolder creditsHolder = (CreditsHolder) holder; //Allan TODO check potential cast exception
+            CreditsHolder creditsHolder = (CreditsHolder) holder; //Allan TODO check potential
+            // cast exception
 
             creditsHolder.text.setText(item.getText());
             creditsHolder.icon.setImageDrawable(item.getIcon());
@@ -234,11 +245,13 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                             break;
                         case 1:
                             ISDialogs.showContributorsDialog(context,
-                                    context.getResources().getStringArray(R.array.contributors_links));
+                                    context.getResources().getStringArray(R.array
+                                            .contributors_links));
                             break;
                         case 2:
                             ISDialogs.showUICollaboratorsDialog(context,
-                                    context.getResources().getStringArray(R.array.ui_collaborators_links));
+                                    context.getResources().getStringArray(R.array
+                                            .ui_collaborators_links));
                             break;
                         case 3:
                             ISDialogs.showTranslatorsDialogs(context);

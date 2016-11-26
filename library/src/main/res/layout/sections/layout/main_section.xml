@@ -24,7 +24,7 @@
         android:id="@+id/home_rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/homeBackground"
+        android:background="?attr/colorCardBackground"
         android:clipToPadding="false"
         android:overScrollMode="ifContentScrolls"
         android:paddingBottom="@dimen/fab_size_normal"

@@ -40,17 +40,20 @@ public final class PermissionUtils {
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static boolean canAccessStorage(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            return context.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+            return context.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
+                    PackageManager.PERMISSION_GRANTED;
         } else {
             return true;
         }
     }
 
     public static void requestStoragePermission(Activity activity) {
-        ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
+        ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission
+                .WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
     }
 
-    public static void requestStoragePermission(Activity activity, OnPermissionResultListener permissionResultListener) {
+    public static void requestStoragePermission(Activity activity, OnPermissionResultListener
+            permissionResultListener) {
         onPermissionResultListener = permissionResultListener;
         requestStoragePermission(activity);
     }

@@ -23,7 +23,8 @@ public class DetailedCreditsItem {
 
     private final String bannerLink, photoLink, title, content, btnTexts[], btnLinks[];
 
-    public DetailedCreditsItem(String bannerLink, String photoLink, String title, String content, String[] btnTexts, String[] btnLinks) {
+    public DetailedCreditsItem(String bannerLink, String photoLink, String title, String content,
+                               String[] btnTexts, String[] btnLinks) {
         this.bannerLink = bannerLink;
         this.photoLink = photoLink;
         this.title = title;

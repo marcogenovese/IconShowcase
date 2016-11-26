@@ -54,7 +54,8 @@ public class IconsFragment extends CapsuleFragment {
 
     @Override
     @SuppressWarnings("unchecked")
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
+            savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
         View layout = inflater.inflate(R.layout.icons_grid, container, false);
@@ -79,7 +80,8 @@ public class IconsFragment extends CapsuleFragment {
 
         iconsGrid.setAdapter(mAdapter);
 
-        RecyclerFastScroller fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
+        RecyclerFastScroller fastScroller = (RecyclerFastScroller) layout.findViewById(R.id
+                .rvFastScroller);
         fastScroller.attachRecyclerView(iconsGrid);
 
         return layout;

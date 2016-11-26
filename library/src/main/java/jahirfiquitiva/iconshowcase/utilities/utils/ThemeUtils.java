@@ -44,18 +44,21 @@ public class ThemeUtils {
     public static boolean darkTheme;
     public static boolean transparent;
 
-    public static int darkOrLight(@ColorRes int dark, @ColorRes int light) { //TODO use this instead of ternary conditions
+    public static int darkOrLight(@ColorRes int dark, @ColorRes int light) { //TODO use this
+        // instead of ternary conditions
         if (darkTheme) return dark;
         return light;
     }
 
-    public static int darkOrLight(@NonNull Context context, @ColorRes int dark, @ColorRes int light) {
+    public static int darkOrLight(@NonNull Context context, @ColorRes int dark, @ColorRes int
+            light) {
         return ContextCompat.getColor(context, darkOrLight(dark, light));
     }
 
     public static void onActivityCreateSetTheme(Activity activity) {
         final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
-        int mTheme = sp.getInt("theme", (activity.getResources().getInteger(R.integer.app_theme) - 1));
+        int mTheme = sp.getInt("theme", (activity.getResources().getInteger(R.integer.app_theme)
+                - 1));
         switch (mTheme) {
             default:
             case LIGHT:

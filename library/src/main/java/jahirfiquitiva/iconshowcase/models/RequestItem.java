@@ -29,7 +29,8 @@ import android.support.annotation.Nullable;
 public class RequestItem implements Parcelable {
 
     @SuppressWarnings("unused")
-    public static final Parcelable.Creator<RequestItem> CREATOR = new Parcelable.Creator<RequestItem>() {
+    public static final Parcelable.Creator<RequestItem> CREATOR = new Parcelable
+            .Creator<RequestItem>() {
         @Override
         public RequestItem createFromParcel(Parcel in) {
             return new RequestItem(in);
@@ -47,7 +48,8 @@ public class RequestItem implements Parcelable {
     private String className;
     private boolean selected = false;
 
-    public RequestItem(@NonNull String appName, @NonNull String packageName, @NonNull String className,
+    public RequestItem(@NonNull String appName, @NonNull String packageName, @NonNull String
+            className,
                        @Nullable Drawable normalIcon, @Nullable ResolveInfo resolveInfo) {
         this.appName = appName;
         this.packageName = packageName;

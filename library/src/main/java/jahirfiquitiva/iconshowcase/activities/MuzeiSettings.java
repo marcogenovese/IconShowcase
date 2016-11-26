@@ -46,9 +46,9 @@ import jahirfiquitiva.iconshowcase.config.Config;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.services.MuzeiArtSourceService;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
+import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
-import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.views.CustomCoordinatorLayout;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 import jahirfiquitiva.iconshowcase.views.FixedElevationAppBarLayout;
@@ -78,7 +78,8 @@ public class MuzeiSettings extends AppCompatActivity {
 
         mPrefs = new Preferences(this);
 
-        int iconsColor = ThemeUtils.darkOrLight(this, R.color.toolbar_text_dark, R.color.toolbar_text_light);
+        int iconsColor = ThemeUtils.darkOrLight(this, R.color.toolbar_text_dark, R.color
+                .toolbar_text_light);
 
         setContentView(R.layout.muzei_settings);
 
@@ -88,11 +89,14 @@ public class MuzeiSettings extends AppCompatActivity {
         customCoordinatorLayout = (CustomCoordinatorLayout) findViewById(R.id.muzeiLayout);
         customCoordinatorLayout.setScrollAllowed(false);
 
-        CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbar);
+        CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById
+                (R.id.collapsingToolbar);
         collapsingToolbarLayout.setCollapsedTitleTextColor(iconsColor);
-        collapsingToolbarLayout.setTitle(Utils.getStringFromResources(this, R.string.muzei_settings));
+        collapsingToolbarLayout.setTitle(Utils.getStringFromResources(this, R.string
+                .muzei_settings));
 
-        FixedElevationAppBarLayout appBarLayout = (FixedElevationAppBarLayout) findViewById(R.id.appbar);
+        FixedElevationAppBarLayout appBarLayout = (FixedElevationAppBarLayout) findViewById(R.id
+                .appbar);
         appBarLayout.setExpanded(false, false);
 
         numberpicker = (NumberPicker) findViewById(R.id.number_picker);
@@ -138,7 +142,8 @@ public class MuzeiSettings extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        int iconsColor = ThemeUtils.darkOrLight(this, R.color.toolbar_text_dark, R.color.toolbar_text_light);
+        int iconsColor = ThemeUtils.darkOrLight(this, R.color.toolbar_text_dark, R.color
+                .toolbar_text_light);
         ToolbarColorizer.colorizeToolbar(toolbar, iconsColor);
     }
 
@@ -147,7 +152,8 @@ public class MuzeiSettings extends AppCompatActivity {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.muzei, menu);
         MenuItem save = menu.findItem(R.id.save);
-        int iconsColor = ThemeUtils.darkOrLight(this, R.color.toolbar_text_dark, R.color.toolbar_text_light);
+        int iconsColor = ThemeUtils.darkOrLight(this, R.color.toolbar_text_dark, R.color
+                .toolbar_text_light);
         ToolbarColorizer.tintSaveIcon(save, this, iconsColor);
         return true;
     }
@@ -169,7 +175,8 @@ public class MuzeiSettings extends AppCompatActivity {
                     rotate_time = Utils.convertMinutesToMillis(numberpicker.getValue()) * 60;
                     mPrefs.setRotateMinute(false);
                     mPrefs.setRotateTime(rotate_time);
-                    timeText = String.valueOf(Utils.convertMillisToMinutes(rotate_time) / 60) + " " +
+                    timeText = String.valueOf(Utils.convertMillisToMinutes(rotate_time) / 60) + "" +
+                            " " +
                             Utils.getStringFromResources(context, R.string.hours).toLowerCase();
                 }
                 Intent intent = new Intent(MuzeiSettings.this, MuzeiArtSourceService.class);
@@ -198,7 +205,8 @@ public class MuzeiSettings extends AppCompatActivity {
                 pf.setAccessible(true);
                 try {
                     pf.set(picker, ContextCompat.getDrawable(this, R.drawable.numberpicker));
-                } catch (IllegalArgumentException | IllegalAccessException | Resources.NotFoundException e) {
+                } catch (IllegalArgumentException | IllegalAccessException | Resources
+                        .NotFoundException e) {
                     //Do nothing
                 }
                 break;
@@ -210,13 +218,16 @@ public class MuzeiSettings extends AppCompatActivity {
         ISDialogs.showLicenseFailDialog(this,
                 new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
-                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Config.MARKET_URL + getPackageName()));
+                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull
+                            DialogAction dialogAction) {
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Config
+                                .MARKET_URL + getPackageName()));
                         startActivity(browserIntent);
                     }
                 }, new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull
+                            DialogAction dialogAction) {
                         finish();
                     }
                 }, new MaterialDialog.OnDismissListener() {

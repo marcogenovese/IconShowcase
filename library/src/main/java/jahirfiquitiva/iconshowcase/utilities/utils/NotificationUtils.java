@@ -29,7 +29,6 @@ import android.content.res.Resources;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.ContextCompat;
 
 import java.util.List;
 import java.util.Map;
@@ -40,9 +39,14 @@ import timber.log.Timber;
 
 public class NotificationUtils {
     public static void sendFirebaseNotification(Context context, Class mainActivity,
-                                                Map<String, String> data, String title, String content) {
+                                                Map<String, String> data, String title, String
+                                                        content) {
         Preferences mPrefs = new Preferences(context);
         if (!(mPrefs.getNotifsEnabled())) return;
+
+
+        int ledColor = ThemeUtils.darkOrLight(context, R.color.dark_theme_accent,
+                R.color.light_theme_accent);
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.ic_notifications)
@@ -51,47 +55,34 @@ public class NotificationUtils {
                 .setContentText(content)
                 .setAutoCancel(true)
                 .setOngoing(false)
-                .setColor(ThemeUtils.darkTheme ?
-                        ContextCompat.getColor(context, jahirfiquitiva.iconshowcase.R.color.dark_theme_accent) :
-                        ContextCompat.getColor(context, jahirfiquitiva.iconshowcase.R.color.light_theme_accent));
+                .setColor(ledColor);
 
-
+        Intent intent = new Intent();
+        int flag = 0;
         if (mPrefs.getLauncherIconShown()) {
-            boolean open = false;
-            Intent intent = new Intent(context, mainActivity);
+            intent = new Intent(context, mainActivity);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             if (data != null) {
                 if (data.size() > 0) {
                     for (int i = 0; i < data.size(); i++) {
-                        String[] dataValue = data.toString().replace("{", "").replace("}", "").split(",")[i].split("=");
+                        String[] dataValue = data.toString().replace("{", "").replace("}", "")
+                                .split(",")[i].split("=");
                         Timber.d("Key: " + dataValue[0] + " - Value: " + dataValue[1]);
-                        if (!open)
-                            open = (dataValue[0].equals("open_app") && dataValue[1].equals("true"));
                         intent.putExtra(dataValue[0], dataValue[1]);
                     }
                 }
             }
-            intent.putExtra("notification", true);
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0 /* Request code */, intent,
-                    PendingIntent.FLAG_ONE_SHOT);
-            if (open) {
-                notificationBuilder.setContentIntent(pendingIntent);
-            }
+            flag = PendingIntent.FLAG_ONE_SHOT;
         }
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0 /* Request code
+            */, intent,
+                flag);
+        notificationBuilder.setContentIntent(pendingIntent);
 
         Uri ringtoneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        int ledColor = ThemeUtils.darkOrLight(context, R.color.dark_theme_accent,
-                R.color.light_theme_accent);
-        if (mPrefs.getNotifsLedEnabled()) {
-            Resources resources = context.getResources(), systemResources = Resources.getSystem();
-            notificationBuilder.setLights(ledColor,
-                    resources.getInteger(
-                            systemResources.getIdentifier("config_defaultNotificationLedOn",
-                                    "integer", "android")),
-                    resources.getInteger
-                            (systemResources.getIdentifier("config_defaultNotificationLedOff",
-                                    "integer", "android")));
-        }
+
+        Resources resources = context.getResources(), systemResources = Resources.getSystem();
+
         notificationBuilder.setSound(mPrefs.getNotifsSoundEnabled() ? ringtoneUri : null);
         notificationBuilder.setVibrate(mPrefs.getNotifsVibrationEnabled()
                 ? new long[]{500, 500} : null);
@@ -100,23 +91,32 @@ public class NotificationUtils {
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         Notification notification = notificationBuilder.build();
-        if (mPrefs.getNotifsLedEnabled()) {
+
+        if (mPrefs.getNotifsEnabled()) {
             notification.flags |= Notification.FLAG_SHOW_LIGHTS;
-            if (ledColor > 0)
-                notification.ledARGB = ledColor;
+            notification.ledARGB = ledColor;
+            notification.ledOnMS = resources.getInteger(systemResources.getIdentifier(
+                    "config_defaultNotificationLedOn", "integer", "android"));
+            notification.ledOffMS = resources.getInteger(systemResources.getIdentifier(
+                    "config_defaultNotificationLedOff", "integer", "android"));
+        } else {
+            notification.ledOnMS = 0;
+            notification.ledOffMS = 0;
         }
 
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+        notificationManager.notify(1 /* ID of notification */, notificationBuilder.build());
     }
 
 
-    public static boolean hasNotificationExtraKey(Context context, Intent intent, String key, Class service) {
+    public static boolean hasNotificationExtraKey(Context context, Intent intent, String key,
+                                                  Class service) {
         return context != null
                 && isServiceAvailable(context, service)
                 && intent != null && intent.getStringExtra(key) != null;
     }
 
-    public static boolean isNotificationExtraKeyTrue(Context context, Intent intent, String key, Class service) {
+    public static boolean isNotificationExtraKeyTrue(Context context, Intent intent, String key,
+                                                     Class service) {
         return hasNotificationExtraKey(context, intent, key, service)
                 && intent.getStringExtra(key).equals("true");
     }

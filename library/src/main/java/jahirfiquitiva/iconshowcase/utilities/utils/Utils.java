@@ -67,7 +67,8 @@ public class Utils {
 
     public static String getAppVersion(Context context) {
         try {
-            return context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
+            return context.getPackageManager().getPackageInfo(context.getPackageName(), 0)
+                    .versionName;
         } catch (PackageManager.NameNotFoundException e) {
             // this should never happen
             return "Unknown";
@@ -79,7 +80,8 @@ public class Utils {
     }
 
     public static boolean hasNetwork(Context context) {
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context
+                .CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }
@@ -103,9 +105,11 @@ public class Utils {
         return resolveInfo.activityInfo.packageName;
     }
 
-    public static Snackbar snackbar(@NonNull Context context, @NonNull View view, @NonNull CharSequence text, int duration) {
+    public static Snackbar snackbar(@NonNull Context context, @NonNull View view, @NonNull
+            CharSequence text, int duration) {
         Snackbar snackbar = Snackbar.make(view, text, duration);
-        snackbar.getView().setBackgroundColor(ThemeUtils.darkOrLight(context, R.color.snackbar_dark, R.color.snackbar_light));
+        snackbar.getView().setBackgroundColor(ThemeUtils.darkOrLight(context, R.color
+                .snackbar_dark, R.color.snackbar_light));
         return snackbar;
     }
 
@@ -128,7 +132,8 @@ public class Utils {
 
         mCustomTabsServiceConnection = new CustomTabsServiceConnection() {
             @Override
-            public void onCustomTabsServiceConnected(ComponentName componentName, CustomTabsClient customTabsClient) {
+            public void onCustomTabsServiceConnected(ComponentName componentName,
+                                                     CustomTabsClient customTabsClient) {
                 mClient[0] = customTabsClient;
                 mClient[0].warmup(0L);
                 mCustomTabsSession[0] = mClient[0].newSession(null);
@@ -140,7 +145,8 @@ public class Utils {
             }
         };
 
-        CustomTabsClient.bindCustomTabsService(context, "com.android.chrome", mCustomTabsServiceConnection);
+        CustomTabsClient.bindCustomTabsService(context, "com.android.chrome",
+                mCustomTabsServiceConnection);
         customTabsIntent = new CustomTabsIntent.Builder(mCustomTabsSession[0])
                 .setToolbarColor(ThemeUtils.darkTheme ?
                         ContextCompat.getColor(context, R.color.dark_theme_primary) :
@@ -165,7 +171,8 @@ public class Utils {
         String[] text = partialConvertedText.split("\\s+");
         StringBuilder sb = new StringBuilder();
         if (text[0].length() > 0) {
-            sb.append(Character.toUpperCase(text[0].charAt(0))).append(text[0].subSequence(1, text[0].length()).toString().toLowerCase());
+            sb.append(Character.toUpperCase(text[0].charAt(0))).append(text[0].subSequence(1,
+                    text[0].length()).toString().toLowerCase());
             for (int i = 1; i < text.length; i++) {
                 sb.append(" ");
                 sb.append(capitalizeText(text[i]));
@@ -181,13 +188,17 @@ public class Utils {
 
     public static void sendEmailWithDeviceInfo(Context context) {
         StringBuilder emailBuilder = new StringBuilder();
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:" + context.getResources().getString(R.string.email_id)));
-        intent.putExtra(Intent.EXTRA_SUBJECT, context.getResources().getString(R.string.email_subject));
-        emailBuilder.append("\n \n \nOS Version: ").append(System.getProperty("os.version")).append("(").append(Build.VERSION.INCREMENTAL).append(")");
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:" + context.getResources
+                ().getString(R.string.email_id)));
+        intent.putExtra(Intent.EXTRA_SUBJECT, context.getResources().getString(R.string
+                .email_subject));
+        emailBuilder.append("\n \n \nOS Version: ").append(System.getProperty("os.version"))
+                .append("(").append(Build.VERSION.INCREMENTAL).append(")");
         emailBuilder.append("\nOS API Level: ").append(Build.VERSION.SDK_INT);
         emailBuilder.append("\nDevice: ").append(Build.DEVICE);
         emailBuilder.append("\nManufacturer: ").append(Build.MANUFACTURER);
-        emailBuilder.append("\nModel (and Product): ").append(Build.MODEL).append(" (").append(Build.PRODUCT).append(")");
+        emailBuilder.append("\nModel (and Product): ").append(Build.MODEL).append(" (").append
+                (Build.PRODUCT).append(")");
         PackageInfo appInfo = null;
         try {
             appInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
@@ -198,16 +209,19 @@ public class Utils {
         emailBuilder.append("\nApp Version Name: ").append(appInfo.versionName);
         emailBuilder.append("\nApp Version Code: ").append(appInfo.versionCode);
         intent.putExtra(Intent.EXTRA_TEXT, emailBuilder.toString());
-        context.startActivity(Intent.createChooser(intent, (context.getResources().getString(R.string.send_title))));
+        context.startActivity(Intent.createChooser(intent, (context.getResources().getString(R
+                .string.send_title))));
     }
 
     @SuppressWarnings("ResourceAsColor")
     public static void setupCollapsingToolbarTextColors(Context context,
-                                                        CollapsingToolbarLayout collapsingToolbarLayout) {
+                                                        CollapsingToolbarLayout
+                                                                collapsingToolbarLayout) {
         int iconsColor = ThemeUtils.darkTheme ?
                 ContextCompat.getColor(context, R.color.toolbar_text_dark) :
                 ContextCompat.getColor(context, R.color.toolbar_text_light);
-        collapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(context, android.R.color.transparent));
+        collapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(context, android.R
+                .color.transparent));
         collapsingToolbarLayout.setCollapsedTitleTextColor(iconsColor);
     }
 
@@ -222,7 +236,8 @@ public class Utils {
         if (drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
             bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
         } else {
-            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable
+                    .getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
         }
         Canvas canvas = new Canvas(bitmap);
         drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
@@ -285,7 +300,8 @@ public class Utils {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 vectorDrawable = ContextCompat.getDrawable(context, drawable);
             } else {
-                vectorDrawable = VectorDrawableCompat.create(context.getResources(), drawable, null);
+                vectorDrawable = VectorDrawableCompat.create(context.getResources(), drawable,
+                        null);
                 if (vectorDrawable != null) {
                     vectorDrawable = DrawableCompat.wrap(vectorDrawable);
                 }
@@ -341,12 +357,16 @@ public class Utils {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             DisplayMetrics metrics = new DisplayMetrics();
             activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
-            int usableHeight = activity.getResources().getBoolean(R.bool.isTablet) ? metrics.heightPixels :
-                    activity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE ?
+            int usableHeight = activity.getResources().getBoolean(R.bool.isTablet) ? metrics
+                    .heightPixels :
+                    activity.getResources().getConfiguration().orientation == Configuration
+                            .ORIENTATION_LANDSCAPE ?
                             metrics.widthPixels : metrics.heightPixels;
             activity.getWindowManager().getDefaultDisplay().getRealMetrics(metrics);
-            int realHeight = activity.getResources().getBoolean(R.bool.isTablet) ? metrics.heightPixels :
-                    activity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE ?
+            int realHeight = activity.getResources().getBoolean(R.bool.isTablet) ? metrics
+                    .heightPixels :
+                    activity.getResources().getConfiguration().orientation == Configuration
+                            .ORIENTATION_LANDSCAPE ?
                             metrics.widthPixels : metrics.heightPixels;
             if (realHeight > usableHeight)
                 return realHeight - usableHeight;

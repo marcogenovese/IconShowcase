@@ -22,7 +22,6 @@ import jahirfiquitiva.iconshowcase.config.Config;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.utils.RequestUtils;
-import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 
 public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.RequestsHolder> {
 
@@ -167,7 +166,8 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
                                         Config.get().integer(R.integer.limit_request_to_x_minutes),
                                         mPrefs) == -2) {
                                     ISDialogs.showRequestTimeLimitDialog(view.getContext(),
-                                            Config.get().integer(R.integer.limit_request_to_x_minutes));
+                                            Config.get().integer(R.integer
+                                                    .limit_request_to_x_minutes));
                                 } else {
                                     ISDialogs.showRequestLimitDialog(view.getContext(), limit);
                                 }

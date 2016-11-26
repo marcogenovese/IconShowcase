@@ -98,7 +98,8 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
                 Environment.getExternalStorageDirectory().getAbsolutePath());
         String filesLocation = zipLocation + "Files";
 
-        String appNameCorrected = context.get().getResources().getString(R.string.app_name).replace(" ", "");
+        String appNameCorrected = context.get().getResources().getString(R.string.app_name)
+                .replace(" ", "");
 
         SimpleDateFormat date = new SimpleDateFormat("yyyyMMdd_hhmmss", Locale.getDefault());
         String momentOfCreation = date.format(new Date());
@@ -136,27 +137,38 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
                             " -->\n");
 
                     appFilterBuilder.append("<item component=\"ComponentInfo{" +
-                            appsListFinal.get(i).getPackageName() + "/" + appsListFinal.get(i).getClassName() + "}\"" +
-                            " drawable=\"" + appsListFinal.get(i).getAppName().replace(" ", "_").toLowerCase() + "\"/>" + "\n\n");
+                            appsListFinal.get(i).getPackageName() + "/" + appsListFinal.get(i)
+                            .getClassName() + "}\"" +
+                            " drawable=\"" + appsListFinal.get(i).getAppName().replace(" ", "_")
+                            .toLowerCase() + "\"/>" + "\n\n");
 
                     appMapBuilder.append("<item class=\"" + appsListFinal.get(i).getClassName() +
-                            "\" name=\"" + appsListFinal.get(i).getAppName().replace(" ", "_").toLowerCase() + "\" />" + "\n\n");
+                            "\" name=\"" + appsListFinal.get(i).getAppName().replace(" ", "_")
+                            .toLowerCase() + "\" />" + "\n\n");
 
                     themeResourcesBuilder.append("<AppIcon name=\"" +
-                            appsListFinal.get(i).getPackageName() + "/" + appsListFinal.get(i).getClassName() +
-                            "\" image=\"" + appsListFinal.get(i).getAppName().replace(" ", "_").toLowerCase() + "\"/>" + "\n\n");
+                            appsListFinal.get(i).getPackageName() + "/" + appsListFinal.get(i)
+                            .getClassName() +
+                            "\" image=\"" + appsListFinal.get(i).getAppName().replace(" ", "_")
+                            .toLowerCase() + "\"/>" + "\n\n");
 
                     sb.append("App Name: " + appsListFinal.get(i).getAppName() + "\n");
-                    sb.append("App ComponentInfo: " + appsListFinal.get(i).getPackageName() + "/" + appsListFinal.get(i).getClassName() + "\n");
-                    sb.append("App Link: " + "https://play.google.com/store/apps/details?id=" + appsListFinal.get(i).getPackageName() + "\n");
+                    sb.append("App ComponentInfo: " + appsListFinal.get(i).getPackageName() + "/"
+                            + appsListFinal.get(i).getClassName() + "\n");
+                    sb.append("App Link: " + "https://play.google.com/store/apps/details?id=" +
+                            appsListFinal.get(i).getPackageName() + "\n");
                     sb.append("\n");
 
-                    //                    Bitmap bitmap = ((BitmapDrawable) (appsListFinal.get(i).getHiResIcon())).getBitmap();
+                    //                    Bitmap bitmap = ((BitmapDrawable) (appsListFinal.get(i)
+                    // .getHiResIcon())).getBitmap();
 
                     FileOutputStream fileOutputStream;
                     try {
-                        fileOutputStream = new FileOutputStream(filesLocation + "/" + appsListFinal.get(i).getAppName().replace(" ", "_").toLowerCase() + ".png");
-                        //                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
+                        fileOutputStream = new FileOutputStream(filesLocation + "/" +
+                                appsListFinal.get(i).getAppName().replace(" ", "_").toLowerCase()
+                                + ".png");
+                        //                        bitmap.compress(Bitmap.CompressFormat.PNG, 100,
+                        // fileOutputStream);
                         fileOutputStream.flush();
                         fileOutputStream.close();
                     } catch (IOException e) {
@@ -172,11 +184,13 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
             mPrefs.setRequestsLeft(left >= 0 ? left : 0);
 
             sb.append("\nAndroid Version: " + Build.VERSION.RELEASE);
-            sb.append("\nOS Version: " + System.getProperty("os.version") + "(" + Build.VERSION.INCREMENTAL + ")");
+            sb.append("\nOS Version: " + System.getProperty("os.version") + "(" + Build.VERSION
+                    .INCREMENTAL + ")");
             sb.append("\nOS API Level: " + Build.VERSION.SDK_INT);
 
             try {
-                PackageInfo appInfo = context.get().getPackageManager().getPackageInfo(context.get().getPackageName(), 0);
+                PackageInfo appInfo = context.get().getPackageManager().getPackageInfo(context
+                        .get().getPackageName(), 0);
                 sb.append("\nApp Version Name: " + appInfo.versionName);
                 sb.append("\nApp Version Code: " + appInfo.versionCode);
             } catch (Exception e) {
@@ -200,7 +214,8 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
             if (appsCount != 0) {
 
                 try {
-                    FileWriter fileWriter1 = new FileWriter(filesLocation + "/" + "appfilter" + "_" + momentOfCreation + ".xml");
+                    FileWriter fileWriter1 = new FileWriter(filesLocation + "/" + "appfilter" +
+                            "_" + momentOfCreation + ".xml");
                     BufferedWriter bufferedWriter1 = new BufferedWriter(fileWriter1);
                     bufferedWriter1.write(appFilterBuilder.toString());
                     bufferedWriter1.close();
@@ -209,7 +224,8 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
                 }
 
                 try {
-                    FileWriter fileWriter2 = new FileWriter(filesLocation + "/" + "appmap" + "_" + momentOfCreation + ".xml");
+                    FileWriter fileWriter2 = new FileWriter(filesLocation + "/" + "appmap" + "_"
+                            + momentOfCreation + ".xml");
                     BufferedWriter bufferedWriter2 = new BufferedWriter(fileWriter2);
                     bufferedWriter2.write(appMapBuilder.toString());
                     bufferedWriter2.close();
@@ -218,7 +234,8 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
                 }
 
                 try {
-                    FileWriter fileWriter3 = new FileWriter(filesLocation + "/" + "theme_resources" + "_" + momentOfCreation + ".xml");
+                    FileWriter fileWriter3 = new FileWriter(filesLocation + "/" +
+                            "theme_resources" + "_" + momentOfCreation + ".xml");
                     BufferedWriter bufferedWriter3 = new BufferedWriter(fileWriter3);
                     bufferedWriter3.write(themeResourcesBuilder.toString());
                     bufferedWriter3.close();
@@ -269,7 +286,8 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
                     if (filesFolder != null) {
                         filesFolder.delete();
                     }
-                    activity.startActivityForResult(Intent.createChooser(sendIntent, "Send mail..."), 2);
+                    activity.startActivityForResult(Intent.createChooser(sendIntent, "Send " +
+                            "mail..."), 2);
                     Calendar c = Calendar.getInstance();
                     RequestUtils.saveCurrentTimeOfRequest(mPrefs, c);
                 } catch (ActivityNotFoundException e) {
@@ -329,7 +347,8 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
         }
     }
 
-    private void zipFile(final String zipFilesPath, final ZipOutputStream zipOutputStream, final String zipPath) throws IOException {
+    private void zipFile(final String zipFilesPath, final ZipOutputStream zipOutputStream, final
+    String zipPath) throws IOException {
         final File file = new File(zipFilesPath);
 
         if (!file.exists()) {
@@ -357,7 +376,8 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
             }
         } else if (files.length > 0) {
             for (String file1 : files) {
-                zipFile(zipFilesPath + "/" + file1, zipOutputStream, zipPath + file.getName() + "/");
+                zipFile(zipFilesPath + "/" + file1, zipOutputStream, zipPath + file.getName() +
+                        "/");
             }
         }
     }

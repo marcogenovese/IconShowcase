@@ -56,8 +56,6 @@ import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 
-import com.afollestad.materialdialogs.util.DialogUtils;
-
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -82,7 +80,8 @@ public class ColorUtils {
 
     @SuppressWarnings("SameParameterValue")
     @ColorInt
-    public static int adjustAlpha(@ColorInt int color, @FloatRange(from = 0.0, to = 1.0) float factor) {
+    public static int adjustAlpha(@ColorInt int color, @FloatRange(from = 0.0, to = 1.0) float
+            factor) {
         float a = Color.alpha(color) * factor;
         float r = Color.red(color);
         float g = Color.green(color);
@@ -91,7 +90,8 @@ public class ColorUtils {
     }
 
     @ColorInt
-    public static int changeAlpha(@ColorInt int color, @FloatRange(from = 0.0, to = 1.0) float newAlpha) {
+    public static int changeAlpha(@ColorInt int color, @FloatRange(from = 0.0, to = 1.0) float
+            newAlpha) {
         float a = 255 * newAlpha;
         float r = Color.red(color);
         float g = Color.green(color);
@@ -100,7 +100,8 @@ public class ColorUtils {
     }
 
     @ColorInt
-    public static int shiftColor(@ColorInt int color, @FloatRange(from = 0.0f, to = 2.0f) float by) {
+    public static int shiftColor(@ColorInt int color, @FloatRange(from = 0.0f, to = 2.0f) float
+            by) {
         if (by == 1f) return color;
         int alpha = Color.alpha(color);
         float[] hsv = new float[3];
@@ -138,7 +139,8 @@ public class ColorUtils {
     public static double getColorDarkness(@ColorInt int color) {
         if (color == Color.BLACK) return 1.0;
         else if (color == Color.WHITE || color == Color.TRANSPARENT) return 0.0;
-        return (1 - (0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color)) / 255);
+        return (1 - (0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue
+                (color)) / 255);
     }
 
     @ColorInt
@@ -160,13 +162,13 @@ public class ColorUtils {
     public static Drawable getTintedDrawable(@NonNull Context context, String name) {
         final int light = ContextCompat.getColor(context, R.color.drawable_tint_dark);
         final int dark = ContextCompat.getColor(context, R.color.drawable_tint_light);
-
         return ColorUtils.getTintedIcon(context,
                 Utils.getIconResId(context.getResources(), context.getPackageName(), name),
                 ThemeUtils.darkTheme ? light : dark);
     }
 
-    public static Drawable getTintedIcon(@NonNull Context context, @DrawableRes int drawable, @ColorInt int color) {
+    public static Drawable getTintedIcon(@NonNull Context context, @DrawableRes int drawable,
+                                         @ColorInt int color) {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 return getTintedIcon(ContextCompat.getDrawable(context, drawable), color);
@@ -175,7 +177,8 @@ public class ColorUtils {
                 return getTintedIcon(icon, color);
             }
         } catch (Resources.NotFoundException ex) {
-            return getTintedIcon(ContextCompat.getDrawable(context, R.drawable.iconshowcase_logo), color);
+            return getTintedIcon(ContextCompat.getDrawable(context, R.drawable.iconshowcase_logo)
+                    , color);
         }
     }
 
@@ -220,7 +223,8 @@ public class ColorUtils {
                     } else if (ratio < 0) {
                         ratio = 0;
                     }
-                    int paletteColor = ColorUtils.blendColors(defaultIconsColor, iconsColor, (float) ratio);
+                    int paletteColor = ColorUtils.blendColors(defaultIconsColor, iconsColor,
+                            (float) ratio);
                     if (toolbar != null) {
                         // Collapsed offset = -352
                         ToolbarColorizer.colorizeToolbar(toolbar, paletteColor);
@@ -312,19 +316,13 @@ public class ColorUtils {
     }
 
     public static int getMaterialTertiaryColor(boolean dark) {
-        return 0xffff00ff;
-        //        if (dark) {
-        //            // 50%
-        //            return Color.parseColor("#80ffffff");
-        //        } else {
-        //            // 38%
-        //            return Color.parseColor("#61000000");
-        //        }
-    }
-
-    @ColorInt
-    public static int getCheckBoxColor(Context context, @ColorInt int defaultColor) {
-        return DialogUtils.resolveColor(context, R.attr.accentColor, defaultColor);
+        if (dark) {
+            // 50%
+            return Color.parseColor("#80ffffff");
+        } else {
+            // 38%
+            return Color.parseColor("#61000000");
+        }
     }
 
 }

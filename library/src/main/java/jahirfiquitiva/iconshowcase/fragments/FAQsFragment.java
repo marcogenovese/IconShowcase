@@ -48,7 +48,8 @@ import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 public class FAQsFragment extends CapsuleFragment {
 
     @Override
-    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle
+            savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
         Context context = getActivity();
@@ -86,14 +87,16 @@ public class FAQsFragment extends CapsuleFragment {
                     true));
         } else {
             faqsList.setLayoutManager(new LinearLayoutManager(getActivity()));
-            faqsList.addItemDecoration(new DividerItemDecoration(getActivity(), cardsSpacing, false, false));
+            faqsList.addItemDecoration(new DividerItemDecoration(getActivity(), cardsSpacing,
+                    false, false));
         }
 
         faqsList.setItemAnimator(new DefaultItemAnimator());
         faqsList.setHasFixedSize(true);
         faqsList.setAdapter(faqsAdapter);
 
-        RecyclerFastScroller fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
+        RecyclerFastScroller fastScroller = (RecyclerFastScroller) layout.findViewById(R.id
+                .rvFastScroller);
         fastScroller.attachRecyclerView(faqsList);
 
         return layout;

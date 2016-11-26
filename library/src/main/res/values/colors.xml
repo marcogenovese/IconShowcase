@@ -56,14 +56,6 @@
     <color name="splash_dark_background">@color/dark_bg</color>
     <color name="splash_dark_statusbar">#000000</color>
 
-    <!--CLEAR THEME COLORS-->
-    <color name="card_clear_background">#30000000</color>
-    <color name="clear_bg">#70000000</color>
-    <color name="home_clear_background">#aa000000</color>
-    <color name="material_drawer_clear_background">#bb000000</color>
-    <color name="md_background_color_clear">@color/dark_bg</color>
-    <color name="fab_background_tint_clear_theme">#33ffffff</color>
-
     <!-- COLORS FOR INSTALLED LAUNCHERS -->
     <color name="action_launcher_color">#f44336</color>
     <color name="adw_launcher_color">#2196f3</color>
@@ -101,7 +93,6 @@
     <color name="card_light_background">#fafafa</color>
     <color name="drawable_tint_light">#757575</color>
     <color name="light_bg">#fafafa</color>
-    <color name="home_light_background">@color/card_light_background</color>
     <color name="snackbar_light">#fafafa</color>
     <color name="launcher_tint_light">@color/drawable_tint_light</color>
     <color name="launcher_text_light">@color/secondary_text_light</color>
@@ -122,7 +113,6 @@
     <color name="card_dark_background">#424242</color>
     <color name="drawable_tint_dark">@android:color/white</color>
     <color name="dark_bg">#303030</color>
-    <color name="home_dark_background">@color/card_dark_background</color>
     <color name="snackbar_dark">#424242</color>
     <color name="launcher_tint_dark">@color/drawable_tint_dark</color>
     <color name="launcher_text_dark">@color/primary_text_dark</color>
@@ -133,6 +123,13 @@
     <color name="material_drawer_dark_divider">#1fffffff</color>
     <color name="material_drawer_dark_selected">#202020</color>
     <color name="material_drawer_dark_header_selection_text">#fff</color>
+
+    <!--CLEAR THEME COLORS-->
+    <color name="card_clear_background">#30000000</color>
+    <color name="clear_bg">#70000000</color>
+    <color name="material_drawer_clear_background">#bb000000</color>
+    <color name="md_background_color_clear">@color/dark_bg</color>
+    <color name="fab_background_tint_clear_theme">#33ffffff</color>
 
     <!-- THEME INDEPENDENT COLORS -->
     <color name="semitransparent_white">#80ffffff</color>

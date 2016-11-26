@@ -48,7 +48,8 @@ public class ZooperFragment extends CapsuleFragment {
     private GridSpacingItemDecoration space;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle
+            savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
         context = getActivity();
@@ -100,7 +101,8 @@ public class ZooperFragment extends CapsuleFragment {
             mRecyclerView.addItemDecoration(space);
             mRecyclerView.setHasFixedSize(true);
 
-            RecyclerFastScroller fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
+            RecyclerFastScroller fastScroller = (RecyclerFastScroller) layout.findViewById(R.id
+                    .rvFastScroller);
 
             zooperAdapter = new ZooperAdapter(context, layout,
                     ((ShowcaseActivity) context).getWallpaperDrawable(), areAppsInstalled(), this);
@@ -131,7 +133,8 @@ public class ZooperFragment extends CapsuleFragment {
         boolean installed = Utils.isAppInstalled(context, "org.zooper.zwpro");
 
         if (context.getResources().getBoolean(R.bool.mu_needed) && installed) {
-            installed = Utils.isAppInstalled(context, "com.batescorp.notificationmediacontrols.alpha");
+            installed = Utils.isAppInstalled(context, "com.batescorp.notificationmediacontrols" +
+                    ".alpha");
         }
 
         if (context.getResources().getBoolean(R.bool.kolorette_needed) && installed) {

@@ -28,7 +28,9 @@ import android.support.annotation.StringRes;
 /**
  * Created by Allan Wang on 2016-08-19.
  * <p/>
- * With reference to Polar https://github.com/afollestad/polar-dashboard/blob/master/app/src/main/java/com/afollestad/polar/config/IConfig.java
+ * With reference to Polar https://github
+ * .com/afollestad/polar-dashboard/blob/master/app/src/main/java/com/afollestad/polar/config
+ * /IConfig.java
  */
 public interface IConfig {
 

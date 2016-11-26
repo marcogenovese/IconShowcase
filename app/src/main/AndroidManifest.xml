@@ -107,6 +107,13 @@
             </intent-filter>
         </service>
 
+        <meta-data
+                android:name="com.google.firebase.messaging.default_notification_icon"
+                android:resource="@drawable/ic_notifications"/>
+        <meta-data
+                android:name="com.google.firebase.messaging.default_notification_color"
+                android:resource="@color/light_theme_accent"/>
+
         <!-- Icons -->
         <activity
                 android:name="jahirfiquitiva.iconshowcase.activities.ShowcaseActivity"

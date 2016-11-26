@@ -103,7 +103,8 @@ public class ToolbarTinter {
         }
         if (nativeIsActionButton == null) {
             try {
-                Class<?> MenuItemImpl = Class.forName("com.android.internal.view.menu.MenuItemImpl");
+                Class<?> MenuItemImpl = Class.forName("com.android.internal.view.menu" +
+                        ".MenuItemImpl");
                 nativeIsActionButton = MenuItemImpl.getDeclaredMethod("isActionButton");
                 if (!nativeIsActionButton.isAccessible()) {
                     nativeIsActionButton.setAccessible(true);
@@ -143,7 +144,8 @@ public class ToolbarTinter {
         }
         Drawable drawable = menuItem.getIcon();
         if (drawable != null) {
-            // If we don't mutate the drawable, then all drawables with this id will have the ColorFilter
+            // If we don't mutate the drawable, then all drawables with this id will have the
+            // ColorFilter
             drawable.mutate();
             drawable.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
             if (alpha != null) {

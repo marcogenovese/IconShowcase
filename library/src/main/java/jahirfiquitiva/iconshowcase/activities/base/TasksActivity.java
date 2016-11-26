@@ -22,7 +22,6 @@ package jahirfiquitiva.iconshowcase.activities.base;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.CallSuper;
-import android.support.v4.app.Fragment;
 
 import com.pitchedapps.butler.library.icon.request.IconRequest;
 
@@ -87,8 +86,10 @@ public abstract class TasksActivity extends DrawerActivity {
                     //                @Override
                     //                public void checkWallsListCreation(boolean result) {
                     //                    if (WallpapersFragment.mSwipeRefreshLayout != null) {
-                    //                        WallpapersFragment.mSwipeRefreshLayout.setEnabled(false);
-                    //                        WallpapersFragment.mSwipeRefreshLayout.setRefreshing(false);
+                    //                        WallpapersFragment.mSwipeRefreshLayout.setEnabled
+                    // (false);
+                    //                        WallpapersFragment.mSwipeRefreshLayout
+                    // .setRefreshing(false);
                     //                    }
                     //                    if (WallpapersFragment.mAdapter != null) {
                     //                        WallpapersFragment.mAdapter.notifyDataSetChanged();
@@ -103,10 +104,12 @@ public abstract class TasksActivity extends DrawerActivity {
             IconRequest.start(this)
                     //                        .withHeader("Hey, testing Icon Request!")
                     .withAppName(getString(R.string.app_name))
-                    .withFooter("%s Version: %s", getString(R.string.app_name), BuildConfig.VERSION_NAME)
+                    .withFooter("%s Version: %s", getString(R.string.app_name), BuildConfig
+                            .VERSION_NAME)
                     .withSubject(s(R.string.request_title))
                     .toEmail(s(R.string.email_id))
-                    .saveDir(new File(getString(R.string.request_save_location, Environment.getExternalStorageDirectory())))
+                    .saveDir(new File(getString(R.string.request_save_location, Environment
+                            .getExternalStorageDirectory())))
                     .includeDeviceInfo(true) // defaults to true anyways
                     .generateAppFilterXml(true) // defaults to true anyways
                     .generateAppFilterJson(false)

@@ -76,12 +76,12 @@ import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.models.WallpaperItem;
 import jahirfiquitiva.iconshowcase.tasks.ApplyWallpaper;
 import jahirfiquitiva.iconshowcase.tasks.WallpaperToCrop;
-import jahirfiquitiva.iconshowcase.utilities.utils.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
-import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
-import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
+import jahirfiquitiva.iconshowcase.utilities.utils.PermissionUtils;
+import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
+import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 import jahirfiquitiva.iconshowcase.views.TouchImageView;
 
@@ -97,7 +97,8 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
     private MaterialDialog downloadDialog;
     private FloatingActionButton fab, applyFab, saveFab, infoFab;
 
-    //TODO clean up context; I removed the variable and a lot of it isn't needed. This itself is already an activity
+    //TODO clean up context; I removed the variable and a lot of it isn't needed. This itself is
+    // already an activity
 
     @SuppressWarnings("ResourceAsColor")
     @Override
@@ -141,7 +142,8 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
         }
 
         if (Build.VERSION.SDK_INT < 19) {
-            ToolbarColorizer.colorizeToolbar(toolbar, ContextCompat.getColor(this, android.R.color.white));
+            ToolbarColorizer.colorizeToolbar(toolbar, ContextCompat.getColor(this, android.R
+                    .color.white));
         }
 
         fab.setOnClickListener(new DebouncedClickListener() {
@@ -218,7 +220,8 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
         if (bmp != null) {
             colorFromCachedPic = ColorUtils.getPaletteSwatch(bmp).getBodyTextColor();
         } else {
-            colorFromCachedPic = ThemeUtils.darkOrLight(this, R.color.drawable_tint_dark, R.color.drawable_base_tint);
+            colorFromCachedPic = ThemeUtils.darkOrLight(this, R.color.drawable_tint_dark, R.color
+                    .drawable_base_tint);
         }
 
         final ProgressBar spinner = (ProgressBar) findViewById(R.id.progress);
@@ -240,12 +243,17 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
                     .fitCenter()
                     .listener(new RequestListener<String, GlideDrawable>() {
                         @Override
-                        public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        public boolean onException(Exception e, String model,
+                                                   Target<GlideDrawable> target, boolean
+                                                           isFirstResource) {
                             return false;
                         }
 
                         @Override
-                        public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        public boolean onResourceReady(GlideDrawable resource, String model,
+                                                       Target<GlideDrawable> target, boolean
+                                                               isFromMemoryCache, boolean
+                                                               isFirstResource) {
                             spinner.setVisibility(View.GONE);
                             return false;
                         }
@@ -260,12 +268,17 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
                     .fitCenter()
                     .listener(new RequestListener<String, GlideDrawable>() {
                         @Override
-                        public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        public boolean onException(Exception e, String model,
+                                                   Target<GlideDrawable> target, boolean
+                                                           isFirstResource) {
                             return false;
                         }
 
                         @Override
-                        public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        public boolean onResourceReady(GlideDrawable resource, String model,
+                                                       Target<GlideDrawable> target, boolean
+                                                               isFromMemoryCache, boolean
+                                                               isFirstResource) {
                             spinner.setVisibility(View.GONE);
                             return false;
                         }
@@ -328,7 +341,8 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResult) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResult) {
         if (requestCode == PermissionUtils.PERMISSION_REQUEST_CODE) {
             if (grantResult.length > 0 && grantResult[0] == PackageManager.PERMISSION_GRANTED) {
                 if (PermissionUtils.getViewerActivityAction().equals("crop")) {
@@ -393,7 +407,8 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
     }
 
     private void openMenu() {
-        fab.animate().rotation(45.0f).withLayer().setDuration(300).setInterpolator(new OvershootInterpolator(10.0F)).start();
+        fab.animate().rotation(45.0f).withLayer().setDuration(300).setInterpolator(new
+                OvershootInterpolator(10.0F)).start();
         showFab(applyFab);
         showFab(saveFab);
         showFab(infoFab);
@@ -403,7 +418,8 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
         hideFab(infoFab);
         hideFab(saveFab);
         hideFab(applyFab);
-        fab.animate().rotation(0.0f).withLayer().setDuration(300).setInterpolator(new OvershootInterpolator(10.0F)).start();
+        fab.animate().rotation(0.0f).withLayer().setDuration(300).setInterpolator(new
+                OvershootInterpolator(10.0F)).start();
     }
 
     private void showFab(FloatingActionButton fab) {
@@ -426,7 +442,8 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
                 @Override
                 public void onShown(FloatingActionButton fab) {
                     super.onShown(fab);
-                    fab.animate().rotation(0.0f).withLayer().setDuration(300).setInterpolator(new OvershootInterpolator(10.0F)).start();
+                    fab.animate().rotation(0.0f).withLayer().setDuration(300).setInterpolator(new
+                            OvershootInterpolator(10.0F)).start();
                 }
             });
             fab.setVisibility(View.VISIBLE);
@@ -454,7 +471,8 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
                 .cancelable(false)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction
+                            which) {
                         if (downloadDialog != null) {
                             downloadDialog.dismiss();
                             reshowFab(fab);
@@ -471,10 +489,12 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(new SimpleTarget<Bitmap>() {
                     @Override
-                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap>
+                            glideAnimation) {
                         if (resource != null && downloadDialog.isShowing()) {
                             enteredDownloadTask[0] = true;
-                            saveWallpaper(AltWallpaperViewerActivity.this, name, downloadDialog, resource);
+                            saveWallpaper(AltWallpaperViewerActivity.this, name, downloadDialog,
+                                    resource);
                         }
                     }
                 });
@@ -491,7 +511,8 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
                                     + "\n"
                                     + getString(R.string.download_takes_longer);
                             downloadDialog.setContent(newContent);
-                            downloadDialog.setActionButton(DialogAction.POSITIVE, android.R.string.cancel);
+                            downloadDialog.setActionButton(DialogAction.POSITIVE, android.R
+                                    .string.cancel);
                         }
                     }
                 });
@@ -533,7 +554,8 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         downloadDialog.dismiss();
-                        Snackbar longSnackbar = Utils.snackbar(AltWallpaperViewerActivity.this, layout, finalSnackbarText,
+                        Snackbar longSnackbar = Utils.snackbar(AltWallpaperViewerActivity.this,
+                                layout, finalSnackbarText,
                                 Snackbar.LENGTH_LONG);
                         ViewGroup snackbarView = (ViewGroup) longSnackbar.getView();
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -560,7 +582,8 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
         ISDialogs.showApplyWallpaperDialog(this,
                 new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull
+                            DialogAction dialogAction) {
                         if (dialogApply != null) {
                             dialogApply.dismiss();
                         }
@@ -582,7 +605,8 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
                                 .cancelable(false)
                                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                                     @Override
-                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull
+                                            DialogAction which) {
                                         if (applyTask[0] != null) {
                                             applyTask[0].cancel(true);
                                         }
@@ -616,31 +640,39 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
                                                     .cancelable(false)
                                                     .show();
 
-                                            applyTask[0] = new ApplyWallpaper(context, resource, new ApplyWallpaper.ApplyCallback() {
-                                                @Override
-                                                public void afterApplied() {
-                                                    runOnUIThread(context, new Runnable() {
+                                            applyTask[0] = new ApplyWallpaper(context, resource,
+                                                    new ApplyWallpaper.ApplyCallback() {
                                                         @Override
-                                                        public void run() {
-                                                            if (dialogApply != null) {
-                                                                dialogApply.dismiss();
-                                                            }
-                                                            dialogApply = new MaterialDialog.Builder(context)
-                                                                    .content(R.string.set_as_wall_done)
-                                                                    .positiveText(android.R.string.ok)
-                                                                    .show();
-
-                                                            dialogApply.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                                        public void afterApplied() {
+                                                            runOnUIThread(context, new Runnable() {
                                                                 @Override
-                                                                public void onDismiss(DialogInterface dialogInterface) {
-                                                                    reshowFab(fab);
-                                                                    setupFullScreen();
+                                                                public void run() {
+                                                                    if (dialogApply != null) {
+                                                                        dialogApply.dismiss();
+                                                                    }
+                                                                    dialogApply = new MaterialDialog
+                                                                            .Builder(context)
+                                                                            .content(R.string
+                                                                                    .set_as_wall_done)
+                                                                            .positiveText(android.R
+                                                                                    .string.ok)
+                                                                            .show();
+
+                                                                    dialogApply
+                                                                            .setOnDismissListener
+                                                                                    (new DialogInterface.OnDismissListener() {
+                                                                        @Override
+                                                                        public void onDismiss
+                                                                                (DialogInterface
+                                                                                         dialogInterface) {
+                                                                            reshowFab(fab);
+                                                                            setupFullScreen();
+                                                                        }
+                                                                    });
                                                                 }
                                                             });
                                                         }
                                                     });
-                                                }
-                                            });
                                             applyTask[0].execute();
                                         }
                                     }
@@ -654,11 +686,14 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
                                     @Override
                                     public void run() {
                                         if (!enteredApplyTask[0]) {
-                                            String newContent = context.getString(R.string.downloading_wallpaper)
+                                            String newContent = context.getString(R.string
+                                                    .downloading_wallpaper)
                                                     + "\n"
-                                                    + context.getString(R.string.download_takes_longer);
+                                                    + context.getString(R.string
+                                                    .download_takes_longer);
                                             dialogApply.setContent(newContent);
-                                            dialogApply.setActionButton(DialogAction.POSITIVE, android.R.string.cancel);
+                                            dialogApply.setActionButton(DialogAction.POSITIVE,
+                                                    android.R.string.cancel);
                                         }
                                     }
                                 });
@@ -667,10 +702,12 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
                     }
                 }, new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull
+                            DialogAction dialogAction) {
                         if (!PermissionUtils.canAccessStorage(AltWallpaperViewerActivity.this)) {
                             PermissionUtils.setViewerActivityAction("crop");
-                            PermissionUtils.requestStoragePermission(AltWallpaperViewerActivity.this);
+                            PermissionUtils.requestStoragePermission(AltWallpaperViewerActivity
+                                    .this);
                         } else {
                             cropWallpaper(wallUrl);
                         }
@@ -686,7 +723,8 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
     }
 
     private void showNotConnectedSnackBar() {
-        Snackbar notConnectedSnackBar = Utils.snackbar(this, layout, getString(R.string.no_conn_title),
+        Snackbar notConnectedSnackBar = Utils.snackbar(this, layout, getString(R.string
+                        .no_conn_title),
                 Snackbar.LENGTH_LONG);
 
         ViewGroup snackbarView = (ViewGroup) notConnectedSnackBar.getView();
@@ -700,7 +738,8 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
 
     private void showDialogs(String action) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) !=
+                ActivityCompat.checkSelfPermission(this, Manifest.permission
+                        .READ_EXTERNAL_STORAGE) !=
                         PackageManager.PERMISSION_GRANTED) {
             new MaterialDialog.Builder(this)
                     .title(R.string.md_error_label)
@@ -744,7 +783,8 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
                 .cancelable(false)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction
+                            which) {
                         if (cropTask[0] != null) {
                             cropTask[0].cancel(true);
                         }
@@ -769,7 +809,8 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
                             if (dialogApply != null) {
                                 dialogApply.dismiss();
                             }
-                            dialogApply = new MaterialDialog.Builder(AltWallpaperViewerActivity.this)
+                            dialogApply = new MaterialDialog.Builder(AltWallpaperViewerActivity
+                                    .this)
                                     .content(getString(R.string.preparing_wallpaper))
                                     .progress(true, 0)
                                     .cancelable(false)
@@ -791,7 +832,8 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
                                 fabOpened = false;
                             }
                             hideFab(fab);
-                            cropTask[0] = new WallpaperToCrop(AltWallpaperViewerActivity.this, dialogApply, resource,
+                            cropTask[0] = new WallpaperToCrop(AltWallpaperViewerActivity.this,
+                                    dialogApply, resource,
                                     layout, item.getWallName());
                             cropTask[0].execute();
                             Timer timer = new Timer();
@@ -802,10 +844,12 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
                                         @Override
                                         public void run() {
                                             String content = getString(R.string.preparing_wallpaper)
-                                                    + "\n" + getString(R.string.download_takes_longer);
+                                                    + "\n" + getString(R.string
+                                                    .download_takes_longer);
 
                                             dialogApply.setContent(content);
-                                            dialogApply.setActionButton(DialogAction.POSITIVE, android.R.string.cancel);
+                                            dialogApply.setActionButton(DialogAction.POSITIVE,
+                                                    android.R.string.cancel);
                                         }
                                     });
                                 }
@@ -826,7 +870,8 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
                                     + "\n"
                                     + getString(R.string.download_takes_longer);
                             dialogApply.setContent(newContent);
-                            dialogApply.setActionButton(DialogAction.POSITIVE, android.R.string.cancel);
+                            dialogApply.setActionButton(DialogAction.POSITIVE, android.R.string
+                                    .cancel);
                         }
                     }
                 });

@@ -89,7 +89,8 @@ public class AdviceDialog extends DialogFragment {
                 builder.content(R.string.walls_advice)
                         .onNeutral(new MaterialDialog.SingleButtonCallback() {
                             @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull
+                                    DialogAction which) {
                                 getPrefs().setWallsDialogDismissed(true);
                             }
                         });

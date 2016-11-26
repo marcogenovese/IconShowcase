@@ -92,11 +92,14 @@ public class LoadKustomFiles extends AsyncTask<Void, String, Boolean> {
                         komponents, wallpapers);
             }
             if (context.get() instanceof ShowcaseActivity) {
-                if (((ShowcaseActivity) context.get()).getCurrentFragment() instanceof MainFragment) {
-                    ((MainFragment) ((ShowcaseActivity) context.get()).getCurrentFragment()).updateAppInfoData();
+                if (((ShowcaseActivity) context.get()).getCurrentFragment() instanceof
+                        MainFragment) {
+                    ((MainFragment) ((ShowcaseActivity) context.get()).getCurrentFragment())
+                            .updateAppInfoData();
                 }
             }
-            Timber.d("Load of kustom files task completed successfully in: %d milliseconds", (endTime - startTime));
+            Timber.d("Load of kustom files task completed successfully in: %d milliseconds",
+                    (endTime - startTime));
         } else {
             Timber.d("Something went really wrong while loading Kustom files");
         }
@@ -107,7 +110,8 @@ public class LoadKustomFiles extends AsyncTask<Void, String, Boolean> {
         try {
             String[] kustomFiles = assetManager.list(folder);
 
-            File previewsFolder = new File(context.get().getExternalCacheDir(), Utils.capitalizeText(folder) + "Previews");
+            File previewsFolder = new File(context.get().getExternalCacheDir(), Utils
+                    .capitalizeText(folder) + "Previews");
 
             if (kustomFiles != null && kustomFiles.length > 0) {
                 Utils.clean(previewsFolder);
@@ -116,14 +120,16 @@ public class LoadKustomFiles extends AsyncTask<Void, String, Boolean> {
                     File widgetPreviewFile = new File(previewsFolder, template);
                     String widgetName = Utils.getFilenameWithoutExtension(template);
                     String[] previews = getWidgetPreviewPathFromZip(widgetName, folder,
-                            assetManager.open(folder + "/" + template), previewsFolder, widgetPreviewFile);
+                            assetManager.open(folder + "/" + template), previewsFolder,
+                            widgetPreviewFile);
                     if (previews != null) {
                         switch (folder) {
                             case "komponents":
                                 komponents.add(new KustomKomponent(previews[0]));
                                 break;
                             case "wallpapers":
-                                wallpapers.add(new KustomWallpaper(template, previews[0], previews[1]));
+                                wallpapers.add(new KustomWallpaper(template, previews[0],
+                                        previews[1]));
                                 break;
                             case "widgets":
                                 widgets.add(new KustomWidget(template, previews[0], previews[1]));

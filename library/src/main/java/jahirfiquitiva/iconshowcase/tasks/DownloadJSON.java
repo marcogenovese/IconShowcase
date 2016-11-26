@@ -108,8 +108,10 @@ public class DownloadJSON extends AsyncTask<Void, Void, Boolean> {
                 fragment.setupContent();
             }
             if (wrContext.get() instanceof ShowcaseActivity) {
-                if (((ShowcaseActivity) wrContext.get()).getCurrentFragment() instanceof MainFragment) {
-                    ((MainFragment) ((ShowcaseActivity) wrContext.get()).getCurrentFragment()).updateAppInfoData();
+                if (((ShowcaseActivity) wrContext.get()).getCurrentFragment() instanceof
+                        MainFragment) {
+                    ((MainFragment) ((ShowcaseActivity) wrContext.get()).getCurrentFragment())
+                            .updateAppInfoData();
                 }
             }
         } else {
@@ -118,7 +120,8 @@ public class DownloadJSON extends AsyncTask<Void, Void, Boolean> {
     }
 
     public void setFragment(Fragment fragment) {
-        this.fragment = fragment instanceof WallpapersFragment ? (WallpapersFragment) fragment : null;
+        this.fragment = fragment instanceof WallpapersFragment ? (WallpapersFragment) fragment :
+                null;
     }
 
 }

@@ -117,12 +117,16 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
             FullListHolder.get().home().createList(mPreviewIcons);
             FullListHolder.get().iconsCategories().createList(mCategoryList);
             if (mContext.get() instanceof ShowcaseActivity) {
-                if (((ShowcaseActivity) mContext.get()).getCurrentFragment() instanceof MainFragment) {
-                    ((MainFragment) ((ShowcaseActivity) mContext.get()).getCurrentFragment()).updateAppInfoData();
+                if (((ShowcaseActivity) mContext.get()).getCurrentFragment() instanceof
+                        MainFragment) {
+                    ((MainFragment) ((ShowcaseActivity) mContext.get()).getCurrentFragment())
+                            .updateAppInfoData();
                 }
-                ((ShowcaseActivity) mContext.get()).resetFragment(DrawerActivity.DrawerItem.PREVIEWS);
+                ((ShowcaseActivity) mContext.get()).resetFragment(DrawerActivity.DrawerItem
+                        .PREVIEWS);
             }
-            Timber.d("Load of icons task completed successfully in: %d milliseconds", (endTime - startTime));
+            Timber.d("Load of icons task completed successfully in: %d milliseconds", (endTime -
+                    startTime));
         } else {
             Timber.d("Something went really wrong while loading icons.");
         }

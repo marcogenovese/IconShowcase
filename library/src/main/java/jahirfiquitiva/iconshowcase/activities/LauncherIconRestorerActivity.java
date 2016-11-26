@@ -38,7 +38,8 @@ public class LauncherIconRestorerActivity extends Activity {
         PackageManager p = getPackageManager();
         Class<?> className = null;
         final String packageName = Utils.getAppPackageName(this);
-        String componentNameString = packageName + "." + getResources().getString(R.string.main_activity_name);
+        String componentNameString = packageName + "." + getResources().getString(R.string
+                .main_activity_name);
         try {
             className = Class.forName(componentNameString);
         } catch (ClassNotFoundException e) {
@@ -60,12 +61,14 @@ public class LauncherIconRestorerActivity extends Activity {
                         getResources().getString(R.string.app_name));
                 Toast.makeText(this, toastContent, Toast.LENGTH_LONG).show();
             } else {
-                String newToastContent = getResources().getString(R.string.launcher_icon_no_restored,
+                String newToastContent = getResources().getString(R.string
+                                .launcher_icon_no_restored,
                         getResources().getString(R.string.app_name));
                 Toast.makeText(this, newToastContent, Toast.LENGTH_LONG).show();
             }
         } else {
-            String errorToastContent = getResources().getString(R.string.launcher_icon_restorer_error,
+            String errorToastContent = getResources().getString(R.string
+                            .launcher_icon_restorer_error,
                     getResources().getString(R.string.app_name));
             Toast.makeText(this, errorToastContent, Toast.LENGTH_LONG).show();
         }

@@ -61,6 +61,7 @@ public class IconShowcaseCardView extends CardView {
         } else {
             rightCardColor = ContextCompat.getColor(context, R.color.card_light_background);
         }
+        setCardBackgroundColor(0);
     }
 
 }

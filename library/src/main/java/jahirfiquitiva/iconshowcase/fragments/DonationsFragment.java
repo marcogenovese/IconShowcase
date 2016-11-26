@@ -105,7 +105,8 @@ public class DonationsFragment extends CapsuleFragment {
 
     private boolean mDebug = false;
     // Called when consumption is complete
-    private final IabHelper.OnConsumeFinishedListener mConsumeFinishedListener = new IabHelper.OnConsumeFinishedListener() {
+    private final IabHelper.OnConsumeFinishedListener mConsumeFinishedListener = new IabHelper
+            .OnConsumeFinishedListener() {
         public void onConsumeFinished(Purchase purchase, IabResult result) {
             if (mDebug)
                 Timber.d("Consumption finished. Purchase: " + purchase + ", result: " + result);
@@ -122,27 +123,30 @@ public class DonationsFragment extends CapsuleFragment {
         }
     };
     // Callback for when a purchase is finished
-    private final IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
-        public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
-            if (mDebug)
-                Timber.d("Purchase finished: " + result + ", purchase: " + purchase);
+    private final IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new
+            IabHelper.OnIabPurchaseFinishedListener() {
+                public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
+                    if (mDebug)
+                        Timber.d("Purchase finished: " + result + ", purchase: " + purchase);
 
-            // if we were disposed of in the meantime, quit.
-            if (mHelper == null) return;
+                    // if we were disposed of in the meantime, quit.
+                    if (mHelper == null) return;
 
-            if (result.isSuccess()) {
-                if (mDebug)
-                    Timber.d("Purchase successful.");
+                    if (result.isSuccess()) {
+                        if (mDebug)
+                            Timber.d("Purchase successful.");
 
-                // directly consume in-app purchase, so that people can donate multiple times
-                mHelper.consumeAsync(purchase, mConsumeFinishedListener);
+                        // directly consume in-app purchase, so that people can donate multiple
+                        // times
+                        mHelper.consumeAsync(purchase, mConsumeFinishedListener);
 
-                // show thanks openDialog
-                openDialog(android.R.drawable.ic_dialog_info, R.string.donations__thanks_dialog_title,
-                        getString(R.string.donations__thanks_dialog));
-            }
-        }
-    };
+                        // show thanks openDialog
+                        openDialog(android.R.drawable.ic_dialog_info, R.string
+                                        .donations__thanks_dialog_title,
+                                getString(R.string.donations__thanks_dialog));
+                    }
+                }
+            };
     private boolean mGoogleEnabled = false;
     private String mGooglePubkey = "";
     private String[] mGgoogleCatalog = new String[]{};
@@ -167,15 +171,20 @@ public class DonationsFragment extends CapsuleFragment {
      * @param paypalEnabled       Enable PayPal donations
      * @param paypalUser          Your PayPal email address
      * @param paypalCurrencyCode  Currency code like EUR. See here for other codes:
-     *                            https://developer.paypal.com/webapps/developer/docs/classic/api/currency_codes/#id09A6G0U0GYK
+     *                            https://developer.paypal
+     *                            .com/webapps/developer/docs/classic/api/currency_codes
+     *                            /#id09A6G0U0GYK
      * @param paypalItemName      Display item name on PayPal, like "Donation for NTPSync"
      * @param flattrEnabled       Enable Flattr donations
      * @param bitcoinEnabled      Enable bitcoin donations
      * @return DonationsFragment
      */
-    public static DonationsFragment newInstance(boolean googleEnabled, String googlePubkey, String[] googleCatalog,
-                                                String[] googleCatalogValues, boolean paypalEnabled, String paypalUser,
-                                                String paypalCurrencyCode, String paypalItemName, boolean flattrEnabled,
+    public static DonationsFragment newInstance(boolean googleEnabled, String googlePubkey,
+                                                String[] googleCatalog,
+                                                String[] googleCatalogValues, boolean
+                                                        paypalEnabled, String paypalUser,
+                                                String paypalCurrencyCode, String paypalItemName,
+                                                boolean flattrEnabled,
                                                 boolean bitcoinEnabled) {
         DonationsFragment donationsFragment = new DonationsFragment();
         Bundle args = new Bundle();
@@ -229,7 +238,8 @@ public class DonationsFragment extends CapsuleFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
+            savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         return inflater.inflate(R.layout.donations__fragment, container, false);
     }
@@ -278,7 +288,8 @@ public class DonationsFragment extends CapsuleFragment {
                 }
             });
 
-            // Create the helper, passing it our context and the public key to verify signatures with
+            // Create the helper, passing it our context and the public key to verify signatures
+            // with
             if (mDebug)
                 Timber.d("Creating IAB helper.");
             mHelper = new IabHelper(getActivity(), mGooglePubkey);
@@ -297,7 +308,8 @@ public class DonationsFragment extends CapsuleFragment {
 
                     if (!result.isSuccess()) {
                         // Oh noes, there was a problem.
-                        openDialog(android.R.drawable.ic_dialog_alert, R.string.donations__google_android_market_not_supported_title,
+                        openDialog(android.R.drawable.ic_dialog_alert, R.string
+                                        .donations__google_android_market_not_supported_title,
                                 getString(R.string.donations__google_android_market_not_supported));
                     }
 
@@ -325,7 +337,8 @@ public class DonationsFragment extends CapsuleFragment {
         /* Bitcoin */
         if (mBitcoinEnabled) {
             // inflate bitcoin view into stub
-            ViewStub bitcoinViewStub = (ViewStub) getActivity().findViewById(R.id.donations__bitcoin_stub);
+            ViewStub bitcoinViewStub = (ViewStub) getActivity().findViewById(R.id
+                    .donations__bitcoin_stub);
             bitcoinViewStub.inflate();
 
             Button btBitcoin = (Button) getActivity().findViewById(R.id.donations__bitcoin_button);
@@ -342,16 +355,19 @@ public class DonationsFragment extends CapsuleFragment {
                     // http://stackoverflow.com/a/11012443/832776
                     if (Build.VERSION.SDK_INT >= 11) {
                         ClipboardManager clipboard =
-                                (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                                (ClipboardManager) getActivity().getSystemService(Context
+                                        .CLIPBOARD_SERVICE);
                         ClipData clip = ClipData.newPlainText(mBitcoinAddress, mBitcoinAddress);
                         clipboard.setPrimaryClip(clip);
                     } else {
                         @SuppressWarnings("deprecation")
                         android.text.ClipboardManager clipboard =
-                                (android.text.ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                                (android.text.ClipboardManager) getActivity().getSystemService
+                                        (Context.CLIPBOARD_SERVICE);
                         clipboard.setText(mBitcoinAddress);
                     }
-                    Toast.makeText(getActivity(), R.string.donations__bitcoin_toast_copy, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), R.string.donations__bitcoin_toast_copy, Toast
+                            .LENGTH_SHORT).show();
                     return true;
                 }
             });
@@ -423,7 +439,8 @@ public class DonationsFragment extends CapsuleFragment {
 
     /**
      * Donate button with PayPal by opening browser with defined URL For possible parameters see:
-     * https://developer.paypal.com/webapps/developer/docs/classic/paypal-payments-standard/integration-guide/Appx_websitestandard_htmlvariables/
+     * https://developer.paypal.com/webapps/developer/docs/classic/paypal-payments-standard
+     * /integration-guide/Appx_websitestandard_htmlvariables/
      */
     private void donatePayPalOnClick() {
         Uri.Builder uriBuilder = new Uri.Builder();
@@ -469,7 +486,8 @@ public class DonationsFragment extends CapsuleFragment {
     }
 
     /**
-     * Build view for Flattr. see Flattr API for more information: http://developers.flattr.net/button/
+     * Build view for Flattr. see Flattr API for more information: http://developers.flattr
+     * .net/button/
      */
     @SuppressLint({"SetJavaScriptEnabled", "SetTextI18n"})
     @TargetApi(11)
@@ -496,7 +514,8 @@ public class DonationsFragment extends CapsuleFragment {
                     view.getContext().startActivity(
                             new Intent(Intent.ACTION_VIEW, Uri.parse(urlNewString)));
                 } catch (ActivityNotFoundException e) {
-                    openDialog(android.R.drawable.ic_dialog_alert, R.string.donations__alert_dialog_title,
+                    openDialog(android.R.drawable.ic_dialog_alert, R.string
+                                    .donations__alert_dialog_title,
                             getString(R.string.donations__alert_dialog_no_browser));
                 }
                 return false;
@@ -517,7 +536,8 @@ public class DonationsFragment extends CapsuleFragment {
                             view.getContext().startActivity(
                                     new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
                         } catch (ActivityNotFoundException e) {
-                            openDialog(android.R.drawable.ic_dialog_alert, R.string.donations__alert_dialog_title,
+                            openDialog(android.R.drawable.ic_dialog_alert, R.string
+                                            .donations__alert_dialog_title,
                                     getString(R.string.donations__alert_dialog_no_browser));
                         }
                         view.stopLoading();
@@ -539,7 +559,8 @@ public class DonationsFragment extends CapsuleFragment {
         });
 
         // make text white and background transparent
-        String htmlStart = "<html> <head><style type='text/css'>*{color: #FFFFFF; background-color: transparent;}</style>";
+        String htmlStart = "<html> <head><style type='text/css'>*{color: #FFFFFF; " +
+                "background-color: transparent;}</style>";
 
         // https is not working in android 2.1 and 2.2
         String flattrScheme;
@@ -550,13 +571,15 @@ public class DonationsFragment extends CapsuleFragment {
         }
 
         // set url of flattr link
-        TextView mFlattrUrlTextView = (TextView) getActivity().findViewById(R.id.donations__flattr_url);
+        TextView mFlattrUrlTextView = (TextView) getActivity().findViewById(R.id
+                .donations__flattr_url);
         mFlattrUrlTextView.setText(flattrScheme + mFlattrUrl);
 
         String flattrJavascript = "<script type='text/javascript'>"
                 + "/* <![CDATA[ */"
                 + "(function() {"
-                + "var s = document.createElement('script'), t = document.getElementsByTagName('script')[0];"
+                + "var s = document.createElement('script'), t = document.getElementsByTagName" +
+                "('script')[0];"
                 + "s.type = 'text/javascript';" + "s.async = true;" + "s.src = '" + flattrScheme
                 + "api.flattr.com/js/0.6/load.js?mode=auto';" + "t.parentNode.insertBefore(s, t);"
                 + "})();" + "/* ]]> */" + "</script>";
@@ -568,7 +591,8 @@ public class DonationsFragment extends CapsuleFragment {
                 + mFlattrUrl
                 + "' target='_blank'> <img src='"
                 + flattrScheme
-                + "api.flattr.com/button/flattr-badge-large.png' alt='Flattr this' title='Flattr this' border='0' /></a></noscript>";
+                + "api.flattr.com/button/flattr-badge-large.png' alt='Flattr this' title='Flattr " +
+                "this' border='0' /></a></noscript>";
         String htmlEnd = "</div> </body> </html>";
 
         String flattrCode = htmlStart + flattrJavascript + htmlMiddle + flattrHtml + htmlEnd;
@@ -588,7 +612,8 @@ public class DonationsFragment extends CapsuleFragment {
 
         // make background of webview transparent
         // has to be called AFTER loadData
-        // http://stackoverflow.com/questions/5003156/android-webview-style-background-colortransparent-ignored-on-android-2-2
+        // http://stackoverflow.com/questions/5003156/android-webview-style-background
+        // -colortransparent-ignored-on-android-2-2
         mFlattrWebview.setBackgroundColor(0x00000000);
     }
 }

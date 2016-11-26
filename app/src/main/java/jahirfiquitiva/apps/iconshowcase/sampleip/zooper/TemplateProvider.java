@@ -60,7 +60,8 @@ public class TemplateProvider extends ContentProvider {
         return null;
     }
 
-    public Cursor query(@NonNull Uri paramUri, String[] paramArrayOfString1, String paramString1, String[] paramArrayOfString2, String paramString2) {
+    public Cursor query(@NonNull Uri paramUri, String[] paramArrayOfString1, String paramString1,
+                        String[] paramArrayOfString2, String paramString2) {
         MatrixCursor cursor = new MatrixCursor(new String[]{"string"});
         try {
             if (getContext() == null) return cursor;
@@ -78,7 +79,8 @@ public class TemplateProvider extends ContentProvider {
         return cursor;
     }
 
-    public int update(@NonNull Uri paramUri, ContentValues paramContentValues, String paramString, String[] paramArrayOfString) {
+    public int update(@NonNull Uri paramUri, ContentValues paramContentValues, String
+            paramString, String[] paramArrayOfString) {
         return 0;
     }
 }

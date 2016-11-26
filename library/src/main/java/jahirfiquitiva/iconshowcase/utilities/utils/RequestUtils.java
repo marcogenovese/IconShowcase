@@ -95,7 +95,8 @@ public class RequestUtils {
                     e.printStackTrace();
                 }
 
-                long difference = (endDate != null ? endDate.getTime() : 0) - (startDate != null ? startDate.getTime() : 0);
+                long difference = (endDate != null ? endDate.getTime() : 0) - (startDate != null
+                        ? startDate.getTime() : 0);
                 if (difference < 0) {
                     Date dateMax = null;
                     try {
@@ -109,11 +110,14 @@ public class RequestUtils {
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                    difference = ((dateMax != null ? dateMax.getTime() : 0) - startDate.getTime()) + (endDate.getTime() - (dateMin != null ? dateMin.getTime() : 0));
+                    difference = ((dateMax != null ? dateMax.getTime() : 0) - startDate.getTime()
+                    ) + (endDate.getTime() - (dateMin != null ? dateMin.getTime() : 0));
                 }
                 int days = Integer.valueOf(currentDay) - dayNum;
-                int hoursHappened = (int) ((difference - (1000 * 60 * 60 * 24 * days)) / (1000 * 60 * 60));
-                int min = (int) (difference - (1000 * 60 * 60 * 24 * days) - (1000 * 60 * 60 * hoursHappened)) / (1000 * 60);
+                int hoursHappened = (int) ((difference - (1000 * 60 * 60 * 24 * days)) / (1000 *
+                        60 * 60));
+                int min = (int) (difference - (1000 * 60 * 60 * 24 * days) - (1000 * 60 * 60 *
+                        hoursHappened)) / (1000 * 60);
 
                 if (days >= hoursToDays) {
                     return true;
@@ -160,7 +164,8 @@ public class RequestUtils {
                 e.printStackTrace();
             }
 
-            long difference = (endDate != null ? endDate.getTime() : 0) - (startDate != null ? startDate.getTime() : 0);
+            long difference = (endDate != null ? endDate.getTime() : 0) - (startDate != null ?
+                    startDate.getTime() : 0);
             if (difference < 0) {
                 Date dateMax = null;
                 try {
@@ -174,10 +179,12 @@ public class RequestUtils {
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                difference = ((dateMax != null ? dateMax.getTime() : 0) - startDate.getTime()) + (endDate.getTime() - (dateMin != null ? dateMin.getTime() : 0));
+                difference = ((dateMax != null ? dateMax.getTime() : 0) - startDate.getTime()) +
+                        (endDate.getTime() - (dateMin != null ? dateMin.getTime() : 0));
             }
             int days = Integer.valueOf(currentDay) - dayNum;
-            int hoursHappened = (int) ((difference - (1000 * 60 * 60 * 24 * days)) / (1000 * 60 * 60));
+            int hoursHappened = (int) ((difference - (1000 * 60 * 60 * 24 * days)) / (1000 * 60 *
+                    60));
 
             int minutes = (int) (difference - (1000 * 60 * 60 * 24 * days) -
                     (1000 * 60 * 60 * hoursHappened)) / (1000 * 60);

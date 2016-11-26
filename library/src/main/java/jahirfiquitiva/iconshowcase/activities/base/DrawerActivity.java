@@ -68,7 +68,8 @@ public abstract class DrawerActivity extends CapsuleActivity {
             GOOGLE_CATALOG_VALUES = new String[0],
             GOOGLE_CATALOG;
 
-    protected static String GOOGLE_PUBKEY = "", PAYPAL_USER = "", PAYPAL_CURRENCY_CODE = "", thaAppName;
+    protected static String GOOGLE_PUBKEY = "", PAYPAL_USER = "", PAYPAL_CURRENCY_CODE = "",
+            thaAppName;
 
     protected static boolean mIsPremium = false, installedFromPlayStore = false;
 
@@ -94,7 +95,8 @@ public abstract class DrawerActivity extends CapsuleActivity {
                 return DrawerItem.KUSTOM;
             default:
                 //TODO add better catch;
-                throw new RuntimeException("Invalid drawer key " + s + ".\nPlease check your primary_drawer_items array");
+                throw new RuntimeException("Invalid drawer key " + s + ".\nPlease check your " +
+                        "primary_drawer_items array");
         }
     }
 
@@ -103,7 +105,8 @@ public abstract class DrawerActivity extends CapsuleActivity {
         mDrawerItems.add(DrawerItem.HOME);
 
         //Convert keys to enums
-        String[] configurePrimaryDrawerItems = getResources().getStringArray(R.array.drawer_sections);
+        String[] configurePrimaryDrawerItems = getResources().getStringArray(R.array
+                .drawer_sections);
 
         for (String s : configurePrimaryDrawerItems) {
             mDrawerItems.add(drawerKeyToType(s));
@@ -131,7 +134,8 @@ public abstract class DrawerActivity extends CapsuleActivity {
             GOOGLE_CATALOG_VALUES = getResources().getStringArray(R.array.google_donations_catalog);
 
             try {
-                if (!(GOOGLE_PUBKEY.length() > 50) || !(GOOGLE_CATALOG_VALUES.length > 0) || !(GOOGLE_CATALOG.length == GOOGLE_CATALOG_VALUES.length)) {
+                if (!(GOOGLE_PUBKEY.length() > 50) || !(GOOGLE_CATALOG_VALUES.length > 0) || !
+                        (GOOGLE_CATALOG.length == GOOGLE_CATALOG_VALUES.length)) {
                     DONATIONS_GOOGLE = false; //google donations setup is incorrect
                 }
             } catch (Exception e) {
@@ -150,7 +154,8 @@ public abstract class DrawerActivity extends CapsuleActivity {
         }
 
         if (WITH_DONATIONS_SECTION) {
-            WITH_DONATIONS_SECTION = DONATIONS_GOOGLE || DONATIONS_PAYPAL || DONATIONS_FLATTR || DONATIONS_BITCOIN; //if one of the donations are enabled,
+            WITH_DONATIONS_SECTION = DONATIONS_GOOGLE || DONATIONS_PAYPAL || DONATIONS_FLATTR ||
+                    DONATIONS_BITCOIN; //if one of the donations are enabled,
             // then the section is enabled
         }
     }
@@ -261,8 +266,10 @@ public abstract class DrawerActivity extends CapsuleActivity {
          * @param di      drawer type
          * @param i       identifier for drawer item
          */
-        public static PrimaryDrawerItem getPrimaryDrawerItem(final Context context, DrawerItem di, int i) {
-            return new PrimaryDrawerItem().withName(context.getResources().getString(di.getTitleID()))
+        public static PrimaryDrawerItem getPrimaryDrawerItem(final Context context, DrawerItem
+                di, int i) {
+            return new PrimaryDrawerItem().withName(context.getResources().getString(di
+                    .getTitleID()))
                     .withIdentifier(i).withIcon(Utils.getVectorDrawable(context, di.getIconRes()))
                     .withIconTintingEnabled(true);
         }
@@ -272,8 +279,10 @@ public abstract class DrawerActivity extends CapsuleActivity {
          * @param di      drawer type
          * @param i       identifier for drawer item
          */
-        public static SecondaryDrawerItem getSecondaryDrawerItem(final Context context, DrawerItem di, int i) {
-            return new SecondaryDrawerItem().withName(context.getResources().getString(di.getTitleID()))
+        public static SecondaryDrawerItem getSecondaryDrawerItem(final Context context,
+                                                                 DrawerItem di, int i) {
+            return new SecondaryDrawerItem().withName(context.getResources().getString(di
+                    .getTitleID()))
                     .withIdentifier(i);
         }
 

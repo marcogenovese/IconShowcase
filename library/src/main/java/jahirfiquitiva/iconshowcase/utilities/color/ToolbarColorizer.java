@@ -50,7 +50,8 @@ public class ToolbarColorizer {
      */
     public static void colorizeToolbar(Toolbar toolbar, final int toolbarIconsColor) {
 
-        final PorterDuffColorFilter colorFilter = new PorterDuffColorFilter(toolbarIconsColor, PorterDuff.Mode.SRC_IN);
+        final PorterDuffColorFilter colorFilter = new PorterDuffColorFilter(toolbarIconsColor,
+                PorterDuff.Mode.SRC_IN);
 
         for (int i = 0; i < toolbar.getChildCount(); i++) {
             final View v = toolbar.getChildAt(i);
@@ -63,20 +64,26 @@ public class ToolbarColorizer {
 
             if (v instanceof ActionMenuView) {
                 for (int j = 0; j < ((ActionMenuView) v).getChildCount(); j++) {
-                    //Step 2: Changing the color of any ActionMenuViews - icons that are not back button, nor text, nor overflow menu icon.
-                    //Colorize the ActionViews -> all icons that are NOT: back button | overflow menu
+                    //Step 2: Changing the color of any ActionMenuViews - icons that are not back
+                    // button, nor text, nor overflow menu icon.
+                    //Colorize the ActionViews -> all icons that are NOT: back button | overflow
+                    // menu
                     final View innerView = ((ActionMenuView) v).getChildAt(j);
                     if (innerView instanceof ActionMenuItemView) {
-                        for (int k = 0; k < ((ActionMenuItemView) innerView).getCompoundDrawables().length; k++) {
-                            if (((ActionMenuItemView) innerView).getCompoundDrawables()[k] != null) {
+                        for (int k = 0; k < ((ActionMenuItemView) innerView).getCompoundDrawables
+                                ().length; k++) {
+                            if (((ActionMenuItemView) innerView).getCompoundDrawables()[k] !=
+                                    null) {
                                 final int finalK = k;
 
-                                //Important to set the color filter in separate thread, by adding it to the message queue
+                                //Important to set the color filter in separate thread, by adding
+                                // it to the message queue
                                 //Won't work otherwise.
                                 innerView.post(new Runnable() {
                                     @Override
                                     public void run() {
-                                        ((ActionMenuItemView) innerView).getCompoundDrawables()[finalK].setColorFilter(colorFilter);
+                                        ((ActionMenuItemView) innerView).getCompoundDrawables()
+                                                [finalK].setColorFilter(colorFilter);
                                     }
                                 });
                             }
@@ -113,7 +120,8 @@ public class ToolbarColorizer {
             if (drawable != null)
                 mCollapseIconField.set(toolbar, ColorUtils.getTintedIcon(drawable, color));
 
-            final Field mSearchSrcTextViewField = searchViewClass.getDeclaredField("mSearchSrcTextView");
+            final Field mSearchSrcTextViewField = searchViewClass.getDeclaredField
+                    ("mSearchSrcTextView");
             mSearchSrcTextViewField.setAccessible(true);
             final EditText mSearchSrcTextView = (EditText) mSearchSrcTextViewField.get(searchView);
             mSearchSrcTextView.setTextColor(color);
@@ -164,8 +172,10 @@ public class ToolbarColorizer {
             Field fCursorDrawable = clazz.getDeclaredField("mCursorDrawable");
             fCursorDrawable.setAccessible(true);
             Drawable[] drawables = new Drawable[2];
-            drawables[0] = ColorUtils.getTintedIcon(editText.getContext(), mCursorDrawableRes, color);
-            drawables[1] = ColorUtils.getTintedIcon(editText.getContext(), mCursorDrawableRes, color);
+            drawables[0] = ColorUtils.getTintedIcon(editText.getContext(), mCursorDrawableRes,
+                    color);
+            drawables[1] = ColorUtils.getTintedIcon(editText.getContext(), mCursorDrawableRes,
+                    color);
             fCursorDrawable.set(editor, drawables);
         } catch (Exception e) {
             e.printStackTrace();
@@ -177,7 +187,8 @@ public class ToolbarColorizer {
         final ImageView imageView = (ImageView) field.get(target);
         if (imageView == null) return;
         if (imageView.getDrawable() != null)
-            imageView.setImageDrawable(ColorUtils.getTintedIcon(imageView.getDrawable(), tintColor));
+            imageView.setImageDrawable(ColorUtils.getTintedIcon(imageView.getDrawable(),
+                    tintColor));
     }
 
 }

@@ -129,12 +129,14 @@ public class LauncherIntents {
                 break;
             default:
                 Timber.d("No method for package or launcher: ", key);
-                throw new IllegalArgumentException("Couldn't find method for launcher or package: " + key);
+                throw new IllegalArgumentException("Couldn't find method for launcher or package:" +
+                        " " + key);
         }
     }
 
     private void ActionLauncher(Context context) {
-        Intent action = context.getPackageManager().getLaunchIntentForPackage("com.actionlauncher.playstore");
+        Intent action = context.getPackageManager().getLaunchIntentForPackage("com.actionlauncher" +
+                ".playstore");
         action.putExtra("apply_icon_pack", context.getPackageName());
         context.startActivity(action);
     }
@@ -208,7 +210,8 @@ public class LauncherIntents {
     }
 
     private void GoLauncher(Context context) {
-        Intent intent = context.getPackageManager().getLaunchIntentForPackage("com.gau.go.launcherex");
+        Intent intent = context.getPackageManager().getLaunchIntentForPackage("com.gau.go" +
+                ".launcherex");
         Intent go = new Intent("com.gau.go.launcherex.MyThemes.mythemeaction");
         go.putExtra("type", 1);
         go.putExtra("pkgname", context.getPackageName());
@@ -218,26 +221,30 @@ public class LauncherIntents {
 
     private void HoloLauncher(Context context) {
         Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.setComponent(new ComponentName("com.mobint.hololauncher", "com.mobint.hololauncher.Settings"));
+        intent.setComponent(new ComponentName("com.mobint.hololauncher", "com.mobint.hololauncher" +
+                ".Settings"));
         context.startActivity(intent);
     }
 
     private void HoloLauncherICS(Context context) {
         Intent holohdApply = new Intent(Intent.ACTION_MAIN);
-        holohdApply.setComponent(new ComponentName("com.mobint.hololauncher.hd", "com.mobint.hololauncher.SettingsActivity"));
+        holohdApply.setComponent(new ComponentName("com.mobint.hololauncher.hd", "com.mobint" +
+                ".hololauncher.SettingsActivity"));
         context.startActivity(holohdApply);
     }
 
     private void KkLauncher(Context context) {
         Intent kkApply = new Intent("com.kk.launcher.APPLY_ICON_THEME");
         kkApply.putExtra("com.kk.launcher.theme.EXTRA_PKG", context.getPackageName());
-        kkApply.putExtra("com.kk.launcher.theme.EXTRA_NAME", context.getResources().getString(R.string.app_name));
+        kkApply.putExtra("com.kk.launcher.theme.EXTRA_NAME", context.getResources().getString(R
+                .string.app_name));
         context.startActivity(kkApply);
     }
 
     private void LgHomeLauncher(Context context) {
         Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.setComponent(new ComponentName("com.lge.launcher2", "com.lge.launcher2.homesettings.HomeSettingsPrefActivity"));
+        intent.setComponent(new ComponentName("com.lge.launcher2", "com.lge.launcher2" +
+                ".homesettings.HomeSettingsPrefActivity"));
         context.startActivity(intent);
     }
 
@@ -255,14 +262,17 @@ public class LauncherIntents {
 
     private void MiniLauncher(Context context) {
         Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.setComponent(new ComponentName("com.jiubang.go.mini.launcher", "com.jiubang.go.mini.launcher.setting.MiniLauncherSettingActivity"));
+        intent.setComponent(new ComponentName("com.jiubang.go.mini.launcher", "com.jiubang.go" +
+                ".mini.launcher.setting.MiniLauncherSettingActivity"));
         context.startActivity(intent);
     }
 
     private void NextLauncher(Context context) {
-        Intent nextApply = context.getPackageManager().getLaunchIntentForPackage("com.gtp.nextlauncher");
+        Intent nextApply = context.getPackageManager().getLaunchIntentForPackage("com.gtp" +
+                ".nextlauncher");
         if (nextApply == null) {
-            nextApply = context.getPackageManager().getLaunchIntentForPackage("com.gtp.nextlauncher.trial");
+            nextApply = context.getPackageManager().getLaunchIntentForPackage("com.gtp" +
+                    ".nextlauncher.trial");
         }
         Intent next = new Intent("com.gau.go.launcherex.MyThemes.mythemeaction");
         next.putExtra("type", 1);
@@ -275,7 +285,8 @@ public class LauncherIntents {
         Intent intent = new Intent("com.teslacoilsw.launcher.APPLY_ICON_THEME");
         intent.setPackage("com.teslacoilsw.launcher");
         intent.putExtra("com.teslacoilsw.launcher.extra.ICON_THEME_TYPE", "GO");
-        intent.putExtra("com.teslacoilsw.launcher.extra.ICON_THEME_PACKAGE", context.getPackageName());
+        intent.putExtra("com.teslacoilsw.launcher.extra.ICON_THEME_PACKAGE", context
+                .getPackageName());
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
@@ -283,7 +294,8 @@ public class LauncherIntents {
     private void SLauncher(Context context) {
         Intent s = new Intent("com.s.launcher.APPLY_ICON_THEME");
         s.putExtra("com.s.launcher.theme.EXTRA_PKG", context.getPackageName());
-        s.putExtra("com.s.launcher.theme.EXTRA_NAME", context.getResources().getString(R.string.app_name));
+        s.putExtra("com.s.launcher.theme.EXTRA_NAME", context.getResources().getString(R.string
+                .app_name));
         context.startActivity(s);
 
     }
@@ -301,7 +313,8 @@ public class LauncherIntents {
     }
 
     private void SoloLauncher(Context context) {
-        Intent soloApply = context.getPackageManager().getLaunchIntentForPackage("home.solo.launcher.free");
+        Intent soloApply = context.getPackageManager().getLaunchIntentForPackage("home.solo" +
+                ".launcher.free");
         Intent solo = new Intent("home.solo.launcher.free.APPLY_THEME");
         solo.putExtra("EXTRA_PACKAGENAME", context.getPackageName());
         solo.putExtra("EXTRA_THEMENAME", context.getString(R.string.app_name));

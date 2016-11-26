@@ -35,20 +35,23 @@ import timber.log.Timber;
  */
 public class DonationUtils {
 
-    public static void hasPurchase(final Context context, @Nullable String pubKey, final OnPremiumListener listener) {
+    public static void hasPurchase(final Context context, @Nullable String pubKey, final
+    OnPremiumListener listener) {
         if (pubKey == null || pubKey.isEmpty() || !Config.get(context).hasGoogleDonations()) {
             listener.hasNoPurchase();
             return;
         }
 
         final IabHelper mHelper = new IabHelper(context, pubKey);
-        final IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
+        final IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper
+                .QueryInventoryFinishedListener() {
 
             public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
                 if (inventory != null) {
                     Timber.i("IAP inventory exists");
                     for (String key : Config.get().stringArray(R.array.google_donations_items)) {
-                        if (inventory.hasPurchase(key)) { //at least one donation value found, now premium
+                        if (inventory.hasPurchase(key)) { //at least one donation value found,
+                            // now premium
                             Timber.i("%s is purchased", key);
                             listener.hasPurchase(key);
                             return;

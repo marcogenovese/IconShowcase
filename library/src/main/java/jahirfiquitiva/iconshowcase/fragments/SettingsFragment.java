@@ -36,7 +36,6 @@ import android.util.Log;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.pitchedapps.capsule.library.activities.CapsuleActivity;
 import com.pitchedapps.capsule.library.event.CFabEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -50,11 +49,11 @@ import jahirfiquitiva.iconshowcase.config.Config;
 import jahirfiquitiva.iconshowcase.dialogs.FolderSelectorDialog;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.fragments.base.PreferenceFragment;
-import jahirfiquitiva.iconshowcase.utilities.utils.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
+import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
+import jahirfiquitiva.iconshowcase.utilities.utils.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
-import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 
 public class SettingsFragment extends PreferenceFragment implements
         PermissionUtils.OnPermissionResultListener, FolderSelectorDialog.FolderSelectionCallback {
@@ -102,7 +101,8 @@ public class SettingsFragment extends PreferenceFragment implements
         }
 
         final PreferenceScreen preferences = (PreferenceScreen) findPreference("preferences");
-        final PreferenceCategory launcherIcon = (PreferenceCategory) findPreference("launcherIconPreference");
+        final PreferenceCategory launcherIcon = (PreferenceCategory) findPreference
+                ("launcherIconPreference");
 
         setupDevOptions(preferences, getActivity());
 
@@ -115,7 +115,8 @@ public class SettingsFragment extends PreferenceFragment implements
 
         if (Config.get().userWallpaperInToolbar()) {
             wallHeaderCheck.setChecked(mPrefs.getWallpaperAsToolbarHeaderEnabled());
-            wallHeaderCheck.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            wallHeaderCheck.setOnPreferenceChangeListener(new Preference
+                    .OnPreferenceChangeListener() {
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     mPrefs.setWallpaperAsToolbarHeaderEnabled(newValue.toString().equals("true"));
                     ((ShowcaseActivity) getActivity()).setupToolbarHeader();
@@ -144,9 +145,11 @@ public class SettingsFragment extends PreferenceFragment implements
         data.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                MaterialDialog.SingleButtonCallback positiveCallback = new MaterialDialog.SingleButtonCallback() {
+                MaterialDialog.SingleButtonCallback positiveCallback = new MaterialDialog
+                        .SingleButtonCallback() {
                     @Override
-                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull
+                            DialogAction dialogAction) {
                         clearApplicationDataAndCache(getActivity());
                         changeValues(getActivity());
                     }
@@ -156,7 +159,8 @@ public class SettingsFragment extends PreferenceFragment implements
             }
         });
 
-        findPreference("wallsSaveLocation").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+        findPreference("wallsSaveLocation").setOnPreferenceClickListener(new Preference
+                .OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 if (!PermissionUtils.canAccessStorage(getContext())) {
@@ -168,70 +172,156 @@ public class SettingsFragment extends PreferenceFragment implements
             }
         });
 
+
+        PreferenceCategory notifications = (PreferenceCategory) findPreference("notifications");
+
+        //TODO: Remove this line, when OneSignal notification system is implemented.
+        preferences.removePreference(notifications);
+
+        /*
+        TODO: Uncomment this when OneSignal notification system is implemented.
+
+        if (getResources().getBoolean(R.bool.enable_notifications)) {
+            ((SwitchPreference) findPreference("enableNotifs")).setChecked(mPrefs
+            .getNotifsEnabled());
+            ((SwitchPreference) findPreference("enableLed")).setChecked(mPrefs
+            .getNotifsLedEnabled());
+            ((SwitchPreference) findPreference("enableSound")).setChecked(mPrefs
+            .getNotifsSoundEnabled());
+            ((SwitchPreference) findPreference("enableVibration")).setChecked(mPrefs
+            .getNotifsVibrationEnabled());
+            enableNotifsSettings(mPrefs.getNotifsEnabled());
+
+            findPreference("enableNotifs").setOnPreferenceChangeListener(new Preference
+            .OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    mPrefs.setNotifsEnabled(newValue.toString().equals("true"));
+                    ((SwitchPreference) preference).setChecked(newValue.toString().equals("true"));
+                    enableNotifsSettings(newValue.toString().equals("true"));
+                    return false;
+                }
+            });
+
+            findPreference("enableLed").setOnPreferenceChangeListener(new Preference
+            .OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    mPrefs.setNotifsLedEnabled(newValue.toString().equals("true"));
+                    ((SwitchPreference) preference).setChecked(newValue.toString().equals("true"));
+                    return false;
+                }
+            });
+
+            findPreference("enableSound").setOnPreferenceChangeListener(new Preference
+            .OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    mPrefs.setNotifsSoundEnabled(newValue.toString().equals("true"));
+                    ((SwitchPreference) preference).setChecked(newValue.toString().equals("true"));
+                    return false;
+                }
+            });
+
+            findPreference("enableVibration").setOnPreferenceChangeListener(new Preference
+            .OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    mPrefs.setNotifsVibrationEnabled(newValue.toString().equals("true"));
+                    ((SwitchPreference) preference).setChecked(newValue.toString().equals("true"));
+                    return false;
+                }
+            });
+        } else {
+            mPrefs.setNotifsEnabled(false);
+            preferences.removePreference(notifications);
+        }
+        */
+
         if (getResources().getBoolean(R.bool.allow_user_to_hide_app_icon)) {
             final SwitchPreference hideIcon = (SwitchPreference) findPreference("launcherIcon");
-            if (mPrefs.getLauncherIconShown()) {
-                hideIcon.setChecked(false);
-            }
+            hideIcon.setChecked(!mPrefs.getLauncherIconShown());
 
             final Class<?> finalClassName = className;
             final String finalComponentName = componentNameString;
 
-            hideIcon.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    if (finalClassName != null) {
-                        componentName = new ComponentName(
-                                Utils.getAppPackageName(getActivity().getApplicationContext()),
-                                finalComponentName);
-                        if (newValue.toString().equals("true")) {
-                            MaterialDialog.SingleButtonCallback positive = new MaterialDialog.SingleButtonCallback() {
-                                @Override
-                                public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
-                                    if (mPrefs.getLauncherIconShown()) {
-                                        mPrefs.setIconShown(false);
+            hideIcon.setOnPreferenceChangeListener(
+                    new Preference.OnPreferenceChangeListener() {
+                        public boolean onPreferenceChange(Preference preference, Object newValue) {
+                            if (finalClassName != null) {
+                                componentName = new ComponentName(
+                                        Utils.getAppPackageName(getActivity()
+                                                .getApplicationContext()),
+                                        finalComponentName);
+                                if (newValue.toString().equals("true")) {
+                                    MaterialDialog.SingleButtonCallback positive = new
+                                            MaterialDialog.SingleButtonCallback() {
+                                                @Override
+                                                public void onClick(@NonNull MaterialDialog
+                                                                            materialDialog, @NonNull
+                                                                            DialogAction
+                                                                            dialogAction) {
+                                                    if (mPrefs.getLauncherIconShown()) {
+                                                        mPrefs.setIconShown(false);
+                                                        p.setComponentEnabledSetting(componentName,
+                                                                PackageManager
+                                                                        .COMPONENT_ENABLED_STATE_DISABLED,
+                                                                PackageManager.DONT_KILL_APP);
+                                                        hideIcon.setChecked(true);
+                                                    }
+                                                }
+                                            };
+
+                                    MaterialDialog.SingleButtonCallback negative = new
+                                            MaterialDialog.SingleButtonCallback() {
+                                                @Override
+                                                public void onClick(@NonNull MaterialDialog
+                                                                            materialDialog, @NonNull
+                                                                            DialogAction
+                                                                            dialogAction) {
+                                                    if (mPrefs.getLauncherIconShown()) {
+                                                        hideIcon.setChecked(false);
+                                                    }
+                                                }
+                                            };
+
+                                    DialogInterface.OnDismissListener dismissListener = new
+                                            DialogInterface.OnDismissListener() {
+                                                @Override
+                                                public void onDismiss(DialogInterface dialog) {
+                                                    if (mPrefs.getLauncherIconShown()) {
+                                                        hideIcon.setChecked(false);
+                                                    }
+                                                }
+                                            };
+
+                                    ((ShowcaseActivity)
+
+                                            getActivity()
+
+                                    ).
+
+                                            setSettingsDialog(
+                                                    ISDialogs.showHideIconDialog(getActivity(),
+
+                                                            positive, negative, dismissListener));
+                                } else {
+                                    if (!mPrefs.getLauncherIconShown()) {
+                                        mPrefs.setIconShown(true);
                                         p.setComponentEnabledSetting(componentName,
-                                                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                                                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
                                                 PackageManager.DONT_KILL_APP);
                                     }
-
-                                    hideIcon.setChecked(true);
                                 }
-                            };
-
-                            MaterialDialog.SingleButtonCallback negative = new MaterialDialog.SingleButtonCallback() {
-                                @Override
-                                public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
-                                    hideIcon.setChecked(false);
-                                }
-                            };
-
-                            DialogInterface.OnDismissListener dismissListener = new DialogInterface.OnDismissListener() {
-                                @Override
-                                public void onDismiss(DialogInterface dialog) {
-                                    if (mPrefs.getLauncherIconShown()) {
-                                        hideIcon.setChecked(false);
-                                    }
-                                }
-                            };
-
-                            ((ShowcaseActivity) getActivity()).setSettingsDialog(
-                                    ISDialogs.showHideIconDialog(getActivity(),
-                                            positive, negative, dismissListener));
-                        } else {
-                            if (!mPrefs.getLauncherIconShown()) {
-                                mPrefs.setIconShown(true);
-                                p.setComponentEnabledSetting(componentName,
-                                        PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                                        PackageManager.DONT_KILL_APP);
+                                return true;
+                            } else {
+                                ISDialogs.showHideIconErrorDialog(getActivity());
+                                return false;
                             }
                         }
-                        return true;
-                    } else {
-                        ISDialogs.showHideIconErrorDialog(getActivity());
-                        return false;
                     }
-                }
-            });
+
+            );
         } else {
             preferences.removePreference(launcherIcon);
         }
@@ -258,7 +348,8 @@ public class SettingsFragment extends PreferenceFragment implements
             listsCards = (SwitchPreference) findPreference("listsCards");
 
             drawerHeaderTexts.setChecked(mPrefs.getDevDrawerTexts());
-            drawerHeaderTexts.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            drawerHeaderTexts.setOnPreferenceChangeListener(new Preference
+                    .OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     mPrefs.setDevDrawerTexts(newValue.toString().equals("true"));
@@ -423,4 +514,11 @@ public class SettingsFragment extends PreferenceFragment implements
         mPrefs.setDownloadsFolder(location);
         WSL.setSummary(getString(R.string.pref_summary_wsl, location));
     }
+
+    private void enableNotifsSettings(boolean enable) {
+        findPreference("enableLed").setEnabled(enable);
+        findPreference("enableSound").setEnabled(enable);
+        findPreference("enableVibration").setEnabled(enable);
+    }
+
 }

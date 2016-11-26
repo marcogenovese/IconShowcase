@@ -53,10 +53,9 @@ import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.activities.base.DrawerActivity;
 import jahirfiquitiva.iconshowcase.adapters.RequestsAdapter;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
-import jahirfiquitiva.iconshowcase.utilities.utils.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
+import jahirfiquitiva.iconshowcase.utilities.utils.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.RequestUtils;
-import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 import timber.log.Timber;
 
@@ -71,7 +70,8 @@ public class RequestsFragment extends CapsuleFragment {
     private int maxApps = 0, minutesLimit = 0; //TODO move to taskactivity
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
+            savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
         View layout = inflater.inflate(R.layout.icon_request_section, container, false);
@@ -94,7 +94,8 @@ public class RequestsFragment extends CapsuleFragment {
                 new GridSpacingItemDecoration(columnsNumber,
                         gridSpacing,
                         true));
-        RecyclerFastScroller mFastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
+        RecyclerFastScroller mFastScroller = (RecyclerFastScroller) layout.findViewById(R.id
+                .rvFastScroller);
         mFastScroller.attachRecyclerView(mRecyclerView);
 
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -115,7 +116,8 @@ public class RequestsFragment extends CapsuleFragment {
         } else {
             //mLoadingText = (TextView) layout.findViewById(R.id.loading_text);
             Timber.d("Requests still loading; subscribing to events");
-            //            AppLoadingEvent stickyEvent = EventBus.getDefault().removeStickyEvent(AppLoadingEvent.class);
+            //            AppLoadingEvent stickyEvent = EventBus.getDefault().removeStickyEvent
+            // (AppLoadingEvent.class);
             //            if (stickyEvent != null) onAppsLoading(stickyEvent);
         }
         return layout;
@@ -195,7 +197,8 @@ public class RequestsFragment extends CapsuleFragment {
                 if (mAdapter.getSelectedApps() != null) {
                     if (mAdapter.getSelectedApps().size() < mPrefs.getRequestsLeft()) {
                         showRequestsFilesCreationDialog(getActivity(), mPrefs);
-                    } else if ((RequestUtils.canRequestXApps(getActivity(), minutesLimit, mPrefs) != -2)
+                    } else if ((RequestUtils.canRequestXApps(getActivity(), minutesLimit, mPrefs)
+                            != -2)
                             || (minutesLimit <= 0)) {
                         showRequestsFilesCreationDialog(getActivity(), mPrefs);
                     } else {
@@ -216,7 +219,8 @@ public class RequestsFragment extends CapsuleFragment {
                 PermissionUtils.requestStoragePermission((ShowcaseActivity) context);
             } else {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-                        ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) !=
+                        ActivityCompat.checkSelfPermission(context, Manifest.permission
+                                .READ_EXTERNAL_STORAGE) !=
                                 PackageManager.PERMISSION_GRANTED) {
                     ISDialogs.showPermissionNotGrantedDialog(context);
                 } else {
