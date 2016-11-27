@@ -952,6 +952,14 @@ public class ShowcaseActivity extends TasksActivity {
         return WITH_ZOOPER_SECTION;
     }
 
+    public boolean includesIcons() {
+        return mDrawerMap != null && mDrawerMap.containsKey(DrawerItem.PREVIEWS);
+    }
+
+    public boolean includesWallpapers() {
+        return mDrawerMap != null && mDrawerMap.containsKey(DrawerItem.WALLPAPERS);
+    }
+
     public boolean selectAllApps() {
         return SELECT_ALL_APPS;
     }

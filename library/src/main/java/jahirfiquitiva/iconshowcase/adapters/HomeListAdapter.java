@@ -238,15 +238,21 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public void setupAppInfo() {
         if (hldr != null) {
+            if ((!((ShowcaseActivity) context).includesIcons()) || (icons < 1)) {
+                hldr.icons.setVisibility(View.GONE);
+            }
+            if ((!((ShowcaseActivity) context).includesWallpapers()) || (wallpapers < 1)) {
+                hldr.wallpapers.setVisibility(View.GONE);
+            }
+            if ((!((ShowcaseActivity) context).includesZooper()) || (widgets < 1)) {
+                hldr.widgets.setVisibility(View.GONE);
+            }
             hldr.iconsT.setText(context.getResources().getString(R.string.themed_icons, String
                     .valueOf(icons)));
             hldr.wallsT.setText(context.getResources().getString(R.string.available_wallpapers,
                     String.valueOf(wallpapers)));
             hldr.widgetsT.setText(context.getResources().getString(R.string.included_widgets,
                     String.valueOf(widgets)));
-            if (!((ShowcaseActivity) context).includesZooper()) {
-                hldr.widgets.setVisibility(View.GONE);
-            }
         }
     }
 
@@ -267,7 +273,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public class AppInfoCard extends RecyclerView.ViewHolder {
         final ImageView iconsIV, wallsIV, widgetsIV;
         final TextView iconsT, wallsT, widgetsT;
-        final LinearLayout widgets;
+        final LinearLayout icons, wallpapers, widgets;
 
         public AppInfoCard(View itemView) {
             super(itemView);
@@ -277,6 +283,8 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             iconsT = (TextView) itemView.findViewById(R.id.text_themed_icons);
             wallsT = (TextView) itemView.findViewById(R.id.text_available_wallpapers);
             widgetsT = (TextView) itemView.findViewById(R.id.text_included_widgets);
+            icons = (LinearLayout) itemView.findViewById(R.id.icons);
+            wallpapers = (LinearLayout) itemView.findViewById(R.id.wallpapers);
             widgets = (LinearLayout) itemView.findViewById(R.id.widgets);
         }
     }

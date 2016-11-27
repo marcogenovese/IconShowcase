@@ -74,7 +74,6 @@ public class AdviceDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-
         Type type = (Type) getArguments().getSerializable("type");
         if (type == null) type = Type.ERROR;
 

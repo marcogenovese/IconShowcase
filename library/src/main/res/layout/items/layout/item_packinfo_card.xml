@@ -40,6 +40,7 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
 
     <LinearLayout
+            android:id="@+id/icons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -71,6 +72,7 @@
     </LinearLayout>
 
     <LinearLayout
+            android:id="@+id/wallpapers"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"

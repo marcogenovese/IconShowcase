@@ -25,6 +25,7 @@ import android.os.AsyncTask;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -67,6 +68,18 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
             int iconResId = Utils.getIconResId(r, p, icon);
             if (iconResId > 0) {
                 mPreviewIcons.add(new IconItem(icon, iconResId));
+            }
+        }
+
+        if (mPreviewIcons.size() > 0) {
+            try {
+                FullListHolder.get().home().createList(mPreviewIcons);
+                if (((ShowcaseActivity) mContext.get()).getCurrentFragment() instanceof
+                        MainFragment) {
+                    ((ShowcaseActivity) mContext.get()).setupIcons();
+                }
+            } catch (Exception e) {
+                // Do nothing
             }
         }
 
@@ -132,7 +145,26 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
         }
     }
 
-    private ArrayList<IconItem> buildIconsListFromArray(Resources r, String p, String[] icons) {
+    private ArrayList<IconItem> sortIconsList(Resources r, String p, ArrayList<IconItem> icons) {
+        if (r.getBoolean(R.bool.organize_icons_lists)) {
+            List<String> list = new ArrayList<>();
+            for (IconItem icon : icons) {
+                list.add(icon.getName());
+            }
+            Collections.sort(list);
+            Set<String> noDuplicates = new HashSet<>();
+            noDuplicates.addAll(list);
+            list.clear();
+            list.addAll(noDuplicates);
+            Collections.sort(list);
+            return buildIconsListFromArray(r, p, list);
+        } else {
+            return icons;
+        }
+    }
+
+    private ArrayList<IconItem> buildIconsListFromArray(Resources r, String p, List<String>
+            icons) {
         ArrayList<IconItem> list = new ArrayList<>();
         for (String iconName : icons) {
             int iconResId = Utils.getIconResId(r, p, iconName);
@@ -146,25 +178,8 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
         return list;
     }
 
-    private ArrayList<IconItem> sortIconsList(Resources r, String p, ArrayList<IconItem> icons) {
-        List<String> list = new ArrayList<>();
-        for (IconItem icon : icons) {
-            list.add(icon.getName());
-        }
-        Collections.sort(list);
-        Set<String> noDuplicates = new HashSet<>();
-        noDuplicates.addAll(list);
-        list.clear();
-        list.addAll(noDuplicates);
-        Collections.sort(list);
-        ArrayList<IconItem> nIcons = new ArrayList<>();
-        for (String iconName : list) {
-            int iconResId = Utils.getIconResId(r, p, iconName);
-            if (iconResId > 0) {
-                nIcons.add(new IconItem(iconName, iconResId));
-            }
-        }
-        return nIcons;
+    private ArrayList<IconItem> buildIconsListFromArray(Resources r, String p, String[] icons) {
+        return buildIconsListFromArray(r, p, Arrays.asList(icons));
     }
 
 }
