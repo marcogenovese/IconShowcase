@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+~ Copyright (c) 2016.  Jahir Fiquitiva
+~
+~ Licensed under the CreativeCommons Attribution-ShareAlike
+~ 4.0 International License. You may not use this file except in compliance
+~ with the License. You may obtain a copy of the License at
+~
+~    http://creativecommons.org/licenses/by-sa/4.0/legalcode
+~
+~ Unless required by applicable law or agreed to in writing, software
+~ distributed under the License is distributed on an "AS IS" BASIS,
+~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~ See the License for the specific language governing permissions and
+~ limitations under the License.
+~
+~ Big thanks to the project contributors. Check them in the repository.
+~
+-->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslations">
+    <string name="dev_prefs_title">ডেভলপমেন্ট পচ্ছন্দসমূহ</string>
+    <string name="dev_prefs_summary">এই পছন্দসমূহ মূল অ্যাপে পাওয়া যাবেনা। এগুলো শুধুমাত্র ডিজাইনারের জন্য যাতে তিনি আইকন শোকেস যে বহুবিধ কাস্টমাইজেশন অফার করে তা চেক করার জন্য।</string>
+    <string name="dev_drawer_header_style_title">ড্রয়ার হেডার স্টাইল</string>
+    <string name="dev_drawer_header_style_summary">আইকন শোকেস ব্যবহার করার সময় আপনি তিনটি ভিন্ন ড্রয়ার হেডার স্টাইল থেকে বেছে নিতে পারেন।</string>
+    <string name="dev_mini_header_picture_title">মিনি ড্রয়ার হেডার এর ছবি</string>
+    <string name="dev_mini_header_picture_summary">নিষ্ক্রিয় করা হলে, আইকন শোকেস একটি গাঢ় রঙের ড্রয়ার হেডার দেখাবে।</string>
+    <string name="dev_icons_changelog_title">আইকন নির্ভর পরিবর্তনসূচী</string>
+    <string name="dev_icons_changelog_summary">আইকন শোকেস দুটি ভিন্ন স্টাইলের পরিবর্তনসূচী অফার করে। একটি লেখা নির্ভর অন্যটি আইকন নির্ভর।</string>
+    <string name="dev_lists_cards_title">লিস্ট কার্ড</string>
+    <string name="dev_lists_cards_summary">আইকন শোকেস আপনাকে সাধারণ জিনিস দেখানোর পরিবর্তে কিছু লিস্টকে কার্ড হিসেবে দেখানোর সুযোগ করে দেয়।</string>
+    <string name="dev_drawer_header_texts_title">ড্রয়ার হেডার এর লেখা দেখান</string>
+    <string name="dev_drawer_header_texts_summary">নিষ্ক্রিয় করা হলে, আইকন শোকেস অ্যাপের নাম এবং সংস্করণ ড্রয়ার হেডারে দেখাবে না।</string>
+    <string name="dev_more_options_title">আরো বিকল্পসমূহ</string>
+    <string name="dev_more_options_summary">আইকন শোকেস আরো নানাবিধ অতিরিক্ত বিকল্পসমূহ সেট করা অফার করে আপনার অ্যাপ তৈরি করার সময়। সেগুলো চেক করে দেখতে হালকা টোকা দিন।</string>
+    <string-array name="configurations_list">
+        <item>এই ফিচার গুলো আলাদাভাবে কনফিগার করা যাবে ড্যাশবোর্ড সোর্স ব্যবহার করার সময়।</item>
+        <item>সম্পূর্ণ কনফিগার করার মতো ইউআই।</item>
+        <item>কিছু সেকশনের জন্য কলাম সংখ্যা।</item>
+        <item>মূল সেকশনে আপনার অ্যাপ দেখান।</item>
+        <item>ব্যবহারকারীরা যেসব জিনিস কনফিগার করতে পারবে তা সেটআপ করুন।</item>
+    </string-array>
+    <string-array name="additional_features_list">
+        <item>এছাড়াও, আইকন শোকেস আরো কিছু ফিচার অফার করে।</item>
+        <item>লাইসেন্স চেকার।</item>
+        <item>ক্লাউড বেজড ওয়ালপেপার</item>
+        <item>জুমিং সহ ওয়ালপেপার প্রদর্শক</item>
+        <item>"ম্যুজেই সমর্থন। "</item>
+        <item>জুপার উইজেট সমর্থন করে।</item>
+        <item>কাস্টম লাইভ ওয়ালপেপার ও কাস্টম উইজেট সমর্থন করে।</item>
+        <item>ইন অ্যাপ আইকন রিকোয়েস্ট টুল</item>
+        <item>আইকন রিকোয়েস্ট লিমিট: উদাহরণ হিসেবে, ক সংখ্যক অ্যাপস প্রতি খ মিনিটে 
+অর্থাৎ ব্যবহারকারী ক সংখ্যক অ্যাপের জন্য অনুরোধ করতে পারবে খ মিনিটে</item>
+        <item>২৫ টিরও বেশি লঞ্চার সমর্থন করে।</item>
+        <item>এনালগ ক্লক উইজেট</item>
+        <item>ট্যাবলেট সাপোর্ট</item>
+        <item>অ্যাপ গ্যালারি হিসেবে কাজ যাতে আইকন অথবা ওয়ালপেপার পছন্দ করা যায় এবং অন্য অ্যাপে ব্যবহার করা যায়।</item>
+        <item>ড্যাশবোর্ড সাতটিরও বেশি ভাষায় অনুবাদ করা হয়েছে।</item>
+        <item>এন্ড্রয়েড ৪.১ এবং তার উপরের সংস্করণ সমর্থন করে</item>
+    </string-array>
+</resources>

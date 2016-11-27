@@ -564,20 +564,22 @@ public class WallpaperViewerActivity extends AppCompatActivity {
                                                                     dialogApply
                                                                             .setOnDismissListener
                                                                                     (new DialogInterface.OnDismissListener() {
-                                                                        @Override
-                                                                        public void onDismiss
-                                                                                (DialogInterface
-                                                                                         dialogInterface) {
-                                                                            if (toHide1 != null &&
-                                                                                    toHide2 !=
-                                                                                            null) {
-                                                                                toHide1.setVisibility
-                                                                                        (View.VISIBLE);
-                                                                                toHide2.setVisibility
-                                                                                        (View.VISIBLE);
-                                                                            }
-                                                                        }
-                                                                    });
+                                                                                        @Override
+                                                                                        public
+                                                                                        void
+                                                                                        onDismiss
+                                                                                                (DialogInterface
+                                                                                                         dialogInterface) {
+                                                                                            if (toHide1 != null &&
+                                                                                                    toHide2 !=
+                                                                                                            null) {
+                                                                                                toHide1.setVisibility
+                                                                                                        (View.VISIBLE);
+                                                                                                toHide2.setVisibility
+                                                                                                        (View.VISIBLE);
+                                                                                            }
+                                                                                        }
+                                                                                    });
                                                                 }
                                                             });
                                                         }

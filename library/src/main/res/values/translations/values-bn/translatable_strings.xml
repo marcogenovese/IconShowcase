@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+~ Copyright (c) 2016 Jahir Fiquitiva
+~
+~ Licensed under the CreativeCommons Attribution-ShareAlike
+~ 4.0 International License. You may not use this file except in compliance
+~ with the License. You may obtain a copy of the License at
+~
+~    http://creativecommons.org/licenses/by-sa/4.0/legalcode
+~
+~ Unless required by applicable law or agreed to in writing, software
+~ distributed under the License is distributed on an "AS IS" BASIS,
+~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~ See the License for the specific language governing permissions and
+~ limitations under the License.
+~
+~ Special thanks to the project contributors and collaborators
+~ 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
+-->
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="muzei_settings">ম্যুজেই সেটিংস</string>
+    <!-- Sharing wallpaper from Muzei -->
+    <string name="share_text">"আমার আজকের ওয়ালপেপার %1$s হচ্ছে %2$s তৈরী %3$s থেকে। এটিকে পান %4$s থেকে "</string>
+    <!-- List Of Drawer Sections -->
+    <string name="section_home">হোম</string>
+    <string name="section_icons">আইকন</string>
+    <string name="section_apply">প্রয়োগ করুন</string>
+    <string name="section_wallpapers">ওয়ালপেপার</string>
+    <string name="section_icon_request">আইকনের জন্য অনুরোধ</string>
+    <string name="section_donate">অর্থসাহায্য দিন</string>
+    <string name="section_about">অ্যাপ সম্পর্কে</string>
+    <!-- Wallpapers Activity -->
+    <string name="title_activity_detailed_wallpaper">ওয়ালপেপার প্রদর্শক</string>
+    <!-- Muzei Stuff -->
+    <string name="muzeisets_title">ওয়ালপেপার রিফ্রেশ করুন প্রতি:</string>
+    <string name="seconds">সেকেন্ড</string>
+    <string name="minutes">মিনিট</string>
+    <string name="hours">ঘণ্টা</string>
+    <string name="days">দিন</string>
+    <string name="weeks">সপ্তাহ</string>
+    <string name="months">মাস</string>
+    <string name="muzei_info">টীকা : এই সেটিংস আপনার ওয়ালপেপারের ব্যবহারকে প্রভাবিত করতে পারে।</string>
+    <string name="share">"ভাগাভাগি করুন "</string>
+    <string name="send_email">ইমেল পাঠান</string>
+    <!-- Strings for Dropdown Menu & Requests -->
+    <string name="share_title">দিয়ে ভাগাভাগি করুন</string>
+    <string name="send_title">দিয়ে পাঠান</string>
+    <!-- LauncherNotInstalled Dialog -->
+    <string name="lni_content">"%1$s আপনার মোবাইলে ইনস্টল করা নেই। আপনি কি গুগল প্লে থেকে এটি ইনস্টল করতে চান? "</string>
+    <string name="cm_dialog_content">"%1$s সায়ানোজেন মডের অংশ। আপনি কি এটি ইনস্টল করতে চান? "</string>
+    <string name="gnl_title">গুগল নাও লঞ্চার সমর্থিত নয় হ</string>
+    <string name="gnl_content">গুগল এখন লঞ্চার কোন আইকন প্যাকগুলি সঙ্গে সামঞ্জস্যপূর্ণ নয় . দয়া করে এই কারণে নেতিবাচকভাবে আইকন প্যাক রেট করবেন না . একটা সমাধান যে আপনার জন্য চেষ্টা করতে পারেন নিজে , কিন্তু এটি একটি বহিস্থিত অ্যাপ্লিকেশন ব্যবহার করা আবশ্যক. আপনি এটা বিনামূল্যে ডাউনলোড করতে চান?</string>
+    <string name="lg_dialog_content">"দুঃখিত এলজি হোম শুধুমাত্র এলজি ডিভাইসের জন্য আর এজন্য এটি প্লে স্টোর থেকে ডাউনলোড করা যাবে না। "</string>
+    <!-- Changelog Dialog Content -->
+    <string name="changelog_dialog_title">পরিবর্তন সূচী</string>
+    <string name="default_new_version_title">আপডেট</string>
+    <string name="empty_changelog">Changelog খালি</string>
+    <string name="great">অসাধারন</string>
+    <!-- Wallpapers Stuff -->
+    <string name="no_conn_title">কোন সংযোগ নেই</string>
+    <string name="download">ডাউনলোড করুন</string>
+    <string name="wallpaper_downloaded">"%1$s তে ওয়ালপেপার ডাউনলোড করা হয়েছে। "</string>
+    <string name="wallpaper_by">%1$s কর্তৃক</string>
+    <string name="apply">"প্রয়োগ করুন "</string>
+    <string name="save">সংরক্ষণ করুন</string>
+    <string name="downloading_wallpaper">"ওয়ালপেপার টি ডাউনলোড হচ্ছে… "</string>
+    <string name="setting_wall_title">"হোম স্ক্রিনে ওয়ালপেপার টি সেট করা হচ্ছে… "</string>
+    <string name="preparing_wallpaper">ওয়ালপেপার কাটার জন্য প্রস্তুত করা হচ্ছে…</string>
+    <string name="download_takes_longer">এটি আপনার ধারণার চেয়ে বেশি সময় নিচ্ছে। আপনি অপেক্ষা করতে পারেন অথবা বাতিল করতে পারেন আপনার ইচ্ছেমত।</string>
+    <string name="set_as_wall_done">ওয়ালপেপার সেট করা হয়েছে!</string>
+    <string name="error">ত্রুটি</string>
+    <string name="confirm_apply">"আপনি কি নিশ্চিত যে আপনি এই ওয়ালপেপার টি সেট করতে চান? "</string>
+    <string name="refreshing_walls">"ওয়ালপেপার লিস্ট সতেজ করা হচ্ছে… "</string>
+    <string name="retry">আবার চেষ্টা করুন</string>
+    <string name="wallpaper_author_title">লেখক</string>
+    <string name="wallpaper_dimensions_title">মাত্রা</string>
+    <string name="wallpaper_copyright_title">কপিরাইট</string>
+    <string name="settings_saved">সেটিংস সংরক্ষণ করা হয়েছে । ওয়ালপেপার %1$s এ পরিবর্তন হবে</string>
+    <!-- License Check Dialog -->
+    <string name="license_failed_title">"লাইসেন্স চেক করা অসফল হয়েছে "</string>
+    <string name="license_success_title">"লাইসেন্স চেক সফল হয়েছে "</string>
+    <string name="exit">বের হোন</string>
+    <!-- Some texts for Dialogs and Cards -->
+    <string name="close">"বন্ধ করুন "</string>
+    <string name="crop">কেটে নিন</string>
+    <string name="advice">"পরামর্শ "</string>
+    <string name="dontshow">"আবার দেখাবেন না "</string>
+    <string name="rate">"রেটিং দিন "</string>
+    <string name="set_as">ওয়ালপেপার কেটে নিন এবং সেট করুন....হিসেবে</string>
+    <!-- Requests -->
+    <string name="select_all">সবগুলো নির্বাচন করুন</string>
+    <string name="no_selected_apps_title">"কোনো অ্যাপ নির্বাচন করা হয় নি "</string>
+    <string name="no_selected_apps_content">"আপনি কোনো অ্যাপ নির্বাচন  করেন নি আইকন রিকোয়েস্ট এর জন্য।  দয়া করে দু একটা নির্বাচন করুন ফ্যাব বাটনে ক্লিক করার আগে "</string>
+    <string name="apps_limit_dialog">"দুঃখিত %1$s অ্যাপটির জন্য  আইকন রিকোয়েস্ট করা যাবে না। "</string>
+    <string name="apps_limit_dialog_more">"দুঃখিত, আপনি শুধু আর %1$s টি অ্যাপের জন্য অনুরোধ করতে পারবেন। "</string>
+    <string name="apps_limit_dialog_day">দুঃখিত, আপনি প্রতি %1$s এ একটা মাত্র আইকন রিকোয়েস্ট করতে পারেন</string>
+    <string name="apps_limit_dialog_day_extra">আপনি আবারো অনুরোধ করতে পারবেন %1$s এ</string>
+    <string name="apps_limit_dialog_day_extra_sec">আপনি এক মিনিটের ও কম সময়ের মধ্যে আইকন এর জন্য অনুরোধ করতে পারবেন।</string>
+    <!-- Icon search -->
+    <string name="search_icons">আইকন খুঁজুন</string>
+    <string name="search_x">"%1$s খুঁজুন… "</string>
+    <string name="requests_error">অ্যাপ অনুরোধ লোড করাকালীন সমস্যা ছিল\nআবার চেষ্টা করতে এখানে চাপুন</string>
+    <string name="building_request_dialog">"রিকোয়েস্ট ফাইল তৈরি করা হচ্ছে… "</string>
+    <string name="loading_apps">"অ্যাপ লোডলোড হওয়া পর্যন্ত অপেক্ষা করুন,  এটি আরো একটু সময় নিতে পারে। "</string>
+    <string name="loading_icons">"আইকন লোড করা হচ্ছে… "</string>
+    <string name="choose">বাচুন</string>
+    <!--SETTINGS-->
+    <string name="title_settings">সেটিংস</string>
+    <string name="pref_header_ui">ইউআই</string>
+    <string name="pref_title_anims">এনিমেশন চালু করুন</string>
+    <string name="pref_summary_anims">কিছু কিছু ডিভাইসকে মন্থর করে দিতে পারে</string>
+    <string name="pref_title_wall_header">টুলবার হেডার হিসেবে ওয়ালপেপার এর ব্যবহার চালু করুন</string>
+    <string name="pref_summary_wall_header">বর্তমান ডিভাইস ওয়ালপেপার কে অ্যাপ টুলবার হিসেবে দেখানো হবে</string>
+    <string name="pref_header_storage">স্টোরেজ</string>
+    <string name="pref_title_cache">অ্যাপ ক্যাশ ও ডাটা পরিস্কার করুন</string>
+    <string name="pref_summary_cache">এটি অ্যাপ ক্যাশ ও সেটিংস মুছে দিবে 
+সাইজ: %1$s</string>
+    <string name="pref_title_wsl">ওয়ালপেপার ডাউনলোড এর স্থান</string>
+    <string name="pref_summary_wsl">ওয়ালপেপার ডাউনলোড ও সংরক্ষণ করার স্থান পরিবর্তন করুন
+স্থান: %1$s</string>
+    <string name="pref_header_launcher_icon">লঞ্চার আইকন</string>
+    <string name="pref_title_launcher_icon">লঞ্চার আইকন লুকান</string>
+    <string name="pref_summary_launcher_icon">যখন চেক করা হবে লঞ্চার আইকন তখন দেখাবে না</string>
+    <string name="clearcache_dialog_content">আপনি কি নিশ্চিত যে আপনি অ্যাপ ডাটা, ক্যাশ এবং সেটিংস মুছে দিতে চান? 
+প্রয়োগকৃত আইকন প্রভাবিত হবে না</string>
+    <string name="hideicon_dialog_title">"সতর্কতা! "</string>
+    <string name="hideicon_dialog_content">"আপনি কি নিশ্চিত যে আপনি লঞ্চার থেকে  অ্যাপ আইকন লুকিয়ে ফেলতে চান? 
+
+অ্যাপ অনিচ্ছাকৃত ভাবে বন্ধ হয়ে যেতে পারে 
+কিভাবে অ্যাপ আইকন ফিরিয়ে আনতে হয় তা জানতে প্রায়শ জিজ্ঞাসিত প্রশ্ন দেখতে পারেন। "</string>
+    <string name="prefs_notifs_title">বিজ্ঞপ্তি</string>
+    <string name="pref_title_enable_notifs">বিজ্ঞপ্তি চালু করুন</string>
+    <string name="pref_summary_enable_notifs">নতুন ওয়ালপেপার এবং অ্যাপ সংক্রান্ত উন্নয়ন হলে প্রজ্ঞাপন পাবেন</string>
+    <string name="pref_title_enable_notifs_led">বিজ্ঞপ্তির এলইডি চালু করুন</string>
+    <string name="pref_title_enable_notifs_vibration">বিজ্ঞপ্তির কম্পন চালু করুন</string>
+    <string name="pref_title_notifs_interval">হালনাগাদ ও সমকালীন এর বিরতি</string>
+    <string name="pref_summary_notifs_interval">"কতটা সময় পর পর আপনি বিজ্ঞপ্তির জন্য চেক করে থাকেন? "</string>
+    <string name="pref_summary_notifs_interval_more">অ্যাপ প্রতি %1$s এ বিজ্ঞপ্তির জন্য চেক করবে</string>
+    <string name="launcher_icon_restored">%1$s এর  লঞ্চার আইকন ফিরিয়ে আনা হয়েছে</string>
+    <string name="launcher_icon_no_restored">%1$s এর লঞ্চার আইকন ইতিমধ্যে দেখা যাচ্ছে</string>
+    <string name="launcher_icon_restorer_error">"%1$s এর কোডে সমস্যা আছে। দয়া করে  ডেভেলপারের সাথে যোগাযোগ করুন। "</string>
+    <!-- Widgets Names -->
+    <string name="iconrestorer_widget_title">আইকন রিস্টোর উইজেট</string>
+    <string name="clock_widget_title">এনালগ ঘড়ি</string>
+    <string name="faqs_section">প্রায়শ জিজ্ঞাসিত প্রশ্ন</string>
+    <string name="dashboard_author_copyright">আমি একটি 19 বছর বয়েসী অ্যান্ড্রয়েড উন্নয়ন উত্সাহী এবং ড্যাশবোর্ড ডেভেলপার আছি .\n\nকলম্বিয়া থেকে বিশ্বের সাথে ভাগ করা , creativecommons বৈশিষ্ট্য- ShareAlike লাইসেন্সের অধীনে .\nকপিরাইট © 2016 .</string>
+    <string name="allan_description">প্রথম একটি আইকন প্যাক স্রষ্টা , তারপর একটি themer ; এখন একটি ডেভেলপার \nআমি এই ড্যাশবোর্ড এর উন্নয়নের অংশ দিয়ে সাহায্য করেছী</string>
+    <string name="fork_on_github">গিটহাব এ সেঁটে দিন</string>
+    <string name="visit_website">ওয়েবসাইট</string>
+    <string name="more_apps">আরো অ্যাপ</string>
+    <string name="more_apps_long">আমি যে অ্যাপ গুলো গুগল প্লে স্টোরে প্রকাশ করেছি সেগুলো দেখুন</string>
+    <string name="implemented_libraries">বাস্তবায়িত লাইব্রেরি</string>
+    <string name="contributors">উন্নয়নে অবদান</string>
+    <string name="sherry_title">শেরি স্যাবাটিন কে ধন্যবাদ</string>
+    <string name="sherry_dialog">"তাকে ধন্যবাদ, আইকন শোকেস বিনামূল্য এবং মুক্ত সোর্স। "</string>
+    <string name="follow_her">তাকে অনুসরণ করুন</string>
+    <string name="ui_design">ইউআই ডিজাইন সংগঠক</string>
+    <string name="donate">"ডেভলপমেন্ট এ সহায়তা "</string>
+    <string name="donate_summary">"আপনি যদি মনে করেন জাহির ফিকিতিভা এই অ্যাপ টি তৈরির জন্য কিছু টাকা আয় করা ডিজার্ভ করেন। "</string>
+    <string name="report_bugs">বাগ রিপোর্ট করুন</string>
+    <string name="report_bugs_summary">"বাগ রিপোর্ট করুন বা নতুন বৈশিষ্ট্য যোগ করার আবেদন জানান "</string>
+    <string name="join_community">গুগল প্লাস কমিউনিটি তে যোগ দিন</string>
+    <string name="join_community_summary">"আপনার যদি কোন প্রশ্ন থাকে 
+গুগল প্লাস এ আইকন শোকেস কমিউনিটি একটি সেরা যায়গা। "</string>
+    <string name="saving_wallpaper">"ওয়ালপেপার সংরক্ষণ করা হচ্ছে.. "</string>
+    <string name="refresh">"সতেজ করুন "</string>
+    <!-- Messages shown when using LicenseChecker -->
+    <string name="license_failed">আপনি গুগল প্লে স্টোর থেকে %1$s কে ইনস্টল করেন নি।  আপনার দুটো বিকল্প আছে</string>
+    <string name="license_success">"%1$s ডাউনলোড করার জন্য আপনাকে ধন্যবাদ। আপনি যদি এটি পছন্দ করে থাকেন তাহলে গুগল প্লে স্টোরে এটিকে মূল্যায়ন করতে এবং রিভিউ দিতে ভুলবেন না। "</string>
+    <string name="apply_advice">"আপনি যে লঞ্চার ব্যবহার করেন তা এখানে তালিকা ভুক্ত না থাকে তাহলে লঞ্চার টির সেটিংস থেকে আইকন প্যাক প্রয়োগ করতে পারেন। \nকিছু লঞ্চার সরাসরি আইকন প্যাক প্রয়োগ সমর্থন করে না। "</string>
+    <string name="walls_advice">"সাধারণ ভাবে ক্লিক করলে ওয়ালপেপার ফুল স্ক্রিনে দেখাবে। \nদীর্ঘ ক্লিক সরাসরি ওয়ালপেপার টিকে প্রয়োগ করবে। "</string>
+    <string name="zooper_section_title">জুপার সেটআপ</string>
+    <string name="zooper_download_dialog_title">…  থেকে ডাউনলোড করুন</string>
+    <string name="install_apps">অ্যাপ ইনস্টল করুন</string>
+    <string name="install_apps_content">"জুপার উইজেট ঠিকমতো কাজ করতে এই অ্যাপস গুলো ইনস্টল করা প্রয়োজন। ইনস্টল করতে ক্লিক করুন "</string>
+    <string name="install_kustom_apps_content">আপনার এই অ্যাপ গুলো ইনস্টল করা প্রয়োজন কাস্টম অ্যাসেট ঠিকভাবে কাজ করার জন্য। যেকোন একটিতে চাপ দিন তা ইনস্টল করতে।</string>
+    <string name="install_assets">অ্যাসেট গুলো ইনস্টল করুন</string>
+    <string name="open">খুলুন</string>
+    <string name="assets_installed">"অ্যাসেট গুলো ইতিমধ্যে ইনস্টল করা হয়েছে "</string>
+    <string name="apps_installed">অ্যাপস টি ইতিমধ্যে ইনস্টল করা হয়েছে</string>
+    <string name="copying_assets">ZooperWidget/%1$s ফাইল কপি করা হচ্ছে</string>
+    <string name="icon_pack_in_numbers">আইকন প্যাকের সংখ্যা</string>
+    <string name="themed_icons">%1$s ও বেশী আইকন থিম করা হয়েছে</string>
+    <string name="available_wallpapers">%1$s টি ওয়ালপেপার রয়েছে</string>
+    <string name="included_widgets">অধিক %1$s উইজেট অন্তর্ভুক্ত</string>
+    <string name="icons">আইকন</string>
+    <string name="md_storage_perm_error">"আপনি %1$s কে বাহ্যিক স্টোরেজ পড়ার অনুমতি দিয়েছেন। যা এই কাজটি সম্পন্ন করার জন্য জরুরী। "</string>
+    <string name="new_folder">"নতুন ফোল্ডার "</string>
+    <string name="new_folder_hint">ফোল্ডারের নাম</string>
+    <string name="new_folder_title">নতুন ফোল্ডার খুলুন</string>
+    <string name="new_folder_content">"দয়া করে নতুন ফোল্ডারের নাম টাইপ করুন। "</string>
+    <string name="wait_for_walls">"ওয়ালপেপার প্রিভিউ আআসা পর্যন্ত অপেক্ষা করুন… "</string>
+    <string name="translators">অনুবাদক</string>
+    <string name="more">"আরো "</string>
+    <string name="columns">কলামের সংখ্যা</string>
+    <string name="columns_desc">এই অংশে যতগুলো কলাম দেখতে চান তা নির্বাচন করুন</string>
+    <string-array name="columns_options" tools:ignore="InconsistentArrays">
+        <item>পোট্রেট : ১/ ল্যাণ্ডস্কেপ : ৩</item>
+        <item>পোট্রেট : ২/ ল্যাণ্ডস্কেপ : ৪</item>
+        <item>পোট্রেট : ৩/ ল্যাণ্ডস্কেপ : ৫</item>
+    </string-array>
+    <string-array name="questions">
+        <item>"আইকন প্যাক কিভাবে ব্যবহার করতে হয়? "</item>
+        <item>"আইকন প্যাক কিভাবে প্রয়োগ করতে হয়? "</item>
+        <item>"কিভাবে যোগকৃত আইকন গুলো দেখতে হয়? "</item>
+        <item>"কিভাবে বিকল্প গুলো দিয়ে আইকন প্রতিস্থাপন করতে হয়? "</item>
+        <item>"কিভাবে যে আইকন টি থিম করা হয় নি তার জন্য অনুরোধ করতে হয়? "</item>
+        <item>"আমার ডিভাইস রিস্টার্ট করার পর আইকন প্যাক আর প্রয়োগকৃত নেই। 
+সবগুলোই আগের মত হয়ে গেছে। "</item>
+        <item>"আইকন কেন ভাঙা ভাঙা লাগছে? "</item>
+        <item>"আমি ক অ্যাপ টির আইকন আইকন প্যাকে দেখতে পাচ্ছি, কিন্তু এটি প্রয়োগ হচ্ছে না। "</item>
+        <item>"লঞ্চার থেকে কিভাবে আইকন লুকোতে হয়? "</item>
+        <item>"লঞ্চার থেকে আইকন লুকানোর পর কিভাবে অ্যাপ টি খুলতে হয়? "</item>
+        <item>"কিভাবে লুকোনো আইকন আবার দেখাতে হয়? "</item>
+        <item>"কেন অ্যাপ গুলোকে আমার স্টোরেজের কন্টেন্ট পরিবর্তন বা মুছে ফেলার অনুমতি লাগে? "</item>
+        <item>"অ্যাপের কেন পুরোপুরি ভাবে নেটওয়ার্ক অ্যাক্সেসের প্রয়োজন হয়? "</item>
+        <item>"অ্যাপের কেন সংযোগগুলি দেখার অনুমতি লাগে? "</item>
+        <item>"অ্যাপের কেন ওয়ালপেপার সেট করার অনুমতি প্রয়োজন? "</item>
+        <item>"অ্যাপের কেন ওয়ালপেপার সাইজ পরিবর্তন করার অনুমতি প্রয়োজন? "</item>
+        <item>"অ্যাপের কেন ডিভাইস এর স্ক্রীন বন্ধ হয়ে যাওয়া ঠেকানোর প্রয়োজন হয়? "</item>
+    </string-array>
+    <string-array name="answers">
+        <item>আপনার একটি লঞ্চার প্রয়োজন যেটি আইকন প্যাক সমর্থন করে। 
+গুগল প্লে স্টোরে লঞ্চার গুলোর বৈশিষ্ট্য দেখুন। 
+আপনি যদি নিশ্চিত না থাকেন তাহলে অ্যাপের এপ্লাই সেকসেকশন থেকে যে কোন একটা বেচে নিন।</item>
+        <item>"বামের নেভিগেশন ড্রয়ার থেকে এপ্লাই সেকশনে অথবা মূল স্ক্রিনে ফিরে আসুন, তারপর ভাসমান বোতামটিতে ক্লিক করুন। 
+আইকন প্যাক প্রয়োগ করতে লঞ্চার বেচে নিন। 
+আপনার লঞ্চার যদি এখানে তালিকা ভুক্ত না থাকে তাহলে লঞ্চার টির সেটিংস থেকে আইকন প্যাক প্রয়োগ করতে পারেন। "</item>
+        <item>"বামের নেভিগেশন ড্রয়ার থেকে আইকন সেকশনে যান অথবা মূল স্ক্রিনে ফিরে আসুন, যেখানে আইকন কথাটি লেখা আছে সেখানে ক্লিক করুন। "</item>
+        <item>"এটি সাধারণত আপনি কোন লঞ্চার ব্যবহার করছেন তার ওপর নির্ভর করে। 
+কারণ সব লঞ্চার আইকন সম্পাদনা সমর্থন করে না। 
+কিন্তু অধিকাংশ লঞ্চার এ লং প্রেস অথবা ডাবল ক্লিক করে আইকন সম্পাদনা করতে পারেন। "</item>
+        <item>বামের নেভিগেশন ড্রয়ার থেকে রিকোয়েস্ট সেকশনে যান</item>
+        <item>"এটি ঘটেছে কারণ আপনি আইকন প্যাক টি এসডি কার্ডে ইনস্টল করেছেন, আপনার এটি অভ্যন্তরীণ স্মৃতিতে ইনস্টল করেছেন। "</item>
+        <item>"সমস্যা যথাসম্ভব আপনি যে লঞ্চার ব্যবহার করছেন তার হতে পারে, যখন বড় রেজোলিউশন ব্যবহার করার সময়। 
+আপনি আইকন এর সাইজ ১১৫%%-১২০%% বাড়াতে পারেন।
+অথবা অন্য লঞ্চার ব্যবহার করতে পারেন। "</item>
+        <item>একটি আইকন রিকোয়েস্ট পাঠান</item>
+        <item>"বামের নেভিগেশন ড্রয়ার থেকে সেটিংস সেকশনে যান। 
+\"আইকন প্যাক টি লঞ্চার থেকে লুকিয়ে ফেলুন \" ক্লিক করুন। "</item>
+        <item>"আপনার হোম স্ক্রিনে যান, উইজেট অপশন থেকে আইকন রিস্টোর উইজেট টি সেট করুন। "</item>
+        <item>"বামের নেভিগেশন ড্রয়ার থেকে সেটিংস সেকশনে যান 
+তারপর \"আইকন প্যাক টি লঞ্চার থেকে লুকিয়ে ফেলুন\" অপশন থেকে টিক তুলে দিন। "</item>
+        <item>"এটির প্রয়োজন আইকন রিকোয়েস্ট করার জন্য। 
+এছাড়া ওয়ালপেপার ডাউনলোড করতে বা ওয়ালপেপার ডাউনলোড করার স্থান পরিবর্তন করার জন্য। "</item>
+        <item>"এটির প্রয়োজন ক্লাউড বেজড ওয়ালপেপার ডাউনলোড করতে বা লোড করতে। "</item>
+        <item>"আপনার ডিভাইসের ইন্টারনেট সংযোগ চেক করা প্রয়োজন। "</item>
+        <item>"অ্যাপ থেকে সরাসরি ওয়ালপেপার সেট করার জন্য এটি প্রয়োজন। "</item>
+        <item>"স্ক্রীন রেজোলিউশন অনুসারে ওয়ালপেপারে পরিবর্তন আনার জন্য এটি প্রয়োজন। "</item>
+        <item>"ম্যুজেই লাইভ ওয়ালপেপারের জন্য এটি প্রয়োজন। "</item>
+    </string-array>
+    <string name="no_apply_tab">"ডেভেলপারের সাথে যোগাযোগ করুন যেহেতু মনে কিছু একটা অ্যাপে নেই। "</string>
+    <!--No Theme Engine Dialog-->
+    <string name="NTED_title">"ওহ হো! "</string>
+    <string name="NTED_message">"মনে হচ্ছে আমরা আপনার ডিভাইসে কোন থীম ইঞ্জিন খুঁজে পাই নি। আপনি যদি জেনে থাকেন কোথায় সেটা তাহলে সেখানে যান এবং. কাজটি সম্পন্ন করুন। আর যদি না থাকে তাহলে যে রম এ সায়ানোজেন থীম বা লেয়ার থীম সমর্থন করে এমন একটি রম ইনস্টল করুন এবং তাদের নির্দেশনা অনুসরণ করুন। "</string>
+    <string name="tap_to_download">"\nকার্ডটিতে ক্লিক করুন এটি ডাউনলোড করতে। "</string>
+    <string name="tap_to_open">"%1$s\nকার্ডটিতে ক্লিক করুন এটি খোলার জন্য। "</string>
+    <string name="donations_error_title">"অর্থসাহায্য নেই। "</string>
+    <string name="donations_error_content">"আআপনার ডিভাইস ইন অ্যাপস পারচেজ সমর্থন করে না। \nএটি হতে পারে আপনার প্লে স্টোর আপডেট করা প্রয়োজন বা আপনি এমন একটা দেশে থাকেন যেখানে ইন অ্যাপ বিলিং সমর্থন করে না। "</string>
+    <string name="new_walls_notif_title">নতুন ওয়ালপেপার %1$s এ পাওয়া যাচ্ছে</string>
+    <string name="new_walls_notif_content">%1$s টি নতুন ওয়ালপেপার পাওয়া যাচ্ছে। বিজ্ঞপ্তিতে ক্লিক করে অ্যাপ খুলুন এবং চেক করুন।</string>
+    <string name="news">খবরাখবর</string>
+    <string-array name="update_intervals">
+        <item>প্রতি ঘণ্টায়।</item>
+        <item>প্রতি ৬ ঘন্টায়।</item>
+        <item>প্রতি ১২ ঘন্টায়।</item>
+        <item>প্রতি ২৪ ঘন্টায়।</item>
+        <item>প্রতি ২ দিন।</item>
+        <item>"প্রতি ৪ দিন। "</item>
+        <item>"প্রতি সপ্তাহে। "</item>
+    </string-array>
+</resources>

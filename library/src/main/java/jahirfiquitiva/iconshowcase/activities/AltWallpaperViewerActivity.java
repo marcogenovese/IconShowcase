@@ -661,14 +661,16 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
                                                                     dialogApply
                                                                             .setOnDismissListener
                                                                                     (new DialogInterface.OnDismissListener() {
-                                                                        @Override
-                                                                        public void onDismiss
-                                                                                (DialogInterface
-                                                                                         dialogInterface) {
-                                                                            reshowFab(fab);
-                                                                            setupFullScreen();
-                                                                        }
-                                                                    });
+                                                                                        @Override
+                                                                                        public
+                                                                                        void
+                                                                                        onDismiss
+                                                                                                (DialogInterface
+                                                                                                         dialogInterface) {
+                                                                                            reshowFab(fab);
+                                                                                            setupFullScreen();
+                                                                                        }
+                                                                                    });
                                                                 }
                                                             });
                                                         }
