@@ -33,31 +33,31 @@ import android.widget.ImageView;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import jahirfiquitiva.iconshowcase.R;
-import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 
-/**
- * @author Allan Wang
- */
 public class IconDialog extends DialogFragment {
 
     private static final String NAME = "Icon name";
     private static final String RESID = "Icon resId";
     private static final String TAG = "icon_dialog";
-
     private String name;
     private int resId;
 
-    public static void show(final FragmentActivity context, String name, int resId) {
-        Fragment frag = context.getSupportFragmentManager().findFragmentByTag(TAG);
-        if (frag != null) ((IconDialog) frag).dismiss();
-        IconDialog.newInstance(name, resId).show(context.getSupportFragmentManager(), TAG);
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        this.name = getArguments().getString(NAME);
+        this.resId = getArguments().getInt(RESID);
     }
 
-    public static void dismiss(final FragmentActivity context) {
-        Fragment frag = context.getSupportFragmentManager().findFragmentByTag(TAG);
-        if (frag != null) ((IconDialog) frag).dismiss();
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null) {
+            name = savedInstanceState.getString(NAME);
+            resId = savedInstanceState.getInt(RESID);
+        }
     }
 
     private static IconDialog newInstance(String name, int resId) {
@@ -67,17 +67,6 @@ public class IconDialog extends DialogFragment {
         args.putInt(RESID, resId);
         f.setArguments(args);
         return f;
-    }
-
-    private Preferences getPrefs() {
-        return new Preferences(getActivity());
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        this.name = getArguments().getString(NAME);
-        this.resId = getArguments().getInt(RESID);
     }
 
     @SuppressLint("InflateParams")
@@ -103,21 +92,22 @@ public class IconDialog extends DialogFragment {
         return dialog;
     }
 
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (savedInstanceState != null) {
-            name = savedInstanceState.getString(NAME);
-            resId = savedInstanceState.getInt(RESID);
-        }
-    }
-
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putString(NAME, name);
         outState.putInt(RESID, resId);
         super.onSaveInstanceState(outState);
+    }
+
+    public static void show(final FragmentActivity context, String name, int resId) {
+        Fragment frag = context.getSupportFragmentManager().findFragmentByTag(TAG);
+        if (frag != null) ((IconDialog) frag).dismiss();
+        IconDialog.newInstance(name, resId).show(context.getSupportFragmentManager(), TAG);
+    }
+
+    public static void dismiss(final FragmentActivity context) {
+        Fragment frag = context.getSupportFragmentManager().findFragmentByTag(TAG);
+        if (frag != null) ((IconDialog) frag).dismiss();
     }
 
 }

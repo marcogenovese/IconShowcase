@@ -185,20 +185,6 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
         } else {
             if (!inChangelog) {
                 IconDialog.show(((ShowcaseActivity) context), name, resId);
-                /*
-                Drawable iconDrawable = ContextCompat.getDrawable(context, resId);
-                MaterialDialog dialog = new MaterialDialog.Builder(context)
-                        .customView(R.layout.dialog_icon, false)
-                        .title(Utils.makeTextReadable(name))
-                        .positiveText(R.string.close)
-                        .positiveColor(ColorUtils.getColorFromIcon(iconDrawable, context))
-                        .show();
-                if (dialog.getCustomView() != null) {
-                    ImageView dialogIcon = (ImageView) dialog.getCustomView().findViewById(R.id
-                            .dialogicon);
-                    dialogIcon.setImageResource(resId);
-                }
-                */
             }
         }
     }
