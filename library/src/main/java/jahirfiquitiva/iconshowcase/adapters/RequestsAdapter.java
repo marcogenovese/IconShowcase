@@ -83,7 +83,9 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
         final IconRequest ir = IconRequest.get();
 
         int limit = RequestUtils.canRequestXApps(context,
-                context.getResources().getInteger(R.integer.limit_request_to_x_minutes),
+                -1,
+                //TODO uncomment after time limit is ready
+                //context.getResources().getInteger(R.integer.limit_request_to_x_minutes),
                 mPrefs);
 
         if (ir != null && ir.getApps() != null) {

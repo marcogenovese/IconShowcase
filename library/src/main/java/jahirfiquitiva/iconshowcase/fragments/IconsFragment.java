@@ -68,7 +68,7 @@ public class IconsFragment extends CapsuleFragment {
 
         iconsList = new ArrayList<>();
 
-        mAdapter = new IconsAdapter(getActivity(), iconsList);
+        mAdapter = new IconsAdapter(getActivity(), iconsList, false);
 
         if (getArguments() != null) {
             IconsCategory category = getArguments().getParcelable("icons");
