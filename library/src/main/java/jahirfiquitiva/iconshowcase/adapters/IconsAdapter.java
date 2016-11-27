@@ -111,6 +111,7 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
                                 lastPosition = holder.getAdapterPosition();
                             } else {
                                 holder.icon.setImageBitmap(resource);
+                                holder.clearAnimation();
                             }
                         }
                     });
@@ -132,6 +133,7 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
                                 lastPosition = holder.getAdapterPosition();
                             } else {
                                 holder.icon.setImageBitmap(resource);
+                                holder.clearAnimation();
                             }
                         }
                     });
@@ -157,18 +159,16 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
 
     private void iconClick(int position) {
         int resId = iconsList.get(position).getResId();
-        String name = iconsList.get(position).getName().toLowerCase(Locale.getDefault());
+        String name = iconsList.get(position).getName().toLowerCase();
 
         if (((ShowcaseActivity) context).isIconsPicker()) {
             Intent intent = new Intent();
             Bitmap bitmap = null;
-
             try {
                 bitmap = BitmapFactory.decodeResource(context.getResources(), resId);
             } catch (Exception e) {
                 Timber.d("Icons Picker error:", e.getLocalizedMessage());
             }
-
             if (bitmap != null) {
                 intent.putExtra("icon", bitmap);
                 intent.putExtra("android.intent.extra.shortcut.ICON_RESOURCE", resId);
@@ -179,9 +179,7 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
             } else {
                 context.setResult(Activity.RESULT_CANCELED, intent);
             }
-
             context.finish();
-
         } else {
             if (!inChangelog) {
                 IconDialog.show(((ShowcaseActivity) context), name, resId);

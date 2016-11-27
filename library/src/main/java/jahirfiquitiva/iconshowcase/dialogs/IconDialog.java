@@ -31,8 +31,12 @@ import android.support.v4.content.ContextCompat;
 import android.widget.ImageView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 
@@ -86,7 +90,23 @@ public class IconDialog extends DialogFragment {
 
         ImageView iconView = (ImageView) dialog.getCustomView().findViewById(R.id.dialogicon);
         if (iconView != null && resId > 0) {
-            iconView.setImageResource(resId);
+            if (getPrefs().getAnimationsEnabled()) {
+                Glide.with(getActivity())
+                        .load(resId)
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        .priority(Priority.IMMEDIATE)
+                        .thumbnail(0.5f)
+                        .into(iconView);
+            } else {
+                Glide.with(getActivity())
+                        .load(resId)
+                        .dontAnimate()
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        .priority(Priority.IMMEDIATE)
+                        .thumbnail(0.5f)
+                        .into(iconView);
+            }
+            //iconView.setImageResource(resId);
         }
 
         return dialog;
@@ -108,6 +128,10 @@ public class IconDialog extends DialogFragment {
     public static void dismiss(final FragmentActivity context) {
         Fragment frag = context.getSupportFragmentManager().findFragmentByTag(TAG);
         if (frag != null) ((IconDialog) frag).dismiss();
+    }
+
+    private Preferences getPrefs() {
+        return new Preferences(getActivity());
     }
 
 }
