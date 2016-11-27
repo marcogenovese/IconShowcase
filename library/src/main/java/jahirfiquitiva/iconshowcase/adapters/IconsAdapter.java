@@ -193,11 +193,13 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
                 if (dialog.getCustomView() != null) {
                     ImageView dialogIcon = (ImageView) dialog.getCustomView().findViewById(R.id
                             .dialogicon);
-                    // dialogIcon.setImageDrawable(iconDrawable);
+                    dialogIcon.setImageDrawable(iconDrawable);
+                    /*
                     Glide.with(context)
                             .load(iconDrawable)
                             .priority(Priority.IMMEDIATE)
                             .into(dialogIcon);
+                            */
                 }
             }
         }
