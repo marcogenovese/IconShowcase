@@ -147,17 +147,6 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         } else if (holder instanceof AppCard) {
             String description;
             final AppCard ahldr = (AppCard) holder;
-            view.setOnClickListener(new DebouncedClickListener() {
-                @Override
-                public void onDebouncedClick(View v) {
-                    if (homeCards.get(ahldr.i - cards).isInstalled && homeCards.get(ahldr.i -
-                            cards).intent != null) {
-                        context.startActivity(homeCards.get(ahldr.i - cards).intent);
-                    } else if (view.getVisibility() == View.VISIBLE) {
-                        Utils.openLink(context, homeCards.get(ahldr.i - cards).onClickLink);
-                    }
-                }
-            });
             if (homeCards.get(ahldr.i - cards).isInstalled) {
                 description = context.getResources().getString(
                         R.string.tap_to_open,
@@ -174,6 +163,17 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             } else {
                 ahldr.subLly.removeView(ahldr.cardIcon);
             }
+            view.setOnClickListener(new DebouncedClickListener() {
+                @Override
+                public void onDebouncedClick(View v) {
+                    if (homeCards.get(ahldr.i - cards).isInstalled && homeCards.get(ahldr.i -
+                            cards).intent != null) {
+                        context.startActivity(homeCards.get(ahldr.i - cards).intent);
+                    } else if (view.getVisibility() == View.VISIBLE) {
+                        Utils.openLink(context, homeCards.get(ahldr.i - cards).onClickLink);
+                    }
+                }
+            });
         }
     }
 
@@ -238,15 +238,12 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public void setupAppInfo() {
         if (hldr != null) {
-            if ((!((ShowcaseActivity) context).includesIcons()) || (icons < 1)) {
-                hldr.icons.setVisibility(View.GONE);
-            }
-            if ((!((ShowcaseActivity) context).includesWallpapers()) || (wallpapers < 1)) {
-                hldr.wallpapers.setVisibility(View.GONE);
-            }
-            if ((!((ShowcaseActivity) context).includesZooper()) || (widgets < 1)) {
-                hldr.widgets.setVisibility(View.GONE);
-            }
+            hldr.icons.setVisibility((!((ShowcaseActivity) context).includesIcons()) || (icons <
+                    1) ? View.GONE : View.VISIBLE);
+            hldr.wallpapers.setVisibility((!((ShowcaseActivity) context).includesWallpapers()) ||
+                    (wallpapers < 1) ? View.GONE : View.VISIBLE);
+            hldr.widgets.setVisibility((!((ShowcaseActivity) context).includesZooper()) ||
+                    (widgets < 1) ? View.GONE : View.VISIBLE);
             hldr.iconsT.setText(context.getResources().getString(R.string.themed_icons, String
                     .valueOf(icons)));
             hldr.wallsT.setText(context.getResources().getString(R.string.available_wallpapers,

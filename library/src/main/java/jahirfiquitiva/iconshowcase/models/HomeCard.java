@@ -21,7 +21,6 @@ package jahirfiquitiva.iconshowcase.models;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -120,11 +119,11 @@ public class HomeCard implements Parcelable {
             this.onClickLink = s;
             this.isAnApp = s.startsWith("https://play.google.com/store/apps/details?id=");
             if (isAnApp) {
-                this.packageName = s.substring(s.lastIndexOf("="), s.length());
+                this.packageName = s.substring(s.lastIndexOf("=") + 1, s.length());
                 this.isInstalled = Utils.isAppInstalled(context, packageName);
                 if (isInstalled) {
-                    PackageManager pm = context.getPackageManager();
-                    this.intent = pm.getLaunchIntentForPackage(packageName);
+                    this.intent = context.getPackageManager().getLaunchIntentForPackage
+                            (packageName);
                 }
             }
             return this;

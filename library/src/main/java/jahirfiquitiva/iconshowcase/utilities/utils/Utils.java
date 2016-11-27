@@ -20,6 +20,7 @@
 package jahirfiquitiva.iconshowcase.utilities.utils;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -118,9 +119,16 @@ public class Utils {
     }
 
     public static void openLink(Context context, String link) {
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
+        try {
+            if ((!(link.startsWith("http://"))) || (!(link.startsWith("https://")))) {
+                link = "http://" + link;
+            }
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            //Do nothing
+        }
     }
 
     @SuppressWarnings("ResourceAsColor")
