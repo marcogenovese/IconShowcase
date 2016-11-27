@@ -286,7 +286,7 @@ public class ColorUtils {
         return resultColor;
     }
 
-    private static int getBetterColor(Context context, @ColorInt int color) {
+    public static int getBetterColor(Context context, @ColorInt int color) {
         if (color == 0) return 0;
         return ThemeUtils.darkTheme ?
                 shiftDarkTextColor(color, ContextCompat.getColor(context,
