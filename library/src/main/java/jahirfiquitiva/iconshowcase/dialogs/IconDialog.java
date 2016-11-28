@@ -21,7 +21,6 @@ package jahirfiquitiva.iconshowcase.dialogs;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -29,20 +28,16 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.graphics.Palette;
 import android.widget.ImageView;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
-import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 
 public class IconDialog extends DialogFragment {
@@ -88,58 +83,28 @@ public class IconDialog extends DialogFragment {
         builder.customView(R.layout.dialog_icon, false)
                 .title(Utils.makeTextReadable(name))
                 .positiveText(R.string.close)
-                .positiveColor(ColorUtils.getColorFromIcon(ContextCompat.getDrawable(
-                        getActivity(), resId), getActivity()));
+                .positiveColor(ColorUtils.getColorFromIcon(getActivity(), ContextCompat
+                        .getDrawable(getActivity(), resId)));
 
         final MaterialDialog dialog = builder.build();
 
         final ImageView iconView = (ImageView) dialog.getCustomView().findViewById(R.id.dialogicon);
         if (iconView != null && resId > 0) {
-            BitmapImageViewTarget target = new BitmapImageViewTarget(iconView) {
-                @Override
-                public void setResource(Bitmap bitmap) {
-                    Palette.from(bitmap).generate(new Palette
-                            .PaletteAsyncListener() {
-                        @Override
-                        public void onGenerated(Palette palette) {
-                            int resultColor = ColorUtils.getBetterColor(getActivity(), palette
-                                    .getVibrantColor(0));
-                            if (resultColor == 0) {
-                                resultColor = ColorUtils.getBetterColor(getActivity(),
-                                        palette.getMutedColor(0));
-                            }
-                            if (resultColor == 0) {
-                                resultColor = ContextCompat.getColor(getActivity(),
-                                        ThemeUtils.darkTheme ?
-                                                R.color.dark_theme_accent : R.color
-                                                .light_theme_accent);
-                            }
-                            if (dialog != null) {
-                                dialog.getActionButton(DialogAction.NEGATIVE).setTextColor
-                                        (resultColor);
-                            }
-                        }
-                    });
-                    iconView.setImageBitmap(bitmap);
-                }
-            };
             if (getPrefs().getAnimationsEnabled()) {
                 Glide.with(getActivity())
                         .load(resId)
-                        .asBitmap()
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .priority(Priority.IMMEDIATE)
                         .thumbnail(0.5f)
-                        .into(target);
+                        .into(iconView);
             } else {
                 Glide.with(getActivity())
                         .load(resId)
-                        .asBitmap()
                         .dontAnimate()
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .priority(Priority.IMMEDIATE)
                         .thumbnail(0.5f)
-                        .into(target);
+                        .into(iconView);
             }
             //iconView.setImageResource(resId);
         }

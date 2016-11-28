@@ -144,17 +144,17 @@ public class ColorUtils {
     }
 
     @ColorInt
-    public static int shiftLightTextColor(@ColorInt int textColor, @ColorInt int backgroundColor) {
-        while (isLightColor(textColor) && isLightColor(backgroundColor)) {
-            textColor = darkenColor(textColor);
+    public static int shiftLightTextColor(@ColorInt int textColor) {
+        if (isLightColor(textColor)) {
+            textColor = shiftColor(textColor, (float) getColorDarkness(textColor));
         }
         return textColor;
     }
 
     @ColorInt
-    public static int shiftDarkTextColor(@ColorInt int textColor, @ColorInt int backgroundColor) {
-        while (!isLightColor(textColor) && !isLightColor(backgroundColor)) {
-            textColor = lightenColor(textColor);
+    public static int shiftDarkTextColor(@ColorInt int textColor) {
+        if (!isLightColor(textColor)) {
+            textColor = shiftColor(textColor, (float) getColorDarkness(textColor));
         }
         return textColor;
     }
@@ -194,7 +194,6 @@ public class ColorUtils {
             } else {
                 drawable = DrawableCompat.wrap(drawable);
             }
-
             DrawableCompat.setTintMode(drawable, PorterDuff.Mode.SRC_IN);
             DrawableCompat.setTint(drawable, color);
             return drawable;
@@ -273,26 +272,31 @@ public class ColorUtils {
                 });
     }
 
-    public static int getColorFromIcon(Drawable icon, final Context context) {
+    public static int getColorFromIcon(final Context context, Drawable icon) {
+        if (icon == null) return getAccentColor(context);
         Palette palette = Palette.from(Utils.drawableToBitmap(icon)).generate();
+        return getColorFromIcon(context, palette);
+    }
+
+    public static int getColorFromIcon(Context context, Palette palette) {
         int resultColor = getBetterColor(context, palette.getVibrantColor(0));
         if (resultColor == 0) {
             resultColor = getBetterColor(context, palette.getMutedColor(0));
         }
         if (resultColor == 0) {
-            resultColor = ContextCompat.getColor(context, ThemeUtils.darkTheme ?
-                    R.color.dark_theme_accent : R.color.light_theme_accent);
+            resultColor = getAccentColor(context);
         }
         return resultColor;
     }
 
     public static int getBetterColor(Context context, @ColorInt int color) {
         if (color == 0) return 0;
-        return ThemeUtils.darkTheme ?
-                shiftDarkTextColor(color, ContextCompat.getColor(context,
-                        R.color.md_background_color_dark))
-                : shiftLightTextColor(color, ContextCompat.getColor(context,
-                R.color.md_background_color_light));
+        return ThemeUtils.darkTheme ? shiftDarkTextColor(color) : shiftLightTextColor(color);
+    }
+
+    public static int getAccentColor(Context context) {
+        return ContextCompat.getColor(context, ThemeUtils.darkTheme ?
+                R.color.dark_theme_accent : R.color.light_theme_accent);
     }
 
     public static int getMaterialPrimaryTextColor(boolean dark) {

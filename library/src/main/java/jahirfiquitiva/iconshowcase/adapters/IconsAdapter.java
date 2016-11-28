@@ -23,7 +23,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,9 +42,10 @@ import java.util.ArrayList;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
-import jahirfiquitiva.iconshowcase.dialogs.IconDialog;
 import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
+import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
+import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 import timber.log.Timber;
 
@@ -53,7 +56,6 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
     private boolean inChangelog = false;
     private ArrayList<IconItem> iconsList = new ArrayList<>();
     private int lastPosition = -1;
-    private MaterialDialog dialog;
 
     public IconsAdapter(Activity context, ArrayList<IconItem> iconsList, boolean inChangelog) {
         this.context = context;
@@ -176,28 +178,24 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
             context.finish();
         } else {
             if (!inChangelog) {
-                IconDialog.show(((ShowcaseActivity) context), name, resId);
-                /*
                 Drawable iconDrawable = ContextCompat.getDrawable(context, resId);
-                if (dialog != null && dialog.isShowing()) {
-                    dialog.dismiss();
-                }
-                dialog = new MaterialDialog.Builder(context)
+                MaterialDialog dialog = new MaterialDialog.Builder(context)
                         .customView(R.layout.dialog_icon, false)
                         .title(Utils.makeTextReadable(name))
                         .positiveText(R.string.close)
-                        .positiveColor(ColorUtils.getColorFromIcon(iconDrawable, context))
+                        .positiveColor(ColorUtils.getColorFromIcon(context, iconDrawable))
                         .show();
                 if (dialog.getCustomView() != null) {
                     ImageView dialogIcon = (ImageView) dialog.getCustomView().findViewById(R.id
                             .dialogicon);
                     dialogIcon.setImageDrawable(iconDrawable);
+                    /*
                     Glide.with(context)
                             .load(iconDrawable)
                             .priority(Priority.IMMEDIATE)
                             .into(dialogIcon);
+                            */
                 }
-                */
             }
         }
     }
