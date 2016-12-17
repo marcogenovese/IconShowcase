@@ -187,9 +187,7 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
                 Drawable iconDrawable = ContextCompat.getDrawable(context, resId);
                 MaterialDialog dialog = new MaterialDialog.Builder(context)
                         .customView(R.layout.dialog_icon, false)
-                        .title(Config.get().bool(R.bool.advanced_icon_name_format)
-                                ? IconUtils.getAdvancedName(name)
-                                : IconUtils.getSimpleName(name))
+                        .title(IconUtils.formatName(name))
                         .positiveText(R.string.close)
                         .show();
                 if (dialog.getCustomView() != null) {

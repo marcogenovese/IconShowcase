@@ -135,12 +135,6 @@
 
     <!--  /*/*/*/*/*/*/*/*/*/*/*/*/ ICONS/PREVIEWS SECTION CONFIGURATION /*/*/*/*/*/*/*/*/*/*/*/*/ -->
 
-    <!-- Do you want to use advanced icon name format? (Same as Polar Dashboard)
-    True, means yes.
-    False, means no.
-    -->
-    <bool name="advanced_icon_name_format">false</bool>
-
     <!-- Do you want icons be sorted alphabetically and organized automatically, removing duplicates too?
         True, means yes.
         False, means no.

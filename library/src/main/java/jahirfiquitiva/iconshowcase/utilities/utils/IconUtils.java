@@ -86,25 +86,10 @@ public class IconUtils {
         }
     }
 
-    public static String getSimpleName(String mName) {
-        String partialConvertedText = mName.replaceAll("_", " ");
-        String[] text = partialConvertedText.split("\\s+");
-        StringBuilder sb = new StringBuilder();
-        if (text[0].length() > 0) {
-            sb.append(Character.toUpperCase(text[0].charAt(0))).append(text[0].subSequence(1,
-                    text[0].length()).toString().toLowerCase());
-            for (int i = 1; i < text.length; i++) {
-                sb.append(" ");
-                sb.append(capitalizeText(text[i]));
-            }
-        }
-        return sb.toString();
-    }
-
     /**
      * This method's code was created by Aidan Follestad. Complete credits to him.
      */
-    public static String getAdvancedName(String mName) {
+    public static String formatName(String mName) {
         StringBuilder sb = new StringBuilder();
         int underscoreMode = 0;
         boolean foundFirstLetter = false;

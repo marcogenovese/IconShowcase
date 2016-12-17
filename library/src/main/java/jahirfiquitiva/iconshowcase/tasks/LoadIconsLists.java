@@ -98,7 +98,7 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
                         allIcons.addAll(iconsArray);
                     }
                     if (iconsArray.size() > 0) {
-                        mCategoryList.add(new IconsCategory(IconUtils.getSimpleName(tabName),
+                        mCategoryList.add(new IconsCategory(IconUtils.formatName(tabName),
                                 sortIconsList(r, p, iconsArray)));
                     }
                 }

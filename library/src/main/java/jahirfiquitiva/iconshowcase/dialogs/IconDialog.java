@@ -81,9 +81,7 @@ public class IconDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
                 .customView(R.layout.dialog_icon, false)
-                .title(Config.get().bool(R.bool.advanced_icon_name_format)
-                        ? IconUtils.getAdvancedName(name)
-                        : IconUtils.getSimpleName(name))
+                .title(IconUtils.formatName(name))
                 .positiveText(R.string.close)
                 .positiveColor(ColorUtils.getAccentColor(getActivity()))
                 .build();

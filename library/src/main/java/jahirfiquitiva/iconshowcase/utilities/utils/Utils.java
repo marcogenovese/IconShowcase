@@ -120,9 +120,6 @@ public class Utils {
 
     public static void openLink(Context context, String link) {
         try {
-            if ((!(link.startsWith("http://"))) || (!(link.startsWith("https://")))) {
-                link = "http://" + link;
-            }
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
