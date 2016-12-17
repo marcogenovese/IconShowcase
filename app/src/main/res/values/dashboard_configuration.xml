@@ -188,7 +188,7 @@
     True, means cards.
     False, means flat stuff.
     -->
-    <bool name="request_cards">true</bool>
+    <bool name="request_cards">false</bool>
 
     <!--
     1. Set the max amount of apps to request.
@@ -219,7 +219,7 @@
     True, means cards.
     False, means flat stuff.
     -->
-    <bool name="faqs_cards">true</bool>
+    <bool name="faqs_cards">false</bool>
 
 
     <!-- /*/*/*/*/*/*/*/*/*/*/*/*/ SETTINGS SECTION CONFIGURATION /*/*/*/*/*/*/*/*/*/*/*/*/ -->
