@@ -82,7 +82,7 @@ android {
     buildTypes {
         release {
             minifyEnabled true
-            shrinkResources true
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         aaptOptions {
@@ -116,7 +116,7 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.1.0'
 
     //Library for Requests
-    compile 'com.github.AllanWang:Butler:1dd782f'
+    compile 'com.github.AllanWang:Butler:5.0'
 
     //Library for UI framework
     compile 'com.github.AllanWang:Capsule:v3.1'
