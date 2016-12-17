@@ -41,6 +41,7 @@ import java.util.Locale;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.fragments.ApplyFragment;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
+import jahirfiquitiva.iconshowcase.utilities.utils.IconUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
@@ -70,7 +71,7 @@ public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.Laun
     public void onBindViewHolder(LauncherHolder holder, int position) {
         // Turns Launcher name "Something Pro" to "ic_something_pro"
         String iconName = "ic_" + launchers.get(position).name.toLowerCase().replace(" ", "_");
-        int iconResource = Utils.getIconResId(context.getResources(), context.getPackageName(),
+        int iconResource = IconUtils.getIconResId(context.getResources(), context.getPackageName(),
                 iconName);
 
         final int dark = ContextCompat.getColor(context, R.color.launcher_tint_dark);
@@ -82,7 +83,7 @@ public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.Laun
             Glide.with(context)
                     .load(iconResource != 0 ?
                             iconResource :
-                            Utils.getIconResId(context.getResources(), context.getPackageName(),
+                            IconUtils.getIconResId(context.getResources(), context.getPackageName(),
                                     "ic_na_launcher"))
                     .priority(Priority.IMMEDIATE)
                     .into(holder.icon);
@@ -90,7 +91,7 @@ public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.Laun
             Glide.with(context)
                     .load(iconResource != 0 ?
                             iconResource :
-                            Utils.getIconResId(context.getResources(), context.getPackageName(),
+                            IconUtils.getIconResId(context.getResources(), context.getPackageName(),
                                     "ic_na_launcher"))
                     .priority(Priority.IMMEDIATE)
                     .dontAnimate()

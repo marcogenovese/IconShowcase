@@ -25,6 +25,9 @@ import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.view.menu.ActionMenuItemView;
 import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.SearchView;
@@ -39,6 +42,9 @@ import android.widget.TextView;
 import java.lang.reflect.Field;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.utilities.utils.IconUtils;
+import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
+import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 
 public class ToolbarColorizer {
 
@@ -49,7 +55,6 @@ public class ToolbarColorizer {
      * @param toolbarIconsColor the target color of toolbar icons
      */
     public static void colorizeToolbar(Toolbar toolbar, final int toolbarIconsColor) {
-
         final PorterDuffColorFilter colorFilter = new PorterDuffColorFilter(toolbarIconsColor,
                 PorterDuff.Mode.SRC_IN);
 
@@ -99,26 +104,23 @@ public class ToolbarColorizer {
     }
 
     public static void tintSaveIcon(MenuItem item, Context context, int color) {
-        item.setIcon(
-                ColorUtils.getTintedIcon(
-                        context, R.drawable.ic_save,
-                        color));
+        item.setIcon(IconUtils.getTintedIcon(context, R.drawable.ic_save, color));
     }
 
     /**
-     * This code was created by Aidan Follestad. Complete credits to him.
+     * This method's code was created by Aidan Follestad. Complete credits to him.
      */
     @SuppressWarnings("PrivateResource")
     public static void tintSearchView(Context context, @NonNull Toolbar toolbar, MenuItem item,
                                       @NonNull SearchView searchView, @ColorInt int color) {
-        item.setIcon(ColorUtils.getTintedIcon(context, R.drawable.ic_search, color));
+        item.setIcon(IconUtils.getTintedIcon(context, R.drawable.ic_search, color));
         final Class<?> searchViewClass = searchView.getClass();
         try {
             final Field mCollapseIconField = toolbar.getClass().getDeclaredField("mCollapseIcon");
             mCollapseIconField.setAccessible(true);
             final Drawable drawable = (Drawable) mCollapseIconField.get(toolbar);
             if (drawable != null)
-                mCollapseIconField.set(toolbar, ColorUtils.getTintedIcon(drawable, color));
+                mCollapseIconField.set(toolbar, IconUtils.getTintedIcon(drawable, color));
 
             final Field mSearchSrcTextViewField = searchViewClass.getDeclaredField
                     ("mSearchSrcTextView");
@@ -172,9 +174,9 @@ public class ToolbarColorizer {
             Field fCursorDrawable = clazz.getDeclaredField("mCursorDrawable");
             fCursorDrawable.setAccessible(true);
             Drawable[] drawables = new Drawable[2];
-            drawables[0] = ColorUtils.getTintedIcon(editText.getContext(), mCursorDrawableRes,
+            drawables[0] = IconUtils.getTintedIcon(editText.getContext(), mCursorDrawableRes,
                     color);
-            drawables[1] = ColorUtils.getTintedIcon(editText.getContext(), mCursorDrawableRes,
+            drawables[1] = IconUtils.getTintedIcon(editText.getContext(), mCursorDrawableRes,
                     color);
             fCursorDrawable.set(editor, drawables);
         } catch (Exception e) {
@@ -187,8 +189,51 @@ public class ToolbarColorizer {
         final ImageView imageView = (ImageView) field.get(target);
         if (imageView == null) return;
         if (imageView.getDrawable() != null)
-            imageView.setImageDrawable(ColorUtils.getTintedIcon(imageView.getDrawable(),
+            imageView.setImageDrawable(IconUtils.getTintedIcon(imageView.getDrawable(),
                     tintColor));
+    }
+
+    public static void setupToolbarIconsAndTextsColors(final Context context, AppBarLayout appbar,
+                                                       final Toolbar toolbar) {
+
+        final int iconsColor = ThemeUtils.darkTheme ?
+                ContextCompat.getColor(context, R.color.toolbar_text_dark) :
+                ContextCompat.getColor(context, R.color.toolbar_text_light);
+
+        final int defaultIconsColor = ContextCompat.getColor(context, android.R.color.white);
+
+        if (appbar != null) {
+            appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+                @SuppressWarnings("ResourceAsColor")
+                @Override
+                public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                    double ratio = Utils.round(((double) (verticalOffset * -1) / 255.0), 1);
+                    if (ratio > 1) {
+                        ratio = 1;
+                    } else if (ratio < 0) {
+                        ratio = 0;
+                    }
+                    int paletteColor = ColorUtils.blendColors(defaultIconsColor, iconsColor,
+                            (float) ratio);
+                    if (toolbar != null) {
+                        // Collapsed offset = -352
+                        colorizeToolbar(toolbar, paletteColor);
+                    }
+                }
+            });
+        }
+    }
+
+    @SuppressWarnings("ResourceAsColor")
+    public static void setupCollapsingToolbarTextColors(Context context,
+                                                        CollapsingToolbarLayout
+                                                                collapsingToolbarLayout) {
+        int iconsColor = ThemeUtils.darkTheme ?
+                ContextCompat.getColor(context, R.color.toolbar_text_dark) :
+                ContextCompat.getColor(context, R.color.toolbar_text_light);
+        collapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(context, android.R
+                .color.transparent));
+        collapsingToolbarLayout.setCollapsedTitleTextColor(iconsColor);
     }
 
 }

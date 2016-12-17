@@ -77,6 +77,7 @@ public class LauncherIntents {
                 break;
             case "com.kk.launcher":
             case "KK":
+            case "Kk":
                 KkLauncher(context);
                 break;
             case "com.lge.launcher2":

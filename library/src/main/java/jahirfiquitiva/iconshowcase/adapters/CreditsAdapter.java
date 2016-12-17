@@ -41,6 +41,7 @@ import jahirfiquitiva.iconshowcase.models.CreditsItem;
 import jahirfiquitiva.iconshowcase.models.DetailedCreditsItem;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
+import jahirfiquitiva.iconshowcase.utilities.utils.IconUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 import jahirfiquitiva.iconshowcase.views.SplitButtonsLayout;
@@ -122,26 +123,23 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         final String[] extraCreditsDrawablesNames = r.getStringArray(R.array.credits_drawables);
 
         credits = new ArrayList<>(extraCreditsTitles.length);
-        for (int j = 0; j < extraCreditsTitles.length; j++)
+        for (int j = 0; j < extraCreditsTitles.length; j++) {
             credits.add(new CreditsItem(extraCreditsTitles[j],
-                    ColorUtils.getTintedDrawable(context, extraCreditsDrawablesNames[j])));
-
+                    IconUtils.getTintedDrawable(context, extraCreditsDrawablesNames[j])));
+        }
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int position) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-
         if (position < detailedCredits.size()) {
             return new DetailedCreditsHolder(inflater.inflate(R.layout.item_detailed_credit,
                     parent, false));
         }
-
         if (position >= detailedCredits.size()) {
             return new CreditsHolder(inflater.inflate(R.layout.item_credit, parent, false),
                     position - detailedCredits.size());
         }
-
         return null;
     }
 

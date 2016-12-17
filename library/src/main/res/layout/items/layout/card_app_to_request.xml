@@ -29,7 +29,8 @@
         android:stateListAnimator="@anim/card_lift"
         app:cardCornerRadius="@dimen/card_corner_radius"
         app:cardElevation="@dimen/cards_elevation"
-        app:cardPreventCornerOverlap="false">
+        app:cardPreventCornerOverlap="false"
+        tools:ignore="UnusedAttribute">
 
     <LinearLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -68,7 +69,7 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     tools:text="App Name And Some Other Texts Im testing right now"/>
 
-            <jahirfiquitiva.iconshowcase.views.RequestsCheckBox
+            <android.support.v7.widget.AppCompatCheckBox
                     android:id="@+id/chkSelected"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

@@ -30,7 +30,8 @@
         app:cardUseCompatPadding="true"
         app:cardCornerRadius="@dimen/card_corner_radius"
         app:cardElevation="@dimen/cards_elevation"
-        app:cardPreventCornerOverlap="false">
+        app:cardPreventCornerOverlap="false"
+        tools:ignore="UnusedAttribute">
 
     <LinearLayout
             android:layout_width="match_parent"
@@ -38,7 +39,8 @@
             android:gravity="center_vertical"
             android:minHeight="@dimen/md_listitem_height"
             android:orientation="horizontal"
-            android:padding="16dp">
+            android:padding="16dp"
+            tools:ignore="UseCompoundDrawables">
 
         <ImageView
                 android:id="@+id/icon"

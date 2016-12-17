@@ -176,7 +176,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
 
     @Override
     public int getItemCount() {
-        return wallsList == null ? 0 : wallsList.size();
+        return wallsList != null ? wallsList.size() : 0;
     }
 
     private void setColors(int color, WallsHolder holder) {

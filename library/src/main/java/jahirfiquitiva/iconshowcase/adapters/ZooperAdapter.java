@@ -49,6 +49,7 @@ import jahirfiquitiva.iconshowcase.tasks.CopyFilesToStorage;
 import jahirfiquitiva.iconshowcase.tasks.LoadZooperWidgets;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
+import jahirfiquitiva.iconshowcase.utilities.utils.IconUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
@@ -77,10 +78,10 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         this.extraCards = this.everythingInstalled ? 0 : 2;
         final int light = ContextCompat.getColor(context, R.color.drawable_tint_dark);
         final int dark = ContextCompat.getColor(context, R.color.drawable_tint_light);
-        this.icons[0] = ColorUtils.getTintedIcon(
+        this.icons[0] = IconUtils.getTintedIcon(
                 context, R.drawable.ic_store_download,
                 ThemeUtils.darkTheme ? light : dark);
-        this.icons[1] = ColorUtils.getTintedIcon(
+        this.icons[1] = IconUtils.getTintedIcon(
                 context, R.drawable.ic_assets,
                 ThemeUtils.darkTheme ? light : dark);
         this.mFragment = mFragment;

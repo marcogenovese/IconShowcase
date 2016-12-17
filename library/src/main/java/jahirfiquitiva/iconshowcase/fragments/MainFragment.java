@@ -43,6 +43,7 @@ import jahirfiquitiva.iconshowcase.activities.base.DrawerActivity;
 import jahirfiquitiva.iconshowcase.adapters.HomeListAdapter;
 import jahirfiquitiva.iconshowcase.events.OnLoadEvent;
 import jahirfiquitiva.iconshowcase.models.HomeCard;
+import jahirfiquitiva.iconshowcase.utilities.utils.IconUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 import jahirfiquitiva.iconshowcase.views.DividerItemDecoration;
@@ -100,7 +101,7 @@ public class MainFragment extends EventBaseFragment {
                             .title(listNames[i])
                             .description(listDescriptions[i])
                             .icon(ContextCompat.getDrawable(context,
-                                    Utils.getIconResId(getResources(),
+                                    IconUtils.getIconResId(getResources(),
                                             context.getPackageName(), listIcons[i])))
                             .onClickLink(listLinks[i])
                             .build());

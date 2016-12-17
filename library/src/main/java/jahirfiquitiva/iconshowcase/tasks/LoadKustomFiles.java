@@ -40,6 +40,7 @@ import jahirfiquitiva.iconshowcase.fragments.MainFragment;
 import jahirfiquitiva.iconshowcase.models.KustomKomponent;
 import jahirfiquitiva.iconshowcase.models.KustomWallpaper;
 import jahirfiquitiva.iconshowcase.models.KustomWidget;
+import jahirfiquitiva.iconshowcase.utilities.utils.IconUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 import timber.log.Timber;
 
@@ -110,7 +111,7 @@ public class LoadKustomFiles extends AsyncTask<Void, String, Boolean> {
         try {
             String[] kustomFiles = assetManager.list(folder);
 
-            File previewsFolder = new File(context.get().getExternalCacheDir(), Utils
+            File previewsFolder = new File(context.get().getExternalCacheDir(), IconUtils
                     .capitalizeText(folder) + "Previews");
 
             if (kustomFiles != null && kustomFiles.length > 0) {

@@ -67,7 +67,7 @@ import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 public class ColorUtils {
 
     @ColorInt
-    private static int blendColors(@ColorInt int color1,
+    public static int blendColors(@ColorInt int color1,
                                    @ColorInt int color2,
                                    @FloatRange(from = 0f, to = 1f) float ratio) {
         final float inverseRatio = 1f - ratio;
@@ -143,96 +143,6 @@ public class ColorUtils {
                 (color)) / 255);
     }
 
-    @ColorInt
-    public static int shiftLightTextColor(@ColorInt int textColor) {
-        if (isLightColor(textColor)) {
-            textColor = shiftColor(textColor, (float) getColorDarkness(textColor));
-        }
-        return textColor;
-    }
-
-    @ColorInt
-    public static int shiftDarkTextColor(@ColorInt int textColor) {
-        if (!isLightColor(textColor)) {
-            textColor = shiftColor(textColor, (float) getColorDarkness(textColor));
-        }
-        return textColor;
-    }
-
-    public static Drawable getTintedDrawable(@NonNull Context context, String name) {
-        final int light = ContextCompat.getColor(context, R.color.drawable_tint_dark);
-        final int dark = ContextCompat.getColor(context, R.color.drawable_tint_light);
-        return ColorUtils.getTintedIcon(context,
-                Utils.getIconResId(context.getResources(), context.getPackageName(), name),
-                ThemeUtils.darkTheme ? light : dark);
-    }
-
-    public static Drawable getTintedIcon(@NonNull Context context, @DrawableRes int drawable,
-                                         @ColorInt int color) {
-        try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                return getTintedIcon(ContextCompat.getDrawable(context, drawable), color);
-            } else {
-                Drawable icon = VectorDrawableCompat.create(context.getResources(), drawable, null);
-                return getTintedIcon(icon, color);
-            }
-        } catch (Resources.NotFoundException ex) {
-            return getTintedIcon(ContextCompat.getDrawable(context, R.drawable.iconshowcase_logo)
-                    , color);
-        }
-    }
-
-    @CheckResult
-    @Nullable
-    public static Drawable getTintedIcon(Drawable drawable, int color) {
-        if (drawable != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                if (drawable instanceof VectorDrawable) {
-                    drawable.setColorFilter(color, PorterDuff.Mode.SRC_IN);
-                }
-                drawable = DrawableCompat.wrap(drawable.mutate());
-            } else {
-                drawable = DrawableCompat.wrap(drawable);
-            }
-            DrawableCompat.setTintMode(drawable, PorterDuff.Mode.SRC_IN);
-            DrawableCompat.setTint(drawable, color);
-            return drawable;
-        } else {
-            return null;
-        }
-    }
-
-    public static void setupToolbarIconsAndTextsColors(final Context context, AppBarLayout appbar,
-                                                       final Toolbar toolbar) {
-
-        final int iconsColor = ThemeUtils.darkTheme ?
-                ContextCompat.getColor(context, R.color.toolbar_text_dark) :
-                ContextCompat.getColor(context, R.color.toolbar_text_light);
-
-        final int defaultIconsColor = ContextCompat.getColor(context, android.R.color.white);
-
-        if (appbar != null) {
-            appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-                @SuppressWarnings("ResourceAsColor")
-                @Override
-                public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                    double ratio = Utils.round(((double) (verticalOffset * -1) / 255.0), 1);
-                    if (ratio > 1) {
-                        ratio = 1;
-                    } else if (ratio < 0) {
-                        ratio = 0;
-                    }
-                    int paletteColor = ColorUtils.blendColors(defaultIconsColor, iconsColor,
-                            (float) ratio);
-                    if (toolbar != null) {
-                        // Collapsed offset = -352
-                        ToolbarColorizer.colorizeToolbar(toolbar, paletteColor);
-                    }
-                }
-            });
-        }
-    }
-
     public static Palette.Swatch getPaletteSwatch(Bitmap bitmap) {
         //Test areas of 10 and 50*50
         return getPaletteSwatch(Palette.from(bitmap).resizeBitmapArea(50 * 50).generate());
@@ -270,28 +180,6 @@ public class ColorUtils {
                         return a - b;
                     }
                 });
-    }
-
-    public static int getColorFromIcon(final Context context, Drawable icon) {
-        if (icon == null) return getAccentColor(context);
-        Palette palette = Palette.from(Utils.drawableToBitmap(icon)).generate();
-        return getColorFromIcon(context, palette);
-    }
-
-    public static int getColorFromIcon(Context context, Palette palette) {
-        int resultColor = getBetterColor(context, palette.getVibrantColor(0));
-        if (resultColor == 0) {
-            resultColor = getBetterColor(context, palette.getMutedColor(0));
-        }
-        if (resultColor == 0) {
-            resultColor = getAccentColor(context);
-        }
-        return resultColor;
-    }
-
-    public static int getBetterColor(Context context, @ColorInt int color) {
-        if (color == 0) return 0;
-        return ThemeUtils.darkTheme ? shiftDarkTextColor(color) : shiftLightTextColor(color);
     }
 
     public static int getAccentColor(Context context) {

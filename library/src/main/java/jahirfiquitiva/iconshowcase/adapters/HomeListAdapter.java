@@ -43,6 +43,7 @@ import jahirfiquitiva.iconshowcase.models.IconsCategory;
 import jahirfiquitiva.iconshowcase.tasks.LoadKustomFiles;
 import jahirfiquitiva.iconshowcase.tasks.LoadZooperWidgets;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
+import jahirfiquitiva.iconshowcase.utilities.utils.IconUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
@@ -133,7 +134,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             setupAppInfo();
         } else if (holder instanceof MoreAppsCard) {
             MoreAppsCard mhldr = (MoreAppsCard) holder;
-            mhldr.icon.setImageDrawable(ColorUtils.getTintedIcon(
+            mhldr.icon.setImageDrawable(IconUtils.getTintedIcon(
                     context, R.drawable.ic_play_store,
                     ContextCompat.getColor(context, ThemeUtils.darkTheme ?
                             R.color.drawable_tint_dark : R.color.drawable_tint_light)));
@@ -192,15 +193,15 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         final int light = ContextCompat.getColor(context, R.color.drawable_tint_dark);
         final int dark = ContextCompat.getColor(context, R.color.drawable_tint_light);
 
-        Drawable iconsDrawable = ColorUtils.getTintedIcon(
+        Drawable iconsDrawable = IconUtils.getTintedIcon(
                 context, R.drawable.ic_android,
                 ThemeUtils.darkTheme ? light : dark);
 
-        Drawable wallsDrawable = ColorUtils.getTintedIcon(
+        Drawable wallsDrawable = IconUtils.getTintedIcon(
                 context, R.drawable.ic_multiple_wallpapers,
                 ThemeUtils.darkTheme ? light : dark);
 
-        Drawable widgetsDrawable = ColorUtils.getTintedIcon(
+        Drawable widgetsDrawable = IconUtils.getTintedIcon(
                 context, R.drawable.ic_zooper_kustom,
                 ThemeUtils.darkTheme ? light : dark);
 

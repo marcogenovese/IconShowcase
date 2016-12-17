@@ -38,6 +38,7 @@ import jahirfiquitiva.iconshowcase.fragments.MainFragment;
 import jahirfiquitiva.iconshowcase.holders.FullListHolder;
 import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.models.IconsCategory;
+import jahirfiquitiva.iconshowcase.utilities.utils.IconUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 import timber.log.Timber;
 
@@ -65,7 +66,7 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
 
         String[] previews = r.getStringArray(R.array.preview);
         for (String icon : previews) {
-            int iconResId = Utils.getIconResId(r, p, icon);
+            int iconResId = IconUtils.getIconResId(r, p, icon);
             if (iconResId > 0) {
                 mPreviewIcons.add(new IconItem(icon, iconResId));
             }
@@ -97,7 +98,7 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
                         allIcons.addAll(iconsArray);
                     }
                     if (iconsArray.size() > 0) {
-                        mCategoryList.add(new IconsCategory(Utils.makeTextReadable(tabName),
+                        mCategoryList.add(new IconsCategory(IconUtils.getSimpleName(tabName),
                                 sortIconsList(r, p, iconsArray)));
                     }
                 }
@@ -167,7 +168,7 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
             icons) {
         ArrayList<IconItem> list = new ArrayList<>();
         for (String iconName : icons) {
-            int iconResId = Utils.getIconResId(r, p, iconName);
+            int iconResId = IconUtils.getIconResId(r, p, iconName);
             if (iconResId > 0) {
                 list.add(new IconItem(iconName, iconResId));
             } else {

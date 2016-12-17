@@ -25,6 +25,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -58,7 +59,7 @@ public class ApplyFragment extends CapsuleFragment {
     private final List<Launcher> launchers = new ArrayList<>();
     private String intentString;
     private RecyclerView recyclerView;
-
+    private View layout;
     private Preferences mPrefs;
 
     @Override
@@ -66,7 +67,7 @@ public class ApplyFragment extends CapsuleFragment {
             savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        View layout = inflater.inflate(R.layout.apply_section, container, false);
+        layout = inflater.inflate(R.layout.apply_section, container, false);
 
         mPrefs = new Preferences(getActivity());
         showApplyAdviceDialog(getActivity());
@@ -148,7 +149,13 @@ public class ApplyFragment extends CapsuleFragment {
     private void openLauncher(String name) {
         final String launcherName = Character.toUpperCase(name.charAt(0))
                 + name.substring(1).toLowerCase().replace(" ", "").replace("launcher", "");
-        new LauncherIntents(getActivity(), launcherName);
+        try {
+            new LauncherIntents(getActivity(), launcherName);
+        } catch (IllegalArgumentException ex) {
+            if (layout != null) {
+                Snackbar.make(layout, R.string.no_launcher_intent, Snackbar.LENGTH_LONG).show();
+            }
+        }
     }
 
     private void openInPlayStore(final Launcher launcher) {

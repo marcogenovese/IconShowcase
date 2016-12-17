@@ -43,6 +43,7 @@ import jahirfiquitiva.iconshowcase.events.BlankEvent;
 import jahirfiquitiva.iconshowcase.fragments.WallpapersFragment;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
+import jahirfiquitiva.iconshowcase.utilities.utils.IconUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.RequestUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
@@ -152,15 +153,15 @@ public final class ISDialogs {
             int light = ContextCompat.getColor(context, R.color.drawable_tint_dark);
             int dark = ContextCompat.getColor(context, R.color.drawable_tint_light);
 
-            authorIcon.setImageDrawable(ColorUtils.getTintedIcon(
+            authorIcon.setImageDrawable(IconUtils.getTintedIcon(
                     context, R.drawable.ic_person,
                     ThemeUtils.darkTheme ? light : dark));
 
-            dimensIcon.setImageDrawable(ColorUtils.getTintedIcon(
+            dimensIcon.setImageDrawable(IconUtils.getTintedIcon(
                     context, R.drawable.ic_dimensions,
                     ThemeUtils.darkTheme ? light : dark));
 
-            copyrightIcon.setImageDrawable(ColorUtils.getTintedIcon(
+            copyrightIcon.setImageDrawable(IconUtils.getTintedIcon(
                     context, R.drawable.ic_copyright,
                     ThemeUtils.darkTheme ? light : dark));
         }

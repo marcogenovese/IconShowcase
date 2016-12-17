@@ -75,6 +75,7 @@ import jahirfiquitiva.iconshowcase.tasks.WallpaperToCrop;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
+import jahirfiquitiva.iconshowcase.utilities.utils.IconUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
@@ -144,12 +145,12 @@ public class WallpaperViewerActivity extends AppCompatActivity {
         int tintColor = ThemeUtils.darkOrLight(context, R.color.drawable_tint_dark, R.color
                 .drawable_base_tint);
 
-        Drawable save = ColorUtils.getTintedIcon(context, R.drawable.ic_save, tintColor);
+        Drawable save = IconUtils.getTintedIcon(context, R.drawable.ic_save, tintColor);
 
-        Drawable apply = ColorUtils.getTintedIcon(context, R.drawable.ic_apply_wallpaper,
+        Drawable apply = IconUtils.getTintedIcon(context, R.drawable.ic_apply_wallpaper,
                 tintColor);
 
-        Drawable info = ColorUtils.getTintedIcon(context, R.drawable.ic_info, tintColor);
+        Drawable info = IconUtils.getTintedIcon(context, R.drawable.ic_info, tintColor);
 
         ImageView saveIV = (ImageView) findViewById(R.id.download);
         if (item.isDownloadable()) {

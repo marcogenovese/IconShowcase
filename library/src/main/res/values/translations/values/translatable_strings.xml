@@ -341,4 +341,6 @@
     <string name="donations_error_title">Donations unavailable</string>
     <string name="donations_error_content">Your device doesn\'t support In App Billing.\nThis could be because you need to update your Google Play Store application, or because you live in a country where In App Billing is disabled.</string>
 
+    <string name="no_launcher_intent">Direct apply could not be completed for this launcher. Please apply the icon pack manually, in launcher settings.</string>
+
 </resources>

@@ -85,6 +85,7 @@ import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.tasks.DownloadJSON;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
+import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.utilities.utils.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
@@ -186,7 +187,7 @@ public class ShowcaseActivity extends TasksActivity {
         thaAppName = getResources().getString(R.string.app_name);
 
         collapsingToolbarLayout.setTitle(thaAppName);
-        Utils.setupCollapsingToolbarTextColors(this, collapsingToolbarLayout);
+        ToolbarColorizer.setupCollapsingToolbarTextColors(this, collapsingToolbarLayout);
         setupDrawer(savedInstanceState);
 
         //Setup donations
@@ -269,7 +270,7 @@ public class ShowcaseActivity extends TasksActivity {
         if (!iconsPicker && !wallsPicker) {
             setupToolbarHeader();
         }
-        ColorUtils.setupToolbarIconsAndTextsColors(this, cAppBarLayout, cToolbar);
+        ToolbarColorizer.setupToolbarIconsAndTextsColors(this, cAppBarLayout, cToolbar);
     }
 
     @Override
@@ -432,7 +433,7 @@ public class ShowcaseActivity extends TasksActivity {
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         if (collapsingToolbarLayout != null) {
-            Utils.setupCollapsingToolbarTextColors(this, collapsingToolbarLayout);
+            ToolbarColorizer.setupCollapsingToolbarTextColors(this, collapsingToolbarLayout);
             collapsingToolbarLayout.setTitle(savedInstanceState.getString("toolbarTitle",
                     thaAppName));
         }

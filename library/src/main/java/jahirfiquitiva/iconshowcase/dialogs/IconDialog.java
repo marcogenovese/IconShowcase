@@ -36,8 +36,10 @@ import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.config.Config;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
+import jahirfiquitiva.iconshowcase.utilities.utils.IconUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 
 public class IconDialog extends DialogFragment {
@@ -77,36 +79,20 @@ public class IconDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-
-        final MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
-
-        builder.customView(R.layout.dialog_icon, false)
-                .title(Utils.makeTextReadable(name))
+        final MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
+                .customView(R.layout.dialog_icon, false)
+                .title(Config.get().bool(R.bool.advanced_icon_name_format)
+                        ? IconUtils.getAdvancedName(name)
+                        : IconUtils.getSimpleName(name))
                 .positiveText(R.string.close)
-                .positiveColor(ColorUtils.getColorFromIcon(getActivity(), ContextCompat
-                        .getDrawable(getActivity(), resId)));
+                .positiveColor(ColorUtils.getAccentColor(getActivity()))
+                .build();
 
-        final MaterialDialog dialog = builder.build();
-
-        final ImageView iconView = (ImageView) dialog.getCustomView().findViewById(R.id.dialogicon);
-        if (iconView != null && resId > 0) {
-            if (getPrefs().getAnimationsEnabled()) {
-                Glide.with(getActivity())
-                        .load(resId)
-                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                        .priority(Priority.IMMEDIATE)
-                        .thumbnail(0.5f)
-                        .into(iconView);
-            } else {
-                Glide.with(getActivity())
-                        .load(resId)
-                        .dontAnimate()
-                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                        .priority(Priority.IMMEDIATE)
-                        .thumbnail(0.5f)
-                        .into(iconView);
+        if (dialog.getCustomView() != null) {
+            final ImageView iconView = (ImageView) dialog.getCustomView().findViewById(R.id.dialogicon);
+            if (iconView != null && resId > 0) {
+                iconView.setImageDrawable(ContextCompat.getDrawable(getActivity(), resId));
             }
-            //iconView.setImageResource(resId);
         }
 
         return dialog;

@@ -29,7 +29,7 @@
         android:foreground="?attr/selectableItemBackground"
         android:stateListAnimator="@anim/card_lift"
         app:cardPreventCornerOverlap="false"
-        >
+        tools:ignore="UnusedAttribute">
 
     <LinearLayout
             style="@style/ZooperCardContent"
@@ -40,7 +40,8 @@
             android:minHeight="@dimen/md_listitem_height"
             android:orientation="vertical"
             android:paddingLeft="16dp"
-            android:paddingRight="16dp">
+            android:paddingRight="16dp"
+            tools:ignore="UseCompoundDrawables">
 
         <ImageView
                 android:id="@+id/zooper_btn_icon"

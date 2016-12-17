@@ -163,7 +163,7 @@ public class Utils {
                 .build();
 
         try {
-            customTabsIntent.launchUrl((Activity) context, Uri.parse(link));
+            customTabsIntent.launchUrl(context, Uri.parse(link));
         } catch (Exception ex) {
             openLink(context, link);
         }
@@ -171,66 +171,6 @@ public class Utils {
 
     public static String getStringFromResources(Context context, int id) {
         return context.getResources().getString(id);
-    }
-
-    public static String makeTextReadable(String name) {
-
-        String partialConvertedText = name.replaceAll("_", " ");
-        String[] text = partialConvertedText.split("\\s+");
-        StringBuilder sb = new StringBuilder();
-        if (text[0].length() > 0) {
-            sb.append(Character.toUpperCase(text[0].charAt(0))).append(text[0].subSequence(1,
-                    text[0].length()).toString().toLowerCase());
-            for (int i = 1; i < text.length; i++) {
-                sb.append(" ");
-                sb.append(capitalizeText(text[i]));
-            }
-        }
-        return sb.toString();
-
-    }
-
-    public static String capitalizeText(String text) {
-        return text.substring(0, 1).toUpperCase() + text.substring(1).toLowerCase();
-    }
-
-    public static void sendEmailWithDeviceInfo(Context context) {
-        StringBuilder emailBuilder = new StringBuilder();
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:" + context.getResources
-                ().getString(R.string.email_id)));
-        intent.putExtra(Intent.EXTRA_SUBJECT, context.getResources().getString(R.string
-                .email_subject));
-        emailBuilder.append("\n \n \nOS Version: ").append(System.getProperty("os.version"))
-                .append("(").append(Build.VERSION.INCREMENTAL).append(")");
-        emailBuilder.append("\nOS API Level: ").append(Build.VERSION.SDK_INT);
-        emailBuilder.append("\nDevice: ").append(Build.DEVICE);
-        emailBuilder.append("\nManufacturer: ").append(Build.MANUFACTURER);
-        emailBuilder.append("\nModel (and Product): ").append(Build.MODEL).append(" (").append
-                (Build.PRODUCT).append(")");
-        PackageInfo appInfo = null;
-        try {
-            appInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        assert appInfo != null;
-        emailBuilder.append("\nApp Version Name: ").append(appInfo.versionName);
-        emailBuilder.append("\nApp Version Code: ").append(appInfo.versionCode);
-        intent.putExtra(Intent.EXTRA_TEXT, emailBuilder.toString());
-        context.startActivity(Intent.createChooser(intent, (context.getResources().getString(R
-                .string.send_title))));
-    }
-
-    @SuppressWarnings("ResourceAsColor")
-    public static void setupCollapsingToolbarTextColors(Context context,
-                                                        CollapsingToolbarLayout
-                                                                collapsingToolbarLayout) {
-        int iconsColor = ThemeUtils.darkTheme ?
-                ContextCompat.getColor(context, R.color.toolbar_text_dark) :
-                ContextCompat.getColor(context, R.color.toolbar_text_light);
-        collapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(context, android.R
-                .color.transparent));
-        collapsingToolbarLayout.setCollapsedTitleTextColor(iconsColor);
     }
 
     public static Bitmap drawableToBitmap(Drawable drawable) {
@@ -291,33 +231,6 @@ public class Utils {
         newBitmap.setPixels(pixels, 0, width, 0, 0, width, height);
 
         return Bitmap.createBitmap(newBitmap, minX, minY, (maxX - minX) + 1, (maxY - minY) + 1);
-    }
-
-    public static int getIconResId(Resources r, String p, String name) {
-        int res = r.getIdentifier(name, "drawable", p);
-        if (res != 0) {
-            return res;
-        } else {
-            return 0;
-        }
-    }
-
-    public static Drawable getVectorDrawable(@NonNull Context context, @DrawableRes int drawable) {
-        Drawable vectorDrawable;
-        try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                vectorDrawable = ContextCompat.getDrawable(context, drawable);
-            } else {
-                vectorDrawable = VectorDrawableCompat.create(context.getResources(), drawable,
-                        null);
-                if (vectorDrawable != null) {
-                    vectorDrawable = DrawableCompat.wrap(vectorDrawable);
-                }
-            }
-        } catch (Resources.NotFoundException ex) {
-            vectorDrawable = ContextCompat.getDrawable(context, R.drawable.iconshowcase_logo);
-        }
-        return vectorDrawable != null ? vectorDrawable : null;
     }
 
     /**

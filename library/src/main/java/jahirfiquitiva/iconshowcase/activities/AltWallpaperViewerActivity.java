@@ -5,7 +5,7 @@
  * 4.0 International License. You may not use this file except in compliance
  * with the License. You may obtain a copy of the License at
  *
- *    http://creativecommons.org/licenses/by-sa/4.0/legalcode
+ *     http://creativecommons.org/licenses/by-sa/4.0/legalcode
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -49,6 +49,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.AnimationUtils;
 import android.view.animation.OvershootInterpolator;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -76,6 +77,7 @@ import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.models.WallpaperItem;
 import jahirfiquitiva.iconshowcase.tasks.ApplyWallpaper;
 import jahirfiquitiva.iconshowcase.tasks.WallpaperToCrop;
+import jahirfiquitiva.iconshowcase.utilities.GlideConfiguration;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
@@ -88,7 +90,6 @@ import jahirfiquitiva.iconshowcase.views.TouchImageView;
 public class AltWallpaperViewerActivity extends AppCompatActivity {
 
     private boolean fabOpened = false;
-
     private WallpaperItem item;
     private CoordinatorLayout layout;
     private Preferences mPrefs;
@@ -662,8 +663,7 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
                                                                             .setOnDismissListener
                                                                                     (new DialogInterface.OnDismissListener() {
                                                                                         @Override
-                                                                                        public
-                                                                                        void
+                                                                                        public void
                                                                                         onDismiss
                                                                                                 (DialogInterface
                                                                                                          dialogInterface) {

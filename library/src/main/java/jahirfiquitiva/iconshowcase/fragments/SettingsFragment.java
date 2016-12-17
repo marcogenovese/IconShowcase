@@ -51,6 +51,7 @@ import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.fragments.base.PreferenceFragment;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
+import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.utilities.utils.PermissionUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
@@ -120,7 +121,7 @@ public class SettingsFragment extends PreferenceFragment implements
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     mPrefs.setWallpaperAsToolbarHeaderEnabled(newValue.toString().equals("true"));
                     ((ShowcaseActivity) getActivity()).setupToolbarHeader();
-                    ColorUtils.setupToolbarIconsAndTextsColors(
+                    ToolbarColorizer.setupToolbarIconsAndTextsColors(
                             getActivity(),
                             ((ShowcaseActivity) getActivity()).getAppbar(),
                             ((ShowcaseActivity) getActivity()).getToolbar());

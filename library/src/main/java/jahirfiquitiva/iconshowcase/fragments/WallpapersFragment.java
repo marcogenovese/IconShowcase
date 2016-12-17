@@ -48,6 +48,7 @@ import jahirfiquitiva.iconshowcase.events.OnLoadEvent;
 import jahirfiquitiva.iconshowcase.holders.FullListHolder;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
+import jahirfiquitiva.iconshowcase.utilities.utils.IconUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
@@ -89,7 +90,7 @@ public class WallpapersFragment extends EventBaseFragment {
             AdviceDialog.show(getActivity(), AdviceDialog.Type.WALLPAPER);
         }
 
-        noConnection.setImageDrawable(ColorUtils.getTintedIcon(
+        noConnection.setImageDrawable(IconUtils.getTintedIcon(
                 context, R.drawable.ic_no_connection, tintColor));
 
         setupRecyclerView(false, 0);
@@ -129,7 +130,7 @@ public class WallpapersFragment extends EventBaseFragment {
                 progress.setVisibility(View.GONE);
             }
         } else {
-            noConnection.setImageDrawable(ColorUtils.getTintedIcon(
+            noConnection.setImageDrawable(IconUtils.getTintedIcon(
                     context, R.drawable.ic_no_connection,
                     tintColor));
             showNoConnectionPicture();
