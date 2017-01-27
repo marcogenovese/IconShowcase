@@ -1,23 +1,22 @@
 language: android
 jdk: oraclejdk8
-
 android:
   components:
+    - tools
+    - platform-tools
     - build-tools-25.0.2
     - android-25
     - extra-android-support
-    - extra-google-m2repository
     - extra-android-m2repository
+    - extra-google-m2repository
+
+    # Additional components
+    #- extra-google-google_play_services
+    #- addon-google_apis-google-19
+
+    # Specify at least one system image, if you need to run emulator(s) during your tests
+    #- sys-img-armeabi-v7a-android-19
+    #- sys-img-x86-android-17
+
   licenses:
     - '.+'
-
-before_install:
-  - chmod +x gradlew
-
-before_script:
-  - echo yes | android update sdk --no-ui --all --filter platform-tools,tools
-  - echo yes | android update sdk --no-ui --all --filter build-tools-25.0.2
-  - echo yes | android update sdk --no-ui --all --filter android-25
-
-script:
-    - ./gradlew clean test
