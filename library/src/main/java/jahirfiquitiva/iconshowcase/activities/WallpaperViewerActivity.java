@@ -36,7 +36,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -76,7 +75,7 @@ import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.utilities.utils.IconUtils;
-import jahirfiquitiva.iconshowcase.utilities.utils.PermissionUtils;
+import jahirfiquitiva.iconshowcase.utilities.utils.PermissionsUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
@@ -158,12 +157,30 @@ public class WallpaperViewerActivity extends AppCompatActivity {
             saveIV.setOnClickListener(new DebouncedClickListener() {
                 @Override
                 public void onDebouncedClick(View v) {
-                    if (!PermissionUtils.canAccessStorage(context)) {
-                        PermissionUtils.setViewerActivityAction("save");
-                        PermissionUtils.requestStoragePermission(context);
-                    } else {
-                        showDialogs("save");
-                    }
+                    PermissionsUtils.checkPermission(context, Manifest.permission
+                            .WRITE_EXTERNAL_STORAGE, new PermissionsUtils
+                            .PermissionRequestListener() {
+                        @Override
+                        public void onPermissionRequest() {
+                            PermissionsUtils.setViewerActivityAction("save");
+                            PermissionsUtils.requestStoragePermission(context);
+                        }
+
+                        @Override
+                        public void onPermissionDenied() {
+                            ISDialogs.showPermissionNotGrantedDialog(context);
+                        }
+
+                        @Override
+                        public void onPermissionCompletelyDenied() {
+                            ISDialogs.showPermissionNotGrantedDialog(context);
+                        }
+
+                        @Override
+                        public void onPermissionGranted() {
+                            runWallpaperSave();
+                        }
+                    });
                 }
             });
         } else {
@@ -329,12 +346,12 @@ public class WallpaperViewerActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResult) {
-        if (requestCode == PermissionUtils.PERMISSION_REQUEST_CODE) {
+        if (requestCode == PermissionsUtils.PERMISSION_REQUEST_CODE) {
             if (grantResult.length > 0 && grantResult[0] == PackageManager.PERMISSION_GRANTED) {
-                if (PermissionUtils.getViewerActivityAction().equals("crop")) {
+                if (PermissionsUtils.getViewerActivityAction().equals("crop")) {
                     cropWallpaper(item.getWallURL());
-                } else {
-                    showDialogs(PermissionUtils.getViewerActivityAction());
+                } else if (PermissionsUtils.getViewerActivityAction().equals("save")) {
+                    runWallpaperSave();
                 }
             } else {
                 ISDialogs.showPermissionNotGrantedDialog(this);
@@ -440,10 +457,11 @@ public class WallpaperViewerActivity extends AppCompatActivity {
                 String snackbarText;
                 if (!destFile.exists()) {
                     try {
-                        result.compress(Bitmap.CompressFormat.PNG, 100,
-                                new FileOutputStream(destFile));
+                        FileOutputStream fos = new FileOutputStream(destFile);
+                        result.compress(Bitmap.CompressFormat.PNG, 100, fos);
                         snackbarText = context.getString(R.string.wallpaper_downloaded,
                                 destFile.getAbsolutePath());
+                        fos.close();
                     } catch (final Exception e) {
                         snackbarText = context.getString(R.string.error);
                     }
@@ -564,20 +582,19 @@ public class WallpaperViewerActivity extends AppCompatActivity {
 
                                                                     dialogApply
                                                                             .setOnDismissListener
-                                                                                    (new DialogInterface.OnDismissListener() {
+                                                                                    (new DialogInterface
+                                                                                            .OnDismissListener() {
                                                                                         @Override
-                                                                                        public
-                                                                                        void
+                                                                                        public void
                                                                                         onDismiss
-                                                                                                (DialogInterface
-                                                                                                         dialogInterface) {
-                                                                                            if (toHide1 != null &&
-                                                                                                    toHide2 !=
-                                                                                                            null) {
-                                                                                                toHide1.setVisibility
-                                                                                                        (View.VISIBLE);
-                                                                                                toHide2.setVisibility
-                                                                                                        (View.VISIBLE);
+                                                                                                (DialogInterface dialogInterface) {
+                                                                                            if (toHide1
+                                                                                                    !=
+                                                                                                    null
+                                                                                                    &&
+                                                                                                    toHide2 != null) {
+                                                                                                toHide1.setVisibility(View.VISIBLE);
+                                                                                                toHide2.setVisibility(View.VISIBLE);
                                                                                             }
                                                                                         }
                                                                                     });
@@ -616,12 +633,30 @@ public class WallpaperViewerActivity extends AppCompatActivity {
                     @Override
                     public void onClick(@NonNull MaterialDialog materialDialog, @NonNull
                             DialogAction dialogAction) {
-                        if (!PermissionUtils.canAccessStorage(WallpaperViewerActivity.this)) {
-                            PermissionUtils.setViewerActivityAction("crop");
-                            PermissionUtils.requestStoragePermission(WallpaperViewerActivity.this);
-                        } else {
-                            cropWallpaper(wallUrl);
-                        }
+                        PermissionsUtils.checkPermission(context, Manifest.permission
+                                        .WRITE_EXTERNAL_STORAGE,
+                                new PermissionsUtils.PermissionRequestListener() {
+                                    @Override
+                                    public void onPermissionRequest() {
+                                        PermissionsUtils.setViewerActivityAction("crop");
+                                        PermissionsUtils.requestStoragePermission(context);
+                                    }
+
+                                    @Override
+                                    public void onPermissionDenied() {
+                                        ISDialogs.showPermissionNotGrantedDialog(context);
+                                    }
+
+                                    @Override
+                                    public void onPermissionCompletelyDenied() {
+                                        ISDialogs.showPermissionNotGrantedDialog(context);
+                                    }
+
+                                    @Override
+                                    public void onPermissionGranted() {
+                                        cropWallpaper(wallUrl);
+                                    }
+                                });
                     }
                 },
                 new DialogInterface.OnDismissListener() {
@@ -641,27 +676,11 @@ public class WallpaperViewerActivity extends AppCompatActivity {
                 Snackbar.LENGTH_LONG).show();
     }
 
-    private void showDialogs(String action) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-                ActivityCompat.checkSelfPermission(context, Manifest.permission
-                        .READ_EXTERNAL_STORAGE) !=
-                        PackageManager.PERMISSION_GRANTED) {
-            new MaterialDialog.Builder(context)
-                    .title(R.string.md_error_label)
-                    .content(context.getResources().getString(R.string.md_storage_perm_error,
-                            context.getResources().getString(R.string.app_name)))
-                    .positiveText(android.R.string.ok)
-                    .show();
+    private void runWallpaperSave() {
+        if (Utils.hasNetwork(context)) {
+            saveWallpaperAction(item.getWallName(), item.getWallURL());
         } else {
-            if (Utils.hasNetwork(context)) {
-                switch (action) {
-                    case "save":
-                        saveWallpaperAction(item.getWallName(), item.getWallURL());
-                        break;
-                }
-            } else {
-                showNotConnectedSnackBar();
-            }
+            showNotConnectedSnackBar();
         }
     }
 

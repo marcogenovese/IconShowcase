@@ -40,7 +40,6 @@ import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.models.CreditsItem;
 import jahirfiquitiva.iconshowcase.models.DetailedCreditsItem;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
-import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.IconUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;

@@ -45,7 +45,6 @@ import jahirfiquitiva.iconshowcase.fragments.SettingsFragment;
 import jahirfiquitiva.iconshowcase.fragments.WallpapersFragment;
 import jahirfiquitiva.iconshowcase.fragments.ZooperFragment;
 import jahirfiquitiva.iconshowcase.utilities.utils.IconUtils;
-import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 
 /**
  * Created by Allan Wang on 2016-10-09.
@@ -271,7 +270,8 @@ public abstract class DrawerActivity extends CapsuleActivity {
                 di, int i) {
             return new PrimaryDrawerItem().withName(context.getResources().getString(di
                     .getTitleID()))
-                    .withIdentifier(i).withIcon(IconUtils.getVectorDrawable(context, di.getIconRes()))
+                    .withIdentifier(i).withIcon(IconUtils.getVectorDrawable(context, di
+                            .getIconRes()))
                     .withIconTintingEnabled(true);
         }
 

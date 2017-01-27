@@ -42,7 +42,6 @@ import jahirfiquitiva.iconshowcase.models.HomeCard;
 import jahirfiquitiva.iconshowcase.models.IconsCategory;
 import jahirfiquitiva.iconshowcase.tasks.LoadKustomFiles;
 import jahirfiquitiva.iconshowcase.tasks.LoadZooperWidgets;
-import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.IconUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
@@ -158,7 +157,10 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         homeCards.get(ahldr.i - cards).desc);
             }
             ahldr.cardTitle.setText(homeCards.get(ahldr.i - cards).title);
-            ahldr.cardDesc.setText(description);
+
+            ahldr.cardDesc.setText(homeCards.get(ahldr.i - cards).isAnApp ? description :
+                    homeCards.get(ahldr.i - cards).desc);
+
             if (homeCards.get(ahldr.i - cards).imgEnabled) {
                 ahldr.cardIcon.setImageDrawable(homeCards.get(ahldr.i - cards).img);
             } else {
@@ -218,15 +220,20 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public void setupAppInfoAmounts() {
         resetAppInfoValues();
-        if (FullListHolder.get().iconsCategories().getList() != null) {
-            for (IconsCategory category : FullListHolder.get().iconsCategories().getList()) {
-                if (category.getCategoryName().equals("All")) {
-                    this.icons += category.getIconsArray().size();
+        int defIconsAmount = context.getResources().getInteger(R.integer.icons_amount);
+        if (defIconsAmount != -1) {
+            if (FullListHolder.get().iconsCategories().getList() != null) {
+                for (IconsCategory category : FullListHolder.get().iconsCategories().getList()) {
+                    if (category.getCategoryName().equals("All")) {
+                        this.icons += category.getIconsArray().size();
+                    }
+                }
+                if (this.icons > 1) {
+                    this.icons -= 1;
                 }
             }
-            if (this.icons > 1) {
-                this.icons -= 1;
-            }
+        } else {
+            this.icons = defIconsAmount;
         }
         this.wallpapers = FullListHolder.get().walls().getList() != null
                 ? FullListHolder.get().walls().getList().size() : 0;

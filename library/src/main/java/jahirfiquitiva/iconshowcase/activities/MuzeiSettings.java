@@ -108,7 +108,7 @@ public class MuzeiSettings extends AppCompatActivity {
         minute = (RadioButton) findViewById(R.id.minute);
         hour = (RadioButton) findViewById(R.id.hour);
 
-        if (mPrefs.areFeaturesEnabled()) {
+        if (mPrefs.isDashboardWorking()) {
             minute.setOnClickListener(new DebouncedClickListener() {
                 @Override
                 public void onDebouncedClick(View v) {
@@ -135,7 +135,7 @@ public class MuzeiSettings extends AppCompatActivity {
                 numberpicker.setValue(Utils.convertMillisToMinutes(mPrefs.getRotateTime()) / 60);
             }
         } else {
-            showNotLicensedDialog();
+            showShallNotPassDialog();
         }
     }
 
@@ -145,6 +145,7 @@ public class MuzeiSettings extends AppCompatActivity {
         int iconsColor = ThemeUtils.darkOrLight(this, R.color.toolbar_text_dark, R.color
                 .toolbar_text_light);
         ToolbarColorizer.colorizeToolbar(toolbar, iconsColor);
+        // TODO: Run license checker
     }
 
     @Override
@@ -161,7 +162,7 @@ public class MuzeiSettings extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int i = item.getItemId();
-        if (mPrefs.areFeaturesEnabled()) {
+        if (mPrefs.isDashboardWorking()) {
             if (i == R.id.save) {
                 String timeText;
                 int rotate_time;
@@ -187,7 +188,7 @@ public class MuzeiSettings extends AppCompatActivity {
                 return true;
             }
         } else {
-            showNotLicensedDialog();
+            showShallNotPassDialog();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -214,8 +215,8 @@ public class MuzeiSettings extends AppCompatActivity {
         }
     }
 
-    private void showNotLicensedDialog() {
-        ISDialogs.showLicenseFailDialog(this,
+    private void showShallNotPassDialog() {
+        ISDialogs.showShallNotPassDialog(this,
                 new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog materialDialog, @NonNull

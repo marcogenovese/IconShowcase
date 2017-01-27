@@ -19,6 +19,8 @@
 
 package jahirfiquitiva.iconshowcase.adapters;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.drawable.Drawable;
@@ -41,16 +43,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import jahirfiquitiva.iconshowcase.R;
-import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.fragments.ZooperFragment;
 import jahirfiquitiva.iconshowcase.models.ZooperWidget;
 import jahirfiquitiva.iconshowcase.tasks.CopyFilesToStorage;
 import jahirfiquitiva.iconshowcase.tasks.LoadZooperWidgets;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
-import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.IconUtils;
-import jahirfiquitiva.iconshowcase.utilities.utils.PermissionUtils;
+import jahirfiquitiva.iconshowcase.utilities.utils.PermissionsUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
@@ -232,21 +232,17 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     public void installAssets() {
-        if (!PermissionUtils.canAccessStorage(context)) {
-            PermissionUtils.requestStoragePermission((ShowcaseActivity) context);
-        } else {
-            String[] folders = new String[]{"fonts", "iconsets", "bitmaps"};
-            for (String folderName : folders) {
-                String dialogContent =
-                        context.getResources().getString(
-                                R.string.copying_assets, getFolderName(folderName));
-                MaterialDialog dialog = new MaterialDialog.Builder(context)
-                        .content(dialogContent)
-                        .progress(true, 0)
-                        .cancelable(false)
-                        .show();
-                new CopyFilesToStorage(context, layout, dialog, folderName).execute();
-            }
+        String[] folders = new String[]{"fonts", "iconsets", "bitmaps"};
+        for (String folderName : folders) {
+            String dialogContent =
+                    context.getResources().getString(
+                            R.string.copying_assets, getFolderName(folderName));
+            MaterialDialog dialog = new MaterialDialog.Builder(context)
+                    .content(dialogContent)
+                    .progress(true, 0)
+                    .cancelable(false)
+                    .show();
+            new CopyFilesToStorage(context, layout, dialog, folderName).execute();
         }
     }
 
@@ -305,12 +301,31 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         case 1:
                             //Install assets
                             if (!areAssetsInstalled()) {
-                                if (!PermissionUtils.canAccessStorage(context)) {
-                                    PermissionUtils.requestStoragePermission((ShowcaseActivity)
-                                            context);
-                                } else {
-                                    installAssets();
-                                }
+                                PermissionsUtils.checkPermission(context, Manifest.permission
+                                        .WRITE_EXTERNAL_STORAGE, new
+                                        PermissionsUtils.PermissionRequestListener() {
+
+                                            @Override
+                                            public void onPermissionRequest() {
+                                                PermissionsUtils.requestStoragePermission(
+                                                        (Activity) context);
+                                            }
+
+                                            @Override
+                                            public void onPermissionDenied() {
+                                                ISDialogs.showPermissionNotGrantedDialog(context);
+                                            }
+
+                                            @Override
+                                            public void onPermissionCompletelyDenied() {
+                                                ISDialogs.showPermissionNotGrantedDialog(context);
+                                            }
+
+                                            @Override
+                                            public void onPermissionGranted() {
+                                                installAssets();
+                                            }
+                                        });
                             } else {
                                 if (mFragment != null) mFragment.showInstalledAssetsSnackbar();
                             }
@@ -319,7 +334,6 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 }
             });
         }
-
     }
 
 }

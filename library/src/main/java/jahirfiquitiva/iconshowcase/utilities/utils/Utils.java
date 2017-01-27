@@ -23,12 +23,12 @@ import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
@@ -38,19 +38,21 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.ColorInt;
-import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.customtabs.CustomTabsClient;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.customtabs.CustomTabsServiceConnection;
 import android.support.customtabs.CustomTabsSession;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
-import android.support.graphics.drawable.VectorDrawableCompat;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.DisplayMetrics;
 import android.view.View;
+
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.github.javiersantos.piracychecker.enums.PiracyCheckerError;
+import com.pitchedapps.capsule.library.changelog.ChangelogDialog;
 
 import java.io.File;
 import java.io.IOException;
@@ -60,6 +62,13 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
+import jahirfiquitiva.iconshowcase.config.Config;
+import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
+import jahirfiquitiva.iconshowcase.utilities.Preferences;
+import jahirfiquitiva.libs.repellomaxima.mess.RepelloCallback;
+import jahirfiquitiva.libs.repellomaxima.mess.RepelloMaxima;
+import timber.log.Timber;
 
 /**
  * With a little help from Aidan Follestad (afollestad)
@@ -300,6 +309,180 @@ public class Utils {
 
     public static int convertMillisToMinutes(int millis) {
         return millis / 60 / 1000;
+    }
+
+    public static void runLicenseChecker(Context context, boolean ch, String lic, String sig,
+                                         boolean printSig, boolean allAma, boolean allApt,
+                                         boolean checkDeb, boolean checkEmu) {
+        Preferences mPrefs = new Preferences(context);
+        mPrefs.setSettingsModified(false);
+        if (ch && isNewVersion(context)) {
+            checkLicense(context, lic, sig, printSig, allAma, allApt, checkDeb, checkEmu);
+        } else {
+            mPrefs.setDashboardWorking(true);
+            showChangelogDialog(context);
+        }
+    }
+
+    protected static boolean isNewVersion(Context context) {
+        Preferences mPrefs = new Preferences(context);
+        int prevVersionCode = mPrefs.getVersionCode();
+        int curVersionCode = getAppCurrentVersionCode(context);
+        if ((curVersionCode > prevVersionCode) && (curVersionCode > -1)) {
+            mPrefs.setVersionCode(curVersionCode);
+            return true;
+        }
+        return false;
+    }
+
+    protected static void showChangelogDialog(Context context) {
+        if (isNewVersion(context) && (context instanceof ShowcaseActivity)) {
+            try {
+                // TODO: Make this work with all contexts
+                // TODO: Add button in dialog to check new icons (switch Fragment to IconsFrag)
+                ChangelogDialog.show(((FragmentActivity) context), R.xml.changelog);
+            } catch (Exception e) {
+            }
+        }
+    }
+
+    protected static void checkLicense(final Context context, String lic, String sig, boolean
+            printSig, boolean allAma, boolean allApt, boolean checkDeb, boolean checkEmu) {
+        final Preferences mPrefs = new Preferences(context);
+        final RepelloMaxima[] spell = new RepelloMaxima[1];
+        spell[0] = new RepelloMaxima.Speller(context)
+                .withLicKey(lic)
+                // TODO: Add signature here and use values
+                .withSigKey(sig)
+                .printSig(printSig)
+                .allAmazon(allAma)
+                .allApt(allApt)
+                .checkDebug(checkDeb)
+                .checkEmu(checkEmu)
+                .thenDo(new RepelloCallback() {
+                    @Override
+                    public void onRepelled() {
+                        ISDialogs.showLicenseSuccessDialog(context, new MaterialDialog
+                                .SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog materialDialog, @NonNull
+                                    DialogAction dialogAction) {
+                                mPrefs.setDashboardWorking(true);
+                                showChangelogDialog(context);
+                            }
+                        }, new MaterialDialog.OnDismissListener() {
+                            @Override
+                            public void onDismiss(DialogInterface dialog) {
+                                mPrefs.setDashboardWorking(true);
+                                showChangelogDialog(context);
+                            }
+                        }, new MaterialDialog.OnCancelListener() {
+                            @Override
+                            public void onCancel(DialogInterface dialog) {
+                                mPrefs.setDashboardWorking(true);
+                                showChangelogDialog(context);
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onLucky() {
+                        try {
+                            showNotLicensedDialog(((Activity) context), mPrefs);
+                        } catch (Exception e) {
+                        }
+                    }
+
+                    @Override
+                    public void onCastError(PiracyCheckerError error) {
+                        // TODO: Create dialog to show error and allow retrying license check
+                        ISDialogs.showLicenseErrorDialog(context, new MaterialDialog
+                                .SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull
+                                    DialogAction which) {
+                                // TODO: Check this
+                                if (spell[0] != null) spell[0].cast();
+                            }
+                        }, new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull
+                                    DialogAction which) {
+                                try {
+                                    ((Activity) context).finish();
+                                } catch (Exception e) {
+                                    // Do nothing
+                                }
+                            }
+                        }, new DialogInterface.OnDismissListener() {
+                            @Override
+                            public void onDismiss(DialogInterface dialogInterface) {
+                                try {
+                                    ((Activity) context).finish();
+                                } catch (Exception e) {
+                                    // Do nothing
+                                }
+                            }
+                        }, new MaterialDialog.OnCancelListener() {
+                            @Override
+                            public void onCancel(DialogInterface dialogInterface) {
+                                try {
+                                    ((Activity) context).finish();
+                                } catch (Exception e) {
+                                    // Do nothing
+                                }
+                            }
+                        });
+                    }
+                })
+                .construct();
+        spell[0].cast();
+    }
+
+    protected static void showNotLicensedDialog(final Activity act, Preferences mPrefs) {
+        mPrefs.setDashboardWorking(false);
+        ISDialogs.showShallNotPassDialog(act, new MaterialDialog.SingleButtonCallback() {
+            @Override
+            public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction
+                    dialogAction) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Config.MARKET_URL
+                        + act.getPackageName()));
+                act.startActivity(browserIntent);
+            }
+        }, new MaterialDialog.SingleButtonCallback() {
+
+            @Override
+            public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction
+                    dialogAction) {
+                act.finish();
+            }
+        }, new MaterialDialog.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                act.finish();
+            }
+        }, new MaterialDialog.OnCancelListener() {
+
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                act.finish();
+            }
+        });
+    }
+
+    public static String getAppInstaller(Context context) {
+        return context.getPackageManager().getInstallerPackageName(context.getPackageName());
+    }
+
+    protected static int getAppCurrentVersionCode(Context context) {
+        try {
+            PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context
+                    .getPackageName(), 0);
+            return packageInfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            Timber.d("Unable to get version code. Reason:", e.getLocalizedMessage());
+            return -1;
+        }
     }
 
 }

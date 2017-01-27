@@ -39,7 +39,6 @@ import jahirfiquitiva.iconshowcase.holders.FullListHolder;
 import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.models.IconsCategory;
 import jahirfiquitiva.iconshowcase.utilities.utils.IconUtils;
-import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 import timber.log.Timber;
 
 public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {

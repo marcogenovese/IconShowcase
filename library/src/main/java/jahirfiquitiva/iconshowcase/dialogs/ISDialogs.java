@@ -42,7 +42,6 @@ import jahirfiquitiva.iconshowcase.activities.AltWallpaperViewerActivity;
 import jahirfiquitiva.iconshowcase.events.BlankEvent;
 import jahirfiquitiva.iconshowcase.fragments.WallpapersFragment;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
-import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.IconUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.RequestUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
@@ -76,16 +75,16 @@ public final class ISDialogs {
         licenseSuccessDialog.show();
     }
 
-    public static void showLicenseFailDialog(Context context,
-                                             MaterialDialog.SingleButtonCallback onPositive,
-                                             MaterialDialog.SingleButtonCallback onNegative,
-                                             MaterialDialog.OnDismissListener onDismiss,
-                                             MaterialDialog.OnCancelListener onCancel) {
+    public static void showShallNotPassDialog(Context context,
+                                              MaterialDialog.SingleButtonCallback onPositive,
+                                              MaterialDialog.SingleButtonCallback onNegative,
+                                              MaterialDialog.OnDismissListener onDismiss,
+                                              MaterialDialog.OnCancelListener onCancel) {
 
         String message = context.getResources().getString(R.string.license_failed,
                 context.getResources().getString(R.string.app_name));
 
-        MaterialDialog licenseFailDialog = new MaterialDialog.Builder(context)
+        MaterialDialog shallNotPassDialog = new MaterialDialog.Builder(context)
                 .title(R.string.license_failed_title)
                 .content(message)
                 .positiveText(R.string.download)
@@ -95,10 +94,29 @@ public final class ISDialogs {
                 .autoDismiss(false)
                 .build();
 
-        licenseFailDialog.setOnCancelListener(onCancel);
-        licenseFailDialog.setOnDismissListener(onDismiss);
+        shallNotPassDialog.setOnCancelListener(onCancel);
+        shallNotPassDialog.setOnDismissListener(onDismiss);
+        shallNotPassDialog.show();
+    }
 
-        licenseFailDialog.show();
+    public static void showLicenseErrorDialog(Context context,
+                                              MaterialDialog.SingleButtonCallback onPositive,
+                                              MaterialDialog.SingleButtonCallback onNegative,
+                                              MaterialDialog.OnDismissListener onDismiss,
+                                              MaterialDialog.OnCancelListener onCancel) {
+
+        MaterialDialog licenseErrorDialog = new MaterialDialog.Builder(context)
+                .title(R.string.error)
+                .content(R.string.license_error)
+                .positiveText(R.string.download)
+                .negativeText(R.string.exit)
+                .onPositive(onPositive)
+                .onNegative(onNegative)
+                .autoDismiss(false)
+                .build();
+        licenseErrorDialog.setOnCancelListener(onCancel);
+        licenseErrorDialog.setOnDismissListener(onDismiss);
+        licenseErrorDialog.show();
     }
 
     /*

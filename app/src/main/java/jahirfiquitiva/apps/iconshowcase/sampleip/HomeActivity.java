@@ -76,10 +76,6 @@ public class HomeActivity extends AppCompatActivity {
                 NotificationUtils.isNotificationExtraKeyTrue(this, getIntent(), "open_walls",
                         service));
 
-        intent.putExtra("installer", getAppInstaller());
-
-        intent.putExtra("curVersionCode", getAppCurrentVersionCode());
-
         intent.putExtra("enableDonations", ENABLE_DONATIONS);
         intent.putExtra("enableGoogleDonations", ENABLE_GOOGLE_DONATIONS);
         intent.putExtra("enablePayPalDonations", ENABLE_PAYPAL_DONATIONS);
@@ -98,20 +94,6 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         startActivity(intent);
-    }
-
-    private String getAppInstaller() {
-        return getPackageManager().getInstallerPackageName(getPackageName());
-    }
-
-    private int getAppCurrentVersionCode() {
-        try {
-            PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-            return packageInfo.versionCode;
-        } catch (PackageManager.NameNotFoundException e) {
-            Timber.d("Unable to get version code. Reason:", e.getLocalizedMessage());
-            return -1;
-        }
     }
 
 }

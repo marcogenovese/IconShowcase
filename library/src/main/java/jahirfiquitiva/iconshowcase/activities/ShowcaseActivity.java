@@ -19,13 +19,10 @@
 
 package jahirfiquitiva.iconshowcase.activities;
 
-import android.app.Activity;
 import android.app.WallpaperManager;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -47,12 +44,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.github.javiersantos.piracychecker.PiracyChecker;
-import com.github.javiersantos.piracychecker.enums.InstallerID;
-import com.github.javiersantos.piracychecker.enums.PiracyCheckerCallback;
-import com.github.javiersantos.piracychecker.enums.PiracyCheckerError;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -83,10 +75,8 @@ import jahirfiquitiva.iconshowcase.fragments.ZooperFragment;
 import jahirfiquitiva.iconshowcase.holders.FullListHolder;
 import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.tasks.DownloadJSON;
-import jahirfiquitiva.iconshowcase.utilities.Preferences;
-import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
-import jahirfiquitiva.iconshowcase.utilities.utils.PermissionUtils;
+import jahirfiquitiva.iconshowcase.utilities.utils.PermissionsUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 import timber.log.Timber;
@@ -103,7 +93,7 @@ public class ShowcaseActivity extends TasksActivity {
 
     private long currentItem = -1;
 
-    private int numOfIcons = 4, wallpaper = -1, curVersionCode = 0;
+    private int numOfIcons = 4, wallpaper = -1;
 
     //TODO do not save Dialog instance; use fragment tags
     private MaterialDialog settingsDialog;
@@ -124,12 +114,9 @@ public class ShowcaseActivity extends TasksActivity {
 
         super.onCreate(savedInstanceState);
 
-        String installer = getIntent().getStringExtra("installer");
         String shortcut = getIntent().getStringExtra("shortcut");
         boolean openWallpapers = getIntent().getBooleanExtra("open_wallpapers", false) ||
                 (shortcut != null && shortcut.equals("wallpapers_shortcut"));
-
-        curVersionCode = getIntent().getIntExtra("curVersionCode", -1);
 
         //TODO remove all this; donations will exist if they are configured
         WITH_DONATIONS_SECTION = getIntent().getBooleanExtra("enableDonations", false);
@@ -148,12 +135,13 @@ public class ShowcaseActivity extends TasksActivity {
         //Will be deprecated for TasksActivity
         //        TasksExecutor.with(context)
         //                .loadJust((iconsPicker && mDrawerMap.containsKey(DrawerItem.PREVIEWS)),
-        //                        (wallsPicker && mPrefs.areFeaturesEnabled() && mDrawerMap
+        //                        (wallsPicker && mPrefs.isDashboardWorking() && mDrawerMap
         // .containsKey(DrawerItem.WALLPAPERS)));
 
         shuffleIcons = getResources().getBoolean(R.bool.shuffle_toolbar_icons);
 
         try {
+            String installer = Utils.getAppInstaller(this);
             if (installer.matches(Config.PLAY_STORE_INSTALLER) || installer.matches(Config
                     .PLAY_STORE_PACKAGE)) {
                 installedFromPlayStore = true;
@@ -161,8 +149,6 @@ public class ShowcaseActivity extends TasksActivity {
         } catch (Exception e) {
             //Do nothing
         }
-
-        runLicenseChecker(GOOGLE_PUBKEY);
 
         setupDonations();
 
@@ -237,7 +223,7 @@ public class ShowcaseActivity extends TasksActivity {
                 drawerItemSelectAndClick(mDrawerMap.get(DrawerItem.WALLPAPERS));
             } else if (iconsPicker && mDrawerMap.containsKey(DrawerItem.PREVIEWS)) {
                 drawerItemSelectAndClick(mDrawerMap.get(DrawerItem.PREVIEWS));
-            } else if (wallsPicker && mPrefs.areFeaturesEnabled() && mDrawerMap.containsKey
+            } else if (wallsPicker && mPrefs.isDashboardWorking() && mDrawerMap.containsKey
                     (DrawerItem.WALLPAPERS)) {
                 drawerItemSelectAndClick(mDrawerMap.get(DrawerItem.WALLPAPERS));
             } else if ((shortcut != null && shortcut.equals("apply_shortcut")) && mDrawerMap
@@ -261,7 +247,6 @@ public class ShowcaseActivity extends TasksActivity {
 
         //Load last, load all other data first
         startTasks(); //TODO check iconsPicker and wallsPicker booleans
-
     }
 
     @Override
@@ -271,6 +256,9 @@ public class ShowcaseActivity extends TasksActivity {
             setupToolbarHeader();
         }
         ToolbarColorizer.setupToolbarIconsAndTextsColors(this, cAppBarLayout, cToolbar);
+        // TODO: Add proper booleans for this
+        Utils.runLicenseChecker(this, WITH_LICENSE_CHECKER, GOOGLE_PUBKEY, "", false, false,
+                false, true, true);
     }
 
     @Override
@@ -383,7 +371,7 @@ public class ShowcaseActivity extends TasksActivity {
         currentItem = itemId;
 
         // TODO Make sure this works fine even after configuration changes
-        // TODO Add method to expand or collaps WITHOUT animation
+        // TODO Add method to expand or collapse WITHOUT animation
         if (dt == DrawerItem.HOME
             //                && !iconsPicker && !wallsPicker
                 ) {
@@ -463,7 +451,7 @@ public class ShowcaseActivity extends TasksActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == PermissionUtils.PERMISSION_REQUEST_CODE) {
+        if (requestCode == PermissionsUtils.PERMISSION_REQUEST_CODE) {
             if (permissionGranted(grantResults)) {
                 if (getCurrentFragment() instanceof RequestsFragment) {
                     ((RequestsFragment) getCurrentFragment()).startRequestProcess();
@@ -472,8 +460,8 @@ public class ShowcaseActivity extends TasksActivity {
                 } else if (getCurrentFragment() instanceof ZooperFragment) {
                     ((ZooperFragment) getCurrentFragment()).getAdapter().installAssets();
                 }
-            } else if (PermissionUtils.permissionReceived() != null) {
-                PermissionUtils.permissionReceived().onStoragePermissionGranted();
+            } else if (PermissionsUtils.getListener() != null) {
+                PermissionsUtils.getListener().onPermissionGranted();
             } else {
                 ISDialogs.showPermissionNotGrantedDialog(this);
             }
@@ -500,7 +488,10 @@ public class ShowcaseActivity extends TasksActivity {
                 getJsonTask().cancel(true);
             }
             setJsonTask(json);
-            json.execute();
+            try {
+                json.execute();
+            } catch (Exception e) {
+            }
         } else if (i == R.id.columns) {
             if (getCurrentFragment() instanceof WallpapersFragment) {
                 ISDialogs.showColumnsSelectorDialog(this, ((WallpapersFragment)
@@ -556,98 +547,6 @@ public class ShowcaseActivity extends TasksActivity {
                 }
                 break;
         }
-    }
-
-    private void runLicenseChecker(String licenseKey) {
-        mPrefs.setSettingsModified(false);
-        if (WITH_LICENSE_CHECKER) {
-            checkLicense(licenseKey);
-        } else {
-            mPrefs.setFeaturesEnabled(true);
-            showChangelogDialog();
-        }
-    }
-
-    private void showChangelogDialog() {
-        int prevVersionCode = mPrefs.getVersionCode();
-        if ((curVersionCode > prevVersionCode) && (curVersionCode > -1)) {
-            mPrefs.setVersionCode(curVersionCode);
-            ChangelogDialog.show(this, R.xml.changelog);
-        }
-    }
-
-    private void checkLicense(String licenseKey) { //TODO remove this from param
-        PiracyChecker checker = new PiracyChecker(this);
-        if ((licenseKey != null) && (!(licenseKey.isEmpty())) && (licenseKey.length() > 25)) {
-            checker.enableGooglePlayLicensing(licenseKey);
-        }
-        checker.enableInstallerId(InstallerID.GOOGLE_PLAY);
-        if (WITH_INSTALLED_FROM_AMAZON) {
-            checker.enableInstallerId(InstallerID.AMAZON_APP_STORE);
-        }
-        checker.callback(new PiracyCheckerCallback() {
-            @Override
-            public void allow() {
-                ISDialogs.showLicenseSuccessDialog(ShowcaseActivity.this, new MaterialDialog
-                        .SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull
-                            DialogAction dialogAction) {
-                        mPrefs.setFeaturesEnabled(true);
-                        showChangelogDialog();
-                    }
-                }, new MaterialDialog.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        mPrefs.setFeaturesEnabled(true);
-                        showChangelogDialog();
-                    }
-                }, new MaterialDialog.OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialog) {
-                        mPrefs.setFeaturesEnabled(true);
-                        showChangelogDialog();
-                    }
-                });
-            }
-
-            @Override
-            public void dontAllow(PiracyCheckerError piracyCheckerError) {
-                showNotLicensedDialog(ShowcaseActivity.this, mPrefs);
-            }
-        });
-        checker.start();
-    }
-
-    private void showNotLicensedDialog(final Activity act, Preferences mPrefs) {
-        mPrefs.setFeaturesEnabled(false);
-        ISDialogs.showLicenseFailDialog(act, new MaterialDialog.SingleButtonCallback() {
-            @Override
-            public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction
-                    dialogAction) {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Config.MARKET_URL
-                        + act.getPackageName()));
-                act.startActivity(browserIntent);
-            }
-        }, new MaterialDialog.SingleButtonCallback() {
-
-            @Override
-            public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction
-                    dialogAction) {
-                act.finish();
-            }
-        }, new MaterialDialog.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                act.finish();
-            }
-        }, new MaterialDialog.OnCancelListener() {
-
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                act.finish();
-            }
-        });
     }
 
     @Override
@@ -855,31 +754,34 @@ public class ShowcaseActivity extends TasksActivity {
                 }
             }
         } else {
-            String[] wallpapers = getResources().getStringArray(R.array.wallpapers);
-
-            if (wallpapers.length > 0) {
-                int res;
-                ArrayList<Integer> wallpapersArray = new ArrayList<>();
-
-                for (String wallpaper : wallpapers) {
-                    res = getResources().getIdentifier(wallpaper, "drawable", getPackageName());
-                    if (res != 0) {
-                        final int thumbRes = getResources().getIdentifier(wallpaper, "drawable",
-                                getPackageName());
-                        if (thumbRes != 0) {
-                            wallpapersArray.add(thumbRes);
+            String defPicture = getResources().getString(R.string.toolbar_picture);
+            if (defPicture != null && defPicture.length() > 0) {
+                int res = getResources().getIdentifier(defPicture, "drawable", getPackageName());
+                if (res != 0) {
+                    wallpaperDrawable = ContextCompat.getDrawable(this, wallpaper);
+                    toolbarHeader.setImageDrawable(wallpaperDrawable);
+                }
+            } else {
+                String[] wallpapers = getResources().getStringArray(R.array.wallpapers);
+                if (wallpapers.length > 0) {
+                    int res;
+                    ArrayList<Integer> wallpapersArray = new ArrayList<>();
+                    for (String wallpaper : wallpapers) {
+                        res = getResources().getIdentifier(wallpaper, "drawable", getPackageName());
+                        if (res != 0) {
+                            wallpapersArray.add(res);
                         }
                     }
+
+                    Random random = new Random();
+                    if (wallpaper == -1) {
+                        wallpaper = random.nextInt(wallpapersArray.size());
+                    }
+
+                    wallpaperDrawable = ContextCompat.getDrawable(this, wallpapersArray.get
+                            (wallpaper));
+                    toolbarHeader.setImageDrawable(wallpaperDrawable);
                 }
-
-                Random random = new Random();
-
-                if (wallpaper == -1) {
-                    wallpaper = random.nextInt(wallpapersArray.size());
-                }
-
-                wallpaperDrawable = ContextCompat.getDrawable(this, wallpapersArray.get(wallpaper));
-                toolbarHeader.setImageDrawable(wallpaperDrawable);
             }
         }
 

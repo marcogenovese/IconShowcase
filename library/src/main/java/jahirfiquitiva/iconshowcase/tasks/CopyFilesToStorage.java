@@ -64,8 +64,8 @@ public class CopyFilesToStorage extends AsyncTask<Void, String, Boolean> {
 
             if (files != null) {
                 for (String filename : files) {
-                    InputStream in;
-                    OutputStream out;
+                    InputStream in = null;
+                    OutputStream out = null;
                     if (filename.contains(".")) {
                         try {
                             String fileToIgnore1 = "material-design-iconic-font-v2.2.0.ttf",
@@ -81,13 +81,13 @@ public class CopyFilesToStorage extends AsyncTask<Void, String, Boolean> {
                                                 "/ZooperWidget/" + getFolderName(folder) + "/" +
                                                 filename);
                                 copyFiles(in, out);
-                                in.close();
-                                out.close();
                             }
                         } catch (Exception e) {
                             //Do nothing
                         }
                     }
+                    if (in != null) in.close();
+                    if (out != null) out.close();
                 }
             }
             worked = true;

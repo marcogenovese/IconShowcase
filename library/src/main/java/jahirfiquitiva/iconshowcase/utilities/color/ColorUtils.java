@@ -1,23 +1,4 @@
 /*
- * Copyright (c) 2016 Jahir Fiquitiva
- *
- * Licensed under the CreativeCommons Attribution-ShareAlike
- * 4.0 International License. You may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
- *
- *    http://creativecommons.org/licenses/by-sa/4.0/legalcode
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- * Special thanks to the project contributors and collaborators
- * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
- */
-
-/*
  * Copyright 2015 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,25 +17,12 @@
 package jahirfiquitiva.iconshowcase.utilities.color;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.VectorDrawable;
-import android.os.Build;
-import android.support.annotation.CheckResult;
 import android.support.annotation.ColorInt;
-import android.support.annotation.DrawableRes;
 import android.support.annotation.FloatRange;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
-import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.graphics.Palette;
-import android.support.v7.widget.Toolbar;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -62,14 +30,13 @@ import java.util.List;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
-import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 
 public class ColorUtils {
 
     @ColorInt
     public static int blendColors(@ColorInt int color1,
-                                   @ColorInt int color2,
-                                   @FloatRange(from = 0f, to = 1f) float ratio) {
+                                  @ColorInt int color2,
+                                  @FloatRange(from = 0f, to = 1f) float ratio) {
         final float inverseRatio = 1f - ratio;
         float a = (Color.alpha(color1) * inverseRatio) + (Color.alpha(color2) * ratio);
         float r = (Color.red(color1) * inverseRatio) + (Color.red(color2) * ratio);

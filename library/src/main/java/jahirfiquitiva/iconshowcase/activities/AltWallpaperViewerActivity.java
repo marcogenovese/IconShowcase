@@ -40,7 +40,6 @@ import android.support.annotation.StyleRes;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -49,7 +48,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.animation.AnimationUtils;
 import android.view.animation.OvershootInterpolator;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -77,11 +75,10 @@ import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.models.WallpaperItem;
 import jahirfiquitiva.iconshowcase.tasks.ApplyWallpaper;
 import jahirfiquitiva.iconshowcase.tasks.WallpaperToCrop;
-import jahirfiquitiva.iconshowcase.utilities.GlideConfiguration;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
-import jahirfiquitiva.iconshowcase.utilities.utils.PermissionUtils;
+import jahirfiquitiva.iconshowcase.utilities.utils.PermissionsUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
@@ -170,12 +167,33 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
             saveFab.setOnClickListener(new DebouncedClickListener() {
                 @Override
                 public void onDebouncedClick(View v) {
-                    if (!PermissionUtils.canAccessStorage(AltWallpaperViewerActivity.this)) {
-                        PermissionUtils.setViewerActivityAction("save");
-                        PermissionUtils.requestStoragePermission(AltWallpaperViewerActivity.this);
-                    } else {
-                        showDialogs("save");
-                    }
+                    PermissionsUtils.checkPermission(AltWallpaperViewerActivity.this,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                            new PermissionsUtils.PermissionRequestListener() {
+                                @Override
+                                public void onPermissionRequest() {
+                                    PermissionsUtils.setViewerActivityAction("save");
+                                    PermissionsUtils.requestStoragePermission
+                                            (AltWallpaperViewerActivity.this);
+                                }
+
+                                @Override
+                                public void onPermissionDenied() {
+                                    ISDialogs.showPermissionNotGrantedDialog
+                                            (AltWallpaperViewerActivity.this);
+                                }
+
+                                @Override
+                                public void onPermissionCompletelyDenied() {
+                                    ISDialogs.showPermissionNotGrantedDialog
+                                            (AltWallpaperViewerActivity.this);
+                                }
+
+                                @Override
+                                public void onPermissionGranted() {
+                                    runWallpaperSave();
+                                }
+                            });
                 }
             });
         } else {
@@ -344,12 +362,12 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResult) {
-        if (requestCode == PermissionUtils.PERMISSION_REQUEST_CODE) {
+        if (requestCode == PermissionsUtils.PERMISSION_REQUEST_CODE) {
             if (grantResult.length > 0 && grantResult[0] == PackageManager.PERMISSION_GRANTED) {
-                if (PermissionUtils.getViewerActivityAction().equals("crop")) {
+                if (PermissionsUtils.getViewerActivityAction().equals("crop")) {
                     cropWallpaper(item.getWallURL());
-                } else {
-                    showDialogs(PermissionUtils.getViewerActivityAction());
+                } else if (PermissionsUtils.getViewerActivityAction().equals("save")) {
+                    runWallpaperSave();
                 }
             } else {
                 ISDialogs.showPermissionNotGrantedDialog(this);
@@ -539,10 +557,11 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
                 String snackbarText;
                 if (!destFile.exists()) {
                     try {
-                        result.compress(Bitmap.CompressFormat.PNG, 100,
-                                new FileOutputStream(destFile));
+                        FileOutputStream fos = new FileOutputStream(destFile);
+                        result.compress(Bitmap.CompressFormat.PNG, 100, fos);
                         snackbarText = context.getString(R.string.wallpaper_downloaded,
                                 destFile.getAbsolutePath());
+                        fos.close();
                     } catch (final Exception e) {
                         snackbarText = context.getString(R.string.error);
                     }
@@ -565,7 +584,7 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
                                     Utils.getNavigationBarHeight(AltWallpaperViewerActivity.this));
                         }
                         longSnackbar.show();
-                        longSnackbar.setCallback(new Snackbar.Callback() {
+                        longSnackbar.addCallback(new Snackbar.Callback() {
                             @Override
                             public void onDismissed(Snackbar snackbar, int event) {
                                 super.onDismissed(snackbar, event);
@@ -706,13 +725,33 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
                     @Override
                     public void onClick(@NonNull MaterialDialog materialDialog, @NonNull
                             DialogAction dialogAction) {
-                        if (!PermissionUtils.canAccessStorage(AltWallpaperViewerActivity.this)) {
-                            PermissionUtils.setViewerActivityAction("crop");
-                            PermissionUtils.requestStoragePermission(AltWallpaperViewerActivity
-                                    .this);
-                        } else {
-                            cropWallpaper(wallUrl);
-                        }
+                        PermissionsUtils.checkPermission(AltWallpaperViewerActivity.this,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                new PermissionsUtils.PermissionRequestListener() {
+                                    @Override
+                                    public void onPermissionRequest() {
+                                        PermissionsUtils.setViewerActivityAction("crop");
+                                        PermissionsUtils.requestStoragePermission
+                                                (AltWallpaperViewerActivity.this);
+                                    }
+
+                                    @Override
+                                    public void onPermissionDenied() {
+                                        ISDialogs.showPermissionNotGrantedDialog
+                                                (AltWallpaperViewerActivity.this);
+                                    }
+
+                                    @Override
+                                    public void onPermissionCompletelyDenied() {
+                                        ISDialogs.showPermissionNotGrantedDialog
+                                                (AltWallpaperViewerActivity.this);
+                                    }
+
+                                    @Override
+                                    public void onPermissionGranted() {
+                                        cropWallpaper(wallUrl);
+                                    }
+                                });
                     }
                 },
                 new DialogInterface.OnDismissListener() {
@@ -738,27 +777,11 @@ public class AltWallpaperViewerActivity extends AppCompatActivity {
         notConnectedSnackBar.show();
     }
 
-    private void showDialogs(String action) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-                ActivityCompat.checkSelfPermission(this, Manifest.permission
-                        .READ_EXTERNAL_STORAGE) !=
-                        PackageManager.PERMISSION_GRANTED) {
-            new MaterialDialog.Builder(this)
-                    .title(R.string.md_error_label)
-                    .content(getString(R.string.md_storage_perm_error,
-                            getString(R.string.app_name)))
-                    .positiveText(android.R.string.ok)
-                    .show();
+    private void runWallpaperSave() {
+        if (Utils.hasNetwork(this)) {
+            saveWallpaperAction(item.getWallName(), item.getWallURL());
         } else {
-            if (Utils.hasNetwork(this)) {
-                switch (action) {
-                    case "save":
-                        saveWallpaperAction(item.getWallName(), item.getWallURL());
-                        break;
-                }
-            } else {
-                showNotConnectedSnackBar();
-            }
+            showNotConnectedSnackBar();
         }
     }
 

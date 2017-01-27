@@ -108,7 +108,7 @@ public class MuzeiArtSourceService extends RemoteMuzeiArtSource {
 
     @Override
     protected void onTryUpdate(int reason) throws RetryException {
-        if (mPrefs.areFeaturesEnabled()) {
+        if (mPrefs.isDashboardWorking()) {
             try {
                 new DownloadJSONAndSetWall(getApplicationContext()).execute();
             } catch (Exception e) {

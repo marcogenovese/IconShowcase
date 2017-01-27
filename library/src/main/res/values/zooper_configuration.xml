@@ -18,7 +18,7 @@
   ~ 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
   -->
 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
     <!-- These texts are shown in Zooper -->
     <string name="zooper_pack_name">@string/app_name</string>

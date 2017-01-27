@@ -18,7 +18,7 @@
   ~ 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
   -->
 
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
     <string name="muzei_settings">Muzei Settings</string>
     <!-- Sharing wallpaper from Muzei -->
@@ -101,7 +101,7 @@
     <string name="settings_saved">Settings saved. Wallpapers will change every %1$s.</string>
 
     <!-- License Check Dialog -->
-    <string name="license_failed_title">License Check Failed</string>
+    <string name="license_failed_title">You shall not pass!</string>
     <string name="license_success_title">License Check Successful</string>
     <string name="exit">Exit</string>
 
@@ -219,7 +219,8 @@
     <string name="refresh">Refresh</string>
 
     <!-- Messages shown when using LicenseChecker -->
-    <string name="license_failed">You did not download %1$s from Google Play Store. You have two options:</string>
+    <string name="license_failed">Sorry, but we have detected that your license for %1$s is not valid and/or you are using pirated apps. If you think this is an error, please try again later. Otherwise, please download the app from a valid store.</string>
+    <string name="license_error">Sorry, there was an error while checking your license.</string>
     <string name="license_success">Thank you for downloading %1$s. If you like it, do not forget to rate it and write a review in the Google Play Store.</string>
     <string name="apply_advice">If the launcher you use, is not listed here, you must apply the icon pack directly from the launcher settings.\nSome launchers do not support direct apply.</string>
     <string name="walls_advice">Simple press a wallpaper to view it in FullScreen.\nLong press to apply it directly to your homescreen.</string>
@@ -240,7 +241,7 @@
     <string name="copying_assets">Copying files to ZooperWidget/%1$s</string>
 
     <string name="icon_pack_in_numbers">Icon Pack in numbers</string>
-    <string name="themed_icons">Over %1$s themed icons.</string>
+    <string name="themed_icons">Over %1$s included icons.</string>
     <string name="available_wallpapers">About %1$s available wallpapers.</string>
     <string name="included_widgets">More than %1$s included widgets.</string>
     <string name="icons">Icons</string>

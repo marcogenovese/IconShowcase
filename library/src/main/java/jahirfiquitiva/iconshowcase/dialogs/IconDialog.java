@@ -31,16 +31,11 @@ import android.support.v4.content.ContextCompat;
 import android.widget.ImageView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.Priority;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import jahirfiquitiva.iconshowcase.R;
-import jahirfiquitiva.iconshowcase.config.Config;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.IconUtils;
-import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 
 public class IconDialog extends DialogFragment {
 
@@ -49,6 +44,26 @@ public class IconDialog extends DialogFragment {
     private static final String TAG = "icon_dialog";
     private String name;
     private int resId;
+
+    private static IconDialog newInstance(String name, int resId) {
+        IconDialog f = new IconDialog();
+        Bundle args = new Bundle();
+        args.putString(NAME, name);
+        args.putInt(RESID, resId);
+        f.setArguments(args);
+        return f;
+    }
+
+    public static void show(final FragmentActivity context, String name, int resId) {
+        Fragment frag = context.getSupportFragmentManager().findFragmentByTag(TAG);
+        if (frag != null) ((IconDialog) frag).dismiss();
+        IconDialog.newInstance(name, resId).show(context.getSupportFragmentManager(), TAG);
+    }
+
+    public static void dismiss(final FragmentActivity context) {
+        Fragment frag = context.getSupportFragmentManager().findFragmentByTag(TAG);
+        if (frag != null) ((IconDialog) frag).dismiss();
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,15 +81,6 @@ public class IconDialog extends DialogFragment {
         }
     }
 
-    private static IconDialog newInstance(String name, int resId) {
-        IconDialog f = new IconDialog();
-        Bundle args = new Bundle();
-        args.putString(NAME, name);
-        args.putInt(RESID, resId);
-        f.setArguments(args);
-        return f;
-    }
-
     @SuppressLint("InflateParams")
     @NonNull
     @Override
@@ -87,7 +93,8 @@ public class IconDialog extends DialogFragment {
                 .build();
 
         if (dialog.getCustomView() != null) {
-            final ImageView iconView = (ImageView) dialog.getCustomView().findViewById(R.id.dialogicon);
+            final ImageView iconView = (ImageView) dialog.getCustomView().findViewById(R.id
+                    .dialogicon);
             if (iconView != null && resId > 0) {
                 iconView.setImageDrawable(ContextCompat.getDrawable(getActivity(), resId));
             }
@@ -101,17 +108,6 @@ public class IconDialog extends DialogFragment {
         outState.putString(NAME, name);
         outState.putInt(RESID, resId);
         super.onSaveInstanceState(outState);
-    }
-
-    public static void show(final FragmentActivity context, String name, int resId) {
-        Fragment frag = context.getSupportFragmentManager().findFragmentByTag(TAG);
-        if (frag != null) ((IconDialog) frag).dismiss();
-        IconDialog.newInstance(name, resId).show(context.getSupportFragmentManager(), TAG);
-    }
-
-    public static void dismiss(final FragmentActivity context) {
-        Fragment frag = context.getSupportFragmentManager().findFragmentByTag(TAG);
-        if (frag != null) ((IconDialog) frag).dismiss();
     }
 
     private Preferences getPrefs() {

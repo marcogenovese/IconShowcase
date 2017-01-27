@@ -124,6 +124,7 @@ public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
     /**
      * This code was created by Aidan Follestad. Complete credits to him.
      */
+    @SuppressWarnings("ThrowFromFinallyBlock")
     private String getWidgetPreviewPathFromZip(WeakReference<Context> context, String name,
                                                InputStream in,
                                                File previewsFolder, File widgetPreviewFile) {

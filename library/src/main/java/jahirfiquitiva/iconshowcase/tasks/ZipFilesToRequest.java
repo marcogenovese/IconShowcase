@@ -96,13 +96,13 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
 
         String zipLocation = context.get().getString(R.string.request_save_location,
                 Environment.getExternalStorageDirectory().getAbsolutePath());
-        String filesLocation = zipLocation + "Files";
+        final String filesLocation = zipLocation + "Files";
 
         String appNameCorrected = context.get().getResources().getString(R.string.app_name)
                 .replace(" ", "");
 
         SimpleDateFormat date = new SimpleDateFormat("yyyyMMdd_hhmmss", Locale.getDefault());
-        String momentOfCreation = date.format(new Date());
+        final String momentOfCreation = date.format(new Date());
         zipFilePath = zipLocation + appNameCorrected + "_" + momentOfCreation + ".zip";
 
         try {
@@ -116,9 +116,9 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
             filesFolder.mkdirs();
 
             StringBuilder sb = new StringBuilder();
-            StringBuilder appFilterBuilder = new StringBuilder();
-            StringBuilder appMapBuilder = new StringBuilder();
-            StringBuilder themeResourcesBuilder = new StringBuilder();
+            final StringBuilder appFilterBuilder = new StringBuilder();
+            final StringBuilder appMapBuilder = new StringBuilder();
+            final StringBuilder themeResourcesBuilder = new StringBuilder();
 
             sb.append("These apps have no icons, please add some for them. Thanks in advance.\n\n");
 
@@ -214,38 +214,41 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
             if (appsCount != 0) {
 
                 try {
-                    FileWriter fileWriter1 = new FileWriter(filesLocation + "/" + "appfilter" +
-                            "_" + momentOfCreation + ".xml");
+                    FileWriter fileWriter1 = new FileWriter(filesLocation + "/appfilter_" +
+                            momentOfCreation + ".xml");
                     BufferedWriter bufferedWriter1 = new BufferedWriter(fileWriter1);
                     bufferedWriter1.write(appFilterBuilder.toString());
                     bufferedWriter1.close();
+                    fileWriter1.close();
                 } catch (Exception e) {
                     //Do nothing
                 }
 
                 try {
-                    FileWriter fileWriter2 = new FileWriter(filesLocation + "/" + "appmap" + "_"
-                            + momentOfCreation + ".xml");
+                    FileWriter fileWriter2 = new FileWriter(filesLocation + "/appmap_" +
+                            momentOfCreation + ".xml");
                     BufferedWriter bufferedWriter2 = new BufferedWriter(fileWriter2);
                     bufferedWriter2.write(appMapBuilder.toString());
                     bufferedWriter2.close();
+                    fileWriter2.close();
                 } catch (Exception e) {
                     //Do nothing
                 }
 
+
                 try {
-                    FileWriter fileWriter3 = new FileWriter(filesLocation + "/" +
-                            "theme_resources" + "_" + momentOfCreation + ".xml");
+                    FileWriter fileWriter3 = new FileWriter(filesLocation + "/theme_resources_" +
+                            momentOfCreation + ".xml");
                     BufferedWriter bufferedWriter3 = new BufferedWriter(fileWriter3);
                     bufferedWriter3.write(themeResourcesBuilder.toString());
                     bufferedWriter3.close();
+                    fileWriter3.close();
                 } catch (Exception e) {
-                    //Do nothing
+                    // Do nothing
                 }
 
                 createZipFile(filesLocation, zipFilePath);
                 deleteDirectory(filesFolder);
-
             }
 
             worked = true;
@@ -258,7 +261,6 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
         }
 
         return worked;
-
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
@@ -347,6 +349,7 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
         }
     }
 
+    @SuppressWarnings("ThrowFromFinallyBlock")
     private void zipFile(final String zipFilesPath, final ZipOutputStream zipOutputStream, final
     String zipPath) throws IOException {
         final File file = new File(zipFilesPath);
@@ -372,7 +375,6 @@ public class ZipFilesToRequest extends AsyncTask<Void, String, Boolean> {
                 //Do nothing
             } finally {
                 if (zipOutputStream != null) zipOutputStream.closeEntry();
-
             }
         } else if (files.length > 0) {
             for (String file1 : files) {

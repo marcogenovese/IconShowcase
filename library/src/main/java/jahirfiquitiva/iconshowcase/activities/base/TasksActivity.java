@@ -19,7 +19,6 @@
 
 package jahirfiquitiva.iconshowcase.activities.base;
 
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -100,7 +99,10 @@ public abstract class TasksActivity extends DrawerActivity {
                     //                }
                     //            },
                     this);
-            jsonTask.execute();
+            try {
+                jsonTask.execute();
+            } catch (Exception e) {
+            }
         }
         if (drawerHas(DrawerItem.REQUESTS)) {
             //mPrefs.resetRequestsLeft(this);
@@ -113,7 +115,8 @@ public abstract class TasksActivity extends DrawerActivity {
             IconRequest.start(this)
                     //                        .withHeader("Hey, testing Icon Request!")
                     .withAppName(getString(R.string.app_name))
-                    .withFooter("%s Version: %s", getString(R.string.app_name), appInfo != null ? appInfo.versionName : "1.0")
+                    .withFooter("%s Version: %s", getString(R.string.app_name), appInfo != null ?
+                            appInfo.versionName : "1.0")
                     .withSubject(s(R.string.request_title))
                     .toEmail(s(R.string.email_id))
                     .saveDir(new File(getString(R.string.request_save_location, Environment

@@ -34,7 +34,6 @@ public class JSONParser {
 
     public static JSONObject getJSONFromURL(Context context, String url) {
         try {
-
             if (Utils.hasNetwork(context)) {
                 OkHttpClient client = new OkHttpClient();
                 Request request = new Request.Builder()
@@ -42,20 +41,21 @@ public class JSONParser {
                         .build();
 
                 Response response = null;
-
                 try {
                     response = client.newCall(request).execute();
                 } catch (IOException e) {
                     //Do nothing
                 }
-
                 if (response != null) {
-                    return new JSONObject(response.body().string());
+                    try {
+                        return new JSONObject(response.body().string());
+                    } catch (Exception e) {
+                        return null;
+                    }
                 }
             } else {
                 return null;
             }
-
         } catch (Exception e) {
             //Do nothing
         }

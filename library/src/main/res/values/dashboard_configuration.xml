@@ -18,7 +18,7 @@
   ~ 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
   -->
 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
     <!-- Option to enable Log messages-->
     <bool name="debugging">true</bool>
@@ -111,6 +111,14 @@
     False, means no.
     -->
     <bool name="enable_user_wallpaper_in_toolbar">true</bool>
+
+    <!-- Set a drawable name in case you want to use a static picture in toolbar.
+        Leave empty if you don't want to use a static one. -->
+    <string name="toolbar_picture"/>
+
+    <!-- Change to set a custom amount in case you think the app is counting icons wrong.
+        Leave as -1 if you still want the app to count them. -->
+    <integer name="icons_amount">-1</integer>
 
     <!--
     Do you want to hide "Icon Pack in numbers" section?

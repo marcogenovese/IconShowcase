@@ -39,14 +39,15 @@ android {
 
     lintOptions {
         abortOnError false
+        disable 'MissingTranslation'
     }
 
     defaultConfig {
         applicationId "jahirfiquitiva.apps.iconshowcase.sampleip"
         minSdkVersion 16
         targetSdkVersion TARGET_SDK
-        versionCode 10
-        versionName "1.0"
+        versionCode 1975
+        versionName "1.9.7.5"
         vectorDrawables.useSupportLibrary = true
     }
 

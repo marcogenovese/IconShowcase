@@ -157,11 +157,9 @@ public class LoadKustomFiles extends AsyncTask<Void, String, Boolean> {
         }
     }
 
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    private String[] getWidgetPreviewPathFromZip(String name,
-                                                 String folder,
-                                                 InputStream in,
-                                                 File previewsFolder, File widgetPreviewFile) {
+    @SuppressWarnings({"ResultOfMethodCallIgnored", "ThrowFromFinallyBlock"})
+    private String[] getWidgetPreviewPathFromZip(String name, String folder, InputStream in, File
+            previewsFolder, File widgetPreviewFile) {
         OutputStream out;
 
         name.replaceAll(".komp", "");

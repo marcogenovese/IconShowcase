@@ -203,78 +203,84 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
                     @Override
                     public void onClick(@NonNull MaterialDialog materialDialog, @NonNull final
                     DialogAction dialogAction) {
-                        if (applyDialog != null) {
-                            applyDialog.dismiss();
-                        }
-                        final ApplyWallpaper[] applyTask = new ApplyWallpaper[1];
-                        final boolean[] enteredApplyTask = {false};
-                        applyDialog = new MaterialDialog.Builder(context)
-                                .content(R.string.downloading_wallpaper)
-                                .progress(true, 0)
-                                .cancelable(false)
-                                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                    @Override
-                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull
-                                            DialogAction which) {
-                                        if (applyTask[0] != null) {
-                                            applyTask[0].cancel(true);
-                                        }
-                                        applyDialog.dismiss();
-                                    }
-                                })
-                                .show();
-
-                        Glide.with(context)
-                                .load(item.getWallURL())
-                                .asBitmap()
-                                .dontAnimate()
-                                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                                .into(new SimpleTarget<Bitmap>() {
-                                    @Override
-                                    public void onResourceReady(final Bitmap resource,
-                                                                GlideAnimation<? super Bitmap>
-                                                                        glideAnimation) {
-                                        if (resource != null && applyDialog.isShowing()) {
-                                            enteredApplyTask[0] = true;
-
-                                            if (applyDialog != null) {
-                                                applyDialog.dismiss();
-                                            }
-                                            applyDialog = new MaterialDialog.Builder(context)
-                                                    .content(R.string.setting_wall_title)
-                                                    .progress(true, 0)
-                                                    .cancelable(false)
-                                                    .show();
-
-                                            applyTask[0] = new ApplyWallpaper(((ShowcaseActivity)
-                                                    context), applyDialog, resource,
-                                                    ((ShowcaseActivity) context).isWallsPicker());
-                                            applyTask[0].execute();
-                                        }
-                                    }
-                                });
-
-                        Timer timer = new Timer();
-                        timer.schedule(new TimerTask() {
-                            @Override
-                            public void run() {
-                                runOnUIThread(context, new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        if (!enteredApplyTask[0]) {
-                                            String newContent = context.getString(R.string
-                                                    .downloading_wallpaper)
-                                                    + "\n"
-                                                    + context.getString(R.string
-                                                    .download_takes_longer);
-                                            applyDialog.setContent(newContent);
-                                            applyDialog.setActionButton(DialogAction.POSITIVE,
-                                                    android.R.string.cancel);
-                                        }
-                                    }
-                                });
+                        try {
+                            if (applyDialog != null) {
+                                applyDialog.dismiss();
                             }
-                        }, 10000);
+                            final ApplyWallpaper[] applyTask = new ApplyWallpaper[1];
+                            final boolean[] enteredApplyTask = {false};
+                            applyDialog = new MaterialDialog.Builder(context)
+                                    .content(R.string.downloading_wallpaper)
+                                    .progress(true, 0)
+                                    .cancelable(false)
+                                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                        @Override
+                                        public void onClick(@NonNull MaterialDialog dialog, @NonNull
+                                                DialogAction which) {
+                                            if (applyTask[0] != null) {
+                                                applyTask[0].cancel(true);
+                                            }
+                                            applyDialog.dismiss();
+                                        }
+                                    })
+                                    .show();
+
+                            Glide.with(context)
+                                    .load(item.getWallURL())
+                                    .asBitmap()
+                                    .dontAnimate()
+                                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                                    .into(new SimpleTarget<Bitmap>() {
+                                        @Override
+                                        public void onResourceReady(final Bitmap resource,
+                                                                    GlideAnimation<? super Bitmap>
+                                                                            glideAnimation) {
+                                            if (resource != null && applyDialog.isShowing()) {
+                                                enteredApplyTask[0] = true;
+
+                                                if (applyDialog != null) {
+                                                    applyDialog.dismiss();
+                                                }
+                                                applyDialog = new MaterialDialog.Builder(context)
+                                                        .content(R.string.setting_wall_title)
+                                                        .progress(true, 0)
+                                                        .cancelable(false)
+                                                        .show();
+
+                                                applyTask[0] = new ApplyWallpaper((
+                                                        (ShowcaseActivity)
+                                                                context), applyDialog, resource,
+                                                        ((ShowcaseActivity) context)
+                                                                .isWallsPicker());
+                                                applyTask[0].execute();
+                                            }
+                                        }
+                                    });
+
+                            Timer timer = new Timer();
+                            timer.schedule(new TimerTask() {
+                                @Override
+                                public void run() {
+                                    runOnUIThread(context, new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            if (!enteredApplyTask[0]) {
+                                                String newContent = context.getString(R.string
+                                                        .downloading_wallpaper)
+                                                        + "\n"
+                                                        + context.getString(R.string
+                                                        .download_takes_longer);
+                                                applyDialog.setContent(newContent);
+                                                applyDialog.setActionButton(DialogAction.POSITIVE,
+                                                        android.R.string.cancel);
+                                            }
+                                        }
+                                    });
+                                }
+                            }, 10000);
+                        } catch (Exception e) {
+                            // Ignored
+                        }
                     }
                 })
                 .show();

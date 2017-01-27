@@ -19,7 +19,7 @@
   ~ 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
   -->
 
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
     <string-array name="credits_banners" formatted="false" tools:ignore="TypographyDashes">
         <item>https://lh5.googleusercontent.com/-eAPognoXTwE/UYFKq101UyI/AAAAAAAABiY/REl1Ei8txP8/w1600-h900/default_cover_5_ff9ff46d48dc181084c9c23a120b68d8.jpg</item>

@@ -21,11 +21,8 @@ package jahirfiquitiva.iconshowcase.fragments;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -54,7 +51,7 @@ import jahirfiquitiva.iconshowcase.activities.base.DrawerActivity;
 import jahirfiquitiva.iconshowcase.adapters.RequestsAdapter;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
-import jahirfiquitiva.iconshowcase.utilities.utils.PermissionUtils;
+import jahirfiquitiva.iconshowcase.utilities.utils.PermissionsUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.RequestUtils;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 import timber.log.Timber;
@@ -213,48 +210,59 @@ public class RequestsFragment extends CapsuleFragment {
         }
     }
 
-    private void showRequestsFilesCreationDialog(Context context, Preferences mPrefs) {
+    private void showRequestsFilesCreationDialog(final Context context, final Preferences mPrefs) {
         if (mAdapter.getSelectedApps() != null && mAdapter.getSelectedApps().size() > 0) {
-            if (!PermissionUtils.canAccessStorage(context)) {
-                PermissionUtils.requestStoragePermission((ShowcaseActivity) context);
-            } else {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-                        ActivityCompat.checkSelfPermission(context, Manifest.permission
-                                .READ_EXTERNAL_STORAGE) !=
-                                PackageManager.PERMISSION_GRANTED) {
-                    ISDialogs.showPermissionNotGrantedDialog(context);
-                } else {
-                    final MaterialDialog dialog = ISDialogs.showBuildingRequestDialog(context);
-                    if (getResources().getInteger(R.integer.max_apps_to_request) > -1) {
-                        if (maxApps < 0) {
-                            maxApps = 0;
+            PermissionsUtils.checkPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    new PermissionsUtils.PermissionRequestListener() {
+                        @Override
+                        public void onPermissionRequest() {
+                            PermissionsUtils.requestStoragePermission((ShowcaseActivity) context);
                         }
-                        if (mAdapter.getSelectedApps().size() <= mPrefs.getRequestsLeft()) {
-                            dialog.show();
-                            Calendar c = Calendar.getInstance();
-                            RequestUtils.saveCurrentTimeOfRequest(mPrefs, c);
-                            IconRequest.get().send(new IconRequest.RequestReadyCallback() {
-                                @Override
-                                public void onRequestReady() {
-                                    dialog.dismiss();
+
+                        @Override
+                        public void onPermissionDenied() {
+                            ISDialogs.showPermissionNotGrantedDialog(context);
+                        }
+
+                        @Override
+                        public void onPermissionCompletelyDenied() {
+                            ISDialogs.showPermissionNotGrantedDialog(context);
+                        }
+
+                        @Override
+                        public void onPermissionGranted() {
+                            final MaterialDialog dialog = ISDialogs.showBuildingRequestDialog
+                                    (context);
+                            if (getResources().getInteger(R.integer.max_apps_to_request) > -1) {
+                                if (maxApps < 0) {
+                                    maxApps = 0;
                                 }
-                            });
-                        } else {
-                            ISDialogs.showRequestLimitDialog(context, maxApps);
-                        }
-                    } else {
-                        dialog.show();
-                        Calendar c = Calendar.getInstance();
-                        RequestUtils.saveCurrentTimeOfRequest(mPrefs, c);
-                        IconRequest.get().send(new IconRequest.RequestReadyCallback() {
-                            @Override
-                            public void onRequestReady() {
-                                dialog.dismiss();
+                                if (mAdapter.getSelectedApps().size() <= mPrefs.getRequestsLeft()) {
+                                    dialog.show();
+                                    Calendar c = Calendar.getInstance();
+                                    RequestUtils.saveCurrentTimeOfRequest(mPrefs, c);
+                                    IconRequest.get().send(new IconRequest.RequestReadyCallback() {
+                                        @Override
+                                        public void onRequestReady() {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                                } else {
+                                    ISDialogs.showRequestLimitDialog(context, maxApps);
+                                }
+                            } else {
+                                dialog.show();
+                                Calendar c = Calendar.getInstance();
+                                RequestUtils.saveCurrentTimeOfRequest(mPrefs, c);
+                                IconRequest.get().send(new IconRequest.RequestReadyCallback() {
+                                    @Override
+                                    public void onRequestReady() {
+                                        dialog.dismiss();
+                                    }
+                                });
                             }
-                        });
-                    }
-                }
-            }
+                        }
+                    });
         } else {
             ISDialogs.showNoSelectedAppsDialog(context);
         }

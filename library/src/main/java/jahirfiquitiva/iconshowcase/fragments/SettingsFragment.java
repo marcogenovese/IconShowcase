@@ -19,6 +19,7 @@
 
 package jahirfiquitiva.iconshowcase.fragments;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ComponentName;
@@ -50,14 +51,13 @@ import jahirfiquitiva.iconshowcase.dialogs.FolderSelectorDialog;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.fragments.base.PreferenceFragment;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
-import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
-import jahirfiquitiva.iconshowcase.utilities.utils.PermissionUtils;
+import jahirfiquitiva.iconshowcase.utilities.utils.PermissionsUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 
-public class SettingsFragment extends PreferenceFragment implements
-        PermissionUtils.OnPermissionResultListener, FolderSelectorDialog.FolderSelectionCallback {
+public class SettingsFragment extends PreferenceFragment implements FolderSelectorDialog
+        .FolderSelectionCallback {
 
     private Preferences mPrefs;
     private PackageManager p;
@@ -164,11 +164,30 @@ public class SettingsFragment extends PreferenceFragment implements
                 .OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                if (!PermissionUtils.canAccessStorage(getContext())) {
-                    PermissionUtils.requestStoragePermission(getActivity(), SettingsFragment.this);
-                } else {
-                    showFolderChooserDialog();
-                }
+                PermissionsUtils.checkPermission(getActivity(), Manifest.permission
+                                .WRITE_EXTERNAL_STORAGE,
+                        new PermissionsUtils.PermissionRequestListener() {
+                            @Override
+                            public void onPermissionRequest() {
+                                // TODO: Show dialog explaining reasons to ask for permission
+                                PermissionsUtils.requestStoragePermission(getActivity());
+                            }
+
+                            @Override
+                            public void onPermissionDenied() {
+                                ISDialogs.showPermissionNotGrantedDialog(getActivity());
+                            }
+
+                            @Override
+                            public void onPermissionCompletelyDenied() {
+                                ISDialogs.showPermissionNotGrantedDialog(getActivity());
+                            }
+
+                            @Override
+                            public void onPermissionGranted() {
+                                showFolderChooserDialog();
+                            }
+                        });
                 return true;
             }
         });
@@ -296,16 +315,9 @@ public class SettingsFragment extends PreferenceFragment implements
                                                 }
                                             };
 
-                                    ((ShowcaseActivity)
-
-                                            getActivity()
-
-                                    ).
-
-                                            setSettingsDialog(
-                                                    ISDialogs.showHideIconDialog(getActivity(),
-
-                                                            positive, negative, dismissListener));
+                                    ((ShowcaseActivity) getActivity()).setSettingsDialog
+                                            (ISDialogs.showHideIconDialog(getActivity(),
+                                                    positive, negative, dismissListener));
                                 } else {
                                     if (!mPrefs.getLauncherIconShown()) {
                                         mPrefs.setIconShown(true);
@@ -331,10 +343,6 @@ public class SettingsFragment extends PreferenceFragment implements
     @Override
     public void onResume() {
         super.onResume();
-        if (shouldShowFolderChooserDialog) {
-            showFolderChooserDialog();
-            shouldShowFolderChooserDialog = false;
-        }
     }
 
     private void setupDevOptions(PreferenceScreen mainPrefs, final Context context) {
@@ -502,11 +510,6 @@ public class SettingsFragment extends PreferenceFragment implements
 
     public void showFolderChooserDialog() {
         new FolderSelectorDialog().show((AppCompatActivity) getActivity(), this);
-    }
-
-    @Override
-    public void onStoragePermissionGranted() {
-        shouldShowFolderChooserDialog = true;
     }
 
     @Override

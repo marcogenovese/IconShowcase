@@ -29,7 +29,8 @@ public class Preferences {
 
     private static final String
             PREFERENCES_NAME = "dashboard_preferences",
-            FEATURES_ENABLED = "features_enabled",
+            WORKING_DASHBOARD = "working_dashboard",
+            ASKED_PERMISSIONS = "asked_permissions",
             VERSION_CODE = "version_code",
             ROTATE_MINUTE = "rotate_time_minute",
             ROTATE_TIME = "muzei_rotate_time",
@@ -67,12 +68,20 @@ public class Preferences {
         return context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
     }
 
-    public void setFeaturesEnabled(boolean enable) {
-        prefs().edit().putBoolean(FEATURES_ENABLED, enable).apply();
+    public boolean isDashboardWorking() {
+        return prefs().getBoolean(WORKING_DASHBOARD, false);
     }
 
-    public boolean areFeaturesEnabled() {
-        return prefs().getBoolean(FEATURES_ENABLED, false);
+    public void setDashboardWorking(boolean enable) {
+        prefs().edit().putBoolean(WORKING_DASHBOARD, enable).apply();
+    }
+
+    public boolean hasAskedPermissions() {
+        return prefs().getBoolean(ASKED_PERMISSIONS, false);
+    }
+
+    public void setHasAskedPermissions(boolean asked) {
+        prefs().edit().putBoolean(ASKED_PERMISSIONS, asked).apply();
     }
 
     public int getRotateTime() {

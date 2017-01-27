@@ -44,14 +44,16 @@ android {
 
     lintOptions {
         abortOnError false
+        disable 'MissingTranslation'
     }
 
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion TARGET_SDK
-        versionCode 10
-        versionName "1.0"
+        versionCode 1975
+        versionName "1.9.7.5"
         vectorDrawables.useSupportLibrary = true
+        consumerProguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
     }
 
     sourceSets {
@@ -81,9 +83,11 @@ android {
 
     buildTypes {
         release {
+            debuggable false
+            zipAlignEnabled true
             minifyEnabled true
             shrinkResources false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         aaptOptions {
             noCompress 'zip', 'komp', 'klwp', 'kwgt', 'klck', 'kwch'
@@ -129,7 +133,8 @@ dependencies {
     compile 'com.google.android.apps.muzei:muzei-api:2.0'
 
     //License Checker Lib
-    compile 'com.github.javiersantos:PiracyChecker:0.0.2'
+    compile 'com.github.javiersantos:PiracyChecker:0.0.3'
+    compile project(':repmax')
 
     //Required for Kustom support.
     //noinspection GradleDynamicVersion
