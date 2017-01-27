@@ -20,6 +20,9 @@ android:
 
   licenses:
     - '.+'
-    
+ 
+before_install:
+ - chmod +x gradlew
+ 
 script:
-    - ./gradlew clean test
+  - ./gradlew clean test
