@@ -19,10 +19,13 @@
 
 package jahirfiquitiva.iconshowcase.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Handler;
+import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.FragmentActivity;
@@ -209,6 +212,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
                             }
                             final ApplyWallpaper[] applyTask = new ApplyWallpaper[1];
                             final boolean[] enteredApplyTask = {false};
+
                             applyDialog = new MaterialDialog.Builder(context)
                                     .content(R.string.downloading_wallpaper)
                                     .progress(true, 0)
@@ -241,18 +245,13 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
                                                 if (applyDialog != null) {
                                                     applyDialog.dismiss();
                                                 }
-                                                applyDialog = new MaterialDialog.Builder(context)
-                                                        .content(R.string.setting_wall_title)
-                                                        .progress(true, 0)
-                                                        .cancelable(false)
-                                                        .show();
 
-                                                applyTask[0] = new ApplyWallpaper((
-                                                        (ShowcaseActivity)
-                                                                context), applyDialog, resource,
-                                                        ((ShowcaseActivity) context)
-                                                                .isWallsPicker());
-                                                applyTask[0].execute();
+                                                applyTask[0] =
+                                                        showWallpaperApplyOptionsDialogAndGetTask
+                                                                (context, resource);
+
+                                                if (applyTask[0] != null)
+                                                    applyTask[0].execute();
                                             }
                                         }
                                     });
@@ -284,6 +283,73 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
                     }
                 })
                 .show();
+    }
+
+    private ApplyWallpaper showWallpaperApplyOptionsDialogAndGetTask(final Context context,
+                                                                     final Bitmap resource) {
+        final ApplyWallpaper[] applyTask = {null};
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            applyDialog = new MaterialDialog.Builder(context)
+                    .title(R.string.set_wall_to)
+                    .listSelector(android.R.color.transparent)
+                    .items(R.array.wall_options)
+                    .itemsCallback(new MaterialDialog.ListCallback() {
+                        @Override
+                        public void onSelection(MaterialDialog dialog, View itemView, int position,
+                                                CharSequence text) {
+                            dialog.dismiss();
+
+                            if (applyDialog != null) {
+                                applyDialog.dismiss();
+                            }
+
+                            String extra = "";
+
+                            switch (position) {
+                                case 0:
+                                    extra = context.getResources().getString(R.string.home_screen);
+                                    break;
+                                case 1:
+                                    extra = context.getResources().getString(R.string.lock_screen);
+                                    break;
+                                case 2:
+                                    extra = context.getResources().getString(R.string
+                                            .home_lock_screens);
+                                    break;
+                            }
+
+                            applyDialog = new MaterialDialog.Builder(context)
+                                    .content(context.getResources().getString(R.string
+                                            .setting_wall_title, extra.toLowerCase()))
+                                    .progress(true, 0)
+                                    .cancelable(false)
+                                    .show();
+
+                            buildApplyTask(context, applyDialog, resource,
+                                    ((ShowcaseActivity) context).isWallsPicker(), position == 0,
+                                    position == 1, position == 2).execute();
+                        }
+                    })
+                    .show();
+        } else {
+            applyDialog = new MaterialDialog.Builder(context)
+                    .content(R.string.setting_wall_title)
+                    .progress(true, 0)
+                    .cancelable(false)
+                    .show();
+
+            applyTask[0] = buildApplyTask(context, applyDialog, resource,
+                    ((ShowcaseActivity) context).isWallsPicker(), false, false, true);
+        }
+        return applyTask[0];
+    }
+
+    private ApplyWallpaper buildApplyTask(final Context context, MaterialDialog dialog, Bitmap
+            resource, boolean isPicker, boolean setToHomeScreen, boolean setToLockScreen, boolean
+                                                  setToBoth) {
+        return new ApplyWallpaper((Activity) context, dialog, resource, isPicker, setToHomeScreen,
+                setToLockScreen, setToBoth);
     }
 
     private Handler handler(Context context) {
@@ -327,6 +393,9 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
         public boolean onLongClick(View v) {
             if (clickable) {
                 clickable = false;
+                Vibrator vibrator = (Vibrator) v.getContext().getSystemService(Context
+                        .VIBRATOR_SERVICE);
+                vibrator.vibrate(30);
                 showApplyWallpaperDialog(v.getContext(), wallsList.get(getAdapterPosition()));
                 reset(); //TODO shouldn't all clicks be paused when applying?
             }

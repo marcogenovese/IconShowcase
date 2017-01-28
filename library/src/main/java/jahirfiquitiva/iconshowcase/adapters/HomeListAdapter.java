@@ -221,7 +221,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void setupAppInfoAmounts() {
         resetAppInfoValues();
         int defIconsAmount = context.getResources().getInteger(R.integer.icons_amount);
-        if (defIconsAmount != -1) {
+        if (defIconsAmount == -1) {
             if (FullListHolder.get().iconsCategories().getList() != null) {
                 for (IconsCategory category : FullListHolder.get().iconsCategories().getList()) {
                     if (category.getCategoryName().equals("All")) {

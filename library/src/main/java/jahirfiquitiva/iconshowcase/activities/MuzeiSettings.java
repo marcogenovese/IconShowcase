@@ -247,7 +247,7 @@ public class MuzeiSettings extends AppCompatActivity {
 
     private void showSnackBarAndFinish(View location, String text) {
         Utils.snackbar(context, location, text,
-                Snackbar.LENGTH_LONG).setCallback(new Snackbar.Callback() {
+                Snackbar.LENGTH_LONG).addCallback(new Snackbar.Callback() {
             @Override
             public void onDismissed(Snackbar snackbar, int event) {
                 super.onDismissed(snackbar, event);

@@ -126,6 +126,7 @@ public final class ISDialogs {
     public static void showApplyWallpaperDialog(final Context context,
                                                 MaterialDialog.SingleButtonCallback onPositive,
                                                 MaterialDialog.SingleButtonCallback onNeutral,
+                                                MaterialDialog.SingleButtonCallback onNegative,
                                                 MaterialDialog.OnDismissListener onDismiss) {
         MaterialDialog dialog = new MaterialDialog.Builder(context)
                 .title(R.string.apply)
@@ -135,13 +136,7 @@ public final class ISDialogs {
                 .negativeText(android.R.string.cancel)
                 .onPositive(onPositive)
                 .onNeutral(onNeutral)
-                .onNegative(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction
-                            which) {
-                        ((AltWallpaperViewerActivity) context).setupFullScreen();
-                    }
-                })
+                .onNegative(onNegative)
                 .build();
         dialog.setOnDismissListener(onDismiss);
         dialog.show();

@@ -54,7 +54,11 @@ public abstract class DrawerActivity extends CapsuleActivity {
     protected static boolean
             WITH_LICENSE_CHECKER = false,
             WITH_INSTALLED_FROM_AMAZON = false,
-            WITH_DONATIONS_SECTION = false,
+            ALLOW_APT_USE = false,
+            ALLOW_EMU = false,
+            PRINT_SIG = false,
+
+    WITH_DONATIONS_SECTION = false,
 
     //Donations stuff
     DONATIONS_GOOGLE = false,
@@ -68,8 +72,8 @@ public abstract class DrawerActivity extends CapsuleActivity {
             GOOGLE_CATALOG_VALUES = new String[0],
             GOOGLE_CATALOG;
 
-    protected static String GOOGLE_PUBKEY = "", PAYPAL_USER = "", PAYPAL_CURRENCY_CODE = "",
-            thaAppName;
+    protected static String GOOGLE_PUBKEY = "", SIG_KEY = "", PAYPAL_USER = "",
+            PAYPAL_CURRENCY_CODE = "", thaAppName;
 
     protected static boolean mIsPremium = false, installedFromPlayStore = false;
 

@@ -21,10 +21,12 @@ package jahirfiquitiva.iconshowcase.dialogs;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.view.View;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -46,6 +48,9 @@ import jahirfiquitiva.iconshowcase.tasks.ApplyWallpaper;
 public class WallpaperDialog extends BaseEventDialog {
 
     private static final String TAG = "wallpaper_dialog";
+
+    private boolean setToHome;
+    private boolean setToLock;
 
     public static void show(final FragmentActivity context, final String url) {
         showBase(context, url, WallpaperEvent.Step.START);
@@ -87,20 +92,38 @@ public class WallpaperDialog extends BaseEventDialog {
 
         switch (step) {
             case START:
-                builder[0].title(R.string.apply)
-                        .content(R.string.confirm_apply)
-                        .positiveText(R.string.apply)
-                        .negativeText(android.R.string.cancel)
-                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog materialDialog, @NonNull
-                            final DialogAction dialogAction) {
-                                showBase(getActivity(), getUrl(), WallpaperEvent.Step.LOADING);
-                            }
-                        });
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    builder[0].title(R.string.set_wall_to)
+                            .items(R.array.wall_options)
+                            .itemsCallback(new MaterialDialog.ListCallback() {
+                                @Override
+                                public void onSelection(MaterialDialog dialog, View itemView, int
+                                        position, CharSequence text) {
+                                    setToHome = position == 0;
+                                    setToLock = position == 1;
+                                    if (position == 2) {
+                                        setToHome = true;
+                                        setToLock = true;
+                                    }
+                                    showBase(getActivity(), getUrl(), WallpaperEvent.Step.LOADING);
+                                }
+                            });
+                } else {
+                    builder[0].title(R.string.apply)
+                            .content(R.string.confirm_apply)
+                            .positiveText(R.string.apply)
+                            .negativeText(android.R.string.cancel)
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog materialDialog, @NonNull
+                                final DialogAction dialogAction) {
+                                    showBase(getActivity(), getUrl(), WallpaperEvent.Step.LOADING);
+                                }
+                            });
+                }
                 break;
-            case LOADING:
 
+            case LOADING:
                 final ApplyWallpaper task = new ApplyWallpaper(getActivity(), getUrl(), new
                         ApplyWallpaper.ApplyCallback() {
                             @Override
@@ -128,7 +151,7 @@ public class WallpaperDialog extends BaseEventDialog {
                         //TODO: Properly show the "Setting wallpaper..." dialog
                         showBase(getActivity(), getUrl(), WallpaperEvent.Step.APPLYING);
                     }
-                });
+                }, setToHome, setToLock, setToHome && setToLock);
 
                 builder[0].content(R.string.downloading_wallpaper)
                         .progress(true, 0)
@@ -169,13 +192,28 @@ public class WallpaperDialog extends BaseEventDialog {
                 task.execute();
                 enteredApplyTask[0] = true;
                 break;
+
             case APPLYING:
-                builder[0].content(R.string.setting_wall_title)
+                String extra = "";
+
+                if (setToHome)
+                    extra = getActivity().getResources().getString(R.string.home_screen);
+
+                if (setToLock)
+                    extra = getActivity().getResources().getString(R.string.lock_screen);
+
+                if (setToHome && setToLock)
+                    extra = getActivity().getResources().getString(R.string
+                            .home_lock_screens);
+
+                builder[0].content(getActivity().getResources().getString(R.string
+                        .setting_wall_title, extra.toLowerCase()))
                         .progress(true, 0)
                         .cancelable(false);
                 break;
+
             default:
-                builder[0].title(R.string.error); //TODO put to R.string
+                builder[0].title(R.string.error);
                 break;
         }
 

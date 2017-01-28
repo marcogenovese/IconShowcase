@@ -19,6 +19,12 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
+    <string-array name="wall_options">
+        <item>@string/home_screen</item>
+        <item>@string/lock_screen</item>
+        <item>@string/home_lock_screens</item>
+    </string-array>
+
     <string name="dashboard_author_name">Jahir Fiquitiva</string>
     <string name="dashboard_author_photo" formatted="false" tools:ignore="TypographyDashes">https://github.com/jahirfiquitiva/Website-Resources/raw/master/myself/me-square-white.png</string>
     <string name="dashboard_author_banner" formatted="false" tools:ignore="TypographyDashes">https://github.com/jahirfiquitiva/Website-Resources/raw/master/myself/Banner.png</string>

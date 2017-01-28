@@ -313,11 +313,11 @@ public class Utils {
 
     public static void runLicenseChecker(Context context, boolean ch, String lic, String sig,
                                          boolean printSig, boolean allAma, boolean allApt,
-                                         boolean checkDeb, boolean checkEmu) {
+                                         boolean checkEmu) {
         Preferences mPrefs = new Preferences(context);
         mPrefs.setSettingsModified(false);
         if (ch && isNewVersion(context)) {
-            checkLicense(context, lic, sig, printSig, allAma, allApt, checkDeb, checkEmu);
+            checkLicense(context, lic, sig, printSig, allAma, allApt, checkEmu);
         } else {
             mPrefs.setDashboardWorking(true);
             showChangelogDialog(context);
@@ -347,7 +347,7 @@ public class Utils {
     }
 
     protected static void checkLicense(final Context context, String lic, String sig, boolean
-            printSig, boolean allAma, boolean allApt, boolean checkDeb, boolean checkEmu) {
+            printSig, boolean allAma, boolean allApt, boolean checkEmu) {
         final Preferences mPrefs = new Preferences(context);
         final RepelloMaxima[] spell = new RepelloMaxima[1];
         spell[0] = new RepelloMaxima.Speller(context)
@@ -357,7 +357,6 @@ public class Utils {
                 .printSig(printSig)
                 .allAmazon(allAma)
                 .allApt(allApt)
-                .checkDebug(checkDeb)
                 .checkEmu(checkEmu)
                 .thenDo(new RepelloCallback() {
                     @Override

@@ -23,6 +23,7 @@ import android.app.Activity;
 import android.app.WallpaperManager;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
 import android.widget.LinearLayout;
@@ -55,32 +56,46 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
     private Bitmap resource;
     private MaterialDialog dialog;
 
+    private boolean setToHomeScreen;
+    private boolean setToLockScreen;
+    private boolean setToBoth;
+
     public ApplyWallpaper(Activity activity, MaterialDialog dialog, Bitmap resource, boolean
-            isPicker) {
+            isPicker, boolean setToHomeScreen, boolean setToLockScreen, boolean setToBoth) {
         this.wrActivity = new WeakReference<>(activity);
         this.dialog = dialog;
         this.resource = resource;
         this.isPicker = isPicker;
+        this.setToHomeScreen = setToHomeScreen;
+        this.setToLockScreen = setToLockScreen;
+        this.setToBoth = setToBoth;
     }
 
-    public ApplyWallpaper(Activity activity, @NonNull String url, ApplyCallback callback) {
+    public ApplyWallpaper(Activity activity, @NonNull String url, ApplyCallback callback, boolean
+            setToHomeScreen, boolean setToLockScreen, boolean setToBoth) {
         this.wrActivity = new WeakReference<>(activity);
         this.url = url;
         this.callback = callback;
+        this.setToHomeScreen = setToHomeScreen;
+        this.setToLockScreen = setToLockScreen;
+        this.setToBoth = setToBoth;
     }
 
     public ApplyWallpaper(Activity activity, @NonNull String url, ApplyCallback callback,
-                          DownloadCallback downloadCallback) {
-        this.wrActivity = new WeakReference<>(activity);
-        this.url = url;
-        this.callback = callback;
+                          DownloadCallback downloadCallback, boolean setToHomeScreen, boolean
+                                  setToLockScreen, boolean setToBoth) {
+        this(activity, url, callback, setToHomeScreen, setToLockScreen, setToBoth);
         this.downloadCallback = downloadCallback;
     }
 
-    public ApplyWallpaper(Activity activity, @NonNull Bitmap resource, ApplyCallback callback) {
+    public ApplyWallpaper(Activity activity, @NonNull Bitmap resource, ApplyCallback callback,
+                          boolean setToHomeScreen, boolean setToLockScreen, boolean setToBoth) {
         this.wrActivity = new WeakReference<>(activity);
         this.resource = resource;
         this.callback = callback;
+        this.setToHomeScreen = setToHomeScreen;
+        this.setToLockScreen = setToLockScreen;
+        this.setToBoth = setToBoth;
     }
 
 //    public ApplyWallpaper(Activity activity, MaterialDialog dialog, Bitmap resource,
@@ -169,7 +184,19 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
     private void applyWallpaper(Bitmap resource) {
         WallpaperManager wm = WallpaperManager.getInstance(wrActivity.get());
         try {
-            wm.setBitmap(scaleToActualAspectRatio(resource));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                if (setToHomeScreen) {
+                    wm.setBitmap(scaleToActualAspectRatio(resource), null, true, WallpaperManager
+                            .FLAG_SYSTEM);
+                } else if (setToLockScreen) {
+                    wm.setBitmap(scaleToActualAspectRatio(resource), null, true, WallpaperManager
+                            .FLAG_LOCK);
+                } else if (setToBoth) {
+                    wm.setBitmap(scaleToActualAspectRatio(resource), null, true);
+                }
+            } else {
+                wm.setBitmap(scaleToActualAspectRatio(resource));
+            }
             EventBus.getDefault().postSticky(new WallpaperEvent(url, true, WallpaperEvent.Step
                     .FINISH));
             if (callback != null) {
@@ -230,7 +257,7 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
 //                            snackbarView.getPaddingTop(), snackbarView.getPaddingRight(),
 //                            Utils.getNavigationBarHeight((Activity) context.get()));
 //                    longSnackbar.show();
-//                    longSnackbar.setCallback(
+//                    longSnackbar.addCallback(
 //                            new Snackbar.Callback() {
 //                                @Override
 //                                public void onDismissed(Snackbar snackbar, int event) {

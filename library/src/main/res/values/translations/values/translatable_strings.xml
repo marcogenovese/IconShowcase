@@ -85,12 +85,12 @@
     <string name="apply">Apply</string>
     <string name="save">Save</string>
     <string name="downloading_wallpaper">Downloading this wallpaper…</string>
-    <string name="setting_wall_title">Setting this wallpaper to your homescreen…</string>
+    <string name="setting_wall_title">Setting this wallpaper to your %1$s…</string>
     <string name="preparing_wallpaper">Preparing wallpaper to be cropped…</string>
     <string name="download_takes_longer">This is taking longer than expected. Feel free to wait or cancel this action.</string>
     <string name="set_as_wall_done">Wallpaper set!</string>
     <string name="error">Error</string>
-    <string name="confirm_apply">Are you sure you want to apply this wallpaper to your homescreen?
+    <string name="confirm_apply">Are you sure you want to apply this wallpaper to your device?
     </string>
     <string name="refreshing_walls">Refreshing wallpapers list…</string>
     <string name="retry">Retry</string>
@@ -111,7 +111,11 @@
     <string name="advice">Advice</string>
     <string name="dontshow">Don\'t show again</string>
     <string name="rate">Rate</string>
-    <string name="set_as">Crop wallpaper and set as…</string>
+    <string name="set_wall_to">Set wallpaper to…</string>
+    <string name="home_screen">Home screen</string>
+    <string name="lock_screen">Lock screen</string>
+    <string name="home_lock_screens">Home and lock screens</string>
+    <string name="crop_and_set_as">Crop wallpaper and set as…</string>
 
     <!-- Requests -->
     <string name="select_all">Select all</string>
@@ -223,7 +227,7 @@
     <string name="license_error">Sorry, there was an error while checking your license.</string>
     <string name="license_success">Thank you for downloading %1$s. If you like it, do not forget to rate it and write a review in the Google Play Store.</string>
     <string name="apply_advice">If the launcher you use, is not listed here, you must apply the icon pack directly from the launcher settings.\nSome launchers do not support direct apply.</string>
-    <string name="walls_advice">Simple press a wallpaper to view it in FullScreen.\nLong press to apply it directly to your homescreen.</string>
+    <string name="walls_advice">Simple press a wallpaper to view it in FullScreen.\nLong press to apply it directly to your home screen.</string>
 
     <string name="zooper_section_title">Zooper Setup</string>
     <string name="zooper_download_dialog_title">Download from</string>
@@ -317,7 +321,7 @@
         <item>Slide the NavigationDrawer from the left, and go to \"Settings\" section.
             Then check the \"Hide icon from launcher\" option.
         </item>
-        <item>Go to your homescreen, then create a widget for the app which name is \"IconRestorer\".</item>
+        <item>Go to your home screen, then create a widget for the app which name is \"IconRestorer\".</item>
         <item>Slide the NavigationDrawer from the left, and go to \"Settings\" section.
             Then uncheck the \"Hide icon from launcher\" option.
         </item>

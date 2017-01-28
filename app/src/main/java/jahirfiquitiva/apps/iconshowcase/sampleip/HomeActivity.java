@@ -20,15 +20,12 @@
 package jahirfiquitiva.apps.iconshowcase.sampleip;
 
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import jahirfiquitiva.iconshowcase.utilities.LauncherIntents;
 import jahirfiquitiva.iconshowcase.utilities.utils.NotificationUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
-import timber.log.Timber;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -38,12 +35,21 @@ public class HomeActivity extends AppCompatActivity {
     ENABLE_GOOGLE_DONATIONS = false,
             ENABLE_PAYPAL_DONATIONS = false,
             ENABLE_FLATTR_DONATIONS = false,
-            ENABLE_BITCOIN_DONATIONS = false,
+            ENABLE_BITCOIN_DONATIONS = false;
 
-    ENABLE_LICENSE_CHECK = false,
-            ENABLE_AMAZON_INSTALLS = false;
-
-    private static final String GOOGLE_PUBLISHER_KEY = "insert_key_here";
+    /*
+    LICENSE CHECK RELATED STUFF
+     */
+    protected boolean
+            ENABLE_LICENSE_CHECK = false,
+            ENABLE_AMAZON_INSTALLS = false,
+            ENABLE_APTOIDE_USE = false,
+            ENABLE_EMULATOR = false,
+    // Make sure this is false on release builds
+    PRINT_SIG = false;
+    // Don't change if you're not going to use these
+    protected static final String GOOGLE_PUBLISHER_KEY = "insert_key_here";
+    protected static final String SIGNATURE_KEY = "insert_key_here";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,8 +91,12 @@ public class HomeActivity extends AppCompatActivity {
         //noinspection PointlessBooleanExpression
         intent.putExtra("enableLicenseCheck", (ENABLE_LICENSE_CHECK && !BuildConfig.DEBUG));
         intent.putExtra("enableAmazonInstalls", ENABLE_AMAZON_INSTALLS);
-
+        intent.putExtra("enableAptoideUse", ENABLE_APTOIDE_USE);
+        intent.putExtra("enableEmulator", (PRINT_SIG && !BuildConfig.DEBUG));
         intent.putExtra("googlePubKey", GOOGLE_PUBLISHER_KEY);
+        intent.putExtra("sigKey", SIGNATURE_KEY);
+        //noinspection PointlessBooleanExpression
+        intent.putExtra("printSig", (PRINT_SIG && !BuildConfig.DEBUG));
 
         if (getIntent().getDataString() != null && getIntent().getDataString().contains
                 ("_shortcut")) {

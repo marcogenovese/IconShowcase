@@ -30,7 +30,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -53,17 +52,13 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
     private final WeakReference<Activity> wrActivity;
     private Uri wallUri;
     private Context context;
-    private LinearLayout toHide1, toHide2;
+    private View toHide1;
+    private View toHide2;
     private volatile boolean wasCancelled = false;
 
     public WallpaperToCrop(Activity activity, MaterialDialog dialog, Bitmap resource,
-                           View layout, String wallName, LinearLayout toHide1, LinearLayout
-                                   toHide2) {
-        this.wrActivity = new WeakReference<>(activity);
-        this.dialog = dialog;
-        this.resource = resource;
-        this.layout = layout;
-        this.wallName = wallName;
+                           View layout, String wallName, View toHide1, View toHide2) {
+        this(activity, dialog, resource, layout, wallName);
         this.toHide1 = toHide1;
         this.toHide2 = toHide2;
     }
@@ -83,7 +78,6 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
         if (a != null) {
             this.context = a.getApplicationContext();
         }
-
     }
 
     @Override
@@ -116,7 +110,7 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
                 setWall.setDataAndType(wallUri, "image/*");
                 setWall.putExtra("png", "image/*");
                 wrActivity.get().startActivityForResult(Intent.createChooser(setWall,
-                        context.getResources().getString(R.string.set_as)), 1);
+                        context.getResources().getString(R.string.crop_and_set_as)), 1);
             } else {
                 dialog.dismiss();
                 Snackbar snackbar = Snackbar.make(layout,
@@ -130,7 +124,7 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
                         snackbarView.getPaddingTop(), snackbarView.getPaddingRight(),
                         Utils.getNavigationBarHeight((Activity) context));
                 snackbar.show();
-                snackbar.setCallback(new Snackbar.Callback() {
+                snackbar.addCallback(new Snackbar.Callback() {
                     @Override
                     public void onDismissed(Snackbar snackbar, int event) {
                         super.onDismissed(snackbar, event);
@@ -150,7 +144,6 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
     }
 
     private Uri getImageUri(Context inContext, Bitmap inImage) {
-
         Preferences mPrefs = new Preferences(inContext);
         File downloadsFolder;
 
@@ -172,10 +165,11 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
 
         if (!destFile.exists()) {
             try {
-                inImage.compress(Bitmap.CompressFormat.PNG, 100,
-                        new FileOutputStream(destFile));
+                FileOutputStream fos = new FileOutputStream(destFile);
+                inImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                fos.close();
             } catch (final Exception e) {
-                Timber.d("WalllpaperToCrop", e.getLocalizedMessage());
+                Timber.d("WallpaperToCrop", e.getLocalizedMessage());
             }
         }
 

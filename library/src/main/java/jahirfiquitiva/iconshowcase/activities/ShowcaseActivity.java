@@ -127,8 +127,16 @@ public class ShowcaseActivity extends TasksActivity {
 
         WITH_LICENSE_CHECKER = getIntent().getBooleanExtra("enableLicenseCheck", false);
         WITH_INSTALLED_FROM_AMAZON = getIntent().getBooleanExtra("enableAmazonInstalls", false);
+        ALLOW_APT_USE = getIntent().getBooleanExtra("enableAptoideUse", false);
+        ALLOW_EMU = getIntent().getBooleanExtra("enableEmulator", false);
 
         GOOGLE_PUBKEY = getIntent().getStringExtra("googlePubKey");
+        SIG_KEY = getIntent().getStringExtra("sigKey");
+        if (SIG_KEY.equals("insert_key_here")) {
+            SIG_KEY = "";
+        }
+        //noinspection PointlessBooleanExpression
+        PRINT_SIG = getIntent().getBooleanExtra("printSig", false);
 
         getAction();
 
@@ -257,8 +265,8 @@ public class ShowcaseActivity extends TasksActivity {
         }
         ToolbarColorizer.setupToolbarIconsAndTextsColors(this, cAppBarLayout, cToolbar);
         // TODO: Add proper booleans for this
-        Utils.runLicenseChecker(this, WITH_LICENSE_CHECKER, GOOGLE_PUBKEY, "", false, false,
-                false, true, true);
+        Utils.runLicenseChecker(this, WITH_LICENSE_CHECKER, GOOGLE_PUBKEY, SIG_KEY,
+                WITH_INSTALLED_FROM_AMAZON, PRINT_SIG, ALLOW_APT_USE, !ALLOW_EMU);
     }
 
     @Override

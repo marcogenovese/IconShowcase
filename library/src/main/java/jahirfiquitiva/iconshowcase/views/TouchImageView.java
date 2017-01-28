@@ -90,6 +90,7 @@ public class TouchImageView extends ImageView {
     private GestureDetector.OnDoubleTapListener doubleTapListener = null;
     private OnTouchListener userTouchListener = null;
     private OnTouchImageViewListener touchImageViewListener = null;
+    private OnSingleTapListener singleTapListener = null;
 
     public TouchImageView(Context context) {
         super(context);
@@ -140,6 +141,10 @@ public class TouchImageView extends ImageView {
 
     public void setOnDoubleTapListener(GestureDetector.OnDoubleTapListener l) {
         doubleTapListener = l;
+    }
+
+    public void setOnSingleTapListener(OnSingleTapListener l) {
+        singleTapListener = l;
     }
 
     @Override
@@ -808,6 +813,9 @@ public class TouchImageView extends ImageView {
             if (doubleTapListener != null) {
                 return doubleTapListener.onSingleTapConfirmed(e);
             }
+            if (singleTapListener != null) {
+                return singleTapListener.onSingleTap();
+            }
             return performClick();
         }
 
@@ -1179,4 +1187,9 @@ public class TouchImageView extends ImageView {
             this.scaleType = scaleType;
         }
     }
+
+    public interface OnSingleTapListener {
+        boolean onSingleTap();
+    }
+
 }
