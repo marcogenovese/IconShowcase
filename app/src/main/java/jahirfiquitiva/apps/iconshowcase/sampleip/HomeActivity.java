@@ -44,12 +44,10 @@ public class HomeActivity extends AppCompatActivity {
             ENABLE_LICENSE_CHECK = false,
             ENABLE_AMAZON_INSTALLS = false,
             ENABLE_APTOIDE_USE = false,
-            ENABLE_EMULATOR = false,
-    // Make sure this is false on release builds
-    PRINT_SIG = false;
+            ENABLE_EMULATOR = false;
+
     // Don't change if you're not going to use these
     protected static final String GOOGLE_PUBLISHER_KEY = "insert_key_here";
-    protected static final String SIGNATURE_KEY = "insert_key_here";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,11 +90,8 @@ public class HomeActivity extends AppCompatActivity {
         intent.putExtra("enableLicenseCheck", (ENABLE_LICENSE_CHECK && !BuildConfig.DEBUG));
         intent.putExtra("enableAmazonInstalls", ENABLE_AMAZON_INSTALLS);
         intent.putExtra("enableAptoideUse", ENABLE_APTOIDE_USE);
-        intent.putExtra("enableEmulator", (PRINT_SIG && !BuildConfig.DEBUG));
+        intent.putExtra("enableEmulator", (ENABLE_EMULATOR && !BuildConfig.DEBUG));
         intent.putExtra("googlePubKey", GOOGLE_PUBLISHER_KEY);
-        intent.putExtra("sigKey", SIGNATURE_KEY);
-        //noinspection PointlessBooleanExpression
-        intent.putExtra("printSig", (PRINT_SIG && !BuildConfig.DEBUG));
 
         if (getIntent().getDataString() != null && getIntent().getDataString().contains
                 ("_shortcut")) {

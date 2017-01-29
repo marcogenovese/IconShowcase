@@ -311,13 +311,12 @@ public class Utils {
         return millis / 60 / 1000;
     }
 
-    public static void runLicenseChecker(Context context, boolean ch, String lic, String sig,
-                                         boolean printSig, boolean allAma, boolean allApt,
-                                         boolean checkEmu) {
+    public static void runLicenseChecker(Context context, boolean ch, String lic, boolean allAma,
+                                         boolean allApt, boolean checkEmu) {
         Preferences mPrefs = new Preferences(context);
         mPrefs.setSettingsModified(false);
         if (ch && isNewVersion(context)) {
-            checkLicense(context, lic, sig, printSig, allAma, allApt, checkEmu);
+            checkLicense(context, lic, allAma, allApt, checkEmu);
         } else {
             mPrefs.setDashboardWorking(true);
             showChangelogDialog(context);
@@ -346,15 +345,12 @@ public class Utils {
         }
     }
 
-    protected static void checkLicense(final Context context, String lic, String sig, boolean
-            printSig, boolean allAma, boolean allApt, boolean checkEmu) {
+    protected static void checkLicense(final Context context, String lic, boolean allAma, boolean
+            allApt, boolean checkEmu) {
         final Preferences mPrefs = new Preferences(context);
         final RepelloMaxima[] spell = new RepelloMaxima[1];
         spell[0] = new RepelloMaxima.Speller(context)
                 .withLicKey(lic)
-                // TODO: Add signature here and use values
-                .withSigKey(sig)
-                .printSig(printSig)
                 .allAmazon(allAma)
                 .allApt(allApt)
                 .checkEmu(checkEmu)
