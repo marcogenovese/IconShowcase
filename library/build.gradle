@@ -96,6 +96,8 @@ android {
 
 }
 
+apply from: 'https://raw.githubusercontent.com/adwiv/android-fat-aar/master/fat-aar.gradle'
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -134,7 +136,7 @@ dependencies {
 
     //License Checker Lib
     compile 'com.github.javiersantos:PiracyChecker:0.0.3'
-    compile project(':repmax')
+    embedded project(':repmax')
 
     //Required for Kustom support.
     //noinspection GradleDynamicVersion
