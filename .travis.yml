@@ -31,7 +31,7 @@ before_script:
   - echo yes | android update sdk --no-ui --all --filter android-25
 
 script:
-    - ./gradlew clean build
+    - ./gradlew clean build test
   
 branches:
   only:
