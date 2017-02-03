@@ -115,8 +115,10 @@ public abstract class TasksActivity extends DrawerActivity {
             Preferences mPrefs = new Preferences(this);
             IconRequest.start(this)
                     .withAppName(getString(R.string.app_name))
-                    .withFooter("%s Version: %s", getString(R.string.app_name), appInfo != null ?
-                            appInfo.versionName : "1.0")
+                    .withFooter("%s Version: %s \n IconShowcase lib version: %s", getString(R
+                                    .string.app_name), appInfo != null ? appInfo.versionName : "1" +
+                                    ".0",
+                            BuildConfig.VERSION_NAME)
                     .withSubject(s(R.string.request_title))
                     .toEmail(s(R.string.email_id))
                     .saveDir(new File(getString(R.string.request_save_location, Environment
