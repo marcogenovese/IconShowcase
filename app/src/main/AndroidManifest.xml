@@ -81,21 +81,20 @@
 
 
         <!-- Remove comment marks to enable Zooper
-        Replace jahirfiquitiva.apps.iconshowcase.sample with your app's package
         <provider
             android:name=".zooper.TemplateProvider"
-            android:authorities="jahirfiquitiva.apps.iconshowcase.sample.zwprovider"
+            android:authorities="${applicationId}.zwprovider"
             tools:ignore="ExportedContentProvider"/>
 		-->
 
 
         <!-- Remove comment marks to enable Kustom Skins
-        * Replace jahirfiquitiva.apps.iconshowcase.sample with your app's package
-        * Remove intent-filter lines according to your needs. If you're not going to provide any of the options, remove such line.
+        * Remove intent-filter action lines according to your needs.
+		* If you're not going to provide one of the options, remove its respective line.
 
         <provider
             android:name="org.kustom.api.Provider"
-            android:authorities="jahirfiquitiva.apps.iconshowcase.sample.kustomprovider"
+            android:authorities="${applicationId}.kustomprovider"
             android:exported="true"
             tools:ignore="ExportedContentProvider">
             <intent-filter>
