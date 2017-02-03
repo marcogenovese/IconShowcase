@@ -22,7 +22,11 @@ package jahirfiquitiva.iconshowcase.holders;
 import jahirfiquitiva.iconshowcase.events.OnLoadEvent;
 import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.models.IconsCategory;
+import jahirfiquitiva.iconshowcase.models.KustomKomponent;
+import jahirfiquitiva.iconshowcase.models.KustomWallpaper;
+import jahirfiquitiva.iconshowcase.models.KustomWidget;
 import jahirfiquitiva.iconshowcase.models.WallpaperItem;
+import jahirfiquitiva.iconshowcase.models.ZooperWidget;
 
 /**
  * Created by Allan Wang on 2016-09-10.
@@ -32,6 +36,10 @@ public class Holder {
     private CategoryList mIconsCategories = new CategoryList();
     private HomePreviewList mHome = new HomePreviewList();
     private WallpapersList mWalls = new WallpapersList();
+    private KustomWidgetsList mKustomWidgets = new KustomWidgetsList();
+    private KomponentsList mKomponents = new KomponentsList();
+    private KustomWallsList mKustomWalls = new KustomWallsList();
+    private ZooperList mZooperList = new ZooperList();
 
     public CategoryList iconsCategories() {
         return mIconsCategories;
@@ -43,6 +51,22 @@ public class Holder {
 
     public WallpapersList walls() {
         return mWalls;
+    }
+
+    public KustomWidgetsList kustomWidgets() {
+        return mKustomWidgets;
+    }
+
+    public KomponentsList komponents() {
+        return mKomponents;
+    }
+
+    public KustomWallsList kustomWalls() {
+        return mKustomWalls;
+    }
+
+    public ZooperList zooperList() {
+        return mZooperList;
     }
 
     public class CategoryList extends ListHolderFrame<IconsCategory> {
@@ -66,6 +90,39 @@ public class Holder {
         @Override
         public OnLoadEvent.Type getEventType() {
             return OnLoadEvent.Type.WALLPAPERS;
+        }
+    }
+
+    public class KustomWidgetsList extends ListHolderFrame<KustomWidget> {
+
+        @Override
+        public OnLoadEvent.Type getEventType() {
+            return OnLoadEvent.Type.KUSTOMWIDGETS;
+        }
+    }
+
+    public class KomponentsList extends ListHolderFrame<KustomKomponent> {
+
+        @Override
+        public OnLoadEvent.Type getEventType() {
+            return OnLoadEvent.Type.KOMPONENTS;
+        }
+    }
+
+    public class KustomWallsList extends ListHolderFrame<KustomWallpaper> {
+
+        @Override
+        public OnLoadEvent.Type getEventType() {
+            return OnLoadEvent.Type.KUSTOMWALLPAPERS;
+        }
+    }
+
+
+    public class ZooperList extends ListHolderFrame<ZooperWidget> {
+
+        @Override
+        public OnLoadEvent.Type getEventType() {
+            return OnLoadEvent.Type.ZOOPER;
         }
     }
 

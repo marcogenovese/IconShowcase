@@ -100,8 +100,8 @@ apply from: 'https://raw.githubusercontent.com/adwiv/android-fat-aar/master/fat-
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-
     //Android Support Libraries
+    compile "com.android.support:design:$ANDROID_SUPPORT_LIBS"
     compile "com.android.support:palette-v7:$ANDROID_SUPPORT_LIBS"
     compile "com.android.support:gridlayout-v7:$ANDROID_SUPPORT_LIBS"
     compile "com.android.support:customtabs:$ANDROID_SUPPORT_LIBS"
@@ -122,7 +122,7 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.1.0'
 
     //Library for Requests
-    compile 'com.github.AllanWang:Butler:5.0'
+    compile 'com.github.AllanWang:Butler:d0b018b'
 
     //Library for UI framework
     compile 'com.github.AllanWang:Capsule:v3.1'

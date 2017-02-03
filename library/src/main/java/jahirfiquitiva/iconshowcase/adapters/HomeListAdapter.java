@@ -40,8 +40,6 @@ import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.holders.FullListHolder;
 import jahirfiquitiva.iconshowcase.models.HomeCard;
 import jahirfiquitiva.iconshowcase.models.IconsCategory;
-import jahirfiquitiva.iconshowcase.tasks.LoadKustomFiles;
-import jahirfiquitiva.iconshowcase.tasks.LoadZooperWidgets;
 import jahirfiquitiva.iconshowcase.utilities.utils.IconUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
@@ -237,8 +235,10 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
         this.wallpapers = FullListHolder.get().walls().getList() != null
                 ? FullListHolder.get().walls().getList().size() : 0;
-        this.widgets = LoadZooperWidgets.widgets != null ? LoadZooperWidgets.widgets.size() : 0;
-        this.widgets += LoadKustomFiles.widgets != null ? LoadKustomFiles.widgets.size() : 0;
+        this.widgets = FullListHolder.get().zooperList().getList() != null ? FullListHolder
+                .get().zooperList().getList().size() : 0;
+        this.widgets += FullListHolder.get().kustomWidgets().getList() != null ? FullListHolder
+                .get().kustomWidgets().getList().size() : 0;
         if (this.widgets > 1) {
             this.widgets -= 1;
         }

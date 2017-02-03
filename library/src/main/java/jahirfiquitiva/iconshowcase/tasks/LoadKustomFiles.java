@@ -35,8 +35,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
-import jahirfiquitiva.iconshowcase.fragments.KustomFragment;
 import jahirfiquitiva.iconshowcase.fragments.MainFragment;
+import jahirfiquitiva.iconshowcase.holders.FullListHolder;
 import jahirfiquitiva.iconshowcase.models.KustomKomponent;
 import jahirfiquitiva.iconshowcase.models.KustomWallpaper;
 import jahirfiquitiva.iconshowcase.models.KustomWidget;
@@ -46,9 +46,9 @@ import timber.log.Timber;
 
 public class LoadKustomFiles extends AsyncTask<Void, String, Boolean> {
 
-    public final static ArrayList<KustomKomponent> komponents = new ArrayList<>();
-    public final static ArrayList<KustomWallpaper> wallpapers = new ArrayList<>();
-    public final static ArrayList<KustomWidget> widgets = new ArrayList<>();
+    private final ArrayList<KustomKomponent> komponents = new ArrayList<>();
+    private final ArrayList<KustomWallpaper> wallpapers = new ArrayList<>();
+    private final ArrayList<KustomWidget> widgets = new ArrayList<>();
     private final WeakReference<Context> context;
     private long startTime, endTime;
 
@@ -64,23 +64,17 @@ public class LoadKustomFiles extends AsyncTask<Void, String, Boolean> {
     @Override
     @SuppressWarnings("ResultOfMethodCallIgnored")
     protected Boolean doInBackground(Void... params) {
-
         boolean worked = false;
-
         try {
             AssetManager assetManager = context.get().getAssets();
-
             String[] kustomFolders = {"komponents", "wallpapers", "widgets"};
-
             for (String kustomFolder : kustomFolders) {
                 worked = readKustomFiles(assetManager, kustomFolder);
             }
-
         } catch (Exception e) {
             //Do nothing
             worked = false;
         }
-
         endTime = System.currentTimeMillis();
         return worked;
     }
@@ -88,10 +82,9 @@ public class LoadKustomFiles extends AsyncTask<Void, String, Boolean> {
     @Override
     protected void onPostExecute(Boolean worked) {
         if (worked) {
-            if (KustomFragment.kustomAdapter != null) {
-                KustomFragment.kustomAdapter.setLists(widgets,
-                        komponents, wallpapers);
-            }
+            FullListHolder.get().kustomWidgets().createList(widgets);
+            FullListHolder.get().komponents().createList(komponents);
+            FullListHolder.get().kustomWalls().createList(wallpapers);
             if (context.get() instanceof ShowcaseActivity) {
                 if (((ShowcaseActivity) context.get()).getCurrentFragment() instanceof
                         MainFragment) {
@@ -110,10 +103,8 @@ public class LoadKustomFiles extends AsyncTask<Void, String, Boolean> {
     private boolean readKustomFiles(AssetManager assetManager, String folder) {
         try {
             String[] kustomFiles = assetManager.list(folder);
-
             File previewsFolder = new File(context.get().getExternalCacheDir(), IconUtils
                     .capitalizeText(folder) + "Previews");
-
             if (kustomFiles != null && kustomFiles.length > 0) {
                 Utils.clean(previewsFolder);
                 previewsFolder.mkdirs();

@@ -84,14 +84,16 @@ public class MainFragment extends EventBaseFragment {
 
         GridLayout iconsRow = (GridLayout) getActivity().findViewById(R.id.iconsRow);
 
-        iconsRow.setOnClickListener(new DebouncedClickListener() {
+        if (((ShowcaseActivity) getActivity()).includesIcons()) {
+            iconsRow.setOnClickListener(new DebouncedClickListener() {
 
-            @Override
-            public void onDebouncedClick(View v) {
-                ((ShowcaseActivity) getActivity()).setAllowShuffle(true);
-                setupAndAnimateIcons(0);
-            }
-        });
+                @Override
+                public void onDebouncedClick(View v) {
+                    ((ShowcaseActivity) getActivity()).setAllowShuffle(true);
+                    setupAndAnimateIcons(0);
+                }
+            });
+        }
 
         if (hasAppsList) {
             for (int i = 0; i < listNames.length; i++) {
@@ -147,6 +149,7 @@ public class MainFragment extends EventBaseFragment {
     }
 
     private void setupAndAnimateIcons(int delay) {
+        if (!(((ShowcaseActivity) getActivity()).includesIcons())) return;
         ((ShowcaseActivity) getActivity()).setupIcons();
         ((ShowcaseActivity) getActivity()).animateIcons(delay);
     }

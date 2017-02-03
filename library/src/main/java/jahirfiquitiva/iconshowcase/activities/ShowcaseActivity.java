@@ -258,7 +258,6 @@ public class ShowcaseActivity extends TasksActivity {
             setupToolbarHeader();
         }
         ToolbarColorizer.setupToolbarIconsAndTextsColors(this, cAppBarLayout, cToolbar);
-        // TODO: Add proper booleans for this
         Utils.runLicenseChecker(this, WITH_LICENSE_CHECKER, GOOGLE_PUBKEY,
                 WITH_INSTALLED_FROM_AMAZON, ALLOW_APT_USE, !ALLOW_EMU);
     }
@@ -589,7 +588,6 @@ public class ShowcaseActivity extends TasksActivity {
 
     private void getAction() {
         if (getIntent() == null || getIntent().getAction() == null) return;
-
         switch (getIntent().getAction()) {
             case Config.ADW_ACTION:
             case Config.TURBO_ACTION:
@@ -605,8 +603,7 @@ public class ShowcaseActivity extends TasksActivity {
     }
 
     public void setupIcons() {
-
-        if (FullListHolder.get().home().isEmpty()) return;
+        if ((FullListHolder.get().home().isEmpty()) || (!(includesIcons()))) return;
 
         ArrayList<IconItem> finalIconsList = new ArrayList<>();
 
@@ -642,9 +639,24 @@ public class ShowcaseActivity extends TasksActivity {
     }
 
     public void animateIcons(int delay) {
+        if (!(includesIcons())) return;
 
         if (!iconsPicker && !wallsPicker) {
             switch (numOfIcons) {
+                case 8:
+                    if (icon7 != null) {
+                        icon7.setVisibility(View.VISIBLE);
+                    }
+                    if (icon8 != null) {
+                        icon8.setVisibility(View.VISIBLE);
+                    }
+                case 6:
+                    if (icon5 != null) {
+                        icon5.setVisibility(View.VISIBLE);
+                    }
+                    if (icon6 != null) {
+                        icon6.setVisibility(View.VISIBLE);
+                    }
                 case 4:
                     if (icon1 != null) {
                         icon1.setVisibility(View.VISIBLE);
@@ -657,52 +669,6 @@ public class ShowcaseActivity extends TasksActivity {
                     }
                     if (icon4 != null) {
                         icon4.setVisibility(View.VISIBLE);
-                    }
-                    break;
-                case 6:
-                    if (icon1 != null) {
-                        icon1.setVisibility(View.VISIBLE);
-                    }
-                    if (icon2 != null) {
-                        icon2.setVisibility(View.VISIBLE);
-                    }
-                    if (icon3 != null) {
-                        icon3.setVisibility(View.VISIBLE);
-                    }
-                    if (icon4 != null) {
-                        icon4.setVisibility(View.VISIBLE);
-                    }
-                    if (icon5 != null) {
-                        icon5.setVisibility(View.VISIBLE);
-                    }
-                    if (icon6 != null) {
-                        icon6.setVisibility(View.VISIBLE);
-                    }
-                    break;
-                case 8:
-                    if (icon1 != null) {
-                        icon1.setVisibility(View.VISIBLE);
-                    }
-                    if (icon2 != null) {
-                        icon2.setVisibility(View.VISIBLE);
-                    }
-                    if (icon3 != null) {
-                        icon3.setVisibility(View.VISIBLE);
-                    }
-                    if (icon4 != null) {
-                        icon4.setVisibility(View.VISIBLE);
-                    }
-                    if (icon5 != null) {
-                        icon5.setVisibility(View.VISIBLE);
-                    }
-                    if (icon6 != null) {
-                        icon6.setVisibility(View.VISIBLE);
-                    }
-                    if (icon7 != null) {
-                        icon7.setVisibility(View.VISIBLE);
-                    }
-                    if (icon8 != null) {
-                        icon8.setVisibility(View.VISIBLE);
                     }
                     break;
             }
@@ -722,6 +688,7 @@ public class ShowcaseActivity extends TasksActivity {
     }
 
     private void playIconsAnimations(Animation anim) {
+        if (!(includesIcons())) return;
 
         icon1.startAnimation(anim);
         icon2.startAnimation(anim);
@@ -743,51 +710,53 @@ public class ShowcaseActivity extends TasksActivity {
     }
 
     public void setupToolbarHeader() {
-
-        if (Config.get().userWallpaperInToolbar() && mPrefs.getWallpaperAsToolbarHeaderEnabled()) {
-            WallpaperManager wm = WallpaperManager.getInstance(this);
-
-            if (wm != null) {
-                Drawable currentWallpaper = wm.getFastDrawable();
-                if (currentWallpaper != null) {
-                    toolbarHeader.setAlpha(0.9f);
-                    toolbarHeader.setImageDrawable(currentWallpaper);
-                    wallpaperDrawable = currentWallpaper;
-                }
-            }
-        } else {
-            String defPicture = getResources().getString(R.string.toolbar_picture);
-            if (defPicture != null && defPicture.length() > 0) {
-                int res = getResources().getIdentifier(defPicture, "drawable", getPackageName());
-                if (res != 0) {
-                    wallpaperDrawable = ContextCompat.getDrawable(this, wallpaper);
-                    toolbarHeader.setImageDrawable(wallpaperDrawable);
+        try {
+            if (Config.get().userWallpaperInToolbar() && mPrefs
+                    .getWallpaperAsToolbarHeaderEnabled()) {
+                WallpaperManager wm = WallpaperManager.getInstance(this);
+                if (wm != null) {
+                    Drawable currentWallpaper = wm.getFastDrawable();
+                    if (currentWallpaper != null) {
+                        toolbarHeader.setAlpha(0.9f);
+                        toolbarHeader.setImageDrawable(currentWallpaper);
+                        wallpaperDrawable = currentWallpaper;
+                    }
                 }
             } else {
-                String[] wallpapers = getResources().getStringArray(R.array.wallpapers);
-                if (wallpapers.length > 0) {
-                    int res;
-                    ArrayList<Integer> wallpapersArray = new ArrayList<>();
-                    for (String wallpaper : wallpapers) {
-                        res = getResources().getIdentifier(wallpaper, "drawable", getPackageName());
-                        if (res != 0) {
-                            wallpapersArray.add(res);
+                String defPicture = getResources().getString(R.string.toolbar_picture);
+                if (defPicture.length() > 0) {
+                    int res = getResources().getIdentifier(defPicture, "drawable", getPackageName
+                            ());
+                    if (res != 0) {
+                        wallpaperDrawable = ContextCompat.getDrawable(this, wallpaper);
+                        toolbarHeader.setImageDrawable(wallpaperDrawable);
+                    }
+                } else {
+                    String[] wallpapers = getResources().getStringArray(R.array.wallpapers);
+                    if (wallpapers.length > 0) {
+                        int res;
+                        ArrayList<Integer> wallpapersArray = new ArrayList<>();
+                        for (String wallpaper : wallpapers) {
+                            res = getResources().getIdentifier(wallpaper, "drawable",
+                                    getPackageName());
+                            if (res != 0) {
+                                wallpapersArray.add(res);
+                            }
                         }
+                        Random random = new Random();
+                        if (wallpaper == -1) {
+                            wallpaper = random.nextInt(wallpapersArray.size());
+                        }
+                        wallpaperDrawable = ContextCompat.getDrawable(this, wallpapersArray.get
+                                (wallpaper));
+                        toolbarHeader.setImageDrawable(wallpaperDrawable);
                     }
-
-                    Random random = new Random();
-                    if (wallpaper == -1) {
-                        wallpaper = random.nextInt(wallpapersArray.size());
-                    }
-
-                    wallpaperDrawable = ContextCompat.getDrawable(this, wallpapersArray.get
-                            (wallpaper));
-                    toolbarHeader.setImageDrawable(wallpaperDrawable);
                 }
             }
+            toolbarHeader.setVisibility(View.VISIBLE);
+        } catch (Exception e) {
+            // Do nothing
         }
-
-        toolbarHeader.setVisibility(View.VISIBLE);
     }
 
     private void setupDonations() {

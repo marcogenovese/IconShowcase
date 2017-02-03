@@ -25,7 +25,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.CallSuper;
 
-import com.pitchedapps.butler.library.icon.request.IconRequest;
+import com.pitchedapps.butler.iconrequest.IconRequest;
 
 import java.io.File;
 
@@ -112,8 +112,8 @@ public abstract class TasksActivity extends DrawerActivity {
             } catch (PackageManager.NameNotFoundException e) {
                 Timber.d(e.getMessage());
             }
+            Preferences mPrefs = new Preferences(this);
             IconRequest.start(this)
-                    //                        .withHeader("Hey, testing Icon Request!")
                     .withAppName(getString(R.string.app_name))
                     .withFooter("%s Version: %s", getString(R.string.app_name), appInfo != null ?
                             appInfo.versionName : "1.0")
@@ -121,12 +121,12 @@ public abstract class TasksActivity extends DrawerActivity {
                     .toEmail(s(R.string.email_id))
                     .saveDir(new File(getString(R.string.request_save_location, Environment
                             .getExternalStorageDirectory())))
-                    .includeDeviceInfo(true) // defaults to true anyways
-                    .generateAppFilterXml(true) // defaults to true anyways
                     .generateAppFilterJson(false)
                     .debugMode(Config.get().allowDebugging())
                     .filterXmlId(R.xml.appfilter)
                     //.filterOff() //TODO switch
+                    .withTimeLimit(getResources().getInteger(R.integer.time_limit_in_minutes),
+                            mPrefs.getPrefs())
                     .maxSelectionCount(0) //TODO add? And make this toggleable
                     .build().loadApps();
         }

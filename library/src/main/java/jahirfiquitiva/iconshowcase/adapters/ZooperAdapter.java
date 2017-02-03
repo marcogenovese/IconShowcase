@@ -45,9 +45,9 @@ import java.util.ArrayList;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.fragments.ZooperFragment;
+import jahirfiquitiva.iconshowcase.holders.FullListHolder;
 import jahirfiquitiva.iconshowcase.models.ZooperWidget;
 import jahirfiquitiva.iconshowcase.tasks.CopyFilesToStorage;
-import jahirfiquitiva.iconshowcase.tasks.LoadZooperWidgets;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.utils.IconUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.PermissionsUtils;
@@ -72,8 +72,8 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         this.context = context;
         this.mPrefs = new Preferences(context);
         this.layout = layout;
-        this.widgets = LoadZooperWidgets.widgets;
         this.wallpaper = wallpaper;
+        setupWidgets();
         this.everythingInstalled = (appsInstalled && areAssetsInstalled());
         this.extraCards = this.everythingInstalled ? 0 : 2;
         final int light = ContextCompat.getColor(context, R.color.drawable_tint_dark);
@@ -87,13 +87,15 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         this.mFragment = mFragment;
     }
 
-    public void setWidgets(ArrayList<ZooperWidget> widgets) {
-        if (widgets != null) {
-            this.widgets.addAll(widgets);
-            this.notifyItemRangeInserted(0, widgets.size() - 1);
-        } else {
-            this.widgets = new ArrayList<>();
-            this.notifyItemRangeInserted(0, 0);
+    public void setupWidgets() {
+        if (FullListHolder.get().zooperList().getList() != null) {
+            if (widgets != null) {
+                widgets.clear();
+            } else {
+                widgets = new ArrayList<>();
+            }
+            widgets.addAll(FullListHolder.get().zooperList().getList());
+            notifyItemRangeInserted(0, widgets.size());
         }
     }
 

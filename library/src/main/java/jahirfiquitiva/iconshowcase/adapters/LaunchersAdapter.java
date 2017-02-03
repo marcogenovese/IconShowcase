@@ -41,6 +41,7 @@ import java.util.Locale;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.fragments.ApplyFragment;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
+import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.IconUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
@@ -73,25 +74,16 @@ public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.Laun
         int iconResource = IconUtils.getIconResId(context.getResources(), context.getPackageName(),
                 iconName);
 
-        final int dark = ContextCompat.getColor(context, R.color.launcher_tint_dark);
-        final int light = ContextCompat.getColor(context, R.color.launcher_tint_light);
-        final int textDark = ContextCompat.getColor(context, R.color.launcher_text_light);
-        final int textLight = ContextCompat.getColor(context, R.color.launcher_text_dark);
-
         if (mPrefs != null && mPrefs.getAnimationsEnabled()) {
             Glide.with(context)
-                    .load(iconResource != 0 ?
-                            iconResource :
-                            IconUtils.getIconResId(context.getResources(), context.getPackageName(),
-                                    "ic_na_launcher"))
+                    .load(iconResource != 0 ? iconResource : IconUtils.getIconResId(context
+                            .getResources(), context.getPackageName(), "ic_na_launcher"))
                     .priority(Priority.IMMEDIATE)
                     .into(holder.icon);
         } else {
             Glide.with(context)
-                    .load(iconResource != 0 ?
-                            iconResource :
-                            IconUtils.getIconResId(context.getResources(), context.getPackageName(),
-                                    "ic_na_launcher"))
+                    .load(iconResource != 0 ? iconResource : IconUtils.getIconResId(context
+                            .getResources(), context.getPackageName(), "ic_na_launcher"))
                     .priority(Priority.IMMEDIATE)
                     .dontAnimate()
                     .into(holder.icon);
@@ -99,14 +91,19 @@ public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.Laun
 
         holder.launcherName.setText(launchers.get(position).name.toUpperCase(Locale.getDefault()));
 
+        final int dark = ContextCompat.getColor(context, R.color.launcher_tint_dark);
+        final int light = ContextCompat.getColor(context, R.color.launcher_tint_light);
+
         if (launchers.get(position).isInstalled(context)) {
             holder.icon.setColorFilter(null);
             holder.itemBG.setBackgroundColor(launchers.get(position).launcherColor);
-            holder.launcherName.setTextColor(textLight);
+            holder.launcherName.setTextColor(ColorUtils.getMaterialSecondaryTextColor(ColorUtils
+                    .isLightColor(launchers.get(position).launcherColor)));
         } else {
             holder.icon.setColorFilter(bnwFilter());
             holder.itemBG.setBackgroundColor(ThemeUtils.darkTheme ? dark : light);
-            holder.launcherName.setTextColor(ThemeUtils.darkTheme ? textDark : textLight);
+            holder.launcherName.setTextColor(ColorUtils.getMaterialSecondaryTextColor(ColorUtils
+                    .isLightColor(ThemeUtils.darkTheme ? dark : light)));
         }
 
         holder.view.setTag(position);

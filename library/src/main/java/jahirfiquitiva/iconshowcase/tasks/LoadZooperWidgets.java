@@ -41,13 +41,14 @@ import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.activities.base.DrawerActivity;
 import jahirfiquitiva.iconshowcase.fragments.MainFragment;
 import jahirfiquitiva.iconshowcase.fragments.ZooperFragment;
+import jahirfiquitiva.iconshowcase.holders.FullListHolder;
 import jahirfiquitiva.iconshowcase.models.ZooperWidget;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 import timber.log.Timber;
 
 public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
 
-    public final static ArrayList<ZooperWidget> widgets = new ArrayList<>();
+    private final ArrayList<ZooperWidget> widgets = new ArrayList<>();
     private final WeakReference<Context> context;
     private long startTime, endTime;
 
@@ -102,9 +103,7 @@ public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
     @Override
     protected void onPostExecute(Boolean worked) {
         if (worked) {
-            if (mFragment != null && mFragment.getAdapter() != null) {
-                mFragment.getAdapter().setWidgets(widgets);
-            }
+            FullListHolder.get().zooperList().createList(widgets);
             if (context.get() instanceof ShowcaseActivity) {
                 if (((ShowcaseActivity) context.get()).getCurrentFragment() instanceof
                         MainFragment) {

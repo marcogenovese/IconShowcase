@@ -38,10 +38,10 @@ import java.io.File;
 import java.util.ArrayList;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.holders.FullListHolder;
 import jahirfiquitiva.iconshowcase.models.KustomKomponent;
 import jahirfiquitiva.iconshowcase.models.KustomWallpaper;
 import jahirfiquitiva.iconshowcase.models.KustomWidget;
-import jahirfiquitiva.iconshowcase.tasks.LoadKustomFiles;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
@@ -58,35 +58,37 @@ public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.Ku
     public KustomAdapter(Context context, Drawable wallpaper) {
         this.context = context;
         this.mPrefs = new Preferences(context);
-        this.komponents = LoadKustomFiles.komponents;
-        this.kustomWalls = LoadKustomFiles.wallpapers;
-        this.widgets = LoadKustomFiles.widgets;
         this.wallpaper = wallpaper;
+        setupLists();
     }
 
-    public void setLists(ArrayList<KustomWidget> widgets,
-                         ArrayList<KustomKomponent> komponents,
-                         ArrayList<KustomWallpaper> kustomWalls) {
-        if (widgets != null) {
-            this.widgets.addAll(widgets);
-            this.notifyItemRangeInserted(0, widgets.size() - 1);
-        } else {
-            this.widgets = new ArrayList<>();
-            this.notifyItemRangeInserted(0, 0);
+    public void setupLists() {
+        if (FullListHolder.get().kustomWidgets().getList() != null) {
+            if (widgets != null) {
+                widgets.clear();
+            } else {
+                widgets = new ArrayList<>();
+            }
+            widgets.addAll(FullListHolder.get().kustomWidgets().getList());
+            notifyItemRangeInserted(0, widgets.size());
         }
-        if (komponents != null) {
-            this.komponents.addAll(komponents);
-            this.notifyItemRangeInserted(0, komponents.size() - 1);
-        } else {
-            this.komponents = new ArrayList<>();
-            this.notifyItemRangeInserted(0, 0);
+        if (FullListHolder.get().komponents().getList() != null) {
+            if (komponents != null) {
+                komponents.clear();
+            } else {
+                komponents = new ArrayList<>();
+            }
+            komponents.addAll(FullListHolder.get().komponents().getList());
+            notifyItemRangeInserted(0, komponents.size());
         }
-        if (kustomWalls != null) {
-            this.kustomWalls.addAll(kustomWalls);
-            this.notifyItemRangeInserted(0, kustomWalls.size() - 1);
-        } else {
-            this.kustomWalls = new ArrayList<>();
-            this.notifyItemRangeInserted(0, 0);
+        if (FullListHolder.get().kustomWalls().getList() != null) {
+            if (kustomWalls != null) {
+                kustomWalls.clear();
+            } else {
+                kustomWalls = new ArrayList<>();
+            }
+            kustomWalls.addAll(FullListHolder.get().kustomWalls().getList());
+            notifyItemRangeInserted(0, kustomWalls.size());
         }
     }
 
@@ -134,7 +136,8 @@ public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.Ku
                 holder.sectionTitle.setText("Komponents");
                 break;
             case 1:
-                holder.sectionTitle.setText("Wallpapers");
+                holder.sectionTitle.setText(context.getResources().getString(R.string
+                        .section_wallpapers));
                 break;
             case 2:
                 holder.sectionTitle.setText("Widgets");
@@ -154,6 +157,7 @@ public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.Ku
             case 0:
                 filePath = komponents.get(relativePosition).getPreviewPath();
                 break;
+
             case 1:
                 holder.itemView.setOnClickListener(new DebouncedClickListener() {
                     @Override
@@ -164,7 +168,6 @@ public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.Ku
                         }
                     }
                 });
-
                 switch (context.getResources().getConfiguration().orientation) {
                     case Configuration.ORIENTATION_PORTRAIT:
                         filePath = kustomWalls.get(relativePosition).getPreviewPath();
@@ -177,6 +180,7 @@ public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.Ku
                         break;
                 }
                 break;
+
             case 2:
                 holder.itemView.setOnClickListener(new DebouncedClickListener() {
                     @Override
@@ -187,7 +191,6 @@ public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.Ku
                         }
                     }
                 });
-
                 switch (context.getResources().getConfiguration().orientation) {
                     case Configuration.ORIENTATION_PORTRAIT:
                         filePath = widgets.get(relativePosition).getPreviewPath();
@@ -200,6 +203,7 @@ public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.Ku
                         break;
                 }
                 break;
+
             default:
                 filePath = null;
                 break;
@@ -222,7 +226,6 @@ public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.Ku
     }
 
     class KustomHolder extends RecyclerView.ViewHolder {
-
         final ImageView background;
         final ImageView widget;
         final TextView sectionTitle;
@@ -233,7 +236,6 @@ public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.Ku
             widget = (ImageView) itemView.findViewById(R.id.preview);
             sectionTitle = (TextView) itemView.findViewById(R.id.kustom_section_title);
         }
-
     }
 
 }

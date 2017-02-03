@@ -151,6 +151,9 @@
 
     <string name="pref_header_storage">Storage</string>
 
+    <string name="pref_title_low_data_usage">Reduce data usage</string>
+    <string name="pref_summary_low_data_usage">App will load lower resolution wallpaper previews to reduce data usage.</string>
+
     <string name="pref_title_cache">Clear app cache and data</string>
     <string name="pref_summary_cache">This will delete app cache and preferences.\nCurrent cache
         size: %1$s

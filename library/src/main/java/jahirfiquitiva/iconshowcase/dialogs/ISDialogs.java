@@ -38,7 +38,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import jahirfiquitiva.iconshowcase.R;
-import jahirfiquitiva.iconshowcase.activities.AltWallpaperViewerActivity;
 import jahirfiquitiva.iconshowcase.events.BlankEvent;
 import jahirfiquitiva.iconshowcase.fragments.WallpapersFragment;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
@@ -293,13 +292,12 @@ public final class ISDialogs {
         }
     }
 
-    public static void showRequestTimeLimitDialog(Context context, int minutes) {
+    public static void showRequestTimeLimitDialog(Context context, long minutes, long millisLeft) {
         String minutesText =
                 new DecimalFormat("##.##").format(RequestUtils.getExactMinutes(minutes, false)) +
                         " " + RequestUtils.getTimeName(context, minutes);
 
-        int secs = RequestUtils.getSecondsLeftToEnableRequest(context, minutes, new Preferences
-                (context));
+        long secs = millisLeft / 1000;
 
         String content = context.getResources().getString(R.string.apps_limit_dialog_day,
                 minutesText);

@@ -69,7 +69,6 @@
     <color name="light_bg">#fafafa</color>
     <color name="snackbar_light">#fafafa</color>
     <color name="launcher_tint_light">@color/drawable_tint_light</color>
-    <color name="launcher_text_light">@color/secondary_text_light</color>
     <color name="material_drawer_primary_text">#de000000</color>
     <color name="material_drawer_primary_icon">#8A000000</color>
     <color name="material_drawer_secondary_text">#8A000000</color>
@@ -89,7 +88,6 @@
     <color name="dark_bg">#303030</color>
     <color name="snackbar_dark">#424242</color>
     <color name="launcher_tint_dark">@color/drawable_tint_dark</color>
-    <color name="launcher_text_dark">@color/primary_text_dark</color>
     <color name="material_drawer_dark_primary_text">#deffffff</color>
     <color name="material_drawer_dark_primary_icon">#8Affffff</color>
     <color name="material_drawer_dark_secondary_text">#8Affffff</color>

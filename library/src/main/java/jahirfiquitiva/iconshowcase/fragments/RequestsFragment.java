@@ -33,8 +33,9 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.pitchedapps.butler.library.icon.request.AppLoadedEvent;
-import com.pitchedapps.butler.library.icon.request.IconRequest;
+import com.pitchedapps.butler.iconrequest.IconRequest;
+import com.pitchedapps.butler.iconrequest.RequestReadyCallback;
+import com.pitchedapps.butler.iconrequest.events.AppLoadedEvent;
 import com.pitchedapps.capsule.library.event.CFabEvent;
 import com.pitchedapps.capsule.library.fragments.CapsuleFragment;
 import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
@@ -43,7 +44,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
@@ -76,7 +77,7 @@ public class RequestsFragment extends CapsuleFragment {
         int gridSpacing = getResources().getDimensionPixelSize(R.dimen.lists_padding);
         int columnsNumber = getResources().getInteger(R.integer.requests_grid_width);
 
-        minutesLimit = getResources().getInteger(R.integer.limit_request_to_x_minutes);
+        minutesLimit = getResources().getInteger(R.integer.time_limit_in_minutes);
 
         setHasOptionsMenu(true);
 
@@ -194,12 +195,12 @@ public class RequestsFragment extends CapsuleFragment {
                 if (mAdapter.getSelectedApps() != null) {
                     if (mAdapter.getSelectedApps().size() < mPrefs.getRequestsLeft()) {
                         showRequestsFilesCreationDialog(getActivity(), mPrefs);
-                    } else if ((RequestUtils.canRequestXApps(getActivity(), minutesLimit, mPrefs)
-                            != -2)
+                    } else if ((RequestUtils.canRequestXApps(getActivity(), mPrefs) != -2)
                             || (minutesLimit <= 0)) {
                         showRequestsFilesCreationDialog(getActivity(), mPrefs);
                     } else {
-                        ISDialogs.showRequestTimeLimitDialog(getActivity(), minutesLimit);
+                        ISDialogs.showRequestTimeLimitDialog(getActivity(), minutesLimit,
+                                TimeUnit.MINUTES.toMillis(minutesLimit));
                     }
                 }
             } else {
@@ -239,12 +240,17 @@ public class RequestsFragment extends CapsuleFragment {
                                 }
                                 if (mAdapter.getSelectedApps().size() <= mPrefs.getRequestsLeft()) {
                                     dialog.show();
-                                    Calendar c = Calendar.getInstance();
-                                    RequestUtils.saveCurrentTimeOfRequest(mPrefs, c);
-                                    IconRequest.get().send(new IconRequest.RequestReadyCallback() {
+                                    IconRequest.get().send(new RequestReadyCallback() {
                                         @Override
                                         public void onRequestReady() {
                                             dialog.dismiss();
+                                        }
+
+                                        @Override
+                                        public void onRequestLimited(long millis) {
+                                            ISDialogs.showRequestTimeLimitDialog(getActivity(),
+                                                    minutesLimit,
+                                                    TimeUnit.MILLISECONDS.toMinutes(millis));
                                         }
                                     });
                                 } else {
@@ -252,12 +258,17 @@ public class RequestsFragment extends CapsuleFragment {
                                 }
                             } else {
                                 dialog.show();
-                                Calendar c = Calendar.getInstance();
-                                RequestUtils.saveCurrentTimeOfRequest(mPrefs, c);
-                                IconRequest.get().send(new IconRequest.RequestReadyCallback() {
+                                IconRequest.get().send(new RequestReadyCallback() {
                                     @Override
                                     public void onRequestReady() {
                                         dialog.dismiss();
+                                    }
+
+                                    @Override
+                                    public void onRequestLimited(long millis) {
+                                        ISDialogs.showRequestTimeLimitDialog(getActivity(),
+                                                minutesLimit,
+                                                TimeUnit.MILLISECONDS.toMinutes(millis));
                                     }
                                 });
                             }

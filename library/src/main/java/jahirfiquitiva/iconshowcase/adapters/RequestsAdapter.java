@@ -11,13 +11,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Priority;
-import com.pitchedapps.butler.library.icon.request.App;
-import com.pitchedapps.butler.library.icon.request.IconRequest;
+import com.pitchedapps.butler.iconrequest.App;
+import com.pitchedapps.butler.iconrequest.IconRequest;
 
 import java.util.ArrayList;
 
 import jahirfiquitiva.iconshowcase.R;
-import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.config.Config;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
@@ -78,16 +77,9 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
     }
 
     public void selectOrDeselectAll(Context context, boolean select, Preferences mPrefs) {
-        boolean showDialog = false, showTimeLimitDialog = false;
-
+        boolean showDialog = false;
         final IconRequest ir = IconRequest.get();
-
-        int limit = RequestUtils.canRequestXApps(context,
-                -1,
-                //TODO uncomment after time limit is ready
-                //context.getResources().getInteger(R.integer.limit_request_to_x_minutes),
-                mPrefs);
-
+        int limit = RequestUtils.canRequestXApps(context, mPrefs);
         if (ir != null && ir.getApps() != null) {
             if (limit >= -1) {
                 for (App app : ir.getApps()) {
@@ -110,18 +102,8 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
                 }
                 //TODO: Either keep this or find a way to set checked/unchecked checkboxes in holder
                 notifyDataSetChanged();
-            } else {
-                showTimeLimitDialog = limit == -2;
             }
-
             if (showDialog) ISDialogs.showRequestLimitDialog(context, limit);
-
-            if (showTimeLimitDialog) {
-                ISDialogs.showRequestTimeLimitDialog(context,
-                        context.getResources().getInteger(R.integer.limit_request_to_x_minutes));
-                ir.unselectAllApps();
-                ((ShowcaseActivity) context).setSelectAllApps(false);
-            }
         }
     }
 
@@ -152,7 +134,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
                     ir.toggleAppSelected(app);
                     checkBox.setChecked(ir.isAppSelected(app));
                 } else {
-                    if (Config.get().integer(R.integer.limit_request_to_x_minutes) <= 0) {
+                    if (Config.get().integer(R.integer.time_limit_in_minutes) <= 0) {
                         ir.toggleAppSelected(app);
                         checkBox.setChecked(ir.isAppSelected(app));
                     } else if (ir.getSelectedApps().size() < limit) {
@@ -164,13 +146,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
                             checkBox.setChecked(ir.isAppSelected(app));
                         } else {
                             if (Config.get().integer(R.integer.max_apps_to_request) > -1) {
-                                if (RequestUtils.canRequestXApps(view.getContext(),
-                                        Config.get().integer(R.integer.limit_request_to_x_minutes),
-                                        mPrefs) == -2) {
-                                    ISDialogs.showRequestTimeLimitDialog(view.getContext(),
-                                            Config.get().integer(R.integer
-                                                    .limit_request_to_x_minutes));
-                                } else {
+                                if (RequestUtils.canRequestXApps(view.getContext(), mPrefs) > -2) {
                                     ISDialogs.showRequestLimitDialog(view.getContext(), limit);
                                 }
                             }

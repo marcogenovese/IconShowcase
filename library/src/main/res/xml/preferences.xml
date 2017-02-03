@@ -75,6 +75,15 @@
 
     <PreferenceCategory android:title="@string/pref_header_storage">
 
+        <!--
+        <SwitchPreference
+                android:key="lowDataUsage"
+                android:persistent="true"
+                android:defaultValue="true"
+                android:title="@string/pref_title_low_data_usage"
+                android:summary="@string/pref_summary_low_data_usage"/>
+                -->
+
         <Preference
                 android:key="clearData"
                 android:persistent="true"
