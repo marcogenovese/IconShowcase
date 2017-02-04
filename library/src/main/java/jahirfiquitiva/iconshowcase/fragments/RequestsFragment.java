@@ -48,7 +48,6 @@ import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.activities.base.DrawerActivity;
 import jahirfiquitiva.iconshowcase.adapters.RequestsAdapter;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
-import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.utils.PermissionsUtils;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 import timber.log.Timber;
@@ -185,91 +184,40 @@ public class RequestsFragment extends CapsuleFragment {
     }
 
     public void startRequestProcess() {
-        Preferences mPrefs = new Preferences(getActivity());
-        if (getResources().getInteger(R.integer.max_apps_to_request) > 0) {
-            /*
-            if (mPrefs.getRequestsLeft() >= 0) {
-                if (mAdapter.getSelectedApps() != null) {
-                    if (mAdapter.getSelectedApps().size() < mPrefs.getRequestsLeft()) {
-                        showRequestsFilesCreationDialog(getActivity(), mPrefs);
-                    } else if ((RequestUtils.canRequestXApps(getActivity(), mPrefs) != -2)
-                            || (minutesLimit <= 0)) {
-                        showRequestsFilesCreationDialog(getActivity(), mPrefs);
-                    } else {
-                        ISDialogs.showRequestTimeLimitDialog(getActivity(), minutesLimit,
-                                TimeUnit.MINUTES.toMillis(minutesLimit));
-                    }
-                }
-            } else {
-                showRequestsFilesCreationDialog(getActivity(), mPrefs);
-            }
-            */
-        } else {
-            showRequestsFilesCreationDialog(getActivity(), mPrefs);
-        }
+        showRequestsFilesCreationDialog(getActivity());
     }
 
-    private void showRequestsFilesCreationDialog(final Context context, final Preferences mPrefs) {
-        if (mAdapter.getSelectedApps() != null && mAdapter.getSelectedApps().size() > 0) {
-            PermissionsUtils.checkPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    new PermissionsUtils.PermissionRequestListener() {
-                        @Override
-                        public void onPermissionRequest() {
-                            PermissionsUtils.requestStoragePermission((ShowcaseActivity) context);
-                        }
+    private void showRequestsFilesCreationDialog(final Context context) {
+        PermissionsUtils.checkPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                new PermissionsUtils.PermissionRequestListener() {
+                    @Override
+                    public void onPermissionRequest() {
+                        PermissionsUtils.requestStoragePermission((ShowcaseActivity) context);
+                    }
 
-                        @Override
-                        public void onPermissionDenied() {
-                            ISDialogs.showPermissionNotGrantedDialog(context);
-                        }
+                    @Override
+                    public void onPermissionDenied() {
+                        ISDialogs.showPermissionNotGrantedDialog(context);
+                    }
 
-                        @Override
-                        public void onPermissionCompletelyDenied() {
-                            ISDialogs.showPermissionNotGrantedDialog(context);
-                        }
+                    @Override
+                    public void onPermissionCompletelyDenied() {
+                        ISDialogs.showPermissionNotGrantedDialog(context);
+                    }
 
-                        @Override
-                        public void onPermissionGranted() {
-                            final MaterialDialog dialog = ISDialogs.showBuildingRequestDialog
-                                    (context);
-                            if (getResources().getInteger(R.integer.max_apps_to_request) > -1) {
-                                if (maxApps < 0) {
-                                    maxApps = 0;
-                                }
-                                /*
-                                if (mAdapter.getSelectedApps().size() <= mPrefs.getRequestsLeft()) {
-                                    dialog.show();
-                                    IconRequest.get().send(new RequestReadyCallback() {
-                                        @Override
-                                        public void onRequestReady() {
-                                            dialog.dismiss();
-                                        }
-
-                                        @Override
-                                        public void onRequestLimited(long millis) {
-                                            ISDialogs.showRequestTimeLimitDialog(getActivity(),
-                                                    minutesLimit,
-                                                    TimeUnit.MILLISECONDS.toMinutes(millis));
-                                        }
-                                    });
-                                } else {
-                                    ISDialogs.showRequestLimitDialog(context, maxApps);
-                                }
-                                */
-                            } else {
-                                dialog.show();
-                                IconRequest.get().send(new IconRequest.OnRequestReady() {
-                                    @Override
-                                    public void doWhenReady() {
-                                        dialog.dismiss();
-                                    }
-                                });
+                    @Override
+                    public void onPermissionGranted() {
+                        final MaterialDialog dialog = ISDialogs.showBuildingRequestDialog
+                                (context);
+                        dialog.show();
+                        IconRequest.get().send(new IconRequest.OnRequestReady() {
+                            @Override
+                            public void doWhenReady() {
+                                dialog.dismiss();
                             }
-                        }
-                    });
-        } else {
-            ISDialogs.showNoSelectedAppsDialog(context);
-        }
+                        });
+                    }
+                });
     }
 
 }

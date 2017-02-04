@@ -149,7 +149,7 @@ public abstract class TasksActivity extends DrawerActivity {
 
                         @Override
                         public void onRequestEmpty() {
-
+                            ISDialogs.showNoSelectedAppsDialog(getApplicationContext());
                         }
 
                     })
