@@ -55,7 +55,6 @@ public abstract class DrawerActivity extends CapsuleActivity {
             WITH_LICENSE_CHECKER = false,
             WITH_INSTALLED_FROM_AMAZON = false,
             ALLOW_APT_USE = false,
-            ALLOW_EMU = false,
 
     WITH_DONATIONS_SECTION = false,
 

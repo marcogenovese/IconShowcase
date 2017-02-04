@@ -37,14 +37,10 @@ public class HomeActivity extends AppCompatActivity {
             ENABLE_FLATTR_DONATIONS = false,
             ENABLE_BITCOIN_DONATIONS = false;
 
-    /*
-    LICENSE CHECK RELATED STUFF
-     */
     protected boolean
             ENABLE_LICENSE_CHECK = false,
             ENABLE_AMAZON_INSTALLS = false,
-            ENABLE_APTOIDE_USE = false,
-            ENABLE_EMULATOR = false;
+            ENABLE_APTOIDE_USE = false;
 
     // Don't change if you're not going to use these
     protected static final String GOOGLE_PUBLISHER_KEY = "insert_key_here";
@@ -53,7 +49,6 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Class service = FirebaseService.class;
-        Bundle bundle = getIntent().getExtras();
         if (NotificationUtils.hasNotificationExtraKey(this, getIntent(), "open_link", service)) {
             Utils.openLink(this, getIntent().getStringExtra("open_link"));
         } else {
@@ -90,7 +85,7 @@ public class HomeActivity extends AppCompatActivity {
         intent.putExtra("enableLicenseCheck", (ENABLE_LICENSE_CHECK && !BuildConfig.DEBUG));
         intent.putExtra("enableAmazonInstalls", ENABLE_AMAZON_INSTALLS);
         intent.putExtra("enableAptoideUse", ENABLE_APTOIDE_USE);
-        intent.putExtra("enableEmulator", (ENABLE_EMULATOR && !BuildConfig.DEBUG));
+
         intent.putExtra("googlePubKey", GOOGLE_PUBLISHER_KEY);
 
         if (getIntent().getDataString() != null && getIntent().getDataString().contains

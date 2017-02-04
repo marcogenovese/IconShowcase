@@ -310,11 +310,11 @@ public class Utils {
     }
 
     public static void runLicenseChecker(Context context, boolean ch, String lic, boolean allAma,
-                                         boolean allApt, boolean checkEmu) {
+                                         boolean allApt) {
         Preferences mPrefs = new Preferences(context);
         mPrefs.setSettingsModified(false);
         if (ch && isNewVersion(context)) {
-            checkLicense(context, lic, allAma, allApt, checkEmu);
+            checkLicense(context, lic, allAma, allApt);
         } else {
             mPrefs.setDashboardWorking(true);
             showChangelogDialog(context);
@@ -344,14 +344,13 @@ public class Utils {
     }
 
     protected static void checkLicense(final Context context, String lic, boolean allAma, boolean
-            allApt, boolean checkEmu) {
+            allApt) {
         final Preferences mPrefs = new Preferences(context);
         final RepelloMaxima[] spell = new RepelloMaxima[1];
         spell[0] = new RepelloMaxima.Speller(context)
                 .withLicKey(lic)
                 .allAmazon(allAma)
                 .allApt(allApt)
-                .checkEmu(checkEmu)
                 .thenDo(new RepelloCallback() {
                     @Override
                     public void onRepelled() {
@@ -388,13 +387,11 @@ public class Utils {
 
                     @Override
                     public void onCastError(PiracyCheckerError error) {
-                        // TODO: Create dialog to show error and allow retrying license check
                         ISDialogs.showLicenseErrorDialog(context, new MaterialDialog
                                 .SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull
                                     DialogAction which) {
-                                // TODO: Check this
                                 if (spell[0] != null) spell[0].cast();
                             }
                         }, new MaterialDialog.SingleButtonCallback() {

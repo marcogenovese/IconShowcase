@@ -78,35 +78,10 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestHolder> {
 
     private void onItemClick(Context context, AppCompatCheckBox checkBox, App app) {
         final IconRequest ir = IconRequest.get();
-        /*
         if (ir != null && ir.getApps() != null) {
-            Preferences mPrefs = new Preferences(context);
-            int limit = mPrefs.getRequestsLeft();
-            if (limit < 0) {
-                ir.toggleAppSelected(app);
-                checkBox.setChecked(ir.isAppSelected(app));
-            } else {
-                if (Config.get().integer(R.integer.time_limit_in_minutes) <= 0) {
-                    ir.toggleAppSelected(app);
-                    checkBox.setChecked(ir.isAppSelected(app));
-                } else if (ir.getSelectedApps().size() < limit) {
-                    ir.toggleAppSelected(app);
-                    checkBox.setChecked(ir.isAppSelected(app));
-                } else {
-                    if (ir.isAppSelected(app)) {
-                        ir.toggleAppSelected(app);
-                        checkBox.setChecked(ir.isAppSelected(app));
-                    } else {
-                        if (Config.get().integer(R.integer.max_apps_to_request) > -1) {
-                            if (RequestUtils.canRequestXApps(context, mPrefs) > -2) {
-                                ISDialogs.showRequestLimitDialog(context, limit);
-                            }
-                        }
-                    }
-                }
-            }
+            ir.toggleAppSelected(app);
+            checkBox.setChecked(ir.isAppSelected(app));
         }
-        */
     }
 
 }

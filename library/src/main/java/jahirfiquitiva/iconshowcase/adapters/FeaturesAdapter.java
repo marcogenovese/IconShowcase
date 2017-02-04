@@ -84,7 +84,6 @@ public class FeaturesAdapter extends RecyclerView.Adapter<FeaturesAdapter.Featur
         FeatureHolder(View v) {
             super(v);
             view = v;
-
             title = (TextView) view.findViewById(R.id.features_title);
             content = (TextView) view.findViewById(R.id.features_content);
         }

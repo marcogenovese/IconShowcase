@@ -128,7 +128,6 @@ public class ShowcaseActivity extends TasksActivity {
         WITH_LICENSE_CHECKER = getIntent().getBooleanExtra("enableLicenseCheck", false);
         WITH_INSTALLED_FROM_AMAZON = getIntent().getBooleanExtra("enableAmazonInstalls", false);
         ALLOW_APT_USE = getIntent().getBooleanExtra("enableAptoideUse", false);
-        ALLOW_EMU = getIntent().getBooleanExtra("enableEmulator", false);
 
         GOOGLE_PUBKEY = getIntent().getStringExtra("googlePubKey");
 
@@ -259,7 +258,7 @@ public class ShowcaseActivity extends TasksActivity {
         }
         ToolbarColorizer.setupToolbarIconsAndTextsColors(this, cAppBarLayout, cToolbar);
         Utils.runLicenseChecker(this, WITH_LICENSE_CHECKER, GOOGLE_PUBKEY,
-                WITH_INSTALLED_FROM_AMAZON, ALLOW_APT_USE, !ALLOW_EMU);
+                WITH_INSTALLED_FROM_AMAZON, ALLOW_APT_USE);
     }
 
     @Override
