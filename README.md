@@ -144,7 +144,7 @@ Finally, be sure to check the license terms before publishing your works. Projec
 
 This app is shared under the CreativeCommons Attribution-ShareAlike license.
 
-	Copyright 2016 Jahir Fiquitiva
+	Copyright 2017 Jahir Fiquitiva
 
 	Licensed under the CreativeCommons Attribution-ShareAlike 
 	4.0 International License. You may not use this file except in compliance 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Jahir Fiquitiva
+ * Copyright (c) 2017 Jahir Fiquitiva
  *
  * Licensed under the CreativeCommons Attribution-ShareAlike
  * 4.0 International License. You may not use this file except in compliance
@@ -19,6 +19,7 @@
 
 package jahirfiquitiva.iconshowcase.activities.base;
 
+import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -137,19 +138,28 @@ public abstract class TasksActivity extends DrawerActivity {
                     .maxSelectionCount(getResources().getInteger(R.integer.max_apps_to_request))
                     .setCallback(new RequestsCallback() {
                         @Override
-                        public void onRequestLimited(int reason, int appsLeft, long millis) {
-                            if (reason == STATE_TIME_LIMITED && millis > 0) {
-                                ISDialogs.showRequestTimeLimitDialog(getApplicationContext(),
-                                        getResources().getInteger(R.integer.time_limit_in_minutes),
-                                        TimeUnit.MILLISECONDS.toMinutes(millis));
-                            } else {
-                                ISDialogs.showRequestLimitDialog(getApplicationContext(), appsLeft);
+                        public void onRequestLimited(Context context, int reason, int appsLeft,
+                                                     long millis) {
+                            try {
+                                if (reason == STATE_TIME_LIMITED && millis > 0) {
+                                    ISDialogs.showRequestTimeLimitDialog(context, getResources()
+                                                    .getInteger(R.integer.time_limit_in_minutes),
+                                            TimeUnit.MILLISECONDS.toMinutes(millis));
+                                } else {
+                                    ISDialogs.showRequestLimitDialog(context, appsLeft);
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
                         }
 
                         @Override
-                        public void onRequestEmpty() {
-                            ISDialogs.showNoSelectedAppsDialog(getApplicationContext());
+                        public void onRequestEmpty(Context context) {
+                            try {
+                                ISDialogs.showNoSelectedAppsDialog(context);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
 
                     })
