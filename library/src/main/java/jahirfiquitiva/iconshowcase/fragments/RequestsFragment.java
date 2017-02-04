@@ -218,7 +218,16 @@ public class RequestsFragment extends CapsuleFragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == IconRequest.INTENT_CODE) {
             if (getAdapter() != null) {
-                getAdapter().selectOrDeselectAll(false);
+                try {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            getAdapter().selectOrDeselectAll(false);
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
