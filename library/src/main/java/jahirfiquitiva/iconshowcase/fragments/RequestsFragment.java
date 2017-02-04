@@ -34,7 +34,6 @@ import android.widget.RelativeLayout;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.pitchedapps.butler.iconrequest.IconRequest;
-import com.pitchedapps.butler.iconrequest.RequestReadyCallback;
 import com.pitchedapps.butler.iconrequest.events.AppLoadedEvent;
 import com.pitchedapps.capsule.library.event.CFabEvent;
 import com.pitchedapps.capsule.library.fragments.CapsuleFragment;
@@ -44,8 +43,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.concurrent.TimeUnit;
-
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.activities.base.DrawerActivity;
@@ -53,7 +50,6 @@ import jahirfiquitiva.iconshowcase.adapters.RequestsAdapter;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.utils.PermissionsUtils;
-import jahirfiquitiva.iconshowcase.utilities.utils.RequestUtils;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 import timber.log.Timber;
 
@@ -190,8 +186,9 @@ public class RequestsFragment extends CapsuleFragment {
 
     public void startRequestProcess() {
         Preferences mPrefs = new Preferences(getActivity());
-        if (getResources().getInteger(R.integer.max_apps_to_request) > -1) {
-            if (mPrefs.getRequestsLeft() <= 0) {
+        if (getResources().getInteger(R.integer.max_apps_to_request) > 0) {
+            /*
+            if (mPrefs.getRequestsLeft() >= 0) {
                 if (mAdapter.getSelectedApps() != null) {
                     if (mAdapter.getSelectedApps().size() < mPrefs.getRequestsLeft()) {
                         showRequestsFilesCreationDialog(getActivity(), mPrefs);
@@ -206,6 +203,7 @@ public class RequestsFragment extends CapsuleFragment {
             } else {
                 showRequestsFilesCreationDialog(getActivity(), mPrefs);
             }
+            */
         } else {
             showRequestsFilesCreationDialog(getActivity(), mPrefs);
         }
@@ -238,6 +236,7 @@ public class RequestsFragment extends CapsuleFragment {
                                 if (maxApps < 0) {
                                     maxApps = 0;
                                 }
+                                /*
                                 if (mAdapter.getSelectedApps().size() <= mPrefs.getRequestsLeft()) {
                                     dialog.show();
                                     IconRequest.get().send(new RequestReadyCallback() {
@@ -256,19 +255,13 @@ public class RequestsFragment extends CapsuleFragment {
                                 } else {
                                     ISDialogs.showRequestLimitDialog(context, maxApps);
                                 }
+                                */
                             } else {
                                 dialog.show();
-                                IconRequest.get().send(new RequestReadyCallback() {
+                                IconRequest.get().send(new IconRequest.OnRequestReady() {
                                     @Override
-                                    public void onRequestReady() {
+                                    public void doWhenReady() {
                                         dialog.dismiss();
-                                    }
-
-                                    @Override
-                                    public void onRequestLimited(long millis) {
-                                        ISDialogs.showRequestTimeLimitDialog(getActivity(),
-                                                minutesLimit,
-                                                TimeUnit.MILLISECONDS.toMinutes(millis));
                                     }
                                 });
                             }

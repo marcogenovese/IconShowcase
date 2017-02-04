@@ -19,24 +19,11 @@
 
 package jahirfiquitiva.iconshowcase.utilities.utils;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 
 import jahirfiquitiva.iconshowcase.R;
-import jahirfiquitiva.iconshowcase.utilities.Preferences;
 
 public class RequestUtils {
-
-    @SuppressLint("DefaultLocale")
-    public static int canRequestXApps(Context context, Preferences mPrefs) {
-        int requestsLeft = mPrefs.getRequestsLeft(context);
-        if (requestsLeft >= -1) {
-            return requestsLeft;
-        } else {
-            mPrefs.resetRequestsLeft(context);
-            return mPrefs.getRequestsLeft(context);
-        }
-    }
 
     public static String getTimeName(Context context, long minutes) {
         String text;

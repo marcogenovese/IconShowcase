@@ -27,32 +27,24 @@ import android.net.Uri;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.Priority;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
 import java.util.ArrayList;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.dialogs.IconDialog;
+import jahirfiquitiva.iconshowcase.holders.IconHolder;
 import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
-import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 import timber.log.Timber;
 
-public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder> {
+public class IconsAdapter extends RecyclerView.Adapter<IconHolder> {
 
     private final Activity context;
     private final Preferences mPrefs;
     private boolean inChangelog = false;
-    private ArrayList<IconItem> iconsList = new ArrayList<>();
-    private int lastPosition = -1;
+    private ArrayList<IconItem> iconsList;
 
     public IconsAdapter(Activity context, ArrayList<IconItem> iconsList, boolean inChangelog) {
         this.context = context;
@@ -61,14 +53,15 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
         this.mPrefs = new Preferences(context);
     }
 
-    public void setIcons(ArrayList<IconItem> iconsList) {
+    public void setIcons(ArrayList<IconItem> nList) {
         if (iconsList != null) {
-            this.iconsList.addAll(iconsList);
-            this.notifyItemRangeInserted(0, iconsList.size() - 1);
+            iconsList.clear();
         } else {
-            this.iconsList = new ArrayList<>();
-            this.notifyItemRangeInserted(0, 0);
+            iconsList = new ArrayList<>();
         }
+        if (nList != null)
+            iconsList.addAll(nList);
+        notifyItemRangeChanged(0, iconsList.size());
     }
 
     public void clearIconsList() {
@@ -76,68 +69,22 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
     }
 
     @Override
-    public IconsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public IconHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        return new IconsHolder(inflater.inflate(R.layout.item_icon, parent, false));
+        return new IconHolder(inflater.inflate(R.layout.item_icon, parent, false), new IconHolder
+                .OnIconClickListener() {
+            @Override
+            public void onIconClick(IconItem item) {
+                iconClick(item);
+            }
+        });
     }
 
     @Override
-    public void onBindViewHolder(final IconsHolder holder, int position) {
+    public void onBindViewHolder(final IconHolder holder, int position) {
         if (position < 0) return;
-        int iconResource = iconsList.get(holder.getAdapterPosition()).getResId();
-        if (iconResource == 0) return;
-
-        if (mPrefs != null && mPrefs.getAnimationsEnabled()) {
-            Glide.with(context)
-                    .load(iconResource)
-                    .asBitmap()
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                    .priority(Priority.IMMEDIATE)
-                    .into(new BitmapImageViewTarget(holder.icon) {
-                        @Override
-                        protected void setResource(Bitmap resource) {
-                            if ((!inChangelog && mPrefs.getAnimationsEnabled()) &&
-                                    (holder.getAdapterPosition() > lastPosition)) {
-                                holder.icon.setAlpha(0f);
-                                holder.icon.setImageBitmap(resource);
-                                holder.icon.animate().setDuration(250).alpha(1f).start();
-                                lastPosition = holder.getAdapterPosition();
-                            } else {
-                                holder.icon.setImageBitmap(resource);
-                                holder.clearAnimation();
-                            }
-                        }
-                    });
-        } else {
-            Glide.with(context)
-                    .load(iconResource)
-                    .asBitmap()
-                    .dontAnimate()
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                    .priority(Priority.IMMEDIATE)
-                    .into(new BitmapImageViewTarget(holder.icon) {
-                        @Override
-                        protected void setResource(Bitmap resource) {
-                            if ((!inChangelog && mPrefs.getAnimationsEnabled()) &&
-                                    (holder.getAdapterPosition() > lastPosition)) {
-                                holder.icon.setAlpha(0f);
-                                holder.icon.setImageBitmap(resource);
-                                holder.icon.animate().setDuration(250).alpha(1f).start();
-                                lastPosition = holder.getAdapterPosition();
-                            } else {
-                                holder.icon.setImageBitmap(resource);
-                                holder.clearAnimation();
-                            }
-                        }
-                    });
-        }
-
-        holder.view.setOnClickListener(new DebouncedClickListener() {
-            @Override
-            public void onDebouncedClick(View v) {
-                iconClick(holder.getAdapterPosition());
-            }
-        });
+        holder.setItem(iconsList.get(holder.getAdapterPosition()), mPrefs.getAnimationsEnabled(),
+                inChangelog);
     }
 
     @Override
@@ -146,13 +93,13 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
     }
 
     @Override
-    public void onViewDetachedFromWindow(IconsHolder holder) {
+    public void onViewDetachedFromWindow(IconHolder holder) {
         holder.clearAnimation();
     }
 
-    private void iconClick(int position) {
-        int resId = iconsList.get(position).getResId();
-        String name = iconsList.get(position).getName().toLowerCase();
+    private void iconClick(IconItem item) {
+        int resId = item.getResId();
+        String name = item.getName().toLowerCase();
 
         if (((ShowcaseActivity) context).isIconsPicker()) {
             Intent intent = new Intent();
@@ -176,39 +123,8 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.IconsHolder>
         } else {
             if (!inChangelog) {
                 IconDialog.show((FragmentActivity) context, name, resId);
-                /*
-                Drawable iconDrawable = ContextCompat.getDrawable(context, resId);
-                MaterialDialog dialog = new MaterialDialog.Builder(context)
-                        .customView(R.layout.dialog_icon, false)
-                        .title(IconUtils.formatName(name))
-                        .positiveText(R.string.close)
-                        .show();
-                if (dialog.getCustomView() != null) {
-                    ImageView dialogIcon = (ImageView) dialog.getCustomView().findViewById(R.id
-                            .dialogicon);
-                    dialogIcon.setImageDrawable(iconDrawable);
-                }
-                */
             }
         }
-    }
-
-    class IconsHolder extends RecyclerView.ViewHolder {
-
-        final View view;
-        final ImageView icon;
-
-        IconsHolder(View v) {
-            super(v);
-            view = v;
-            icon = (ImageView) v.findViewById(R.id.icon_img);
-        }
-
-        private void clearAnimation() {
-            if (view != null) view.clearAnimation();
-            if (icon != null) icon.clearAnimation();
-        }
-
     }
 
 }

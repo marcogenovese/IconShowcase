@@ -44,10 +44,6 @@ public class Preferences {
             APPLY_DIALOG_DISMISSED = "apply_dialog_dismissed",
             WALLS_DIALOG_DISMISSED = "walls_dialog_dismissed",
             WALLS_COLUMNS_NUMBER = "walls_columns_number",
-            REQUEST_HOUR = "request_hour",
-            REQUEST_DAY = "request_day",
-            REQUESTS_CREATED = "requests_created",
-            REQUESTS_LEFT = "requests_left",
             NOTIFS_ENABLED = "notifs_enabled",
             NOTIFS_LED_ENABLED = "notifs_led_enabled",
             NOTIFS_SOUND_ENABLED = "notifs_sound_enabled",
@@ -188,48 +184,6 @@ public class Preferences {
         getPrefs().edit().putInt(WALLS_COLUMNS_NUMBER, columnsNumber).apply();
     }
 
-    public String getRequestHour() {
-        return getPrefs().getString(REQUEST_HOUR, "null");
-    }
-
-    public void setRequestHour(String hour) {
-        getPrefs().edit().putString(REQUEST_HOUR, hour).apply();
-    }
-
-    public int getRequestDay() {
-        return getPrefs().getInt(REQUEST_DAY, 0);
-    }
-
-    public void setRequestDay(int day) {
-        getPrefs().edit().putInt(REQUEST_DAY, day).apply();
-    }
-
-    public boolean getRequestsCreated() {
-        return getPrefs().getBoolean(REQUESTS_CREATED, false);
-    }
-
-    public void setRequestsCreated(boolean requestsCreated) {
-        getPrefs().edit().putBoolean(REQUESTS_CREATED, requestsCreated).apply();
-    }
-
-    public int getRequestsLeft() {
-        return getPrefs().getInt(REQUESTS_LEFT, -1);
-    }
-
-    public void setRequestsLeft(int requestsLeft) {
-        getPrefs().edit().putInt(REQUESTS_LEFT, requestsLeft).apply();
-    }
-
-    public int getRequestsLeft(Context context) {
-        return getPrefs().getInt(REQUESTS_LEFT,
-                context.getResources().getInteger(R.integer.max_apps_to_request));
-    }
-
-    public void resetRequestsLeft(Context context) {
-        getPrefs().edit().putInt(REQUESTS_LEFT, context.getResources().getInteger(R.integer
-                .max_apps_to_request)).apply();
-    }
-
     public int getVersionCode() {
         return getPrefs().getInt(VERSION_CODE, 0);
     }
@@ -237,7 +191,6 @@ public class Preferences {
     public void setVersionCode(int versionCode) {
         getPrefs().edit().putInt(VERSION_CODE, versionCode).apply();
     }
-
 
     /* NOTIFICATIONS */
 

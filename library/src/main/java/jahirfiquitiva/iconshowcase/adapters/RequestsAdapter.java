@@ -15,10 +15,8 @@ import java.util.ArrayList;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.config.Config;
-import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.holders.RequestHolder;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
-import jahirfiquitiva.iconshowcase.utilities.utils.RequestUtils;
 
 public class RequestsAdapter extends RecyclerView.Adapter<RequestHolder> {
 
@@ -68,40 +66,19 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestHolder> {
         holder.setItem(getApps().get(holder.getAdapterPosition()));
     }
 
-    public void selectOrDeselectAll(Context context, boolean select, Preferences mPrefs) {
-        // TODO: Use methods from Butler
-        boolean showDialog = false;
+    public void selectOrDeselectAll(boolean select) {
         final IconRequest ir = IconRequest.get();
-        int limit = RequestUtils.canRequestXApps(context, mPrefs);
-        if (ir != null && ir.getApps() != null) {
-            if (limit >= -1) {
-                for (App app : ir.getApps()) {
-                    if (select) {
-                        if (limit < 0) {
-                            ir.selectApp(app);
-                        } else {
-                            if (limit > 0) {
-                                if (ir.getSelectedApps().size() < limit) {
-                                    ir.selectApp(app);
-                                } else {
-                                    showDialog = true;
-                                    break;
-                                }
-                            }
-                        }
-                    } else {
-                        ir.unselectApp(app);
-                    }
-                }
-                //TODO: Either keep this or find a way to set checked/unchecked checkboxes in holder
-                notifyDataSetChanged();
-            }
-            if (showDialog) ISDialogs.showRequestLimitDialog(context, limit);
+        if (select) {
+            ir.selectAllApps();
+        } else {
+            ir.unselectAllApps();
         }
+        notifyDataSetChanged();
     }
 
     private void onItemClick(Context context, AppCompatCheckBox checkBox, App app) {
         final IconRequest ir = IconRequest.get();
+        /*
         if (ir != null && ir.getApps() != null) {
             Preferences mPrefs = new Preferences(context);
             int limit = mPrefs.getRequestsLeft();
@@ -129,6 +106,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestHolder> {
                 }
             }
         }
+        */
     }
 
 }

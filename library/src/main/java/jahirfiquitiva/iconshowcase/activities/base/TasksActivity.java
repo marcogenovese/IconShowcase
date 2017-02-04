@@ -26,12 +26,15 @@ import android.os.Environment;
 import android.support.annotation.CallSuper;
 
 import com.pitchedapps.butler.iconrequest.IconRequest;
+import com.pitchedapps.butler.iconrequest.RequestsCallback;
 
 import java.io.File;
+import java.util.concurrent.TimeUnit;
 
 import jahirfiquitiva.iconshowcase.BuildConfig;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.config.Config;
+import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.logging.CrashReportingTree;
 import jahirfiquitiva.iconshowcase.tasks.DownloadJSON;
 import jahirfiquitiva.iconshowcase.tasks.LoadIconsLists;
@@ -39,6 +42,8 @@ import jahirfiquitiva.iconshowcase.tasks.LoadKustomFiles;
 import jahirfiquitiva.iconshowcase.tasks.LoadZooperWidgets;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import timber.log.Timber;
+
+import static com.pitchedapps.butler.iconrequest.IconRequest.STATE_TIME_LIMITED;
 
 /**
  * Created by Allan Wang on 2016-08-20.
@@ -129,7 +134,25 @@ public abstract class TasksActivity extends DrawerActivity {
                     //.filterOff() //TODO switch
                     .withTimeLimit(getResources().getInteger(R.integer.time_limit_in_minutes),
                             mPrefs.getPrefs())
-                    .maxSelectionCount(0) //TODO add? And make this toggleable
+                    .maxSelectionCount(getResources().getInteger(R.integer.max_apps_to_request))
+                    .setCallback(new RequestsCallback() {
+                        @Override
+                        public void onRequestLimited(int reason, int appsLeft, long millis) {
+                            if (reason == STATE_TIME_LIMITED && millis > 0) {
+                                ISDialogs.showRequestTimeLimitDialog(getApplicationContext(),
+                                        getResources().getInteger(R.integer.time_limit_in_minutes),
+                                        TimeUnit.MILLISECONDS.toMinutes(millis));
+                            } else {
+                                ISDialogs.showRequestLimitDialog(getApplicationContext(), appsLeft);
+                            }
+                        }
+
+                        @Override
+                        public void onRequestEmpty() {
+
+                        }
+
+                    })
                     .build().loadApps();
         }
         if (drawerHas(DrawerItem.ZOOPER)) {

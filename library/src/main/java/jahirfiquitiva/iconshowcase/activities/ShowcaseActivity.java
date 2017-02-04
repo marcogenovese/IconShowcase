@@ -504,7 +504,7 @@ public class ShowcaseActivity extends TasksActivity {
         } else if (i == R.id.select_all) {
             RequestsAdapter requestsAdapter = RequestsFragment.mAdapter;
             if (requestsAdapter != null && RequestsFragment.mAdapter.getItemCount() > 0) {
-                RequestsFragment.mAdapter.selectOrDeselectAll(this, SELECT_ALL_APPS, mPrefs);
+                RequestsFragment.mAdapter.selectOrDeselectAll(SELECT_ALL_APPS);
                 SELECT_ALL_APPS = !SELECT_ALL_APPS;
             }
         }
