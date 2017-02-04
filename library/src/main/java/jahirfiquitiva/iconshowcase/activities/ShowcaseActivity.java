@@ -63,7 +63,6 @@ import java.util.Random;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.base.TasksActivity;
-import jahirfiquitiva.iconshowcase.adapters.RequestsAdapter;
 import jahirfiquitiva.iconshowcase.config.Config;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.fragments.KustomFragment;
@@ -481,16 +480,22 @@ public class ShowcaseActivity extends TasksActivity {
         if (i == R.id.changelog) {
             ChangelogDialog.show(this, R.xml.changelog);
         } else if (i == R.id.refresh) {
-            FullListHolder.get().walls().clearList();
-            DownloadJSON json = new DownloadJSON(this);
-            json.setFragment(getCurrentFragment());
-            if (getJsonTask() != null) {
-                getJsonTask().cancel(true);
-            }
-            setJsonTask(json);
-            try {
-                json.execute();
-            } catch (Exception e) {
+            if (getCurrentFragment() instanceof WallpapersFragment) {
+                FullListHolder.get().walls().clearList();
+                DownloadJSON json = new DownloadJSON(this);
+                json.setFragment(getCurrentFragment());
+                if (getJsonTask() != null) {
+                    getJsonTask().cancel(true);
+                }
+                setJsonTask(json);
+                try {
+                    json.execute();
+                } catch (Exception e) {
+                    // Do nothing
+                }
+            } else {
+                Toast.makeText(this, "Can't perform this action from here.", Toast.LENGTH_SHORT)
+                        .show();
             }
         } else if (i == R.id.columns) {
             if (getCurrentFragment() instanceof WallpapersFragment) {
@@ -501,10 +506,16 @@ public class ShowcaseActivity extends TasksActivity {
                         .show();
             }
         } else if (i == R.id.select_all) {
-            RequestsAdapter requestsAdapter = RequestsFragment.mAdapter;
-            if (requestsAdapter != null && RequestsFragment.mAdapter.getItemCount() > 0) {
-                RequestsFragment.mAdapter.selectOrDeselectAll(SELECT_ALL_APPS);
-                SELECT_ALL_APPS = !SELECT_ALL_APPS;
+            if (getCurrentFragment() instanceof RequestsFragment) {
+                if (((RequestsFragment) getCurrentFragment()).getAdapter() != null && (
+                        (RequestsFragment) getCurrentFragment()).getAdapter().getItemCount() > 0) {
+                    ((RequestsFragment) getCurrentFragment()).getAdapter().selectOrDeselectAll
+                            (SELECT_ALL_APPS);
+                    SELECT_ALL_APPS = !SELECT_ALL_APPS;
+                }
+            } else {
+                Toast.makeText(this, "Can't perform this action from here.", Toast.LENGTH_SHORT)
+                        .show();
             }
         }
         return true;
@@ -513,15 +524,9 @@ public class ShowcaseActivity extends TasksActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        //        if (resultCode == RESULT_OK && requestCode == 2) {
-        //            RequestsAdapter adapter = ((RequestsAdapter) RequestsFragment.mRecyclerView
-        // .getAdapter());
-        //            if (adapter != null) {
-        //                adapter.deselectAllApps();
-        //            }
-        //        }
-
+        if (getCurrentFragment() instanceof RequestsFragment) {
+            getCurrentFragment().onActivityResult(requestCode, resultCode, data);
+        }
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragment = fragmentManager.findFragmentByTag("donationsFragment");
         if (fragment != null) {

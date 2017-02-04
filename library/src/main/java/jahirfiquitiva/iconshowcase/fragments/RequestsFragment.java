@@ -21,6 +21,7 @@ package jahirfiquitiva.iconshowcase.fragments;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
@@ -54,13 +55,12 @@ import timber.log.Timber;
 
 public class RequestsFragment extends CapsuleFragment {
 
-    public static RequestsAdapter mAdapter;
+    private RequestsAdapter mAdapter;
     private ViewGroup mViewGroup;
     private RelativeLayout mLoadingView;
     //private TextView mLoadingText;
     private RecyclerView mRecyclerView;
     private boolean subscribed = true;
-    private int maxApps = 0, minutesLimit = 0; //TODO move to taskactivity
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
@@ -71,8 +71,6 @@ public class RequestsFragment extends CapsuleFragment {
 
         int gridSpacing = getResources().getDimensionPixelSize(R.dimen.lists_padding);
         int columnsNumber = getResources().getInteger(R.integer.requests_grid_width);
-
-        minutesLimit = getResources().getInteger(R.integer.time_limit_in_minutes);
 
         setHasOptionsMenu(true);
 
@@ -107,7 +105,6 @@ public class RequestsFragment extends CapsuleFragment {
             subscribed = false;
             Timber.d("Requests already loaded");
         } else {
-            //mLoadingText = (TextView) layout.findViewById(R.id.loading_text);
             Timber.d("Requests still loading; subscribing to events");
             //            AppLoadingEvent stickyEvent = EventBus.getDefault().removeStickyEvent
             // (AppLoadingEvent.class);
@@ -144,14 +141,6 @@ public class RequestsFragment extends CapsuleFragment {
         });
     }
 
-    //    public static RequestsFragment newInstance(boolean isLoaded) {
-    //        RequestsFragment fragment = new RequestsFragment();
-    //        Bundle args = new Bundle();
-    //        args.putBoolean("is_loaded", isLoaded);
-    //        fragment.setArguments(args);
-    //        return fragment;
-    //    }
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -164,6 +153,7 @@ public class RequestsFragment extends CapsuleFragment {
         //        EventBus.getDefault().unregister(AppLoadingEvent.class);
     }
 
+    // TODO: Show a dialog with the progress of apps load
     //    @Subscribe(threadMode = ThreadMode.MAIN)
     //    public void onAppsLoading(AppLoadingEvent event) {
     //        EventBus.getDefault().removeStickyEvent(AppLoadingEvent.class);
@@ -174,11 +164,8 @@ public class RequestsFragment extends CapsuleFragment {
     private void switchToLoadedView() {
         mViewGroup.removeView(mLoadingView);
         mLoadingView = null;
-        //mLoadingText = null;
         mRecyclerView.setVisibility(View.VISIBLE);
         mAdapter = new RequestsAdapter();
-        //        mRecyclerView.setItemAnimator(null);
-        //        mRecyclerView.setAnimation(null);
         mRecyclerView.setAdapter(mAdapter);
         showFab();
     }
@@ -214,10 +201,26 @@ public class RequestsFragment extends CapsuleFragment {
                             @Override
                             public void doWhenReady() {
                                 dialog.dismiss();
+                                if (mAdapter != null)
+                                    mAdapter.notifyDataSetChanged();
                             }
                         });
                     }
                 });
+    }
+
+    public RequestsAdapter getAdapter() {
+        return mAdapter;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == IconRequest.INTENT_CODE) {
+            if (getAdapter() != null) {
+                getAdapter().selectOrDeselectAll(false);
+            }
+        }
     }
 
 }

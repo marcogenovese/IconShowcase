@@ -68,12 +68,14 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestHolder> {
 
     public void selectOrDeselectAll(boolean select) {
         final IconRequest ir = IconRequest.get();
-        if (select) {
-            ir.selectAllApps();
-        } else {
-            ir.unselectAllApps();
+        if (ir != null) {
+            if (select) {
+                ir.selectAllApps();
+            } else {
+                ir.unselectAllApps();
+            }
+            notifyDataSetChanged();
         }
-        notifyDataSetChanged();
     }
 
     private void onItemClick(Context context, AppCompatCheckBox checkBox, App app) {
