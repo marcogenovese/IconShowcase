@@ -18,6 +18,7 @@
   ~ 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
   -->
 
+<!--suppress AndroidElementNotAllowed -->
 <manifest
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -66,7 +67,8 @@
 
         <!-- FirebaseService -->
         <service
-                android:name=".FirebaseService">
+                android:name=".FirebaseService"
+                tools:ignore="ExportedService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
@@ -82,10 +84,10 @@
 
         <!-- Remove comment marks to enable Zooper
         <provider
-            android:name=".zooper.TemplateProvider"
-            android:authorities="${applicationId}.zwprovider"
-            tools:ignore="ExportedContentProvider"/>
-		-->
+                android:name=".zooper.TemplateProvider"
+                android:authorities="${applicationId}.zwprovider"
+                tools:ignore="ExportedContentProvider"/>
+        -->
 
 
         <!-- Remove comment marks to enable Kustom Skins
@@ -93,14 +95,14 @@
 		* If you're not going to provide one of the options, remove its respective line.
 
         <provider
-            android:name="org.kustom.api.Provider"
-            android:authorities="${applicationId}.kustomprovider"
-            android:exported="true"
-            tools:ignore="ExportedContentProvider">
+                android:name="org.kustom.api.Provider"
+                android:authorities="${applicationId}.kustomprovider"
+                android:exported="true"
+                tools:ignore="ExportedContentProvider">
             <intent-filter>
-                <action android:name="org.kustom.provider.WALLPAPERS" />
-                <action android:name="org.kustom.provider.WIDGETS" />
-                <action android:name="org.kustom.provider.KOMPONENTS" />
+                <action android:name="org.kustom.provider.WALLPAPERS"/>
+                <action android:name="org.kustom.provider.WIDGETS"/>
+                <action android:name="org.kustom.provider.KOMPONENTS"/>
             </intent-filter>
         </provider>
         -->
