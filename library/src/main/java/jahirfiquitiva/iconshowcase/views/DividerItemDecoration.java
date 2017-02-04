@@ -24,7 +24,6 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -43,8 +42,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
     private int mOrientation = -1;
 
     private DividerItemDecoration(Context context) {
-        mDivider = new ColorDrawable(ContextCompat.getColor(context, ThemeUtils.darkTheme ? R
-                .color.dark_theme_divider :
+        mDivider = new ColorDrawable(ThemeUtils.darkOrLight(context, R.color.dark_theme_divider,
                 R.color.light_theme_divider));
         /*
         final TypedArray a = context

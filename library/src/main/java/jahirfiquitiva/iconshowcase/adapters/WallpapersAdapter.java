@@ -25,27 +25,21 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Handler;
-import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewCompat;
-import android.support.v7.graphics.Palette;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.bumptech.glide.request.target.SimpleTarget;
 
 import java.io.FileOutputStream;
@@ -58,142 +52,47 @@ import jahirfiquitiva.iconshowcase.activities.AltWallpaperViewerActivity;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.activities.WallpaperViewerActivity;
 import jahirfiquitiva.iconshowcase.dialogs.WallpaperDialog;
+import jahirfiquitiva.iconshowcase.holders.WallpaperHolder;
 import jahirfiquitiva.iconshowcase.models.WallpaperItem;
 import jahirfiquitiva.iconshowcase.tasks.ApplyWallpaper;
-import jahirfiquitiva.iconshowcase.utilities.Preferences;
-import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
-import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 import timber.log.Timber;
 
-public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.WallsHolder> {
+public class WallpapersAdapter extends RecyclerView.Adapter<WallpaperHolder> {
 
     private final FragmentActivity activity;
     private final ArrayList<WallpaperItem> wallsList;
     private MaterialDialog applyDialog;
-    private Preferences mPrefs;
-    private int lastPosition = -1;
 
     public WallpapersAdapter(FragmentActivity activity, ArrayList<WallpaperItem> wallsList) {
         this.activity = activity;
         this.wallsList = wallsList;
-        this.mPrefs = new Preferences(activity);
     }
 
     @Override
-    public WallsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new WallsHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout
-                .item_wallpaper, parent, false));
-    }
-
-    @Override
-    public void onBindViewHolder(final WallsHolder holder, int position) {
-        holder.titleBg.setBackgroundColor(
-                ColorUtils.changeAlpha(ThemeUtils.darkOrLight(activity, R.color
-                        .card_light_background, R.color.card_dark_background), 0.65f));
-        holder.name.setTextColor(ColorUtils.getMaterialPrimaryTextColor(!ThemeUtils.darkTheme));
-        holder.authorName.setTextColor(ColorUtils.getMaterialSecondaryTextColor(!ThemeUtils
-                .darkTheme));
-
-        final WallpaperItem wallItem = wallsList.get(holder.getAdapterPosition());
-
-        ViewCompat.setTransitionName(holder.wall, "transition" + holder.getAdapterPosition());
-
-        holder.name.setText(wallItem.getWallName());
-        holder.authorName.setText(wallItem.getWallAuthor());
-
-        final String wallURL = wallItem.getWallURL(), wallThumbURL = wallItem.getWallThumbURL();
-
-        BitmapImageViewTarget target = new BitmapImageViewTarget(holder.wall) {
+    public WallpaperHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new WallpaperHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout
+                .item_wallpaper, parent, false), new WallpaperHolder.OnWallpaperClickListener() {
             @Override
-            protected void setResource(Bitmap bitmap) {
-                Palette.Swatch wallSwatch = ColorUtils.getPaletteSwatch(bitmap);
-                if ((mPrefs != null & mPrefs.getAnimationsEnabled()) && (holder
-                        .getAdapterPosition() > lastPosition)) {
-                    holder.wall.setAlpha(0f);
-                    holder.titleBg.setAlpha(0f);
-                    holder.wall.setImageBitmap(bitmap);
-                    if (wallSwatch != null) setColors(wallSwatch.getRgb(), holder);
-                    holder.wall.animate().setDuration(250).alpha(1f).start();
-                    holder.titleBg.animate().setDuration(250).alpha(1f).start();
-                    lastPosition = holder.getAdapterPosition();
-                } else {
-                    holder.wall.setImageBitmap(bitmap);
-                    if (wallSwatch != null) setColors(wallSwatch.getRgb(), holder);
-                }
+            public void onSimpleClick(ImageView wall, WallpaperItem item) {
+                onWallClick(wall, item);
             }
-        };
 
-        //TODO: Find a way to simplify the code when animations are disabled.
-        if (!(wallThumbURL.equals("null"))) {
-            if (mPrefs != null && mPrefs.getAnimationsEnabled()) {
-                Glide.with(activity)
-                        .load(wallURL)
-                        .asBitmap()
-                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                        .priority(Priority.HIGH)
-                        .thumbnail(
-                                Glide.with(activity)
-                                        .load(wallThumbURL)
-                                        .asBitmap()
-                                        .priority(Priority.IMMEDIATE)
-                                        .thumbnail(0.3f))
-                        .into(target);
-            } else {
-                Glide.with(activity)
-                        .load(wallURL)
-                        .asBitmap()
-                        .dontAnimate()
-                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                        .priority(Priority.HIGH)
-                        .thumbnail(
-                                Glide.with(activity)
-                                        .load(wallThumbURL)
-                                        .asBitmap()
-                                        .priority(Priority.IMMEDIATE)
-                                        .thumbnail(0.3f))
-                        .into(target);
+            @Override
+            public void onLongClick(Context context, WallpaperItem item) {
+                showApplyWallpaperDialog(context, item);
             }
-        } else {
-            if (mPrefs.getAnimationsEnabled()) {
-                Glide.with(activity)
-                        .load(wallURL)
-                        .asBitmap()
-                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                        .priority(Priority.HIGH)
-                        .thumbnail(0.5f)
-                        .into(target);
-            } else {
-                Glide.with(activity)
-                        .load(wallURL)
-                        .asBitmap()
-                        .dontAnimate()
-                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                        .priority(Priority.HIGH)
-                        .thumbnail(0.5f)
-                        .into(target);
-            }
-        }
+        });
+    }
 
+    @Override
+    public void onBindViewHolder(final WallpaperHolder holder, int position) {
+        holder.setItem(wallsList.get(holder.getAdapterPosition()));
     }
 
     @Override
     public int getItemCount() {
         return wallsList != null ? wallsList.size() : 0;
-    }
-
-    private void setColors(int color, WallsHolder holder) {
-        if (holder.titleBg != null && color != 0) {
-            holder.titleBg.setBackgroundColor(color);
-            if (holder.name != null) {
-                holder.name.setTextColor(ColorUtils.getMaterialPrimaryTextColor(!ColorUtils
-                        .isLightColor(color)));
-            }
-            if (holder.authorName != null) {
-                holder.authorName.setTextColor(ColorUtils.getMaterialPrimaryTextColor(!ColorUtils
-                        .isLightColor(color)));
-            }
-        }
     }
 
     private void showApplyWallpaperDialog(final Context context, final WallpaperItem item) {
@@ -360,93 +259,42 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
         handler(context).post(r);
     }
 
-    public class WallsHolder extends RecyclerView.ViewHolder implements View.OnClickListener,
-            View.OnLongClickListener {
+    private void onWallClick(ImageView wall, WallpaperItem item) {
+        if (((ShowcaseActivity) activity).isWallsPicker()) {
+            WallpaperDialog.show(activity, item.getWallURL());
+        } else {
+            final Intent intent = new Intent(activity,
+                    activity.getResources().getBoolean(R.bool.alternative_viewer) ?
+                            AltWallpaperViewerActivity.class :
+                            WallpaperViewerActivity.class);
 
-        public final View view;
-        public final ImageView wall;
-        public final TextView name, authorName;
-        public final LinearLayout titleBg;
-        private boolean clickable = true;
+            intent.putExtra("item", item);
+            intent.putExtra("transitionName", ViewCompat.getTransitionName(wall));
 
-        WallsHolder(View v) {
-            super(v);
-            view = v;
-            wall = (ImageView) view.findViewById(R.id.wall);
-            name = (TextView) view.findViewById(R.id.name);
-            authorName = (TextView) view.findViewById(R.id.author);
-            titleBg = (LinearLayout) view.findViewById(R.id.titleBg);
-            view.setOnClickListener(this);
-            view.setOnLongClickListener(this);
-        }
+            Bitmap bitmap;
 
-        @Override
-        public void onClick(View v) {
-            if (clickable) {
-                clickable = false;
-                onWallClick();
-                reset(); //TODO shouldn't all clicks be paused when applying?
-            }
-        }
+            if (wall.getDrawable() != null) {
+                bitmap = Utils.drawableToBitmap(wall.getDrawable());
 
-        @Override
-        public boolean onLongClick(View v) {
-            if (clickable) {
-                clickable = false;
-                Vibrator vibrator = (Vibrator) v.getContext().getSystemService(Context
-                        .VIBRATOR_SERVICE);
-                vibrator.vibrate(30);
-                showApplyWallpaperDialog(v.getContext(), wallsList.get(getAdapterPosition()));
-                reset(); //TODO shouldn't all clicks be paused when applying?
-            }
-            //WallpaperDialog.show(activity, wallsList.get(getLayoutPosition()).getWallURL());
-            return false;
-        }
-
-        private void onWallClick() {
-            final WallpaperItem item = wallsList.get(getLayoutPosition());
-
-            if (((ShowcaseActivity) activity).isWallsPicker()) {
-                WallpaperDialog.show(activity, item.getWallURL());
-            } else {
-                final Intent intent = new Intent(activity,
-                        activity.getResources().getBoolean(R.bool.alternative_viewer) ?
-                                AltWallpaperViewerActivity.class :
-                                WallpaperViewerActivity.class);
-
-                intent.putExtra("item", item);
-                intent.putExtra("transitionName", ViewCompat.getTransitionName(wall));
-
-                Bitmap bitmap;
-
-                if (wall.getDrawable() != null) {
-                    bitmap = Utils.drawableToBitmap(wall.getDrawable());
-
-                    try {
-                        String filename = "temp.png";
-                        FileOutputStream stream = activity.openFileOutput(filename, Context
-                                .MODE_PRIVATE);
-                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                        stream.close();
-                        intent.putExtra("image", filename);
-                    } catch (Exception e) {
-                        Timber.d("Error getting drawable", e.getLocalizedMessage());
-                    }
-
-                    ActivityOptionsCompat options = ActivityOptionsCompat
-                            .makeSceneTransitionAnimation(activity, wall, ViewCompat
-                                    .getTransitionName(wall));
-                    activity.startActivity(intent, options.toBundle());
-                } else {
-                    activity.startActivity(intent);
+                try {
+                    String filename = "temp.png";
+                    FileOutputStream stream = activity.openFileOutput(filename, Context
+                            .MODE_PRIVATE);
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    stream.close();
+                    intent.putExtra("image", filename);
+                } catch (Exception e) {
+                    Timber.d("Error getting drawable", e.getLocalizedMessage());
                 }
+
+                ActivityOptionsCompat options = ActivityOptionsCompat
+                        .makeSceneTransitionAnimation(activity, wall, ViewCompat
+                                .getTransitionName(wall));
+                activity.startActivity(intent, options.toBundle());
+            } else {
+                activity.startActivity(intent);
             }
         }
-
-        private void reset() {
-            clickable = true;
-        }
-
     }
 
 }

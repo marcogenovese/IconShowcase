@@ -23,7 +23,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -43,7 +42,6 @@ import jahirfiquitiva.iconshowcase.fragments.WallpapersFragment;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.utils.IconUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.RequestUtils;
-import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 
 /**
@@ -161,21 +159,9 @@ public final class ISDialogs {
             authorIcon = (ImageView) v.findViewById(R.id.icon_author);
             dimensIcon = (ImageView) v.findViewById(R.id.icon_dimensions);
             copyrightIcon = (ImageView) v.findViewById(R.id.icon_copyright);
-
-            int light = ContextCompat.getColor(context, R.color.drawable_tint_dark);
-            int dark = ContextCompat.getColor(context, R.color.drawable_tint_light);
-
-            authorIcon.setImageDrawable(IconUtils.getTintedIcon(
-                    context, R.drawable.ic_person,
-                    ThemeUtils.darkTheme ? light : dark));
-
-            dimensIcon.setImageDrawable(IconUtils.getTintedIcon(
-                    context, R.drawable.ic_dimensions,
-                    ThemeUtils.darkTheme ? light : dark));
-
-            copyrightIcon.setImageDrawable(IconUtils.getTintedIcon(
-                    context, R.drawable.ic_copyright,
-                    ThemeUtils.darkTheme ? light : dark));
+            authorIcon.setImageDrawable(IconUtils.getTintedDrawable(context, "ic_person"));
+            dimensIcon.setImageDrawable(IconUtils.getTintedDrawable(context, "ic_dimensions"));
+            copyrightIcon.setImageDrawable(IconUtils.getTintedDrawable(context, "ic_copyright"));
         }
 
         @SuppressWarnings("ConstantConditions") LinearLayout author = (LinearLayout) v

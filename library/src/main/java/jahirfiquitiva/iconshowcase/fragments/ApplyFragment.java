@@ -48,6 +48,8 @@ import jahirfiquitiva.iconshowcase.activities.base.DrawerActivity;
 import jahirfiquitiva.iconshowcase.adapters.LaunchersAdapter;
 import jahirfiquitiva.iconshowcase.config.Config;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
+import jahirfiquitiva.iconshowcase.holders.LauncherHolder;
+import jahirfiquitiva.iconshowcase.models.LauncherItem;
 import jahirfiquitiva.iconshowcase.utilities.LauncherIntents;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.sort.InstalledLauncherComparator;
@@ -56,7 +58,7 @@ import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 
 public class ApplyFragment extends CapsuleFragment {
 
-    private final List<Launcher> launchers = new ArrayList<>();
+    private final List<LauncherItem> launchers = new ArrayList<>();
     private String intentString;
     private RecyclerView recyclerView;
     private View layout;
@@ -100,44 +102,44 @@ public class ApplyFragment extends CapsuleFragment {
         final String[] launcherArray = getResources().getStringArray(R.array.launchers);
         final int[] launcherColors = getResources().getIntArray(R.array.launcher_colors);
         for (int i = 0; i < launcherArray.length; i++) {
-            launchers.add(new Launcher(launcherArray[i].split("\\|"), launcherColors[i]));
+            launchers.add(new LauncherItem(launcherArray[i].split("\\|"), launcherColors[i]));
         }
         Collections.sort(launchers, new InstalledLauncherComparator(getActivity()));
 
-        LaunchersAdapter adapter = new LaunchersAdapter(getActivity(), launchers,
-                new LaunchersAdapter.ClickListener() {
+        LaunchersAdapter adapter = new LaunchersAdapter(getActivity(), launchers, new
+                LauncherHolder.OnLauncherClickListener() {
                     @Override
-                    public void onClick(int position) {
-                        if (launchers.get(position).name.equals("Google Now")) {
+                    public void onLauncherClick(LauncherItem item) {
+                        if (item.getName().equals("Google Now")) {
                             gnlDialog();
-                        } else if (launchers.get(position).name.equals("LG Home")) {
-                            if (Utils.isAppInstalled(getActivity(), launchers.get(position)
-                                    .packageName)) {
-                                openLauncher(launchers.get(position).name);
+                        } else if (item.getName().equals("LG Home")) {
+                            if (Utils.isAppInstalled(getActivity(), item
+                                    .getPackageName())) {
+                                openLauncher(item.getName());
                             } else {
                                 new MaterialDialog.Builder(getActivity())
                                         .content(R.string.lg_dialog_content)
                                         .positiveText(android.R.string.ok)
                                         .show();
                             }
-                        } else if (launchers.get(position).name.equals("CM Theme Engine")) {
+                        } else if (item.getName().equals("CM Theme Engine")) {
                             //TODO Make sure CM Theme Engine dialog appears in ROMs without it
                             if (Utils.isAppInstalled(getActivity(), "com.cyngn.theme.chooser")) {
                                 openLauncher("CM Theme Engine");
-                            } else if (Utils.isAppInstalled(getActivity(), launchers.get
-                                    (position).packageName)) {
-                                openLauncher(launchers.get(position).name);
+                            } else if (Utils.isAppInstalled(getActivity(), item.getPackageName())) {
+                                openLauncher(item.getName());
                             } else {
-                                openInPlayStore(launchers.get(position));
+                                openInPlayStore(item);
                             }
-                        } else if (Utils.isAppInstalled(getActivity(), launchers.get(position)
-                                .packageName)) {
-                            openLauncher(launchers.get(position).name);
+                        } else if (Utils.isAppInstalled(getActivity(), item
+                                .getPackageName())) {
+                            openLauncher(item.getName());
                         } else {
-                            openInPlayStore(launchers.get(position));
+                            openInPlayStore(item);
                         }
                     }
                 });
+
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
 
@@ -158,19 +160,19 @@ public class ApplyFragment extends CapsuleFragment {
         }
     }
 
-    private void openInPlayStore(final Launcher launcher) {
-        intentString = Config.MARKET_URL + launcher.packageName;
-        final String LauncherName = launcher.name;
+    private void openInPlayStore(final LauncherItem launcher) {
+        intentString = Config.MARKET_URL + launcher.getPackageName();
+        final String LauncherName = launcher.getName();
         final String cmName = "CM Theme Engine";
         String dialogContent;
         if (LauncherName.equals(cmName)) {
-            dialogContent = getResources().getString(R.string.cm_dialog_content, launcher.name);
+            dialogContent = getResources().getString(R.string.cm_dialog_content, launcher.getName());
             intentString = "http://download.cyanogenmod.org/";
         } else {
-            dialogContent = getResources().getString(R.string.lni_content, launcher.name);
-            intentString = Config.MARKET_URL + launcher.packageName;
+            dialogContent = getResources().getString(R.string.lni_content, launcher.getName());
+            intentString = Config.MARKET_URL + launcher.getPackageName();
         }
-        ISDialogs.showOpenInPlayStoreDialog(getContext(), launcher.name, dialogContent, new
+        ISDialogs.showOpenInPlayStoreDialog(getContext(), launcher.getName(), dialogContent, new
                 MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog materialDialog, @NonNull
@@ -218,37 +220,6 @@ public class ApplyFragment extends CapsuleFragment {
     @Override
     protected CFabEvent updateFab() {
         return new CFabEvent(false);
-    }
-
-    public class Launcher {
-
-        public final String name;
-        public final String packageName;
-        public final int launcherColor;
-        private int isInstalled = -1;
-
-        public Launcher(String[] values, int color) {
-            name = values[0];
-            packageName = values[1];
-            launcherColor = color;
-        }
-
-        public boolean isInstalled(Context context) {
-            if (isInstalled == -1) {
-                if (packageName.equals("org.cyanogenmod.theme.chooser")) {
-                    if (Utils.isAppInstalled(context, "org.cyanogenmod.theme.chooser")
-                            || Utils.isAppInstalled(context, "com.cyngn.theme.chooser")) {
-                        isInstalled = 1;
-                    }
-                } else {
-                    isInstalled = Utils.isAppInstalled(context, packageName) ? 1 : 0;
-                }
-            }
-
-            // Caches this value, checking if a launcher is installed is intensive on processing
-            return isInstalled == 1;
-        }
-
     }
 
 }

@@ -17,7 +17,7 @@
  * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
-package jahirfiquitiva.iconshowcase.holders;
+package jahirfiquitiva.iconshowcase.holders.lists;
 
 /**
  * Created by Allan Wang on 2016-09-10.

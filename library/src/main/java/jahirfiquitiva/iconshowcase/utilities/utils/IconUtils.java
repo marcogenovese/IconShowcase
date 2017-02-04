@@ -44,11 +44,9 @@ public class IconUtils {
     private static final int CAPS_LOCK = 3;
 
     public static Drawable getTintedDrawable(@NonNull Context context, String name) {
-        final int light = ContextCompat.getColor(context, R.color.drawable_tint_dark);
-        final int dark = ContextCompat.getColor(context, R.color.drawable_tint_light);
-        return getTintedIcon(context,
-                getIconResId(context.getResources(), context.getPackageName(), name),
-                ThemeUtils.darkTheme ? light : dark);
+        return getTintedIcon(context, getIconResId(context.getResources(), context.getPackageName
+                (), name), ThemeUtils.darkOrLight(context, R.color.drawable_tint_dark, R.color
+                .drawable_tint_light));
     }
 
     public static Drawable getTintedIcon(@NonNull Context context, @DrawableRes int drawable,

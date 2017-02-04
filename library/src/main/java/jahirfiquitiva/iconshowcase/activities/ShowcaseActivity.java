@@ -72,7 +72,7 @@ import jahirfiquitiva.iconshowcase.fragments.RequestsFragment;
 import jahirfiquitiva.iconshowcase.fragments.SettingsFragment;
 import jahirfiquitiva.iconshowcase.fragments.WallpapersFragment;
 import jahirfiquitiva.iconshowcase.fragments.ZooperFragment;
-import jahirfiquitiva.iconshowcase.holders.FullListHolder;
+import jahirfiquitiva.iconshowcase.holders.lists.FullListHolder;
 import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.tasks.DownloadJSON;
 import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
@@ -331,9 +331,9 @@ public class ShowcaseActivity extends TasksActivity {
         }
 
         AccountHeader drawerHeader = new AccountHeaderBuilder().withActivity(this)
-                .withHeaderBackground(ThemeUtils.darkTheme ? ThemeUtils.transparent ? R.drawable
-                        .drawer_header_clear : R.drawable.drawer_header_dark : R.drawable
-                        .drawer_header_light)
+                .withHeaderBackground(ThemeUtils.getHeaderForCurrentTheme(R.drawable
+                        .drawer_header_light, R.drawable.drawer_header_dark, R.drawable
+                        .drawer_header_clear))
                 .withSelectionFirstLine(headerAppName)
                 .withSelectionSecondLine(headerAppVersion)
                 .withProfileImagesClickable(false)

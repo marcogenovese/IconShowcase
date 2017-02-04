@@ -196,10 +196,6 @@ public class ToolbarColorizer {
     public static void setupToolbarIconsAndTextsColors(final Context context, AppBarLayout appbar,
                                                        final Toolbar toolbar) {
 
-        final int iconsColor = ThemeUtils.darkTheme ?
-                ContextCompat.getColor(context, R.color.toolbar_text_dark) :
-                ContextCompat.getColor(context, R.color.toolbar_text_light);
-
         final int defaultIconsColor = ContextCompat.getColor(context, android.R.color.white);
 
         if (appbar != null) {
@@ -213,8 +209,9 @@ public class ToolbarColorizer {
                     } else if (ratio < 0) {
                         ratio = 0;
                     }
-                    int paletteColor = ColorUtils.blendColors(defaultIconsColor, iconsColor,
-                            (float) ratio);
+                    int paletteColor = ColorUtils.blendColors(defaultIconsColor, ThemeUtils
+                            .darkOrLight(context, R.color.toolbar_text_dark, R.color
+                                    .toolbar_text_light), (float) ratio);
                     if (toolbar != null) {
                         // Collapsed offset = -352
                         colorizeToolbar(toolbar, paletteColor);
@@ -225,15 +222,12 @@ public class ToolbarColorizer {
     }
 
     @SuppressWarnings("ResourceAsColor")
-    public static void setupCollapsingToolbarTextColors(Context context,
-                                                        CollapsingToolbarLayout
-                                                                collapsingToolbarLayout) {
-        int iconsColor = ThemeUtils.darkTheme ?
-                ContextCompat.getColor(context, R.color.toolbar_text_dark) :
-                ContextCompat.getColor(context, R.color.toolbar_text_light);
+    public static void setupCollapsingToolbarTextColors(Context context, CollapsingToolbarLayout
+            collapsingToolbarLayout) {
         collapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(context, android.R
                 .color.transparent));
-        collapsingToolbarLayout.setCollapsedTitleTextColor(iconsColor);
+        collapsingToolbarLayout.setCollapsedTitleTextColor(ThemeUtils.darkOrLight(context, R
+                .color.toolbar_text_dark, R.color.toolbar_text_light));
     }
 
 }

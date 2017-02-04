@@ -21,9 +21,7 @@ package jahirfiquitiva.iconshowcase.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -37,11 +35,10 @@ import java.util.ArrayList;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
-import jahirfiquitiva.iconshowcase.holders.FullListHolder;
+import jahirfiquitiva.iconshowcase.holders.lists.FullListHolder;
 import jahirfiquitiva.iconshowcase.models.HomeCard;
 import jahirfiquitiva.iconshowcase.models.IconsCategory;
 import jahirfiquitiva.iconshowcase.utilities.utils.IconUtils;
-import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 
@@ -131,10 +128,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             setupAppInfo();
         } else if (holder instanceof MoreAppsCard) {
             MoreAppsCard mhldr = (MoreAppsCard) holder;
-            mhldr.icon.setImageDrawable(IconUtils.getTintedIcon(
-                    context, R.drawable.ic_play_store,
-                    ContextCompat.getColor(context, ThemeUtils.darkTheme ?
-                            R.color.drawable_tint_dark : R.color.drawable_tint_light)));
+            mhldr.icon.setImageDrawable(IconUtils.getTintedDrawable(context, "ic_play_store"));
             mhldr.lly.setOnClickListener(new DebouncedClickListener() {
                 @Override
                 public void onDebouncedClick(View v) {
@@ -190,24 +184,9 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private void setupIcons(Context context, ImageView iconsIV, ImageView wallsIV,
                             ImageView widgetsIV) {
-        final int light = ContextCompat.getColor(context, R.color.drawable_tint_dark);
-        final int dark = ContextCompat.getColor(context, R.color.drawable_tint_light);
-
-        Drawable iconsDrawable = IconUtils.getTintedIcon(
-                context, R.drawable.ic_android,
-                ThemeUtils.darkTheme ? light : dark);
-
-        Drawable wallsDrawable = IconUtils.getTintedIcon(
-                context, R.drawable.ic_multiple_wallpapers,
-                ThemeUtils.darkTheme ? light : dark);
-
-        Drawable widgetsDrawable = IconUtils.getTintedIcon(
-                context, R.drawable.ic_zooper_kustom,
-                ThemeUtils.darkTheme ? light : dark);
-
-        iconsIV.setImageDrawable(iconsDrawable);
-        wallsIV.setImageDrawable(wallsDrawable);
-        widgetsIV.setImageDrawable(widgetsDrawable);
+        iconsIV.setImageDrawable(IconUtils.getTintedDrawable(context, "ic_android"));
+        wallsIV.setImageDrawable(IconUtils.getTintedDrawable(context, "ic_multiple_wallpapers"));
+        widgetsIV.setImageDrawable(IconUtils.getTintedDrawable(context, "ic_zooper_kustom"));
     }
 
     private void resetAppInfoValues() {

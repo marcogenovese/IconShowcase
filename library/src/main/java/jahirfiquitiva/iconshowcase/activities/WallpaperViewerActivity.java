@@ -109,19 +109,9 @@ public class WallpaperViewerActivity extends BaseWallpaperViewerActivity {
 
         setViewsToHide(toHide1, toHide2);
 
-        int tintColor = ThemeUtils.darkOrLight(context, R.color.drawable_tint_dark, R.color
-                .drawable_base_tint);
-
-        Drawable save = IconUtils.getTintedIcon(context, R.drawable.ic_save, tintColor);
-
-        Drawable apply = IconUtils.getTintedIcon(context, R.drawable.ic_apply_wallpaper,
-                tintColor);
-
-        Drawable info = IconUtils.getTintedIcon(context, R.drawable.ic_info, tintColor);
-
         ImageView saveIV = (ImageView) findViewById(R.id.download);
         if (getItem().isDownloadable()) {
-            saveIV.setImageDrawable(save);
+            saveIV.setImageDrawable(IconUtils.getTintedDrawable(context, "ic_save"));
             saveIV.setOnClickListener(new DebouncedClickListener() {
                 @Override
                 public void onDebouncedClick(View v) {
@@ -156,7 +146,7 @@ public class WallpaperViewerActivity extends BaseWallpaperViewerActivity {
         }
 
         ImageView applyIV = (ImageView) findViewById(R.id.apply);
-        applyIV.setImageDrawable(apply);
+        applyIV.setImageDrawable(IconUtils.getTintedDrawable(context, "ic_apply_wallpaper"));
         applyIV.setOnClickListener(new DebouncedClickListener() {
             @Override
             public void onDebouncedClick(View v) {
@@ -165,7 +155,7 @@ public class WallpaperViewerActivity extends BaseWallpaperViewerActivity {
         });
 
         ImageView infoIV = (ImageView) findViewById(R.id.info);
-        infoIV.setImageDrawable(info);
+        infoIV.setImageDrawable(IconUtils.getTintedDrawable(context, "ic_info"));
         infoIV.setOnClickListener(new DebouncedClickListener() {
             @Override
             public void onDebouncedClick(View v) {
@@ -208,7 +198,7 @@ public class WallpaperViewerActivity extends BaseWallpaperViewerActivity {
         if (bmp != null) {
             colorFromCachedPic = ColorUtils.getPaletteSwatch(bmp).getTitleTextColor();
         } else {
-            colorFromCachedPic = tintColor;
+            colorFromCachedPic = ColorUtils.getMaterialPrimaryTextColor(ThemeUtils.isDarkTheme());
         }
 
         final ProgressBar spinner = (ProgressBar) findViewById(R.id.progress);

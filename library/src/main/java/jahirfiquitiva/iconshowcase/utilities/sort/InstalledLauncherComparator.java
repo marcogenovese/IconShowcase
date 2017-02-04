@@ -23,12 +23,12 @@ import android.content.Context;
 
 import java.util.Comparator;
 
-import jahirfiquitiva.iconshowcase.fragments.ApplyFragment;
+import jahirfiquitiva.iconshowcase.models.LauncherItem;
 
 /**
  * @author Aidan Follestad (afollestad)
  */
-public class InstalledLauncherComparator implements Comparator<ApplyFragment.Launcher> {
+public class InstalledLauncherComparator implements Comparator<LauncherItem> {
 
     private final Context context;
 
@@ -37,7 +37,7 @@ public class InstalledLauncherComparator implements Comparator<ApplyFragment.Lau
     }
 
     @Override
-    public int compare(ApplyFragment.Launcher lhs, ApplyFragment.Launcher rhs) {
+    public int compare(LauncherItem lhs, LauncherItem rhs) {
         if (!lhs.isInstalled(context) && rhs.isInstalled(context)) {
             // Left is not installed, right is, push left down towards the bottom.
             return 1;
@@ -46,7 +46,7 @@ public class InstalledLauncherComparator implements Comparator<ApplyFragment.Lau
             return -1;
         } else {
             // Sort alphabetically if they're at the same position.
-            return lhs.name.compareTo(rhs.name);
+            return lhs.getName().compareTo(rhs.getName());
         }
     }
 }

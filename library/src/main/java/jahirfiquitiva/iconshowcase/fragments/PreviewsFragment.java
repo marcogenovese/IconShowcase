@@ -24,7 +24,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.SearchView;
@@ -47,7 +46,7 @@ import jahirfiquitiva.iconshowcase.activities.base.DrawerActivity;
 import jahirfiquitiva.iconshowcase.events.OnLoadEvent;
 import jahirfiquitiva.iconshowcase.fragments.base.EventBaseFragment;
 import jahirfiquitiva.iconshowcase.fragments.base.FragmentStatePagerAdapter;
-import jahirfiquitiva.iconshowcase.holders.FullListHolder;
+import jahirfiquitiva.iconshowcase.holders.lists.FullListHolder;
 import jahirfiquitiva.iconshowcase.models.IconsCategory;
 import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.utilities.color.ToolbarTinter;
@@ -94,15 +93,11 @@ public class PreviewsFragment extends EventBaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        int iconsColor = ThemeUtils.darkTheme ?
-                ContextCompat.getColor(getActivity(), R.color.toolbar_text_dark) :
-                ContextCompat.getColor(getActivity(), R.color.toolbar_text_light);
-
         if (getActivity() != null && mSearchItem != null) {
             ToolbarColorizer.tintSearchView(getActivity(),
                     ((ShowcaseActivity) getActivity()).getToolbar(), mSearchItem, mSearchView,
-                    iconsColor);
+                    ThemeUtils.darkOrLight(getActivity(), R.color.toolbar_text_dark, R.color
+                            .toolbar_text_light));
         }
     }
 
@@ -196,12 +191,9 @@ public class PreviewsFragment extends EventBaseFragment {
 
         mSearchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
-        int iconsColor = ThemeUtils.darkTheme ?
-                ContextCompat.getColor(getActivity(), R.color.toolbar_text_dark) :
-                ContextCompat.getColor(getActivity(), R.color.toolbar_text_light);
-
         ToolbarTinter.on(menu)
-                .setIconsColor(iconsColor)
+                .setIconsColor(ThemeUtils.darkOrLight(getActivity(), R.color.toolbar_text_dark, R
+                        .color.toolbar_text_light))
                 .forceIcons()
                 .reapplyOnChange(true)
                 .apply(getActivity());

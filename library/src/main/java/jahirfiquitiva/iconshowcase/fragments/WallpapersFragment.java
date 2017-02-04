@@ -46,7 +46,7 @@ import jahirfiquitiva.iconshowcase.adapters.WallpapersAdapter;
 import jahirfiquitiva.iconshowcase.dialogs.AdviceDialog;
 import jahirfiquitiva.iconshowcase.events.OnLoadEvent;
 import jahirfiquitiva.iconshowcase.fragments.base.EventBaseFragment;
-import jahirfiquitiva.iconshowcase.holders.FullListHolder;
+import jahirfiquitiva.iconshowcase.holders.lists.FullListHolder;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.utils.IconUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
@@ -63,7 +63,6 @@ public class WallpapersFragment extends EventBaseFragment {
     private ImageView noConnection;
     private Activity context;
     private GridSpacingItemDecoration gridSpacing;
-    private int tintColor;
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle
@@ -76,9 +75,6 @@ public class WallpapersFragment extends EventBaseFragment {
 
         View layout = inflater.inflate(R.layout.wallpapers_section, container, false);
 
-        tintColor = ThemeUtils.darkOrLight(context, R.color.drawable_tint_dark, R.color
-                .drawable_tint_light);
-
         noConnection = (ImageView) layout.findViewById(R.id.no_connected_icon);
         mRecyclerView = (RecyclerView) layout.findViewById(R.id.wallsGrid);
         fastScroller = (RecyclerFastScroller) layout.findViewById(R.id.rvFastScroller);
@@ -90,8 +86,7 @@ public class WallpapersFragment extends EventBaseFragment {
             AdviceDialog.show(getActivity(), AdviceDialog.Type.WALLPAPER);
         }
 
-        noConnection.setImageDrawable(IconUtils.getTintedIcon(
-                context, R.drawable.ic_no_connection, tintColor));
+        noConnection.setImageDrawable(IconUtils.getTintedDrawable(context, "ic_no_connection"));
 
         setupRecyclerView(false, 0);
 
@@ -130,9 +125,7 @@ public class WallpapersFragment extends EventBaseFragment {
                 progress.setVisibility(View.GONE);
             }
         } else {
-            noConnection.setImageDrawable(IconUtils.getTintedIcon(
-                    context, R.drawable.ic_no_connection,
-                    tintColor));
+            noConnection.setImageDrawable(IconUtils.getTintedDrawable(context, "ic_no_connection"));
             showNoConnectionPicture();
         }
     }

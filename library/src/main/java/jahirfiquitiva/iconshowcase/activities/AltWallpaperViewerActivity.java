@@ -71,7 +71,6 @@ public class AltWallpaperViewerActivity extends BaseWallpaperViewerActivity {
 
     private FloatingActionButton fab, applyFab, saveFab, infoFab;
 
-
     @SuppressWarnings("ResourceAsColor")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -238,8 +237,7 @@ public class AltWallpaperViewerActivity extends BaseWallpaperViewerActivity {
         if (bmp != null) {
             colorFromCachedPic = ColorUtils.getPaletteSwatch(bmp).getBodyTextColor();
         } else {
-            colorFromCachedPic = ThemeUtils.darkOrLight(this, R.color.drawable_tint_dark, R.color
-                    .drawable_base_tint);
+            colorFromCachedPic = ColorUtils.getMaterialPrimaryTextColor(ThemeUtils.isDarkTheme());
         }
 
         final ProgressBar spinner = (ProgressBar) findViewById(R.id.progress);

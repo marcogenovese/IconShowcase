@@ -20,134 +20,45 @@
 package jahirfiquitiva.iconshowcase.adapters;
 
 import android.content.Context;
-import android.graphics.ColorFilter;
-import android.graphics.ColorMatrix;
-import android.graphics.ColorMatrixColorFilter;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.Priority;
 
 import java.util.List;
-import java.util.Locale;
 
 import jahirfiquitiva.iconshowcase.R;
-import jahirfiquitiva.iconshowcase.fragments.ApplyFragment;
-import jahirfiquitiva.iconshowcase.utilities.Preferences;
-import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
-import jahirfiquitiva.iconshowcase.utilities.utils.IconUtils;
-import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
-import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
+import jahirfiquitiva.iconshowcase.holders.LauncherHolder;
+import jahirfiquitiva.iconshowcase.models.LauncherItem;
 
-public class LaunchersAdapter extends RecyclerView.Adapter<LaunchersAdapter.LauncherHolder> {
+public class LaunchersAdapter extends RecyclerView.Adapter<LauncherHolder> {
 
     private final Context context;
-    private final List<ApplyFragment.Launcher> launchers;
-    private final ClickListener mCallback;
-    private Preferences mPrefs;
+    private final List<LauncherItem> launchers;
+    private LauncherHolder.OnLauncherClickListener listener;
 
-    public LaunchersAdapter(Context context, List<ApplyFragment.Launcher> launchers,
-                            ClickListener callback) {
+    public LaunchersAdapter(Context context, List<LauncherItem> launchers,
+                            LauncherHolder.OnLauncherClickListener listener) {
         this.context = context;
-        this.mPrefs = new Preferences(context);
         this.launchers = launchers;
-        this.mCallback = callback;
+        this.listener = listener;
     }
 
     @Override
     public LauncherHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        return new LauncherHolder(inflater.inflate(R.layout.item_launcher, parent, false));
+        return new LauncherHolder(inflater.inflate(R.layout.item_launcher, parent, false),
+                listener);
     }
 
     @Override
     public void onBindViewHolder(LauncherHolder holder, int position) {
         // Turns Launcher name "Something Pro" to "ic_something_pro"
-        String iconName = "ic_" + launchers.get(position).name.toLowerCase().replace(" ", "_");
-        int iconResource = IconUtils.getIconResId(context.getResources(), context.getPackageName(),
-                iconName);
-
-        if (mPrefs != null && mPrefs.getAnimationsEnabled()) {
-            Glide.with(context)
-                    .load(iconResource != 0 ? iconResource : IconUtils.getIconResId(context
-                            .getResources(), context.getPackageName(), "ic_na_launcher"))
-                    .priority(Priority.IMMEDIATE)
-                    .into(holder.icon);
-        } else {
-            Glide.with(context)
-                    .load(iconResource != 0 ? iconResource : IconUtils.getIconResId(context
-                            .getResources(), context.getPackageName(), "ic_na_launcher"))
-                    .priority(Priority.IMMEDIATE)
-                    .dontAnimate()
-                    .into(holder.icon);
-        }
-
-        holder.launcherName.setText(launchers.get(position).name.toUpperCase(Locale.getDefault()));
-
-        final int dark = ContextCompat.getColor(context, R.color.launcher_tint_dark);
-        final int light = ContextCompat.getColor(context, R.color.launcher_tint_light);
-
-        if (launchers.get(position).isInstalled(context)) {
-            holder.icon.setColorFilter(null);
-            holder.itemBG.setBackgroundColor(launchers.get(position).launcherColor);
-            holder.launcherName.setTextColor(ColorUtils.getMaterialSecondaryTextColor(ColorUtils
-                    .isLightColor(launchers.get(position).launcherColor)));
-        } else {
-            holder.icon.setColorFilter(bnwFilter());
-            holder.itemBG.setBackgroundColor(ThemeUtils.darkTheme ? dark : light);
-            holder.launcherName.setTextColor(ColorUtils.getMaterialSecondaryTextColor(ColorUtils
-                    .isLightColor(ThemeUtils.darkTheme ? dark : light)));
-        }
-
-        holder.view.setTag(position);
-        holder.view.setOnClickListener(new DebouncedClickListener() {
-            @Override
-            public void onDebouncedClick(View v) {
-                if (v.getTag() != null) {
-                    int index = (int) v.getTag();
-                    if (mCallback != null)
-                        mCallback.onClick(index);
-                }
-            }
-        });
+        holder.setItem(context, launchers.get(holder.getAdapterPosition()));
     }
 
     @Override
     public int getItemCount() {
         return launchers == null ? 0 : launchers.size();
-    }
-
-    private ColorFilter bnwFilter() {
-        ColorMatrix matrix = new ColorMatrix();
-        matrix.setSaturation(0);
-        return new ColorMatrixColorFilter(matrix);
-    }
-
-    public interface ClickListener {
-        void onClick(int index);
-    }
-
-    class LauncherHolder extends RecyclerView.ViewHolder {
-
-        final View view;
-        final ImageView icon;
-        final TextView launcherName;
-        final LinearLayout itemBG;
-
-        LauncherHolder(View v) {
-            super(v);
-            view = v;
-            itemBG = (LinearLayout) view.findViewById(R.id.itemBG);
-            icon = (ImageView) view.findViewById(R.id.launcherIcon);
-            launcherName = (TextView) view.findViewById(R.id.launcherName);
-        }
     }
 
 }

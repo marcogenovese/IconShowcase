@@ -19,45 +19,35 @@
 
 package jahirfiquitiva.iconshowcase.adapters;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.afollestad.sectionedrecyclerview.SectionedRecyclerViewAdapter;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.Priority;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import jahirfiquitiva.iconshowcase.R;
-import jahirfiquitiva.iconshowcase.holders.FullListHolder;
+import jahirfiquitiva.iconshowcase.holders.KustomHolder;
+import jahirfiquitiva.iconshowcase.holders.lists.FullListHolder;
 import jahirfiquitiva.iconshowcase.models.KustomKomponent;
 import jahirfiquitiva.iconshowcase.models.KustomWallpaper;
 import jahirfiquitiva.iconshowcase.models.KustomWidget;
-import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
-import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 
-public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.KustomHolder> {
+public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomHolder> {
 
     private final Context context;
     private final Drawable wallpaper;
-    private Preferences mPrefs;
     private ArrayList<KustomWidget> widgets;
     private ArrayList<KustomKomponent> komponents;
     private ArrayList<KustomWallpaper> kustomWalls;
 
     public KustomAdapter(Context context, Drawable wallpaper) {
         this.context = context;
-        this.mPrefs = new Preferences(context);
         this.wallpaper = wallpaper;
         setupLists();
     }
@@ -96,7 +86,23 @@ public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.Ku
     public KustomHolder onCreateViewHolder(ViewGroup parent, int i) {
         View view = LayoutInflater.from(parent.getContext()).inflate(i == VIEW_TYPE_HEADER ?
                 R.layout.kustom_section_header : R.layout.item_widget_preview, parent, false);
-        return new KustomHolder(view);
+        return new KustomHolder(view, wallpaper, new KustomHolder.OnKustomItemClickListener() {
+            @Override
+            public void onKustomItemClick(int section, int position) {
+                switch (section) {
+                    case 1:
+                        if (Utils.isAppInstalled(context, "org.kustom.wallpaper")) {
+                            context.startActivity(kustomWalls.get(position).getKLWPIntent(context));
+                        }
+                        break;
+                    case 2:
+                        if (Utils.isAppInstalled(context, "org.kustom.widget")) {
+                            context.startActivity(widgets.get(position).getKWGTIntent(context));
+                        }
+                        break;
+                }
+            }
+        });
     }
 
     @Override
@@ -128,30 +134,14 @@ public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.Ku
         return headers;
     }
 
-    @SuppressLint("SetTextI18n")
     @Override
     public void onBindHeaderViewHolder(KustomHolder holder, int section) {
-        switch (section) {
-            case 0:
-                holder.sectionTitle.setText("Komponents");
-                break;
-            case 1:
-                holder.sectionTitle.setText(context.getResources().getString(R.string
-                        .section_wallpapers));
-                break;
-            case 2:
-                holder.sectionTitle.setText("Widgets");
-                break;
-            default:
-                holder.sectionTitle.setText("Empty Assets");
-                break;
-        }
+        holder.setSectionTitle(section);
     }
 
     @Override
     public void onBindViewHolder(KustomHolder holder, int section, final int relativePosition,
                                  int absolutePosition) {
-        holder.background.setImageDrawable(wallpaper);
         String filePath;
         switch (section) {
             case 0:
@@ -159,15 +149,6 @@ public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.Ku
                 break;
 
             case 1:
-                holder.itemView.setOnClickListener(new DebouncedClickListener() {
-                    @Override
-                    public void onDebouncedClick(View v) {
-                        if (Utils.isAppInstalled(context, "org.kustom.wallpaper")) {
-                            context.startActivity(kustomWalls.get(relativePosition).getKLWPIntent
-                                    (context));
-                        }
-                    }
-                });
                 switch (context.getResources().getConfiguration().orientation) {
                     case Configuration.ORIENTATION_PORTRAIT:
                         filePath = kustomWalls.get(relativePosition).getPreviewPath();
@@ -182,15 +163,6 @@ public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.Ku
                 break;
 
             case 2:
-                holder.itemView.setOnClickListener(new DebouncedClickListener() {
-                    @Override
-                    public void onDebouncedClick(View v) {
-                        if (Utils.isAppInstalled(context, "org.kustom.widget")) {
-                            context.startActivity(widgets.get(relativePosition).getKWGTIntent
-                                    (context));
-                        }
-                    }
-                });
                 switch (context.getResources().getConfiguration().orientation) {
                     case Configuration.ORIENTATION_PORTRAIT:
                         filePath = widgets.get(relativePosition).getPreviewPath();
@@ -209,33 +181,7 @@ public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomAdapter.Ku
                 break;
         }
 
-        if (filePath != null) {
-            if (mPrefs != null && mPrefs.getAnimationsEnabled()) {
-                Glide.with(context)
-                        .load(new File(filePath))
-                        .priority(Priority.IMMEDIATE)
-                        .into(holder.widget);
-            } else {
-                Glide.with(context)
-                        .load(new File(filePath))
-                        .dontAnimate()
-                        .priority(Priority.IMMEDIATE)
-                        .into(holder.widget);
-            }
-        }
-    }
-
-    class KustomHolder extends RecyclerView.ViewHolder {
-        final ImageView background;
-        final ImageView widget;
-        final TextView sectionTitle;
-
-        public KustomHolder(View itemView) {
-            super(itemView);
-            background = (ImageView) itemView.findViewById(R.id.wall);
-            widget = (ImageView) itemView.findViewById(R.id.preview);
-            sectionTitle = (TextView) itemView.findViewById(R.id.kustom_section_title);
-        }
+        holder.setItem(context, section, filePath, relativePosition);
     }
 
 }

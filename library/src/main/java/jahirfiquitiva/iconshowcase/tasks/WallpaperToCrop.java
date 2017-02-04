@@ -27,7 +27,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -115,11 +114,9 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
                 dialog.dismiss();
                 Snackbar snackbar = Snackbar.make(layout,
                         context.getResources().getString(R.string.error), Snackbar.LENGTH_SHORT);
-                final int snackbarLight = ContextCompat.getColor(context, R.color.snackbar_light);
-                final int snackbarDark = ContextCompat.getColor(context, R.color.snackbar_dark);
                 ViewGroup snackbarView = (ViewGroup) snackbar.getView();
-                snackbarView.setBackgroundColor(ThemeUtils.darkTheme ? snackbarDark :
-                        snackbarLight);
+                snackbarView.setBackgroundColor(ThemeUtils.darkOrLight(context, R.color
+                        .snackbar_light, R.color.snackbar_dark));
                 snackbarView.setPadding(snackbarView.getPaddingLeft(),
                         snackbarView.getPaddingTop(), snackbarView.getPaddingRight(),
                         Utils.getNavigationBarHeight((Activity) context));

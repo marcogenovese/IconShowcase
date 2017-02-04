@@ -26,6 +26,7 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.annotation.ColorRes;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 
@@ -41,18 +42,31 @@ public class ThemeUtils {
     private final static int CLEAR = 2;
     private final static int AUTO = 3;
 
-    public static boolean darkTheme;
-    public static boolean transparent;
+    private static boolean darkTheme;
+    private static boolean transparent;
 
-    public static int darkOrLight(@ColorRes int dark, @ColorRes int light) { //TODO use this
-        // instead of ternary conditions
-        if (darkTheme) return dark;
-        return light;
+    public static int darkOrLight(@ColorRes int dark, @ColorRes int light) {
+        return darkTheme ? dark : light;
     }
 
     public static int darkOrLight(@NonNull Context context, @ColorRes int dark, @ColorRes int
             light) {
         return ContextCompat.getColor(context, darkOrLight(dark, light));
+    }
+
+    public static int darkLightOrTransparent(@NonNull Context context, @ColorRes int dark,
+                                             @ColorRes int light, @ColorRes int transparentColor) {
+        if (transparent) return ContextCompat.getColor(context, transparentColor);
+        return darkOrLight(context, dark, light);
+    }
+
+    public static boolean isDarkTheme() {
+        return darkTheme;
+    }
+
+    public static int getHeaderForCurrentTheme(@DrawableRes int lightHeader, @DrawableRes int
+            darkHeader, @DrawableRes int transparentHeader) {
+        return darkTheme ? transparent ? transparentHeader : darkHeader : lightHeader;
     }
 
     public static void onActivityCreateSetTheme(Activity activity) {

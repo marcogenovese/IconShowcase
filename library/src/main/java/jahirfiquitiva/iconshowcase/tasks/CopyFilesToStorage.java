@@ -24,7 +24,6 @@ import android.content.res.AssetManager;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -103,10 +102,9 @@ public class CopyFilesToStorage extends AsyncTask<Void, String, Boolean> {
         if (layout != null) {
             Snackbar longSnackbar = Snackbar.make(layout,
                     context.get().getString(R.string.assets_installed), Snackbar.LENGTH_SHORT);
-            final int snackbarLight = ContextCompat.getColor(context.get(), R.color.snackbar_light);
-            final int snackbarDark = ContextCompat.getColor(context.get(), R.color.snackbar_dark);
             ViewGroup snackbarView = (ViewGroup) longSnackbar.getView();
-            snackbarView.setBackgroundColor(ThemeUtils.darkTheme ? snackbarDark : snackbarLight);
+            snackbarView.setBackgroundColor(ThemeUtils.darkOrLight(context.get(), R.color
+                    .snackbar_dark, R.color.snackbar_light));
             longSnackbar.show();
             if (context.get() instanceof ShowcaseActivity) {
                 ((ShowcaseActivity) context.get()).resetFragment(DrawerActivity.DrawerItem.ZOOPER);

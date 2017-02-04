@@ -21,7 +21,6 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.support.annotation.ColorInt;
 import android.support.annotation.FloatRange;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.graphics.Palette;
 
 import java.util.Collections;
@@ -150,8 +149,8 @@ public class ColorUtils {
     }
 
     public static int getAccentColor(Context context) {
-        return ContextCompat.getColor(context, ThemeUtils.darkTheme ?
-                R.color.dark_theme_accent : R.color.light_theme_accent);
+        return ThemeUtils.darkOrLight(context, R.color.dark_theme_accent, R.color
+                .light_theme_accent);
     }
 
     public static int getMaterialPrimaryTextColor(boolean dark) {

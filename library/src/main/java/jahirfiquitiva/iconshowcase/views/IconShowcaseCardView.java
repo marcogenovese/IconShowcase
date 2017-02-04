@@ -29,7 +29,7 @@ import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
 
 public class IconShowcaseCardView extends CardView {
 
-    private int rightCardColor;
+    private Context context;
 
     public IconShowcaseCardView(Context context) {
         super(context);
@@ -48,19 +48,13 @@ public class IconShowcaseCardView extends CardView {
 
     @Override
     public void setCardBackgroundColor(int ignoredColor) {
-        super.setCardBackgroundColor(rightCardColor);
+        super.setCardBackgroundColor(ThemeUtils.darkLightOrTransparent(context, R.color
+                .card_dark_background, R.color.card_light_background, R.color
+                .card_clear_background));
     }
 
     private void setupRightCardColor(Context context) {
-        if (ThemeUtils.darkTheme) {
-            if (ThemeUtils.transparent) {
-                rightCardColor = ContextCompat.getColor(context, R.color.card_clear_background);
-            } else {
-                rightCardColor = ContextCompat.getColor(context, R.color.card_dark_background);
-            }
-        } else {
-            rightCardColor = ContextCompat.getColor(context, R.color.card_light_background);
-        }
+        this.context = context;
         setCardBackgroundColor(0);
     }
 

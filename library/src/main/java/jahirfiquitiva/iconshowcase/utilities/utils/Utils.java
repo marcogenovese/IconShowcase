@@ -45,7 +45,6 @@ import android.support.customtabs.CustomTabsServiceConnection;
 import android.support.customtabs.CustomTabsSession;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
 import android.view.View;
 
@@ -162,9 +161,8 @@ public class Utils {
         CustomTabsClient.bindCustomTabsService(context, "com.android.chrome",
                 mCustomTabsServiceConnection);
         customTabsIntent = new CustomTabsIntent.Builder(mCustomTabsSession[0])
-                .setToolbarColor(ThemeUtils.darkTheme ?
-                        ContextCompat.getColor(context, R.color.dark_theme_primary) :
-                        ContextCompat.getColor(context, R.color.light_theme_primary))
+                .setToolbarColor(ThemeUtils.darkOrLight(context, R.color.dark_theme_primary, R
+                        .color.light_theme_primary))
                 .setShowTitle(true)
                 .build();
 
