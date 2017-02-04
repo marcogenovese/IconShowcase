@@ -49,7 +49,8 @@ public class KustomHolder extends RecyclerView.ViewHolder {
         widget = (ImageView) itemView.findViewById(R.id.preview);
         sectionTitle = (TextView) itemView.findViewById(R.id.kustom_section_title);
         listener = nListener;
-        background.setImageDrawable(wallpaper);
+        if (background != null)
+            background.setImageDrawable(wallpaper);
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
