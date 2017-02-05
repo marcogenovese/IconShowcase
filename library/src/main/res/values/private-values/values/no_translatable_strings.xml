@@ -75,6 +75,9 @@
     <string name="okhttp">OkHttp</string>
     <string name="okhttp_web">http://square.github.io/okhttp/</string>
 
+    <string name="counter_fab">CounterFab</string>
+    <string name="counter_fab_web">https://github.com/andremion/CounterFab</string>
+
     <string name="rob_beane">Rob Beane</string>
     <string name="tim_bremer">Tim Bremer</string>
     <string name="steve_albright">Steve Albright</string>
@@ -187,6 +190,7 @@
         <item>@string/rv_fast_scroller_name</item>
         <item>@string/sectioned_rv_name</item>
         <item>@string/circleiv_name</item>
+        <item>@string/counter_fab</item>
         <item>@string/muzei_api_name</item>
         <item>@string/splitbtns_name</item>
     </string-array>
@@ -200,6 +204,7 @@
         <item>@string/rv_fast_scroller_web</item>
         <item>@string/sectioned_rv_web</item>
         <item>@string/circleiv_web</item>
+        <item>@string/counter_fab_web</item>
         <item>@string/muzei_api_web</item>
         <item>@string/splitbtns_web</item>
     </string-array>
