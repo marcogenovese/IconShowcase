@@ -524,9 +524,6 @@ public class ShowcaseActivity extends TasksActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (getCurrentFragment() instanceof RequestsFragment) {
-            getCurrentFragment().onActivityResult(requestCode, resultCode, data);
-        }
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragment = fragmentManager.findFragmentByTag("donationsFragment");
         if (fragment != null) {

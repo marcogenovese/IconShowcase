@@ -21,7 +21,6 @@ package jahirfiquitiva.iconshowcase.fragments;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
@@ -207,7 +206,7 @@ public class RequestsFragment extends CapsuleFragment {
                             public void doWhenReady() {
                                 dialog.dismiss();
                                 if (mAdapter != null)
-                                    mAdapter.notifyDataSetChanged();
+                                    mAdapter.selectOrDeselectAll(false);
                             }
                         });
                     }
@@ -216,29 +215,6 @@ public class RequestsFragment extends CapsuleFragment {
 
     public RequestsAdapter getAdapter() {
         return mAdapter;
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == IconRequest.INTENT_CODE) {
-            if (getAdapter() != null) {
-                try {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                getAdapter().selectOrDeselectAll(false);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
     }
 
 }
