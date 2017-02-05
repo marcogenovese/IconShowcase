@@ -63,27 +63,21 @@ import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 
 public class BaseWallpaperViewerActivity extends AppCompatActivity {
 
+    private static final int NAV_BAR_VISIBILITY_CHANGE_DELAY = 2000;
     private boolean isFullScreen = false;
     private String transitionName = "";
-
     private MaterialDialog dialogApply;
     private MaterialDialog downloadDialog;
-
     private WallpaperItem item;
     private Preferences mPrefs;
-
     private ViewGroup layout;
     private File downloadsFolder;
-
     private WallpaperDialogsCallback callback;
-
     private WallpaperToCrop cropTask;
-
     private View toHide1;
     private View toHide2;
-
     private Timer mTimer;
-    private static final int NAV_BAR_VISIBILITY_CHANGE_DELAY = 2000;
+    private boolean shouldShowNavBar = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,7 +120,6 @@ public class BaseWallpaperViewerActivity extends AppCompatActivity {
         }
         super.onDestroy();
     }
-
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -184,10 +177,6 @@ public class BaseWallpaperViewerActivity extends AppCompatActivity {
         this.callback = callback;
     }
 
-    public void setLayout(ViewGroup layout) {
-        this.layout = layout;
-    }
-
     public void setViewsToHide(View toHide1, View toHide2) {
         this.toHide1 = toHide1;
         this.toHide2 = toHide2;
@@ -195,6 +184,10 @@ public class BaseWallpaperViewerActivity extends AppCompatActivity {
 
     public ViewGroup getLayout() {
         return layout;
+    }
+
+    public void setLayout(ViewGroup layout) {
+        this.layout = layout;
     }
 
     public String getTransitionName() {
@@ -262,8 +255,6 @@ public class BaseWallpaperViewerActivity extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
         // | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
     }
-
-    private boolean shouldShowNavBar = false;
 
     public void navBarVisibilityChange() {
         shouldShowNavBar = !shouldShowNavBar;

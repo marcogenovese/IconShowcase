@@ -50,6 +50,7 @@ import jahirfiquitiva.iconshowcase.activities.base.DrawerActivity;
 import jahirfiquitiva.iconshowcase.adapters.RequestsAdapter;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.utilities.utils.PermissionsUtils;
+import jahirfiquitiva.iconshowcase.views.CounterFab;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 import timber.log.Timber;
 
@@ -133,6 +134,14 @@ public class RequestsFragment extends CapsuleFragment {
     @Nullable
     @Override
     protected CFabEvent updateFab() {
+        if (getAdapter() != null && getAdapter().getSelectedApps() != null) {
+            try {
+                ((CounterFab) capsuleActivity().getFab()).setCount(getAdapter().getSelectedApps()
+                        .size());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         return new CFabEvent(R.drawable.ic_email, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -165,7 +174,24 @@ public class RequestsFragment extends CapsuleFragment {
         mViewGroup.removeView(mLoadingView);
         mLoadingView = null;
         mRecyclerView.setVisibility(View.VISIBLE);
-        mAdapter = new RequestsAdapter();
+        mAdapter = new RequestsAdapter(new RequestsAdapter.OnItemsChanged() {
+            @Override
+            public void doOnItemsChanged() {
+                if (getAdapter() != null && getAdapter().getSelectedApps() != null) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                ((CounterFab) capsuleActivity().getFab()).setCount(getAdapter()
+                                        .getSelectedApps().size());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                }
+            }
+        });
         mRecyclerView.setAdapter(mAdapter);
         showFab();
     }

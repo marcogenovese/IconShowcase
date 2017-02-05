@@ -51,9 +51,9 @@
                     android:layout_height="?actionBarSize"
                     android:minHeight="?actionBarSize"
                     android:transitionName="actionBar"
+                    android:theme="@style/Toolbar.AppCompat.Responsive.Light"
                     app:layout_collapseMode="pin"
                     app:popupTheme="@style/Toolbar.Popup.AppCompat"
-                    app:theme="@style/Toolbar.AppCompat.Responsive.Light"
                     tools:ignore="UnusedAttribute"/>
 
         </android.support.design.widget.CollapsingToolbarLayout>

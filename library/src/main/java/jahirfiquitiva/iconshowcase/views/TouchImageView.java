@@ -800,6 +800,10 @@ public class TouchImageView extends ImageView {
         void onMove();
     }
 
+    public interface OnSingleTapListener {
+        boolean onSingleTap();
+    }
+
     /**
      * Gesture Listener detects a single click or long click and passes that on to the view's
      * listener.
@@ -1186,10 +1190,6 @@ public class TouchImageView extends ImageView {
             this.focusY = focusY;
             this.scaleType = scaleType;
         }
-    }
-
-    public interface OnSingleTapListener {
-        boolean onSingleTap();
     }
 
 }

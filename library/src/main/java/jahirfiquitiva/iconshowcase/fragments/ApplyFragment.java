@@ -166,7 +166,8 @@ public class ApplyFragment extends CapsuleFragment {
         final String cmName = "CM Theme Engine";
         String dialogContent;
         if (LauncherName.equals(cmName)) {
-            dialogContent = getResources().getString(R.string.cm_dialog_content, launcher.getName());
+            dialogContent = getResources().getString(R.string.cm_dialog_content, launcher.getName
+                    ());
             intentString = "http://download.cyanogenmod.org/";
         } else {
             dialogContent = getResources().getString(R.string.lni_content, launcher.getName());

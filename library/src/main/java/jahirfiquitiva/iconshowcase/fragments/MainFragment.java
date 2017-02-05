@@ -45,6 +45,7 @@ import jahirfiquitiva.iconshowcase.events.OnLoadEvent;
 import jahirfiquitiva.iconshowcase.fragments.base.EventBaseFragment;
 import jahirfiquitiva.iconshowcase.models.HomeCard;
 import jahirfiquitiva.iconshowcase.utilities.utils.IconUtils;
+import jahirfiquitiva.iconshowcase.views.CounterFab;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 import jahirfiquitiva.iconshowcase.views.DividerItemDecoration;
 import timber.log.Timber;
@@ -137,12 +138,16 @@ public class MainFragment extends EventBaseFragment {
     @Nullable
     @Override
     protected CFabEvent updateFab() {
+        try {
+            ((CounterFab) capsuleActivity().getFab()).setCount(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return new CFabEvent(R.drawable.ic_rate, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent rate = new Intent(Intent.ACTION_VIEW,
-                        Uri.parse("https://play.google.com/store/apps/details?id=" +
-                                context.getPackageName()));
+                Intent rate = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google" +
+                        ".com/store/apps/details?id=" + context.getPackageName()));
                 context.startActivity(rate);
             }
         });

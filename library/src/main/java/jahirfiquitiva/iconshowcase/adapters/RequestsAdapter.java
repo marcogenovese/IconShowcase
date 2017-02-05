@@ -34,14 +34,18 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestHolder> {
         return null;
     }
 
+    private OnItemsChanged onItemsChanged = null;
+
+    public RequestsAdapter(OnItemsChanged onItemsChanged) {
+        this.onItemsChanged = onItemsChanged;
+    }
+
     @Override
     public RequestHolder onCreateViewHolder(ViewGroup parent, int position) {
         Preferences mPrefs = new Preferences(parent.getContext());
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate((Config.get().devOptions() ?
-                        mPrefs.getDevListsCards() : Config.get().bool(R.bool.request_cards))
-                        ? R.layout.card_app_to_request :
-                        R.layout.item_app_to_request, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate((Config.get().devOptions() ?
+                mPrefs.getDevListsCards() : Config.get().bool(R.bool.request_cards)) ? R.layout
+                .card_app_to_request : R.layout.item_app_to_request, parent, false);
         return new RequestHolder(view, new RequestHolder.OnAppClickListener() {
             @Override
             public void onClick(Context context, AppCompatCheckBox checkBox, App item) {
@@ -75,6 +79,8 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestHolder> {
                 ir.unselectAllApps();
             }
             notifyDataSetChanged();
+            if (onItemsChanged != null)
+                onItemsChanged.doOnItemsChanged();
         }
     }
 
@@ -83,7 +89,13 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestHolder> {
         if (ir != null && ir.getApps() != null) {
             ir.toggleAppSelected(app);
             checkBox.setChecked(ir.isAppSelected(app));
+            if (onItemsChanged != null)
+                onItemsChanged.doOnItemsChanged();
         }
+    }
+
+    public interface OnItemsChanged {
+        void doOnItemsChanged();
     }
 
 }
