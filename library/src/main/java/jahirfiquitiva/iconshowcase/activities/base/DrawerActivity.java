@@ -64,7 +64,7 @@ public abstract class DrawerActivity extends CapsuleActivity {
             DONATIONS_FLATTR = false,
             DONATIONS_BITCOIN = false,
 
-    WITH_ZOOPER_SECTION = false, SELECT_ALL_APPS = true;
+    WITH_ZOOPER_SECTION = false;
 
     protected static String[] mGoogleCatalog = new String[0],
             GOOGLE_CATALOG_VALUES = new String[0],

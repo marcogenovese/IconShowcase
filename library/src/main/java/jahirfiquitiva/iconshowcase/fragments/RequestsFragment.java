@@ -171,6 +171,14 @@ public class RequestsFragment extends CapsuleFragment {
     }
 
     public void startRequestProcess() {
+        if (mAdapter != null && ((mAdapter.getSelectedApps() != null) && (mAdapter
+                .getSelectedApps().size() > 0))) {
+            try {
+                ISDialogs.showNoSelectedAppsDialog(getActivity());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         showRequestsFilesCreationDialog(getActivity());
     }
 
@@ -199,14 +207,24 @@ public class RequestsFragment extends CapsuleFragment {
                         IconRequest.get().send(new OnRequestProgress() {
                             @Override
                             public void doWhenStarted() {
-                                dialog.show();
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        dialog.show();
+                                    }
+                                });
                             }
 
                             @Override
                             public void doWhenReady() {
-                                dialog.dismiss();
-                                if (mAdapter != null)
-                                    mAdapter.selectOrDeselectAll(false);
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        dialog.dismiss();
+                                        if (mAdapter != null)
+                                            mAdapter.selectOrDeselectAll();
+                                    }
+                                });
                             }
                         });
                     }

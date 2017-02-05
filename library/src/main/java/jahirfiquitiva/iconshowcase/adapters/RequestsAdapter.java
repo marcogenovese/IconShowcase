@@ -66,10 +66,10 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestHolder> {
         holder.setItem(getApps().get(holder.getAdapterPosition()));
     }
 
-    public void selectOrDeselectAll(boolean select) {
+    public void selectOrDeselectAll() {
         final IconRequest ir = IconRequest.get();
         if (ir != null) {
-            if (select) {
+            if (getSelectedApps() != null && getSelectedApps().isEmpty()) {
                 ir.selectAllApps();
             } else {
                 ir.unselectAllApps();

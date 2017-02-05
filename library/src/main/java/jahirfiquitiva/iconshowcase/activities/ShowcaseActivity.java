@@ -509,9 +509,7 @@ public class ShowcaseActivity extends TasksActivity {
             if (getCurrentFragment() instanceof RequestsFragment) {
                 if (((RequestsFragment) getCurrentFragment()).getAdapter() != null && (
                         (RequestsFragment) getCurrentFragment()).getAdapter().getItemCount() > 0) {
-                    ((RequestsFragment) getCurrentFragment()).getAdapter().selectOrDeselectAll
-                            (SELECT_ALL_APPS);
-                    SELECT_ALL_APPS = !SELECT_ALL_APPS;
+                    ((RequestsFragment) getCurrentFragment()).getAdapter().selectOrDeselectAll();
                 }
             } else {
                 Toast.makeText(this, "Can't perform this action from here.", Toast.LENGTH_SHORT)
@@ -833,14 +831,6 @@ public class ShowcaseActivity extends TasksActivity {
 
     public boolean includesWallpapers() {
         return mDrawerMap != null && mDrawerMap.containsKey(DrawerItem.WALLPAPERS);
-    }
-
-    public boolean selectAllApps() {
-        return SELECT_ALL_APPS;
-    }
-
-    public void setSelectAllApps(boolean newValue) {
-        this.SELECT_ALL_APPS = newValue;
     }
 
     public boolean allowShuffle() {
