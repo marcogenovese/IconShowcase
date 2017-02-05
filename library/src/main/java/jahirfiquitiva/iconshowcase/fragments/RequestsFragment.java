@@ -36,6 +36,7 @@ import android.widget.RelativeLayout;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.pitchedapps.butler.iconrequest.IconRequest;
 import com.pitchedapps.butler.iconrequest.events.AppLoadedEvent;
+import com.pitchedapps.butler.iconrequest.events.OnRequestProgress;
 import com.pitchedapps.capsule.library.event.CFabEvent;
 import com.pitchedapps.capsule.library.fragments.CapsuleFragment;
 import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
@@ -196,8 +197,12 @@ public class RequestsFragment extends CapsuleFragment {
                     public void onPermissionGranted() {
                         final MaterialDialog dialog = ISDialogs.showBuildingRequestDialog
                                 (context);
-                        dialog.show();
-                        IconRequest.get().send(new IconRequest.OnRequestReady() {
+                        IconRequest.get().send(new OnRequestProgress() {
+                            @Override
+                            public void doWhenStarted() {
+                                dialog.show();
+                            }
+
                             @Override
                             public void doWhenReady() {
                                 dialog.dismiss();
@@ -222,7 +227,11 @@ public class RequestsFragment extends CapsuleFragment {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            getAdapter().selectOrDeselectAll(false);
+                            try {
+                                getAdapter().selectOrDeselectAll(false);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
                 } catch (Exception e) {

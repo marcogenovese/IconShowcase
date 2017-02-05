@@ -27,7 +27,7 @@ import android.os.Environment;
 import android.support.annotation.CallSuper;
 
 import com.pitchedapps.butler.iconrequest.IconRequest;
-import com.pitchedapps.butler.iconrequest.RequestsCallback;
+import com.pitchedapps.butler.iconrequest.events.RequestsCallback;
 
 import java.io.File;
 import java.util.concurrent.TimeUnit;
