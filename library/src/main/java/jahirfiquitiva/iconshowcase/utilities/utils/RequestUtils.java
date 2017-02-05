@@ -21,62 +21,40 @@ package jahirfiquitiva.iconshowcase.utilities.utils;
 
 import android.content.Context;
 
+import java.util.concurrent.TimeUnit;
+
 import jahirfiquitiva.iconshowcase.R;
 
 public class RequestUtils {
 
-    public static String getTimeName(Context context, long minutes) {
-        String text;
-        if (minutes > 40320) {
-            text = Utils.getStringFromResources(context, R.string.months).toLowerCase();
-        } else if (minutes > 10080) {
-            text = Utils.getStringFromResources(context, R.string.weeks).toLowerCase();
-        } else if (minutes > 1440) {
-            text = Utils.getStringFromResources(context, R.string.days).toLowerCase();
-        } else if (minutes > 60) {
-            text = Utils.getStringFromResources(context, R.string.hours).toLowerCase();
+    public static String getTimeTextFromMillis(Context context, long millis) {
+        if (TimeUnit.MILLISECONDS.toSeconds(millis) < 60) {
+            return (String.valueOf(TimeUnit.MILLISECONDS.toSeconds(millis)) + " " + Utils
+                    .getStringFromResources(context, R.string.seconds).toLowerCase());
+        } else if (TimeUnit.MILLISECONDS.toMinutes(millis) < 60) {
+            return (String.valueOf(TimeUnit.MILLISECONDS.toMinutes(millis)) + " " + Utils
+                    .getStringFromResources(context, R.string.minutes).toLowerCase());
+        } else if (TimeUnit.MILLISECONDS.toHours(millis) < 24) {
+            return (String.valueOf(TimeUnit.MILLISECONDS.toHours(millis)) + " " + Utils
+                    .getStringFromResources(context, R.string.hours).toLowerCase());
+        } else if (TimeUnit.MILLISECONDS.toDays(millis) < 7) {
+            return (String.valueOf(TimeUnit.MILLISECONDS.toDays(millis)) + " " + Utils
+                    .getStringFromResources(context, R.string.days).toLowerCase());
+        } else if (millisToWeeks(millis) < 4) {
+            return (String.valueOf(millisToWeeks(millis)) + " " + Utils.getStringFromResources
+                    (context, R.string.weeks).toLowerCase());
         } else {
-            text = Utils.getStringFromResources(context, R.string.minutes).toLowerCase();
+            return (String.valueOf(millisToMonths(millis)) + " " + Utils.getStringFromResources
+                    (context, R.string.months).toLowerCase());
         }
-        return text;
     }
 
-    public static String getTimeNameInSeconds(Context context, long secs) {
-        String text;
-        if (secs > (40320 * 60)) {
-            text = Utils.getStringFromResources(context, R.string.months).toLowerCase();
-        } else if (secs > (10080 * 60)) {
-            text = Utils.getStringFromResources(context, R.string.weeks).toLowerCase();
-        } else if (secs > (1440 * 60)) {
-            text = Utils.getStringFromResources(context, R.string.days).toLowerCase();
-        } else if (secs > (60 * 60)) {
-            text = Utils.getStringFromResources(context, R.string.hours).toLowerCase();
-        } else if (secs > 60) {
-            text = Utils.getStringFromResources(context, R.string.minutes).toLowerCase();
-        } else {
-            text = Utils.getStringFromResources(context, R.string.seconds).toLowerCase();
-        }
-        return text;
+    private static long millisToWeeks(long millis) {
+        return TimeUnit.MILLISECONDS.toDays(millis) / 7;
     }
 
-    public static float getExactMinutes(long minutes, boolean withSeconds) {
-        float time;
-        if (minutes > 40320) {
-            time = minutes / 40320.0f;
-        } else if (minutes > 10080) {
-            time = minutes / 10080.0f;
-        } else if (minutes > 1440) {
-            time = minutes / 1440.0f;
-        } else if (minutes > 60) {
-            time = minutes / 60.0f;
-        } else {
-            if (withSeconds) {
-                time = minutes / 60.0f;
-            } else {
-                time = minutes;
-            }
-        }
-        return time;
+    private static long millisToMonths(long millis) {
+        return millisToWeeks(millis) / 4;
     }
 
 }

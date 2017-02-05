@@ -20,8 +20,6 @@
 package jahirfiquitiva.iconshowcase.activities.base;
 
 import android.content.Context;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.CallSuper;
@@ -108,23 +106,14 @@ public abstract class TasksActivity extends DrawerActivity {
             try {
                 jsonTask.execute();
             } catch (Exception e) {
+                // Do nothing
             }
         }
         if (drawerHas(DrawerItem.REQUESTS)) {
-            //mPrefs.resetRequestsLeft(this);
-            PackageInfo appInfo = null;
-            try {
-                appInfo = this.getPackageManager().getPackageInfo(this.getPackageName(), 0);
-            } catch (PackageManager.NameNotFoundException e) {
-                Timber.d(e.getMessage());
-            }
             Preferences mPrefs = new Preferences(this);
             IconRequest.start(this)
                     .withAppName(getString(R.string.app_name))
-                    .withFooter("%s Version: %s \n IconShowcase lib version: %s", getString(R
-                                    .string.app_name), appInfo != null ? appInfo.versionName : "1" +
-                                    ".0",
-                            BuildConfig.VERSION_NAME)
+                    .withFooter("IconShowcase lib version: %s", BuildConfig.VERSION_NAME)
                     .withSubject(s(R.string.request_title))
                     .toEmail(s(R.string.email_id))
                     .saveDir(new File(getString(R.string.request_save_location, Environment

@@ -213,27 +213,27 @@ public class ShowcaseActivity extends TasksActivity {
 
         if (savedInstanceState == null) {
             if (openWallpapers) {
-                drawerItemSelectAndClick(mDrawerMap.get(DrawerItem.WALLPAPERS));
+                drawerItemClick(mDrawerMap.get(DrawerItem.WALLPAPERS));
             } else if (iconsPicker && mDrawerMap.containsKey(DrawerItem.PREVIEWS)) {
-                drawerItemSelectAndClick(mDrawerMap.get(DrawerItem.PREVIEWS));
+                drawerItemClick(mDrawerMap.get(DrawerItem.PREVIEWS));
             } else if (wallsPicker && mPrefs.isDashboardWorking() && mDrawerMap.containsKey
                     (DrawerItem.WALLPAPERS)) {
-                drawerItemSelectAndClick(mDrawerMap.get(DrawerItem.WALLPAPERS));
+                drawerItemClick(mDrawerMap.get(DrawerItem.WALLPAPERS));
             } else if ((shortcut != null && shortcut.equals("apply_shortcut")) && mDrawerMap
                     .containsKey(DrawerItem.APPLY)) {
-                drawerItemSelectAndClick(mDrawerMap.get(DrawerItem.APPLY));
+                drawerItemClick(mDrawerMap.get(DrawerItem.APPLY));
             } else if ((shortcut != null && shortcut.equals("request_shortcut")) && mDrawerMap
                     .containsKey(DrawerItem.REQUESTS)) {
-                drawerItemSelectAndClick(mDrawerMap.get(DrawerItem.REQUESTS));
+                drawerItemClick(mDrawerMap.get(DrawerItem.REQUESTS));
             } else {
                 if (mPrefs.getSettingsModified()) { //TODO remove this from preferences; this can
                     // be sent via bundle itself
                     //TODO check this
                     long settingsIdentifier = 0;
-                    drawerItemSelectAndClick(settingsIdentifier);
+                    drawerItemClick(settingsIdentifier);
                 } else {
                     currentItem = -1;
-                    drawerItemSelectAndClick(0);
+                    drawerItemClick(0);
                 }
             }
         }
@@ -284,7 +284,7 @@ public class ShowcaseActivity extends TasksActivity {
 
         DrawerBuilder drawerBuilder = new DrawerBuilder().withActivity(this)
                 .withToolbar(cToolbar)
-                .withFireOnInitialOnClick(true)
+                // .withFireOnInitialOnClick(true)
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
 
                     @Override
@@ -346,12 +346,7 @@ public class ShowcaseActivity extends TasksActivity {
         drawer = drawerBuilder.build();
     }
 
-    public void drawerItemSelectAndClick(long id) {
-        drawer.setSelection(id);
-        drawerItemClick(id);
-    }
-
-    private void drawerItemClick(long id) {
+    public void drawerItemClick(long id) {
         switchFragment(id, mDrawerItems.get((int) id));
     }
 
@@ -382,9 +377,7 @@ public class ShowcaseActivity extends TasksActivity {
         collapsingToolbarLayout.setTitle(dt.getName().equals("Home") ? Config.get().string(R
                 .string.app_name) : getString(dt.getTitleID()));
 
-        if (drawer != null) { //TODO check this
-            drawer.setSelection(itemId);
-        }
+        drawer.setSelection(itemId);
     }
 
     @Override
@@ -471,7 +464,7 @@ public class ShowcaseActivity extends TasksActivity {
                         .OnChangelogNeutralButtonClick() {
                     @Override
                     public void onNeutralButtonClick() {
-                        drawerItemSelectAndClick(mDrawerMap.get(DrawerItem.PREVIEWS));
+                        drawerItemClick(mDrawerMap.get(DrawerItem.PREVIEWS));
                     }
                 });
             } else {

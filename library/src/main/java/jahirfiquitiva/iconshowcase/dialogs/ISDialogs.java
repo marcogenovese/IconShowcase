@@ -33,8 +33,8 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.events.BlankEvent;
@@ -43,7 +43,6 @@ import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.utils.IconUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.RequestUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
-import timber.log.Timber;
 
 /**
  * This Class was created by Patrick Jung on 07.01.16. For more Details and Licensing have a look at
@@ -280,24 +279,13 @@ public final class ISDialogs {
     }
 
     public static void showRequestTimeLimitDialog(Context context, long minutes, long millisLeft) {
-        String minutesText =
-                new DecimalFormat("##.##").format(RequestUtils.getExactMinutes(minutes, false)) +
-                        " " + RequestUtils.getTimeName(context, minutes);
-
-        long secs = millisLeft / 1000;
-
-        Timber.d("TimeLimit! Millis: " + millisLeft + " - Seconds: " + secs);
-
         String content = context.getResources().getString(R.string.apps_limit_dialog_day,
-                minutesText);
+                RequestUtils.getTimeTextFromMillis(context, TimeUnit.MINUTES.toMillis(minutes)));
 
         String contentExtra;
-
-        if (secs >= 60) {
-            String leftText = new DecimalFormat("##.##").format(RequestUtils.getExactMinutes
-                    (minutes, true)) + " " + RequestUtils.getTimeNameInSeconds(context, secs);
+        if (TimeUnit.MILLISECONDS.toSeconds(millisLeft) >= 60) {
             contentExtra = context.getResources().getString(R.string.apps_limit_dialog_day_extra,
-                    leftText);
+                    RequestUtils.getTimeTextFromMillis(context, millisLeft));
         } else {
             contentExtra = Utils.getStringFromResources(context, R.string
                     .apps_limit_dialog_day_extra_sec);

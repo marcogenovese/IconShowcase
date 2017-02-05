@@ -78,7 +78,6 @@ public abstract class DrawerActivity extends CapsuleActivity {
     protected List<DrawerItem> mDrawerItems;
     protected EnumMap<DrawerItem, Integer> mDrawerMap = new EnumMap<>(DrawerItem.class);
 
-
     protected DrawerItem drawerKeyToType(String s) {
         switch (s.toLowerCase()) {
             case "previews":
@@ -96,7 +95,8 @@ public abstract class DrawerActivity extends CapsuleActivity {
             case "kustom":
                 return DrawerItem.KUSTOM;
             default:
-                throw new UnsupportedOperationException("Invalid drawer key " + s + ".\nPlease check your " +
+                throw new UnsupportedOperationException("Invalid drawer key " + s + ".\nPlease " +
+                        "check your " +
                         "primary_drawer_items array");
         }
     }
@@ -108,10 +108,10 @@ public abstract class DrawerActivity extends CapsuleActivity {
         //Convert keys to enums
         String[] configurePrimaryDrawerItems = getResources().getStringArray(R.array
                 .drawer_sections);
-
         for (String s : configurePrimaryDrawerItems) {
             mDrawerItems.add(drawerKeyToType(s));
         }
+
         mDrawerItems.add(DrawerItem.CREDITS);
         mDrawerItems.add(DrawerItem.SETTINGS);
         if (WITH_DONATIONS_SECTION) mDrawerItems.add(DrawerItem.DONATE);
@@ -266,10 +266,8 @@ public abstract class DrawerActivity extends CapsuleActivity {
         public static PrimaryDrawerItem getPrimaryDrawerItem(final Context context, DrawerItem
                 di, int i) {
             return new PrimaryDrawerItem().withName(context.getResources().getString(di
-                    .getTitleID()))
-                    .withIdentifier(i).withIcon(IconUtils.getVectorDrawable(context, di
-                            .getIconRes()))
-                    .withIconTintingEnabled(true);
+                    .getTitleID())).withIdentifier(i).withIcon(IconUtils.getVectorDrawable
+                    (context, di.getIconRes())).withIconTintingEnabled(true);
         }
 
         /**
@@ -280,8 +278,7 @@ public abstract class DrawerActivity extends CapsuleActivity {
         public static SecondaryDrawerItem getSecondaryDrawerItem(final Context context,
                                                                  DrawerItem di, int i) {
             return new SecondaryDrawerItem().withName(context.getResources().getString(di
-                    .getTitleID()))
-                    .withIdentifier(i);
+                    .getTitleID())).withIdentifier(i);
         }
 
         public int getTitleID() {

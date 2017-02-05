@@ -342,8 +342,7 @@ public class Utils {
                                     try {
                                         long id = ((ShowcaseActivity) context).getPreviewsId();
                                         if (id != -1) {
-                                            ((ShowcaseActivity) context).drawerItemSelectAndClick
-                                                    (id);
+                                            ((ShowcaseActivity) context).drawerItemClick(id);
                                         }
                                     } catch (Exception e) {
                                         e.printStackTrace();
