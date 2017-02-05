@@ -172,14 +172,15 @@ public class RequestsFragment extends CapsuleFragment {
 
     public void startRequestProcess() {
         if (mAdapter != null && ((mAdapter.getSelectedApps() != null) && (mAdapter
-                .getSelectedApps().size() > 0))) {
+                .getSelectedApps().size() <= 0))) {
             try {
                 ISDialogs.showNoSelectedAppsDialog(getActivity());
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        } else {
+            showRequestsFilesCreationDialog(getActivity());
         }
-        showRequestsFilesCreationDialog(getActivity());
     }
 
     private void showRequestsFilesCreationDialog(final Context context) {
