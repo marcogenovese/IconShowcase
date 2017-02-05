@@ -43,12 +43,7 @@ public class Preferences {
             WALLPAPER_AS_TOOLBAR_HEADER = "wallpaper_as_toolbar_header",
             APPLY_DIALOG_DISMISSED = "apply_dialog_dismissed",
             WALLS_DIALOG_DISMISSED = "walls_dialog_dismissed",
-            WALLS_COLUMNS_NUMBER = "walls_columns_number",
-            NOTIFS_ENABLED = "notifs_enabled",
-            NOTIFS_LED_ENABLED = "notifs_led_enabled",
-            NOTIFS_SOUND_ENABLED = "notifs_sound_enabled",
-            NOTIFS_VIBRATION_ENABLED = "notifs_vibration_enabled",
-            NOTIFS_UPDATE_INTERVAL = "notifs_update_interval";
+            WALLS_COLUMNS_NUMBER = "walls_columns_number";
 
     private static final String
             DEV_DRAWER_TEXTS = "dev_drawer_texts",
@@ -191,41 +186,6 @@ public class Preferences {
     public void setVersionCode(int versionCode) {
         getPrefs().edit().putInt(VERSION_CODE, versionCode).apply();
     }
-
-    /* NOTIFICATIONS */
-
-    public boolean getNotifsEnabled() {
-        return getPrefs().getBoolean(NOTIFS_ENABLED, true);
-    }
-
-    public void setNotifsEnabled(boolean enabled) {
-        getPrefs().edit().putBoolean(NOTIFS_ENABLED, enabled).apply();
-    }
-
-    public boolean getNotifsLedEnabled() {
-        return getPrefs().getBoolean(NOTIFS_LED_ENABLED, true);
-    }
-
-    public void setNotifsLedEnabled(boolean enableLed) {
-        getPrefs().edit().putBoolean(NOTIFS_LED_ENABLED, enableLed).apply();
-    }
-
-    public boolean getNotifsSoundEnabled() {
-        return getPrefs().getBoolean(NOTIFS_SOUND_ENABLED, true);
-    }
-
-    public void setNotifsSoundEnabled(boolean enableLed) {
-        getPrefs().edit().putBoolean(NOTIFS_SOUND_ENABLED, enableLed).apply();
-    }
-
-    public boolean getNotifsVibrationEnabled() {
-        return getPrefs().getBoolean(NOTIFS_VIBRATION_ENABLED, true);
-    }
-
-    public void setNotifsVibrationEnabled(boolean vibrate) {
-        getPrefs().edit().putBoolean(NOTIFS_VIBRATION_ENABLED, vibrate).apply();
-    }
-
 
     /* DEV MODE PREFERENCES */
 

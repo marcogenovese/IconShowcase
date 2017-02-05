@@ -44,7 +44,6 @@ import android.support.customtabs.CustomTabsIntent;
 import android.support.customtabs.CustomTabsServiceConnection;
 import android.support.customtabs.CustomTabsSession;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentActivity;
 import android.util.DisplayMetrics;
 import android.view.View;
 
@@ -332,13 +331,30 @@ public class Utils {
         return false;
     }
 
-    protected static void showChangelogDialog(Context context) {
+    protected static void showChangelogDialog(final Context context) {
         if (isNewVersion(context) && (context instanceof ShowcaseActivity)) {
             try {
-                // TODO: Make this work with all contexts
-                // TODO: Add button in dialog to check new icons (switch Fragment to IconsFrag)
-                ChangelogDialog.show(((FragmentActivity) context), R.xml.changelog);
+                if (((ShowcaseActivity) context).includesIcons()) {
+                    ChangelogDialog.show(((ShowcaseActivity) context), R.xml.changelog, new
+                            ChangelogDialog.OnChangelogNeutralButtonClick() {
+                                @Override
+                                public void onNeutralButtonClick() {
+                                    try {
+                                        long id = ((ShowcaseActivity) context).getPreviewsId();
+                                        if (id != -1) {
+                                            ((ShowcaseActivity) context).drawerItemSelectAndClick
+                                                    (id);
+                                        }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+                } else {
+                    ChangelogDialog.show(((ShowcaseActivity) context), R.xml.changelog, null);
+                }
             } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }

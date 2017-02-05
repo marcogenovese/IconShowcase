@@ -96,8 +96,7 @@ public abstract class DrawerActivity extends CapsuleActivity {
             case "kustom":
                 return DrawerItem.KUSTOM;
             default:
-                //TODO add better catch;
-                throw new RuntimeException("Invalid drawer key " + s + ".\nPlease check your " +
+                throw new UnsupportedOperationException("Invalid drawer key " + s + ".\nPlease check your " +
                         "primary_drawer_items array");
         }
     }
@@ -161,10 +160,6 @@ public abstract class DrawerActivity extends CapsuleActivity {
             // then the section is enabled
         }
     }
-
-    private boolean isPremium() {
-        return mIsPremium;
-    } //TODO move if needed
 
     /*
      * Drawer item enum class

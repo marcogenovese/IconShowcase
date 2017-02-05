@@ -271,10 +271,8 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpaperHolder> {
             intent.putExtra("item", item);
             intent.putExtra("transitionName", ViewCompat.getTransitionName(wall));
 
-            Bitmap bitmap;
-
             if (wall.getDrawable() != null) {
-                bitmap = Utils.drawableToBitmap(wall.getDrawable());
+                Bitmap bitmap = Utils.drawableToBitmap(wall.getDrawable());
 
                 try {
                     String filename = "temp.png";

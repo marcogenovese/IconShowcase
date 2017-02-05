@@ -156,8 +156,7 @@ public class WallpaperDialog extends BaseEventDialog {
                 builder[0].content(R.string.downloading_wallpaper)
                         .progress(true, 0)
                         .cancelable(false)
-                        .onPositive(new MaterialDialog.SingleButtonCallback() { //TODO set
-                            // positive text?
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull
                                     DialogAction which) {
@@ -222,9 +221,6 @@ public class WallpaperDialog extends BaseEventDialog {
 
     private String getUrl() {
         return getArguments().getString("wall_url", "error");
-        //TODO add default url in case of error?
-        //TODO There won't be any default url, instead we could show an icon from resources, i.e.
-        // the one in drawer
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)

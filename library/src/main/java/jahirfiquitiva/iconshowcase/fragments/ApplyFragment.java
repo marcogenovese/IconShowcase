@@ -123,7 +123,6 @@ public class ApplyFragment extends CapsuleFragment {
                                         .show();
                             }
                         } else if (item.getName().equals("CM Theme Engine")) {
-                            //TODO Make sure CM Theme Engine dialog appears in ROMs without it
                             if (Utils.isAppInstalled(getActivity(), "com.cyngn.theme.chooser")) {
                                 openLauncher("CM Theme Engine");
                             } else if (Utils.isAppInstalled(getActivity(), item.getPackageName())) {

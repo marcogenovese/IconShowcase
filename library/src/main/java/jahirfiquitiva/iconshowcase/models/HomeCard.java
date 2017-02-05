@@ -29,26 +29,14 @@ import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 
 public class HomeCard implements Parcelable {
 
-    @SuppressWarnings("unused")
-    public static final Creator<HomeCard> CREATOR = new Creator<HomeCard>() {
-        @Override
-        public HomeCard createFromParcel(Parcel in) {
-            return new HomeCard(in);
-        }
-
-        @Override
-        public HomeCard[] newArray(int size) {
-            return new HomeCard[size];
-        }
-    };
-
-    public final String title, desc;
-    public final Drawable img;
-    public final boolean imgEnabled;
-    public String onClickLink;
-    public boolean isInstalled;
-    public Intent intent;
-    public boolean isAnApp;
+    private String title;
+    private String desc;
+    private String onClickLink;
+    private boolean imgEnabled;
+    private boolean isAnApp;
+    private boolean isInstalled;
+    private Drawable img;
+    private Intent intent;
 
     private HomeCard(Builder builder) {
         this.title = builder.title;
@@ -59,30 +47,6 @@ public class HomeCard implements Parcelable {
         this.isInstalled = builder.isInstalled;
         this.intent = builder.intent;
         this.isAnApp = builder.isAnApp;
-    }
-
-    private HomeCard(Parcel in) { //TODO correct parcel
-        title = in.readString();
-        desc = in.readString();
-        img = (Drawable) in.readValue(Drawable.class.getClassLoader());
-        imgEnabled = in.readByte() != 0;
-        onClickLink = (String) in.readValue(Object.class.getClassLoader());
-        isAnApp = in.readByte() != 0;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(title);
-        dest.writeString(desc);
-        dest.writeValue(img);
-        dest.writeByte((byte) (imgEnabled ? 1 : 0));
-        dest.writeValue(onClickLink);
-        dest.writeByte((byte) (isAnApp ? 1 : 0));
     }
 
     public static class Builder {
@@ -137,5 +101,75 @@ public class HomeCard implements Parcelable {
         public HomeCard build() {
             return new HomeCard(this);
         }
+    }
+
+    protected HomeCard(Parcel in) {
+        title = in.readString();
+        desc = in.readString();
+        imgEnabled = in.readByte() != 0;
+        onClickLink = in.readString();
+        isInstalled = in.readByte() != 0;
+        intent = in.readParcelable(Intent.class.getClassLoader());
+        isAnApp = in.readByte() != 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(title);
+        dest.writeString(desc);
+        dest.writeByte((byte) (imgEnabled ? 1 : 0));
+        dest.writeString(onClickLink);
+        dest.writeByte((byte) (isInstalled ? 1 : 0));
+        dest.writeParcelable(intent, flags);
+        dest.writeByte((byte) (isAnApp ? 1 : 0));
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<HomeCard> CREATOR = new Creator<HomeCard>() {
+        @Override
+        public HomeCard createFromParcel(Parcel in) {
+            return new HomeCard(in);
+        }
+
+        @Override
+        public HomeCard[] newArray(int size) {
+            return new HomeCard[size];
+        }
+    };
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public String getOnClickLink() {
+        return onClickLink;
+    }
+
+    public boolean hasImgEnabled() {
+        return imgEnabled;
+    }
+
+    public boolean isAnApp() {
+        return isAnApp;
+    }
+
+    public boolean isInstalled() {
+        return isInstalled;
+    }
+
+    public Drawable getImg() {
+        return img;
+    }
+
+    public Intent getIntent() {
+        return intent;
     }
 }

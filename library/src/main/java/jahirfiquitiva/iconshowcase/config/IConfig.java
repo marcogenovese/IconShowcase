@@ -75,7 +75,4 @@ public interface IConfig {
 
     int getIconResId(String iconName);
 
-    //TODO Amounts interface?
-
-    //TODO home card getter ... only if needed
 }

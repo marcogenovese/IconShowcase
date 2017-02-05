@@ -139,33 +139,31 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         } else if (holder instanceof AppCard) {
             String description;
             final AppCard ahldr = (AppCard) holder;
-            if (homeCards.get(ahldr.i - cards).isInstalled) {
-                description = context.getResources().getString(
-                        R.string.tap_to_open,
-                        homeCards.get(ahldr.i - cards).desc);
+            if (homeCards.get(ahldr.i - cards).isInstalled()) {
+                description = context.getResources().getString(R.string.tap_to_open, homeCards
+                        .get(ahldr.i - cards).getDesc());
             } else {
-                description = context.getResources().getString(
-                        R.string.tap_to_download,
-                        homeCards.get(ahldr.i - cards).desc);
+                description = context.getResources().getString(R.string.tap_to_download,
+                        homeCards.get(ahldr.i - cards).getDesc());
             }
-            ahldr.cardTitle.setText(homeCards.get(ahldr.i - cards).title);
 
-            ahldr.cardDesc.setText(homeCards.get(ahldr.i - cards).isAnApp ? description :
-                    homeCards.get(ahldr.i - cards).desc);
+            ahldr.cardTitle.setText(homeCards.get(ahldr.i - cards).getTitle());
+            ahldr.cardDesc.setText(homeCards.get(ahldr.i - cards).isAnApp() ? description :
+                    homeCards.get(ahldr.i - cards).getDesc());
 
-            if (homeCards.get(ahldr.i - cards).imgEnabled) {
-                ahldr.cardIcon.setImageDrawable(homeCards.get(ahldr.i - cards).img);
+            if (homeCards.get(ahldr.i - cards).hasImgEnabled()) {
+                ahldr.cardIcon.setImageDrawable(homeCards.get(ahldr.i - cards).getImg());
             } else {
                 ahldr.subLly.removeView(ahldr.cardIcon);
             }
             view.setOnClickListener(new DebouncedClickListener() {
                 @Override
                 public void onDebouncedClick(View v) {
-                    if (homeCards.get(ahldr.i - cards).isInstalled && homeCards.get(ahldr.i -
-                            cards).intent != null) {
-                        context.startActivity(homeCards.get(ahldr.i - cards).intent);
+                    if (homeCards.get(ahldr.i - cards).isInstalled() && homeCards.get(ahldr.i -
+                            cards).getIntent() != null) {
+                        context.startActivity(homeCards.get(ahldr.i - cards).getIntent());
                     } else if (view.getVisibility() == View.VISIBLE) {
-                        Utils.openLink(context, homeCards.get(ahldr.i - cards).onClickLink);
+                        Utils.openLink(context, homeCards.get(ahldr.i - cards).getOnClickLink());
                     }
                 }
             });

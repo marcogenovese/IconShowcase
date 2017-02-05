@@ -94,7 +94,8 @@ public class DownloadJSON extends AsyncTask<Void, Void, Boolean> {
                             copyright,
                             downloadable));
                 }
-            } catch (JSONException e) { //TODO log
+            } catch (JSONException e) {
+                Timber.d("JSON Exception: " + e.getMessage());
             }
         }
         return true;

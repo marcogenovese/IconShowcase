@@ -133,7 +133,7 @@ dependencies {
     compile 'com.github.AllanWang:Butler:f29ac8d'
 
     //Library for UI framework
-    compile 'com.github.AllanWang:Capsule:v3.1'
+    compile 'com.github.jahirfiquitiva:Capsule:f6f1df2'
 
     //Donations Lib
     compile 'org.sufficientlysecure:donations:2.5'

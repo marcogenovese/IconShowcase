@@ -41,9 +41,8 @@ public class NotificationUtils {
     public static void sendFirebaseNotification(Context context, Class mainActivity,
                                                 Map<String, String> data, String title, String
                                                         content) {
-        Preferences mPrefs = new Preferences(context);
-        if (!(mPrefs.getNotifsEnabled())) return;
 
+        Preferences mPrefs = new Preferences(context);
 
         int ledColor = ThemeUtils.darkOrLight(context, R.color.dark_theme_accent,
                 R.color.light_theme_accent);
@@ -83,26 +82,20 @@ public class NotificationUtils {
 
         Resources resources = context.getResources(), systemResources = Resources.getSystem();
 
-        notificationBuilder.setSound(mPrefs.getNotifsSoundEnabled() ? ringtoneUri : null);
-        notificationBuilder.setVibrate(mPrefs.getNotifsVibrationEnabled()
-                ? new long[]{500, 500} : null);
+        notificationBuilder.setSound(ringtoneUri);
+        notificationBuilder.setVibrate(new long[]{500, 500});
 
         NotificationManager notificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         Notification notification = notificationBuilder.build();
 
-        if (mPrefs.getNotifsEnabled()) {
-            notification.flags |= Notification.FLAG_SHOW_LIGHTS;
-            notification.ledARGB = ledColor;
-            notification.ledOnMS = resources.getInteger(systemResources.getIdentifier(
-                    "config_defaultNotificationLedOn", "integer", "android"));
-            notification.ledOffMS = resources.getInteger(systemResources.getIdentifier(
-                    "config_defaultNotificationLedOff", "integer", "android"));
-        } else {
-            notification.ledOnMS = 0;
-            notification.ledOffMS = 0;
-        }
+        notification.flags |= Notification.FLAG_SHOW_LIGHTS;
+        notification.ledARGB = ledColor;
+        notification.ledOnMS = resources.getInteger(systemResources.getIdentifier(
+                "config_defaultNotificationLedOn", "integer", "android"));
+        notification.ledOffMS = resources.getInteger(systemResources.getIdentifier(
+                "config_defaultNotificationLedOff", "integer", "android"));
 
         notificationManager.notify(1 /* ID of notification */, notificationBuilder.build());
     }

@@ -132,12 +132,6 @@ public class ShowcaseActivity extends TasksActivity {
 
         getAction();
 
-        //Will be deprecated for TasksActivity
-        //        TasksExecutor.with(context)
-        //                .loadJust((iconsPicker && mDrawerMap.containsKey(DrawerItem.PREVIEWS)),
-        //                        (wallsPicker && mPrefs.isDashboardWorking() && mDrawerMap
-        // .containsKey(DrawerItem.WALLPAPERS)));
-
         shuffleIcons = getResources().getBoolean(R.bool.shuffle_toolbar_icons);
 
         try {
@@ -202,8 +196,7 @@ public class ShowcaseActivity extends TasksActivity {
             mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
                 public void onIabSetupFinished(IabResult result) {
                     if (!result.isSuccess()) {
-                        Timber.d("In-app Billing setup failed:", result); //TODO move text to
-                        // string?
+                        Timber.d("In-app Billing setup failed: ", result);
                         new MaterialDialog.Builder(ShowcaseActivity.this).title(R.string
                                 .donations_error_title)
                                 .content(R.string.donations_error_content)
@@ -262,11 +255,11 @@ public class ShowcaseActivity extends TasksActivity {
 
     @Override
     protected void onDestroy() {
+        super.onDestroy();
         if (settingsDialog != null) {
             settingsDialog.dismiss();
             settingsDialog = null;
-        } //TODO fix dialog
-        super.onDestroy();
+        }
     }
 
     public Fragment getCurrentFragment() {
@@ -353,7 +346,7 @@ public class ShowcaseActivity extends TasksActivity {
         drawer = drawerBuilder.build();
     }
 
-    private void drawerItemSelectAndClick(long id) {
+    public void drawerItemSelectAndClick(long id) {
         drawer.setSelection(id);
         drawerItemClick(id);
     }
@@ -370,13 +363,10 @@ public class ShowcaseActivity extends TasksActivity {
         currentItem = itemId;
 
         // TODO Make sure this works fine even after configuration changes
-        // TODO Add method to expand or collapse WITHOUT animation
-        if (dt == DrawerItem.HOME
-            //                && !iconsPicker && !wallsPicker
-                ) {
-            expandAppBar();
+        if ((dt == DrawerItem.HOME) && (!iconsPicker && !wallsPicker)) {
+            expandAppBar(mPrefs != null && mPrefs.getAnimationsEnabled());
         } else {
-            collapseAppBar();
+            collapseAppBar(mPrefs != null && mPrefs.getAnimationsEnabled());
         }
 
         if (dt == DrawerItem.HOME) {
@@ -389,10 +379,8 @@ public class ShowcaseActivity extends TasksActivity {
         //Fragment Switcher
         reloadFragment(dt);
 
-        //TODO verify
-        collapsingToolbarLayout.setTitle(
-                dt.getName().equals("Home") ? Config.get().string(R.string.app_name)
-                        : getString(dt.getTitleID()));
+        collapsingToolbarLayout.setTitle(dt.getName().equals("Home") ? Config.get().string(R
+                .string.app_name) : getString(dt.getTitleID()));
 
         if (drawer != null) { //TODO check this
             drawer.setSelection(itemId);
@@ -478,7 +466,17 @@ public class ShowcaseActivity extends TasksActivity {
         super.onOptionsItemSelected(item);
         int i = item.getItemId();
         if (i == R.id.changelog) {
-            ChangelogDialog.show(this, R.xml.changelog);
+            if (includesIcons()) {
+                ChangelogDialog.show(this, R.xml.changelog, new ChangelogDialog
+                        .OnChangelogNeutralButtonClick() {
+                    @Override
+                    public void onNeutralButtonClick() {
+                        drawerItemSelectAndClick(mDrawerMap.get(DrawerItem.PREVIEWS));
+                    }
+                });
+            } else {
+                ChangelogDialog.show(this, R.xml.changelog, null);
+            }
         } else if (i == R.id.refresh) {
             if (getCurrentFragment() instanceof WallpapersFragment) {
                 FullListHolder.get().walls().clearList();
@@ -607,7 +605,6 @@ public class ShowcaseActivity extends TasksActivity {
         ArrayList<IconItem> finalIconsList = new ArrayList<>();
 
         if (allowShuffle && shuffleIcons) {
-            //TODO rather than shuffle list, why not get a random index point x times?
             Collections.shuffle(FullListHolder.get().home().getList());
         }
 
@@ -851,6 +848,10 @@ public class ShowcaseActivity extends TasksActivity {
 
     public Drawable getWallpaperDrawable() {
         return wallpaperDrawable;
+    }
+
+    public long getPreviewsId() {
+        return mDrawerMap != null ? mDrawerMap.get(DrawerItem.PREVIEWS) : -1;
     }
 
 }

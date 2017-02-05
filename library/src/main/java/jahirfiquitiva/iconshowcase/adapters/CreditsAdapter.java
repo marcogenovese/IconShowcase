@@ -142,6 +142,7 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         return null;
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (position < detailedCredits.size()) {
@@ -201,9 +202,7 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         if (position >= detailedCredits.size()) {
             CreditsItem item = credits.get(holder.getAdapterPosition() - detailedCredits.size());
-            CreditsHolder creditsHolder = (CreditsHolder) holder; //Allan TODO check potential
-            // cast exception
-
+            CreditsHolder creditsHolder = (CreditsHolder) holder;
             creditsHolder.text.setText(item.getText());
             creditsHolder.icon.setImageDrawable(item.getIcon());
         }

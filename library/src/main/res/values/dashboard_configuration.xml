@@ -143,6 +143,12 @@
 
     <!--  /*/*/*/*/*/*/*/*/*/*/*/*/ ICONS/PREVIEWS SECTION CONFIGURATION /*/*/*/*/*/*/*/*/*/*/*/*/ -->
 
+    <!-- Show button in changelog to check new icons?
+        True, means yes.
+        False, means no.
+        -->
+    <bool name="show_check_new_icons_button">true</bool>
+
     <!-- Do you want icons be sorted alphabetically and organized automatically, removing duplicates too?
         True, means yes.
         False, means no.

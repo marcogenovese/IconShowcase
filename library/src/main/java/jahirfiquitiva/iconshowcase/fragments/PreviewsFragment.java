@@ -80,7 +80,6 @@ public class PreviewsFragment extends EventBaseFragment {
 
         mCategories = FullListHolder.get().iconsCategories().getList();
 
-        //TODO Check if ViewPager is smooth enough
         mPager = (ViewPager) layout.findViewById(R.id.pager);
         mTabs = (TabLayout) getActivity().findViewById(R.id.tabs);
         mPager.setAdapter(new IconsPagerAdapter(getChildFragmentManager()));
