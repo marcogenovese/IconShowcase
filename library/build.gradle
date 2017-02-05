@@ -125,7 +125,7 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.1.0'
 
     //Library for Requests
-    compile 'com.github.AllanWang:Butler:224855d'
+    compile 'com.github.AllanWang:Butler:54bb42f'
 
     //Library for UI framework
     compile 'com.github.AllanWang:Capsule:v3.1'
