@@ -43,6 +43,7 @@ import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.utils.IconUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.RequestUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
+import timber.log.Timber;
 
 /**
  * This Class was created by Patrick Jung on 07.01.16. For more Details and Licensing have a look at
@@ -284,6 +285,8 @@ public final class ISDialogs {
                         " " + RequestUtils.getTimeName(context, minutes);
 
         long secs = millisLeft / 1000;
+
+        Timber.d("TimeLimit! Millis: " + millisLeft + " - Seconds: " + secs);
 
         String content = context.getResources().getString(R.string.apps_limit_dialog_day,
                 minutesText);
