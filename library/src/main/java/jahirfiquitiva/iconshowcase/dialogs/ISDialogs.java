@@ -290,15 +290,14 @@ public final class ISDialogs {
 
         String contentExtra;
 
-        if (secs > 60) {
+        if (secs >= 60) {
             String leftText = new DecimalFormat("##.##").format(RequestUtils.getExactMinutes
-                    (minutes, true)) +
-                    " " + RequestUtils.getTimeNameInSeconds(context, secs);
-            contentExtra = context.getResources().getString(
-                    R.string.apps_limit_dialog_day_extra, leftText);
+                    (minutes, true)) + " " + RequestUtils.getTimeNameInSeconds(context, secs);
+            contentExtra = context.getResources().getString(R.string.apps_limit_dialog_day_extra,
+                    leftText);
         } else {
-            contentExtra = Utils.getStringFromResources(context,
-                    R.string.apps_limit_dialog_day_extra_sec);
+            contentExtra = Utils.getStringFromResources(context, R.string
+                    .apps_limit_dialog_day_extra_sec);
         }
 
         String finalContent = content + " " + contentExtra;
