@@ -64,11 +64,6 @@ public class ThemeUtils {
         return darkTheme;
     }
 
-    public static int getHeaderForCurrentTheme(@DrawableRes int lightHeader, @DrawableRes int
-            darkHeader, @DrawableRes int transparentHeader) {
-        return darkTheme ? transparent ? transparentHeader : darkHeader : lightHeader;
-    }
-
     public static void onActivityCreateSetTheme(Activity activity) {
         final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
         int mTheme = sp.getInt("theme", (activity.getResources().getInteger(R.integer.app_theme)

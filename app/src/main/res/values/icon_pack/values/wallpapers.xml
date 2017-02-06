@@ -21,12 +21,11 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <!-- Provide a list of wallpapers -->
     <string-array name="wallpapers">
-        <item>a_wall</item>
         <item>wallpaper_01</item>
         <item>wallpaper_02</item>
     </string-array>
 
     <!-- This wallpaper will be used when a user applies the theme -->
-    <string name="default_wallpaper">a_wall</string>
+    <string name="default_wallpaper">wallpaper_01</string>
 
 </resources>

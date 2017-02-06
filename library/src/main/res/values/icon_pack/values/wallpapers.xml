@@ -20,12 +20,7 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <!-- Provide a list of wallpapers -->
-    <string-array name="wallpapers">
-        <item>drawer_header</item>
-        <!--placeholder-->
-    </string-array>
-
+    <string-array name="wallpapers"/>
     <!-- This wallpaper will be used when a user applies the theme -->
-    <string name="default_wallpaper">drawer_header</string>
-
+    <string name="default_wallpaper"/>
 </resources>

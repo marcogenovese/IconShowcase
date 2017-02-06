@@ -322,9 +322,7 @@ public class ShowcaseActivity extends TasksActivity {
         }
 
         AccountHeader drawerHeader = new AccountHeaderBuilder().withActivity(this)
-                .withHeaderBackground(ThemeUtils.getHeaderForCurrentTheme(R.drawable
-                        .drawer_header_light, R.drawable.drawer_header_dark, R.drawable
-                        .drawer_header_clear))
+                .withHeaderBackground(R.drawable.drawer_header)
                 .withSelectionFirstLine(headerAppName)
                 .withSelectionSecondLine(headerAppVersion)
                 .withProfileImagesClickable(false)

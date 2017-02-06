@@ -59,8 +59,7 @@ public class IconUtils {
                 return getTintedIcon(icon, color);
             }
         } catch (Resources.NotFoundException ex) {
-            return getTintedIcon(ContextCompat.getDrawable(context, R.drawable.iconshowcase_logo)
-                    , color);
+            return getTintedIcon(ContextCompat.getDrawable(context, R.drawable.ic_android), color);
         }
     }
 
@@ -150,7 +149,7 @@ public class IconUtils {
                 }
             }
         } catch (Resources.NotFoundException ex) {
-            vectorDrawable = ContextCompat.getDrawable(context, R.drawable.iconshowcase_logo);
+            vectorDrawable = ContextCompat.getDrawable(context, R.drawable.ic_android);
         }
         return vectorDrawable != null ? vectorDrawable : null;
     }

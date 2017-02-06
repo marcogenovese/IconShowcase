@@ -94,7 +94,7 @@ android {
             debuggable false
             zipAlignEnabled true
             minifyEnabled true
-            shrinkResources false
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         aaptOptions {
