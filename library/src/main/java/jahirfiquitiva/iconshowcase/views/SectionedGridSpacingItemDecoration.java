@@ -32,6 +32,7 @@ public class SectionedGridSpacingItemDecoration extends RecyclerView.ItemDecorat
     private final boolean includeEdge;
     private final KustomAdapter adapter;
 
+    @SuppressWarnings("SameParameterValue")
     public SectionedGridSpacingItemDecoration(int spanCount, int spacing, boolean includeEdge,
                                               KustomAdapter adapter) {
         this.spanCount = spanCount;

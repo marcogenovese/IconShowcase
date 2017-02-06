@@ -104,7 +104,7 @@ android {
 
 }
 
-apply from: 'https://raw.githubusercontent.com/adwiv/android-fat-aar/master/fat-aar.gradle'
+apply from: 'fat-aar.gradle'
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -130,7 +130,7 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.1.0'
 
     //Library for Requests
-    compile 'com.github.AllanWang:Butler:56f0312'
+    compile 'com.github.AllanWang:Butler:d6941d5'
 
     //Library for UI framework
     compile 'com.github.AllanWang:Capsule:v3.3'

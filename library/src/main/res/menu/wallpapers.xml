@@ -18,19 +18,22 @@
   ~ 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
   -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
+<menu xmlns:tools="http://schemas.android.com/tools"
+      xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
             android:id="@+id/refresh"
             android:icon="@drawable/ic_refresh"
             android:title="@string/refresh"
-            app:showAsAction="always"/>
+            app:showAsAction="always"
+            tools:ignore="AppCompatResource"/>
 
     <item
             android:id="@+id/columns"
             android:icon="@drawable/ic_columns"
             android:title="@string/columns"
-            app:showAsAction="ifRoom"/>
+            app:showAsAction="ifRoom"
+            tools:ignore="AppCompatResource"/>
 
 </menu>

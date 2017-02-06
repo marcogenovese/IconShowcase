@@ -43,13 +43,11 @@ public class IconsAdapter extends RecyclerView.Adapter<IconHolder> {
 
     private final Activity context;
     private final Preferences mPrefs;
-    private boolean inChangelog = false;
     private ArrayList<IconItem> iconsList;
 
-    public IconsAdapter(Activity context, ArrayList<IconItem> iconsList, boolean inChangelog) {
+    public IconsAdapter(Activity context, ArrayList<IconItem> iconsList) {
         this.context = context;
         this.iconsList = iconsList;
-        this.inChangelog = inChangelog;
         this.mPrefs = new Preferences(context);
     }
 
@@ -83,8 +81,7 @@ public class IconsAdapter extends RecyclerView.Adapter<IconHolder> {
     @Override
     public void onBindViewHolder(final IconHolder holder, int position) {
         if (position < 0) return;
-        holder.setItem(iconsList.get(holder.getAdapterPosition()), mPrefs.getAnimationsEnabled(),
-                inChangelog);
+        holder.setItem(iconsList.get(holder.getAdapterPosition()), mPrefs.getAnimationsEnabled());
     }
 
     @Override
@@ -121,9 +118,7 @@ public class IconsAdapter extends RecyclerView.Adapter<IconHolder> {
             }
             context.finish();
         } else {
-            if (!inChangelog) {
-                IconDialog.show((FragmentActivity) context, name, resId);
-            }
+            IconDialog.show((FragmentActivity) context, name, resId);
         }
     }
 

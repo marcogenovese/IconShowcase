@@ -1155,6 +1155,7 @@ public class TouchImageView extends ImageView {
             overScroller.fling(startX, startY, velocityX, velocityY, minX, maxX, minY, maxY);
         }
 
+        @SuppressWarnings("SameParameterValue")
         public void forceFinished(boolean finished) {
             overScroller.forceFinished(finished);
         }

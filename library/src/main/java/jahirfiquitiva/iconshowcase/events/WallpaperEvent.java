@@ -30,6 +30,7 @@ public class WallpaperEvent {
     private boolean success;
     private Step nextStep;
 
+    @SuppressWarnings("SameParameterValue")
     public WallpaperEvent(@NonNull String u, boolean b, Step s) {
         url = u;
         success = b;

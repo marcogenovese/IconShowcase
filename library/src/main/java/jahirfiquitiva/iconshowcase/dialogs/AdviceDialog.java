@@ -40,17 +40,17 @@ public class AdviceDialog extends DialogFragment {
 
     private static final String TAG = "advice_dialog";
 
-    public static void show(final FragmentActivity context, final Type type) {
+    public static void show(final FragmentActivity context) {
         Preferences prefs = new Preferences(context);
 
-        switch (type) {
+        switch (Type.WALLPAPER) {
             case WALLPAPER:
                 if (prefs.getWallsDialogDismissed()) return;
         }
 
         Fragment frag = context.getSupportFragmentManager().findFragmentByTag(TAG);
         if (frag != null) ((AdviceDialog) frag).dismiss();
-        AdviceDialog.newInstance(type).show(context.getSupportFragmentManager(), TAG);
+        AdviceDialog.newInstance(Type.WALLPAPER).show(context.getSupportFragmentManager(), TAG);
     }
 
     public static void dismiss(final FragmentActivity context) {

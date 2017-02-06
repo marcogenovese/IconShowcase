@@ -115,7 +115,7 @@ public class NotificationUtils {
     }
 
 
-    public static boolean isServiceAvailable(Context context, Class service) {
+    private static boolean isServiceAvailable(Context context, Class service) {
         if (context == null) return false;
         try {
             final PackageManager packageManager = context.getPackageManager();

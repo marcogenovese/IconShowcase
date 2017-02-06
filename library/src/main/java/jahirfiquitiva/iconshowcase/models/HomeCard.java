@@ -103,7 +103,7 @@ public class HomeCard implements Parcelable {
         }
     }
 
-    protected HomeCard(Parcel in) {
+    private HomeCard(Parcel in) {
         title = in.readString();
         desc = in.readString();
         imgEnabled = in.readByte() != 0;

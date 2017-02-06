@@ -45,12 +45,11 @@ import jahirfiquitiva.iconshowcase.views.SectionedGridSpacingItemDecoration;
 
 public class KustomFragment extends CapsuleFragment {
 
-    public static KustomAdapter kustomAdapter;
-    private final String KLWP_PKG = "org.kustom.wallpaper",
+    private KustomAdapter kustomAdapter;
+    private static final String KLWP_PKG = "org.kustom.wallpaper",
             KWGT_PKG = "org.kustom.widget",
             KOLORETTE_PKG = "com.arun.themeutil.kolorette";
     private Context context;
-    private RecyclerView mRecyclerView;
     private SectionedGridSpacingItemDecoration space;
 
     @Override
@@ -103,7 +102,7 @@ public class KustomFragment extends CapsuleFragment {
         int gridSpacing = getResources().getDimensionPixelSize(R.dimen.lists_padding);
         final int columnsNumber = getResources().getInteger(R.integer.zooper_kustom_grid_width);
 
-        mRecyclerView = (RecyclerView) layout.findViewById(R.id.zooper_rv);
+        RecyclerView mRecyclerView = (RecyclerView) layout.findViewById(R.id.zooper_rv);
 
         if (space != null) {
             mRecyclerView.removeItemDecoration(space);

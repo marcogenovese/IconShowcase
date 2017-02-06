@@ -71,6 +71,7 @@ public class Preferences {
         return getPrefs().getBoolean(ASKED_PERMISSIONS, false);
     }
 
+    @SuppressWarnings("SameParameterValue")
     public void setHasAskedPermissions(boolean asked) {
         getPrefs().edit().putBoolean(ASKED_PERMISSIONS, asked).apply();
     }

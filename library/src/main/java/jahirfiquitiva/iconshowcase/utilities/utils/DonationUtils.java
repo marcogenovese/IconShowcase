@@ -33,6 +33,7 @@ import timber.log.Timber;
 /**
  * Created by Allan Wang on 2016-08-20.
  */
+@SuppressWarnings("WeakerAccess")
 public class DonationUtils {
 
     public static void hasPurchase(final Context context, @Nullable String pubKey, final

@@ -20,6 +20,7 @@
 package jahirfiquitiva.iconshowcase.activities.base;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -61,6 +62,7 @@ import jahirfiquitiva.iconshowcase.utilities.utils.PermissionsUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 
+@SuppressLint("Registered")
 public class BaseWallpaperViewerActivity extends AppCompatActivity {
 
     private static final int NAV_BAR_VISIBILITY_CHANGE_DELAY = 2000;
@@ -157,15 +159,15 @@ public class BaseWallpaperViewerActivity extends AppCompatActivity {
         }
     }
 
-    public Handler handler(Context context) {
+    private Handler handler(Context context) {
         return new Handler(context.getMainLooper());
     }
 
-    public void runOnUIThread(Context context, Runnable r) {
+    private void runOnUIThread(Context context, Runnable r) {
         handler(this).post(r);
     }
 
-    public void setFullScreen(boolean fullScreen) {
+    protected void setFullScreen(boolean fullScreen) {
         this.isFullScreen = fullScreen;
     }
 
@@ -173,36 +175,36 @@ public class BaseWallpaperViewerActivity extends AppCompatActivity {
         this.dialogApply = dialog;
     }
 
-    public void setCallback(WallpaperDialogsCallback callback) {
+    protected void setCallback(WallpaperDialogsCallback callback) {
         this.callback = callback;
     }
 
-    public void setViewsToHide(View toHide1, View toHide2) {
+    protected void setViewsToHide(View toHide1, View toHide2) {
         this.toHide1 = toHide1;
         this.toHide2 = toHide2;
     }
 
-    public ViewGroup getLayout() {
+    protected ViewGroup getLayout() {
         return layout;
     }
 
-    public void setLayout(ViewGroup layout) {
+    protected void setLayout(ViewGroup layout) {
         this.layout = layout;
     }
 
-    public String getTransitionName() {
+    protected String getTransitionName() {
         return transitionName;
     }
 
-    public WallpaperItem getItem() {
+    protected WallpaperItem getItem() {
         return item;
     }
 
-    public Preferences getPrefs() {
+    protected Preferences getPrefs() {
         return mPrefs;
     }
 
-    public void closeViewer() {
+    protected void closeViewer() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             supportFinishAfterTransition();
         } else {
@@ -210,7 +212,7 @@ public class BaseWallpaperViewerActivity extends AppCompatActivity {
         }
     }
 
-    public void setupFullScreen() {
+    protected void setupFullScreen() {
         makeStatusBarIconsWhite();
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
@@ -225,7 +227,7 @@ public class BaseWallpaperViewerActivity extends AppCompatActivity {
         }
     }
 
-    public void makeStatusBarIconsWhite() {
+    private void makeStatusBarIconsWhite() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             int flags = getWindow().getDecorView().getSystemUiVisibility();
             flags &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
@@ -256,7 +258,7 @@ public class BaseWallpaperViewerActivity extends AppCompatActivity {
         // | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
     }
 
-    public void navBarVisibilityChange() {
+    protected void navBarVisibilityChange() {
         shouldShowNavBar = !shouldShowNavBar;
         if (shouldShowNavBar) {
             showNavBar();
@@ -281,7 +283,7 @@ public class BaseWallpaperViewerActivity extends AppCompatActivity {
     }
 
 
-    public void runWallpaperSave(Context context) {
+    protected void runWallpaperSave(Context context) {
         if (Utils.hasNetwork(context)) {
             saveWallpaperAction(context);
         } else {
@@ -438,7 +440,7 @@ public class BaseWallpaperViewerActivity extends AppCompatActivity {
         }).start();
     }
 
-    public void showApplyWallpaperDialog(final Context context) {
+    protected void showApplyWallpaperDialog(final Context context) {
         if (callback != null) {
             callback.onDialogShown();
         }
@@ -681,7 +683,7 @@ public class BaseWallpaperViewerActivity extends AppCompatActivity {
                 Snackbar.LENGTH_LONG).show();
     }
 
-    public void cropWallpaper(final Context context) {
+    private void cropWallpaper(final Context context) {
         if (dialogApply != null) {
             dialogApply.dismiss();
         }

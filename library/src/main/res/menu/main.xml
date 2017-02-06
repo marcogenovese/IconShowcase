@@ -27,6 +27,7 @@
             android:icon="@drawable/ic_changes"
             android:orderInCategory="100"
             android:title="@string/changelog_dialog_title"
-            app:showAsAction="always"/>
+            app:showAsAction="always"
+            tools:ignore="AppCompatResource"/>
 
 </menu>

@@ -40,6 +40,7 @@ import android.widget.RadioButton;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.pitchedapps.capsule.library.custom.CapsuleCoordinatorLayout;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.config.Config;
@@ -49,7 +50,6 @@ import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
-import jahirfiquitiva.iconshowcase.views.CustomCoordinatorLayout;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 import jahirfiquitiva.iconshowcase.views.FixedElevationAppBarLayout;
 
@@ -60,7 +60,7 @@ public class MuzeiSettings extends AppCompatActivity {
     private NumberPicker numberpicker;
     private Preferences mPrefs;
     private Context context;
-    private CustomCoordinatorLayout customCoordinatorLayout;
+    private CapsuleCoordinatorLayout coordinatorLayout;
     private Toolbar toolbar;
 
     @Override
@@ -86,8 +86,8 @@ public class MuzeiSettings extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        customCoordinatorLayout = (CustomCoordinatorLayout) findViewById(R.id.muzeiLayout);
-        customCoordinatorLayout.setScrollAllowed(false);
+        coordinatorLayout = (CapsuleCoordinatorLayout) findViewById(R.id.muzeiLayout);
+        coordinatorLayout.setScrollAllowed(false);
 
         CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById
                 (R.id.collapsingToolbar);
@@ -183,7 +183,7 @@ public class MuzeiSettings extends AppCompatActivity {
                 Intent intent = new Intent(MuzeiSettings.this, MuzeiArtSourceService.class);
                 intent.putExtra("service", "restarted");
                 startService(intent);
-                showSnackBarAndFinish(customCoordinatorLayout,
+                showSnackBarAndFinish(coordinatorLayout,
                         getResources().getString(R.string.settings_saved, timeText));
                 return true;
             }
@@ -196,7 +196,6 @@ public class MuzeiSettings extends AppCompatActivity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        ;
     }
 
     private void setDividerColor(NumberPicker picker) {

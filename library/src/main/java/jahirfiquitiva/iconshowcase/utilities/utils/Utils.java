@@ -269,6 +269,7 @@ public class Utils {
         return count;
     }
 
+    @SuppressWarnings("SameParameterValue")
     public static double round(double value, int places) {
         if (places < 0) throw new IllegalArgumentException();
         BigDecimal bd = new BigDecimal(value);
@@ -320,7 +321,7 @@ public class Utils {
         }
     }
 
-    protected static boolean isNewVersion(Context context) {
+    private static boolean isNewVersion(Context context) {
         Preferences mPrefs = new Preferences(context);
         int prevVersionCode = mPrefs.getVersionCode();
         int curVersionCode = getAppCurrentVersionCode(context);
@@ -331,7 +332,7 @@ public class Utils {
         return false;
     }
 
-    protected static void showChangelogDialog(final Context context) {
+    private static void showChangelogDialog(final Context context) {
         if (isNewVersion(context) && (context instanceof ShowcaseActivity)) {
             try {
                 if (((ShowcaseActivity) context).includesIcons()) {
@@ -358,7 +359,7 @@ public class Utils {
         }
     }
 
-    protected static void checkLicense(final Context context, String lic, boolean allAma, boolean
+    private static void checkLicense(final Context context, String lic, boolean allAma, boolean
             allApt) {
         final Preferences mPrefs = new Preferences(context);
         final RepelloMaxima[] spell = new RepelloMaxima[1];
@@ -444,7 +445,7 @@ public class Utils {
         spell[0].cast();
     }
 
-    protected static void showNotLicensedDialog(final Activity act, Preferences mPrefs) {
+    private static void showNotLicensedDialog(final Activity act, Preferences mPrefs) {
         mPrefs.setDashboardWorking(false);
         ISDialogs.showShallNotPassDialog(act, new MaterialDialog.SingleButtonCallback() {
             @Override
@@ -479,7 +480,7 @@ public class Utils {
         return context.getPackageManager().getInstallerPackageName(context.getPackageName());
     }
 
-    protected static int getAppCurrentVersionCode(Context context) {
+    private static int getAppCurrentVersionCode(Context context) {
         try {
             PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context
                     .getPackageName(), 0);

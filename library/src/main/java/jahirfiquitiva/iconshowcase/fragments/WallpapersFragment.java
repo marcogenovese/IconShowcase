@@ -55,7 +55,7 @@ import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 
 public class WallpapersFragment extends EventBaseFragment {
 
-    public WallpapersAdapter mAdapter;
+    private WallpapersAdapter mAdapter;
     private RecyclerView mRecyclerView;
     private RecyclerFastScroller fastScroller;
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -83,7 +83,7 @@ public class WallpapersFragment extends EventBaseFragment {
         progress = (ProgressBar) layout.findViewById(R.id.progress);
 
         if (!((ShowcaseActivity) getActivity()).isWallsPicker()) {
-            AdviceDialog.show(getActivity(), AdviceDialog.Type.WALLPAPER);
+            AdviceDialog.show(getActivity());
         }
 
         noConnection.setImageDrawable(IconUtils.getTintedDrawable(context, "ic_no_connection"));

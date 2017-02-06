@@ -825,6 +825,7 @@ public class ShowcaseActivity extends TasksActivity {
         return allowShuffle;
     }
 
+    @SuppressWarnings("SameParameterValue")
     public void setAllowShuffle(boolean newValue) {
         this.allowShuffle = newValue;
     }

@@ -42,7 +42,7 @@ import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 
 public class ZooperFragment extends CapsuleFragment {
 
-    public ZooperAdapter zooperAdapter;
+    private ZooperAdapter zooperAdapter;
     private ViewGroup layout;
     private Context context;
     private GridSpacingItemDecoration space;

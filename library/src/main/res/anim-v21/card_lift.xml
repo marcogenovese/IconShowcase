@@ -19,6 +19,7 @@
   -->
 
 <!-- animate the translationZ property of a view when pressed -->
+<!--suppress XmlWrongFileType -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item
             android:state_enabled="true"

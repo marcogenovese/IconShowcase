@@ -18,7 +18,7 @@
   ~ 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
   -->
 
-<jahirfiquitiva.iconshowcase.views.CustomCoordinatorLayout
+<com.pitchedapps.capsule.library.custom.CapsuleCoordinatorLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -124,4 +124,4 @@
 
     </android.support.v4.widget.NestedScrollView>
 
-</jahirfiquitiva.iconshowcase.views.CustomCoordinatorLayout>
+</com.pitchedapps.capsule.library.custom.CapsuleCoordinatorLayout>

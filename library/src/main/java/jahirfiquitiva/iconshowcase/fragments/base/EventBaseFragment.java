@@ -54,7 +54,7 @@ public abstract class EventBaseFragment extends CapsuleFragment {
         return inflater.inflate(R.layout.loading_section, container, false);
     }
 
-    protected void eventUnregister() {
+    private void eventUnregister() {
         if (EventBus.getDefault().isRegistered(this)) EventBus.getDefault().unregister(this);
     }
 

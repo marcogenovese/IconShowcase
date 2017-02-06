@@ -29,6 +29,7 @@ public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
     private final int spacing;
     private final boolean includeEdge;
 
+    @SuppressWarnings("SameParameterValue")
     public GridSpacingItemDecoration(int spanCount, int spacing, boolean includeEdge) {
         this.spanCount = spanCount;
         this.spacing = spacing;

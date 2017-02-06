@@ -58,7 +58,7 @@ public class RequestItem implements Parcelable {
         this.resolveInfo = resolveInfo;
     }
 
-    protected RequestItem(Parcel in) {
+    private RequestItem(Parcel in) {
         appName = in.readString();
         packageName = in.readString();
         className = in.readString();

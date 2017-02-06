@@ -49,7 +49,8 @@
             android:minHeight="@dimen/md_listitem_height"
             android:orientation="horizontal"
             android:paddingLeft="16dp"
-            android:paddingRight="16dp">
+            android:paddingRight="16dp"
+            tools:ignore="UseCompoundDrawables">
 
         <ImageView
                 android:id="@+id/icon_themed_icons"
@@ -81,7 +82,8 @@
             android:minHeight="@dimen/md_listitem_height"
             android:orientation="horizontal"
             android:paddingLeft="16dp"
-            android:paddingRight="16dp">
+            android:paddingRight="16dp"
+            tools:ignore="UseCompoundDrawables">
 
         <ImageView
                 android:id="@+id/icon_available_wallpapers"
@@ -113,7 +115,8 @@
             android:minHeight="@dimen/md_listitem_height"
             android:orientation="horizontal"
             android:paddingLeft="16dp"
-            android:paddingRight="16dp">
+            android:paddingRight="16dp"
+            tools:ignore="UseCompoundDrawables">
 
         <ImageView
                 android:id="@+id/icon_included_widgets"

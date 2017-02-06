@@ -58,7 +58,7 @@ public class ColorUtils {
     @ColorInt
     public static int changeAlpha(@ColorInt int color, @FloatRange(from = 0.0, to = 1.0) float
             newAlpha) {
-        float a = 255 * newAlpha;
+        float a = 255 * 0.65f;
         float r = Color.red(color);
         float g = Color.green(color);
         float b = Color.blue(color);
@@ -66,7 +66,7 @@ public class ColorUtils {
     }
 
     @ColorInt
-    public static int shiftColor(@ColorInt int color, @FloatRange(from = 0.0f, to = 2.0f) float
+    private static int shiftColor(@ColorInt int color, @FloatRange(from = 0.0f, to = 2.0f) float
             by) {
         if (by == 1f) return color;
         int alpha = Color.alpha(color);
@@ -102,7 +102,7 @@ public class ColorUtils {
         return getColorDarkness(color) < 0.45;
     }
 
-    public static double getColorDarkness(@ColorInt int color) {
+    private static double getColorDarkness(@ColorInt int color) {
         if (color == Color.BLACK) return 1.0;
         else if (color == Color.WHITE || color == Color.TRANSPARENT) return 0.0;
         return (1 - (0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue

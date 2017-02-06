@@ -19,6 +19,7 @@
 
 package jahirfiquitiva.iconshowcase.models;
 
+@SuppressWarnings("WeakerAccess")
 public class NotificationItem {
 
     private final String text;

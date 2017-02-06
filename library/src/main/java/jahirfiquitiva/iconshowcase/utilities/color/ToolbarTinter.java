@@ -40,7 +40,6 @@ import android.app.Activity;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.view.menu.MenuItemImpl;
 import android.support.v7.widget.ActionMenuView;
@@ -379,11 +378,7 @@ public class ToolbarTinter {
             if (iconsColor != null) {
                 overflow.setColorFilter(iconsColor);
             }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                overflow.setImageAlpha(iconsAlpha);
-            } else {
-                overflow.setAlpha(iconsAlpha);
-            }
+            overflow.setImageAlpha(iconsAlpha);
         }
     }
 
@@ -482,6 +477,7 @@ public class ToolbarTinter {
          *                views.
          * @return this Builder object to allow for chaining of calls to set methods
          */
+        @SuppressWarnings("SameParameterValue")
         public Builder reapplyOnChange(boolean reapply) {
             reApplyOnChange = reapply;
             return this;

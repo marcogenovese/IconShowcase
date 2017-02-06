@@ -21,7 +21,7 @@ import jahirfiquitiva.iconshowcase.utilities.Preferences;
 public class RequestsAdapter extends RecyclerView.Adapter<RequestHolder> {
 
     @Nullable
-    public ArrayList<App> getApps() {
+    private ArrayList<App> getApps() {
         if (IconRequest.get() != null)
             return IconRequest.get().getApps();
         return null;

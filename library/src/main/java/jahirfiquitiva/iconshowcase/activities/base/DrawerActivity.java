@@ -78,7 +78,7 @@ public abstract class DrawerActivity extends CapsuleActivity {
     protected List<DrawerItem> mDrawerItems;
     protected EnumMap<DrawerItem, Integer> mDrawerMap = new EnumMap<>(DrawerItem.class);
 
-    protected DrawerItem drawerKeyToType(String s) {
+    private DrawerItem drawerKeyToType(String s) {
         switch (s.toLowerCase()) {
             case "previews":
                 return DrawerItem.PREVIEWS;

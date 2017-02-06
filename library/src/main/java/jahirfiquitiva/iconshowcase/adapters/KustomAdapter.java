@@ -52,7 +52,7 @@ public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomHolder> {
         setupLists();
     }
 
-    public void setupLists() {
+    private void setupLists() {
         if (FullListHolder.get().kustomWidgets().getList() != null) {
             if (widgets != null) {
                 widgets.clear();

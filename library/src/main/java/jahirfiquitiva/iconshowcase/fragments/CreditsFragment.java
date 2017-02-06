@@ -39,13 +39,11 @@ import jahirfiquitiva.iconshowcase.adapters.CreditsAdapter;
 
 public class CreditsFragment extends CapsuleFragment {
 
-    private Context context;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
             savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        context = getActivity();
+        Context context = getActivity();
 
         View layout = inflater.inflate(R.layout.credits_section, container, false);
 

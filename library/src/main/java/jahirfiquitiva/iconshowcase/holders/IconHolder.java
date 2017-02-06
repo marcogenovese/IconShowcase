@@ -54,7 +54,7 @@ public class IconHolder extends RecyclerView.ViewHolder {
         });
     }
 
-    public void setItem(IconItem item, final boolean animate, final boolean inChangelog) {
+    public void setItem(IconItem item, final boolean animate) {
         this.item = item;
         if (item.getResId() == 0) return;
         Glide.with(view.getContext())
@@ -65,8 +65,7 @@ public class IconHolder extends RecyclerView.ViewHolder {
                 .into(new BitmapImageViewTarget(icon) {
                     @Override
                     protected void setResource(Bitmap resource) {
-                        if (((!(inChangelog)) && animate) && (getAdapterPosition() >
-                                lastPosition)) {
+                        if (animate && (getAdapterPosition() > lastPosition)) {
                             icon.setAlpha(0f);
                             icon.setImageBitmap(resource);
                             icon.animate().setDuration(250).alpha(1f).start();

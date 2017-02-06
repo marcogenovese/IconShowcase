@@ -26,9 +26,10 @@ import jahirfiquitiva.iconshowcase.models.WallpaperItem;
 /**
  * Created by Allan Wang on 2016-09-06.
  */
+@SuppressWarnings("WeakerAccess")
 public class WallJSONEvent {
 
-    public final ArrayList<WallpaperItem> walls;
+    private final ArrayList<WallpaperItem> walls;
 
     public WallJSONEvent(ArrayList<WallpaperItem> list) {
         walls = list;

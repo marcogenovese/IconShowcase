@@ -179,6 +179,7 @@ public class DonationsFragment extends CapsuleFragment {
      * @param bitcoinEnabled      Enable bitcoin donations
      * @return DonationsFragment
      */
+    @SuppressWarnings("SameParameterValue")
     public static DonationsFragment newInstance(boolean googleEnabled, String googlePubkey,
                                                 String[] googleCatalog,
                                                 String[] googleCatalogValues, boolean
@@ -508,6 +509,7 @@ public class DonationsFragment extends CapsuleFragment {
             /**
              * Open all links in browser, not in webview
              */
+            @SuppressWarnings("deprecation")
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String urlNewString) {
                 try {

@@ -156,7 +156,7 @@ public abstract class TasksActivity extends DrawerActivity {
         }
         if (drawerHas(DrawerItem.ZOOPER)) {
             WITH_ZOOPER_SECTION = true;
-            new LoadZooperWidgets(this, null).execute();
+            new LoadZooperWidgets(this).execute();
         }
         if (drawerHas(DrawerItem.KUSTOM)) {
             new LoadKustomFiles(this).execute();
@@ -171,7 +171,7 @@ public abstract class TasksActivity extends DrawerActivity {
         return jsonTask;
     }
 
-    public void setJsonTask(DownloadJSON jsonTask) {
+    protected void setJsonTask(DownloadJSON jsonTask) {
         this.jsonTask = jsonTask;
     }
 

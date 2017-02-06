@@ -71,7 +71,7 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
         this.setToBoth = setToBoth;
     }
 
-    public ApplyWallpaper(Activity activity, @NonNull String url, ApplyCallback callback, boolean
+    private ApplyWallpaper(Activity activity, @NonNull String url, ApplyCallback callback, boolean
             setToHomeScreen, boolean setToLockScreen, boolean setToBoth) {
         this.wrActivity = new WeakReference<>(activity);
         this.url = url;

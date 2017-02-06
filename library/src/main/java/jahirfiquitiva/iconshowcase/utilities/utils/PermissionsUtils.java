@@ -43,7 +43,7 @@ public class PermissionsUtils {
     * Check if version is marshmallow and above.
     * Used in deciding to ask runtime permission
     */
-    public static boolean shouldAskPermission() {
+    private static boolean shouldAskPermission() {
         return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M);
     }
 
@@ -70,6 +70,7 @@ public class PermissionsUtils {
         VIEWER_ACTIVITY_ACTION = viewerActivityAction;
     }
 
+    @SuppressWarnings("SameParameterValue")
     @TargetApi(Build.VERSION_CODES.M)
     public static void checkPermission(Context context, String permission, PermissionRequestListener
             listener) {
