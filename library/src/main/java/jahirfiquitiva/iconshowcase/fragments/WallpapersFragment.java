@@ -55,7 +55,6 @@ import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
 
 public class WallpapersFragment extends EventBaseFragment {
 
-    private WallpapersAdapter mAdapter;
     private RecyclerView mRecyclerView;
     private RecyclerFastScroller fastScroller;
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -114,7 +113,7 @@ public class WallpapersFragment extends EventBaseFragment {
         if (Utils.hasNetwork(context)) {
             showProgressBar();
             if (!(FullListHolder.get().walls().getList().isEmpty())) {
-                mAdapter = new WallpapersAdapter(getActivity(),
+                WallpapersAdapter mAdapter = new WallpapersAdapter(getActivity(),
                         FullListHolder.get().walls().getList());
 
                 mRecyclerView.setAdapter(mAdapter);

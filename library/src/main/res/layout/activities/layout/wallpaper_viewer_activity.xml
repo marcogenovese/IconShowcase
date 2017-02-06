@@ -77,7 +77,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignTop="@+id/iconsB"
             android:layout_gravity="center_vertical"
-            android:background="?attr/colorCardBackground"
+            android:background="?attr/cardColorBackground"
             android:minHeight="?actionBarSize"
             android:orientation="horizontal"
             tools:ignore="UnusedAttribute">
@@ -128,7 +128,7 @@
             android:layout_gravity="center_vertical"
             android:layout_toLeftOf="@id/iconsA"
             android:layout_toStartOf="@id/iconsA"
-            android:background="?attr/colorCardBackground"
+            android:background="?attr/cardColorBackground"
             android:gravity="center_vertical"
             android:minHeight="?actionBarSize"
             android:orientation="horizontal"

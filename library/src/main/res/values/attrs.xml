@@ -33,7 +33,7 @@
         <eat-comment/>
 
         <!-- Default color of cardview background. -->
-        <attr name="colorCardBackground" format="color"/>
+        <attr name="cardColorBackground" format="color"/>
         <!-- Color to tint drawables. -->
         <attr name="drawablesTintColor" format="color"/>
         <!-- Color to tint fabs. -->

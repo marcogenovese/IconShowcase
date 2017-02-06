@@ -26,7 +26,7 @@ import jahirfiquitiva.iconshowcase.models.WallpaperItem;
 /**
  * Created by Allan Wang on 2016-09-06.
  */
-@SuppressWarnings("WeakerAccess")
+@SuppressWarnings({"WeakerAccess", "FieldCanBeLocal"})
 public class WallJSONEvent {
 
     private final ArrayList<WallpaperItem> walls;

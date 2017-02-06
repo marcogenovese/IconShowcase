@@ -29,7 +29,8 @@
         android:clipToPadding="false"
         android:descendantFocusability="blocksDescendants"
         android:focusable="true"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        tools:ignore="Overdraw">
 
     <ImageView
             android:id="@+id/imgIcon"

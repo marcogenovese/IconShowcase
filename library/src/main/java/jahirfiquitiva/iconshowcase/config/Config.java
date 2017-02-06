@@ -48,6 +48,7 @@ public class Config implements IConfig {
             ADW_ACTION = "org.adw.launcher.icons.ACTION_PICK_ICON",
             TURBO_ACTION = "com.phonemetra.turbo.launcher.icons.ACTION_PICK_ICON",
             NOVA_ACTION = "com.novalauncher.THEME";
+
     private static Config mConfig;
     private Context mContext;
     private Resources mR;

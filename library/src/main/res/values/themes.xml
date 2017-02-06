@@ -43,7 +43,7 @@
         <item name="md_negative_color">@color/md_button_text_light</item>
         <item name="md_neutral_color">@color/md_button_text_light</item>
         <item name="md_background_color">@color/md_background_color_light</item>
-        <item name="colorCardBackground">@color/card_light_background</item>
+        <item name="cardColorBackground">@color/card_light_background</item>
         <item name="drawablesTintColor">@color/drawable_tint_light</item>
         <item name="fabTintColor">@color/fab_background_tint_light_theme</item>
         <item name="toolbarTextColor">@color/toolbar_text_light</item>
@@ -63,7 +63,7 @@
     </style>
 
     <style name="AppTheme.Base.Clear" parent="AppTheme.Base.Dark">
-        <item name="colorCardBackground">@color/card_clear_background</item>
+        <item name="cardColorBackground">@color/card_clear_background</item>
         <item name="android:windowShowWallpaper">true</item>
         <item name="android:windowBackground">@color/clear_bg</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Clear</item>
@@ -90,7 +90,7 @@
         <item name="md_negative_color">@color/md_button_text_dark</item>
         <item name="md_neutral_color">@color/md_button_text_dark</item>
         <item name="md_background_color">@color/md_background_color_dark</item>
-        <item name="colorCardBackground">@color/card_dark_background</item>
+        <item name="cardColorBackground">@color/card_dark_background</item>
         <item name="drawablesTintColor">@color/drawable_tint_dark</item>
         <item name="fabTintColor">@color/fab_background_tint_dark_theme</item>
         <item name="toolbarTextColor">@color/toolbar_text_dark</item>
