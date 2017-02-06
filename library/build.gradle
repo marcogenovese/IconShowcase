@@ -130,10 +130,10 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.1.0'
 
     //Library for Requests
-    compile 'com.github.AllanWang:Butler:5d6bcbe'
+    compile 'com.github.AllanWang:Butler:56f0312'
 
     //Library for UI framework
-    compile 'com.github.AllanWang:Capsule:7dd6a64'
+    compile 'com.github.AllanWang:Capsule:v3.3'
 
     //Donations Lib
     compile 'org.sufficientlysecure:donations:2.5'
