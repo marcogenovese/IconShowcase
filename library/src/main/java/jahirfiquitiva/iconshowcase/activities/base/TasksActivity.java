@@ -28,7 +28,6 @@ import com.pitchedapps.butler.iconrequest.IconRequest;
 import com.pitchedapps.butler.iconrequest.events.RequestsCallback;
 
 import java.io.File;
-import java.util.concurrent.TimeUnit;
 
 import jahirfiquitiva.iconshowcase.BuildConfig;
 import jahirfiquitiva.iconshowcase.R;
@@ -132,8 +131,7 @@ public abstract class TasksActivity extends DrawerActivity {
                             try {
                                 if (reason == STATE_TIME_LIMITED && millis > 0) {
                                     ISDialogs.showRequestTimeLimitDialog(context, getResources()
-                                                    .getInteger(R.integer.time_limit_in_minutes),
-                                            TimeUnit.MILLISECONDS.toMinutes(millis));
+                                            .getInteger(R.integer.time_limit_in_minutes), millis);
                                 } else {
                                     ISDialogs.showRequestLimitDialog(context, appsLeft);
                                 }

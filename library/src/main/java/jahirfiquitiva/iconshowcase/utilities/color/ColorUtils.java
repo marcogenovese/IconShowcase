@@ -101,7 +101,6 @@ public class ColorUtils {
     }
 
     public static boolean isLightColor(@ColorInt int color) {
-        Timber.d("Color darkness: " + getColorDarkness(color));
         return getColorDarkness(color) < 0.475;
     }
 
