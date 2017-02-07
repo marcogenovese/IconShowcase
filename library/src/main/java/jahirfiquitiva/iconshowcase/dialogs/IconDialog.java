@@ -48,7 +48,7 @@ public class IconDialog extends DialogFragment {
     private static final String NAME = "Icon name";
     private static final String RESID = "Icon resId";
     private static final String TAG = "icon_dialog";
-    private static final int ANIMATION_DURATION = 350;
+    private static final int ANIMATION_DURATION = 400;
     private String name;
     private int resId;
 

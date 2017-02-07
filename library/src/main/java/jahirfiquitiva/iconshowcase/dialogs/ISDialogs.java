@@ -43,6 +43,7 @@ import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.utils.IconUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.RequestUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
+import timber.log.Timber;
 
 /**
  * This Class was created by Patrick Jung on 07.01.16. For more Details and Licensing have a look at
@@ -51,11 +52,10 @@ import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 
 public final class ISDialogs {
 
-    public static void showLicenseSuccessDialog(Context context,
-                                                MaterialDialog.SingleButtonCallback
-                                                        onPositive,
-                                                MaterialDialog.OnDismissListener onDismiss,
+    public static void showLicenseSuccessDialog(Context context, MaterialDialog
+            .SingleButtonCallback onPositive, MaterialDialog.OnDismissListener onDismiss,
                                                 MaterialDialog.OnCancelListener onCancel) {
+
         String message = context.getResources().getString(R.string.license_success,
                 context.getResources().getString(R.string.app_name));
 
@@ -283,6 +283,10 @@ public final class ISDialogs {
                 RequestUtils.getTimeTextFromMillis(context, TimeUnit.MINUTES.toMillis(minutes)));
 
         String contentExtra;
+
+        Timber.d("TimeLimit: - Millis left: " + millisLeft + " - Seconds left: " + TimeUnit
+                .MILLISECONDS.toSeconds(millisLeft));
+
         if (TimeUnit.MILLISECONDS.toSeconds(millisLeft) >= 60) {
             contentExtra = context.getResources().getString(R.string.apps_limit_dialog_day_extra,
                     RequestUtils.getTimeTextFromMillis(context, millisLeft));
@@ -292,6 +296,8 @@ public final class ISDialogs {
         }
 
         String finalContent = content + " " + contentExtra;
+
+        Timber.d("TimeLimit: - " + finalContent);
 
         new MaterialDialog.Builder(context)
                 .title(R.string.section_icon_request)
