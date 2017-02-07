@@ -118,11 +118,18 @@ public class IconDialog extends DialogFragment {
                                 .scaleX(1)
                                 .scaleY(1)
                                 .setStartDelay(100)
-                                .setDuration(500);
+                                .setDuration(500)
+                                .start();
+
                         if (palette == null) return;
 
-                        int color = ColorUtils.getPaletteSwatch(palette).getRgb();
+                        Palette.Swatch iconSwatch = ColorUtils.getPaletteSwatch(palette);
+                        if (iconSwatch == null) return;
+
+                        int color = iconSwatch.getRgb();
+
                         TextView buttonText = dialog.getActionButton(DialogAction.POSITIVE);
+                        if (buttonText == null) return;
 
                         if (ColorUtils.isLightColor(color)) {
                             if (ThemeUtils.isDarkTheme()) {
