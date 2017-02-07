@@ -283,10 +283,6 @@ public final class ISDialogs {
                 RequestUtils.getTimeTextFromMillis(context, TimeUnit.MINUTES.toMillis(minutes)));
 
         String contentExtra;
-
-        Timber.d("TimeLimit: - Millis left: " + millisLeft + " - Seconds left: " + TimeUnit
-                .MILLISECONDS.toSeconds(millisLeft));
-
         if (TimeUnit.MILLISECONDS.toSeconds(millisLeft) >= 60) {
             contentExtra = context.getResources().getString(R.string.apps_limit_dialog_day_extra,
                     RequestUtils.getTimeTextFromMillis(context, millisLeft));
@@ -296,9 +292,6 @@ public final class ISDialogs {
         }
 
         String finalContent = content + " " + contentExtra;
-
-        Timber.d("TimeLimit: - " + finalContent);
-
         new MaterialDialog.Builder(context)
                 .title(R.string.section_icon_request)
                 .content(finalContent)
