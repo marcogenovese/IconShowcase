@@ -29,6 +29,7 @@ import java.util.List;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
+import timber.log.Timber;
 
 @SuppressWarnings("SameParameterValue")
 public class ColorUtils {
@@ -100,6 +101,7 @@ public class ColorUtils {
     }
 
     public static boolean isLightColor(@ColorInt int color) {
+        Timber.d("Color darkness: " + getColorDarkness(color));
         return getColorDarkness(color) < 0.45;
     }
 

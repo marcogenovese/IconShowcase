@@ -48,6 +48,7 @@ public class IconDialog extends DialogFragment {
     private static final String NAME = "Icon name";
     private static final String RESID = "Icon resId";
     private static final String TAG = "icon_dialog";
+    private static final int ANIMATION_DURATION = 350;
     private String name;
     private int resId;
 
@@ -118,7 +119,7 @@ public class IconDialog extends DialogFragment {
                                 .scaleX(1)
                                 .scaleY(1)
                                 .setStartDelay(100)
-                                .setDuration(500)
+                                .setDuration(ANIMATION_DURATION)
                                 .start();
 
                         if (palette == null) return;
@@ -135,13 +136,15 @@ public class IconDialog extends DialogFragment {
                             if (ThemeUtils.isDarkTheme()) {
                                 buttonText.setAlpha(0);
                                 buttonText.setTextColor(color);
-                                buttonText.animate().alpha(1).setDuration(500).start();
+                                buttonText.animate().alpha(1).setDuration(ANIMATION_DURATION)
+                                        .start();
                             }
                         } else {
                             if (!(ThemeUtils.isDarkTheme())) {
                                 buttonText.setAlpha(0);
                                 buttonText.setTextColor(color);
-                                buttonText.animate().alpha(1).setDuration(500).start();
+                                buttonText.animate().alpha(1).setDuration(ANIMATION_DURATION)
+                                        .start();
                             }
                         }
 
