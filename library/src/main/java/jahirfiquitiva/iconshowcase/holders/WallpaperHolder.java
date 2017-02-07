@@ -44,11 +44,12 @@ import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
 public class WallpaperHolder extends RecyclerView.ViewHolder implements View.OnClickListener,
         View.OnLongClickListener {
 
-    private View view;
-    private ImageView wall;
-    private TextView name, authorName;
-    private LinearLayout titleBg;
-    private OnWallpaperClickListener listener;
+    private final View view;
+    private final ImageView wall;
+    private final TextView name;
+    private final TextView authorName;
+    private final LinearLayout titleBg;
+    private final OnWallpaperClickListener listener;
     private WallpaperItem item;
     private int lastPosition = -1;
     private boolean clickable = true;

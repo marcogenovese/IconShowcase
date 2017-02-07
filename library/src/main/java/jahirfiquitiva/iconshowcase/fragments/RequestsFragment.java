@@ -156,6 +156,7 @@ public class RequestsFragment extends CapsuleFragment {
         inflater.inflate(R.menu.requests, menu);
     }
 
+    @SuppressWarnings("UnusedParameters")
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onAppsLoaded(AppLoadedEvent event) { //TODO make use of exceptions provided in event
         switchToLoadedView();

@@ -274,16 +274,11 @@ public class SettingsFragment extends PreferenceFragment implements FolderSelect
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
     private void setupDevOptions(PreferenceScreen mainPrefs, final Context context) {
         if (getResources().getBoolean(R.bool.dev_options)) {
 
             Preference moarOptions;
-            SwitchPreference drawerHeaderTexts, iconsChangelog, listsCards;
+            SwitchPreference drawerHeaderTexts, listsCards;
 
             moarOptions = findPreference("moreOptions");
 
@@ -378,6 +373,7 @@ public class SettingsFragment extends PreferenceFragment implements FolderSelect
         return dir != null && dir.delete();
     }
 
+    @SuppressWarnings("ConstantConditions")
     @SuppressLint("DefaultLocale")
     private String fullCacheDataSize(Context context) { //TODO add permission check?
         String finalSize;

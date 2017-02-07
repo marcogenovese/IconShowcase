@@ -73,7 +73,7 @@ public class CounterFab extends FloatingActionButton {
             };
     private int mCount;
     private String mText;
-    private float mTextHeight;
+    private final float mTextHeight;
     private ObjectAnimator mAnimator;
 
     public CounterFab(Context context) {

@@ -33,13 +33,13 @@ import jahirfiquitiva.iconshowcase.models.ZooperWidget;
  */
 public class Holder {
 
-    private CategoryList mIconsCategories = new CategoryList();
-    private HomePreviewList mHome = new HomePreviewList();
-    private WallpapersList mWalls = new WallpapersList();
-    private KustomWidgetsList mKustomWidgets = new KustomWidgetsList();
-    private KomponentsList mKomponents = new KomponentsList();
-    private KustomWallsList mKustomWalls = new KustomWallsList();
-    private ZooperList mZooperList = new ZooperList();
+    private final CategoryList mIconsCategories = new CategoryList();
+    private final HomePreviewList mHome = new HomePreviewList();
+    private final WallpapersList mWalls = new WallpapersList();
+    private final KustomWidgetsList mKustomWidgets = new KustomWidgetsList();
+    private final KomponentsList mKomponents = new KomponentsList();
+    private final KustomWallsList mKustomWalls = new KustomWallsList();
+    private final ZooperList mZooperList = new ZooperList();
 
     public CategoryList iconsCategories() {
         return mIconsCategories;

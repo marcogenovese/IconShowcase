@@ -42,9 +42,6 @@ public class DownloadJSON extends AsyncTask<Void, Void, Boolean> {
 
     @Override
     protected Boolean doInBackground(Void... params) {
-
-        boolean worked;
-
         JSONObject json = JSONParser.getJSONFromURL(wrContext.get(),
                 Utils.getStringFromResources(wrContext.get(),
                         R.string.wallpapers_json_link));
@@ -96,6 +93,7 @@ public class DownloadJSON extends AsyncTask<Void, Void, Boolean> {
                 }
             } catch (JSONException e) {
                 Timber.d("JSON Exception: " + e.getMessage());
+                return false;
             }
         }
         return true;

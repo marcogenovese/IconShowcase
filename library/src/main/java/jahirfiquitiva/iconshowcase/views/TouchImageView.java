@@ -399,6 +399,7 @@ public class TouchImageView extends ImageView {
      */
     private void setZoom(TouchImageView img) {
         PointF center = img.getScrollPosition();
+        if (center == null) return;
         setZoom(img.getCurrentZoom(), center.x, center.y, img.getScaleType());
     }
 
@@ -800,6 +801,7 @@ public class TouchImageView extends ImageView {
         void onMove();
     }
 
+    @SuppressWarnings("SameReturnValue")
     public interface OnSingleTapListener {
         boolean onSingleTap();
     }
@@ -1144,7 +1146,7 @@ public class TouchImageView extends ImageView {
     @TargetApi(VERSION_CODES.GINGERBREAD)
     private class CompatScroller {
 
-        OverScroller overScroller;
+        final OverScroller overScroller;
 
         public CompatScroller(Context context) {
             overScroller = new OverScroller(context);

@@ -43,9 +43,9 @@ public class RequestItem implements Parcelable {
     };
     private final Drawable normalIcon;
     private final ResolveInfo resolveInfo;
-    private String appName;
-    private String packageName;
-    private String className;
+    private final String appName;
+    private final String packageName;
+    private final String className;
     private boolean selected = false;
 
     public RequestItem(@NonNull String appName, @NonNull String packageName, @NonNull String
@@ -62,7 +62,7 @@ public class RequestItem implements Parcelable {
         appName = in.readString();
         packageName = in.readString();
         className = in.readString();
-        normalIcon = (Drawable) in.readParcelable(Drawable.class.getClassLoader());
+        normalIcon = in.readParcelable(Drawable.class.getClassLoader());
         resolveInfo = (ResolveInfo) in.readValue(ResolveInfo.class.getClassLoader());
         selected = in.readByte() != 0x00;
     }

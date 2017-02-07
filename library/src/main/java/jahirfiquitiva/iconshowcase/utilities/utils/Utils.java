@@ -398,6 +398,7 @@ public class Utils {
                         try {
                             showNotLicensedDialog(((Activity) context), mPrefs);
                         } catch (Exception e) {
+                            // Do nothing
                         }
                     }
 

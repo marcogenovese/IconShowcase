@@ -55,7 +55,7 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private final View layout;
     private final boolean everythingInstalled;
     private ArrayList<ZooperWidget> widgets;
-    private ZooperFragment mFragment;
+    private final ZooperFragment mFragment;
     private int extraCards = 0;
 
     public ZooperAdapter(Context context, View layout,

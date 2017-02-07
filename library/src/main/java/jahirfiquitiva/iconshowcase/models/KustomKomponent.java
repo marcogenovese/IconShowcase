@@ -21,7 +21,7 @@ package jahirfiquitiva.iconshowcase.models;
 
 public class KustomKomponent {
 
-    private String previewPath;
+    private final String previewPath;
 
     public KustomKomponent(String previewPath) {
         this.previewPath = previewPath;

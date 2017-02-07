@@ -36,9 +36,9 @@ import jahirfiquitiva.iconshowcase.utilities.Preferences;
 
 public class ZooperWidgetHolder extends RecyclerView.ViewHolder {
 
-    private ImageView background;
-    private ImageView widget;
-    private Drawable wallpaper;
+    private final ImageView background;
+    private final ImageView widget;
+    private final Drawable wallpaper;
 
     public ZooperWidgetHolder(View itemView, Drawable nWallpaper) {
         super(itemView);

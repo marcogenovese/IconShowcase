@@ -27,8 +27,8 @@ import android.net.Uri;
 public class KustomWidget {
 
     private final String widgetName;
-    private String previewPath;
-    private String previewPathLand;
+    private final String previewPath;
+    private final String previewPathLand;
 
     public KustomWidget(String widgetName, String previewPath, String previewPathLand) {
         this.widgetName = widgetName;

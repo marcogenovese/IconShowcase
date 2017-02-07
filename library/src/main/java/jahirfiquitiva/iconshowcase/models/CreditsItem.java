@@ -23,8 +23,8 @@ import android.graphics.drawable.Drawable;
 
 public class CreditsItem {
 
-    private String text;
-    private Drawable icon;
+    private final String text;
+    private final Drawable icon;
 
     public CreditsItem(String text, Drawable icon) {
         this.text = text;

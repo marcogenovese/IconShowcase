@@ -19,6 +19,7 @@
 
 package jahirfiquitiva.iconshowcase.config;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.preference.Preference;
@@ -49,6 +50,7 @@ public class Config implements IConfig {
             TURBO_ACTION = "com.phonemetra.turbo.launcher.icons.ACTION_PICK_ICON",
             NOVA_ACTION = "com.novalauncher.THEME";
 
+    @SuppressLint("StaticFieldLeak")
     private static Config mConfig;
     private Context mContext;
     private Resources mR;

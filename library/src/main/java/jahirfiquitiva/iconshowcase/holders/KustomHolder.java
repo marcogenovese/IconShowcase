@@ -37,9 +37,9 @@ import jahirfiquitiva.iconshowcase.config.Config;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 
 public class KustomHolder extends RecyclerView.ViewHolder {
-    private ImageView widget;
-    private TextView sectionTitle;
-    private OnKustomItemClickListener listener;
+    private final ImageView widget;
+    private final TextView sectionTitle;
+    private final OnKustomItemClickListener listener;
     private int section = -1;
     private int position = -1;
 

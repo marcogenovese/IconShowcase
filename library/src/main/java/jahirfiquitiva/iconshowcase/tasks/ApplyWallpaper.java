@@ -48,7 +48,7 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
 
     private String url;
     private boolean isPicker;
-    private WeakReference<Activity> wrActivity;
+    private final WeakReference<Activity> wrActivity;
     private LinearLayout toHide1, toHide2;
     private volatile boolean wasCancelled = false;
     private ApplyCallback callback;
@@ -56,9 +56,9 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
     private Bitmap resource;
     private MaterialDialog dialog;
 
-    private boolean setToHomeScreen;
-    private boolean setToLockScreen;
-    private boolean setToBoth;
+    private final boolean setToHomeScreen;
+    private final boolean setToLockScreen;
+    private final boolean setToBoth;
 
     public ApplyWallpaper(Activity activity, MaterialDialog dialog, Bitmap resource, boolean
             isPicker, boolean setToHomeScreen, boolean setToLockScreen, boolean setToBoth) {
@@ -279,6 +279,7 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
 //        }
     }
 
+    @SuppressWarnings("ConstantConditions")
     private Bitmap scaleToActualAspectRatio(Bitmap bitmap) {
         if (bitmap != null) {
             boolean flag = true;

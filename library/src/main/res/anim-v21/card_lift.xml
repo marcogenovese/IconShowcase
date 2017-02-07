@@ -16,10 +16,10 @@
   ~
   ~ Special thanks to the project contributors and collaborators
   ~ 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
-  -->
+ , XmlHighlighting -->
 
-<!-- animate the translationZ property of a view when pressed -->
-<!--suppress XmlWrongFileType -->
+<!-- animate the translationZ property of a view when pressed, XmlHighlighting -->
+<!--suppress XmlWrongFileType, XmlHighlighting -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item
             android:state_enabled="true"

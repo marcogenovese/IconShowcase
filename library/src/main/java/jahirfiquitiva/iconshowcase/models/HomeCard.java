@@ -29,14 +29,14 @@ import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 
 public class HomeCard implements Parcelable {
 
-    private String title;
-    private String desc;
-    private String onClickLink;
-    private boolean imgEnabled;
-    private boolean isAnApp;
-    private boolean isInstalled;
+    private final String title;
+    private final String desc;
+    private final String onClickLink;
+    private final boolean imgEnabled;
+    private final boolean isAnApp;
+    private final boolean isInstalled;
     private Drawable img;
-    private Intent intent;
+    private final Intent intent;
 
     private HomeCard(Builder builder) {
         this.title = builder.title;

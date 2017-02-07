@@ -36,6 +36,7 @@ import jahirfiquitiva.iconshowcase.utilities.Preferences;
 /**
  * @author Allan Wang
  */
+@SuppressWarnings("SameParameterValue")
 public class AdviceDialog extends DialogFragment {
 
     private static final String TAG = "advice_dialog";
@@ -58,10 +59,11 @@ public class AdviceDialog extends DialogFragment {
         if (frag != null) ((AdviceDialog) frag).dismiss();
     }
 
+    @SuppressWarnings("UnusedParameters")
     private static AdviceDialog newInstance(@NonNull final Type type) {
         AdviceDialog f = new AdviceDialog();
         Bundle args = new Bundle();
-        args.putSerializable("type", type);
+        args.putSerializable("type", Type.WALLPAPER);
         f.setArguments(args);
         return f;
     }

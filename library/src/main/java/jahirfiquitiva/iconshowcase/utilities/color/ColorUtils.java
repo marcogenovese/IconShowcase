@@ -30,6 +30,7 @@ import java.util.List;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
 
+@SuppressWarnings("SameParameterValue")
 public class ColorUtils {
 
     @ColorInt
@@ -58,7 +59,7 @@ public class ColorUtils {
     @ColorInt
     public static int changeAlpha(@ColorInt int color, @FloatRange(from = 0.0, to = 1.0) float
             newAlpha) {
-        float a = 255 * 0.65f;
+        float a = 255 * newAlpha;
         float r = Color.red(color);
         float g = Color.green(color);
         float b = Color.blue(color);

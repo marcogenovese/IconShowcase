@@ -48,8 +48,8 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestHolder> {
                 .card_app_to_request : R.layout.item_app_to_request, parent, false);
         return new RequestHolder(view, new RequestHolder.OnAppClickListener() {
             @Override
-            public void onClick(Context context, AppCompatCheckBox checkBox, App item) {
-                onItemClick(context, checkBox, item);
+            public void onClick(AppCompatCheckBox checkBox, App item) {
+                onItemClick(checkBox, item);
             }
         });
     }
@@ -84,7 +84,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestHolder> {
         }
     }
 
-    private void onItemClick(Context context, AppCompatCheckBox checkBox, App app) {
+    private void onItemClick(AppCompatCheckBox checkBox, App app) {
         final IconRequest ir = IconRequest.get();
         if (ir != null && ir.getApps() != null) {
             ir.toggleAppSelected(app);

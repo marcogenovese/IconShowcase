@@ -33,10 +33,10 @@ import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 
 public class ZooperButtonHolder extends RecyclerView.ViewHolder {
 
-    private ImageView icon;
-    private TextView text;
+    private final ImageView icon;
+    private final TextView text;
     private int buttonId = -1;
-    private OnZooperButtonClickListener listener;
+    private final OnZooperButtonClickListener listener;
 
     public ZooperButtonHolder(View itemView, OnZooperButtonClickListener nListener) {
         super(itemView);

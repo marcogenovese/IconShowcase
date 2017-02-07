@@ -34,10 +34,10 @@ import jahirfiquitiva.iconshowcase.models.IconItem;
 
 public class IconHolder extends RecyclerView.ViewHolder {
 
-    private View view;
-    private ImageView icon;
+    private final View view;
+    private final ImageView icon;
     private IconItem item;
-    private OnIconClickListener listener;
+    private final OnIconClickListener listener;
     private int lastPosition = 0;
 
     public IconHolder(View v, OnIconClickListener nListener) {

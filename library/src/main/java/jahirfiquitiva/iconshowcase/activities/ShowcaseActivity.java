@@ -379,11 +379,6 @@ public class ShowcaseActivity extends TasksActivity {
     }
 
     @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-    }
-
-    @Override
     protected void onSaveInstanceState(Bundle outState) {
         if (drawer != null) {
             outState = drawer.saveInstanceState(outState);

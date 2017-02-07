@@ -44,8 +44,8 @@ import timber.log.Timber;
 public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
 
     private final WeakReference<Context> mContext;
-    private ArrayList<IconItem> mPreviewIcons = new ArrayList<>();
-    private ArrayList<IconsCategory> mCategoryList = new ArrayList<>();
+    private final ArrayList<IconItem> mPreviewIcons = new ArrayList<>();
+    private final ArrayList<IconsCategory> mCategoryList = new ArrayList<>();
     private long startTime, endTime;
 
     public LoadIconsLists(Context context) {

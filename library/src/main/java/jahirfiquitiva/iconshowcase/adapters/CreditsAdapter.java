@@ -47,10 +47,10 @@ import jahirfiquitiva.iconshowcase.views.SplitButtonsLayout;
 
 public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private ArrayList<DetailedCreditsItem> detailedCredits = new ArrayList<>();
-    private ArrayList<CreditsItem> credits;
-    private Context context;
-    private Preferences mPrefs;
+    private final ArrayList<DetailedCreditsItem> detailedCredits = new ArrayList<>();
+    private final ArrayList<CreditsItem> credits;
+    private final Context context;
+    private final Preferences mPrefs;
 
     public CreditsAdapter(Context context) {
         this.context = context;
@@ -224,8 +224,8 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     class CreditsHolder extends RecyclerView.ViewHolder {
 
         final View view;
-        private TextView text;
-        private ImageView icon;
+        private final TextView text;
+        private final ImageView icon;
 
         public CreditsHolder(View itemView, final int position) {
             super(itemView);
@@ -265,9 +265,11 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     class DetailedCreditsHolder extends RecyclerView.ViewHolder {
 
         final View view;
-        private TextView title, content;
-        private ImageView photo, banner;
-        private SplitButtonsLayout buttons;
+        private final TextView title;
+        private final TextView content;
+        private final ImageView photo;
+        private final ImageView banner;
+        private final SplitButtonsLayout buttons;
 
         public DetailedCreditsHolder(View itemView) {
             super(itemView);

@@ -76,7 +76,7 @@ public abstract class DrawerActivity extends CapsuleActivity {
     protected static boolean mIsPremium = false, installedFromPlayStore = false;
 
     protected List<DrawerItem> mDrawerItems;
-    protected EnumMap<DrawerItem, Integer> mDrawerMap = new EnumMap<>(DrawerItem.class);
+    protected final EnumMap<DrawerItem, Integer> mDrawerMap = new EnumMap<>(DrawerItem.class);
 
     private DrawerItem drawerKeyToType(String s) {
         switch (s.toLowerCase()) {
@@ -244,8 +244,9 @@ public abstract class DrawerActivity extends CapsuleActivity {
             }
         };
 
-        private String name;
-        private int titleID, iconRes;
+        private final String name;
+        private final int titleID;
+        private int iconRes;
         private boolean isSecondary = false;
 
         DrawerItem(String name, @StringRes int titleID, @DrawableRes int iconRes) {

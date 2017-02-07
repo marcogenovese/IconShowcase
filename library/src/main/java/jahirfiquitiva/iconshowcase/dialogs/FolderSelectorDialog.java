@@ -45,6 +45,7 @@ import java.util.List;
 
 import jahirfiquitiva.iconshowcase.R;
 
+@SuppressWarnings("ConfusingArgumentToVarargsMethod")
 public class FolderSelectorDialog extends DialogFragment implements MaterialDialog.ListCallback {
 
     private File parentFolder;

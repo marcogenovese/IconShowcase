@@ -124,11 +124,6 @@ public class BaseWallpaperViewerActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-    }
-
-    @Override
     public void onBackPressed() {
         closeViewer();
     }
@@ -164,7 +159,7 @@ public class BaseWallpaperViewerActivity extends AppCompatActivity {
     }
 
     private void runOnUIThread(Context context, Runnable r) {
-        handler(this).post(r);
+        handler(context).post(r);
     }
 
     protected void setFullScreen(boolean fullScreen) {
@@ -332,7 +327,7 @@ public class BaseWallpaperViewerActivity extends AppCompatActivity {
                                 saveWallpaper(((Activity) context), item.getWallName(),
                                         downloadDialog, resource);
                             } catch (Exception e) {
-
+                                // Do nothing
                             }
                         }
                     }
@@ -465,6 +460,7 @@ public class BaseWallpaperViewerActivity extends AppCompatActivity {
                                             PermissionsUtils.requestStoragePermission((Activity)
                                                     context);
                                         } catch (Exception e) {
+                                            // Do nothing
                                         }
                                     }
 

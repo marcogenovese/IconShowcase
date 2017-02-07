@@ -213,7 +213,7 @@ public class PreviewsFragment extends EventBaseFragment {
 
     class IconsPagerAdapter extends FragmentStatePagerAdapter {
 
-        private String[] tabs;
+        private final String[] tabs;
 
         public IconsPagerAdapter(FragmentManager fm) {
             super(fm);

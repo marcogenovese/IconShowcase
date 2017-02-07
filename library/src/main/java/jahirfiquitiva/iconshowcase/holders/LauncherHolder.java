@@ -44,11 +44,11 @@ import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 
 public class LauncherHolder extends RecyclerView.ViewHolder {
 
-    private ImageView icon;
-    private TextView launcherName;
-    private LinearLayout itemBG;
+    private final ImageView icon;
+    private final TextView launcherName;
+    private final LinearLayout itemBG;
     private LauncherItem launcher;
-    private OnLauncherClickListener listener;
+    private final OnLauncherClickListener listener;
 
     public LauncherHolder(View view, OnLauncherClickListener nListener) {
         super(view);

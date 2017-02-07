@@ -27,8 +27,8 @@ import android.net.Uri;
 public class KustomWallpaper {
 
     private final String wallpaperName;
-    private String previewPath;
-    private String previewPathLand;
+    private final String previewPath;
+    private final String previewPathLand;
 
     public KustomWallpaper(String wallpaperName, String previewPath, String previewPathLand) {
         this.wallpaperName = wallpaperName;

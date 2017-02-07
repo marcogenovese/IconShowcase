@@ -34,7 +34,7 @@ public class LaunchersAdapter extends RecyclerView.Adapter<LauncherHolder> {
 
     private final Context context;
     private final List<LauncherItem> launchers;
-    private LauncherHolder.OnLauncherClickListener listener;
+    private final LauncherHolder.OnLauncherClickListener listener;
 
     public LaunchersAdapter(Context context, List<LauncherItem> launchers,
                             LauncherHolder.OnLauncherClickListener listener) {

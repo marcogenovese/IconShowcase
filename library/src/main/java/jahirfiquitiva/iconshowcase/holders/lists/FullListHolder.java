@@ -24,7 +24,7 @@ package jahirfiquitiva.iconshowcase.holders.lists;
  */
 public class FullListHolder {
 
-    private static Holder sLists = new Holder();
+    private static final Holder sLists = new Holder();
 
     public static Holder get() {
         if (sLists == null) return new Holder();

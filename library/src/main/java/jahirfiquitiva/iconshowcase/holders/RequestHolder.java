@@ -19,7 +19,6 @@
 
 package jahirfiquitiva.iconshowcase.holders;
 
-import android.content.Context;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -34,11 +33,11 @@ import jahirfiquitiva.iconshowcase.R;
 
 public class RequestHolder extends RecyclerView.ViewHolder {
 
-    private ImageView imgIcon;
-    private TextView txtName;
-    private AppCompatCheckBox checkBox;
+    private final ImageView imgIcon;
+    private final TextView txtName;
+    private final AppCompatCheckBox checkBox;
     private App item;
-    private OnAppClickListener listener;
+    private final OnAppClickListener listener;
 
     public RequestHolder(View v, OnAppClickListener nListener) {
         super(v);
@@ -50,7 +49,7 @@ public class RequestHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View view) {
                 if (listener != null)
-                    listener.onClick(view.getContext(), checkBox, item);
+                    listener.onClick(checkBox, item);
             }
         });
     }
@@ -65,6 +64,6 @@ public class RequestHolder extends RecyclerView.ViewHolder {
     }
 
     public interface OnAppClickListener {
-        void onClick(Context context, AppCompatCheckBox checkBox, App item);
+        void onClick(AppCompatCheckBox checkBox, App item);
     }
 }
