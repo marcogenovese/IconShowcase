@@ -115,7 +115,7 @@ public class ColorUtils {
         return getPaletteSwatch(Palette.from(bitmap).resizeBitmapArea(50 * 50).generate());
     }
 
-    private static Palette.Swatch getPaletteSwatch(Palette palette) {
+    public static Palette.Swatch getPaletteSwatch(Palette palette) {
         if (palette != null) {
             if (palette.getVibrantSwatch() != null) {
                 return palette.getVibrantSwatch();

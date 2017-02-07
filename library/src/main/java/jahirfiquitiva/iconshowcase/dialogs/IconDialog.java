@@ -21,6 +21,7 @@ package jahirfiquitiva.iconshowcase.dialogs;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -28,14 +29,19 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.graphics.Palette;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.IconUtils;
+import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
+import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 
 public class IconDialog extends DialogFragment {
 
@@ -95,11 +101,48 @@ public class IconDialog extends DialogFragment {
         if (dialog.getCustomView() != null) {
             final ImageView iconView = (ImageView) dialog.getCustomView().findViewById(R.id
                     .dialogicon);
+
             if (iconView != null && resId > 0) {
-                iconView.setImageDrawable(ContextCompat.getDrawable(getActivity(), resId));
+                iconView.setScaleX(0);
+                iconView.setScaleY(0);
+
+                Bitmap icon = Utils.drawableToBitmap(ContextCompat.getDrawable(getActivity(),
+                        resId));
+
+                iconView.setImageBitmap(icon);
+
+                Palette.from(icon).generate(new Palette.PaletteAsyncListener() {
+                    @Override
+                    public void onGenerated(Palette palette) {
+                        iconView.animate()
+                                .scaleX(1)
+                                .scaleY(1)
+                                .setStartDelay(100)
+                                .setDuration(500);
+                        if (palette == null) return;
+
+                        int color = ColorUtils.getPaletteSwatch(palette).getRgb();
+                        TextView buttonText = dialog.getActionButton(DialogAction.POSITIVE);
+
+                        if (ColorUtils.isLightColor(color)) {
+                            if (ThemeUtils.isDarkTheme()) {
+                                buttonText.setAlpha(0);
+                                buttonText.setTextColor(color);
+                                buttonText.animate().alpha(1).setDuration(500).start();
+                            }
+                        } else {
+                            if (!(ThemeUtils.isDarkTheme())) {
+                                buttonText.setAlpha(0);
+                                buttonText.setTextColor(color);
+                                buttonText.animate().alpha(1).setDuration(500).start();
+                            }
+                        }
+
+                    }
+                });
+
             }
         }
-
         return dialog;
     }
 
