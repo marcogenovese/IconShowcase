@@ -261,24 +261,6 @@
                 android:label="@string/title_activity_detailed_wallpaper"
                 android:theme="@style/AppTheme"/>
 
-        <service
-                android:name=".services.MuzeiArtSourceService"
-                android:description="@string/artsource_desc"
-                android:icon="@drawable/ic_muzei_logo"
-                android:label="@string/artsource_name"
-                tools:ignore="ExportedService">
-            <intent-filter>
-                <action android:name="com.google.android.apps.muzei.api.MuzeiArtSource"/>
-            </intent-filter>
-
-            <meta-data
-                    android:name="color"
-                    android:value="@color/primary"/>
-            <meta-data
-                    android:name="settingsActivity"
-                    android:value=".activities.MuzeiSettings"/>
-        </service>
-
         <activity
                 android:name=".activities.MuzeiSettings"
                 android:exported="true"
@@ -288,7 +270,6 @@
         <!-- WIDGETS -->
 
         <!-- Icon restorer Widget -->
-
         <receiver
                 android:name=".widgets.IconRestorerWidget"
                 android:icon="@drawable/app_logo"

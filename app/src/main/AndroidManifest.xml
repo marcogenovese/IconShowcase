@@ -107,6 +107,26 @@
         </provider>
         -->
 
+        <!-- Muzei Service -->
+        <service
+                android:name="jahirfiquitiva.iconshowcase.services.MuzeiArtSourceService"
+                android:description="@string/artsource_desc"
+                android:icon="@drawable/ic_muzei_logo"
+                android:label="@string/artsource_name"
+                tools:ignore="ExportedService">
+            <intent-filter>
+                <action android:name="com.google.android.apps.muzei.api.MuzeiArtSource"/>
+            </intent-filter>
+
+            <meta-data
+                    android:name="color"
+                    android:value="@color/muzei_color"/>
+            <meta-data
+                    android:name="settingsActivity"
+                    android:value="jahirfiquitiva.iconshowcase.activities.MuzeiSettings"/>
+        </service>
+
+        <!-- Picture Quality Configuration - DO NOT REMOVE -->
         <meta-data
                 android:name="jahirfiquitiva.iconshowcase.utilities.GlideConfiguration"
                 android:value="GlideModule"/>
