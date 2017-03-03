@@ -19,235 +19,212 @@
 
 package jahirfiquitiva.iconshowcase.activities;
 
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.res.Resources;
-import android.net.Uri;
-import android.os.Build;
+import android.content.res.ColorStateList;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.AppCompatCheckBox;
+import android.support.v7.widget.AppCompatSeekBar;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.NumberPicker;
-import android.widget.RadioButton;
+import android.widget.LinearLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.pitchedapps.capsule.library.custom.CapsuleCoordinatorLayout;
+
+import java.util.Locale;
 
 import jahirfiquitiva.iconshowcase.R;
-import jahirfiquitiva.iconshowcase.config.Config;
-import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
-import jahirfiquitiva.iconshowcase.services.MuzeiArtSourceService;
+import jahirfiquitiva.iconshowcase.activities.base.ThemedActivity;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
+import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
+import jahirfiquitiva.iconshowcase.utilities.utils.IconUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
-import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
-import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
-import jahirfiquitiva.iconshowcase.views.FixedElevationAppBarLayout;
 
 @SuppressWarnings("ResourceAsColor")
-public class MuzeiSettings extends AppCompatActivity {
+public class MuzeiSettings extends ThemedActivity {
 
-    private RadioButton minute, hour;
-    private NumberPicker numberpicker;
+    private static final int SEEKBAR_STEPS = 1;
+    private static final int SEEKBAR_MAX_VALUE = 13;
+    private static final int SEEKBAR_MIN_VALUE = 0;
+
     private Preferences mPrefs;
-    private Context context;
-    private CapsuleCoordinatorLayout coordinatorLayout;
-    private Toolbar toolbar;
+
+    private AppCompatSeekBar seekBar;
+    private AppCompatCheckBox checkBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        ThemeUtils.onActivityCreateSetTheme(this);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            ThemeUtils.onActivityCreateSetNavBar(this);
-        }
-
         super.onCreate(savedInstanceState);
-
-        context = this;
-
-        mPrefs = new Preferences(this);
-
-        int iconsColor = ThemeUtils.darkOrLight(this, R.color.toolbar_text_dark, R.color
-                .toolbar_text_light);
 
         setContentView(R.layout.muzei_settings);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        mPrefs = new Preferences(this);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        coordinatorLayout = (CapsuleCoordinatorLayout) findViewById(R.id.muzeiLayout);
-        coordinatorLayout.setScrollAllowed(false);
+        if (getSupportActionBar() != null)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById
-                (R.id.collapsingToolbar);
-        collapsingToolbarLayout.setCollapsedTitleTextColor(iconsColor);
-        collapsingToolbarLayout.setTitle(Utils.getStringFromResources(this, R.string
-                .muzei_settings));
+        ToolbarColorizer.colorizeToolbar(toolbar, ColorUtils.getMaterialPrimaryTextColor(!
+                (ColorUtils.isLightColor(ThemeUtils.darkOrLight(this, R.color.dark_theme_primary,
+                        R.color.light_theme_primary)))));
 
-        FixedElevationAppBarLayout appBarLayout = (FixedElevationAppBarLayout) findViewById(R.id
-                .appbar);
-        appBarLayout.setExpanded(false, false);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setBackgroundTintList(ColorStateList.valueOf(ColorUtils.getAccentColor(this)));
+        fab.setImageDrawable(IconUtils.getTintedDrawable(this, "ic_save", ColorUtils
+                .getAccentColor(this)));
 
-        numberpicker = (NumberPicker) findViewById(R.id.number_picker);
-        numberpicker.setMaxValue(100);
-        numberpicker.setMinValue(1);
+        TextView everyTitle = (TextView) findViewById(R.id.every_title);
+        everyTitle.setTextColor(ColorUtils.getMaterialPrimaryTextColor(ThemeUtils.isDarkTheme()));
 
-        setDividerColor(numberpicker);
+        final TextView everySummary = (TextView) findViewById(R.id.every_summary);
+        everySummary.setTextColor(ColorUtils.getMaterialSecondaryTextColor(
+                ThemeUtils.isDarkTheme()));
+        everySummary.setText(getResources().getString(R.string.every_x, textFromProgress
+                (mPrefs.getMuzeiRefreshInterval()).toLowerCase(Locale.getDefault())));
 
-        minute = (RadioButton) findViewById(R.id.minute);
-        hour = (RadioButton) findViewById(R.id.hour);
+        seekBar = (AppCompatSeekBar) findViewById(R.id.every_seekbar);
+        seekBar.setProgress(mPrefs.getMuzeiRefreshInterval());
+        seekBar.incrementProgressBy(SEEKBAR_STEPS);
+        seekBar.setMax((int) ((SEEKBAR_MAX_VALUE - SEEKBAR_MIN_VALUE) / SEEKBAR_STEPS));
 
-        if (mPrefs.isDashboardWorking()) {
-            minute.setOnClickListener(new DebouncedClickListener() {
-                @Override
-                public void onDebouncedClick(View v) {
-                    hour.setChecked(false);
-                    minute.setChecked(true);
-                }
-            });
+        View divider = findViewById(R.id.divider);
+        divider.setBackground(new ColorDrawable(ColorUtils.getMaterialDividerColor(
+                ThemeUtils.isDarkTheme())));
 
-            hour.setOnClickListener(new DebouncedClickListener() {
-                @Override
-                public void onDebouncedClick(View v) {
-                    minute.setChecked(false);
-                    hour.setChecked(true);
-                }
-            });
+        TextView wifiOnlyTitle = (TextView) findViewById(R.id.wifi_only_title);
+        wifiOnlyTitle.setTextColor(ColorUtils.getMaterialPrimaryTextColor(ThemeUtils.isDarkTheme
+                ()));
 
-            if (mPrefs.isRotateMinute()) {
-                hour.setChecked(false);
-                minute.setChecked(true);
-                numberpicker.setValue(Utils.convertMillisToMinutes(mPrefs.getRotateTime()));
-            } else {
-                hour.setChecked(true);
-                minute.setChecked(false);
-                numberpicker.setValue(Utils.convertMillisToMinutes(mPrefs.getRotateTime()) / 60);
+        TextView wifiOnlySummary = (TextView) findViewById(R.id.wifi_only_summary);
+        wifiOnlySummary.setTextColor(ColorUtils.getMaterialSecondaryTextColor(ThemeUtils
+                .isDarkTheme()));
+
+        checkBox = (AppCompatCheckBox) findViewById(R.id.wifi_checkbox);
+        checkBox.setChecked(mPrefs.getMuzeiRefreshOnWiFiOnly());
+
+        LinearLayout wifiOnly = (LinearLayout) findViewById(R.id.wifi_only);
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                int value = SEEKBAR_MIN_VALUE + (progress * SEEKBAR_STEPS);
+                everySummary.setText(getResources().getString(R.string.every_x, textFromProgress
+                        (value).toLowerCase(Locale.getDefault())));
             }
-        } else {
-            showShallNotPassDialog();
-        }
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        int iconsColor = ThemeUtils.darkOrLight(this, R.color.toolbar_text_dark, R.color
-                .toolbar_text_light);
-        ToolbarColorizer.colorizeToolbar(toolbar, iconsColor);
-        // TODO: Run license checker
-    }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.muzei, menu);
-        MenuItem save = menu.findItem(R.id.save);
-        int iconsColor = ThemeUtils.darkOrLight(this, R.color.toolbar_text_dark, R.color
-                .toolbar_text_light);
-        ToolbarColorizer.tintSaveIcon(save, this, iconsColor);
-        return true;
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        wifiOnly.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                checkBox.toggle();
+            }
+        });
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveValues();
+                finish();
+            }
+        });
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int i = item.getItemId();
-        if (mPrefs.isDashboardWorking()) {
-            if (i == R.id.save) {
-                String timeText;
-                int rotate_time;
-                if (minute.isChecked()) {
-                    rotate_time = Utils.convertMinutesToMillis(numberpicker.getValue());
-                    mPrefs.setRotateMinute(true);
-                    mPrefs.setRotateTime(rotate_time);
-                    timeText = String.valueOf(Utils.convertMillisToMinutes(rotate_time)) + " " +
-                            Utils.getStringFromResources(context, R.string.minutes).toLowerCase();
-                } else {
-                    rotate_time = Utils.convertMinutesToMillis(numberpicker.getValue()) * 60;
-                    mPrefs.setRotateMinute(false);
-                    mPrefs.setRotateTime(rotate_time);
-                    timeText = String.valueOf(Utils.convertMillisToMinutes(rotate_time) / 60) + "" +
-                            " " +
-                            Utils.getStringFromResources(context, R.string.hours).toLowerCase();
-                }
-                Intent intent = new Intent(MuzeiSettings.this, MuzeiArtSourceService.class);
-                intent.putExtra("service", "restarted");
-                startService(intent);
-                showSnackBarAndFinish(coordinatorLayout,
-                        getResources().getString(R.string.settings_saved, timeText));
-                return true;
-            }
-        } else {
-            showShallNotPassDialog();
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void setDividerColor(NumberPicker picker) {
-        java.lang.reflect.Field[] pickerFields = NumberPicker.class.getDeclaredFields();
-        for (java.lang.reflect.Field pf : pickerFields) {
-            if (pf.getName().equals("mSelectionDivider")) {
-                pf.setAccessible(true);
-                try {
-                    pf.set(picker, ContextCompat.getDrawable(this, R.drawable.numberpicker));
-                } catch (IllegalArgumentException | IllegalAccessException | Resources
-                        .NotFoundException e) {
-                    //Do nothing
-                }
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                showConfirmDialog();
                 break;
-            }
         }
+        return true;
     }
 
-    private void showShallNotPassDialog() {
-        ISDialogs.showShallNotPassDialog(this,
-                new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull
-                            DialogAction dialogAction) {
-                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Config
-                                .MARKET_URL + getPackageName()));
-                        startActivity(browserIntent);
-                    }
-                }, new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull
-                            DialogAction dialogAction) {
-                        finish();
-                    }
-                }, new MaterialDialog.OnDismissListener() {
-
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        finish();
-                    }
-                }, new MaterialDialog.OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialog) {
-                        finish();
-                    }
-                });
+    @Override
+    public void onBackPressed() {
+        showConfirmDialog();
     }
 
-    private void showSnackBarAndFinish(View location, String text) {
-        Utils.snackbar(context, location, text,
-                Snackbar.LENGTH_LONG).addCallback(new Snackbar.Callback() {
-            @Override
-            public void onDismissed(Snackbar snackbar, int event) {
-                super.onDismissed(snackbar, event);
-                finish();
-            }
-        }).show();
+    private void showConfirmDialog() {
+        new MaterialDialog.Builder(this)
+                .title(R.string.sure_to_exit)
+                .content(R.string.sure_to_exit_content)
+                .positiveText(R.string.yes)
+                .negativeText(R.string.no)
+                .neutralText(android.R.string.cancel)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction
+                            which) {
+                        saveValues();
+                        finish();
+                    }
+                })
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction
+                            which) {
+                        finish();
+                    }
+                })
+                .show();
+    }
+
+    private void saveValues() {
+        if (seekBar != null)
+            mPrefs.setMuzeiRefreshInterval(seekBar.getProgress());
+        mPrefs.setMuzeiRefreshOnWiFiOnly(checkBox != null && checkBox.isChecked());
+    }
+
+    private String textFromProgress(int progress) {
+        switch (progress) {
+            case 0:
+                return 15 + " " + getResources().getString(R.string.minutes);
+            case 1:
+                return 30 + " " + getResources().getString(R.string.minutes);
+            case 2:
+                return 45 + " " + getResources().getString(R.string.minutes);
+            case 3:
+                return 1 + " " + getResources().getString(R.string.hours);
+            case 4:
+                return 2 + " " + getResources().getString(R.string.hours);
+            case 5:
+                return 3 + " " + getResources().getString(R.string.hours);
+            case 6:
+                return 6 + " " + getResources().getString(R.string.hours);
+            case 7:
+                return 9 + " " + getResources().getString(R.string.hours);
+            case 8:
+                return 12 + " " + getResources().getString(R.string.hours);
+            case 9:
+                return 18 + " " + getResources().getString(R.string.hours);
+            case 10:
+                return 1 + " " + getResources().getString(R.string.days);
+            case 11:
+                return 3 + " " + getResources().getString(R.string.days);
+            case 12:
+                return 7 + " " + getResources().getString(R.string.days);
+            case 13:
+                return 14 + " " + getResources().getString(R.string.days);
+        }
+        return "";
     }
 
 }

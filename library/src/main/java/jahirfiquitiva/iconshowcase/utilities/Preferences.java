@@ -32,8 +32,6 @@ public class Preferences {
             WORKING_DASHBOARD = "working_dashboard",
             ASKED_PERMISSIONS = "asked_permissions",
             VERSION_CODE = "version_code",
-            ROTATE_MINUTE = "rotate_time_minute",
-            ROTATE_TIME = "muzei_rotate_time",
             LAUNCHER_ICON = "launcher_icon_shown",
             WALLS_DOWNLOAD_FOLDER = "walls_download_folder",
             APPS_TO_REQUEST_LOADED = "apps_to_request_loaded",
@@ -43,7 +41,9 @@ public class Preferences {
             WALLPAPER_AS_TOOLBAR_HEADER = "wallpaper_as_toolbar_header",
             APPLY_DIALOG_DISMISSED = "apply_dialog_dismissed",
             WALLS_DIALOG_DISMISSED = "walls_dialog_dismissed",
-            WALLS_COLUMNS_NUMBER = "walls_columns_number";
+            WALLS_COLUMNS_NUMBER = "walls_columns_number",
+            MUZEI_REFRESH_INTERVAL = "muzei_refresh_interval",
+            MUZEI_REFRESH_ON_WIFI_ONLY = "muzei_refresh_on_wifi_only";
 
     private static final String
             DEV_DRAWER_TEXTS = "dev_drawer_texts",
@@ -74,22 +74,6 @@ public class Preferences {
     @SuppressWarnings("SameParameterValue")
     public void setHasAskedPermissions(boolean asked) {
         getPrefs().edit().putBoolean(ASKED_PERMISSIONS, asked).apply();
-    }
-
-    public int getRotateTime() {
-        return getPrefs().getInt(ROTATE_TIME, 3 * 60 * 60 * 1000);
-    }
-
-    public void setRotateTime(int time) {
-        getPrefs().edit().putInt(ROTATE_TIME, time).apply();
-    }
-
-    public boolean isRotateMinute() {
-        return getPrefs().getBoolean(ROTATE_MINUTE, false);
-    }
-
-    public void setRotateMinute(boolean bool) {
-        getPrefs().edit().putBoolean(ROTATE_MINUTE, bool).apply();
     }
 
     public void setIconShown(boolean show) {
@@ -204,6 +188,22 @@ public class Preferences {
 
     public void setDevListsCards(boolean enableCards) {
         getPrefs().edit().putBoolean(DEV_LISTS_CARDS, enableCards).apply();
+    }
+
+    public void setMuzeiRefreshInterval(int interval) {
+        getPrefs().edit().putInt(MUZEI_REFRESH_INTERVAL, interval).apply();
+    }
+
+    public int getMuzeiRefreshInterval() {
+        return getPrefs().getInt(MUZEI_REFRESH_INTERVAL, 10);
+    }
+
+    public void setMuzeiRefreshOnWiFiOnly(boolean onWifiOnly) {
+        getPrefs().edit().putBoolean(MUZEI_REFRESH_ON_WIFI_ONLY, onWifiOnly).apply();
+    }
+
+    public boolean getMuzeiRefreshOnWiFiOnly() {
+        return getPrefs().getBoolean(MUZEI_REFRESH_ON_WIFI_ONLY, false);
     }
 
 }

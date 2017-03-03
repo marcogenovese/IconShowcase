@@ -19,81 +19,56 @@
 
 package jahirfiquitiva.apps.iconshowcase.sampleip;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
-import jahirfiquitiva.iconshowcase.utilities.LauncherIntents;
-import jahirfiquitiva.iconshowcase.utilities.utils.NotificationUtils;
-import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
+import jahirfiquitiva.iconshowcase.activities.base.LaunchActivity;
 
-public class HomeActivity extends AppCompatActivity {
-
-    private static final boolean
-            ENABLE_DONATIONS = false,
-
-    ENABLE_GOOGLE_DONATIONS = false,
-            ENABLE_PAYPAL_DONATIONS = false,
-            ENABLE_FLATTR_DONATIONS = false,
-            ENABLE_BITCOIN_DONATIONS = false;
-
-    protected boolean
-            ENABLE_LICENSE_CHECK = false,
-            ENABLE_AMAZON_INSTALLS = false,
-            ENABLE_APTOIDE_USE = false;
-
-    // Don't change if you're not going to use these
-    protected static final String GOOGLE_PUBLISHER_KEY = "insert_key_here";
+public class HomeActivity extends LaunchActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Class service = FirebaseService.class;
-        if (NotificationUtils.hasNotificationExtraKey(this, getIntent(), "open_link", service)) {
-            Utils.openLink(this, getIntent().getStringExtra("open_link"));
-        } else {
-            if ((getIntent().getDataString() != null && getIntent().getDataString().equals
-                    ("apply_shortcut"))
-                    && (Utils.getDefaultLauncherPackage(this) != null)) {
-                try {
-                    new LauncherIntents(this, Utils.getDefaultLauncherPackage(this));
-                } catch (IllegalArgumentException ex) {
-                    runIntent(service);
-                }
-            } else {
-                runIntent(service);
-            }
-        }
-        finish();
     }
 
-    private void runIntent(Class service) {
-        Intent intent = new Intent(HomeActivity.this, jahirfiquitiva.iconshowcase.activities
-                .ShowcaseActivity.class);
+    @Override
+    protected Class getFirebaseClass() {
+        return FirebaseService.class;
+    }
 
-        intent.putExtra("open_wallpapers",
-                NotificationUtils.isNotificationExtraKeyTrue(this, getIntent(), "open_walls",
-                        service));
+    @Override
+    protected boolean enableDonations() {
+        return false;
+    }
 
-        intent.putExtra("enableDonations", ENABLE_DONATIONS);
-        intent.putExtra("enableGoogleDonations", ENABLE_GOOGLE_DONATIONS);
-        intent.putExtra("enablePayPalDonations", ENABLE_PAYPAL_DONATIONS);
-        intent.putExtra("enableFlattrDonations", ENABLE_FLATTR_DONATIONS);
-        intent.putExtra("enableBitcoinDonations", ENABLE_BITCOIN_DONATIONS);
+    @Override
+    protected boolean enableGoogleDonations() {
+        return false;
+    }
 
-        //noinspection PointlessBooleanExpression
-        intent.putExtra("enableLicenseCheck", (ENABLE_LICENSE_CHECK && !BuildConfig.DEBUG));
-        intent.putExtra("enableAmazonInstalls", ENABLE_AMAZON_INSTALLS);
-        intent.putExtra("enableAptoideUse", ENABLE_APTOIDE_USE);
+    @Override
+    protected boolean enablePayPalDonations() {
+        return false;
+    }
 
-        intent.putExtra("googlePubKey", GOOGLE_PUBLISHER_KEY);
+    @Override
+    protected boolean enableLicCheck() {
+        // TODO: Make sure you set this to true if you want to check license.
+        return !BuildConfig.DEBUG;
+    }
 
-        if (getIntent().getDataString() != null && getIntent().getDataString().contains
-                ("_shortcut")) {
-            intent.putExtra("shortcut", getIntent().getDataString());
-        }
+    @Override
+    protected boolean enableAmazonInstalls() {
+        return false;
+    }
 
-        startActivity(intent);
+    @Override
+    protected boolean allowAptoideUse() {
+        return false;
+    }
+
+    @Override
+    protected String licKey() {
+        return "insert_key_here";
     }
 
 }

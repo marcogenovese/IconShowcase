@@ -22,106 +22,135 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/muzeiLayout"
+        android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
     <jahirfiquitiva.iconshowcase.views.FixedElevationAppBarLayout
-            android:id="@+id/appbar"
+            android:id="@+id/appBar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+            android:clipChildren="false"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            android:layout_height="wrap_content"
+            tools:ignore="UnusedAttribute">
 
-        <android.support.design.widget.CollapsingToolbarLayout
-                android:id="@+id/collapsingToolbar"
+        <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:minHeight="?actionBarSize"
-                app:contentScrim="?attr/colorPrimary"
-                app:expandedTitleMarginBottom="32dp"
-                app:expandedTitleMarginEnd="64dp"
-                app:expandedTitleMarginStart="24dp"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                app:titleEnabled="true">
-
-            <android.support.v7.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?actionBarSize"
-                    android:minHeight="?actionBarSize"
-                    android:transitionName="actionBar"
-                    android:theme="@style/Toolbar.AppCompat.Responsive.Light"
-                    app:layout_collapseMode="pin"
-                    app:popupTheme="@style/Toolbar.Popup.AppCompat"
-                    tools:ignore="UnusedAttribute"/>
-
-        </android.support.design.widget.CollapsingToolbarLayout>
+                android:layout_height="?actionBarSize"
+                android:title="@string/app_name"
+                android:theme="@style/Toolbar.AppCompat.Responsive.Light"
+                android:popupTheme="@style/Toolbar.Popup.AppCompat"
+                app:layout_scrollFlags="enterAlways"/>
 
     </jahirfiquitiva.iconshowcase.views.FixedElevationAppBarLayout>
 
     <android.support.v4.widget.NestedScrollView
+            android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/appbar"
-            android:fillViewport="true"
-            android:overScrollMode="ifContentScrolls">
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:orientation="vertical">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:weightSum="1">
 
             <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:paddingBottom="@dimen/dialog_margin"
-                    android:text="@string/muzeisets_title"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                    android:textColor="?attr/accentColor"/>
-
-            <LinearLayout
-                    style="@style/HomeCardContent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                <NumberPicker
-                        android:id="@+id/number_picker"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-
-                <RadioButton
-                        android:id="@+id/minute"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/minutes"/>
-
-                <RadioButton
-                        android:id="@+id/hour"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/hours"/>
-
-            </LinearLayout>
-
-            <TextView
-                    style="@style/AboutContent"
+                    android:id="@+id/every_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="@dimen/cards_margin"
-                    android:lineSpacingMultiplier="1.2"
-                    android:text="@string/muzei_info"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
+                    android:padding="@dimen/fab_margin"
+                    android:text="@string/refresh_wallpapers_every"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
+            <TextView
+                    android:id="@+id/every_summary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/card_little_margin"
+                    android:paddingLeft="@dimen/fab_margin"
+                    android:paddingStart="@dimen/fab_margin"
+                    android:paddingEnd="@dimen/fab_margin"
+                    android:paddingRight="@dimen/fab_margin"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    tools:text="Every 12 hours"/>
+
+            <android.support.v7.widget.AppCompatSeekBar
+                    android:id="@+id/every_seekbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/fab_margin"/>
+
+            <View
+                    android:id="@+id/divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/md_divider_black"/>
+
+            <LinearLayout
+                    android:id="@+id/wifi_only"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:paddingTop="@dimen/fab_margin"
+                    android:paddingStart="@dimen/fab_margin"
+                    android:paddingLeft="@dimen/fab_margin"
+                    android:paddingBottom="@dimen/fab_margin"
+                    android:orientation="horizontal"
+                    android:background="?selectableItemBackground"
+                    android:descendantFocusability="blocksDescendants"
+                    tools:ignore="RtlSymmetry">
+
+                <LinearLayout
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:paddingEnd="@dimen/cards_margin"
+                        android:paddingRight="@dimen/cards_margin">
+
+                    <TextView
+                            android:id="@+id/wifi_only_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/refresh_only_on_wifi"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
+                    <TextView
+                            android:id="@+id/wifi_only_summary"
+                            android:paddingTop="@dimen/cards_margin"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/refresh_only_on_wifi_summary"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
+
+                </LinearLayout>
+
+                <android.support.v7.widget.AppCompatCheckBox
+                        android:id="@+id/wifi_checkbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:clickable="false"
+                        android:gravity="center"
+                        android:padding="@dimen/fab_margin"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            app:rippleColor="@color/semitransparent_white"
+            app:srcCompat="@drawable/ic_save"
+            app:fabSize="normal"/>
 
 </com.pitchedapps.capsule.library.custom.CapsuleCoordinatorLayout>

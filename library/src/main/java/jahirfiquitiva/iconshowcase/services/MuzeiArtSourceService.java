@@ -35,6 +35,7 @@ import org.json.JSONObject;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import jahirfiquitiva.iconshowcase.BuildConfig;
 import jahirfiquitiva.iconshowcase.R;
@@ -42,6 +43,7 @@ import jahirfiquitiva.iconshowcase.config.Config;
 import jahirfiquitiva.iconshowcase.logging.CrashReportingTree;
 import jahirfiquitiva.iconshowcase.utilities.JSONParser;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
+import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 import timber.log.Timber;
 
 public class MuzeiArtSourceService extends RemoteMuzeiArtSource {
@@ -106,17 +108,33 @@ public class MuzeiArtSourceService extends RemoteMuzeiArtSource {
         }
     }
 
+    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     protected void onTryUpdate(int reason) throws RetryException {
         if (mPrefs.isDashboardWorking()) {
-            try {
-                new DownloadJSONAndSetWall(getApplicationContext()).execute();
-            } catch (Exception e) {
-                Timber.d("Error updating Muzei: " + e.getLocalizedMessage());
-                throw new RetryException();
+            if (mPrefs.getMuzeiRefreshOnWiFiOnly()) {
+                if (Utils.isConnectedToWiFi(this)) {
+                    executeMuzeiUpdate();
+                } else {
+                    // TODO: Check if needed
+                    // rescheduleUpdate();
+                }
+            } else if (Utils.hasNetwork(this)) {
+                executeMuzeiUpdate();
+            } else {
+                // TODO: Check if needed
+                // rescheduleUpdate();
             }
         }
+    }
 
+    private void executeMuzeiUpdate() throws RetryException {
+        try {
+            new DownloadJSONAndSetWall(getApplicationContext()).execute();
+        } catch (Exception e) {
+            Timber.d("Error updating Muzei: " + e.getLocalizedMessage());
+            throw new RetryException();
+        }
     }
 
     private void setImageForMuzei(String name, String author, String url) {
@@ -126,7 +144,12 @@ public class MuzeiArtSourceService extends RemoteMuzeiArtSource {
                 .imageUri(Uri.parse(url))
                 .viewIntent(new Intent(Intent.ACTION_VIEW, Uri.parse(url)))
                 .build());
-        scheduleUpdate(System.currentTimeMillis() + mPrefs.getRotateTime());
+        rescheduleUpdate();
+    }
+
+    private void rescheduleUpdate() {
+        scheduleUpdate(System.currentTimeMillis() + convertRefreshIntervalToMillis(mPrefs
+                .getMuzeiRefreshInterval()));
     }
 
     public class DownloadJSONAndSetWall extends AsyncTask<Void, String, Boolean> {
@@ -187,11 +210,42 @@ public class MuzeiArtSourceService extends RemoteMuzeiArtSource {
                 } catch (IllegalArgumentException e) {
                     Timber.d("Muzei error: " + e.getLocalizedMessage());
                 }
-
             }
-
         }
+    }
 
+    private long convertRefreshIntervalToMillis(int interval) {
+        switch (interval) {
+            case 0:
+                return TimeUnit.MINUTES.toMillis(15);
+            case 1:
+                return TimeUnit.MINUTES.toMillis(30);
+            case 2:
+                return TimeUnit.MINUTES.toMillis(45);
+            case 3:
+                return TimeUnit.HOURS.toMillis(1);
+            case 4:
+                return TimeUnit.HOURS.toMillis(2);
+            case 5:
+                return TimeUnit.HOURS.toMillis(3);
+            case 6:
+                return TimeUnit.HOURS.toMillis(6);
+            case 7:
+                return TimeUnit.HOURS.toMillis(9);
+            case 8:
+                return TimeUnit.HOURS.toMillis(12);
+            case 9:
+                return TimeUnit.HOURS.toMillis(18);
+            case 10:
+                return TimeUnit.DAYS.toMillis(1);
+            case 11:
+                return TimeUnit.DAYS.toMillis(3);
+            case 12:
+                return TimeUnit.DAYS.toMillis(7);
+            case 13:
+                return TimeUnit.DAYS.toMillis(14);
+        }
+        return 0;
     }
 
 }

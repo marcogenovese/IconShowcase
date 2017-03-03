@@ -26,7 +26,6 @@ import android.support.v4.app.Fragment;
 
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
-import com.pitchedapps.capsule.library.activities.CapsuleActivity;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -49,7 +48,7 @@ import jahirfiquitiva.iconshowcase.utilities.utils.IconUtils;
 /**
  * Created by Allan Wang on 2016-10-09.
  */
-public abstract class DrawerActivity extends CapsuleActivity {
+public abstract class DrawerActivity extends ThemedActivity {
 
     protected static boolean
             WITH_LICENSE_CHECKER = false,
@@ -61,8 +60,6 @@ public abstract class DrawerActivity extends CapsuleActivity {
     //Donations stuff
     DONATIONS_GOOGLE = false,
             DONATIONS_PAYPAL = false,
-            DONATIONS_FLATTR = false,
-            DONATIONS_BITCOIN = false,
 
     WITH_ZOOPER_SECTION = false;
 
@@ -124,8 +121,6 @@ public abstract class DrawerActivity extends CapsuleActivity {
         if (installedFromPlayStore) {
             // Disable donation methods not allowed by Google
             DONATIONS_PAYPAL = false;
-            DONATIONS_FLATTR = false;
-            DONATIONS_BITCOIN = false;
         }
 
         //google
@@ -155,9 +150,8 @@ public abstract class DrawerActivity extends CapsuleActivity {
         }
 
         if (WITH_DONATIONS_SECTION) {
-            WITH_DONATIONS_SECTION = DONATIONS_GOOGLE || DONATIONS_PAYPAL || DONATIONS_FLATTR ||
-                    DONATIONS_BITCOIN; //if one of the donations are enabled,
-            // then the section is enabled
+            WITH_DONATIONS_SECTION = DONATIONS_GOOGLE || DONATIONS_PAYPAL;
+            //if one of the donations are enabled, then the section is enabled
         }
     }
 
@@ -239,8 +233,8 @@ public abstract class DrawerActivity extends CapsuleActivity {
                         PAYPAL_USER,
                         PAYPAL_CURRENCY_CODE,
                         "DONATE",
-                        DONATIONS_FLATTR,
-                        DONATIONS_BITCOIN);
+                        false,
+                        false);
             }
         };
 

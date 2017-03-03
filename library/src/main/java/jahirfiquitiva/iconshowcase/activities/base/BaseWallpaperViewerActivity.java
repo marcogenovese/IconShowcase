@@ -63,7 +63,7 @@ import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 
 @SuppressLint("Registered")
-public class BaseWallpaperViewerActivity extends AppCompatActivity {
+public class BaseWallpaperViewerActivity extends ThemedActivity {
 
     private static final int NAV_BAR_VISIBILITY_CHANGE_DELAY = 2000;
     private boolean isFullScreen = false;

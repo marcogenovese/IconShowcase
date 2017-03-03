@@ -97,6 +97,7 @@ public class ThemeUtils {
                 }
                 break;
         }
+        onActivityCreateSetNavBar(activity);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)

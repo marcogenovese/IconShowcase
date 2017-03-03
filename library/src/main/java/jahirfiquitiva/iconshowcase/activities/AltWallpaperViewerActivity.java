@@ -59,6 +59,7 @@ import jahirfiquitiva.iconshowcase.activities.base.BaseWallpaperViewerActivity;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
+import jahirfiquitiva.iconshowcase.utilities.utils.IconUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.PermissionsUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
@@ -106,6 +107,8 @@ public class AltWallpaperViewerActivity extends BaseWallpaperViewerActivity {
                     .color.white));
         }
 
+        fab.setBackgroundDrawable(IconUtils.getTintedDrawable(this, "ic_plus", ColorUtils
+                .getAccentColor(this)));
         fab.setOnClickListener(new DebouncedClickListener() {
             @Override
             public void onDebouncedClick(View v) {
@@ -118,6 +121,8 @@ public class AltWallpaperViewerActivity extends BaseWallpaperViewerActivity {
             }
         });
 
+        applyFab.setBackgroundDrawable(IconUtils.getTintedDrawable(this, "ic_check", ColorUtils
+                .getAccentColor(this)));
         applyFab.setOnClickListener(new DebouncedClickListener() {
             @Override
             public void onDebouncedClick(View v) {
@@ -126,6 +131,8 @@ public class AltWallpaperViewerActivity extends BaseWallpaperViewerActivity {
         });
 
         if (getItem().isDownloadable()) {
+            saveFab.setBackgroundDrawable(IconUtils.getTintedDrawable(this, "ic_save", ColorUtils
+                    .getAccentColor(this)));
             saveFab.setOnClickListener(new DebouncedClickListener() {
                 @Override
                 public void onDebouncedClick(View v) {
@@ -162,6 +169,8 @@ public class AltWallpaperViewerActivity extends BaseWallpaperViewerActivity {
             saveFab.setVisibility(View.GONE);
         }
 
+        infoFab.setBackgroundDrawable(IconUtils.getTintedDrawable(this, "ic_info", ColorUtils
+                .getAccentColor(this)));
         infoFab.setOnClickListener(new DebouncedClickListener() {
             @Override
             public void onDebouncedClick(View v) {

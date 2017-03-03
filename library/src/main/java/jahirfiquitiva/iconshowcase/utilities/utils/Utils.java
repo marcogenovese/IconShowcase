@@ -94,6 +94,14 @@ public class Utils {
         return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }
 
+    public static boolean isConnectedToWiFi(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context
+                .CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null && (activeNetwork.getType() == ConnectivityManager
+                .TYPE_WIFI) && activeNetwork.isConnectedOrConnecting();
+    }
+
     public static boolean isAppInstalled(Context context, String packageName) {
         final PackageManager pm = context.getPackageManager();
         boolean installed;
@@ -278,21 +286,18 @@ public class Utils {
     }
 
     public static int getNavigationBarHeight(Activity activity) {
-        // getRealMetrics is only available with API 17 and +
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             DisplayMetrics metrics = new DisplayMetrics();
             activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
-            int usableHeight = activity.getResources().getBoolean(R.bool.isTablet) ? metrics
-                    .heightPixels :
+            int usableHeight = activity.getResources().getBoolean(R.bool.isTablet)
+                    ? metrics.heightPixels :
                     activity.getResources().getConfiguration().orientation == Configuration
-                            .ORIENTATION_LANDSCAPE ?
-                            metrics.widthPixels : metrics.heightPixels;
+                            .ORIENTATION_LANDSCAPE ? metrics.widthPixels : metrics.heightPixels;
             activity.getWindowManager().getDefaultDisplay().getRealMetrics(metrics);
-            int realHeight = activity.getResources().getBoolean(R.bool.isTablet) ? metrics
-                    .heightPixels :
+            int realHeight = activity.getResources().getBoolean(R.bool.isTablet)
+                    ? metrics.heightPixels :
                     activity.getResources().getConfiguration().orientation == Configuration
-                            .ORIENTATION_LANDSCAPE ?
-                            metrics.widthPixels : metrics.heightPixels;
+                            .ORIENTATION_LANDSCAPE ? metrics.widthPixels : metrics.heightPixels;
             if (realHeight > usableHeight)
                 return realHeight - usableHeight;
             else
@@ -313,8 +318,9 @@ public class Utils {
                                          boolean allApt) {
         Preferences mPrefs = new Preferences(context);
         mPrefs.setSettingsModified(false);
-        if (ch && isNewVersion(context)) {
-            checkLicense(context, lic, allAma, allApt);
+        if (ch) {
+            if (isNewVersion(context) || (!(mPrefs.isDashboardWorking())))
+                checkLicense(context, lic, allAma, allApt);
         } else {
             mPrefs.setDashboardWorking(true);
             showChangelogDialog(context);
@@ -363,8 +369,7 @@ public class Utils {
             allApt) {
         final Preferences mPrefs = new Preferences(context);
         final RepelloMaxima[] spell = new RepelloMaxima[1];
-        spell[0] = new RepelloMaxima.Speller(context)
-                .withLicKey(lic)
+        final RepelloMaxima.Speller speller = new RepelloMaxima.Speller(context)
                 .allAmazon(allAma)
                 .allApt(allApt)
                 .thenDo(new RepelloCallback() {
@@ -441,8 +446,10 @@ public class Utils {
                             }
                         });
                     }
-                })
-                .construct();
+                });
+        if (lic != null)
+            speller.withLicKey(lic);
+        spell[0] = speller.construct();
         spell[0].cast();
     }
 

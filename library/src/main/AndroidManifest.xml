@@ -16,31 +16,23 @@
   ~
   ~ Special thanks to the project contributors and collaborators
   ~ 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
-  -->
-
-<manifest
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        package="jahirfiquitiva.iconshowcase">
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
+          package="jahirfiquitiva.iconshowcase">
 
     <uses-sdk tools:overrideLibrary="org.kustom.api"/>
 
     <uses-permission android:name="com.android.vending.CHECK_LICENSE"/>
-
     <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
-
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-
     <uses-permission android:name="android.permission.SET_WALLPAPER"/>
     <uses-permission android:name="android.permission.SET_WALLPAPER_HINTS"/>
-
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-
     <uses-permission android:name="android.permission.VIBRATE"/>
 
     <supports-screens
@@ -81,22 +73,24 @@
                 android:name="com.lge.support.SPLIT_WINDOW"
                 android:value="true"/>
 
+        <activity
+                android:name=".activities.base.LaunchActivity"
+                android:noHistory="true"/>
+
         <!-- Icons -->
         <activity
                 android:name=".activities.ShowcaseActivity"
                 android:label="@string/app_name">
-
             <intent-filter tools:ignore="GoogleAppIndexingDeepLinkError,GoogleAppIndexingUrlError,
-            GoogleAppIndexingWarning">
-
+                GoogleAppIndexingWarning">
                 <action android:name="android.intent.action.VIEW"/>
 
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
             </intent-filter>
-
             <intent-filter>
                 <action android:name="android.intent.action.SET_WALLPAPER"/>
+
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
             <intent-filter>
@@ -109,7 +103,9 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.PICK"/>
+
                 <category android:name="android.intent.category.DEFAULT"/>
+
                 <data android:mimeType="image/*"/>
             </intent-filter>
             <intent-filter>
@@ -120,7 +116,9 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.PICK"/>
+
                 <category android:name="android.intent.category.DEFAULT"/>
+
                 <data android:mimeType="image/*"/>
             </intent-filter>
             <!-- Xperia Home Launcher -->
@@ -132,15 +130,18 @@
             <!-- ADW -->
             <intent-filter>
                 <action android:name="org.adw.launcher.THEMES"/>
+
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
             <intent-filter>
                 <action android:name="org.adw.launcher.icons.ACTION_PICK_ICON"/>
+
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
             <!-- Apex -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+
                 <category android:name="com.anddoes.launcher.THEME"/>
             </intent-filter>
             <!-- Atom -->
@@ -150,20 +151,24 @@
             <!-- Nova -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+
                 <category android:name="com.teslacoilsw.launcher.THEME"/>
             </intent-filter>
             <intent-filter>
                 <action android:name="com.novalauncher.THEME"/>
+
                 <category android:name="com.novalauncher.category.CUSTOM_ICON_PICKER"/>
             </intent-filter>
             <!-- LauncherPro / Holo -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+
                 <category android:name="com.fede.launcher.THEME_ICONPACK"/>
             </intent-filter>
             <!-- Next Launcher -->
             <intent-filter>
                 <action android:name="com.gtp.nextlauncher.theme"/>
+
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
             <!-- TSF Shell -->
@@ -176,10 +181,12 @@
             <!-- Turbo Launcher -->
             <intent-filter>
                 <action android:name="com.phonemetra.turbo.launcher.THEMES"/>
+
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
             <intent-filter>
                 <action android:name="com.phonemetra.turbo.launcher.icons.ACTION_PICK_ICON"/>
+
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
             <!-- Smart Launcher -->
@@ -195,6 +202,7 @@
             <!-- Nine Launcher -->
             <intent-filter>
                 <action android:name="com.gridappsinc.launcher.theme.apk_action"/>
+
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
             <!-- Random launchers -->
@@ -217,11 +225,13 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="cdproductions.crazyicons.TWO"/>
+
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
             <!-- THEME MANAGER -->
             <intent-filter>
                 <action android:name="com.daeva112.manager.MAIN"/>
+
                 <category android:name="com.daeva112.manager.THEME"/>
             </intent-filter>
             <!-- GO LAUNCHER -->
@@ -248,7 +258,6 @@
 
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
-
         </activity>
 
         <!-- Wallpapers Activities -->
@@ -260,7 +269,6 @@
                 android:name=".activities.AltWallpaperViewerActivity"
                 android:label="@string/title_activity_detailed_wallpaper"
                 android:theme="@style/AppTheme"/>
-
         <activity
                 android:name=".activities.MuzeiSettings"
                 android:exported="true"
@@ -268,6 +276,7 @@
                 android:theme="@style/AppTheme.LaunchScreen"/>
 
         <!-- WIDGETS -->
+
 
         <!-- Icon restorer Widget -->
         <receiver
@@ -285,9 +294,9 @@
 
         <activity
                 android:name=".activities.LauncherIconRestorerActivity"
+                android:excludeFromRecents="true"
                 android:label="@string/app_name"
                 android:noHistory="true"
-                android:excludeFromRecents="true"
                 android:theme="@style/EmptyActivity"/>
 
         <!-- Clock Widget -->

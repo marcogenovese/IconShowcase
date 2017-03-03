@@ -76,7 +76,6 @@ import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.tasks.DownloadJSON;
 import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.utilities.utils.PermissionsUtils;
-import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 import timber.log.Timber;
 
@@ -104,13 +103,6 @@ public class ShowcaseActivity extends TasksActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        ThemeUtils.onActivityCreateSetTheme(this);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            ThemeUtils.onActivityCreateSetNavBar(this);
-        }
-
         super.onCreate(savedInstanceState);
 
         String shortcut = getIntent().getStringExtra("shortcut");
@@ -121,12 +113,10 @@ public class ShowcaseActivity extends TasksActivity {
         WITH_DONATIONS_SECTION = getIntent().getBooleanExtra("enableDonations", false);
         DONATIONS_GOOGLE = getIntent().getBooleanExtra("enableGoogleDonations", false);
         DONATIONS_PAYPAL = getIntent().getBooleanExtra("enablePayPalDonations", false);
-        DONATIONS_FLATTR = getIntent().getBooleanExtra("enableFlattrDonations", false);
-        DONATIONS_BITCOIN = getIntent().getBooleanExtra("enableBitcoinDonations", false);
 
         WITH_LICENSE_CHECKER = getIntent().getBooleanExtra("enableLicenseCheck", false);
         WITH_INSTALLED_FROM_AMAZON = getIntent().getBooleanExtra("enableAmazonInstalls", false);
-        ALLOW_APT_USE = getIntent().getBooleanExtra("enableAptoideUse", false);
+        ALLOW_APT_USE = getIntent().getBooleanExtra("allowAptoideUse", false);
 
         GOOGLE_PUBKEY = getIntent().getStringExtra("googlePubKey");
 
@@ -747,8 +737,6 @@ public class ShowcaseActivity extends TasksActivity {
         if (installedFromPlayStore) {
             // Disable donation methods not allowed by Google
             DONATIONS_PAYPAL = false;
-            DONATIONS_FLATTR = false;
-            DONATIONS_BITCOIN = false;
         }
 
         //google
@@ -778,9 +766,8 @@ public class ShowcaseActivity extends TasksActivity {
         }
 
         if (WITH_DONATIONS_SECTION) {
-            WITH_DONATIONS_SECTION = DONATIONS_GOOGLE || DONATIONS_PAYPAL || DONATIONS_FLATTR ||
-                    DONATIONS_BITCOIN; //if one of the donations are enabled,
-            // then the section is enabled
+            WITH_DONATIONS_SECTION = DONATIONS_GOOGLE || DONATIONS_PAYPAL;
+            //if one of the donations are enabled, then the section is enabled
         }
     }
 
@@ -809,11 +796,11 @@ public class ShowcaseActivity extends TasksActivity {
     }
 
     public boolean includesIcons() {
-        return mDrawerMap != null && mDrawerMap.containsKey(DrawerItem.PREVIEWS);
+        return mDrawerMap.containsKey(DrawerItem.PREVIEWS);
     }
 
     public boolean includesWallpapers() {
-        return mDrawerMap != null && mDrawerMap.containsKey(DrawerItem.WALLPAPERS);
+        return mDrawerMap.containsKey(DrawerItem.WALLPAPERS);
     }
 
     public boolean allowShuffle() {
@@ -838,7 +825,7 @@ public class ShowcaseActivity extends TasksActivity {
     }
 
     public long getPreviewsId() {
-        return mDrawerMap != null ? mDrawerMap.get(DrawerItem.PREVIEWS) : -1;
+        return mDrawerMap.get(DrawerItem.PREVIEWS);
     }
 
 }

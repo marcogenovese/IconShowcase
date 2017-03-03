@@ -36,6 +36,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 
 public class IconUtils {
 
@@ -47,6 +48,13 @@ public class IconUtils {
         return getTintedIcon(context, getIconResId(context.getResources(), context.getPackageName
                 (), name), ThemeUtils.darkOrLight(context, R.color.drawable_tint_dark, R.color
                 .drawable_tint_light));
+    }
+
+    public static Drawable getTintedDrawable(@NonNull Context context, String name, @ColorInt int
+            color) {
+        return getTintedIcon(context, getIconResId(context.getResources(), context.getPackageName
+                (), name), ContextCompat.getColor(context, ColorUtils.isLightColor(color)
+                ? R.color.drawable_tint_light : R.color.drawable_tint_light));
     }
 
     public static Drawable getTintedIcon(@NonNull Context context, @DrawableRes int drawable,
