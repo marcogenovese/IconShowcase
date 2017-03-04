@@ -63,7 +63,7 @@ import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 
 @SuppressLint("Registered")
-public class BaseWallpaperViewerActivity extends ThemedActivity {
+public class BaseWallpaperViewerActivity extends AppCompatActivity {
 
     private static final int NAV_BAR_VISIBILITY_CHANGE_DELAY = 2000;
     private boolean isFullScreen = false;
@@ -88,7 +88,6 @@ public class BaseWallpaperViewerActivity extends ThemedActivity {
             setupFullScreen();
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                ThemeUtils.onActivityCreateSetNavBar(this);
                 getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             }
             makeStatusBarIconsWhite();

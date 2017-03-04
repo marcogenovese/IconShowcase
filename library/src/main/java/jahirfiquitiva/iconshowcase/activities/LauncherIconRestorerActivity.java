@@ -19,17 +19,17 @@
 
 package jahirfiquitiva.iconshowcase.activities;
 
-import android.app.Activity;
 import android.content.ComponentName;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 
-public class LauncherIconRestorerActivity extends Activity {
+public class LauncherIconRestorerActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

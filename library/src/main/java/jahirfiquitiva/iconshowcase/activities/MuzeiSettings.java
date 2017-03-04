@@ -24,6 +24,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.AppCompatSeekBar;
 import android.support.v7.widget.Toolbar;
@@ -39,7 +40,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import java.util.Locale;
 
 import jahirfiquitiva.iconshowcase.R;
-import jahirfiquitiva.iconshowcase.activities.base.ThemedActivity;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
@@ -47,7 +47,7 @@ import jahirfiquitiva.iconshowcase.utilities.utils.IconUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
 
 @SuppressWarnings("ResourceAsColor")
-public class MuzeiSettings extends ThemedActivity {
+public class MuzeiSettings extends AppCompatActivity {
 
     private static final int SEEKBAR_STEPS = 1;
     private static final int SEEKBAR_MAX_VALUE = 13;
@@ -60,6 +60,7 @@ public class MuzeiSettings extends ThemedActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ThemeUtils.onActivityCreateSetTheme(this);
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.muzei_settings);

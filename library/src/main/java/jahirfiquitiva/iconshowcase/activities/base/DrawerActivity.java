@@ -26,6 +26,7 @@ import android.support.v4.app.Fragment;
 
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
+import com.pitchedapps.capsule.library.activities.CapsuleActivity;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -48,7 +49,7 @@ import jahirfiquitiva.iconshowcase.utilities.utils.IconUtils;
 /**
  * Created by Allan Wang on 2016-10-09.
  */
-public abstract class DrawerActivity extends ThemedActivity {
+public abstract class DrawerActivity extends CapsuleActivity {
 
     protected static boolean
             WITH_LICENSE_CHECKER = false,

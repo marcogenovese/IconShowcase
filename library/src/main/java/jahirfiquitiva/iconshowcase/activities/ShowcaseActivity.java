@@ -76,6 +76,7 @@ import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.tasks.DownloadJSON;
 import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.utilities.utils.PermissionsUtils;
+import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 import timber.log.Timber;
 
@@ -103,6 +104,7 @@ public class ShowcaseActivity extends TasksActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ThemeUtils.onActivityCreateSetTheme(this);
         super.onCreate(savedInstanceState);
 
         String shortcut = getIntent().getStringExtra("shortcut");

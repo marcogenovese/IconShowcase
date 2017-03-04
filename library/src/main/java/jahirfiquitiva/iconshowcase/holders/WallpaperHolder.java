@@ -160,7 +160,7 @@ public class WallpaperHolder extends RecyclerView.ViewHolder implements View.OnC
                         .isLightColor(color)));
             }
             if (authorName != null) {
-                authorName.setTextColor(ColorUtils.getMaterialPrimaryTextColor(!ColorUtils
+                authorName.setTextColor(ColorUtils.getMaterialSecondaryTextColor(!ColorUtils
                         .isLightColor(color)));
             }
         }
