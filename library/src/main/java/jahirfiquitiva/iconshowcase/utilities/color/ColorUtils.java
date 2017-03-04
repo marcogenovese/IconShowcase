@@ -29,7 +29,6 @@ import java.util.List;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
-import timber.log.Timber;
 
 @SuppressWarnings("SameParameterValue")
 public class ColorUtils {

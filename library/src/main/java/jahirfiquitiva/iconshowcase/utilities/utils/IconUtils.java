@@ -52,9 +52,10 @@ public class IconUtils {
 
     public static Drawable getTintedDrawable(@NonNull Context context, String name, @ColorInt int
             color) {
-        return getTintedIcon(context, getIconResId(context.getResources(), context.getPackageName
-                (), name), ContextCompat.getColor(context, ColorUtils.isLightColor(color)
-                ? R.color.drawable_tint_light : R.color.drawable_tint_light));
+        return getTintedIcon(context,
+                getIconResId(context.getResources(), context.getPackageName(), name),
+                ContextCompat.getColor(context, ColorUtils.isLightColor(color)
+                        ? R.color.drawable_tint_light : R.color.drawable_tint_dark));
     }
 
     public static Drawable getTintedIcon(@NonNull Context context, @DrawableRes int drawable,

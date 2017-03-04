@@ -65,13 +65,13 @@
     <color name="md_dialog_title_light">@color/primary_text_light</color>
     <color name="md_dialog_content_light">@color/secondary_text_light</color>
     <color name="card_light_background">#ffffff</color>
-    <color name="drawable_tint_light">#757575</color>
+    <color name="drawable_tint_light">#8a000000</color>
     <color name="light_bg">#fafafa</color>
     <color name="snackbar_light">#fafafa</color>
     <color name="launcher_tint_light">@color/drawable_tint_light</color>
     <color name="material_drawer_primary_text">#de000000</color>
-    <color name="material_drawer_primary_icon">#8A000000</color>
-    <color name="material_drawer_secondary_text">#8A000000</color>
+    <color name="material_drawer_primary_icon">#8a000000</color>
+    <color name="material_drawer_secondary_text">#8a000000</color>
     <color name="material_drawer_hint_text">#42000000</color>
     <color name="material_drawer_divider">#1f000000</color>
     <color name="material_drawer_selected">#e8e8e8</color>
@@ -89,8 +89,8 @@
     <color name="snackbar_dark">#424242</color>
     <color name="launcher_tint_dark">@color/drawable_tint_dark</color>
     <color name="material_drawer_dark_primary_text">#deffffff</color>
-    <color name="material_drawer_dark_primary_icon">#8Affffff</color>
-    <color name="material_drawer_dark_secondary_text">#8Affffff</color>
+    <color name="material_drawer_dark_primary_icon">#8affffff</color>
+    <color name="material_drawer_dark_secondary_text">#8affffff</color>
     <color name="material_drawer_dark_hint_text">#42ffffff</color>
     <color name="material_drawer_dark_divider">#1fffffff</color>
     <color name="material_drawer_dark_selected">#202020</color>
@@ -107,7 +107,7 @@
     <color name="semitransparent_white">#80ffffff</color>
     <color name="white_highlight">#66ffffff</color>
     <color name="semitransparent_black">#66000000</color>
-    <color name="drawable_base_tint">#616161</color>
+    <color name="drawable_base_tint">#8a000000</color>
     <color name="muzei_color">@color/primary</color>
 
 </resources>
