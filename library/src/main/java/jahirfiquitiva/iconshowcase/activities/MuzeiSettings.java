@@ -19,8 +19,11 @@
 
 package jahirfiquitiva.iconshowcase.activities;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -40,6 +43,8 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import java.util.Locale;
 
 import jahirfiquitiva.iconshowcase.R;
+import jahirfiquitiva.iconshowcase.config.Config;
+import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
@@ -73,9 +78,8 @@ public class MuzeiSettings extends AppCompatActivity {
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        ToolbarColorizer.colorizeToolbar(toolbar, ColorUtils.getMaterialPrimaryTextColor(!
-                (ColorUtils.isLightColor(ThemeUtils.darkOrLight(this, R.color.dark_theme_primary,
-                        R.color.light_theme_primary)))));
+        ToolbarColorizer.colorizeToolbar(toolbar, ThemeUtils.darkOrLight(this,
+                R.color.toolbar_text_dark, R.color.toolbar_text_light));
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setBackgroundTintList(ColorStateList.valueOf(ColorUtils.getAccentColor(this)));
@@ -92,9 +96,9 @@ public class MuzeiSettings extends AppCompatActivity {
                 (mPrefs.getMuzeiRefreshInterval()).toLowerCase(Locale.getDefault())));
 
         seekBar = (AppCompatSeekBar) findViewById(R.id.every_seekbar);
-        seekBar.setProgress(mPrefs.getMuzeiRefreshInterval());
         seekBar.incrementProgressBy(SEEKBAR_STEPS);
         seekBar.setMax((int) ((SEEKBAR_MAX_VALUE - SEEKBAR_MIN_VALUE) / SEEKBAR_STEPS));
+        seekBar.setProgress(mPrefs.getMuzeiRefreshInterval());
 
         View divider = findViewById(R.id.divider);
         divider.setBackground(new ColorDrawable(ColorUtils.getMaterialDividerColor(
@@ -146,6 +150,9 @@ public class MuzeiSettings extends AppCompatActivity {
                 finish();
             }
         });
+
+        if (!(mPrefs.isDashboardWorking())) showShallNotPassDialog();
+
     }
 
     @Override
@@ -161,6 +168,32 @@ public class MuzeiSettings extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         showConfirmDialog();
+    }
+
+    private void showShallNotPassDialog() {
+        ISDialogs.showShallNotPassDialog(this, new MaterialDialog.SingleButtonCallback() {
+            @Override
+            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Config
+                        .MARKET_URL + getPackageName()));
+                startActivity(browserIntent);
+            }
+        }, new MaterialDialog.SingleButtonCallback() {
+            @Override
+            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                finish();
+            }
+        }, new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                finish();
+            }
+        }, new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialogInterface) {
+                finish();
+            }
+        });
     }
 
     private void showConfirmDialog() {
