@@ -100,8 +100,8 @@ public class ThemeUtils {
         onActivityCreateSetNavBar(activity);
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public static void onActivityCreateSetNavBar(Activity activity) {
+    private static void onActivityCreateSetNavBar(Activity activity) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) return;
         activity.getWindow().setNavigationBarColor(darkTheme ?
                 ContextCompat.getColor(activity, R.color.dark_theme_navigation_bar) :
                 ContextCompat.getColor(activity, R.color.light_theme_navigation_bar));
