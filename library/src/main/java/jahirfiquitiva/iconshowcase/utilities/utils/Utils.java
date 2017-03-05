@@ -50,7 +50,6 @@ import android.view.View;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.javiersantos.piracychecker.enums.PiracyCheckerError;
-import com.pitchedapps.capsule.library.changelog.ChangelogDialog;
 
 import java.io.File;
 import java.io.IOException;
@@ -59,6 +58,7 @@ import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+import ca.allanwang.capsule.library.changelog.ChangelogDialog;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.config.Config;

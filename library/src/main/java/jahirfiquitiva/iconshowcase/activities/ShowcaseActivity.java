@@ -51,7 +51,6 @@ import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
-import com.pitchedapps.capsule.library.changelog.ChangelogDialog;
 
 import org.sufficientlysecure.donations.google.util.IabHelper;
 import org.sufficientlysecure.donations.google.util.IabResult;
@@ -61,6 +60,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
+import ca.allanwang.capsule.library.changelog.ChangelogDialog;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.base.TasksActivity;
 import jahirfiquitiva.iconshowcase.config.Config;

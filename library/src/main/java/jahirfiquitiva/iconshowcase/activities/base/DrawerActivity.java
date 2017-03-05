@@ -26,12 +26,12 @@ import android.support.v4.app.Fragment;
 
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
-import com.pitchedapps.capsule.library.activities.CapsuleActivity;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 
+import ca.allanwang.capsule.library.activities.CapsuleActivity;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.fragments.ApplyFragment;
 import jahirfiquitiva.iconshowcase.fragments.CreditsFragment;

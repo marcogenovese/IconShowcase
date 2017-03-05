@@ -37,12 +37,12 @@ import android.util.Log;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.pitchedapps.capsule.library.event.CFabEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 
+import ca.allanwang.capsule.library.event.CFabEvent;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.adapters.FeaturesAdapter;

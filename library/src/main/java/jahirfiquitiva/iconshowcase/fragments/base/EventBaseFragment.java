@@ -23,12 +23,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.pitchedapps.capsule.library.fragments.CapsuleFragment;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import ca.allanwang.capsule.library.fragments.CapsuleFragment;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.events.OnLoadEvent;
 import timber.log.Timber;
