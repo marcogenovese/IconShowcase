@@ -234,7 +234,8 @@
     <string name="refresh">Refresh</string>
 
     <!-- Messages shown when using LicenseChecker -->
-    <string name="license_failed">Sorry, but we have detected that your license for %1$s is not valid and/or you are using pirated apps. If you think this is an error, please try again later. Otherwise, please download the app from a valid store.</string>
+    <string name="unknown">Unknown</string>
+    <string name="license_failed">Sorry, but we have detected that your license for %1$s is not valid. This can also be because you are using pirate apps, or specifically: \'%2$s\' app. If you think this is an error, please try again later. Otherwise, please remove all pirate apps and download the app from a valid store.</string>
     <string name="license_error">Sorry, there was an error while checking your license.</string>
     <string name="license_success">Thank you for downloading %1$s. If you like it, do not forget to rate it and write a review in the Google Play Store.</string>
     <string name="apply_advice">If the launcher you use, is not listed here, you must apply the icon pack directly from the launcher settings.\nSome launchers do not support direct apply.</string>

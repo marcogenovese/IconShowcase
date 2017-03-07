@@ -19,10 +19,14 @@
 
 package jahirfiquitiva.iconshowcase.activities;
 
+import android.app.Activity;
 import android.app.WallpaperManager;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -44,7 +48,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.github.javiersantos.piracychecker.enums.PiracyCheckerError;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -74,10 +80,14 @@ import jahirfiquitiva.iconshowcase.fragments.ZooperFragment;
 import jahirfiquitiva.iconshowcase.holders.lists.FullListHolder;
 import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.tasks.DownloadJSON;
+import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.utilities.utils.PermissionsUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
+import jahirfiquitiva.libs.repellomaxima.mess.RepelloCallback;
+import jahirfiquitiva.libs.repellomaxima.mess.RepelloMaxima;
+import jahirfiquitiva.libs.repellomaxima.mess.Wizard;
 import timber.log.Timber;
 
 public class ShowcaseActivity extends TasksActivity {
@@ -241,8 +251,8 @@ public class ShowcaseActivity extends TasksActivity {
             setupToolbarHeader();
         }
         ToolbarColorizer.setupToolbarIconsAndTextsColors(this, cAppBarLayout, cToolbar);
-        Utils.runLicenseChecker(this, WITH_LICENSE_CHECKER, GOOGLE_PUBKEY,
-                WITH_INSTALLED_FROM_AMAZON, ALLOW_APT_USE);
+        runLicenseChecker(WITH_LICENSE_CHECKER, GOOGLE_PUBKEY, WITH_INSTALLED_FROM_AMAZON,
+                ALLOW_APT_USE);
     }
 
     @Override
@@ -771,6 +781,170 @@ public class ShowcaseActivity extends TasksActivity {
             WITH_DONATIONS_SECTION = DONATIONS_GOOGLE || DONATIONS_PAYPAL;
             //if one of the donations are enabled, then the section is enabled
         }
+    }
+
+    private void runLicenseChecker(boolean ch, String lic, boolean allAma,
+                                   boolean allApt) {
+        Preferences mPrefs = new Preferences(this);
+        mPrefs.setSettingsModified(false);
+        if (ch) {
+            if (Utils.isNewVersion(this) || (!(mPrefs.isDashboardWorking())))
+                checkLicense(lic, allAma, allApt);
+        } else {
+            mPrefs.setDashboardWorking(true);
+            showChangelogDialog();
+        }
+    }
+
+    private void showChangelogDialog() {
+        if (Utils.isNewVersion(this)) {
+            try {
+                if (includesIcons()) {
+                    ChangelogDialog.show(this, R.xml.changelog, new
+                            ChangelogDialog.OnChangelogNeutralButtonClick() {
+                                @Override
+                                public void onNeutralButtonClick() {
+                                    try {
+                                        long id = getPreviewsId();
+                                        if (id != -1) {
+                                            drawerItemClick(id);
+                                        }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+                } else {
+                    ChangelogDialog.show(this, R.xml.changelog, null);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void checkLicense(String lic, boolean allAma, boolean
+            allApt) {
+        final Context context = this;
+        final Preferences mPrefs = new Preferences(context);
+        final RepelloMaxima[] spell = new RepelloMaxima[1];
+        final RepelloMaxima.Speller speller = new RepelloMaxima.Speller(context)
+                .allAmazon(allAma)
+                .allApt(allApt)
+                .thenDo(new RepelloCallback() {
+                    @Override
+                    public void onRepelled() {
+                        ISDialogs.showLicenseSuccessDialog(context, new MaterialDialog
+                                .SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog materialDialog, @NonNull
+                                    DialogAction dialogAction) {
+                                mPrefs.setDashboardWorking(true);
+                                showChangelogDialog();
+                            }
+                        }, new MaterialDialog.OnDismissListener() {
+                            @Override
+                            public void onDismiss(DialogInterface dialog) {
+                                mPrefs.setDashboardWorking(true);
+                                showChangelogDialog();
+                            }
+                        }, new MaterialDialog.OnCancelListener() {
+                            @Override
+                            public void onCancel(DialogInterface dialog) {
+                                mPrefs.setDashboardWorking(true);
+                                showChangelogDialog();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onUnderSpell(Wizard wizard) {
+                        try {
+                            showNotLicensedDialog(((Activity) context), mPrefs, wizard);
+                        } catch (Exception e) {
+                            // Do nothing
+                        }
+                    }
+
+                    @Override
+                    public void onCastError(PiracyCheckerError error) {
+                        ISDialogs.showLicenseErrorDialog(context, new MaterialDialog
+                                .SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull
+                                    DialogAction which) {
+                                if (spell[0] != null) spell[0].cast();
+                            }
+                        }, new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull
+                                    DialogAction which) {
+                                try {
+                                    ((Activity) context).finish();
+                                } catch (Exception e) {
+                                    // Do nothing
+                                }
+                            }
+                        }, new DialogInterface.OnDismissListener() {
+                            @Override
+                            public void onDismiss(DialogInterface dialogInterface) {
+                                try {
+                                    ((Activity) context).finish();
+                                } catch (Exception e) {
+                                    // Do nothing
+                                }
+                            }
+                        }, new MaterialDialog.OnCancelListener() {
+                            @Override
+                            public void onCancel(DialogInterface dialogInterface) {
+                                try {
+                                    ((Activity) context).finish();
+                                } catch (Exception e) {
+                                    // Do nothing
+                                }
+                            }
+                        });
+                    }
+                });
+        if (lic != null)
+            speller.withLicKey(lic);
+        spell[0] = speller.construct();
+        spell[0].cast();
+    }
+
+    private void showNotLicensedDialog(final Activity act, Preferences mPrefs, Wizard wizard) {
+        mPrefs.setDashboardWorking(false);
+        ISDialogs.showShallNotPassDialog(act, wizard,
+                new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull
+                            DialogAction
+                            dialogAction) {
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Config
+                                .MARKET_URL
+                                + act.getPackageName()));
+                        act.startActivity(browserIntent);
+                    }
+                }, new MaterialDialog.SingleButtonCallback() {
+
+                    @Override
+                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull
+                            DialogAction
+                            dialogAction) {
+                        act.finish();
+                    }
+                }, new MaterialDialog.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        act.finish();
+                    }
+                }, new MaterialDialog.OnCancelListener() {
+
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        act.finish();
+                    }
+                });
     }
 
     private boolean isPremium() {

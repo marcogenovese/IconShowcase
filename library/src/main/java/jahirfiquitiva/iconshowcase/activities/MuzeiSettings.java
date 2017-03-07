@@ -171,7 +171,7 @@ public class MuzeiSettings extends AppCompatActivity {
     }
 
     private void showShallNotPassDialog() {
-        ISDialogs.showShallNotPassDialog(this, new MaterialDialog.SingleButtonCallback() {
+        ISDialogs.showShallNotPassDialog(this, null, new MaterialDialog.SingleButtonCallback() {
             @Override
             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Config

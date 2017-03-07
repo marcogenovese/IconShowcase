@@ -43,7 +43,7 @@ import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.utils.IconUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.RequestUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
-import timber.log.Timber;
+import jahirfiquitiva.libs.repellomaxima.mess.Wizard;
 
 /**
  * This Class was created by Patrick Jung on 07.01.16. For more Details and Licensing have a look at
@@ -73,13 +73,17 @@ public final class ISDialogs {
     }
 
     public static void showShallNotPassDialog(Context context,
+                                              Wizard wizard,
                                               MaterialDialog.SingleButtonCallback onPositive,
                                               MaterialDialog.SingleButtonCallback onNegative,
                                               MaterialDialog.OnDismissListener onDismiss,
                                               MaterialDialog.OnCancelListener onCancel) {
 
         String message = context.getResources().getString(R.string.license_failed,
-                context.getResources().getString(R.string.app_name));
+                context.getResources().getString(R.string.app_name),
+                wizard != null ? IconUtils.capitalizeText(wizard.getName()) :
+                        IconUtils.capitalizeText(
+                                context.getResources().getString(R.string.unknown)));
 
         MaterialDialog shallNotPassDialog = new MaterialDialog.Builder(context)
                 .title(R.string.license_failed_title)

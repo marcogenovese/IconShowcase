@@ -66,6 +66,7 @@ import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.libs.repellomaxima.mess.RepelloCallback;
 import jahirfiquitiva.libs.repellomaxima.mess.RepelloMaxima;
+import jahirfiquitiva.libs.repellomaxima.mess.Wizard;
 import timber.log.Timber;
 
 /**
@@ -314,20 +315,7 @@ public class Utils {
         return millis / 60 / 1000;
     }
 
-    public static void runLicenseChecker(Context context, boolean ch, String lic, boolean allAma,
-                                         boolean allApt) {
-        Preferences mPrefs = new Preferences(context);
-        mPrefs.setSettingsModified(false);
-        if (ch) {
-            if (isNewVersion(context) || (!(mPrefs.isDashboardWorking())))
-                checkLicense(context, lic, allAma, allApt);
-        } else {
-            mPrefs.setDashboardWorking(true);
-            showChangelogDialog(context);
-        }
-    }
-
-    private static boolean isNewVersion(Context context) {
+    public static boolean isNewVersion(Context context) {
         Preferences mPrefs = new Preferences(context);
         int prevVersionCode = mPrefs.getVersionCode();
         int curVersionCode = getAppCurrentVersionCode(context);
@@ -336,152 +324,6 @@ public class Utils {
             return true;
         }
         return false;
-    }
-
-    private static void showChangelogDialog(final Context context) {
-        if (isNewVersion(context) && (context instanceof ShowcaseActivity)) {
-            try {
-                if (((ShowcaseActivity) context).includesIcons()) {
-                    ChangelogDialog.show(((ShowcaseActivity) context), R.xml.changelog, new
-                            ChangelogDialog.OnChangelogNeutralButtonClick() {
-                                @Override
-                                public void onNeutralButtonClick() {
-                                    try {
-                                        long id = ((ShowcaseActivity) context).getPreviewsId();
-                                        if (id != -1) {
-                                            ((ShowcaseActivity) context).drawerItemClick(id);
-                                        }
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            });
-                } else {
-                    ChangelogDialog.show(((ShowcaseActivity) context), R.xml.changelog, null);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private static void checkLicense(final Context context, String lic, boolean allAma, boolean
-            allApt) {
-        final Preferences mPrefs = new Preferences(context);
-        final RepelloMaxima[] spell = new RepelloMaxima[1];
-        final RepelloMaxima.Speller speller = new RepelloMaxima.Speller(context)
-                .allAmazon(allAma)
-                .allApt(allApt)
-                .thenDo(new RepelloCallback() {
-                    @Override
-                    public void onRepelled() {
-                        ISDialogs.showLicenseSuccessDialog(context, new MaterialDialog
-                                .SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog materialDialog, @NonNull
-                                    DialogAction dialogAction) {
-                                mPrefs.setDashboardWorking(true);
-                                showChangelogDialog(context);
-                            }
-                        }, new MaterialDialog.OnDismissListener() {
-                            @Override
-                            public void onDismiss(DialogInterface dialog) {
-                                mPrefs.setDashboardWorking(true);
-                                showChangelogDialog(context);
-                            }
-                        }, new MaterialDialog.OnCancelListener() {
-                            @Override
-                            public void onCancel(DialogInterface dialog) {
-                                mPrefs.setDashboardWorking(true);
-                                showChangelogDialog(context);
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onLucky() {
-                        try {
-                            showNotLicensedDialog(((Activity) context), mPrefs);
-                        } catch (Exception e) {
-                            // Do nothing
-                        }
-                    }
-
-                    @Override
-                    public void onCastError(PiracyCheckerError error) {
-                        ISDialogs.showLicenseErrorDialog(context, new MaterialDialog
-                                .SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull
-                                    DialogAction which) {
-                                if (spell[0] != null) spell[0].cast();
-                            }
-                        }, new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull
-                                    DialogAction which) {
-                                try {
-                                    ((Activity) context).finish();
-                                } catch (Exception e) {
-                                    // Do nothing
-                                }
-                            }
-                        }, new DialogInterface.OnDismissListener() {
-                            @Override
-                            public void onDismiss(DialogInterface dialogInterface) {
-                                try {
-                                    ((Activity) context).finish();
-                                } catch (Exception e) {
-                                    // Do nothing
-                                }
-                            }
-                        }, new MaterialDialog.OnCancelListener() {
-                            @Override
-                            public void onCancel(DialogInterface dialogInterface) {
-                                try {
-                                    ((Activity) context).finish();
-                                } catch (Exception e) {
-                                    // Do nothing
-                                }
-                            }
-                        });
-                    }
-                });
-        if (lic != null)
-            speller.withLicKey(lic);
-        spell[0] = speller.construct();
-        spell[0].cast();
-    }
-
-    private static void showNotLicensedDialog(final Activity act, Preferences mPrefs) {
-        mPrefs.setDashboardWorking(false);
-        ISDialogs.showShallNotPassDialog(act, new MaterialDialog.SingleButtonCallback() {
-            @Override
-            public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction
-                    dialogAction) {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Config.MARKET_URL
-                        + act.getPackageName()));
-                act.startActivity(browserIntent);
-            }
-        }, new MaterialDialog.SingleButtonCallback() {
-
-            @Override
-            public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction
-                    dialogAction) {
-                act.finish();
-            }
-        }, new MaterialDialog.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                act.finish();
-            }
-        }, new MaterialDialog.OnCancelListener() {
-
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                act.finish();
-            }
-        });
     }
 
     public static String getAppInstaller(Context context) {
