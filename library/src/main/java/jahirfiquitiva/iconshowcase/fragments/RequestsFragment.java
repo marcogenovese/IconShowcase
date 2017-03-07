@@ -36,14 +36,14 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.pitchedapps.butler.iconrequest.IconRequest;
 import com.pitchedapps.butler.iconrequest.events.AppLoadedEvent;
 import com.pitchedapps.butler.iconrequest.events.OnRequestProgress;
-import com.pitchedapps.capsule.library.event.CFabEvent;
-import com.pitchedapps.capsule.library.fragments.CapsuleFragment;
 import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import ca.allanwang.capsule.library.event.CFabEvent;
+import ca.allanwang.capsule.library.fragments.CapsuleFragment;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.activities.base.DrawerActivity;

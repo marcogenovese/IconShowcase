@@ -18,7 +18,7 @@
   ~ 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
   -->
 
-<com.pitchedapps.capsule.library.custom.CapsuleCoordinatorLayout
+<ca.allanwang.capsule.library.custom.CapsuleCoordinatorLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -153,4 +153,4 @@
             app:srcCompat="@drawable/ic_save"
             app:fabSize="normal"/>
 
-</com.pitchedapps.capsule.library.custom.CapsuleCoordinatorLayout>
+</ca.allanwang.capsule.library.custom.CapsuleCoordinatorLayout>

@@ -35,10 +35,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-import com.pitchedapps.capsule.library.event.CFabEvent;
-import com.pitchedapps.capsule.library.event.SnackbarEvent;
 import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 
+import ca.allanwang.capsule.library.event.CFabEvent;
+import ca.allanwang.capsule.library.event.SnackbarEvent;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.activities.base.DrawerActivity;

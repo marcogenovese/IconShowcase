@@ -44,7 +44,7 @@ Everything you need to know can be found in the [Wiki site](https://github.com/j
 - IconShowcase is the **FIRST** and **ONLY** dashboard that allows you to send notifications to your users.
 - IconShowcase is the **ONLY** dashboard that provides support for **more than 24** launchers.
 - IconShowcase is the **FIRST** and **ONLY** dashboard that gives you `appfilter.xml`, `appmap.xml` and `theme_resources.xml` with each icon request. (Those are the files you need to support the most of launchers).
-- IconShowcase was the **first** dashboard that included support for Kustom.
+- IconShowcase is the **FIRST** dashboard that included support for Kustom.
 - IconShowcase is fully compatible with all devices and all android versions from Android 4.1 JellyBean.
 - Compared to other dashboard, IconShowcase **actually** follows Material Design guidelines.
 - Want more reasons? Check the features below.
@@ -98,7 +98,7 @@ Help making IconShowcase available in more languages. [Click here to go to the t
 
 
 * Allan Wang
-	* Web: http://allanwang.ca/dev/
+	* Web: https://allanwang.ca/dev/
 	* Google+: https://plus.google.com/+AllanWPitchedApps/
 
 

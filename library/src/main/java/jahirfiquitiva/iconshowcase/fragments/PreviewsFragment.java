@@ -35,11 +35,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 
-import com.pitchedapps.capsule.library.event.CFabEvent;
-
 import java.util.ArrayList;
 import java.util.Locale;
 
+import ca.allanwang.capsule.library.event.CFabEvent;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.activities.base.DrawerActivity;
