@@ -55,7 +55,7 @@
     3. Clear
     4. Auto (Light in the morning & Dark in the night)
     -->
-    <integer name="app_theme">1</integer>
+    <integer name="app_theme">2</integer>
 
     <!--
     Do you want the app name and version in the drawer header?

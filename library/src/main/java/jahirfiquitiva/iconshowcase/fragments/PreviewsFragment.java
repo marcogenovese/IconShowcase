@@ -61,7 +61,6 @@ public class PreviewsFragment extends EventBaseFragment {
     private MenuItem mSearchItem;
     private ArrayList<IconsCategory> mCategories;
     private boolean tintedSearch = false;
-    private boolean tintedToolbar = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -184,17 +183,14 @@ public class PreviewsFragment extends EventBaseFragment {
         });
 
         mSearchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        if (!tintedToolbar) {
-            ToolbarTinter.on(menu)
-                    .setIconsColor(ThemeUtils.darkOrLight(getActivity(), R.color
-                            .toolbar_text_dark, R
+        ToolbarTinter.on(menu)
+                .setIconsColor(ThemeUtils.darkOrLight(getActivity(), R.color
+                        .toolbar_text_dark, R
 
-                            .color.toolbar_text_light))
-                    .forceIcons()
-                    .reapplyOnChange(false)
-                    .apply(getActivity());
-            tintedToolbar = true;
-        }
+                        .color.toolbar_text_light))
+                .forceIcons()
+                .reapplyOnChange(false)
+                .apply(getActivity());
         if (!tintedSearch) {
             if (getActivity() != null && getActivity() instanceof ShowcaseActivity) {
                 if (mSearchItem != null) {

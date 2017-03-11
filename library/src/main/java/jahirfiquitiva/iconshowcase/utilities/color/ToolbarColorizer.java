@@ -37,6 +37,7 @@ import android.support.v7.view.menu.MenuItemImpl;
 import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
@@ -127,6 +128,8 @@ public class ToolbarColorizer {
     @SuppressWarnings("PrivateResource")
     public static void tintSearchView(Context context, @NonNull Toolbar toolbar, MenuItem item,
                                       @NonNull SearchView searchView, @ColorInt int color) {
+        Log.e("SearchView tint", "Tinting search with color: " +
+                String.format("#%06X", 0xFFFFFF & color));
         if (item == null) return;
         item.setIcon(IconUtils.getTintedIcon(context, R.drawable.ic_search, color));
         final Class<?> searchViewClass = searchView.getClass();
