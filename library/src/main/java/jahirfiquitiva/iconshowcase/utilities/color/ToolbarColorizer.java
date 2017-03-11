@@ -19,20 +19,27 @@
 
 package jahirfiquitiva.iconshowcase.utilities.color;
 
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.view.menu.ActionMenuItemView;
+import android.support.v7.view.menu.MenuItemImpl;
 import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -40,6 +47,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.utilities.utils.IconUtils;
@@ -55,6 +63,8 @@ public class ToolbarColorizer {
      * @param toolbarIconsColor the target color of toolbar icons
      */
     public static void colorizeToolbar(Toolbar toolbar, final int toolbarIconsColor) {
+        if (toolbar == null) return;
+
         final PorterDuffColorFilter colorFilter = new PorterDuffColorFilter(toolbarIconsColor,
                 PorterDuff.Mode.SRC_IN);
 
@@ -101,10 +111,14 @@ public class ToolbarColorizer {
         //Step 3: Changing the color of title and subtitle.
         toolbar.setTitleTextColor(toolbarIconsColor);
         toolbar.setSubtitleTextColor(toolbarIconsColor);
-    }
 
-    public static void tintSaveIcon(MenuItem item, Context context, int color) {
-        item.setIcon(IconUtils.getTintedIcon(context, R.drawable.ic_save, color));
+        //Step 4: Change the color of overflow menu icon.
+        Drawable drawable = toolbar.getOverflowIcon();
+        if (drawable != null) {
+            drawable = DrawableCompat.wrap(drawable);
+            toolbar.setOverflowIcon(IconUtils.getTintedIcon(drawable,
+                    toolbarIconsColor));
+        }
     }
 
     /**
@@ -113,6 +127,7 @@ public class ToolbarColorizer {
     @SuppressWarnings("PrivateResource")
     public static void tintSearchView(Context context, @NonNull Toolbar toolbar, MenuItem item,
                                       @NonNull SearchView searchView, @ColorInt int color) {
+        if (item == null) return;
         item.setIcon(IconUtils.getTintedIcon(context, R.drawable.ic_search, color));
         final Class<?> searchViewClass = searchView.getClass();
         try {
@@ -127,7 +142,7 @@ public class ToolbarColorizer {
             mSearchSrcTextViewField.setAccessible(true);
             final EditText mSearchSrcTextView = (EditText) mSearchSrcTextViewField.get(searchView);
             mSearchSrcTextView.setTextColor(color);
-            mSearchSrcTextView.setHintTextColor(ColorUtils.adjustAlpha(color, 0.5f));
+            mSearchSrcTextView.setHintTextColor(ColorUtils.adjustAlpha(color, 0.65f));
             setCursorTint(mSearchSrcTextView, color);
 
             hideSearchHintIcon(context, searchView);
@@ -193,8 +208,9 @@ public class ToolbarColorizer {
                     tintColor));
     }
 
-    public static void setupToolbarIconsAndTextsColors(final Context context, AppBarLayout appbar,
-                                                       final Toolbar toolbar) {
+    public static void setupCollapsingToolbarIconsAndTextsColors(final Context context,
+                                                                 AppBarLayout appbar,
+                                                                 final Toolbar toolbar) {
 
         final int defaultIconsColor = ContextCompat.getColor(context, android.R.color.white);
 
@@ -209,9 +225,10 @@ public class ToolbarColorizer {
                     } else if (ratio < 0) {
                         ratio = 0;
                     }
-                    int paletteColor = ColorUtils.blendColors(defaultIconsColor, ThemeUtils
-                            .darkOrLight(context, R.color.toolbar_text_dark, R.color
-                                    .toolbar_text_light), (float) ratio);
+                    int paletteColor = ColorUtils.blendColors(defaultIconsColor, ColorUtils
+                            .getMaterialPrimaryTextColor(!(ColorUtils.isLightColor(ThemeUtils
+                                    .darkOrLight(context, R.color.dark_theme_primary, R.color
+                                            .light_theme_primary)))), (float) ratio);
                     if (toolbar != null) {
                         // Collapsed offset = -352
                         colorizeToolbar(toolbar, paletteColor);
@@ -221,13 +238,115 @@ public class ToolbarColorizer {
         }
     }
 
-    @SuppressWarnings("ResourceAsColor")
     public static void setupCollapsingToolbarTextColors(Context context, CollapsingToolbarLayout
             collapsingToolbarLayout) {
-        collapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(context, android.R
-                .color.transparent));
-        collapsingToolbarLayout.setCollapsedTitleTextColor(ThemeUtils.darkOrLight(context, R
-                .color.toolbar_text_dark, R.color.toolbar_text_light));
+        setupCollapsingToolbarTextColors(context, collapsingToolbarLayout, false);
+    }
+
+    @SuppressWarnings("ResourceAsColor")
+    public static void setupCollapsingToolbarTextColors(Context context, CollapsingToolbarLayout
+            collapsingToolbarLayout, boolean transparentWhenExpanded) {
+        int textColor = ColorUtils.getMaterialPrimaryTextColor(!(ColorUtils.isLightColor
+                (ThemeUtils.darkOrLight(context, R.color.dark_theme_primary, R.color
+                        .light_theme_primary))));
+        if (transparentWhenExpanded) {
+            collapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(context, android.R
+                    .color.transparent));
+        } else {
+            collapsingToolbarLayout.setExpandedTitleColor(textColor);
+        }
+        collapsingToolbarLayout.setCollapsedTitleTextColor(textColor);
+    }
+
+    public static void makeMenuIconsVisible(Menu menu) {
+        try {
+            Class<?> MenuBuilder = menu.getClass();
+            Method setOptionalIconsVisible =
+                    MenuBuilder.getDeclaredMethod("setOptionalIconsVisible", boolean.class);
+            if (!setOptionalIconsVisible.isAccessible()) {
+                setOptionalIconsVisible.setAccessible(true);
+            }
+            setOptionalIconsVisible.invoke(menu, true);
+        } catch (Exception ignored) {
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    public static void tintStatusBar(Activity activity) {
+        int statusBarColor = ThemeUtils.darkOrLight(activity, R.color.dark_theme_primary_dark, R
+                .color.light_theme_primary_dark);
+        if (ColorUtils.isLightColor(statusBarColor)) {
+            setLightStatusBar(activity);
+        } else {
+            clearLightStatusBar(activity);
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    private static void setLightStatusBar(@NonNull Activity activity) {
+        int flags = activity.getWindow().getDecorView().getSystemUiVisibility();
+        flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+        activity.getWindow().getDecorView().setSystemUiVisibility(flags);
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    public static void clearLightStatusBar(@NonNull Activity activity) {
+        int flags = activity.getWindow().getDecorView().getSystemUiVisibility();
+        flags &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+        activity.getWindow().getDecorView().setSystemUiVisibility(flags);
+    }
+
+    public static void tintMenu(final Menu menu, @ColorInt final int iconsColor) {
+        if (menu != null) {
+            for (int i = 0, size = menu.size(); i < size; i++) {
+                MenuItem menuItem = menu.getItem(i);
+                if (isInOverflow(menuItem)) {
+                    colorMenuItem(menuItem, iconsColor);
+                }
+                if (menuItem.hasSubMenu()) {
+                    SubMenu subMenu = menuItem.getSubMenu();
+                    for (int j = 0; j < subMenu.size(); j++) {
+                        colorMenuItem(subMenu.getItem(j), iconsColor);
+                    }
+                }
+            }
+        }
+    }
+
+    private static boolean isInOverflow(MenuItem item) {
+        return !isActionButton(item);
+    }
+
+    @SuppressWarnings("RestrictedApi")
+    private static boolean isActionButton(MenuItem item) {
+        if (item instanceof MenuItemImpl) {
+            return ((MenuItemImpl) item).isActionButton();
+        }
+        Method nativeIsActionButton = null;
+        try {
+            Class<?> MenuItemImpl = Class.forName("com.android.internal.view.menu" +
+                    ".MenuItemImpl");
+            nativeIsActionButton = MenuItemImpl.getDeclaredMethod("isActionButton");
+            if (!nativeIsActionButton.isAccessible()) {
+                nativeIsActionButton.setAccessible(true);
+            }
+        } catch (Exception ignored) {
+        }
+        try {
+            //noinspection ConstantConditions
+            return (boolean) nativeIsActionButton.invoke(item, (Object[]) null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+    private static void colorMenuItem(MenuItem menuItem, int color) {
+        Drawable drawable = menuItem.getIcon();
+        if (drawable != null) {
+            drawable.mutate();
+            drawable.setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN));
+        }
     }
 
 }

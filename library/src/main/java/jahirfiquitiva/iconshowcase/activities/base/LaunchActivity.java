@@ -24,6 +24,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
+import jahirfiquitiva.iconshowcase.config.Config;
 import jahirfiquitiva.iconshowcase.utilities.LauncherIntents;
 import jahirfiquitiva.iconshowcase.utilities.utils.NotificationUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
@@ -76,6 +77,21 @@ public class LaunchActivity extends AppCompatActivity {
             intent.putExtra("shortcut", getIntent().getDataString());
         }
 
+        if (getIntent().getAction() != null) {
+            switch (getIntent().getAction()) {
+                case Config.ADW_ACTION:
+                case Config.TURBO_ACTION:
+                case Config.NOVA_ACTION:
+                case Intent.ACTION_PICK:
+                case Intent.ACTION_GET_CONTENT:
+                    intent.putExtra("picker", Config.ICONS_PICKER);
+                    break;
+                case Intent.ACTION_SET_WALLPAPER:
+                    intent.putExtra("picker", Config.WALLS_PICKER);
+                    break;
+            }
+        }
+
         startActivity(intent);
     }
 
@@ -107,7 +123,7 @@ public class LaunchActivity extends AppCompatActivity {
         return true;
     }
 
-    protected boolean checkStores(){
+    protected boolean checkStores() {
         return true;
     }
 

@@ -65,6 +65,7 @@ import java.lang.reflect.Method;
  * ToolbarTinter.on(menu).setMenuItemIconColor(color).setMenuItemIconAlpha(alpha).apply(this); ... }
  * </pre>
  */
+@SuppressWarnings("RestrictedApi")
 public class ToolbarTinter {
 
     private static final String TAG = "ToolbarTinter";

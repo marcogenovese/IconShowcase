@@ -50,6 +50,8 @@ public class Config implements IConfig {
             TURBO_ACTION = "com.phonemetra.turbo.launcher.icons.ACTION_PICK_ICON",
             NOVA_ACTION = "com.novalauncher.THEME";
 
+    public static final int ICONS_PICKER = 1, WALLS_PICKER = 2;
+
     @SuppressLint("StaticFieldLeak")
     private static Config mConfig;
     private Context mContext;

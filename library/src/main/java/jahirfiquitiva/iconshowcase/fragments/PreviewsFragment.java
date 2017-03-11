@@ -60,6 +60,8 @@ public class PreviewsFragment extends EventBaseFragment {
     private SearchView mSearchView;
     private MenuItem mSearchItem;
     private ArrayList<IconsCategory> mCategories;
+    private boolean tintedSearch = false;
+    private boolean tintedToolbar = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -91,11 +93,17 @@ public class PreviewsFragment extends EventBaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (getActivity() != null && mSearchItem != null) {
-            ToolbarColorizer.tintSearchView(getActivity(),
-                    ((ShowcaseActivity) getActivity()).getToolbar(), mSearchItem, mSearchView,
-                    ThemeUtils.darkOrLight(getActivity(), R.color.toolbar_text_dark, R.color
-                            .toolbar_text_light));
+        if (!tintedSearch) {
+            if (getActivity() != null && getActivity() instanceof ShowcaseActivity) {
+                if (mSearchItem != null) {
+                    ToolbarColorizer.tintSearchView(getActivity(),
+                            ((ShowcaseActivity) getActivity()).getToolbar(), mSearchItem,
+                            mSearchView,
+                            ThemeUtils.darkOrLight(getActivity(), R.color.toolbar_text_dark, R.color
+                                    .toolbar_text_light));
+                }
+                tintedSearch = true;
+            }
         }
     }
 
@@ -188,14 +196,12 @@ public class PreviewsFragment extends EventBaseFragment {
         });
 
         mSearchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-
         ToolbarTinter.on(menu)
                 .setIconsColor(ThemeUtils.darkOrLight(getActivity(), R.color.toolbar_text_dark, R
                         .color.toolbar_text_light))
                 .forceIcons()
-                .reapplyOnChange(true)
+                .reapplyOnChange(false)
                 .apply(getActivity());
-
     }
 
     @Override
@@ -210,11 +216,11 @@ public class PreviewsFragment extends EventBaseFragment {
         super.onSaveInstanceState(savedInstanceState);
     }
 
-    class IconsPagerAdapter extends FragmentStatePagerAdapter {
+    private class IconsPagerAdapter extends FragmentStatePagerAdapter {
 
         private final String[] tabs;
 
-        public IconsPagerAdapter(FragmentManager fm) {
+        IconsPagerAdapter(FragmentManager fm) {
             super(fm);
             String[] tabsNames = new String[mCategories.size()];
             for (int i = 0; i < tabsNames.length; i++) {

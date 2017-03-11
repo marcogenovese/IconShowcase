@@ -39,6 +39,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -170,7 +171,7 @@ public class ShowcaseActivity extends TasksActivity {
         thaAppName = getResources().getString(R.string.app_name);
 
         collapsingToolbarLayout.setTitle(thaAppName);
-        ToolbarColorizer.setupCollapsingToolbarTextColors(this, collapsingToolbarLayout);
+        ToolbarColorizer.setupCollapsingToolbarTextColors(this, collapsingToolbarLayout, true);
         setupDrawer(savedInstanceState);
 
         //Setup donations
@@ -251,7 +252,7 @@ public class ShowcaseActivity extends TasksActivity {
         if (!iconsPicker && !wallsPicker) {
             setupToolbarHeader();
         }
-        ToolbarColorizer.setupToolbarIconsAndTextsColors(this, cAppBarLayout, cToolbar);
+        ToolbarColorizer.setupCollapsingToolbarIconsAndTextsColors(this, cAppBarLayout, cToolbar);
         runLicenseChecker(WITH_LICENSE_CHECKER, GOOGLE_PUBKEY, WITH_INSTALLED_FROM_AMAZON,
                 CHECK_LPF, CHECK_STORES);
     }
@@ -573,19 +574,9 @@ public class ShowcaseActivity extends TasksActivity {
     }
 
     private void getAction() {
-        if (getIntent() == null || getIntent().getAction() == null) return;
-        switch (getIntent().getAction()) {
-            case Config.ADW_ACTION:
-            case Config.TURBO_ACTION:
-            case Config.NOVA_ACTION:
-            case Intent.ACTION_PICK:
-            case Intent.ACTION_GET_CONTENT:
-                iconsPicker = true;
-                break;
-            case Intent.ACTION_SET_WALLPAPER:
-                wallsPicker = true;
-                break;
-        }
+        if (getIntent() == null || getIntent().getIntExtra("picker", 0) == 0) return;
+        iconsPicker = getIntent().getIntExtra("picker", 0) == Config.ICONS_PICKER;
+        wallsPicker = getIntent().getIntExtra("picker", 0) == Config.WALLS_PICKER;
     }
 
     public void setupIcons() {
@@ -789,8 +780,30 @@ public class ShowcaseActivity extends TasksActivity {
         Preferences mPrefs = new Preferences(this);
         mPrefs.setSettingsModified(false);
         if (ch) {
-            if (Utils.isNewVersion(this) || (!(mPrefs.isDashboardWorking())))
-                checkLicense(lic, allAma, checkLPF, checkStores);
+            if (Utils.isNewVersion(this) || (!(mPrefs.isDashboardWorking()))) {
+                if (Utils.hasNetwork(this)) {
+                    checkLicense(lic, allAma, checkLPF, checkStores);
+                } else {
+                    ISDialogs.showLicenseErrorDialog(this, null,
+                            new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull
+                                        DialogAction which) {
+                                    finish();
+                                }
+                            }, new DialogInterface.OnDismissListener() {
+                                @Override
+                                public void onDismiss(DialogInterface dialogInterface) {
+                                    finish();
+                                }
+                            }, new MaterialDialog.OnCancelListener() {
+                                @Override
+                                public void onCancel(DialogInterface dialogInterface) {
+                                    finish();
+                                }
+                            });
+                }
+            }
         } else {
             mPrefs.setDashboardWorking(true);
             showChangelogDialog();

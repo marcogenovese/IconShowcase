@@ -239,7 +239,7 @@
     <string name="license_failed_extra">This can also be because you are using pirate apps, or specifically: \'%1$s\' app.</string>
     <!-- Please keep this phrase in lowercase unless grammatically required by your language -->
     <string name="license_failed_extra_sec">remove all pirate apps and</string>
-    <string name="license_error">Sorry, there was an error while checking your license.</string>
+    <string name="license_error">Sorry, there was an error while checking your license. Please try again later.</string>
     <string name="license_success">Thank you for downloading %1$s. If you like it, do not forget to rate it and write a review in the Google Play Store.</string>
     <string name="apply_advice">If the launcher you use, is not listed here, you must apply the icon pack directly from the launcher settings.\nSome launchers do not support direct apply.</string>
     <string name="walls_advice">Simple press a wallpaper to view it in FullScreen.\nLong press to apply it directly to your home screen.</string>

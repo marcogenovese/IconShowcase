@@ -121,7 +121,7 @@ public class SettingsFragment extends PreferenceFragment implements FolderSelect
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     mPrefs.setWallpaperAsToolbarHeaderEnabled(newValue.toString().equals("true"));
                     ((ShowcaseActivity) getActivity()).setupToolbarHeader();
-                    ToolbarColorizer.setupToolbarIconsAndTextsColors(
+                    ToolbarColorizer.setupCollapsingToolbarIconsAndTextsColors(
                             getActivity(),
                             ((ShowcaseActivity) getActivity()).getAppbar(),
                             ((ShowcaseActivity) getActivity()).getToolbar());

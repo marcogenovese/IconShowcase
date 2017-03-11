@@ -114,17 +114,25 @@ public final class ISDialogs {
                                               MaterialDialog.OnDismissListener onDismiss,
                                               MaterialDialog.OnCancelListener onCancel) {
 
-        MaterialDialog licenseErrorDialog = new MaterialDialog.Builder(context)
+        MaterialDialog.Builder licenseErrorDialogBuilder = new MaterialDialog.Builder(context)
                 .title(R.string.error)
                 .content(R.string.license_error)
-                .positiveText(R.string.download)
-                .negativeText(R.string.exit)
-                .onPositive(onPositive)
-                .onNegative(onNegative)
-                .autoDismiss(false)
-                .build();
-        licenseErrorDialog.setOnCancelListener(onCancel);
-        licenseErrorDialog.setOnDismissListener(onDismiss);
+                .autoDismiss(false);
+
+        if (onPositive != null) {
+            licenseErrorDialogBuilder.positiveText(R.string.download);
+            licenseErrorDialogBuilder.onPositive(onPositive);
+        }
+        if (onNegative != null) {
+            licenseErrorDialogBuilder.negativeText(R.string.exit);
+            licenseErrorDialogBuilder.onNegative(onNegative);
+        }
+
+        MaterialDialog licenseErrorDialog = licenseErrorDialogBuilder.build();
+        if (onCancel != null)
+            licenseErrorDialog.setOnCancelListener(onCancel);
+        if (onDismiss != null)
+            licenseErrorDialog.setOnDismissListener(onDismiss);
         licenseErrorDialog.show();
     }
 
