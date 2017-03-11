@@ -52,9 +52,10 @@ import jahirfiquitiva.iconshowcase.utilities.utils.IconUtils;
 public abstract class DrawerActivity extends CapsuleActivity {
 
     protected static boolean
-            WITH_LICENSE_CHECKER = false,
+            WITH_LICENSE_CHECKER = true,
             WITH_INSTALLED_FROM_AMAZON = false,
-            ALLOW_APT_USE = false,
+            CHECK_LPF = true,
+            CHECK_STORES = true,
 
     WITH_DONATIONS_SECTION = false,
 

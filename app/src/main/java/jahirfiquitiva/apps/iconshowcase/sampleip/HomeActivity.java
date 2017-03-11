@@ -62,8 +62,15 @@ public class HomeActivity extends LaunchActivity {
     }
 
     @Override
-    protected boolean allowAptoideUse() {
-        return false;
+    protected boolean checkLPF() {
+        // Check if LuckyPatcher or Freedom is installed
+        return true;
+    }
+
+    @Override
+    protected boolean checkStores() {
+        // Check for third-party stores (like Aptoide, Blackmart, Mobogenie and others)
+        return true;
     }
 
     @Override

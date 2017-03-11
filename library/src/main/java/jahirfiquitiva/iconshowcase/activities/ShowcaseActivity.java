@@ -128,7 +128,8 @@ public class ShowcaseActivity extends TasksActivity {
 
         WITH_LICENSE_CHECKER = getIntent().getBooleanExtra("enableLicenseCheck", false);
         WITH_INSTALLED_FROM_AMAZON = getIntent().getBooleanExtra("enableAmazonInstalls", false);
-        ALLOW_APT_USE = getIntent().getBooleanExtra("allowAptoideUse", false);
+        CHECK_LPF = getIntent().getBooleanExtra("checkLPF", false);
+        CHECK_STORES = getIntent().getBooleanExtra("checkStores", false);
 
         GOOGLE_PUBKEY = getIntent().getStringExtra("googlePubKey");
 
@@ -252,7 +253,7 @@ public class ShowcaseActivity extends TasksActivity {
         }
         ToolbarColorizer.setupToolbarIconsAndTextsColors(this, cAppBarLayout, cToolbar);
         runLicenseChecker(WITH_LICENSE_CHECKER, GOOGLE_PUBKEY, WITH_INSTALLED_FROM_AMAZON,
-                ALLOW_APT_USE);
+                CHECK_LPF, CHECK_STORES);
     }
 
     @Override
@@ -784,12 +785,12 @@ public class ShowcaseActivity extends TasksActivity {
     }
 
     private void runLicenseChecker(boolean ch, String lic, boolean allAma,
-                                   boolean allApt) {
+                                   boolean checkLPF, boolean checkStores) {
         Preferences mPrefs = new Preferences(this);
         mPrefs.setSettingsModified(false);
         if (ch) {
             if (Utils.isNewVersion(this) || (!(mPrefs.isDashboardWorking())))
-                checkLicense(lic, allAma, allApt);
+                checkLicense(lic, allAma, checkLPF, checkStores);
         } else {
             mPrefs.setDashboardWorking(true);
             showChangelogDialog();
@@ -823,14 +824,14 @@ public class ShowcaseActivity extends TasksActivity {
         }
     }
 
-    private void checkLicense(String lic, boolean allAma, boolean
-            allApt) {
+    private void checkLicense(String lic, boolean allAma, boolean checkLPF, boolean checkStores) {
         final Context context = this;
         final Preferences mPrefs = new Preferences(context);
         final RepelloMaxima[] spell = new RepelloMaxima[1];
         final RepelloMaxima.Speller speller = new RepelloMaxima.Speller(context)
                 .allAmazon(allAma)
-                .allApt(allApt)
+                .checkLPF(checkLPF)
+                .checkStores(checkStores)
                 .thenDo(new RepelloCallback() {
                     @Override
                     public void onRepelled() {

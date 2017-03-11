@@ -78,25 +78,33 @@ public final class ISDialogs {
                                               MaterialDialog.SingleButtonCallback onNegative,
                                               MaterialDialog.OnDismissListener onDismiss,
                                               MaterialDialog.OnCancelListener onCancel) {
-
+        String extra1 = "";
+        String extra2 = "";
+        if (wizard != null) {
+            extra1 = context.getResources().getString(R.string.license_failed_extra);
+            extra2 = context.getResources().getString(R.string.license_failed_extra_sec);
+        }
         String message = context.getResources().getString(R.string.license_failed,
-                context.getResources().getString(R.string.app_name),
-                wizard != null ? IconUtils.capitalizeText(wizard.getName()) :
-                        IconUtils.capitalizeText(
-                                context.getResources().getString(R.string.unknown)));
+                context.getResources().getString(R.string.app_name), extra1, extra2);
 
-        MaterialDialog shallNotPassDialog = new MaterialDialog.Builder(context)
+        MaterialDialog.Builder shallNotPassDialogBuilder = new MaterialDialog.Builder(context)
                 .title(R.string.license_failed_title)
                 .content(message)
                 .positiveText(R.string.download)
                 .negativeText(R.string.exit)
-                .onPositive(onPositive)
-                .onNegative(onNegative)
-                .autoDismiss(false)
-                .build();
+                .autoDismiss(false);
 
-        shallNotPassDialog.setOnCancelListener(onCancel);
-        shallNotPassDialog.setOnDismissListener(onDismiss);
+        if (onPositive != null)
+            shallNotPassDialogBuilder.onPositive(onPositive);
+        if (onNegative != null)
+            shallNotPassDialogBuilder.onNegative(onNegative);
+
+        MaterialDialog shallNotPassDialog = shallNotPassDialogBuilder.build();
+        if (onCancel != null)
+            shallNotPassDialog.setOnCancelListener(onCancel);
+        if (onDismiss != null)
+            shallNotPassDialog.setOnDismissListener(onDismiss);
+
         shallNotPassDialog.show();
     }
 

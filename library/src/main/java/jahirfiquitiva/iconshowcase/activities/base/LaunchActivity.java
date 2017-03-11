@@ -65,12 +65,10 @@ public class LaunchActivity extends AppCompatActivity {
         intent.putExtra("enableDonations", enableDonations());
         intent.putExtra("enableGoogleDonations", enableGoogleDonations());
         intent.putExtra("enablePayPalDonations", enablePayPalDonations());
-
-        //noinspection PointlessBooleanExpression
         intent.putExtra("enableLicenseCheck", enableLicCheck());
         intent.putExtra("enableAmazonInstalls", enableAmazonInstalls());
-        intent.putExtra("allowAptoideUse", allowAptoideUse());
-
+        intent.putExtra("checkLPF", checkLPF());
+        intent.putExtra("checkStores", checkStores());
         intent.putExtra("googlePubKey", licKey());
 
         if (getIntent().getDataString() != null && getIntent().getDataString().contains
@@ -105,8 +103,12 @@ public class LaunchActivity extends AppCompatActivity {
         return false;
     }
 
-    protected boolean allowAptoideUse() {
-        return false;
+    protected boolean checkLPF() {
+        return true;
+    }
+
+    protected boolean checkStores(){
+        return true;
     }
 
     protected String licKey() {
