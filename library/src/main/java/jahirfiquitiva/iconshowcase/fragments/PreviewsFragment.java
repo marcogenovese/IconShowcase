@@ -93,18 +93,6 @@ public class PreviewsFragment extends EventBaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (!tintedSearch) {
-            if (getActivity() != null && getActivity() instanceof ShowcaseActivity) {
-                if (mSearchItem != null) {
-                    ToolbarColorizer.tintSearchView(getActivity(),
-                            ((ShowcaseActivity) getActivity()).getToolbar(), mSearchItem,
-                            mSearchView,
-                            ThemeUtils.darkOrLight(getActivity(), R.color.toolbar_text_dark, R.color
-                                    .toolbar_text_light));
-                }
-                tintedSearch = true;
-            }
-        }
     }
 
     @Override
@@ -196,12 +184,29 @@ public class PreviewsFragment extends EventBaseFragment {
         });
 
         mSearchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        ToolbarTinter.on(menu)
-                .setIconsColor(ThemeUtils.darkOrLight(getActivity(), R.color.toolbar_text_dark, R
-                        .color.toolbar_text_light))
-                .forceIcons()
-                .reapplyOnChange(false)
-                .apply(getActivity());
+        if (!tintedToolbar) {
+            ToolbarTinter.on(menu)
+                    .setIconsColor(ThemeUtils.darkOrLight(getActivity(), R.color
+                            .toolbar_text_dark, R
+
+                            .color.toolbar_text_light))
+                    .forceIcons()
+                    .reapplyOnChange(false)
+                    .apply(getActivity());
+            tintedToolbar = true;
+        }
+        if (!tintedSearch) {
+            if (getActivity() != null && getActivity() instanceof ShowcaseActivity) {
+                if (mSearchItem != null) {
+                    ToolbarColorizer.tintSearchView(getActivity(),
+                            ((ShowcaseActivity) getActivity()).getToolbar(), mSearchItem,
+                            mSearchView,
+                            ThemeUtils.darkOrLight(getActivity(), R.color.toolbar_text_dark, R.color
+                                    .toolbar_text_light));
+                }
+                tintedSearch = true;
+            }
+        }
     }
 
     @Override

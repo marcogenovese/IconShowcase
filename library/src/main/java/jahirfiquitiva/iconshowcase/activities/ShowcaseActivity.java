@@ -39,7 +39,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -887,6 +886,7 @@ public class ShowcaseActivity extends TasksActivity {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull
                                     DialogAction which) {
+                                dialog.dismiss();
                                 if (spell[0] != null) spell[0].cast();
                             }
                         }, new MaterialDialog.SingleButtonCallback() {

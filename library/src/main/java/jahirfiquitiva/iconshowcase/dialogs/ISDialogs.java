@@ -91,14 +91,16 @@ public final class ISDialogs {
         MaterialDialog.Builder shallNotPassDialogBuilder = new MaterialDialog.Builder(context)
                 .title(R.string.license_failed_title)
                 .content(message)
-                .positiveText(R.string.download)
-                .negativeText(R.string.exit)
                 .autoDismiss(false);
 
-        if (onPositive != null)
+        if (onPositive != null) {
+            shallNotPassDialogBuilder.positiveText(R.string.download);
             shallNotPassDialogBuilder.onPositive(onPositive);
-        if (onNegative != null)
+        }
+        if (onNegative != null) {
+            shallNotPassDialogBuilder.negativeText(R.string.exit);
             shallNotPassDialogBuilder.onNegative(onNegative);
+        }
 
         MaterialDialog shallNotPassDialog = shallNotPassDialogBuilder.build();
         if (onCancel != null)
@@ -121,7 +123,7 @@ public final class ISDialogs {
                 .autoDismiss(false);
 
         if (onPositive != null) {
-            licenseErrorDialogBuilder.positiveText(R.string.download);
+            licenseErrorDialogBuilder.positiveText(R.string.retry);
             licenseErrorDialogBuilder.onPositive(onPositive);
         }
         if (onNegative != null) {
