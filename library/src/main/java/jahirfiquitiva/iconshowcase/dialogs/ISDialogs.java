@@ -81,7 +81,8 @@ public final class ISDialogs {
         String extra1 = "";
         String extra2 = "";
         if (wizard != null) {
-            extra1 = context.getResources().getString(R.string.license_failed_extra);
+            extra1 = context.getResources().getString(R.string.license_failed_extra,
+                    wizard.getName());
             extra2 = context.getResources().getString(R.string.license_failed_extra_sec);
         }
         String message = context.getResources().getString(R.string.license_failed,
