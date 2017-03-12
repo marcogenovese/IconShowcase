@@ -23,7 +23,6 @@ import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -47,10 +46,6 @@ import android.support.design.widget.Snackbar;
 import android.util.DisplayMetrics;
 import android.view.View;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.github.javiersantos.piracychecker.enums.PiracyCheckerError;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -58,15 +53,8 @@ import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import ca.allanwang.capsule.library.changelog.ChangelogDialog;
 import jahirfiquitiva.iconshowcase.R;
-import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
-import jahirfiquitiva.iconshowcase.config.Config;
-import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
-import jahirfiquitiva.libs.repellomaxima.mess.RepelloCallback;
-import jahirfiquitiva.libs.repellomaxima.mess.RepelloMaxima;
-import jahirfiquitiva.libs.repellomaxima.mess.Wizard;
 import timber.log.Timber;
 
 /**

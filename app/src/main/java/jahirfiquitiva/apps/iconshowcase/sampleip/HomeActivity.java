@@ -63,7 +63,7 @@ public class HomeActivity extends LaunchActivity {
 
     @Override
     protected boolean checkLPF() {
-        // Check if LuckyPatcher or Freedom is installed
+        // Check if LuckyPatcher, Freedom or CreeHack is installed
         return true;
     }
 

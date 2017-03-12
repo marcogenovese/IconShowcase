@@ -31,6 +31,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -50,7 +51,11 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.github.javiersantos.piracychecker.PiracyChecker;
+import com.github.javiersantos.piracychecker.enums.InstallerID;
+import com.github.javiersantos.piracychecker.enums.PiracyCheckerCallback;
 import com.github.javiersantos.piracychecker.enums.PiracyCheckerError;
+import com.github.javiersantos.piracychecker.enums.PirateApp;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -85,9 +90,6 @@ import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.utilities.utils.PermissionsUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
-import jahirfiquitiva.libs.repellomaxima.mess.RepelloCallback;
-import jahirfiquitiva.libs.repellomaxima.mess.RepelloMaxima;
-import jahirfiquitiva.libs.repellomaxima.mess.Wizard;
 import timber.log.Timber;
 
 public class ShowcaseActivity extends TasksActivity {
@@ -105,7 +107,7 @@ public class ShowcaseActivity extends TasksActivity {
     private int numOfIcons = 4, wallpaper = -1;
 
     //TODO do not save Dialog instance; use fragment tags
-    private MaterialDialog settingsDialog;
+    private MaterialDialog dialog;
     private CollapsingToolbarLayout collapsingToolbarLayout;
     //TODO perhaps dynamically load the imageviews rather than predefining 8
     private ImageView icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8;
@@ -259,9 +261,9 @@ public class ShowcaseActivity extends TasksActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (settingsDialog != null) {
-            settingsDialog.dismiss();
-            settingsDialog = null;
+        if (dialog != null) {
+            dialog.dismiss();
+            dialog = null;
         }
     }
 
@@ -783,7 +785,8 @@ public class ShowcaseActivity extends TasksActivity {
                 if (Utils.hasNetwork(this)) {
                     checkLicense(lic, allAma, checkLPF, checkStores);
                 } else {
-                    ISDialogs.showLicenseErrorDialog(this, null,
+                    if (dialog != null) dialog.dismiss();
+                    dialog = ISDialogs.buildLicenseErrorDialog(this, null,
                             new MaterialDialog.SingleButtonCallback() {
                                 @Override
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull
@@ -801,6 +804,7 @@ public class ShowcaseActivity extends TasksActivity {
                                     finish();
                                 }
                             });
+                    dialog.show();
                 }
             }
         } else {
@@ -839,15 +843,22 @@ public class ShowcaseActivity extends TasksActivity {
     private void checkLicense(String lic, boolean allAma, boolean checkLPF, boolean checkStores) {
         final Context context = this;
         final Preferences mPrefs = new Preferences(context);
-        final RepelloMaxima[] spell = new RepelloMaxima[1];
-        final RepelloMaxima.Speller speller = new RepelloMaxima.Speller(context)
-                .allAmazon(allAma)
-                .checkLPF(checkLPF)
-                .checkStores(checkStores)
-                .thenDo(new RepelloCallback() {
+        final PiracyChecker[] checkers = new PiracyChecker[1];
+        final PiracyChecker checker = new PiracyChecker(context);
+        checker.enableInstallerId(InstallerID.GOOGLE_PLAY);
+        if (lic != null)
+            checker.enableGooglePlayLicensing(lic);
+        if (allAma)
+            checker.enableInstallerId(InstallerID.AMAZON_APP_STORE);
+        checker.enableEmulatorCheck(true)
+                .enableDebugCheck(true)
+                .enableLPFCheck(checkLPF)
+                .enableStoresCheck(checkStores)
+                .callback(new PiracyCheckerCallback() {
                     @Override
-                    public void onRepelled() {
-                        ISDialogs.showLicenseSuccessDialog(context, new MaterialDialog
+                    public void allow() {
+                        if (dialog != null) dialog.dismiss();
+                        dialog = ISDialogs.buildLicenseSuccessDialog(context, new MaterialDialog
                                 .SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog materialDialog, @NonNull
@@ -868,25 +879,25 @@ public class ShowcaseActivity extends TasksActivity {
                                 showChangelogDialog();
                             }
                         });
+                        dialog.show();
                     }
 
                     @Override
-                    public void onUnderSpell(Wizard wizard) {
-                        try {
-                            showNotLicensedDialog(((Activity) context), mPrefs, wizard);
-                        } catch (Exception ignored) {
-                        }
+                    public void dontAllow(@NonNull PiracyCheckerError piracyCheckerError,
+                                          @Nullable PirateApp pirateApp) {
+                        showNotLicensedDialog(((Activity) context), mPrefs, pirateApp);
                     }
 
                     @Override
-                    public void onCastError(PiracyCheckerError error) {
-                        ISDialogs.showLicenseErrorDialog(context, new MaterialDialog
+                    public void onError(@NonNull PiracyCheckerError error) {
+                        if (dialog != null) dialog.dismiss();
+                        dialog = ISDialogs.buildLicenseErrorDialog(context, new MaterialDialog
                                 .SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull
                                     DialogAction which) {
                                 dialog.dismiss();
-                                if (spell[0] != null) spell[0].cast();
+                                if (checkers[0] != null) checkers[0].start();
                             }
                         }, new MaterialDialog.SingleButtonCallback() {
                             @Override
@@ -914,26 +925,24 @@ public class ShowcaseActivity extends TasksActivity {
                                 }
                             }
                         });
+                        dialog.show();
                     }
                 });
-        if (lic != null)
-            speller.withLicKey(lic);
-        spell[0] = speller.create();
-        spell[0].cast();
+        checkers[0] = checker;
+        checkers[0].start();
     }
 
-    private void showNotLicensedDialog(final Activity act, Preferences mPrefs, Wizard wizard) {
+    private void showNotLicensedDialog(final Activity act, Preferences mPrefs, PirateApp app) {
         mPrefs.setDashboardWorking(false);
-        ISDialogs.showShallNotPassDialog(act, wizard,
+        if (dialog != null) dialog.dismiss();
+        dialog = ISDialogs.buildShallNotPassDialog(act, app,
                 new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog materialDialog, @NonNull
                             DialogAction
                             dialogAction) {
-                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Config
-                                .MARKET_URL
-                                + act.getPackageName()));
-                        act.startActivity(browserIntent);
+                        act.startActivity(new Intent(Intent.ACTION_VIEW,
+                                Uri.parse(Config.MARKET_URL + act.getPackageName())));
                     }
                 }, new MaterialDialog.SingleButtonCallback() {
 
@@ -955,6 +964,7 @@ public class ShowcaseActivity extends TasksActivity {
                         act.finish();
                     }
                 });
+        dialog.show();
     }
 
     private boolean isPremium() {
@@ -962,7 +972,7 @@ public class ShowcaseActivity extends TasksActivity {
     }
 
     public void setSettingsDialog(MaterialDialog settingsDialog) {
-        this.settingsDialog = settingsDialog;
+        this.dialog = settingsDialog;
     }
 
     public Toolbar getToolbar() {

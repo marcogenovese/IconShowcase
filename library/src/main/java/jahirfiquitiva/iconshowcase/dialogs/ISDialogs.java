@@ -30,6 +30,7 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.github.javiersantos.piracychecker.enums.PirateApp;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -43,7 +44,6 @@ import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.utils.IconUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.RequestUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
-import jahirfiquitiva.libs.repellomaxima.mess.Wizard;
 
 /**
  * This Class was created by Patrick Jung on 07.01.16. For more Details and Licensing have a look at
@@ -52,9 +52,10 @@ import jahirfiquitiva.libs.repellomaxima.mess.Wizard;
 
 public final class ISDialogs {
 
-    public static void showLicenseSuccessDialog(Context context, MaterialDialog
+    public static MaterialDialog buildLicenseSuccessDialog(Context context, MaterialDialog
             .SingleButtonCallback onPositive, MaterialDialog.OnDismissListener onDismiss,
-                                                MaterialDialog.OnCancelListener onCancel) {
+                                                           MaterialDialog.OnCancelListener
+                                                                   onCancel) {
 
         String message = context.getResources().getString(R.string.license_success,
                 context.getResources().getString(R.string.app_name));
@@ -68,21 +69,22 @@ public final class ISDialogs {
 
         licenseSuccessDialog.setOnCancelListener(onCancel);
         licenseSuccessDialog.setOnDismissListener(onDismiss);
-
-        licenseSuccessDialog.show();
+        return licenseSuccessDialog;
     }
 
-    public static void showShallNotPassDialog(Context context,
-                                              Wizard wizard,
-                                              MaterialDialog.SingleButtonCallback onPositive,
-                                              MaterialDialog.SingleButtonCallback onNegative,
-                                              MaterialDialog.OnDismissListener onDismiss,
-                                              MaterialDialog.OnCancelListener onCancel) {
+    public static MaterialDialog buildShallNotPassDialog(Context context,
+                                                         PirateApp app,
+                                                         MaterialDialog.SingleButtonCallback
+                                                                 onPositive,
+                                                         MaterialDialog.SingleButtonCallback
+                                                                 onNegative,
+                                                         MaterialDialog.OnDismissListener onDismiss,
+                                                         MaterialDialog.OnCancelListener onCancel) {
         String extra1 = "";
         String extra2 = "";
-        if (wizard != null) {
+        if (app != null) {
             extra1 = context.getResources().getString(R.string.license_failed_extra,
-                    wizard.getName());
+                    app.getName());
             extra2 = context.getResources().getString(R.string.license_failed_extra_sec);
         }
         String message = context.getResources().getString(R.string.license_failed,
@@ -108,14 +110,16 @@ public final class ISDialogs {
         if (onDismiss != null)
             shallNotPassDialog.setOnDismissListener(onDismiss);
 
-        shallNotPassDialog.show();
+        return shallNotPassDialog;
     }
 
-    public static void showLicenseErrorDialog(Context context,
-                                              MaterialDialog.SingleButtonCallback onPositive,
-                                              MaterialDialog.SingleButtonCallback onNegative,
-                                              MaterialDialog.OnDismissListener onDismiss,
-                                              MaterialDialog.OnCancelListener onCancel) {
+    public static MaterialDialog buildLicenseErrorDialog(Context context,
+                                                         MaterialDialog.SingleButtonCallback
+                                                                 onPositive,
+                                                         MaterialDialog.SingleButtonCallback
+                                                                 onNegative,
+                                                         MaterialDialog.OnDismissListener onDismiss,
+                                                         MaterialDialog.OnCancelListener onCancel) {
 
         MaterialDialog.Builder licenseErrorDialogBuilder = new MaterialDialog.Builder(context)
                 .title(R.string.error)
@@ -136,7 +140,7 @@ public final class ISDialogs {
             licenseErrorDialog.setOnCancelListener(onCancel);
         if (onDismiss != null)
             licenseErrorDialog.setOnDismissListener(onDismiss);
-        licenseErrorDialog.show();
+        return licenseErrorDialog;
     }
 
     /*

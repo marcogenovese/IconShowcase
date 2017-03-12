@@ -63,6 +63,8 @@ public class MuzeiSettings extends AppCompatActivity {
     private AppCompatSeekBar seekBar;
     private AppCompatCheckBox checkBox;
 
+    private MaterialDialog dialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         ThemeUtils.onActivityCreateSetTheme(this);
@@ -171,33 +173,38 @@ public class MuzeiSettings extends AppCompatActivity {
     }
 
     private void showShallNotPassDialog() {
-        ISDialogs.showShallNotPassDialog(this, null, new MaterialDialog.SingleButtonCallback() {
-            @Override
-            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Config
-                        .MARKET_URL + getPackageName()));
-                startActivity(browserIntent);
-            }
-        }, new MaterialDialog.SingleButtonCallback() {
-            @Override
-            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                finish();
-            }
-        }, new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialogInterface) {
-                finish();
-            }
-        }, new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialogInterface) {
-                finish();
-            }
-        });
+        if (dialog != null) dialog.dismiss();
+        dialog = ISDialogs.buildShallNotPassDialog(this, null,
+                new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction
+                            which) {
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                                Uri.parse(Config.MARKET_URL + getPackageName()));
+                        startActivity(browserIntent);
+                    }
+                }, new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction
+                            which) {
+                        finish();
+                    }
+                }, new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialogInterface) {
+                        finish();
+                    }
+                }, new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialogInterface) {
+                        finish();
+                    }
+                });
     }
 
     private void showConfirmDialog() {
-        new MaterialDialog.Builder(this)
+        if (dialog != null) dialog.dismiss();
+        dialog = new MaterialDialog.Builder(this)
                 .title(R.string.sure_to_exit)
                 .content(R.string.sure_to_exit_content)
                 .positiveText(R.string.yes)
@@ -218,7 +225,8 @@ public class MuzeiSettings extends AppCompatActivity {
                         finish();
                     }
                 })
-                .show();
+                .build();
+        dialog.show();
     }
 
     private void saveValues() {
@@ -260,5 +268,4 @@ public class MuzeiSettings extends AppCompatActivity {
         }
         return "";
     }
-
 }
