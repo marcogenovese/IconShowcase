@@ -874,8 +874,7 @@ public class ShowcaseActivity extends TasksActivity {
                     public void onUnderSpell(Wizard wizard) {
                         try {
                             showNotLicensedDialog(((Activity) context), mPrefs, wizard);
-                        } catch (Exception e) {
-                            // Do nothing
+                        } catch (Exception ignored) {
                         }
                     }
 
@@ -895,8 +894,7 @@ public class ShowcaseActivity extends TasksActivity {
                                     DialogAction which) {
                                 try {
                                     ((Activity) context).finish();
-                                } catch (Exception e) {
-                                    // Do nothing
+                                } catch (Exception ignored) {
                                 }
                             }
                         }, new DialogInterface.OnDismissListener() {
@@ -904,8 +902,7 @@ public class ShowcaseActivity extends TasksActivity {
                             public void onDismiss(DialogInterface dialogInterface) {
                                 try {
                                     ((Activity) context).finish();
-                                } catch (Exception e) {
-                                    // Do nothing
+                                } catch (Exception ignored) {
                                 }
                             }
                         }, new MaterialDialog.OnCancelListener() {
@@ -913,8 +910,7 @@ public class ShowcaseActivity extends TasksActivity {
                             public void onCancel(DialogInterface dialogInterface) {
                                 try {
                                     ((Activity) context).finish();
-                                } catch (Exception e) {
-                                    // Do nothing
+                                } catch (Exception ignored) {
                                 }
                             }
                         });
@@ -922,7 +918,7 @@ public class ShowcaseActivity extends TasksActivity {
                 });
         if (lic != null)
             speller.withLicKey(lic);
-        spell[0] = speller.construct();
+        spell[0] = speller.create();
         spell[0].cast();
     }
 
