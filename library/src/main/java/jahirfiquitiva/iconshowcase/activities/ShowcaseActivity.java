@@ -40,6 +40,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -885,11 +886,16 @@ public class ShowcaseActivity extends TasksActivity {
                     @Override
                     public void dontAllow(@NonNull PiracyCheckerError piracyCheckerError,
                                           @Nullable PirateApp pirateApp) {
+                        Log.w("LicenseCheck", "License invalid due to: " + piracyCheckerError
+                                .toString());
+                        if (pirateApp != null)
+                            Log.w("LicenseCheck", "Found app: " + pirateApp.toString());
                         showNotLicensedDialog(((Activity) context), mPrefs, pirateApp);
                     }
 
                     @Override
                     public void onError(@NonNull PiracyCheckerError error) {
+                        Log.w("LicenseCheck", error.toString());
                         if (dialog != null) dialog.dismiss();
                         dialog = ISDialogs.buildLicenseErrorDialog(context, new MaterialDialog
                                 .SingleButtonCallback() {
