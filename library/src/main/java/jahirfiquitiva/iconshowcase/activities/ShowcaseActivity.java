@@ -850,10 +850,12 @@ public class ShowcaseActivity extends TasksActivity {
             checker.enableGooglePlayLicensing(lic);
         if (allAma)
             checker.enableInstallerId(InstallerID.AMAZON_APP_STORE);
-        checker.enableEmulatorCheck(true)
-                .enableDebugCheck(true)
-                .enableLPFCheck(checkLPF)
-                .enableStoresCheck(checkStores)
+        if (checkLPF)
+            checker.enableUnauthorizedAppsCheck();
+        if (checkStores)
+            checker.enableStoresCheck();
+        checker.enableEmulatorCheck()
+                .enableDebugCheck()
                 .callback(new PiracyCheckerCallback() {
                     @Override
                     public void allow() {
@@ -885,8 +887,8 @@ public class ShowcaseActivity extends TasksActivity {
                     @Override
                     public void dontAllow(@NonNull PiracyCheckerError piracyCheckerError,
                                           @Nullable PirateApp pirateApp) {
-                        Toast.makeText(context, "License invalid due to error: " + piracyCheckerError
-                                .toString(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, "License invalid due to error: " +
+                                piracyCheckerError.toString(), Toast.LENGTH_LONG).show();
                         if (pirateApp != null)
                             Toast.makeText(context, "Found app: " + pirateApp.toString(), Toast
                                     .LENGTH_LONG).show();
