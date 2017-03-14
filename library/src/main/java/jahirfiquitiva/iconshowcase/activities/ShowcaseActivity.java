@@ -854,8 +854,8 @@ public class ShowcaseActivity extends TasksActivity {
             checker.enableUnauthorizedAppsCheck();
         if (checkStores)
             checker.enableStoresCheck();
-        checker.enableEmulatorCheck()
-                .enableDebugCheck()
+        // checker.enableEmulatorCheck()
+        checker.enableDebugCheck()
                 .callback(new PiracyCheckerCallback() {
                     @Override
                     public void allow() {
