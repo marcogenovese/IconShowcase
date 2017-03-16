@@ -860,27 +860,27 @@ public class ShowcaseActivity extends TasksActivity {
                     @Override
                     public void allow() {
                         if (dialog != null) dialog.dismiss();
-                        dialog = ISDialogs.buildLicenseSuccessDialog(context, new MaterialDialog
-                                .SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog materialDialog, @NonNull
-                                    DialogAction dialogAction) {
-                                mPrefs.setDashboardWorking(true);
-                                showChangelogDialog();
-                            }
-                        }, new MaterialDialog.OnDismissListener() {
-                            @Override
-                            public void onDismiss(DialogInterface dialog) {
-                                mPrefs.setDashboardWorking(true);
-                                showChangelogDialog();
-                            }
-                        }, new MaterialDialog.OnCancelListener() {
-                            @Override
-                            public void onCancel(DialogInterface dialog) {
-                                mPrefs.setDashboardWorking(true);
-                                showChangelogDialog();
-                            }
-                        });
+                        dialog = ISDialogs.buildLicenseSuccessDialog(context,
+                                new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(@NonNull MaterialDialog materialDialog,
+                                                        @NonNull DialogAction dialogAction) {
+                                        mPrefs.setDashboardWorking(true);
+                                        showChangelogDialog();
+                                    }
+                                }, new MaterialDialog.OnDismissListener() {
+                                    @Override
+                                    public void onDismiss(DialogInterface dialog) {
+                                        mPrefs.setDashboardWorking(true);
+                                        showChangelogDialog();
+                                    }
+                                }, new MaterialDialog.OnCancelListener() {
+                                    @Override
+                                    public void onCancel(DialogInterface dialog) {
+                                        mPrefs.setDashboardWorking(true);
+                                        showChangelogDialog();
+                                    }
+                                });
                         dialog.show();
                     }
 
@@ -900,40 +900,40 @@ public class ShowcaseActivity extends TasksActivity {
                         Toast.makeText(context, "Error: " + error.toString(), Toast.LENGTH_LONG)
                                 .show();
                         if (dialog != null) dialog.dismiss();
-                        dialog = ISDialogs.buildLicenseErrorDialog(context, new MaterialDialog
-                                .SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull
-                                    DialogAction which) {
-                                dialog.dismiss();
-                                if (checkers[0] != null) checkers[0].start();
-                            }
-                        }, new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull
-                                    DialogAction which) {
-                                try {
-                                    ((Activity) context).finish();
-                                } catch (Exception ignored) {
-                                }
-                            }
-                        }, new DialogInterface.OnDismissListener() {
-                            @Override
-                            public void onDismiss(DialogInterface dialogInterface) {
-                                try {
-                                    ((Activity) context).finish();
-                                } catch (Exception ignored) {
-                                }
-                            }
-                        }, new MaterialDialog.OnCancelListener() {
-                            @Override
-                            public void onCancel(DialogInterface dialogInterface) {
-                                try {
-                                    ((Activity) context).finish();
-                                } catch (Exception ignored) {
-                                }
-                            }
-                        });
+                        dialog = ISDialogs.buildLicenseErrorDialog(context,
+                                new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(@NonNull MaterialDialog dialog,
+                                                        @NonNull DialogAction which) {
+                                        dialog.dismiss();
+                                        if (checkers[0] != null) checkers[0].start();
+                                    }
+                                }, new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(@NonNull MaterialDialog dialog,
+                                                        @NonNull DialogAction which) {
+                                        try {
+                                            ((Activity) context).finish();
+                                        } catch (Exception ignored) {
+                                        }
+                                    }
+                                }, new DialogInterface.OnDismissListener() {
+                                    @Override
+                                    public void onDismiss(DialogInterface dialogInterface) {
+                                        try {
+                                            ((Activity) context).finish();
+                                        } catch (Exception ignored) {
+                                        }
+                                    }
+                                }, new MaterialDialog.OnCancelListener() {
+                                    @Override
+                                    public void onCancel(DialogInterface dialogInterface) {
+                                        try {
+                                            ((Activity) context).finish();
+                                        } catch (Exception ignored) {
+                                        }
+                                    }
+                                });
                         dialog.show();
                     }
                 });
