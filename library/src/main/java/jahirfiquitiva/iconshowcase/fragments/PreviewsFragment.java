@@ -104,7 +104,14 @@ public class PreviewsFragment extends EventBaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (mTabs != null) mTabs.setVisibility(View.GONE);
+        if (mTabs != null) {
+            mTabs.setVisibility(View.GONE);
+            mTabs.clearOnTabSelectedListeners();
+        }
+        if (mPager != null) {
+            mPager.clearOnPageChangeListeners();
+            mPager.removeAllViewsInLayout();
+        }
     }
 
     @Override
@@ -125,27 +132,32 @@ public class PreviewsFragment extends EventBaseFragment {
 
     private void createTabs() {
         mTabs.removeAllTabs();
+        for (IconsCategory category : mCategories) {
+            TabLayout.Tab nTab = mTabs.newTab();
+            nTab.setText(category.getCategoryName());
+            mTabs.addTab(nTab);
+        }
         mTabs.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mPager));
         mPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabs) {
             @Override
             public void onPageSelected(int position) {
-                super.onPageSelected(position);
+                mLastSelected = position;
+                try {
+                    super.onPageSelected(mLastSelected);
+                } catch (Exception ignored) {
+                }
                 if (mLastSelected > -1) {
                     IconsFragment frag = (IconsFragment) getChildFragmentManager()
                             .findFragmentByTag("page:" + mLastSelected);
                     if (frag != null)
                         frag.performSearch(null);
                 }
-                mLastSelected = position;
-                if (mSearchView != null && getActivity() != null)
+                if (mSearchView != null)
                     mSearchView.setQueryHint(getString(R.string.search_x, tabName(mLastSelected)));
                 if (getActivity() != null)
                     getActivity().invalidateOptionsMenu();
             }
         });
-        for (IconsCategory category : mCategories) {
-            mTabs.addTab(mTabs.newTab().setText(category.getCategoryName()));
-        }
         mTabs.setVisibility(View.VISIBLE);
     }
 

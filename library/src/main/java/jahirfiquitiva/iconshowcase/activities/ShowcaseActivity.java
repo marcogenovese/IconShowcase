@@ -202,12 +202,12 @@ public class ShowcaseActivity extends TasksActivity {
                 public void onIabSetupFinished(IabResult result) {
                     if (!result.isSuccess()) {
                         Timber.d("In-app Billing setup failed: ", result);
-                        new MaterialDialog.Builder(ShowcaseActivity.this).title(R.string
+                        clearDialog();
+                        dialog = new MaterialDialog.Builder(ShowcaseActivity.this).title(R.string
                                 .donations_error_title)
                                 .content(R.string.donations_error_content)
-                                .positiveText(android.R.string.ok)
-                                .show();
-
+                                .positiveText(android.R.string.ok).build();
+                        dialog.show();
                     } else {
                         mHelper.queryInventoryAsync(false, mGotInventoryListener);
                     }
@@ -261,6 +261,10 @@ public class ShowcaseActivity extends TasksActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        clearDialog();
+    }
+
+    private void clearDialog() {
         if (dialog != null) {
             dialog.dismiss();
             dialog = null;
@@ -785,7 +789,7 @@ public class ShowcaseActivity extends TasksActivity {
                 if (Utils.hasNetwork(this)) {
                     checkLicense(lic, allAma, checkLPF, checkStores);
                 } else {
-                    if (dialog != null) dialog.dismiss();
+                    clearDialog();
                     dialog = ISDialogs.buildLicenseErrorDialog(this, null,
                             new MaterialDialog.SingleButtonCallback() {
                                 @Override
@@ -859,7 +863,7 @@ public class ShowcaseActivity extends TasksActivity {
                 .callback(new PiracyCheckerCallback() {
                     @Override
                     public void allow() {
-                        if (dialog != null) dialog.dismiss();
+                        clearDialog();
                         dialog = ISDialogs.buildLicenseSuccessDialog(context,
                                 new MaterialDialog.SingleButtonCallback() {
                                     @Override
@@ -887,19 +891,12 @@ public class ShowcaseActivity extends TasksActivity {
                     @Override
                     public void dontAllow(@NonNull PiracyCheckerError piracyCheckerError,
                                           @Nullable PirateApp pirateApp) {
-                        Toast.makeText(context, "License invalid due to error: " +
-                                piracyCheckerError.toString(), Toast.LENGTH_LONG).show();
-                        if (pirateApp != null)
-                            Toast.makeText(context, "Found app: " + pirateApp.toString(), Toast
-                                    .LENGTH_LONG).show();
                         showNotLicensedDialog(((Activity) context), mPrefs, pirateApp);
                     }
 
                     @Override
                     public void onError(@NonNull PiracyCheckerError error) {
-                        Toast.makeText(context, "Error: " + error.toString(), Toast.LENGTH_LONG)
-                                .show();
-                        if (dialog != null) dialog.dismiss();
+                        clearDialog();
                         dialog = ISDialogs.buildLicenseErrorDialog(context,
                                 new MaterialDialog.SingleButtonCallback() {
                                     @Override
@@ -943,7 +940,7 @@ public class ShowcaseActivity extends TasksActivity {
 
     private void showNotLicensedDialog(final Activity act, Preferences mPrefs, PirateApp app) {
         mPrefs.setDashboardWorking(false);
-        if (dialog != null) dialog.dismiss();
+        clearDialog();
         dialog = ISDialogs.buildShallNotPassDialog(act, app,
                 new MaterialDialog.SingleButtonCallback() {
                     @Override
@@ -981,6 +978,7 @@ public class ShowcaseActivity extends TasksActivity {
     }
 
     public void setSettingsDialog(MaterialDialog settingsDialog) {
+        clearDialog();
         this.dialog = settingsDialog;
     }
 
