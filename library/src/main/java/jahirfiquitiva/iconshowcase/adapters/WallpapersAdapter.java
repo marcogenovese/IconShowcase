@@ -19,8 +19,8 @@
 
 package jahirfiquitiva.iconshowcase.adapters;
 
-import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
@@ -109,7 +109,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpaperHolder> {
                             if (applyDialog != null) {
                                 applyDialog.dismiss();
                             }
-                            final ApplyWallpaper[] applyTask = new ApplyWallpaper[1];
+
                             final boolean[] enteredApplyTask = {false};
 
                             applyDialog = new MaterialDialog.Builder(context)
@@ -120,8 +120,13 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpaperHolder> {
                                         @Override
                                         public void onClick(@NonNull MaterialDialog dialog, @NonNull
                                                 DialogAction which) {
-                                            if (applyTask[0] != null) {
-                                                applyTask[0].cancel(true);
+                                            try {
+                                                ((ShowcaseActivity) context)
+                                                        .getSupportLoaderManager().getLoader(2)
+                                                        .cancelLoad();
+                                                ((ShowcaseActivity) context)
+                                                        .getSupportLoaderManager().destroyLoader(2);
+                                            } catch (Exception ignored) {
                                             }
                                             applyDialog.dismiss();
                                         }
@@ -144,13 +149,8 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpaperHolder> {
                                                 if (applyDialog != null) {
                                                     applyDialog.dismiss();
                                                 }
-
-                                                applyTask[0] =
-                                                        showWallpaperApplyOptionsDialogAndGetTask
-                                                                (context, resource);
-
-                                                if (applyTask[0] != null)
-                                                    applyTask[0].execute();
+                                                showWallpaperApplyOptionsDialogAndExecuteTask
+                                                        (context, resource);
                                             }
                                         }
                                     });
@@ -184,10 +184,8 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpaperHolder> {
                 .show();
     }
 
-    private ApplyWallpaper showWallpaperApplyOptionsDialogAndGetTask(final Context context,
-                                                                     final Bitmap resource) {
-        final ApplyWallpaper[] applyTask = {null};
-
+    private void showWallpaperApplyOptionsDialogAndExecuteTask(final Context context,
+                                                               final Bitmap resource) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             applyDialog = new MaterialDialog.Builder(context)
                     .title(R.string.set_wall_to)
@@ -198,13 +196,11 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpaperHolder> {
                         public void onSelection(MaterialDialog dialog, View itemView, int position,
                                                 CharSequence text) {
                             dialog.dismiss();
-
                             if (applyDialog != null) {
                                 applyDialog.dismiss();
                             }
 
                             String extra = "";
-
                             switch (position) {
                                 case 0:
                                     extra = context.getResources().getString(R.string.home_screen);
@@ -225,9 +221,8 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpaperHolder> {
                                     .cancelable(false)
                                     .show();
 
-                            buildApplyTask(context, applyDialog, resource,
-                                    ((ShowcaseActivity) context).isWallsPicker(), position == 0,
-                                    position == 1, position == 2).execute();
+                            executeApplyTask(context, resource, position == 0, position == 1,
+                                    position == 2);
                         }
                     })
                     .show();
@@ -238,17 +233,49 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpaperHolder> {
                     .cancelable(false)
                     .show();
 
-            applyTask[0] = buildApplyTask(context, applyDialog, resource,
-                    ((ShowcaseActivity) context).isWallsPicker(), false, false, true);
+            executeApplyTask(context, resource, false, false, true);
         }
-        return applyTask[0];
     }
 
-    private ApplyWallpaper buildApplyTask(final Context context, MaterialDialog dialog, Bitmap
-            resource, boolean isPicker, boolean setToHomeScreen, boolean setToLockScreen, boolean
-                                                  setToBoth) {
-        return new ApplyWallpaper((Activity) context, dialog, resource, isPicker, setToHomeScreen,
-                setToLockScreen, setToBoth);
+    private void executeApplyTask(final Context context, Bitmap resource, boolean setHome,
+                                  boolean setLock, boolean setBoth) {
+        ((ShowcaseActivity) context).executeApplyTask(
+                new ApplyWallpaper.ApplyWallpaperCallback() {
+                    @Override
+                    public void onPreExecute(Context context) {
+
+                    }
+
+                    @Override
+                    public void onSuccess() {
+                        if (applyDialog != null) {
+                            applyDialog.dismiss();
+                        }
+
+                        applyDialog = new MaterialDialog.Builder(context)
+                                .content(R.string.set_as_wall_done)
+                                .positiveText(android.R.string.ok)
+                                .show();
+
+                        applyDialog.setOnDismissListener(
+                                new DialogInterface.OnDismissListener() {
+                                    @Override
+                                    public void onDismiss(DialogInterface
+                                                                  dialogInterface) {
+                                        if (((ShowcaseActivity) context)
+                                                .isWallsPicker()) {
+                                            ((ShowcaseActivity) context)
+                                                    .finish();
+                                        }
+                                    }
+                                });
+                    }
+
+                    @Override
+                    public void onError() {
+
+                    }
+                }, resource, null, setHome, setLock, setBoth);
     }
 
     private Handler handler(Context context) {

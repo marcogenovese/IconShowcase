@@ -21,14 +21,11 @@ package jahirfiquitiva.iconshowcase.tasks;
 
 import android.app.Activity;
 import android.app.WallpaperManager;
+import android.content.Context;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.os.Build;
-import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
-import android.widget.LinearLayout;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
@@ -36,161 +33,77 @@ import com.bumptech.glide.request.target.SimpleTarget;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.io.IOException;
-import java.lang.ref.WeakReference;
-
-import jahirfiquitiva.iconshowcase.R;
-import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.events.WallpaperEvent;
 import timber.log.Timber;
 
-public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
+public class ApplyWallpaper extends BasicTaskLoader<Boolean> {
 
-    private String url;
-    private boolean isPicker;
-    private final WeakReference<Activity> wrActivity;
-    private LinearLayout toHide1, toHide2;
-    private volatile boolean wasCancelled = false;
-    private ApplyCallback callback;
-    private DownloadCallback downloadCallback;
+    private boolean setToHomeScreen;
+    private boolean setToLockScreen;
+    private boolean setToBoth;
+
+    private Context context;
     private Bitmap resource;
-    private MaterialDialog dialog;
+    private String url;
 
-    private final boolean setToHomeScreen;
-    private final boolean setToLockScreen;
-    private final boolean setToBoth;
-
-    public ApplyWallpaper(Activity activity, MaterialDialog dialog, Bitmap resource, boolean
-            isPicker, boolean setToHomeScreen, boolean setToLockScreen, boolean setToBoth) {
-        this.wrActivity = new WeakReference<>(activity);
-        this.dialog = dialog;
-        this.resource = resource;
-        this.isPicker = isPicker;
-        this.setToHomeScreen = setToHomeScreen;
-        this.setToLockScreen = setToLockScreen;
-        this.setToBoth = setToBoth;
+    ApplyWallpaper(Context context) {
+        super(context);
+        this.context = context;
     }
 
-    private ApplyWallpaper(Activity activity, @NonNull String url, ApplyCallback callback, boolean
-            setToHomeScreen, boolean setToLockScreen, boolean setToBoth) {
-        this.wrActivity = new WeakReference<>(activity);
+    public ApplyWallpaper(Context context, Bitmap resource, String url, boolean setToHomeScreen,
+                          boolean setToLockScreen, boolean setToBoth) {
+        super(context);
+        this.context = context;
+        this.resource = resource;
         this.url = url;
-        this.callback = callback;
         this.setToHomeScreen = setToHomeScreen;
         this.setToLockScreen = setToLockScreen;
         this.setToBoth = setToBoth;
     }
-
-    public ApplyWallpaper(Activity activity, @NonNull String url, ApplyCallback callback,
-                          DownloadCallback downloadCallback, boolean setToHomeScreen, boolean
-                                  setToLockScreen, boolean setToBoth) {
-        this(activity, url, callback, setToHomeScreen, setToLockScreen, setToBoth);
-        this.downloadCallback = downloadCallback;
-    }
-
-    public ApplyWallpaper(Activity activity, @NonNull Bitmap resource, ApplyCallback callback,
-                          boolean setToHomeScreen, boolean setToLockScreen, boolean setToBoth) {
-        this.wrActivity = new WeakReference<>(activity);
-        this.resource = resource;
-        this.callback = callback;
-        this.setToHomeScreen = setToHomeScreen;
-        this.setToLockScreen = setToLockScreen;
-        this.setToBoth = setToBoth;
-    }
-
-//    public ApplyWallpaper(Activity activity, MaterialDialog dialog, Bitmap resource,
-//                          View layout, LinearLayout toHide1, LinearLayout toHide2) {
-//        this.wrActivity = new WeakReference<>(activity);
-////        this.dialog = dialog;
-////        this.resource = resource;
-//        this.isPicker = false;
-//        this.layout = layout;
-//        this.toHide1 = toHide1;
-//        this.toHide2 = toHide2;
-//    }
-
-//    @Override
-//    protected void onPreExecute() {
-//        if (wrActivity != null) {
-//            activity = wrActivity.get();
-//        } else if (context != null) {
-//            activity = (Activity) context.get();
-//        }
-//    }
 
     @Override
-    protected Boolean doInBackground(Void... params) {
-        if (dialog != null) {
-            applyWallpaper(resource);
-        } else if (resource != null) {
+    public Boolean loadInBackground() {
+        if (resource != null) {
             EventBus.getDefault().post(new WallpaperEvent(url, true, WallpaperEvent.Step.APPLYING));
-            applyWallpaper(resource);
+            return applyWallpaper(resource);
         } else if (url != null) {
-            wrActivity.get().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Glide.with(wrActivity.get())
-                            .load(url)
-                            .asBitmap()
-                            .dontAnimate()
-                            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                            .into(new SimpleTarget<Bitmap>() {
-                                @Override
-                                public void onResourceReady(final Bitmap resource,
-                                                            GlideAnimation<? super Bitmap>
-                                                                    glideAnimation) {
-                                    if (resource != null) {
-                                        if (downloadCallback != null) {
-                                            downloadCallback.afterDownloaded();
-                                        }
-                                        try {
-                                            Thread.sleep(500);
-                                            EventBus.getDefault().post(new WallpaperEvent(url,
-                                                    true, WallpaperEvent.Step.APPLYING));
-                                            applyWallpaper(resource);
-                                        } catch (InterruptedException ex) {
-                                            cancel(true);
-                                        }
-                                    } else {
-                                        cancel(true);
-                                    }
+            final boolean[] worked = {false};
+            Glide.with(context)
+                    .load(url)
+                    .asBitmap()
+                    .dontAnimate()
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .into(new SimpleTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(final Bitmap resource,
+                                                    GlideAnimation<? super Bitmap> glideAnimation) {
+                            if (resource != null) {
+                                try {
+                                    Thread.sleep(500);
+                                    EventBus.getDefault().post(new WallpaperEvent(url,
+                                            true, WallpaperEvent.Step.APPLYING));
+                                    worked[0] = applyWallpaper(resource);
+                                } catch (InterruptedException ignored) {
                                 }
-                            });
-                }
-            });
+                            }
+                        }
+                    });
+            return worked[0];
         }
-
-//        Boolean worked;
-//        if ((!wasCancelled) && (activity != null)) {
-//            WallpaperManager wm = WallpaperManager.getInstance(activity);
-//            try {
-//                try {
-//                    wm.setBitmap(scaleToActualAspectRatio(resource));
-//                } catch (OutOfMemoryError ex) {
-//                    Timber.d("OutOfMemoryError: " + ex.getLocalizedMessage());
-//                    showRetrySnackbar();
-//                }
-//                worked = true;
-//            } catch (IOException e2) {
-//                worked = false;
-//            }
-//        } else {
-//            worked = false;
-//        }
-//        return worked;
-        return true;
+        return false;
     }
 
-    private void applyWallpaper(Bitmap resource) {
-        WallpaperManager wm = WallpaperManager.getInstance(wrActivity.get());
+    private boolean applyWallpaper(Bitmap resource) {
+        WallpaperManager wm = WallpaperManager.getInstance(context);
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 if (setToHomeScreen) {
-                    wm.setBitmap(scaleToActualAspectRatio(resource), null, true, WallpaperManager
-                            .FLAG_SYSTEM);
+                    wm.setBitmap(scaleToActualAspectRatio(resource), null, true,
+                            WallpaperManager.FLAG_SYSTEM);
                 } else if (setToLockScreen) {
-                    wm.setBitmap(scaleToActualAspectRatio(resource), null, true, WallpaperManager
-                            .FLAG_LOCK);
+                    wm.setBitmap(scaleToActualAspectRatio(resource), null, true,
+                            WallpaperManager.FLAG_LOCK);
                 } else if (setToBoth) {
                     wm.setBitmap(scaleToActualAspectRatio(resource), null, true);
                 }
@@ -199,84 +112,11 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
             }
             EventBus.getDefault().postSticky(new WallpaperEvent(url, true, WallpaperEvent.Step
                     .FINISH));
-            if (callback != null) {
-                callback.afterApplied();
-            }
-        } catch (OutOfMemoryError ex) {
-            Timber.e("OutOfMemoryError %s", ex.getLocalizedMessage());
-            showRetrySnackbar();
-            cancel(true);
-        } catch (IOException e2) {
-            Timber.e("IOException %s", e2.getLocalizedMessage());
-            cancel(true);
+            return true;
+        } catch (Exception ex) {
+            Timber.e("Exception %s", ex.getLocalizedMessage());
         }
-    }
-
-    @Override
-    protected void onPostExecute(Boolean worked) {
-        if (worked) {
-            if (wrActivity.get() instanceof ShowcaseActivity) {
-                if (dialog != null) {
-                    dialog.dismiss();
-                }
-                dialog = new MaterialDialog.Builder(wrActivity.get())
-                        .content(R.string.set_as_wall_done)
-                        .positiveText(android.R.string.ok)
-                        .show();
-                if (isPicker) {
-                    wrActivity.get().finish();
-                } else {
-                    ((ShowcaseActivity) wrActivity.get()).setupToolbarHeader();
-                }
-            }
-        }
-//        if (!isCancelled()) {
-//            if (worked) {
-//                dialog.dismiss();
-//                if (!isPicker) {
-//                    if (toHide1 != null && toHide2 != null) {
-//                        toHide1.setVisibility(View.GONE);
-//                        toHide2.setVisibility(View.GONE);
-//                    } else {
-//                        ((ShowcaseActivity) activity).setupToolbarHeader();
-//                        ColorUtils.setupToolbarIconsAndTextsColors(activity,
-//                                ((ShowcaseActivity) activity).getAppbar(), ((ShowcaseActivity)
-// activity).getToolbar());
-//                    }
-//
-//                    Snackbar longSnackbar = Snackbar.make(layout,
-//                            activity.getString(R.string.set_as_wall_done), Snackbar.LENGTH_LONG);
-//                    final int snackbarLight = ContextCompat.getColor(activity, R.color
-// .snackbar_light);
-//                    final int snackbarDark = ContextCompat.getColor(activity, R.color
-// .snackbar_dark);
-//                    ViewGroup snackbarView = (ViewGroup) longSnackbar.getView();
-//                    snackbarView.setBackgroundColor(ThemeUtils.darkTheme ? snackbarDark :
-// snackbarLight);
-//                    snackbarView.setPadding(snackbarView.getPaddingLeft(),
-//                            snackbarView.getPaddingTop(), snackbarView.getPaddingRight(),
-//                            Utils.getNavigationBarHeight((Activity) context.get()));
-//                    longSnackbar.show();
-//                    longSnackbar.addCallback(
-//                            new Snackbar.Callback() {
-//                                @Override
-//                                public void onDismissed(Snackbar snackbar, int event) {
-//                                    super.onDismissed(snackbar, event);
-//                                    if (toHide1 != null && toHide2 != null) {
-//                                        toHide1.setVisibility(View.VISIBLE);
-//                                        toHide2.setVisibility(View.VISIBLE);
-//                                    }
-//                                    EventBus.getDefault().post(new WallpaperEvent(true));
-//                                }
-//                            });
-//                }
-//            } else {
-//                showRetrySnackbar();
-//            }
-//            if (isPicker) {
-//                activity.finish();
-//            }
-//        }
+        return false;
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -285,7 +125,8 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
             boolean flag = true;
 
             DisplayMetrics displayMetrics = new DisplayMetrics();
-            wrActivity.get().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+            ((Activity) context).getWindowManager().getDefaultDisplay()
+                    .getMetrics(displayMetrics);
 
             int deviceWidth = displayMetrics.widthPixels;
             int deviceHeight = displayMetrics.heightPixels;
@@ -308,8 +149,7 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
             }
             if (flag) {
                 if (bitmapHeight > deviceHeight) {
-                    int scaledWidth = (deviceHeight * bitmapWidth)
-                            / bitmapHeight;
+                    int scaledWidth = (deviceHeight * bitmapWidth) / bitmapHeight;
                     try {
                         if (scaledWidth > deviceWidth)
                             scaledWidth = deviceWidth;
@@ -324,37 +164,12 @@ public class ApplyWallpaper extends AsyncTask<Void, String, Boolean> {
         return bitmap;
     }
 
-    private void showRetrySnackbar() {
-//        String retry = wrActivity.get().getResources().getString(R.string.retry);
-//        Snackbar snackbar = Snackbar
-//                .make(layout, R.string.error, Snackbar.LENGTH_INDEFINITE)
-//                .setAction(retry.toUpperCase(), new DebouncedClickListener() {
-//                    @Override
-//                    public void onDebouncedClick(View view) {
-//                        new ApplyWallpaper(activity, dialog, resource, isPicker, layout);
-//                    }
-//                });
-//        final int snackbarLight = ContextCompat.getColor(context.get(), R.color.snackbar_light);
-//        final int snackbarDark = ContextCompat.getColor(context.get(), R.color.snackbar_dark);
-//        ViewGroup snackbarView = (ViewGroup) snackbar.getView();
-//        snackbarView.setBackgroundColor(ThemeUtils.darkTheme ? snackbarDark : snackbarLight);
-//        snackbarView.setPadding(snackbarView.getPaddingLeft(),
-//                snackbarView.getPaddingTop(), snackbarView.getPaddingRight(),
-//                Utils.getNavigationBarHeight((Activity) context.get()));
-//        TypedValue typedValue = new TypedValue();
-//        Resources.Theme theme = activity.getTheme();
-//        theme.resolveAttribute(R.attr.accentColor, typedValue, true);
-//        int actionTextColor = typedValue.data;
-//        snackbar.setActionTextColor(actionTextColor);
-//        snackbar.show();
-    }
+    public interface ApplyWallpaperCallback {
+        void onPreExecute(Context context);
 
-    public interface ApplyCallback {
-        void afterApplied();
-    }
+        void onSuccess();
 
-    public interface DownloadCallback {
-        void afterDownloaded();
+        void onError();
     }
 
 }

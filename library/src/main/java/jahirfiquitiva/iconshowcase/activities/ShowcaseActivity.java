@@ -84,7 +84,8 @@ import jahirfiquitiva.iconshowcase.fragments.WallpapersFragment;
 import jahirfiquitiva.iconshowcase.fragments.ZooperFragment;
 import jahirfiquitiva.iconshowcase.holders.lists.FullListHolder;
 import jahirfiquitiva.iconshowcase.models.IconItem;
-import jahirfiquitiva.iconshowcase.tasks.DownloadJSON;
+import jahirfiquitiva.iconshowcase.models.WallpaperItem;
+import jahirfiquitiva.iconshowcase.tasks.DownloadJSONTask;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.utilities.utils.PermissionsUtils;
@@ -95,15 +96,12 @@ import timber.log.Timber;
 public class ShowcaseActivity extends TasksActivity {
 
     private IabHelper mHelper;
-
     private Drawer drawer;
 
     //TODO check if these are necessary
-    private boolean iconsPicker = false, wallsPicker = false, allowShuffle = true, shuffleIcons =
-            true;
-
+    private boolean iconsPicker = false, wallsPicker = false, allowShuffle = true,
+            shuffleIcons = true;
     private long currentItem = -1;
-
     private int numOfIcons = 4, wallpaper = -1;
 
     //TODO do not save Dialog instance; use fragment tags
@@ -113,6 +111,8 @@ public class ShowcaseActivity extends TasksActivity {
     private ImageView icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8;
     private ImageView toolbarHeader;
     private Drawable wallpaperDrawable;
+
+    private PiracyChecker[] checkers = new PiracyChecker[1];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -262,6 +262,11 @@ public class ShowcaseActivity extends TasksActivity {
     protected void onDestroy() {
         super.onDestroy();
         clearDialog();
+        for (PiracyChecker checker : checkers) {
+            if (checker != null) {
+                checker.destroy();
+            }
+        }
     }
 
     private void clearDialog() {
@@ -462,30 +467,36 @@ public class ShowcaseActivity extends TasksActivity {
         int i = item.getItemId();
         if (i == R.id.changelog) {
             if (includesIcons()) {
-                ChangelogDialog.show(this, R.xml.changelog, new ChangelogDialog
-                        .OnChangelogNeutralButtonClick() {
-                    @Override
-                    public void onNeutralButtonClick() {
-                        drawerItemClick(mDrawerMap.get(DrawerItem.PREVIEWS));
-                    }
-                });
+                ChangelogDialog.show(this, R.xml.changelog,
+                        new ChangelogDialog.OnChangelogNeutralButtonClick() {
+                            @Override
+                            public int getNeutralText() {
+                                return R.string.changelog_neutral_text;
+                            }
+
+                            @Override
+                            public void onNeutralButtonClick() {
+                                drawerItemClick(mDrawerMap.get(DrawerItem.PREVIEWS));
+                            }
+                        });
             } else {
                 ChangelogDialog.show(this, R.xml.changelog, null);
             }
         } else if (i == R.id.refresh) {
             if (getCurrentFragment() instanceof WallpapersFragment) {
                 FullListHolder.get().walls().clearList();
-                DownloadJSON json = new DownloadJSON(this);
-                json.setFragment(getCurrentFragment());
-                if (getJsonTask() != null) {
-                    getJsonTask().cancel(true);
-                }
-                setJsonTask(json);
-                try {
-                    json.execute();
-                } catch (Exception e) {
-                    // Do nothing
-                }
+                executeJsonTask(new DownloadJSONTask.JSONDownloadCallback() {
+                    @Override
+                    public void onPreExecute(Context context) {
+                        ((WallpapersFragment) getCurrentFragment()).refreshContent(context);
+                    }
+
+                    @Override
+                    public void onSuccess(ArrayList<WallpaperItem> wallpapers) {
+                        FullListHolder.get().walls().createList(wallpapers);
+                        ((WallpapersFragment) getCurrentFragment()).setupContent();
+                    }
+                });
             } else {
                 Toast.makeText(this, "Can't perform this action from here.", Toast.LENGTH_SHORT)
                         .show();
@@ -821,8 +832,13 @@ public class ShowcaseActivity extends TasksActivity {
         if (Utils.isNewVersion(this)) {
             try {
                 if (includesIcons()) {
-                    ChangelogDialog.show(this, R.xml.changelog, new
-                            ChangelogDialog.OnChangelogNeutralButtonClick() {
+                    ChangelogDialog.show(this, R.xml.changelog,
+                            new ChangelogDialog.OnChangelogNeutralButtonClick() {
+                                @Override
+                                public int getNeutralText() {
+                                    return R.string.changelog_neutral_text;
+                                }
+
                                 @Override
                                 public void onNeutralButtonClick() {
                                     try {
@@ -847,7 +863,6 @@ public class ShowcaseActivity extends TasksActivity {
     private void checkLicense(String lic, boolean allAma, boolean checkLPF, boolean checkStores) {
         final Context context = this;
         final Preferences mPrefs = new Preferences(context);
-        final PiracyChecker[] checkers = new PiracyChecker[1];
         final PiracyChecker checker = new PiracyChecker(context);
         checker.enableInstallerId(InstallerID.GOOGLE_PLAY);
         if (lic != null)

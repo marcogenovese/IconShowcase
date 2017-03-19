@@ -21,6 +21,7 @@ package jahirfiquitiva.iconshowcase.dialogs;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -124,34 +125,55 @@ public class WallpaperDialog extends BaseEventDialog {
                 break;
 
             case LOADING:
-                final ApplyWallpaper task = new ApplyWallpaper(getActivity(), getUrl(), new
-                        ApplyWallpaper.ApplyCallback() {
-                            @Override
-                            public void afterApplied() {
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        dismiss();
-                                        builder[0] = new MaterialDialog.Builder(getActivity());
-                                        builder[0].content(R.string.set_as_wall_done)
-                                                .positiveText(android.R.string.ok)
-                                                .show();
-                                        if (getActivity() instanceof ShowcaseActivity) {
-                                            if (((ShowcaseActivity) getActivity()).isWallsPicker
-                                                    ()) {
-                                                getActivity().finish();
-                                            }
+                try {
+                    ((ShowcaseActivity) getContext()).executeApplyTask(new ApplyWallpaper
+                            .ApplyWallpaperCallback() {
+
+                        @Override
+                        public void onPreExecute(Context context) {
+
+                        }
+
+                        //After downloaded...
+                        //showBase(getActivity(), getUrl(), WallpaperEvent.Step.APPLYING);
+
+                        @Override
+                        public void onSuccess() {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    dismiss();
+                                    builder[0] = new MaterialDialog.Builder(getActivity());
+                                    builder[0].content(R.string.set_as_wall_done)
+                                            .positiveText(android.R.string.ok)
+                                            .show();
+                                    if (getActivity() instanceof ShowcaseActivity) {
+                                        if (((ShowcaseActivity) getActivity()).isWallsPicker
+                                                ()) {
+                                            getActivity().finish();
                                         }
                                     }
-                                });
-                            }
-                        }, new ApplyWallpaper.DownloadCallback() {
-                    @Override
-                    public void afterDownloaded() {
-                        //TODO: Properly show the "Setting wallpaper..." dialog
-                        showBase(getActivity(), getUrl(), WallpaperEvent.Step.APPLYING);
-                    }
-                }, setToHome, setToLock, setToHome && setToLock);
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onError() {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    dismiss();
+                                    builder[0] = new MaterialDialog.Builder(getActivity());
+                                    builder[0].content(R.string.error)
+                                            .positiveText(android.R.string.ok)
+                                            .show();
+                                }
+                            });
+                        }
+                    }, null, getUrl(), setToHome, setToLock, setToHome && setToLock);
+
+                } catch (Exception ignored) {
+                }
 
                 builder[0].content(R.string.downloading_wallpaper)
                         .progress(true, 0)
@@ -160,7 +182,7 @@ public class WallpaperDialog extends BaseEventDialog {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull
                                     DialogAction which) {
-                                task.cancel(true);
+                                ((ShowcaseActivity) getContext()).cancelApplyTask();
                                 dismiss();
                             }
                         });
@@ -188,7 +210,6 @@ public class WallpaperDialog extends BaseEventDialog {
                     }
                 }, 10000);
 
-                task.execute();
                 enteredApplyTask[0] = true;
                 break;
 

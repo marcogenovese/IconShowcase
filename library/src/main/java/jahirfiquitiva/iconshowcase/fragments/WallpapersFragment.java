@@ -70,7 +70,6 @@ public class WallpapersFragment extends EventBaseFragment {
 
         setHasOptionsMenu(true);
         context = getActivity();
-        ((ShowcaseActivity) context).getJsonTask().setFragment(this);
 
         View layout = inflater.inflate(R.layout.wallpapers_section, container, false);
 
@@ -112,7 +111,8 @@ public class WallpapersFragment extends EventBaseFragment {
     public void setupContent() {
         if (Utils.hasNetwork(context)) {
             showProgressBar();
-            if (!(FullListHolder.get().walls().getList().isEmpty())) {
+            if (FullListHolder.get().walls().getList() != null &&
+                    !(FullListHolder.get().walls().getList().isEmpty())) {
                 WallpapersAdapter mAdapter = new WallpapersAdapter(getActivity(),
                         FullListHolder.get().walls().getList());
 

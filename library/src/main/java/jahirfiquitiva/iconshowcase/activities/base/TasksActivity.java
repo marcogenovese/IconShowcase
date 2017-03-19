@@ -20,21 +20,30 @@
 package jahirfiquitiva.iconshowcase.activities.base;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.CallSuper;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 
 import com.pitchedapps.butler.iconrequest.IconRequest;
 import com.pitchedapps.butler.iconrequest.events.RequestsCallback;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import jahirfiquitiva.iconshowcase.BuildConfig;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.config.Config;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
+import jahirfiquitiva.iconshowcase.fragments.MainFragment;
+import jahirfiquitiva.iconshowcase.fragments.WallpapersFragment;
+import jahirfiquitiva.iconshowcase.holders.lists.FullListHolder;
 import jahirfiquitiva.iconshowcase.logging.CrashReportingTree;
-import jahirfiquitiva.iconshowcase.tasks.DownloadJSON;
+import jahirfiquitiva.iconshowcase.models.WallpaperItem;
+import jahirfiquitiva.iconshowcase.tasks.ApplyWallpaper;
+import jahirfiquitiva.iconshowcase.tasks.DownloadJSONTask;
 import jahirfiquitiva.iconshowcase.tasks.LoadIconsLists;
 import jahirfiquitiva.iconshowcase.tasks.LoadKustomFiles;
 import jahirfiquitiva.iconshowcase.tasks.LoadZooperWidgets;
@@ -50,7 +59,6 @@ public abstract class TasksActivity extends DrawerActivity {
 
     protected Preferences mPrefs;
     private boolean tasksExecuted = false;
-    private DownloadJSON jsonTask;
 
     @Override
     @CallSuper
@@ -73,8 +81,14 @@ public abstract class TasksActivity extends DrawerActivity {
 
     @Override
     protected void onDestroy() {
-        Config.deinit();
         super.onDestroy();
+        Config.deinit();
+        try {
+            getSupportLoaderManager().getLoader(0).cancelLoad();
+            getSupportLoaderManager().destroyLoader(0);
+        } catch (Exception ignored) {
+        }
+        cancelApplyTask();
     }
 
     //TODO fix up booleans
@@ -86,27 +100,25 @@ public abstract class TasksActivity extends DrawerActivity {
         if (drawerHas(DrawerItem.PREVIEWS))
             new LoadIconsLists(this).execute();
         if (drawerHas(DrawerItem.WALLPAPERS)) {
-            jsonTask = new DownloadJSON(
-                    //                    new ShowcaseActivity.WallsListInterface() {
-                    //                @Override
-                    //                public void checkWallsListCreation(boolean result) {
-                    //                    if (WallpapersFragment.mSwipeRefreshLayout != null) {
-                    //                        WallpapersFragment.mSwipeRefreshLayout.setEnabled
-                    // (false);
-                    //                        WallpapersFragment.mSwipeRefreshLayout
-                    // .setRefreshing(false);
-                    //                    }
-                    //                    if (WallpapersFragment.mAdapter != null) {
-                    //                        WallpapersFragment.mAdapter.notifyDataSetChanged();
-                    //                    }
-                    //                }
-                    //            },
-                    this);
-            try {
-                jsonTask.execute();
-            } catch (Exception e) {
-                // Do nothing
-            }
+            executeJsonTask(new DownloadJSONTask.JSONDownloadCallback() {
+                @Override
+                public void onPreExecute(Context context) {
+                    FullListHolder.get().walls().clearList();
+                    if (getCurrentFragment() instanceof WallpapersFragment) {
+                        ((WallpapersFragment) getCurrentFragment()).refreshContent(context);
+                    }
+                }
+
+                @Override
+                public void onSuccess(ArrayList<WallpaperItem> wallpapers) {
+                    FullListHolder.get().walls().createList(wallpapers);
+                    if (getCurrentFragment() instanceof MainFragment) {
+                        ((MainFragment) getCurrentFragment()).updateAppInfoData();
+                    } else if (getCurrentFragment() instanceof WallpapersFragment) {
+                        ((WallpapersFragment) getCurrentFragment()).setupContent();
+                    }
+                }
+            });
         }
         if (drawerHas(DrawerItem.REQUESTS)) {
             Preferences mPrefs = new Preferences(this);
@@ -165,12 +177,74 @@ public abstract class TasksActivity extends DrawerActivity {
         return mDrawerMap.containsKey(item);
     }
 
-    public DownloadJSON getJsonTask() {
-        return jsonTask;
+    public void executeJsonTask(final DownloadJSONTask.JSONDownloadCallback callback) {
+        final Context c = this;
+        try {
+            getSupportLoaderManager().getLoader(0).cancelLoad();
+            getSupportLoaderManager().destroyLoader(0);
+        } catch (Exception ignored) {
+        }
+        if (callback != null) callback.onPreExecute(this);
+        getSupportLoaderManager().initLoader(0, null, new LoaderManager
+                .LoaderCallbacks<ArrayList<WallpaperItem>>() {
+            @Override
+            public Loader<ArrayList<WallpaperItem>> onCreateLoader(int id, Bundle args) {
+                return new DownloadJSONTask(c);
+            }
+
+            @Override
+            @SuppressWarnings("unchecked")
+            public void onLoadFinished(Loader<ArrayList<WallpaperItem>> loader,
+                                       ArrayList<WallpaperItem> data) {
+                if ((data != null) && (callback != null)) {
+                    callback.onSuccess(data);
+                }
+            }
+
+            @Override
+            public void onLoaderReset(Loader<ArrayList<WallpaperItem>> loader) {
+                // Do nothing
+            }
+        });
     }
 
-    protected void setJsonTask(DownloadJSON jsonTask) {
-        this.jsonTask = jsonTask;
+    public void executeApplyTask(final ApplyWallpaper.ApplyWallpaperCallback callback,
+                                 final Bitmap resource, final String url,
+                                 final boolean setToHomeScreen, final boolean setToLockScreen,
+                                 final boolean setToBoth) {
+        final Context c = this;
+        cancelApplyTask();
+        if (callback != null) callback.onPreExecute(this);
+        getSupportLoaderManager().initLoader(2, null,
+                new LoaderManager.LoaderCallbacks<Boolean>() {
+                    @Override
+                    public Loader<Boolean> onCreateLoader(int id, Bundle args) {
+                        return new ApplyWallpaper(c, resource, url, setToHomeScreen,
+                                setToLockScreen, setToBoth);
+                    }
+
+                    @Override
+                    @SuppressWarnings("unchecked")
+                    public void onLoadFinished(Loader<Boolean> loader, Boolean success) {
+                        if (callback != null) {
+                            if (success) callback.onSuccess();
+                            else callback.onError();
+                        }
+                    }
+
+                    @Override
+                    public void onLoaderReset(Loader<Boolean> loader) {
+                        // Do nothing
+                    }
+                });
+    }
+
+    public void cancelApplyTask() {
+        try {
+            getSupportLoaderManager().getLoader(2).cancelLoad();
+            getSupportLoaderManager().destroyLoader(2);
+        } catch (Exception ignored) {
+        }
     }
 
     //    @Subscribe

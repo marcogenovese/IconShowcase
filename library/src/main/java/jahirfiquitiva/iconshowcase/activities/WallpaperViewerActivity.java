@@ -70,6 +70,8 @@ public class WallpaperViewerActivity extends BaseWallpaperViewerActivity {
         super.setFullScreen(false);
         super.onCreate(savedInstanceState);
 
+        context = this;
+
         setCallback(new WallpaperDialogsCallback() {
             @Override
             public void onDialogShown() {
@@ -101,8 +103,8 @@ public class WallpaperViewerActivity extends BaseWallpaperViewerActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
-        ToolbarColorizer.colorizeToolbar(toolbar, ContextCompat.getColor(context, android.R.color
-                .white));
+        ToolbarColorizer.colorizeToolbar(toolbar,
+                ContextCompat.getColor(context, android.R.color.white));
 
         toHide1 = (LinearLayout) findViewById(R.id.iconsA);
         toHide2 = (LinearLayout) findViewById(R.id.iconsB);

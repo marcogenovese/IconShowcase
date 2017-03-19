@@ -33,6 +33,8 @@ import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
@@ -505,8 +507,6 @@ public class BaseWallpaperViewerActivity extends AppCompatActivity {
             callback.onDialogShown();
         }
 
-        final ApplyWallpaper[] applyTask = new ApplyWallpaper[1];
-
         final boolean[] enteredApplyTask = {false};
 
         dialogApply = new MaterialDialog.Builder(context)
@@ -517,8 +517,10 @@ public class BaseWallpaperViewerActivity extends AppCompatActivity {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull
                             DialogAction which) {
-                        if (applyTask[0] != null) {
-                            applyTask[0].cancel(true);
+                        try {
+                            getSupportLoaderManager().getLoader(1).cancelLoad();
+                            getSupportLoaderManager().destroyLoader(1);
+                        } catch (Exception ignored) {
                         }
                         dialogApply.dismiss();
 
@@ -541,16 +543,10 @@ public class BaseWallpaperViewerActivity extends AppCompatActivity {
                             GlideAnimation<? super Bitmap> glideAnimation) {
                         if (resource != null && dialogApply.isShowing()) {
                             enteredApplyTask[0] = true;
-
                             if (dialogApply != null) {
                                 dialogApply.dismiss();
                             }
-
-                            applyTask[0] = showWallpaperApplyOptionsDialogAndGetTask(context,
-                                    resource);
-
-                            if (applyTask[0] != null)
-                                applyTask[0].execute();
+                            showWallpaperApplyOptionsDialogAndExecuteTask(context, resource);
                         }
                     }
                 });
@@ -578,10 +574,8 @@ public class BaseWallpaperViewerActivity extends AppCompatActivity {
         }, 10000);
     }
 
-    private ApplyWallpaper showWallpaperApplyOptionsDialogAndGetTask(final Context context,
-                                                                     final Bitmap resource) {
-        final ApplyWallpaper[] applyTask = {null};
-
+    private void showWallpaperApplyOptionsDialogAndExecuteTask(final Context context,
+                                                               final Bitmap resource) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             dialogApply = new MaterialDialog.Builder(context)
                     .title(R.string.set_wall_to)
@@ -619,8 +613,8 @@ public class BaseWallpaperViewerActivity extends AppCompatActivity {
                                     .cancelable(false)
                                     .show();
 
-                            buildApplyTask(context, resource, position == 0, position
-                                    == 1, position == 2).execute();
+                            executeApplyTask(getApplyCallback(), resource, null, position == 0,
+                                    position == 1, position == 2);
                         }
                     })
                     .show();
@@ -630,44 +624,28 @@ public class BaseWallpaperViewerActivity extends AppCompatActivity {
                     .progress(true, 0)
                     .cancelable(false)
                     .show();
-
-            return buildApplyTask(context, resource, false, false, true);
+            executeApplyTask(getApplyCallback(), resource, null, false, false, true);
         }
-        return applyTask[0];
     }
 
-    private ApplyWallpaper buildApplyTask(final Context context, Bitmap resource, boolean
-            setToHomeScreen, boolean setToLockScreen, boolean setToBoth) {
+    private void showWallpaperAppliedDialog() {
+        if (dialogApply != null) {
+            dialogApply.dismiss();
+        }
 
-        return new ApplyWallpaper((Activity) context, resource, new ApplyWallpaper.ApplyCallback() {
+        dialogApply = new MaterialDialog.Builder(this)
+                .content(R.string.set_as_wall_done)
+                .positiveText(android.R.string.ok)
+                .show();
+
+        dialogApply.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
-            public void afterApplied() {
-                runOnUIThread(context, new Runnable() {
-                    @Override
-                    public void run() {
-                        if (dialogApply != null) {
-                            dialogApply.dismiss();
-                        }
-
-                        dialogApply = new MaterialDialog.Builder(context)
-                                .content(R.string.set_as_wall_done)
-                                .positiveText(android.R.string.ok)
-                                .show();
-
-                        dialogApply
-                                .setOnDismissListener
-                                        (new DialogInterface.OnDismissListener() {
-                                            @Override
-                                            public void onDismiss(DialogInterface dialogInterface) {
-                                                if (callback != null) {
-                                                    callback.onDialogDismissed();
-                                                }
-                                            }
-                                        });
-                    }
-                });
+            public void onDismiss(DialogInterface dialogInterface) {
+                if (callback != null) {
+                    callback.onDialogDismissed();
+                }
             }
-        }, setToHomeScreen, setToLockScreen, setToBoth);
+        });
     }
 
     protected void showNotConnectedSnackBar(Context context) {
@@ -774,6 +752,71 @@ public class BaseWallpaperViewerActivity extends AppCompatActivity {
                 });
             }
         }, 10000);
+    }
+
+    public void executeApplyTask(final ApplyWallpaper.ApplyWallpaperCallback callback,
+                                 final Bitmap resource, final String url,
+                                 final boolean setToHomeScreen, final boolean setToLockScreen,
+                                 final boolean setToBoth) {
+        final Context c = this;
+        try {
+            getSupportLoaderManager().getLoader(1).cancelLoad();
+            getSupportLoaderManager().destroyLoader(1);
+        } catch (Exception ignored) {
+        }
+        if (callback != null) callback.onPreExecute(this);
+        getSupportLoaderManager().initLoader(1, null,
+                new LoaderManager.LoaderCallbacks<Boolean>() {
+                    @Override
+                    public Loader<Boolean> onCreateLoader(int id, Bundle args) {
+                        return new ApplyWallpaper(c, resource, url, setToHomeScreen,
+                                setToLockScreen, setToBoth);
+                    }
+
+                    @Override
+                    @SuppressWarnings("unchecked")
+                    public void onLoadFinished(Loader<Boolean> loader, Boolean success) {
+                        if (callback != null) {
+                            if (success) callback.onSuccess();
+                            else callback.onError();
+                        }
+                    }
+
+                    @Override
+                    public void onLoaderReset(Loader<Boolean> loader) {
+                        // Do nothing
+                    }
+                });
+    }
+
+    protected ApplyWallpaper.ApplyWallpaperCallback getApplyCallback() {
+        return new ApplyWallpaper.ApplyWallpaperCallback() {
+            @Override
+            public void onPreExecute(Context context) {
+
+            }
+
+            @Override
+            public void onSuccess() {
+                showWallpaperAppliedDialog();
+            }
+
+            @Override
+            public void onError() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (dialogApply != null) {
+                            dialogApply.dismiss();
+                        }
+                        dialogApply = new MaterialDialog.Builder(getBaseContext())
+                                .content(R.string.error)
+                                .positiveText(android.R.string.ok)
+                                .show();
+                    }
+                });
+            }
+        };
     }
 
     public abstract class WallpaperDialogsCallback {
