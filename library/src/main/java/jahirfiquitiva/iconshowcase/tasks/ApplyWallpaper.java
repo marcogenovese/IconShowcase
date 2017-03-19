@@ -69,26 +69,32 @@ public class ApplyWallpaper extends BasicTaskLoader<Boolean> {
             return applyWallpaper(resource);
         } else if (url != null) {
             final boolean[] worked = {false};
-            Glide.with(context)
-                    .load(url)
-                    .asBitmap()
-                    .dontAnimate()
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                    .into(new SimpleTarget<Bitmap>() {
-                        @Override
-                        public void onResourceReady(final Bitmap resource,
-                                                    GlideAnimation<? super Bitmap> glideAnimation) {
-                            if (resource != null) {
-                                try {
-                                    Thread.sleep(500);
-                                    EventBus.getDefault().post(new WallpaperEvent(url,
-                                            true, WallpaperEvent.Step.APPLYING));
-                                    worked[0] = applyWallpaper(resource);
-                                } catch (InterruptedException ignored) {
+            ((Activity) context).runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Glide.with(context)
+                            .load(url)
+                            .asBitmap()
+                            .dontAnimate()
+                            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                            .into(new SimpleTarget<Bitmap>() {
+                                @Override
+                                public void onResourceReady(final Bitmap resource,
+                                                            GlideAnimation<? super Bitmap>
+                                                                    glideAnimation) {
+                                    if (resource != null) {
+                                        try {
+                                            Thread.sleep(500);
+                                            EventBus.getDefault().post(new WallpaperEvent(url,
+                                                    true, WallpaperEvent.Step.APPLYING));
+                                            worked[0] = applyWallpaper(resource);
+                                        } catch (InterruptedException ignored) {
+                                        }
+                                    }
                                 }
-                            }
-                        }
-                    });
+                            });
+                }
+            });
             return worked[0];
         }
         return false;
