@@ -51,7 +51,6 @@ import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.AltWallpaperViewerActivity;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.activities.WallpaperViewerActivity;
-import jahirfiquitiva.iconshowcase.dialogs.WallpaperDialog;
 import jahirfiquitiva.iconshowcase.holders.WallpaperHolder;
 import jahirfiquitiva.iconshowcase.models.WallpaperItem;
 import jahirfiquitiva.iconshowcase.tasks.ApplyWallpaper;
@@ -273,7 +272,12 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpaperHolder> {
 
                     @Override
                     public void onError() {
-
+                        if (applyDialog != null) {
+                            applyDialog.dismiss();
+                        }
+                        if (((ShowcaseActivity) context).isWallsPicker()) {
+                            ((ShowcaseActivity) context).finish();
+                        }
                     }
                 }, resource, null, setHome, setLock, setBoth);
     }
@@ -288,7 +292,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpaperHolder> {
 
     private void onWallClick(ImageView wall, WallpaperItem item) {
         if (((ShowcaseActivity) activity).isWallsPicker()) {
-            WallpaperDialog.show(activity, item.getWallURL());
+            showApplyWallpaperDialog(activity, item);
         } else {
             final Intent intent = new Intent(activity,
                     activity.getResources().getBoolean(R.bool.alternative_viewer) ?
