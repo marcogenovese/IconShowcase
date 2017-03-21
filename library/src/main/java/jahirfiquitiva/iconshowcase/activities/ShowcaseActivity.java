@@ -873,8 +873,8 @@ public class ShowcaseActivity extends TasksActivity {
                 .callback(new PiracyCheckerCallback() {
                     @Override
                     public void allow() {
-                        Log.i("IconShowcase", "License Check is valid");
-                        /*
+                        // Log.i("IconShowcase", "License Check is valid");
+
                         clearDialog();
                         dialog = ISDialogs.buildLicenseSuccessDialog(context,
                                 new MaterialDialog.SingleButtonCallback() {
@@ -897,23 +897,25 @@ public class ShowcaseActivity extends TasksActivity {
                                         showChangelogDialog();
                                     }
                                 });
-                        dialog.show(); */
+                        dialog.show();
                     }
 
                     @Override
                     public void dontAllow(@NonNull PiracyCheckerError piracyCheckerError,
                                           @Nullable PirateApp pirateApp) {
+                        /*
                         Log.i("IconShowcase", "License Check is not valid due to error: \'"
                                 + piracyCheckerError.toString() + "\' and installed app: " +
-                                (pirateApp != null ? pirateApp.getName() : "none"));
-                        // showNotLicensedDialog(((Activity) context), mPrefs, pirateApp);
+                                (pirateApp != null ? pirateApp.getName() : "none")); */
+                        showNotLicensedDialog(((Activity) context), mPrefs, pirateApp);
                     }
 
                     @Override
                     public void onError(@NonNull PiracyCheckerError error) {
-                        Log.i("IconShowcase", "Error: \'" + error.toString() + "\' occurred while" +
-                                " validating license.");
                         /*
+                        Log.i("IconShowcase", "Error: \'" + error.toString() + "\' occurred while" +
+                                " validating license."); */
+
                         clearDialog();
                         dialog = ISDialogs.buildLicenseErrorDialog(context,
                                 new MaterialDialog.SingleButtonCallback() {
@@ -950,7 +952,6 @@ public class ShowcaseActivity extends TasksActivity {
                                     }
                                 });
                         dialog.show();
-                        */
                     }
                 });
         checker.start();
