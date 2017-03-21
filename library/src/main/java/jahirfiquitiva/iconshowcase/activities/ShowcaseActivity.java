@@ -866,14 +866,14 @@ public class ShowcaseActivity extends TasksActivity {
         checker.enableInstallerId(InstallerID.GOOGLE_PLAY);
         if (lic != null) checker.enableGooglePlayLicensing(lic);
         if (allAma) checker.enableInstallerId(InstallerID.AMAZON_APP_STORE);
-        if (checkLPF) checker.enableUnauthorizedAppsCheck();
-        if (checkStores) checker.enableStoresCheck();
-        // checker.enableEmulatorCheck();
-        // checker.enableDebugCheck();
-        checker.callback(new PiracyCheckerCallback() {
-            @Override
-            public void allow() {
-                Log.i("IconShowcase", "License Check is valid");
+        // if (checkLPF) checker.enableUnauthorizedAppsCheck();
+        // if (checkStores) checker.enableStoresCheck();
+        checker.enableEmulatorCheck()
+                .enableDebugCheck()
+                .callback(new PiracyCheckerCallback() {
+                    @Override
+                    public void allow() {
+                        Log.i("IconShowcase", "License Check is valid");
                         /*
                         clearDialog();
                         dialog = ISDialogs.buildLicenseSuccessDialog(context,
@@ -898,21 +898,21 @@ public class ShowcaseActivity extends TasksActivity {
                                     }
                                 });
                         dialog.show(); */
-            }
+                    }
 
-            @Override
-            public void dontAllow(@NonNull PiracyCheckerError piracyCheckerError,
-                                  @Nullable PirateApp pirateApp) {
-                Log.i("IconShowcase", "License Check is not valid due to error: \'"
-                        + piracyCheckerError.toString() + "\' and installed app: " +
-                        (pirateApp != null ? pirateApp.getName() : "none"));
-                // showNotLicensedDialog(((Activity) context), mPrefs, pirateApp);
-            }
+                    @Override
+                    public void dontAllow(@NonNull PiracyCheckerError piracyCheckerError,
+                                          @Nullable PirateApp pirateApp) {
+                        Log.i("IconShowcase", "License Check is not valid due to error: \'"
+                                + piracyCheckerError.toString() + "\' and installed app: " +
+                                (pirateApp != null ? pirateApp.getName() : "none"));
+                        // showNotLicensedDialog(((Activity) context), mPrefs, pirateApp);
+                    }
 
-            @Override
-            public void onError(@NonNull PiracyCheckerError error) {
-                Log.i("IconShowcase", "Error: \'" + error.toString() + "\' occurred while" +
-                        " validating license.");
+                    @Override
+                    public void onError(@NonNull PiracyCheckerError error) {
+                        Log.i("IconShowcase", "Error: \'" + error.toString() + "\' occurred while" +
+                                " validating license.");
                         /*
                         clearDialog();
                         dialog = ISDialogs.buildLicenseErrorDialog(context,
@@ -951,8 +951,8 @@ public class ShowcaseActivity extends TasksActivity {
                                 });
                         dialog.show();
                         */
-            }
-        });
+                    }
+                });
         checker.start();
     }
 
