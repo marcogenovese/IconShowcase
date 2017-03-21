@@ -40,7 +40,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -862,6 +861,10 @@ public class ShowcaseActivity extends TasksActivity {
     private void checkLicense(String lic, boolean allAma, boolean checkLPF, boolean checkStores) {
         final Context context = this;
         final Preferences mPrefs = new Preferences(context);
+        if (checker != null) {
+            checker.destroy();
+            checker = null;
+        }
         checker = new PiracyChecker(context);
         checker.enableInstallerId(InstallerID.GOOGLE_PLAY);
         if (lic != null) checker.enableGooglePlayLicensing(lic);
