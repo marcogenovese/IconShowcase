@@ -885,23 +885,38 @@ public class ShowcaseActivity extends TasksActivity {
                     @Override
                     public void allow() {
                         Log.i("IconShowcase", "License Check is valid");
-                        showLicensedDialog();
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                showLicensedDialog();
+                            }
+                        });
                     }
 
                     @Override
                     public void dontAllow(@NonNull PiracyCheckerError piracyCheckerError,
-                                          @Nullable PirateApp pirateApp) {
+                                          @Nullable final PirateApp pirateApp) {
                         Log.i("IconShowcase", "License Check is not valid due to error: \'"
                                 + piracyCheckerError.toString() + "\' and installed app: " +
                                 (pirateApp != null ? pirateApp.getName() : "none"));
-                        showNotLicensedDialog(pirateApp);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                showNotLicensedDialog(pirateApp);
+                            }
+                        });
                     }
 
                     @Override
                     public void onError(@NonNull PiracyCheckerError error) {
                         Log.i("IconShowcase", "Error: \'" + error.toString() + "\' occurred while" +
                                 " validating license.");
-                        showLicenseCheckErrorDialog(lic, allAma, checkLPF, checkStores);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                showLicenseCheckErrorDialog(lic, allAma, checkLPF, checkStores);
+                            }
+                        });
                     }
                 });
         checker.start();
