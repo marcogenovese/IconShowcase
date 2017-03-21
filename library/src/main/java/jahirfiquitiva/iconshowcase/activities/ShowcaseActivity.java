@@ -53,6 +53,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.javiersantos.piracychecker.PiracyChecker;
+import com.github.javiersantos.piracychecker.enums.InstallerID;
 import com.github.javiersantos.piracychecker.enums.PiracyCheckerCallback;
 import com.github.javiersantos.piracychecker.enums.PiracyCheckerError;
 import com.github.javiersantos.piracychecker.enums.PirateApp;
@@ -864,8 +865,8 @@ public class ShowcaseActivity extends TasksActivity {
         checker = new PiracyChecker(context);
         // checker.enableInstallerId(InstallerID.GOOGLE_PLAY);
         // if (lic != null) checker.enableGooglePlayLicensing(lic);
-        // if (allAma) checker.enableInstallerId(InstallerID.AMAZON_APP_STORE);
-        if (checkLPF) checker.enableUnauthorizedAppsCheck();
+        if (allAma) checker.enableInstallerId(InstallerID.AMAZON_APP_STORE);
+        // if (checkLPF) checker.enableUnauthorizedAppsCheck();
         // if (checkStores) checker.enableStoresCheck();
         // checker.enableEmulatorCheck();
         // checker.enableDebugCheck();
