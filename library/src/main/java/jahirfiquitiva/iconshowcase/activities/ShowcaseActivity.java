@@ -40,6 +40,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -112,7 +113,7 @@ public class ShowcaseActivity extends TasksActivity {
     private ImageView toolbarHeader;
     private Drawable wallpaperDrawable;
 
-    private PiracyChecker[] checkers = new PiracyChecker[1];
+    private PiracyChecker checker = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -262,10 +263,8 @@ public class ShowcaseActivity extends TasksActivity {
     protected void onDestroy() {
         super.onDestroy();
         clearDialog();
-        for (PiracyChecker checker : checkers) {
-            if (checker != null) {
-                checker.destroy();
-            }
+        if (checker != null) {
+            checker.destroy();
         }
     }
 
@@ -863,21 +862,19 @@ public class ShowcaseActivity extends TasksActivity {
     private void checkLicense(String lic, boolean allAma, boolean checkLPF, boolean checkStores) {
         final Context context = this;
         final Preferences mPrefs = new Preferences(context);
-        final PiracyChecker checker = new PiracyChecker(context);
-        checker.enableInstallerId(InstallerID.GOOGLE_PLAY);
-        if (lic != null)
-            checker.enableGooglePlayLicensing(lic);
-        if (allAma)
-            checker.enableInstallerId(InstallerID.AMAZON_APP_STORE);
-        if (checkLPF)
-            checker.enableUnauthorizedAppsCheck();
-        if (checkStores)
-            checker.enableStoresCheck();
-        checker.enableEmulatorCheck()
-                .enableDebugCheck()
+        checker = new PiracyChecker(context);
+        // checker.enableInstallerId(InstallerID.GOOGLE_PLAY);
+        // if (lic != null) checker.enableGooglePlayLicensing(lic);
+        // if (allAma) checker.enableInstallerId(InstallerID.AMAZON_APP_STORE);
+        // if (checkLPF) checker.enableUnauthorizedAppsCheck();
+        // if (checkStores) checker.enableStoresCheck();
+        // checker.enableEmulatorCheck();
+        checker.enableDebugCheck()
                 .callback(new PiracyCheckerCallback() {
                     @Override
                     public void allow() {
+                        Log.i("IconShowcase", "License Check is valid");
+                        /*
                         clearDialog();
                         dialog = ISDialogs.buildLicenseSuccessDialog(context,
                                 new MaterialDialog.SingleButtonCallback() {
@@ -900,17 +897,23 @@ public class ShowcaseActivity extends TasksActivity {
                                         showChangelogDialog();
                                     }
                                 });
-                        dialog.show();
+                        dialog.show(); */
                     }
 
                     @Override
                     public void dontAllow(@NonNull PiracyCheckerError piracyCheckerError,
                                           @Nullable PirateApp pirateApp) {
-                        showNotLicensedDialog(((Activity) context), mPrefs, pirateApp);
+                        Log.i("IconShowcase", "License Check is not valid due to error: \'"
+                                + piracyCheckerError.toString() + "\' and installed app: " +
+                                (pirateApp != null ? pirateApp.getName() : "none"));
+                        // showNotLicensedDialog(((Activity) context), mPrefs, pirateApp);
                     }
 
                     @Override
                     public void onError(@NonNull PiracyCheckerError error) {
+                        Log.i("IconShowcase", "Error: \'" + error.toString() + "\' occurred while" +
+                                " validating license.");
+                        /*
                         clearDialog();
                         dialog = ISDialogs.buildLicenseErrorDialog(context,
                                 new MaterialDialog.SingleButtonCallback() {
@@ -918,7 +921,7 @@ public class ShowcaseActivity extends TasksActivity {
                                     public void onClick(@NonNull MaterialDialog dialog,
                                                         @NonNull DialogAction which) {
                                         dialog.dismiss();
-                                        if (checkers[0] != null) checkers[0].start();
+                                        if (checker != null) checker.start();
                                     }
                                 }, new MaterialDialog.SingleButtonCallback() {
                                     @Override
@@ -947,10 +950,10 @@ public class ShowcaseActivity extends TasksActivity {
                                     }
                                 });
                         dialog.show();
+                        */
                     }
                 });
-        checkers[0] = checker;
-        checkers[0].start();
+        checker.start();
     }
 
     private void showNotLicensedDialog(final Activity act, Preferences mPrefs, PirateApp app) {
