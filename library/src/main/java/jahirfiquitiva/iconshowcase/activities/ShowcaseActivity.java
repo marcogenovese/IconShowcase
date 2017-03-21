@@ -865,7 +865,7 @@ public class ShowcaseActivity extends TasksActivity {
         checker = new PiracyChecker(context);
         checker.enableInstallerId(InstallerID.GOOGLE_PLAY);
         // if (lic != null) checker.enableGooglePlayLicensing(lic);
-        // if (allAma) checker.enableInstallerId(InstallerID.AMAZON_APP_STORE);
+        if (allAma) checker.enableInstallerId(InstallerID.AMAZON_APP_STORE);
         // if (checkLPF) checker.enableUnauthorizedAppsCheck();
         // if (checkStores) checker.enableStoresCheck();
         // checker.enableEmulatorCheck();
