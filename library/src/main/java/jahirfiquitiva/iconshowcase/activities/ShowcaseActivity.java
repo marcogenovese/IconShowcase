@@ -39,6 +39,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -883,25 +884,23 @@ public class ShowcaseActivity extends TasksActivity {
                 .callback(new PiracyCheckerCallback() {
                     @Override
                     public void allow() {
-                        // Log.i("IconShowcase", "License Check is valid");
+                        Log.i("IconShowcase", "License Check is valid");
                         showLicensedDialog();
                     }
 
                     @Override
                     public void dontAllow(@NonNull PiracyCheckerError piracyCheckerError,
                                           @Nullable PirateApp pirateApp) {
-                        /*
                         Log.i("IconShowcase", "License Check is not valid due to error: \'"
                                 + piracyCheckerError.toString() + "\' and installed app: " +
-                                (pirateApp != null ? pirateApp.getName() : "none")); */
+                                (pirateApp != null ? pirateApp.getName() : "none"));
                         showNotLicensedDialog(pirateApp);
                     }
 
                     @Override
                     public void onError(@NonNull PiracyCheckerError error) {
-                        /*
                         Log.i("IconShowcase", "Error: \'" + error.toString() + "\' occurred while" +
-                                " validating license."); */
+                                " validating license.");
                         showLicenseCheckErrorDialog(lic, allAma, checkLPF, checkStores);
                     }
                 });
