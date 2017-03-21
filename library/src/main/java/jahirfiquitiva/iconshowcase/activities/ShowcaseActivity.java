@@ -19,7 +19,6 @@
 
 package jahirfiquitiva.iconshowcase.activities;
 
-import android.app.Activity;
 import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -261,6 +260,15 @@ public class ShowcaseActivity extends TasksActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        clearDialog();
+        if (checker != null) {
+            checker.destroy();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
         clearDialog();
         if (checker != null) {
             checker.destroy();
@@ -858,14 +866,13 @@ public class ShowcaseActivity extends TasksActivity {
         }
     }
 
-    private void checkLicense(String lic, boolean allAma, boolean checkLPF, boolean checkStores) {
-        final Context context = this;
-        final Preferences mPrefs = new Preferences(context);
+    private void checkLicense(final String lic, final boolean allAma, final boolean checkLPF,
+                              final boolean checkStores) {
         if (checker != null) {
             checker.destroy();
             checker = null;
         }
-        checker = new PiracyChecker(context);
+        checker = new PiracyChecker(this);
         checker.enableInstallerId(InstallerID.GOOGLE_PLAY);
         if (lic != null) checker.enableGooglePlayLicensing(lic);
         if (allAma) checker.enableInstallerId(InstallerID.AMAZON_APP_STORE);
@@ -877,30 +884,7 @@ public class ShowcaseActivity extends TasksActivity {
                     @Override
                     public void allow() {
                         // Log.i("IconShowcase", "License Check is valid");
-
-                        clearDialog();
-                        dialog = ISDialogs.buildLicenseSuccessDialog(context,
-                                new MaterialDialog.SingleButtonCallback() {
-                                    @Override
-                                    public void onClick(@NonNull MaterialDialog materialDialog,
-                                                        @NonNull DialogAction dialogAction) {
-                                        mPrefs.setDashboardWorking(true);
-                                        showChangelogDialog();
-                                    }
-                                }, new MaterialDialog.OnDismissListener() {
-                                    @Override
-                                    public void onDismiss(DialogInterface dialog) {
-                                        mPrefs.setDashboardWorking(true);
-                                        showChangelogDialog();
-                                    }
-                                }, new MaterialDialog.OnCancelListener() {
-                                    @Override
-                                    public void onCancel(DialogInterface dialog) {
-                                        mPrefs.setDashboardWorking(true);
-                                        showChangelogDialog();
-                                    }
-                                });
-                        dialog.show();
+                        showLicensedDialog();
                     }
 
                     @Override
@@ -910,7 +894,7 @@ public class ShowcaseActivity extends TasksActivity {
                         Log.i("IconShowcase", "License Check is not valid due to error: \'"
                                 + piracyCheckerError.toString() + "\' and installed app: " +
                                 (pirateApp != null ? pirateApp.getName() : "none")); */
-                        showNotLicensedDialog(((Activity) context), mPrefs, pirateApp);
+                        showNotLicensedDialog(pirateApp);
                     }
 
                     @Override
@@ -918,59 +902,80 @@ public class ShowcaseActivity extends TasksActivity {
                         /*
                         Log.i("IconShowcase", "Error: \'" + error.toString() + "\' occurred while" +
                                 " validating license."); */
-
-                        clearDialog();
-                        dialog = ISDialogs.buildLicenseErrorDialog(context,
-                                new MaterialDialog.SingleButtonCallback() {
-                                    @Override
-                                    public void onClick(@NonNull MaterialDialog dialog,
-                                                        @NonNull DialogAction which) {
-                                        dialog.dismiss();
-                                        if (checker != null) checker.start();
-                                    }
-                                }, new MaterialDialog.SingleButtonCallback() {
-                                    @Override
-                                    public void onClick(@NonNull MaterialDialog dialog,
-                                                        @NonNull DialogAction which) {
-                                        try {
-                                            ((Activity) context).finish();
-                                        } catch (Exception ignored) {
-                                        }
-                                    }
-                                }, new DialogInterface.OnDismissListener() {
-                                    @Override
-                                    public void onDismiss(DialogInterface dialogInterface) {
-                                        try {
-                                            ((Activity) context).finish();
-                                        } catch (Exception ignored) {
-                                        }
-                                    }
-                                }, new MaterialDialog.OnCancelListener() {
-                                    @Override
-                                    public void onCancel(DialogInterface dialogInterface) {
-                                        try {
-                                            ((Activity) context).finish();
-                                        } catch (Exception ignored) {
-                                        }
-                                    }
-                                });
-                        dialog.show();
+                        showLicenseCheckErrorDialog(lic, allAma, checkLPF, checkStores);
                     }
                 });
         checker.start();
     }
 
-    private void showNotLicensedDialog(final Activity act, Preferences mPrefs, PirateApp app) {
+    private void showLicensedDialog() {
+        clearDialog();
+        dialog = ISDialogs.buildLicenseSuccessDialog(this,
+                new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog materialDialog,
+                                        @NonNull DialogAction dialogAction) {
+                        mPrefs.setDashboardWorking(true);
+                        showChangelogDialog();
+                    }
+                }, new MaterialDialog.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        mPrefs.setDashboardWorking(true);
+                        showChangelogDialog();
+                    }
+                }, new MaterialDialog.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        mPrefs.setDashboardWorking(true);
+                        showChangelogDialog();
+                    }
+                });
+        dialog.show();
+    }
+
+    private void showLicenseCheckErrorDialog(final String lic, final boolean allAma,
+                                             final boolean checkLPF, final boolean checkStores) {
+        clearDialog();
+        dialog = ISDialogs.buildLicenseErrorDialog(this,
+                new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog,
+                                        @NonNull DialogAction which) {
+                        dialog.dismiss();
+                        checkLicense(lic, allAma, checkLPF, checkStores);
+                    }
+                }, new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog,
+                                        @NonNull DialogAction which) {
+                        finish();
+                    }
+                }, new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialogInterface) {
+                        finish();
+                    }
+                }, new MaterialDialog.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialogInterface) {
+                        finish();
+                    }
+                });
+        dialog.show();
+    }
+
+    private void showNotLicensedDialog(PirateApp app) {
         mPrefs.setDashboardWorking(false);
         clearDialog();
-        dialog = ISDialogs.buildShallNotPassDialog(act, app,
+        dialog = ISDialogs.buildShallNotPassDialog(this, app,
                 new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog materialDialog, @NonNull
                             DialogAction
                             dialogAction) {
-                        act.startActivity(new Intent(Intent.ACTION_VIEW,
-                                Uri.parse(Config.MARKET_URL + act.getPackageName())));
+                        startActivity(new Intent(Intent.ACTION_VIEW,
+                                Uri.parse(Config.MARKET_URL + getPackageName())));
                     }
                 }, new MaterialDialog.SingleButtonCallback() {
 
@@ -978,18 +983,18 @@ public class ShowcaseActivity extends TasksActivity {
                     public void onClick(@NonNull MaterialDialog materialDialog, @NonNull
                             DialogAction
                             dialogAction) {
-                        act.finish();
+                        finish();
                     }
                 }, new MaterialDialog.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
-                        act.finish();
+                        finish();
                     }
                 }, new MaterialDialog.OnCancelListener() {
 
                     @Override
                     public void onCancel(DialogInterface dialog) {
-                        act.finish();
+                        finish();
                     }
                 });
         dialog.show();
