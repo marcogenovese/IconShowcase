@@ -39,7 +39,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -794,7 +793,7 @@ public class ShowcaseActivity extends TasksActivity {
 
         if (WITH_DONATIONS_SECTION) {
             WITH_DONATIONS_SECTION = DONATIONS_GOOGLE || DONATIONS_PAYPAL;
-            //if one of the donations are enabled, then the section is enabled
+            //if one of the donations is enabled, then the section is enabled
         }
     }
 
@@ -831,39 +830,36 @@ public class ShowcaseActivity extends TasksActivity {
             }
         } else {
             mPrefs.setDashboardWorking(true);
-            showChangelogDialog();
+            if (Utils.isNewVersion(this)) showChangelogDialog();
         }
     }
 
     private void showChangelogDialog() {
-        if (Utils.isNewVersion(this)) {
-            try {
-                if (includesIcons()) {
-                    ChangelogDialog.show(this, R.xml.changelog,
-                            new ChangelogDialog.OnChangelogNeutralButtonClick() {
-                                @Override
-                                public int getNeutralText() {
-                                    return R.string.changelog_neutral_text;
-                                }
+        clearDialog();
+        try {
+            if (includesIcons()) {
+                ChangelogDialog.show(this, R.xml.changelog,
+                        new ChangelogDialog.OnChangelogNeutralButtonClick() {
+                            @Override
+                            public int getNeutralText() {
+                                return R.string.changelog_neutral_text;
+                            }
 
-                                @Override
-                                public void onNeutralButtonClick() {
-                                    try {
-                                        long id = getPreviewsId();
-                                        if (id != -1) {
-                                            drawerItemClick(id);
-                                        }
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
+                            @Override
+                            public void onNeutralButtonClick() {
+                                try {
+                                    long id = getPreviewsId();
+                                    if (id != -1) drawerItemClick(id);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
                                 }
-                            });
-                } else {
-                    ChangelogDialog.show(this, R.xml.changelog, null);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+                            }
+                        });
+            } else {
+                ChangelogDialog.show(this, R.xml.changelog, null);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -884,39 +880,18 @@ public class ShowcaseActivity extends TasksActivity {
                 .callback(new PiracyCheckerCallback() {
                     @Override
                     public void allow() {
-                        Log.i("IconShowcase", "License Check is valid");
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                showLicensedDialog();
-                            }
-                        });
+                        showLicensedDialog();
                     }
 
                     @Override
                     public void dontAllow(@NonNull PiracyCheckerError piracyCheckerError,
                                           @Nullable final PirateApp pirateApp) {
-                        Log.i("IconShowcase", "License Check is not valid due to error: \'"
-                                + piracyCheckerError.toString() + "\' and installed app: " +
-                                (pirateApp != null ? pirateApp.getName() : "none"));
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                showNotLicensedDialog(pirateApp);
-                            }
-                        });
+                        showNotLicensedDialog(pirateApp);
                     }
 
                     @Override
                     public void onError(@NonNull PiracyCheckerError error) {
-                        Log.i("IconShowcase", "Error: \'" + error.toString() + "\' occurred while" +
-                                " validating license.");
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                showLicenseCheckErrorDialog(lic, allAma, checkLPF, checkStores);
-                            }
-                        });
+                        showLicenseCheckErrorDialog(lic, allAma, checkLPF, checkStores);
                     }
                 });
         checker.start();
