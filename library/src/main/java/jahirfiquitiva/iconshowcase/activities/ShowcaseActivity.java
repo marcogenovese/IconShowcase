@@ -140,12 +140,11 @@ public class ShowcaseActivity extends TasksActivity {
 
         try {
             String installer = Utils.getAppInstaller(this);
-            if (installer.matches(Config.PLAY_STORE_INSTALLER) || installer.matches(Config
-                    .PLAY_STORE_PACKAGE)) {
+            if (installer.matches(Config.PLAY_STORE_INSTALLER) ||
+                    installer.matches(Config.PLAY_STORE_PACKAGE)) {
                 installedFromPlayStore = true;
             }
-        } catch (Exception e) {
-            //Do nothing
+        } catch (Exception ignored) {
         }
 
         setupDonations();
@@ -610,30 +609,28 @@ public class ShowcaseActivity extends TasksActivity {
             Collections.shuffle(FullListHolder.get().home().getList());
         }
 
-        int i = 0;
-
-        while (i < numOfIcons) {
+        for (int i = 0; i < numOfIcons; i++) {
             finalIconsList.add(FullListHolder.get().home().getList().get(i));
-            i++;
         }
 
-        icon1.setImageResource(finalIconsList.get(0).getResId());
-        icon2.setImageResource(finalIconsList.get(1).getResId());
-        icon3.setImageResource(finalIconsList.get(2).getResId());
-        icon4.setImageResource(finalIconsList.get(3).getResId());
-
-        if (numOfIcons == 6) {
-            icon5.setImageResource(finalIconsList.get(4).getResId());
-            icon6.setImageResource(finalIconsList.get(5).getResId());
-        } else if (numOfIcons == 8) {
-            icon5.setImageResource(finalIconsList.get(4).getResId());
-            icon6.setImageResource(finalIconsList.get(5).getResId());
-            icon7.setImageResource(finalIconsList.get(6).getResId());
-            icon8.setImageResource(finalIconsList.get(7).getResId());
+        try {
+            icon1.setImageResource(finalIconsList.get(0).getResId());
+            icon2.setImageResource(finalIconsList.get(1).getResId());
+            icon3.setImageResource(finalIconsList.get(2).getResId());
+            icon4.setImageResource(finalIconsList.get(3).getResId());
+            if (numOfIcons == 6) {
+                icon5.setImageResource(finalIconsList.get(4).getResId());
+                icon6.setImageResource(finalIconsList.get(5).getResId());
+            } else if (numOfIcons == 8) {
+                icon5.setImageResource(finalIconsList.get(4).getResId());
+                icon6.setImageResource(finalIconsList.get(5).getResId());
+                icon7.setImageResource(finalIconsList.get(6).getResId());
+                icon8.setImageResource(finalIconsList.get(7).getResId());
+            }
+        } catch (Exception ignored) {
         }
 
         allowShuffle = false;
-
     }
 
     public void animateIcons(int delay) {
@@ -709,8 +706,8 @@ public class ShowcaseActivity extends TasksActivity {
 
     public void setupToolbarHeader() {
         try {
-            if (Config.get().userWallpaperInToolbar() && mPrefs
-                    .getWallpaperAsToolbarHeaderEnabled()) {
+            if (Config.get().userWallpaperInToolbar() &&
+                    mPrefs.getWallpaperAsToolbarHeaderEnabled()) {
                 WallpaperManager wm = WallpaperManager.getInstance(this);
                 if (wm != null) {
                     Drawable currentWallpaper = wm.getFastDrawable();

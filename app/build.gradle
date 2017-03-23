@@ -22,7 +22,7 @@ apply plugin: 'com.android.application'
 ext {
     TARGET_SDK = 25
     BUILD_TOOLS = "25.0.2"
-    ANDROID_SUPPORT_LIBS = "25.2.0"
+    ANDROID_SUPPORT_LIBS = "25.3.0"
     APP_TAG = "IS-IconPack"
 }
 
@@ -85,7 +85,7 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     //Firebase Notifications
-    compile 'com.google.firebase:firebase-messaging:9.8.0'
+    compile 'com.google.firebase:firebase-messaging:10.2.0'
     compile project(':library')
 }
 

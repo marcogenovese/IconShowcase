@@ -54,12 +54,12 @@ public class Config implements IConfig {
 
     @SuppressLint("StaticFieldLeak")
     private static Config mConfig;
-    private Context mContext;
+    private Context context;
     private Resources mR;
 
     private Config(@Nullable Context context) {
         mR = null;
-        mContext = context;
+        this.context = context;
         if (context != null)
             mR = context.getResources();
     }
@@ -70,7 +70,7 @@ public class Config implements IConfig {
 
     public static void setContext(Context context) {
         if (mConfig != null) {
-            mConfig.mContext = context;
+            mConfig.context = context;
             if (context != null)
                 mConfig.mR = context.getResources();
         }
@@ -98,14 +98,14 @@ public class Config implements IConfig {
     }
 
     private void destroy() {
-        mContext = null;
+        context = null;
         mR = null;
     }
 
     // Getters
 
     private Preference prefs() {
-        return new Preference(mContext);
+        return new Preference(context);
     }
 
     @Override
@@ -204,7 +204,7 @@ public class Config implements IConfig {
 
     @Override
     public int getIconResId(String iconName) {
-        if (mContext == null) return 0;
-        return mR.getIdentifier(iconName, "drawable", mContext.getPackageName());
+        if (context == null) return 0;
+        return mR.getIdentifier(iconName, "drawable", context.getPackageName());
     }
 }

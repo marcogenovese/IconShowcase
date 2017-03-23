@@ -43,43 +43,35 @@ import timber.log.Timber;
 
 public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
 
-    private final WeakReference<Context> mContext;
-    private final ArrayList<IconItem> mPreviewIcons = new ArrayList<>();
-    private final ArrayList<IconsCategory> mCategoryList = new ArrayList<>();
-    private long startTime, endTime;
+    private final WeakReference<Context> context;
+    private final ArrayList<IconItem> previewIcons = new ArrayList<>();
+    private final ArrayList<IconsCategory> categories = new ArrayList<>();
 
     public LoadIconsLists(Context context) {
-        mContext = new WeakReference<>(context);
-    }
-
-    @Override
-    protected void onPreExecute() {
-        startTime = System.currentTimeMillis();
+        this.context = new WeakReference<>(context);
     }
 
     @Override
     protected Boolean doInBackground(Void... params) {
-
-        Resources r = mContext.get().getResources();
-        String p = mContext.get().getPackageName();
+        Resources r = context.get().getResources();
+        String p = context.get().getPackageName();
 
         String[] previews = r.getStringArray(R.array.preview);
         for (String icon : previews) {
             int iconResId = IconUtils.getIconResId(r, p, icon);
             if (iconResId > 0) {
-                mPreviewIcons.add(new IconItem(icon, iconResId));
+                previewIcons.add(new IconItem(icon, iconResId));
             }
         }
 
-        if (mPreviewIcons.size() > 0) {
+        if (previewIcons.size() > 0) {
             try {
-                FullListHolder.get().home().createList(mPreviewIcons);
-                if (((ShowcaseActivity) mContext.get()).getCurrentFragment() instanceof
+                FullListHolder.get().home().createList(previewIcons);
+                if (((ShowcaseActivity) context.get()).getCurrentFragment() instanceof
                         MainFragment) {
-                    ((ShowcaseActivity) mContext.get()).setupIcons();
+                    ((ShowcaseActivity) context.get()).setupIcons();
                 }
-            } catch (Exception e) {
-                // Do nothing
+            } catch (Exception ignored) {
             }
         }
 
@@ -93,53 +85,50 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
                 icons = r.getStringArray(arrayId);
                 if (icons.length > 0) {
                     ArrayList<IconItem> iconsArray = buildIconsListFromArray(r, p, icons);
-                    if (mContext.get().getResources().getBoolean(R.bool.auto_generate_all_icons)) {
+                    if (context.get().getResources().getBoolean(R.bool.auto_generate_all_icons)) {
                         allIcons.addAll(iconsArray);
                     }
                     if (iconsArray.size() > 0) {
-                        mCategoryList.add(new IconsCategory(IconUtils.formatName(tabName),
+                        categories.add(new IconsCategory(IconUtils.formatName(tabName),
                                 sortIconsList(r, p, iconsArray)));
                     }
                 }
             } catch (Resources.NotFoundException e) {
-                Timber.d("Couldn't find array: " + tabName);
+                Timber.d("Couldn't find array for section: \'" + tabName + "\'.");
             }
         }
 
-        if (mContext.get().getResources().getBoolean(R.bool.auto_generate_all_icons)) {
+        if (context.get().getResources().getBoolean(R.bool.auto_generate_all_icons)) {
             ArrayList<IconItem> allTheIcons = sortIconsList(r, p, allIcons);
             if (allTheIcons.size() > 0) {
-                mCategoryList.add(new IconsCategory("All", allTheIcons));
+                categories.add(new IconsCategory("All", allTheIcons));
             }
         } else {
             String[] allIconsArray = r.getStringArray(R.array.icon_pack);
             if (allIconsArray.length > 0) {
-                mCategoryList.add(
+                categories.add(
                         new IconsCategory("All",
-                                sortIconsList(r, p,
-                                        buildIconsListFromArray(r, p, allIconsArray))));
+                                sortIconsList(r, p, buildIconsListFromArray(r, p, allIconsArray))));
             }
         }
 
-        return (!(mPreviewIcons.isEmpty())) && (!(mCategoryList.isEmpty()));
+        return (!(categories.isEmpty()));
     }
 
     @Override
     protected void onPostExecute(Boolean worked) {
         if (worked) {
-            FullListHolder.get().home().createList(mPreviewIcons);
-            FullListHolder.get().iconsCategories().createList(mCategoryList);
-            if (mContext.get() instanceof ShowcaseActivity) {
-                if (((ShowcaseActivity) mContext.get()).getCurrentFragment() instanceof
+            FullListHolder.get().home().createList(previewIcons);
+            FullListHolder.get().iconsCategories().createList(categories);
+            if (context.get() instanceof ShowcaseActivity) {
+                if (((ShowcaseActivity) context.get()).getCurrentFragment() instanceof
                         MainFragment) {
-                    ((MainFragment) ((ShowcaseActivity) mContext.get()).getCurrentFragment())
+                    ((MainFragment) ((ShowcaseActivity) context.get()).getCurrentFragment())
                             .updateAppInfoData();
                 }
-                ((ShowcaseActivity) mContext.get()).resetFragment(DrawerActivity.DrawerItem
-                        .PREVIEWS);
+                ((ShowcaseActivity) context.get())
+                        .resetFragment(DrawerActivity.DrawerItem.PREVIEWS);
             }
-            Timber.d("Load of icons task completed successfully in: %d milliseconds", (endTime -
-                    startTime));
         } else {
             Timber.d("Something went really wrong while loading icons.");
         }
@@ -163,8 +152,8 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
         }
     }
 
-    private ArrayList<IconItem> buildIconsListFromArray(Resources r, String p, List<String>
-            icons) {
+    private ArrayList<IconItem> buildIconsListFromArray(Resources r, String p,
+                                                        List<String> icons) {
         ArrayList<IconItem> list = new ArrayList<>();
         for (String iconName : icons) {
             int iconResId = IconUtils.getIconResId(r, p, iconName);

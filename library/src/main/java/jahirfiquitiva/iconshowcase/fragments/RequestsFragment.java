@@ -198,8 +198,8 @@ public class RequestsFragment extends CapsuleFragment {
     }
 
     public void startRequestProcess() {
-        if (mAdapter != null && ((mAdapter.getSelectedApps() != null) && (mAdapter
-                .getSelectedApps().size() <= 0))) {
+        if (mAdapter != null && ((mAdapter.getSelectedApps() != null) &&
+                (mAdapter.getSelectedApps().size() <= 0))) {
             try {
                 ISDialogs.showNoSelectedAppsDialog(getActivity());
             } catch (Exception e) {
@@ -239,6 +239,21 @@ public class RequestsFragment extends CapsuleFragment {
                                     @Override
                                     public void run() {
                                         dialog.show();
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void doOnError() {
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        dialog.dismiss();
+                                        new MaterialDialog.Builder(getActivity())
+                                                .title(R.string.error)
+                                                .content(R.string.requests_error)
+                                                .positiveText(android.R.string.ok)
+                                                .show();
                                     }
                                 });
                             }

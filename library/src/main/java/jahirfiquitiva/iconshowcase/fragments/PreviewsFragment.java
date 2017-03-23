@@ -110,7 +110,6 @@ public class PreviewsFragment extends EventBaseFragment {
         }
         if (mPager != null) {
             mPager.clearOnPageChangeListeners();
-            mPager.removeAllViewsInLayout();
         }
     }
 
@@ -126,12 +125,17 @@ public class PreviewsFragment extends EventBaseFragment {
     }
 
     private String tabName(int i) {
-        if (mCategories == null) throw new RuntimeException("mCategories not loaded yet");
-        return mCategories.get(i).getCategoryName();
+        if (mCategories == null || mCategories.isEmpty()) return "";
+        try {
+            return mCategories.get(i).getCategoryName();
+        } catch (Exception e) {
+            return "";
+        }
     }
 
     private void createTabs() {
         mTabs.removeAllTabs();
+        if (mCategories == null || mCategories.isEmpty()) return;
         for (IconsCategory category : mCategories) {
             TabLayout.Tab nTab = mTabs.newTab();
             nTab.setText(category.getCategoryName());
@@ -164,7 +168,6 @@ public class PreviewsFragment extends EventBaseFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        if (FullListHolder.get().iconsCategories().isEmpty()) return;
         inflater.inflate(R.menu.search, menu);
         MenuItem mSearchItem = menu.findItem(R.id.search);
         mSearchView = (SearchView) MenuItemCompat.getActionView(mSearchItem);
@@ -223,15 +226,8 @@ public class PreviewsFragment extends EventBaseFragment {
 
     private class IconsPagerAdapter extends FragmentStatePagerAdapter {
 
-        private final String[] tabs;
-
         IconsPagerAdapter(FragmentManager fm) {
             super(fm);
-            String[] tabsNames = new String[mCategories.size()];
-            for (int i = 0; i < tabsNames.length; i++) {
-                tabsNames[i] = mCategories.get(i).getCategoryName();
-            }
-            tabs = tabsNames;
         }
 
         @Override
@@ -241,12 +237,12 @@ public class PreviewsFragment extends EventBaseFragment {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return tabs[position].toUpperCase(Locale.getDefault());
+            return mCategories.get(position).getCategoryName().toUpperCase(Locale.getDefault());
         }
 
         @Override
         public int getCount() {
-            return tabs.length;
+            return mCategories.size();
         }
     }
 

@@ -36,7 +36,7 @@ repositories {
 ext {
     TARGET_SDK = 25
     BUILD_TOOLS = "25.0.2"
-    ANDROID_SUPPORT_LIBS = "25.2.0"
+    ANDROID_SUPPORT_LIBS = "25.3.0"
 }
 
 android {
@@ -102,6 +102,7 @@ apply from: 'fat-aar.gradle'
 dependencies {
     embedded fileTree(dir: 'libs', include: ['*.jar'])
     //Android Support Libraries
+    //noinspection GradleCompatible
     compile "com.android.support:design:$ANDROID_SUPPORT_LIBS"
     compile "com.android.support:palette-v7:$ANDROID_SUPPORT_LIBS"
     compile "com.android.support:gridlayout-v7:$ANDROID_SUPPORT_LIBS"
@@ -123,10 +124,10 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.1.0'
 
     //Library for Requests
-    compile 'com.github.AllanWang:Butler:24ada2c'
+    compile 'com.github.AllanWang:Butler:b378dd6'
 
     //Library for UI framework
-    compile 'ca.allanwang:capsule:10706bf'
+    compile 'ca.allanwang:capsule:0fc1b59'
 
     //Donations Lib
     compile 'org.sufficientlysecure:donations:2.5'
