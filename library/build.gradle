@@ -36,7 +36,7 @@ repositories {
 ext {
     TARGET_SDK = 25
     BUILD_TOOLS = "25.0.2"
-    ANDROID_SUPPORT_LIBS = "25.2.0"
+    ANDROID_SUPPORT_LIBS = "25.3.0"
 }
 
 android {
@@ -137,7 +137,7 @@ dependencies {
     compile 'com.google.android.apps.muzei:muzei-api:2.0'
 
     //License Checker Lib
-    compile 'me.jahirfiquitiva:PiracyChecker:395c5f9'
+    compile 'me.jahirfiquitiva:PiracyChecker:43a031d'
 
     //Required for Kustom support.
     //noinspection GradleDynamicVersion
