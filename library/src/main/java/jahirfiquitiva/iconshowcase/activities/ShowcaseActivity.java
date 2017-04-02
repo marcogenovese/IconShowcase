@@ -39,6 +39,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -257,8 +258,8 @@ public class ShowcaseActivity extends TasksActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onPause() {
+        super.onPause();
         clearDialog();
         if (checker != null) {
             checker.destroy();
@@ -266,8 +267,8 @@ public class ShowcaseActivity extends TasksActivity {
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onDestroy() {
+        super.onDestroy();
         clearDialog();
         if (checker != null) {
             checker.destroy();
@@ -601,7 +602,16 @@ public class ShowcaseActivity extends TasksActivity {
     }
 
     public void setupIcons() {
-        if ((FullListHolder.get().home().isEmpty()) || (!(includesIcons()))) return;
+        if (FullListHolder.get().home() == null ||
+                FullListHolder.get().home().isEmpty() ||
+                !includesIcons()) return;
+
+        if (FullListHolder.get().home().getList().size() < 8) {
+            Log.e(getString(R.string.app_name),
+                    "You didn't set at least 8 icons for the toolbar previews." +
+                            "No icons will be shown there until you do so.");
+            return;
+        }
 
         ArrayList<IconItem> finalIconsList = new ArrayList<>();
 
@@ -827,36 +837,38 @@ public class ShowcaseActivity extends TasksActivity {
             }
         } else {
             mPrefs.setDashboardWorking(true);
-            if (Utils.isNewVersion(this)) showChangelogDialog();
+            showChangelogDialog();
         }
     }
 
     private void showChangelogDialog() {
         clearDialog();
-        try {
-            if (includesIcons()) {
-                ChangelogDialog.show(this, R.xml.changelog,
-                        new ChangelogDialog.OnChangelogNeutralButtonClick() {
-                            @Override
-                            public int getNeutralText() {
-                                return R.string.changelog_neutral_text;
-                            }
-
-                            @Override
-                            public void onNeutralButtonClick() {
-                                try {
-                                    long id = getPreviewsId();
-                                    if (id != -1) drawerItemClick(id);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
+        if (Utils.isNewVersion(this)) {
+            try {
+                if (includesIcons()) {
+                    ChangelogDialog.show(this, R.xml.changelog,
+                            new ChangelogDialog.OnChangelogNeutralButtonClick() {
+                                @Override
+                                public int getNeutralText() {
+                                    return R.string.changelog_neutral_text;
                                 }
-                            }
-                        });
-            } else {
-                ChangelogDialog.show(this, R.xml.changelog, null);
+
+                                @Override
+                                public void onNeutralButtonClick() {
+                                    try {
+                                        long id = getPreviewsId();
+                                        if (id != -1) drawerItemClick(id);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+                } else {
+                    ChangelogDialog.show(this, R.xml.changelog, null);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 

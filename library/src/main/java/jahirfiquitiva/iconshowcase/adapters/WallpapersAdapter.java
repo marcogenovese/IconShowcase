@@ -313,7 +313,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpaperHolder> {
                     stream.close();
                     intent.putExtra("image", filename);
                 } catch (Exception e) {
-                    Timber.d("Error getting drawable", e.getLocalizedMessage());
+                    Timber.e("Error getting drawable", e.getLocalizedMessage());
                 }
 
                 ActivityOptionsCompat options = ActivityOptionsCompat

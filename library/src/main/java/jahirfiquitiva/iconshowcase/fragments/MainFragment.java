@@ -110,7 +110,7 @@ public class MainFragment extends EventBaseFragment {
                 } catch (IndexOutOfBoundsException e) {
                     hasAppsList = false;
                     showFab();
-                    Timber.d("Apps Cards arrays are inconsistent. Fix them.");
+                    Timber.e("Apps Cards arrays are inconsistent. Fix them.");
                 }
             }
         }

@@ -176,7 +176,7 @@ public class Config implements IConfig {
     public String getPaypalCurrency() {
         String s = string(R.string.paypal_currency_code);
         if (s == null || s.length() != 3) {
-            Timber.d("Invalid currency $s; switching to USD", s);
+            Timber.e("Invalid currency $s; switching to USD", s);
             return "USD";
         }
         return s;

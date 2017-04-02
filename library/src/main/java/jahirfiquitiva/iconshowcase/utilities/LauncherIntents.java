@@ -129,9 +129,9 @@ public class LauncherIntents {
                 Unicon(context);
                 break;
             default:
-                Timber.d("No method for package or launcher: ", key);
-                throw new IllegalArgumentException("Couldn't find method for launcher or package:" +
-                        " " + key);
+                Timber.e("No method for package or launcher: ", key);
+                throw new IllegalArgumentException("Couldn't find method for launcher or package: "
+                        + key);
         }
     }
 

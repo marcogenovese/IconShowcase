@@ -125,11 +125,11 @@ public class PreviewsFragment extends EventBaseFragment {
     }
 
     private String tabName(int i) {
-        if (mCategories == null || mCategories.isEmpty()) return "";
+        if (mCategories == null || mCategories.isEmpty()) return "Null";
         try {
             return mCategories.get(i).getCategoryName();
         } catch (Exception e) {
-            return "";
+            return "Unknown";
         }
     }
 
@@ -168,6 +168,7 @@ public class PreviewsFragment extends EventBaseFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
+        if (mCategories == null || mCategories.isEmpty()) return;
         inflater.inflate(R.menu.search, menu);
         MenuItem mSearchItem = menu.findItem(R.id.search);
         mSearchView = (SearchView) MenuItemCompat.getActionView(mSearchItem);
@@ -237,7 +238,7 @@ public class PreviewsFragment extends EventBaseFragment {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return mCategories.get(position).getCategoryName().toUpperCase(Locale.getDefault());
+            return tabName(position).toUpperCase(Locale.getDefault());
         }
 
         @Override

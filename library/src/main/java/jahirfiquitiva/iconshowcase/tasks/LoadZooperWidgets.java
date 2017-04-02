@@ -49,23 +49,15 @@ public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
 
     private final ArrayList<ZooperWidget> widgets = new ArrayList<>();
     private final WeakReference<Context> context;
-    private long startTime, endTime;
 
     public LoadZooperWidgets(Context context) {
         this.context = new WeakReference<>(context);
     }
 
     @Override
-    protected void onPreExecute() {
-        startTime = System.currentTimeMillis();
-    }
-
-    @Override
     @SuppressWarnings("ResultOfMethodCallIgnored")
     protected Boolean doInBackground(Void... params) {
-
         boolean worked = false;
-
         try {
             AssetManager assetManager = context.get().getAssets();
             String[] templates = assetManager.list("templates");
@@ -88,11 +80,8 @@ public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
                 worked = widgets.size() == templates.length;
             }
         } catch (Exception e) {
-            //Do nothing
             worked = false;
         }
-
-        endTime = System.currentTimeMillis();
         return worked;
     }
 
@@ -108,10 +97,8 @@ public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
                 }
                 ((ShowcaseActivity) context.get()).resetFragment(DrawerActivity.DrawerItem.ZOOPER);
             }
-            Timber.d("Load of widgets task completed successfully in: %d milliseconds", (endTime
-                    - startTime));
         } else {
-            Timber.d("Something went really wrong while loading zooper widgets.");
+            Timber.e("Something went really wrong while loading zooper widgets.");
         }
 
     }
@@ -164,12 +151,12 @@ public class LoadZooperWidgets extends AsyncTask<Void, String, Boolean> {
                 out = new FileOutputStream(preview);
                 bmp.compress(Bitmap.CompressFormat.PNG, 100, out);
             } catch (IOException e) {
-                Timber.d("ZooperIOException", e.getLocalizedMessage());
+                Timber.e("ZooperIOException", e.getLocalizedMessage());
             } finally {
                 try {
                     if (out != null) out.close();
                 } catch (IOException e1) {
-                    Timber.d("ZooperIOException2", e1.getLocalizedMessage());
+                    Timber.e("ZooperIOException2", e1.getLocalizedMessage());
                 }
             }
         }

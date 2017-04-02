@@ -21,13 +21,9 @@
 
 -keep public class * implements com.bumptech.glide.module.GlideModule
 
--keep class com.google.**
--keep class autovalue.shaded.com.google.**
+-keep class com.github.javiersantos.**
+-dontwarn com.github.javiersantos.**
 -keep public class com.android.vending.licensing.ILicensingService
-
--dontwarn org.apache.**
--dontwarn com.google.**
--dontwarn autovalue.shaded.com.google.**
 
 -dontwarn
 -ignorewarnings

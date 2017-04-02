@@ -324,7 +324,7 @@ public class Utils {
                     .getPackageName(), 0);
             return packageInfo.versionCode;
         } catch (PackageManager.NameNotFoundException e) {
-            Timber.d("Unable to get version code. Reason:", e.getLocalizedMessage());
+            Timber.e("Unable to get version code. Reason:", e.getLocalizedMessage());
             return -1;
         }
     }

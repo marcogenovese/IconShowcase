@@ -166,10 +166,9 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
                 inImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
                 fos.close();
             } catch (final Exception e) {
-                Timber.d("WallpaperToCrop", e.getLocalizedMessage());
+                Timber.e("WallpaperToCrop", e.getLocalizedMessage());
             }
         }
-
         return Uri.fromFile(destFile);
     }
 

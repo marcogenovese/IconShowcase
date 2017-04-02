@@ -94,7 +94,7 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
                     }
                 }
             } catch (Resources.NotFoundException e) {
-                Timber.d("Couldn't find array for section: \'" + tabName + "\'.");
+                Timber.e("Couldn't find array for section: \'" + tabName + "\'.");
             }
         }
 
@@ -130,7 +130,7 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
                         .resetFragment(DrawerActivity.DrawerItem.PREVIEWS);
             }
         } else {
-            Timber.d("Something went really wrong while loading icons.");
+            Timber.e("Something went really wrong while loading icons.");
         }
     }
 
@@ -160,8 +160,8 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
             if (iconResId > 0) {
                 list.add(new IconItem(iconName, iconResId));
             } else {
-                Timber.d("Icon \'" + iconName + "\' could not be found." +
-                        " Make sure you added it in resources.");
+                Timber.e("Icon \'" + iconName + "\' could not be found. Make sure you added it in" +
+                        " resources.");
             }
         }
         return list;

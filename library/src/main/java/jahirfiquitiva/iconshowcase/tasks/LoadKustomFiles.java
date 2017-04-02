@@ -50,15 +50,9 @@ public class LoadKustomFiles extends AsyncTask<Void, String, Boolean> {
     private final ArrayList<KustomWallpaper> wallpapers = new ArrayList<>();
     private final ArrayList<KustomWidget> widgets = new ArrayList<>();
     private final WeakReference<Context> context;
-    private long startTime, endTime;
 
     public LoadKustomFiles(Context context) {
         this.context = new WeakReference<>(context);
-    }
-
-    @Override
-    protected void onPreExecute() {
-        startTime = System.currentTimeMillis();
     }
 
     @Override
@@ -75,7 +69,6 @@ public class LoadKustomFiles extends AsyncTask<Void, String, Boolean> {
             //Do nothing
             worked = false;
         }
-        endTime = System.currentTimeMillis();
         return worked;
     }
 
@@ -92,10 +85,8 @@ public class LoadKustomFiles extends AsyncTask<Void, String, Boolean> {
                             .updateAppInfoData();
                 }
             }
-            Timber.d("Load of kustom files task completed successfully in: %d milliseconds",
-                    (endTime - startTime));
         } else {
-            Timber.d("Something went really wrong while loading Kustom files");
+            Timber.e("Something went really wrong while loading Kustom files");
         }
     }
 

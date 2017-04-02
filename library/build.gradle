@@ -124,10 +124,10 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.1.0'
 
     //Library for Requests
-    compile 'com.github.AllanWang:Butler:b378dd6'
+    compile 'com.github.AllanWang:Butler:8b5f059'
 
     //Library for UI framework
-    compile 'ca.allanwang:capsule:0fc1b59'
+    compile 'ca.allanwang:capsule:79c8689'
 
     //Donations Lib
     compile 'org.sufficientlysecure:donations:2.5'
@@ -137,7 +137,7 @@ dependencies {
     compile 'com.google.android.apps.muzei:muzei-api:2.0'
 
     //License Checker Lib
-    compile 'me.jahirfiquitiva:PiracyChecker:43a031d'
+    compile 'me.jahirfiquitiva:PiracyChecker:1232c3f'
 
     //Required for Kustom support.
     //noinspection GradleDynamicVersion

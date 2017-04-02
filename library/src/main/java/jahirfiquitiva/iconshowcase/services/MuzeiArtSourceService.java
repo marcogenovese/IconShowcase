@@ -66,7 +66,7 @@ public class MuzeiArtSourceService extends RemoteMuzeiArtSource {
             try {
                 onTryUpdate(UPDATE_REASON_USER_NEXT);
             } catch (RetryException e) {
-                Timber.d("Error updating Muzei: " + e.getLocalizedMessage());
+                Timber.e("Error updating Muzei: " + e.getLocalizedMessage());
             }
         }
         return super.onStartCommand(intent, flags, startId);
@@ -132,7 +132,7 @@ public class MuzeiArtSourceService extends RemoteMuzeiArtSource {
         try {
             new DownloadJSONAndSetWall(getApplicationContext()).execute();
         } catch (Exception e) {
-            Timber.d("Error updating Muzei: " + e.getLocalizedMessage());
+            Timber.e("Error updating Muzei: " + e.getLocalizedMessage());
             throw new RetryException();
         }
     }
@@ -187,14 +187,14 @@ public class MuzeiArtSourceService extends RemoteMuzeiArtSource {
                         worked = true;
                     } catch (JSONException e) {
                         worked = false;
-                        Timber.d("Error downloading JSON for Muzei: " + e.getLocalizedMessage());
+                        Timber.e("Error downloading JSON for Muzei: " + e.getLocalizedMessage());
                     }
                 } else {
                     worked = false;
                 }
             } catch (Exception e) {
                 worked = false;
-                Timber.d("Error in Muzei: " + e.getLocalizedMessage());
+                Timber.e("Error in Muzei: " + e.getLocalizedMessage());
             }
             return worked;
         }
@@ -207,8 +207,8 @@ public class MuzeiArtSourceService extends RemoteMuzeiArtSource {
                     i = new Random().nextInt(names.size());
                     setImageForMuzei(names.get(i), authors.get(i), urls.get(i));
                     Timber.d("Setting picture: " + names.get(i));
-                } catch (IllegalArgumentException e) {
-                    Timber.d("Muzei error: " + e.getLocalizedMessage());
+                } catch (Exception e) {
+                    Timber.e("Muzei error: " + e.getLocalizedMessage());
                 }
             }
         }
