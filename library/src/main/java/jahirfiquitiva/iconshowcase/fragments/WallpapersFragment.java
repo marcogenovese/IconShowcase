@@ -148,6 +148,7 @@ public class WallpapersFragment extends EventBaseFragment {
     }
 
     private void setupRecyclerView(boolean updating, int newColumns) {
+        if(mRecyclerView==null) return;
         Preferences mPrefs = new Preferences(context);
         if (updating && gridSpacing != null) {
             mPrefs.setWallsColumnsNumber(newColumns);
@@ -180,14 +181,18 @@ public class WallpapersFragment extends EventBaseFragment {
     }
 
     public void updateRecyclerView(int newColumns) {
-        mRecyclerView.setVisibility(View.GONE);
-        fastScroller.setVisibility(View.GONE);
+        if(mRecyclerView!=null)
+            mRecyclerView.setVisibility(View.GONE);
+        if(fastScroller!=null)
+            fastScroller.setVisibility(View.GONE);
         setupRecyclerView(true, newColumns);
     }
 
     public void refreshContent(Context context) {
-        mRecyclerView.setVisibility(View.GONE);
-        fastScroller.setVisibility(View.GONE);
+        if(mRecyclerView!=null)
+            mRecyclerView.setVisibility(View.GONE);
+        if(fastScroller!=null)
+            fastScroller.setVisibility(View.GONE);
         int stringId;
         if (Utils.hasNetwork(context)) {
             stringId = R.string.refreshing_walls;
@@ -195,8 +200,8 @@ public class WallpapersFragment extends EventBaseFragment {
             stringId = R.string.no_conn_title;
         }
         snackbar(new SnackbarEvent(stringId).setDuration(Snackbar.LENGTH_SHORT)
-                .setColor(ThemeUtils.darkOrLight(context, R.color.snackbar_dark, R.color
-                        .snackbar_light)));
+                .setColor(ThemeUtils.darkOrLight(context, R.color.snackbar_dark,
+                                                 R.color.snackbar_light)));
         mSwipeRefreshLayout.setEnabled(true);
         mSwipeRefreshLayout.post(new Runnable() {
             @Override
