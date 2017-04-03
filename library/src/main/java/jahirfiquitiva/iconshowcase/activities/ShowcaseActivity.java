@@ -290,11 +290,8 @@ public class ShowcaseActivity extends TasksActivity {
     }
 
     private void reloadFragment(DrawerItem dt) {
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager()
-                .beginTransaction();
-
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(getFragmentId(), dt.getFragment(), dt.getName());
-
         if (mPrefs.getAnimationsEnabled())
             fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter,
                     R.anim.pop_exit);

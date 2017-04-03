@@ -137,7 +137,7 @@ dependencies {
     compile 'com.google.android.apps.muzei:muzei-api:2.0'
 
     //License Checker Lib
-    compile 'me.jahirfiquitiva:PiracyChecker:6cc1d20'
+    compile 'me.jahirfiquitiva:PiracyChecker:292c299'
 
     //Required for Kustom support.
     //noinspection GradleDynamicVersion
