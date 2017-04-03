@@ -97,8 +97,6 @@ android {
 
 }
 
-apply from: 'fat-aar.gradle'
-
 dependencies {
     embedded fileTree(dir: 'libs', include: ['*.jar'])
     //Android Support Libraries
@@ -137,12 +135,11 @@ dependencies {
     compile 'com.google.android.apps.muzei:muzei-api:2.0'
 
     //License Checker Lib
-    compile 'me.jahirfiquitiva:PiracyChecker:aee9fdd'
+    compile 'me.jahirfiquitiva:PiracyChecker:9edebd2'
 
     //Required for Kustom support.
     //noinspection GradleDynamicVersion
     compile 'org.bitbucket.frankmonza:kustomapi:+'
-
 }
 
 // build a jar with source files
