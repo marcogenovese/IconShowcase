@@ -261,24 +261,27 @@ public class ShowcaseActivity extends TasksActivity {
     protected void onPause() {
         super.onPause();
         clearDialog();
-        if (checker != null) {
-            checker.destroy();
-        }
+        destroyChecker();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         clearDialog();
-        if (checker != null) {
-            checker.destroy();
-        }
+        destroyChecker();
     }
 
     private void clearDialog() {
         if (dialog != null) {
             dialog.dismiss();
             dialog = null;
+        }
+    }
+
+    private void destroyChecker() {
+        if (checker != null) {
+            // checker.destroy();
+            checker = null;
         }
     }
 
@@ -874,10 +877,7 @@ public class ShowcaseActivity extends TasksActivity {
 
     private void checkLicense(final String lic, final boolean allAma, final boolean checkLPF,
                               final boolean checkStores) {
-        if (checker != null) {
-            checker.destroy();
-            checker = null;
-        }
+        destroyChecker();
         checker = new PiracyChecker(this);
         checker.enableInstallerId(InstallerID.GOOGLE_PLAY);
         if (lic != null) checker.enableGooglePlayLicensing(lic);
