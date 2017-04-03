@@ -280,7 +280,7 @@ public class ShowcaseActivity extends TasksActivity {
 
     private void destroyChecker() {
         if (checker != null) {
-            // checker.destroy();
+            checker.destroy();
             checker = null;
         }
     }
