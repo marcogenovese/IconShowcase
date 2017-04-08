@@ -22,7 +22,7 @@
 <manifest
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        package="jahirfiquitiva.apps.iconshowcase.sampleip">
+        package="jahirfiquitiva.apps.iconshowcase.demo">
 
     <!-- Uncomment if you're going to implement in-app purchases for donations
     <uses-permission android:name="com.android.vending.BILLING" />

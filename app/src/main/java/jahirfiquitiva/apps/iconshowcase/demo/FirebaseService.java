@@ -17,7 +17,7 @@
  * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
-package jahirfiquitiva.apps.iconshowcase.sampleip;
+package jahirfiquitiva.apps.iconshowcase.demo;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;

@@ -17,7 +17,7 @@
  * 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
  */
 
-package jahirfiquitiva.apps.iconshowcase.sampleip.zooper;
+package jahirfiquitiva.apps.iconshowcase.demo.zooper;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
