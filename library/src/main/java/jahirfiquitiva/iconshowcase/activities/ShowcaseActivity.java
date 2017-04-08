@@ -881,7 +881,7 @@ public class ShowcaseActivity extends TasksActivity {
         if (allAma) checker.enableInstallerId(InstallerID.AMAZON_APP_STORE);
         if (checkLPF) checker.enableUnauthorizedAppsCheck();
         if (checkStores) checker.enableStoresCheck();
-        checker.enableEmulatorCheck()
+        checker.enableEmulatorCheck(false)
                 .enableDebugCheck()
                 .callback(new PiracyCheckerCallback() {
                     @Override

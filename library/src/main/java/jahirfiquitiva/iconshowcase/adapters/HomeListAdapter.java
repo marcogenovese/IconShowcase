@@ -83,7 +83,8 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     return new AppInfoCard(infoCard);
                 }
             case 2:
-                if (!hasAppsList) {
+                if (!hasAppsList &&
+                        context.getString(R.string.iconpack_author_playstore).length() > 3) {
                     View moreAppsCard = LayoutInflater.from(
                             viewGroup.getContext()).inflate(R.layout.item_moreapps_card,
                             viewGroup, false);
@@ -101,25 +102,21 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof WelcomeCard) {
             WelcomeCard whldr = (WelcomeCard) holder;
-            if (hasAppsList) {
-                whldr.buttons.setVisibility(View.VISIBLE);
-            } else {
-                whldr.buttons.setVisibility(View.GONE);
-            }
+            whldr.buttons.setVisibility(hasAppsList ? View.VISIBLE : View.GONE);
             whldr.ratebtn.setOnClickListener(new DebouncedClickListener() {
                 @Override
                 public void onDebouncedClick(View v) {
                     Intent rate = new Intent(Intent.ACTION_VIEW,
-                            Uri.parse("https://play.google.com/store/apps/details?id=" + context
-                                    .getPackageName()));
+                            Uri.parse("https://play.google.com/store/apps/details?id=" +
+                                    context.getPackageName()));
                     context.startActivity(rate);
                 }
             });
             whldr.moreappsbtn.setOnClickListener(new DebouncedClickListener() {
                 @Override
                 public void onDebouncedClick(View v) {
-                    Utils.openLink(context, context.getResources().getString(R.string
-                            .iconpack_author_playstore));
+                    Utils.openLink(context,
+                            context.getResources().getString(R.string.iconpack_author_playstore));
                 }
             });
         } else if (holder instanceof AppInfoCard) {
@@ -132,16 +129,16 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             mhldr.lly.setOnClickListener(new DebouncedClickListener() {
                 @Override
                 public void onDebouncedClick(View v) {
-                    Utils.openLink(context, context.getResources().getString(R.string
-                            .iconpack_author_playstore));
+                    Utils.openLink(context,
+                            context.getResources().getString(R.string.iconpack_author_playstore));
                 }
             });
         } else if (holder instanceof AppCard) {
             String description;
             final AppCard ahldr = (AppCard) holder;
             if (homeCards.get(ahldr.i - cards).isInstalled()) {
-                description = context.getResources().getString(R.string.tap_to_open, homeCards
-                        .get(ahldr.i - cards).getDesc());
+                description = context.getResources().getString(R.string.tap_to_open,
+                        homeCards.get(ahldr.i - cards).getDesc());
             } else {
                 description = context.getResources().getString(R.string.tap_to_download,
                         homeCards.get(ahldr.i - cards).getDesc());
@@ -212,10 +209,10 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
         this.wallpapers = FullListHolder.get().walls().getList() != null
                 ? FullListHolder.get().walls().getList().size() : 0;
-        this.widgets = FullListHolder.get().zooperList().getList() != null ? FullListHolder
-                .get().zooperList().getList().size() : 0;
-        this.widgets += FullListHolder.get().kustomWidgets().getList() != null ? FullListHolder
-                .get().kustomWidgets().getList().size() : 0;
+        this.widgets = FullListHolder.get().zooperList().getList() != null
+                ? FullListHolder.get().zooperList().getList().size() : 0;
+        this.widgets += FullListHolder.get().kustomWidgets().getList() != null
+                ? FullListHolder.get().kustomWidgets().getList().size() : 0;
         if (this.widgets > 1) {
             this.widgets -= 1;
         }

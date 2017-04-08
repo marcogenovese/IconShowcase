@@ -145,8 +145,9 @@ public class MainFragment extends EventBaseFragment {
         return new CFabEvent(R.drawable.ic_rate, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent rate = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google" +
-                        ".com/store/apps/details?id=" + context.getPackageName()));
+                Intent rate = new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("https://play.google.com/store/apps/details?id=" +
+                                context.getPackageName()));
                 context.startActivity(rate);
             }
         });

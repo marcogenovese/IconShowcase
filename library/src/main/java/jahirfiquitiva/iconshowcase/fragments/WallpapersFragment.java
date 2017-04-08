@@ -148,7 +148,7 @@ public class WallpapersFragment extends EventBaseFragment {
     }
 
     private void setupRecyclerView(boolean updating, int newColumns) {
-        if(mRecyclerView==null) return;
+        if (mRecyclerView == null) return;
         Preferences mPrefs = new Preferences(context);
         if (updating && gridSpacing != null) {
             mPrefs.setWallsColumnsNumber(newColumns);
@@ -160,11 +160,9 @@ public class WallpapersFragment extends EventBaseFragment {
             columnsNumber += 2;
         }
 
-        mRecyclerView.setLayoutManager(new GridLayoutManager(context,
-                columnsNumber));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(context, columnsNumber));
         gridSpacing = new GridSpacingItemDecoration(columnsNumber,
-                context.getResources().getDimensionPixelSize(R.dimen.lists_padding),
-                true);
+                context.getResources().getDimensionPixelSize(R.dimen.lists_padding), true);
         mRecyclerView.addItemDecoration(gridSpacing);
         mRecyclerView.setHasFixedSize(true);
 
@@ -172,7 +170,7 @@ public class WallpapersFragment extends EventBaseFragment {
             mRecyclerView.setVisibility(View.VISIBLE);
         }
 
-        if (mRecyclerView.getAdapter() != null) {
+        if (mRecyclerView.getAdapter() != null && fastScroller != null) {
             fastScroller.attachRecyclerView(mRecyclerView);
             if (fastScroller.getVisibility() != View.VISIBLE) {
                 fastScroller.setVisibility(View.VISIBLE);
@@ -181,17 +179,17 @@ public class WallpapersFragment extends EventBaseFragment {
     }
 
     public void updateRecyclerView(int newColumns) {
-        if(mRecyclerView!=null)
+        if (mRecyclerView != null)
             mRecyclerView.setVisibility(View.GONE);
-        if(fastScroller!=null)
+        if (fastScroller != null)
             fastScroller.setVisibility(View.GONE);
         setupRecyclerView(true, newColumns);
     }
 
     public void refreshContent(Context context) {
-        if(mRecyclerView!=null)
+        if (mRecyclerView != null)
             mRecyclerView.setVisibility(View.GONE);
-        if(fastScroller!=null)
+        if (fastScroller != null)
             fastScroller.setVisibility(View.GONE);
         int stringId;
         if (Utils.hasNetwork(context)) {
@@ -201,14 +199,16 @@ public class WallpapersFragment extends EventBaseFragment {
         }
         snackbar(new SnackbarEvent(stringId).setDuration(Snackbar.LENGTH_SHORT)
                 .setColor(ThemeUtils.darkOrLight(context, R.color.snackbar_dark,
-                                                 R.color.snackbar_light)));
-        mSwipeRefreshLayout.setEnabled(true);
-        mSwipeRefreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                mSwipeRefreshLayout.setRefreshing(true);
-            }
-        });
+                        R.color.snackbar_light)));
+        if (mSwipeRefreshLayout != null) {
+            mSwipeRefreshLayout.setEnabled(true);
+            mSwipeRefreshLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    mSwipeRefreshLayout.setRefreshing(true);
+                }
+            });
+        }
     }
 
     @Override
