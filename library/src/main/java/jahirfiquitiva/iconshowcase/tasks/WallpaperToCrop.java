@@ -140,13 +140,12 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
         wasCancelled = true;
     }
 
-    private Uri getImageUri(Context inContext, Bitmap inImage) {
-        Preferences mPrefs = new Preferences(inContext);
+    private Uri getImageUri(Context context, Bitmap inImage) {
+        Preferences mPrefs = new Preferences(context);
         File downloadsFolder;
 
-        if (inImage.isRecycled()) {
-            inImage = inImage.copy(Bitmap.Config.ARGB_8888, false);
-        }
+        Bitmap picture;
+        picture = inImage.isRecycled() ? inImage.copy(Bitmap.Config.ARGB_8888, false) : inImage;
 
         if (mPrefs.getDownloadsFolder() != null) {
             downloadsFolder = new File(mPrefs.getDownloadsFolder());
@@ -160,10 +159,10 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
 
         File destFile = new File(downloadsFolder, wallName + ".png");
 
-        if (!destFile.exists()) {
+        if (!destFile.exists() && picture != null) {
             try {
                 FileOutputStream fos = new FileOutputStream(destFile);
-                inImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                picture.compress(Bitmap.CompressFormat.PNG, 100, fos);
                 fos.close();
             } catch (final Exception e) {
                 Timber.e("WallpaperToCrop", e.getLocalizedMessage());

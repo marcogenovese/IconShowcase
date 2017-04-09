@@ -37,7 +37,6 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import jahirfiquitiva.iconshowcase.R;
-import jahirfiquitiva.iconshowcase.utilities.Preferences;
 import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.IconUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
@@ -47,36 +46,19 @@ public class IconDialog extends DialogFragment {
 
     private static final String NAME = "Icon name";
     private static final String RESID = "Icon resId";
+    private static final String ANIM = "Icon animation";
     private static final String TAG = "icon_dialog";
     private static final int ANIMATION_DURATION = 400;
     private String name;
     private int resId;
-
-    private static IconDialog newInstance(String name, int resId) {
-        IconDialog f = new IconDialog();
-        Bundle args = new Bundle();
-        args.putString(NAME, name);
-        args.putInt(RESID, resId);
-        f.setArguments(args);
-        return f;
-    }
-
-    public static void show(final FragmentActivity context, String name, int resId) {
-        Fragment frag = context.getSupportFragmentManager().findFragmentByTag(TAG);
-        if (frag != null) ((IconDialog) frag).dismiss();
-        IconDialog.newInstance(name, resId).show(context.getSupportFragmentManager(), TAG);
-    }
-
-    public static void dismiss(final FragmentActivity context) {
-        Fragment frag = context.getSupportFragmentManager().findFragmentByTag(TAG);
-        if (frag != null) ((IconDialog) frag).dismiss();
-    }
+    private boolean animate;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.name = getArguments().getString(NAME);
         this.resId = getArguments().getInt(RESID);
+        this.animate = getArguments().getBoolean(ANIM);
     }
 
     @Override
@@ -85,10 +67,32 @@ public class IconDialog extends DialogFragment {
         if (savedInstanceState != null) {
             name = savedInstanceState.getString(NAME);
             resId = savedInstanceState.getInt(RESID);
+            animate = savedInstanceState.getBoolean(ANIM);
         }
     }
 
-    @SuppressLint("InflateParams")
+    private static IconDialog newInstance(String name, int resId, boolean animate) {
+        IconDialog f = new IconDialog();
+        Bundle args = new Bundle();
+        args.putString(NAME, name);
+        args.putInt(RESID, resId);
+        args.putBoolean(ANIM, animate);
+        f.setArguments(args);
+        return f;
+    }
+
+    public static void show(final FragmentActivity context, String name, int resId,
+                            boolean animate) {
+        Fragment frag = context.getSupportFragmentManager().findFragmentByTag(TAG);
+        if (frag != null) ((IconDialog) frag).dismiss();
+        IconDialog.newInstance(name, resId, animate).show(context.getSupportFragmentManager(), TAG);
+    }
+
+    public static void dismiss(final FragmentActivity context) {
+        Fragment frag = context.getSupportFragmentManager().findFragmentByTag(TAG);
+        if (frag != null) ((IconDialog) frag).dismiss();
+    }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -100,12 +104,14 @@ public class IconDialog extends DialogFragment {
                 .build();
 
         if (dialog.getCustomView() != null) {
-            final ImageView iconView = (ImageView) dialog.getCustomView().findViewById(R.id
-                    .dialogicon);
+            final ImageView iconView = (ImageView) dialog.getCustomView()
+                    .findViewById(R.id.dialogicon);
 
             if (iconView != null && resId > 0) {
-                iconView.setScaleX(0);
-                iconView.setScaleY(0);
+                if (animate) {
+                    iconView.setScaleX(0);
+                    iconView.setScaleY(0);
+                }
 
                 Bitmap icon = Utils.drawableToBitmap(ContextCompat.getDrawable(getActivity(),
                         resId));
@@ -115,12 +121,13 @@ public class IconDialog extends DialogFragment {
                 Palette.from(icon).generate(new Palette.PaletteAsyncListener() {
                     @Override
                     public void onGenerated(Palette palette) {
-                        iconView.animate()
-                                .scaleX(1)
-                                .scaleY(1)
-                                .setStartDelay(100)
-                                .setDuration(ANIMATION_DURATION)
-                                .start();
+                        if (animate) {
+                            iconView.animate()
+                                    .scaleX(1)
+                                    .scaleY(1)
+                                    .setDuration(ANIMATION_DURATION)
+                                    .start();
+                        }
 
                         if (palette == null) return;
 
@@ -134,23 +141,29 @@ public class IconDialog extends DialogFragment {
 
                         if (ColorUtils.isLightColor(color)) {
                             if (ThemeUtils.isDarkTheme()) {
-                                buttonText.setAlpha(0);
-                                buttonText.setTextColor(color);
-                                buttonText.animate().alpha(1).setDuration(ANIMATION_DURATION)
-                                        .start();
+                                if (animate) {
+                                    buttonText.setAlpha(0);
+                                    buttonText.setTextColor(color);
+                                    buttonText.animate().alpha(1).setDuration(ANIMATION_DURATION)
+                                            .start();
+                                } else {
+                                    buttonText.setTextColor(color);
+                                }
                             }
                         } else {
                             if (!(ThemeUtils.isDarkTheme())) {
-                                buttonText.setAlpha(0);
-                                buttonText.setTextColor(color);
-                                buttonText.animate().alpha(1).setDuration(ANIMATION_DURATION)
-                                        .start();
+                                if (animate) {
+                                    buttonText.setAlpha(0);
+                                    buttonText.setTextColor(color);
+                                    buttonText.animate().alpha(1).setDuration(ANIMATION_DURATION)
+                                            .start();
+                                } else {
+                                    buttonText.setTextColor(color);
+                                }
                             }
                         }
-
                     }
                 });
-
             }
         }
         return dialog;
@@ -160,11 +173,8 @@ public class IconDialog extends DialogFragment {
     public void onSaveInstanceState(Bundle outState) {
         outState.putString(NAME, name);
         outState.putInt(RESID, resId);
+        outState.putBoolean(ANIM, animate);
         super.onSaveInstanceState(outState);
-    }
-
-    private Preferences getPrefs() {
-        return new Preferences(getActivity());
     }
 
 }

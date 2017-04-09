@@ -153,17 +153,15 @@ public class ApplyWallpaper extends BasicTaskLoader<Boolean> {
                     e.printStackTrace();
                 }
             }
-            if (flag) {
-                if (bitmapHeight > deviceHeight) {
-                    int scaledWidth = (deviceHeight * bitmapWidth) / bitmapHeight;
-                    try {
-                        if (scaledWidth > deviceWidth)
-                            scaledWidth = deviceWidth;
-                        bitmap = Bitmap.createScaledBitmap(bitmap, scaledWidth,
-                                deviceHeight, true);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+            if (flag && bitmapHeight > deviceHeight) {
+                int scaledWidth = (deviceHeight * bitmapWidth) / bitmapHeight;
+                try {
+                    if (scaledWidth > deviceWidth)
+                        scaledWidth = deviceWidth;
+                    bitmap = Bitmap.createScaledBitmap(bitmap, scaledWidth,
+                            deviceHeight, true);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }

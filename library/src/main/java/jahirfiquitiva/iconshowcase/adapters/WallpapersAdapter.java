@@ -19,6 +19,7 @@
 
 package jahirfiquitiva.iconshowcase.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -51,6 +52,7 @@ import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.AltWallpaperViewerActivity;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.activities.WallpaperViewerActivity;
+import jahirfiquitiva.iconshowcase.config.Config;
 import jahirfiquitiva.iconshowcase.holders.WallpaperHolder;
 import jahirfiquitiva.iconshowcase.models.WallpaperItem;
 import jahirfiquitiva.iconshowcase.tasks.ApplyWallpaper;
@@ -70,18 +72,19 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpaperHolder> {
 
     @Override
     public WallpaperHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new WallpaperHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout
-                .item_wallpaper, parent, false), new WallpaperHolder.OnWallpaperClickListener() {
-            @Override
-            public void onSimpleClick(ImageView wall, WallpaperItem item) {
-                onWallClick(wall, item);
-            }
+        return new WallpaperHolder(LayoutInflater.from(
+                parent.getContext()).inflate(R.layout.item_wallpaper, parent, false),
+                new WallpaperHolder.OnWallpaperClickListener() {
+                    @Override
+                    public void onSimpleClick(ImageView wall, WallpaperItem item) {
+                        onWallClick(wall, item);
+                    }
 
-            @Override
-            public void onLongClick(Context context, WallpaperItem item) {
-                showApplyWallpaperDialog(context, item);
-            }
-        });
+                    @Override
+                    public void onLongClick(Context context, WallpaperItem item) {
+                        showApplyWallpaperDialog(context, item);
+                    }
+                });
     }
 
     @Override
@@ -191,6 +194,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpaperHolder> {
                     .listSelector(android.R.color.transparent)
                     .items(R.array.wall_options)
                     .itemsCallback(new MaterialDialog.ListCallback() {
+                        @SuppressLint("StringFormatInvalid")
                         @Override
                         public void onSelection(MaterialDialog dialog, View itemView, int position,
                                                 CharSequence text) {
@@ -214,8 +218,8 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpaperHolder> {
                             }
 
                             applyDialog = new MaterialDialog.Builder(context)
-                                    .content(context.getResources().getString(R.string
-                                            .setting_wall_title, extra.toLowerCase()))
+                                    .content(context.getResources().getString(
+                                            R.string.setting_wall_title, extra.toLowerCase()))
                                     .progress(true, 0)
                                     .cancelable(false)
                                     .show();
@@ -242,7 +246,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpaperHolder> {
                 new ApplyWallpaper.ApplyWallpaperCallback() {
                     @Override
                     public void onPreExecute(Context context) {
-
+                        // Do nothing
                     }
 
                     @Override
@@ -259,12 +263,10 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpaperHolder> {
                         applyDialog.setOnDismissListener(
                                 new DialogInterface.OnDismissListener() {
                                     @Override
-                                    public void onDismiss(DialogInterface
-                                                                  dialogInterface) {
-                                        if (((ShowcaseActivity) context)
-                                                .isWallsPicker()) {
-                                            ((ShowcaseActivity) context)
-                                                    .finish();
+                                    public void onDismiss(DialogInterface dialogInterface) {
+                                        if (((ShowcaseActivity) context).getPickerKey() ==
+                                                Config.WALLS_PICKER) {
+                                            ((ShowcaseActivity) context).finish();
                                         }
                                     }
                                 });
@@ -275,7 +277,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpaperHolder> {
                         if (applyDialog != null) {
                             applyDialog.dismiss();
                         }
-                        if (((ShowcaseActivity) context).isWallsPicker()) {
+                        if (((ShowcaseActivity) context).getPickerKey() == Config.WALLS_PICKER) {
                             ((ShowcaseActivity) context).finish();
                         }
                     }
@@ -291,7 +293,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpaperHolder> {
     }
 
     private void onWallClick(ImageView wall, WallpaperItem item) {
-        if (((ShowcaseActivity) activity).isWallsPicker()) {
+        if (((ShowcaseActivity) activity).getPickerKey() == Config.WALLS_PICKER) {
             showApplyWallpaperDialog(activity, item);
         } else {
             final Intent intent = new Intent(activity,

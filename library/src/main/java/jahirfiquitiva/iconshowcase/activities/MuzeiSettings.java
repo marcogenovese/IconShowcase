@@ -85,8 +85,8 @@ public class MuzeiSettings extends AppCompatActivity {
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setBackgroundTintList(ColorStateList.valueOf(ColorUtils.getAccentColor(this)));
-        fab.setImageDrawable(IconUtils.getTintedDrawable(this, "ic_save", ColorUtils
-                .getAccentColor(this)));
+        fab.setImageDrawable(IconUtils.getTintedDrawable(this, "ic_save",
+                ColorUtils.getAccentColor(this)));
 
         TextView everyTitle = (TextView) findViewById(R.id.every_title);
         everyTitle.setTextColor(ColorUtils.getMaterialPrimaryTextColor(ThemeUtils.isDarkTheme()));
@@ -99,7 +99,7 @@ public class MuzeiSettings extends AppCompatActivity {
 
         seekBar = (AppCompatSeekBar) findViewById(R.id.every_seekbar);
         seekBar.incrementProgressBy(SEEKBAR_STEPS);
-        seekBar.setMax((int) ((SEEKBAR_MAX_VALUE - SEEKBAR_MIN_VALUE) / SEEKBAR_STEPS));
+        seekBar.setMax((SEEKBAR_MAX_VALUE - SEEKBAR_MIN_VALUE) / SEEKBAR_STEPS);
         seekBar.setProgress(mPrefs.getMuzeiRefreshInterval());
 
         View divider = findViewById(R.id.divider);
@@ -107,12 +107,12 @@ public class MuzeiSettings extends AppCompatActivity {
                 ThemeUtils.isDarkTheme())));
 
         TextView wifiOnlyTitle = (TextView) findViewById(R.id.wifi_only_title);
-        wifiOnlyTitle.setTextColor(ColorUtils.getMaterialPrimaryTextColor(ThemeUtils.isDarkTheme
-                ()));
+        wifiOnlyTitle.setTextColor(ColorUtils.getMaterialPrimaryTextColor(
+                ThemeUtils.isDarkTheme()));
 
         TextView wifiOnlySummary = (TextView) findViewById(R.id.wifi_only_summary);
-        wifiOnlySummary.setTextColor(ColorUtils.getMaterialSecondaryTextColor(ThemeUtils
-                .isDarkTheme()));
+        wifiOnlySummary.setTextColor(ColorUtils.getMaterialSecondaryTextColor(
+                ThemeUtils.isDarkTheme()));
 
         checkBox = (AppCompatCheckBox) findViewById(R.id.wifi_checkbox);
         checkBox.setChecked(mPrefs.getMuzeiRefreshOnWiFiOnly());
@@ -129,12 +129,12 @@ public class MuzeiSettings extends AppCompatActivity {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
+                // Do nothing
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
+                // Do nothing
             }
         });
 
@@ -162,6 +162,8 @@ public class MuzeiSettings extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 showConfirmDialog();
+                break;
+            default:
                 break;
         }
         return true;

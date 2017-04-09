@@ -38,7 +38,7 @@ public class LauncherItem {
 
     public boolean isInstalled(Context context) {
         if (isInstalled == -1) {
-            if (packageName.equals("org.cyanogenmod.theme.chooser")) {
+            if ("org.cyanogenmod.theme.chooser".equals(packageName)) {
                 if (Utils.isAppInstalled(context, "org.cyanogenmod.theme.chooser")
                         || Utils.isAppInstalled(context, "com.cyngn.theme.chooser")) {
                     isInstalled = 1;

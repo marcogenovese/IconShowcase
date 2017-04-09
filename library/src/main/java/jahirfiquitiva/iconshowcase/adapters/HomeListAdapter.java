@@ -236,10 +236,9 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     public class WelcomeCard extends RecyclerView.ViewHolder {
-
-        final LinearLayout buttons;
-        final AppCompatButton ratebtn;
-        final AppCompatButton moreappsbtn;
+        private final LinearLayout buttons;
+        private final AppCompatButton ratebtn;
+        private final AppCompatButton moreappsbtn;
 
         public WelcomeCard(View itemView) {
             super(itemView);
@@ -250,9 +249,15 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     public class AppInfoCard extends RecyclerView.ViewHolder {
-        final ImageView iconsIV, wallsIV, widgetsIV;
-        final TextView iconsT, wallsT, widgetsT;
-        final LinearLayout icons, wallpapers, widgets;
+        private final ImageView iconsIV;
+        private final ImageView wallsIV;
+        private final ImageView widgetsIV;
+        private final TextView iconsT;
+        private final TextView wallsT;
+        private final TextView widgetsT;
+        private final LinearLayout icons;
+        private final LinearLayout wallpapers;
+        private final LinearLayout widgets;
 
         public AppInfoCard(View itemView) {
             super(itemView);
@@ -269,11 +274,11 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     public class MoreAppsCard extends RecyclerView.ViewHolder {
-        final LinearLayout lly;
-        final LinearLayout subLly;
-        final TextView title;
-        final TextView desc;
-        final ImageView icon;
+        private final LinearLayout lly;
+        private final LinearLayout subLly;
+        private final TextView title;
+        private final TextView desc;
+        private final ImageView icon;
 
         public MoreAppsCard(View itemView) {
             super(itemView);
@@ -287,11 +292,11 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     public class AppCard extends RecyclerView.ViewHolder {
-
-        final LinearLayout subLly;
-        final TextView cardTitle, cardDesc;
-        final ImageView cardIcon;
-        final int i;
+        private final LinearLayout subLly;
+        private final TextView cardTitle;
+        private final TextView cardDesc;
+        private final ImageView cardIcon;
+        private final int i;
 
         public AppCard(View itemView, int pos) {
             super(itemView);

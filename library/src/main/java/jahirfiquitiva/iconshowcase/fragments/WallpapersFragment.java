@@ -43,6 +43,7 @@ import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.activities.base.DrawerActivity;
 import jahirfiquitiva.iconshowcase.adapters.WallpapersAdapter;
+import jahirfiquitiva.iconshowcase.config.Config;
 import jahirfiquitiva.iconshowcase.dialogs.AdviceDialog;
 import jahirfiquitiva.iconshowcase.events.OnLoadEvent;
 import jahirfiquitiva.iconshowcase.fragments.base.EventBaseFragment;
@@ -80,7 +81,7 @@ public class WallpapersFragment extends EventBaseFragment {
 
         progress = (ProgressBar) layout.findViewById(R.id.progress);
 
-        if (!((ShowcaseActivity) getActivity()).isWallsPicker()) {
+        if (((ShowcaseActivity) getActivity()).getPickerKey() != Config.WALLS_PICKER) {
             AdviceDialog.show(getActivity());
         }
 

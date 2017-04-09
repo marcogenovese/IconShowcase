@@ -223,7 +223,7 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     class CreditsHolder extends RecyclerView.ViewHolder {
 
-        final View view;
+        private final View view;
         private final TextView text;
         private final ImageView icon;
 
@@ -256,6 +256,8 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                             ISDialogs.showLibrariesDialog(context,
                                     context.getResources().getStringArray(R.array.libs_links));
                             break;
+                        default:
+                            break;
                     }
                 }
             });
@@ -264,7 +266,7 @@ public class CreditsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     class DetailedCreditsHolder extends RecyclerView.ViewHolder {
 
-        final View view;
+        private final View view;
         private final TextView title;
         private final TextView content;
         private final ImageView photo;

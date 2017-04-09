@@ -1,6 +1,5 @@
 package jahirfiquitiva.iconshowcase.adapters;
 
-import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.RecyclerView;

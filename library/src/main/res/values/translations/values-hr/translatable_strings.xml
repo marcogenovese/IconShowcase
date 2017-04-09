@@ -176,7 +176,7 @@
     <!-- Please keep this phrase in lowercase unless grammatically required by your language -->
     <string name="license_failed_extra_sec">uklonite sve nelegalne aplikacije</string>
     <string name="license_error">Oprostite, došlo je do pogreške u provjeri vaše licence.</string>
-    <string name="license_success">Hvala na preuzimanju % 1$s. Ako vam se sviđa, nemojte zaboraviti ocijeniti i napisati osvrt na Google Play trgovini.</string>
+    <string name="license_success">Hvala na preuzimanju %1$s. Ako vam se sviđa, nemojte zaboraviti ocijeniti i napisati osvrt na Google Play trgovini.</string>
     <string name="apply_advice">Ako pokretač koji koristite nije na popisu, morate primijeniti paket ikona izravno iz postavki pokretača.\nNeki pokretači ne podržavaju izravnu primjenu.</string>
     <string name="walls_advice">Jednostavno pritisnite sliku da bi ju vidjeli preko cijelog zaslona.\nDugo pritisnite da biste ju primijeniti izravno na početni zaslon.</string>
     <string name="zooper_section_title">Zooper postavljanje</string>

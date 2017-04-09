@@ -85,8 +85,10 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     //Firebase Notifications
-    compile 'com.google.firebase:firebase-messaging:10.2.0'
+    // TODO: Remove comment marks if you want to implement Firebase Notifications
+    // compile 'com.google.firebase:firebase-messaging:10.2.0'
     compile project(':library')
 }
 
-apply plugin: 'com.google.gms.google-services'
+// TODO: Remove comment marks if you want to implement Firebase Notifications
+// apply plugin: 'com.google.gms.google-services'

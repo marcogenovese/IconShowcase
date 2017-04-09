@@ -19,12 +19,8 @@
 
 package jahirfiquitiva.apps.iconshowcase.demo;
 
-import com.google.firebase.messaging.FirebaseMessagingService;
-import com.google.firebase.messaging.RemoteMessage;
-
-import jahirfiquitiva.iconshowcase.utilities.utils.NotificationUtils;
-
-public class FirebaseService extends FirebaseMessagingService {
+// TODO: Remove comment marks if you want to implement Firebase Notifications
+public class FirebaseService { /* extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -36,5 +32,6 @@ public class FirebaseService extends FirebaseMessagingService {
                     remoteMessage.getNotification().getBody());
         }
     }
+    */
 
 }

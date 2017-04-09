@@ -103,8 +103,7 @@ public class NotificationUtils {
 
     public static boolean hasNotificationExtraKey(Context context, Intent intent, String key,
                                                   Class service) {
-        return context != null
-                && isServiceAvailable(context, service)
+        return context != null && isServiceAvailable(context, service)
                 && intent != null && intent.getStringExtra(key) != null;
     }
 

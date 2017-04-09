@@ -27,6 +27,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -34,22 +38,29 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.Target;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -60,6 +71,7 @@ import jahirfiquitiva.iconshowcase.models.WallpaperItem;
 import jahirfiquitiva.iconshowcase.tasks.ApplyWallpaper;
 import jahirfiquitiva.iconshowcase.tasks.WallpaperToCrop;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
+import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.utilities.utils.PermissionsUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
@@ -582,6 +594,7 @@ public class BaseWallpaperViewerActivity extends AppCompatActivity {
                     .listSelector(android.R.color.transparent)
                     .items(R.array.wall_options)
                     .itemsCallback(new MaterialDialog.ListCallback() {
+                        @SuppressLint("StringFormatInvalid")
                         @Override
                         public void onSelection(MaterialDialog dialog, View itemView, int position,
                                                 CharSequence text) {
@@ -607,8 +620,8 @@ public class BaseWallpaperViewerActivity extends AppCompatActivity {
                             }
 
                             dialogApply = new MaterialDialog.Builder(context)
-                                    .content(context.getResources().getString(R.string
-                                            .setting_wall_title, extra.toLowerCase()))
+                                    .content(context.getResources().getString(
+                                            R.string.setting_wall_title, extra.toLowerCase()))
                                     .progress(true, 0)
                                     .cancelable(false)
                                     .show();
@@ -827,6 +840,92 @@ public class BaseWallpaperViewerActivity extends AppCompatActivity {
         public abstract void onDialogShown();
 
         public abstract void onDialogDismissed();
+    }
+
+    public void setupPicture(ImageView mPhoto) {
+        Bitmap bmp = null;
+        String filename = getIntent().getStringExtra("image");
+        try {
+            if (filename != null) {
+                FileInputStream is = openFileInput(filename);
+                bmp = BitmapFactory.decodeStream(is);
+                is.close();
+            } else {
+                bmp = null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        int colorFromCachedPic;
+
+        if (bmp != null) {
+            colorFromCachedPic = ColorUtils.getPaletteSwatch(bmp).getBodyTextColor();
+        } else {
+            colorFromCachedPic = ColorUtils.getMaterialPrimaryTextColor(ThemeUtils.isDarkTheme());
+        }
+
+        final ProgressBar spinner = (ProgressBar) findViewById(R.id.progress);
+        spinner.getIndeterminateDrawable()
+                .setColorFilter(colorFromCachedPic, PorterDuff.Mode.SRC_IN);
+
+        Drawable d;
+        if (bmp != null) {
+            d = new GlideBitmapDrawable(getResources(), bmp);
+        } else {
+            d = new ColorDrawable(ContextCompat.getColor(this, android.R.color.transparent));
+        }
+
+        if (getPrefs().getAnimationsEnabled()) {
+            Glide.with(this)
+                    .load(getItem().getWallURL())
+                    .placeholder(d)
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .fitCenter()
+                    .listener(new RequestListener<String, GlideDrawable>() {
+                        @Override
+                        public boolean onException(Exception e, String model,
+                                                   Target<GlideDrawable> target, boolean
+                                                           isFirstResource) {
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(GlideDrawable resource, String model,
+                                                       Target<GlideDrawable> target, boolean
+                                                               isFromMemoryCache, boolean
+                                                               isFirstResource) {
+                            spinner.setVisibility(View.GONE);
+                            return false;
+                        }
+                    })
+                    .into(mPhoto);
+        } else {
+            Glide.with(this)
+                    .load(getItem().getWallURL())
+                    .placeholder(d)
+                    .dontAnimate()
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .fitCenter()
+                    .listener(new RequestListener<String, GlideDrawable>() {
+                        @Override
+                        public boolean onException(Exception e, String model,
+                                                   Target<GlideDrawable> target, boolean
+                                                           isFirstResource) {
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(GlideDrawable resource, String model,
+                                                       Target<GlideDrawable> target, boolean
+                                                               isFromMemoryCache, boolean
+                                                               isFirstResource) {
+                            spinner.setVisibility(View.GONE);
+                            return false;
+                        }
+                    })
+                    .into(mPhoto);
+        }
     }
 
 }

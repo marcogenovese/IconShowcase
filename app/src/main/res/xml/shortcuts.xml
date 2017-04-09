@@ -31,9 +31,9 @@
             android:shortcutLongLabel="@string/section_icon_request"
             tools:targetApi="n_mr1">
         <intent
-                android:targetPackage="${applicationId}"
+                android:targetPackage="jahirfiquitiva.apps.iconshowcase.demo"
                 android:action="android.intent.action.VIEW"
-                android:targetClass="${applicationId}.HomeActivity"
+                android:targetClass="jahirfiquitiva.apps.iconshowcase.demo.HomeActivity"
                 android:data="request_shortcut"/>
         <categories android:name="android.shortcut.conversation"/>
     </shortcut>
@@ -46,9 +46,9 @@
             android:shortcutLongLabel="@string/section_wallpapers"
             tools:targetApi="n_mr1">
         <intent
-                android:targetPackage="${applicationId}"
+                android:targetPackage="jahirfiquitiva.apps.iconshowcase.demo"
                 android:action="android.intent.action.VIEW"
-                android:targetClass="${applicationId}.HomeActivity"
+                android:targetClass="jahirfiquitiva.apps.iconshowcase.demo.HomeActivity"
                 android:data="wallpapers_shortcut"/>
         <categories android:name="android.shortcut.conversation"/>
     </shortcut>
@@ -61,9 +61,9 @@
             android:shortcutLongLabel="@string/section_apply"
             tools:targetApi="n_mr1">
         <intent
-                android:targetPackage="${applicationId}"
+                android:targetPackage="jahirfiquitiva.apps.iconshowcase.demo"
                 android:action="android.intent.action.VIEW"
-                android:targetClass="${applicationId}.HomeActivity"
+                android:targetClass="jahirfiquitiva.apps.iconshowcase.demo.HomeActivity"
                 android:data="apply_shortcut"/>
         <categories android:name="android.shortcut.conversation"/>
     </shortcut>

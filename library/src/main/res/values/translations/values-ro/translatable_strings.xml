@@ -73,7 +73,7 @@ prin urmare, acesta nu poate fi descărcata din Google Play Store.</string>
     <string name="apply">aplica</string>
     <string name="save">Salvați</string>
     <string name="downloading_wallpaper">Se descarca fundalul…</string>
-    <string name="setting_wall_title">Setarea acestui wallpaper pentru% 1 $ s …</string>
+    <string name="setting_wall_title">Setarea acestui wallpaper pentru %1$s…</string>
     <string name="preparing_wallpaper">Imaginea este pregatita pentru a fi taiata….</string>
     <string name="download_takes_longer">Acestea dureaza mai mult decat normal.Simțiți-vă liber să așteptati sau să anulați această acțiune.</string>
     <string name="set_as_wall_done">Fundal setat!</string>
@@ -95,11 +95,11 @@ prin urmare, acesta nu poate fi descărcata din Google Play Store.</string>
     <string name="advice">Sfat</string>
     <string name="dontshow">Nu mai afisa</string>
     <string name="rate">Voteaza</string>
-    <string name="set_wall_to">Setati fundalul pe …..</string>
+    <string name="set_wall_to">Setati fundalul pe…</string>
     <string name="home_screen">Ecranul de start</string>
     <string name="lock_screen">Ecran de blocaj</string>
     <string name="home_lock_screens">start si ecran de blocaj</string>
-    <string name="crop_and_set_as">taiati fundalul si setatil ca ….</string>
+    <string name="crop_and_set_as">taiati fundalul si setatil ca…</string>
     <!-- Requests -->
     <string name="select_all">Selecteaza tot</string>
     <string name="no_selected_apps_title">Nu există aplicatii selectate</string>

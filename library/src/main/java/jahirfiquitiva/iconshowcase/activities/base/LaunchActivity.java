@@ -22,7 +22,9 @@ package jahirfiquitiva.iconshowcase.activities.base;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
+import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.config.Config;
 import jahirfiquitiva.iconshowcase.utilities.LauncherIntents;
@@ -38,18 +40,24 @@ public class LaunchActivity extends AppCompatActivity {
         if (NotificationUtils.hasNotificationExtraKey(this, getIntent(), "open_link", service)) {
             Utils.openLink(this, getIntent().getStringExtra("open_link"));
         } else {
-            if ((getIntent().getDataString() != null && getIntent().getDataString().equals
-                    ("apply_shortcut"))
-                    && (Utils.getDefaultLauncherPackage(this) != null)) {
-                try {
-                    new LauncherIntents(this, Utils.getDefaultLauncherPackage(this));
-                } catch (IllegalArgumentException ex) {
-                    if (service != null)
-                        runIntent(service);
+            if (getIntent() != null) {
+                if ((getIntent().getDataString() != null &&
+                        getIntent().getDataString().equals("apply_shortcut"))
+                        && (Utils.getDefaultLauncherPackage(this) != null)) {
+                    try {
+                        new LauncherIntents(this, Utils.getDefaultLauncherPackage(this));
+                    } catch (Exception ex) {
+                        if (service != null)
+                            runIntent(service);
+                    }
                 }
+            } else if (service != null) {
+                runIntent(service);
             } else {
-                if (service != null)
-                    runIntent(service);
+                Toast.makeText(this,
+                        getResources().getString(R.string.launcher_icon_restorer_error,
+                                getResources().getString(R.string.app_name)),
+                        Toast.LENGTH_SHORT).show();
             }
         }
         finish();
@@ -72,23 +80,30 @@ public class LaunchActivity extends AppCompatActivity {
         intent.putExtra("checkStores", checkStores());
         intent.putExtra("googlePubKey", licKey());
 
-        if (getIntent().getDataString() != null && getIntent().getDataString().contains
-                ("_shortcut")) {
-            intent.putExtra("shortcut", getIntent().getDataString());
-        }
+        if (getIntent() != null) {
+            if (getIntent().getDataString() != null &&
+                    getIntent().getDataString().contains("_shortcut")) {
+                intent.putExtra("shortcut", getIntent().getDataString());
+            }
 
-        if (getIntent().getAction() != null) {
-            switch (getIntent().getAction()) {
-                case Config.ADW_ACTION:
-                case Config.TURBO_ACTION:
-                case Config.NOVA_ACTION:
-                case Intent.ACTION_PICK:
-                case Intent.ACTION_GET_CONTENT:
-                    intent.putExtra("picker", Config.ICONS_PICKER);
-                    break;
-                case Intent.ACTION_SET_WALLPAPER:
-                    intent.putExtra("picker", Config.WALLS_PICKER);
-                    break;
+            if (getIntent().getAction() != null) {
+                switch (getIntent().getAction()) {
+                    case Config.ADW_ACTION:
+                    case Config.TURBO_ACTION:
+                    case Config.NOVA_ACTION:
+                        intent.putExtra("picker", Config.ICONS_PICKER);
+                        break;
+                    case Intent.ACTION_PICK:
+                    case Intent.ACTION_GET_CONTENT:
+                        intent.putExtra("picker", Config.IMAGE_PICKER);
+                        break;
+                    case Intent.ACTION_SET_WALLPAPER:
+                        intent.putExtra("picker", Config.WALLS_PICKER);
+                        break;
+                    default:
+                        intent.putExtra("picker", 0);
+                        break;
+                }
             }
         }
 

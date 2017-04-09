@@ -72,7 +72,6 @@ public class AdviceDialog extends DialogFragment {
         return new Preferences(getActivity());
     }
 
-    @SuppressLint("InflateParams")
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {

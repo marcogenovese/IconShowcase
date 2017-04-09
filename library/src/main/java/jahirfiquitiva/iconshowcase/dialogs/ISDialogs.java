@@ -52,8 +52,11 @@ import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 
 public final class ISDialogs {
 
-    public static MaterialDialog buildLicenseSuccessDialog(Context context, MaterialDialog
-            .SingleButtonCallback onPositive, MaterialDialog.OnDismissListener onDismiss,
+    public static MaterialDialog buildLicenseSuccessDialog(Context context,
+                                                           MaterialDialog.SingleButtonCallback
+                                                                   onPositive,
+                                                           MaterialDialog.OnDismissListener
+                                                                   onDismiss,
                                                            MaterialDialog.OnCancelListener
                                                                    onCancel) {
 
@@ -180,7 +183,9 @@ public final class ISDialogs {
 
         View v = dialog.getCustomView();
 
-        ImageView authorIcon, dimensIcon, copyrightIcon;
+        ImageView authorIcon;
+        ImageView dimensIcon;
+        ImageView copyrightIcon;
 
         if (v != null) {
             authorIcon = (ImageView) v.findViewById(R.id.icon_author);
@@ -189,33 +194,32 @@ public final class ISDialogs {
             authorIcon.setImageDrawable(IconUtils.getTintedDrawable(context, "ic_person"));
             dimensIcon.setImageDrawable(IconUtils.getTintedDrawable(context, "ic_dimensions"));
             copyrightIcon.setImageDrawable(IconUtils.getTintedDrawable(context, "ic_copyright"));
-        }
 
-        @SuppressWarnings("ConstantConditions") LinearLayout author = (LinearLayout) v
-                .findViewById(R.id.authorName);
-        LinearLayout dimensions = (LinearLayout) v.findViewById(R.id.wallDimensions);
-        LinearLayout copyright = (LinearLayout) v.findViewById(R.id.wallCopyright);
+            LinearLayout author = (LinearLayout) v.findViewById(R.id.authorName);
+            LinearLayout dimensions = (LinearLayout) v.findViewById(R.id.wallDimensions);
+            LinearLayout copyright = (LinearLayout) v.findViewById(R.id.wallCopyright);
 
-        TextView authorText = (TextView) v.findViewById(R.id.wallpaper_author_text);
-        TextView dimensionsText = (TextView) v.findViewById(R.id.wallpaper_dimensions_text);
-        TextView copyrightText = (TextView) v.findViewById(R.id.wallpaper_copyright_text);
+            TextView authorText = (TextView) v.findViewById(R.id.wallpaper_author_text);
+            TextView dimensionsText = (TextView) v.findViewById(R.id.wallpaper_dimensions_text);
+            TextView copyrightText = (TextView) v.findViewById(R.id.wallpaper_copyright_text);
 
-        if (wallAuthor.equals("null") || wallAuthor.equals("")) {
-            author.setVisibility(View.GONE);
-        } else {
-            authorText.setText(wallAuthor);
-        }
+            if ("null".equals(wallAuthor) || wallAuthor.isEmpty()) {
+                author.setVisibility(View.GONE);
+            } else {
+                authorText.setText(wallAuthor);
+            }
 
-        if (wallDimensions.equals("null") || wallDimensions.equals("")) {
-            dimensions.setVisibility(View.GONE);
-        } else {
-            dimensionsText.setText(wallDimensions);
-        }
+            if ("null".equals(wallDimensions) || wallDimensions.isEmpty()) {
+                dimensions.setVisibility(View.GONE);
+            } else {
+                dimensionsText.setText(wallDimensions);
+            }
 
-        if (wallCopyright.equals("null") || wallCopyright.equals("")) {
-            copyright.setVisibility(View.GONE);
-        } else {
-            copyrightText.setText(wallCopyright);
+            if ("null".equals(wallCopyright) || wallCopyright.isEmpty()) {
+                copyright.setVisibility(View.GONE);
+            } else {
+                copyrightText.setText(wallCopyright);
+            }
         }
 
         dialog.show();
@@ -336,8 +340,8 @@ public final class ISDialogs {
                 .show();
     }
 
-    public static void showColumnsSelectorDialog(final Context context, final WallpapersFragment
-            wallsFragment) {
+    public static void showColumnsSelectorDialog(final Context context,
+                                                 final WallpapersFragment wallsFragment) {
         Preferences mPrefs = new Preferences(context);
         final int current = mPrefs.getWallsColumnsNumber();
         new MaterialDialog.Builder(context)
@@ -362,8 +366,8 @@ public final class ISDialogs {
                 .show();
     }
 
-    public static void showZooperAppsDialog(final Context context, final ArrayList<String>
-            appsNames) {
+    public static void showZooperAppsDialog(final Context context,
+                                            final ArrayList<String> appsNames) {
         final String storePrefix = "https://play.google.com/store/apps/details?id=",
                 muLink = "com.batescorp.notificationmediacontrols.alpha",
                 koloretteLink = "com.arun.themeutil.kolorette";
@@ -389,8 +393,8 @@ public final class ISDialogs {
                 .show();
     }
 
-    public static void showKustomAppsDownloadDialog(final Context context, final
-    ArrayList<String> appsNames) {
+    public static void showKustomAppsDownloadDialog(final Context context,
+                                                    final ArrayList<String> appsNames) {
         final String storePrefix = "https://play.google.com/store/apps/details?id=",
                 klwpLink = "org.kustom.wallpaper",
                 kwgtLink = "org.kustom.widget",
@@ -465,8 +469,8 @@ public final class ISDialogs {
                 .show();
     }
 
-    public static void showUICollaboratorsDialog(final Context context, final String[]
-            uiCollaboratorsLinks) {
+    public static void showUICollaboratorsDialog(final Context context,
+                                                 final String[] uiCollaboratorsLinks) {
         new MaterialDialog.Builder(context)
                 .title(R.string.ui_design)
                 .negativeText(R.string.close)

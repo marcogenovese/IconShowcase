@@ -98,11 +98,12 @@ public class ShowcaseActivity extends TasksActivity {
     private IabHelper mHelper;
     private Drawer drawer;
 
-    //TODO check if these are necessary
-    private boolean iconsPicker = false, wallsPicker = false, allowShuffle = true,
-            shuffleIcons = true;
+    private boolean allowShuffle = true;
+    private boolean shuffleIcons = true;
     private long currentItem = -1;
-    private int numOfIcons = 4, wallpaper = -1;
+    private int numOfIcons = 4;
+    private int wallpaper = -1;
+    private int pickerKey = 0;
 
     //TODO do not save Dialog instance; use fragment tags
     private MaterialDialog dialog;
@@ -218,20 +219,21 @@ public class ShowcaseActivity extends TasksActivity {
         if (savedInstanceState == null) {
             if (openWallpapers) {
                 drawerItemClick(mDrawerMap.get(DrawerItem.WALLPAPERS));
-            } else if (iconsPicker && mDrawerMap.containsKey(DrawerItem.PREVIEWS)) {
+            } else if ((pickerKey == Config.ICONS_PICKER || pickerKey == Config.IMAGE_PICKER)
+                    && mDrawerMap.containsKey(DrawerItem.PREVIEWS)) {
                 drawerItemClick(mDrawerMap.get(DrawerItem.PREVIEWS));
-            } else if (wallsPicker && mPrefs.isDashboardWorking() && mDrawerMap.containsKey
-                    (DrawerItem.WALLPAPERS)) {
+            } else if (pickerKey == Config.WALLS_PICKER && mPrefs.isDashboardWorking()
+                    && mDrawerMap.containsKey(DrawerItem.WALLPAPERS)) {
                 drawerItemClick(mDrawerMap.get(DrawerItem.WALLPAPERS));
-            } else if ((shortcut != null && shortcut.equals("apply_shortcut")) && mDrawerMap
-                    .containsKey(DrawerItem.APPLY)) {
+            } else if ((shortcut != null && shortcut.equals("apply_shortcut"))
+                    && mDrawerMap.containsKey(DrawerItem.APPLY)) {
                 drawerItemClick(mDrawerMap.get(DrawerItem.APPLY));
-            } else if ((shortcut != null && shortcut.equals("request_shortcut")) && mDrawerMap
-                    .containsKey(DrawerItem.REQUESTS)) {
+            } else if ((shortcut != null && shortcut.equals("request_shortcut"))
+                    && mDrawerMap.containsKey(DrawerItem.REQUESTS)) {
                 drawerItemClick(mDrawerMap.get(DrawerItem.REQUESTS));
             } else {
-                if (mPrefs.getSettingsModified()) { //TODO remove this from preferences; this can
-                    // be sent via bundle itself
+                if (mPrefs.getSettingsModified()) {
+                    //TODO remove this from preferences; this can be sent via bundle itself
                     //TODO check this
                     long settingsIdentifier = 0;
                     drawerItemClick(settingsIdentifier);
@@ -243,13 +245,13 @@ public class ShowcaseActivity extends TasksActivity {
         }
 
         //Load last, load all other data first
-        startTasks(); //TODO check iconsPicker and wallsPicker booleans
+        startTasks();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (!iconsPicker && !wallsPicker) {
+        if (pickerKey == 0) {
             setupToolbarHeader();
         }
         ToolbarColorizer.setupCollapsingToolbarIconsAndTextsColors(this, cAppBarLayout, cToolbar);
@@ -376,7 +378,7 @@ public class ShowcaseActivity extends TasksActivity {
         currentItem = itemId;
 
         // TODO Make sure this works fine even after configuration changes
-        if ((dt == DrawerItem.HOME) && (!iconsPicker && !wallsPicker)) {
+        if ((dt == DrawerItem.HOME) && (pickerKey == 0)) {
             expandAppBar(mPrefs != null && mPrefs.getAnimationsEnabled());
         } else {
             collapseAppBar(mPrefs != null && mPrefs.getAnimationsEnabled());
@@ -425,7 +427,7 @@ public class ShowcaseActivity extends TasksActivity {
     public void onBackPressed() {
         if (drawer != null && drawer.isDrawerOpen()) {
             drawer.closeDrawer();
-        } else if (drawer != null && currentItem != 0 && !iconsPicker) {
+        } else if (drawer != null && currentItem != 0 && (pickerKey == 0)) {
             drawer.setSelection(0);
         } else if (drawer != null) {
             super.onBackPressed();
@@ -509,8 +511,8 @@ public class ShowcaseActivity extends TasksActivity {
             }
         } else if (i == R.id.columns) {
             if (getCurrentFragment() instanceof WallpapersFragment) {
-                ISDialogs.showColumnsSelectorDialog(this, ((WallpapersFragment)
-                        getCurrentFragment()));
+                ISDialogs.showColumnsSelectorDialog(this,
+                        ((WallpapersFragment) getCurrentFragment()));
             } else {
                 Toast.makeText(this, "Can't perform this action from here.", Toast.LENGTH_SHORT)
                         .show();
@@ -596,9 +598,8 @@ public class ShowcaseActivity extends TasksActivity {
     }
 
     private void getAction() {
-        if (getIntent() == null || getIntent().getIntExtra("picker", 0) == 0) return;
-        iconsPicker = getIntent().getIntExtra("picker", 0) == Config.ICONS_PICKER;
-        wallsPicker = getIntent().getIntExtra("picker", 0) == Config.WALLS_PICKER;
+        if (getIntent() == null) return;
+        this.pickerKey = getIntent().getIntExtra("picker", 0);
     }
 
     public void setupIcons() {
@@ -646,7 +647,7 @@ public class ShowcaseActivity extends TasksActivity {
     public void animateIcons(int delay) {
         if (!(includesIcons())) return;
 
-        if (!iconsPicker && !wallsPicker) {
+        if (pickerKey == 0) {
             switch (numOfIcons) {
                 case 8:
                     if (icon7 != null) {
@@ -793,7 +794,7 @@ public class ShowcaseActivity extends TasksActivity {
         if (DONATIONS_PAYPAL) {
             PAYPAL_USER = getResources().getString(R.string.paypal_email);
             PAYPAL_CURRENCY_CODE = getResources().getString(R.string.paypal_currency_code);
-            if (!(PAYPAL_USER.length() > 5) || !(PAYPAL_CURRENCY_CODE.length() > 1)) {
+            if (PAYPAL_USER.length() <= 5 || PAYPAL_CURRENCY_CODE.length() <= 1) {
                 DONATIONS_PAYPAL = false; //paypal content incorrect
             }
         }
@@ -1037,12 +1038,8 @@ public class ShowcaseActivity extends TasksActivity {
         this.allowShuffle = newValue;
     }
 
-    public boolean isIconsPicker() {
-        return iconsPicker;
-    }
-
-    public boolean isWallsPicker() {
-        return wallsPicker;
+    public int getPickerKey() {
+        return pickerKey;
     }
 
     public Drawable getWallpaperDrawable() {

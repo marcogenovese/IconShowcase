@@ -62,9 +62,7 @@ public class FolderSelectorDialog extends DialogFragment implements MaterialDial
     }
 
     public void setInitialPath(String path) {
-        if (path == null)
-            path = File.separator;
-        initialPath = path;
+        initialPath = path != null ? path : File.separator;
     }
 
     private String[] getContentsArray() {
@@ -159,8 +157,8 @@ public class FolderSelectorDialog extends DialogFragment implements MaterialDial
         dialog.setItems(getContentsArray());
     }
 
-    public <T extends Fragment & FolderSelectionCallback> void show(AppCompatActivity context, T
-            fragment) {
+    public <T extends Fragment & FolderSelectionCallback> void show(AppCompatActivity context,
+                                                                    T fragment) {
         Fragment frag = context.getSupportFragmentManager().findFragmentByTag("FOLDER_SELECTOR");
         if (frag != null) {
             ((DialogFragment) frag).dismiss();
@@ -171,8 +169,8 @@ public class FolderSelectorDialog extends DialogFragment implements MaterialDial
         show(context.getSupportFragmentManager(), "FOLDER_SELECTOR");
     }
 
-    private void createFolder(Context context, final MaterialDialog folderChooserDialog, final
-    String folderPath) {
+    private void createFolder(Context context, final MaterialDialog folderChooserDialog,
+                              final String folderPath) {
         new MaterialDialog.Builder(context)
                 .title(R.string.new_folder_title)
                 .content(R.string.new_folder_content)

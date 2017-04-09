@@ -270,7 +270,8 @@
         -->
 
 
-        <!-- FirebaseService -->
+        <!-- FirebaseService
+        TODO: Remove comment marks if you want to implement Firebase Notifications
         <service
                 android:name=".FirebaseService"
                 tools:ignore="ExportedService">
@@ -285,6 +286,7 @@
         <meta-data
                 android:name="com.google.firebase.messaging.default_notification_color"
                 android:resource="@color/light_theme_accent"/>
+        -->
 
 
         <!-- Muzei Service -->

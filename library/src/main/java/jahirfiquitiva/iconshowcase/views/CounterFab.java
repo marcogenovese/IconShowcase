@@ -42,21 +42,6 @@ import android.view.animation.OvershootInterpolator;
  */
 public class CounterFab extends FloatingActionButton {
 
-    private static final int MAX_COUNT = 99;
-    private static final String MAX_COUNT_TEXT = "99+";
-    private static final int TEXT_SIZE_DP = 11;
-    private static final int TEXT_PADDING_DP = 2;
-    private static final int MASK_COLOR = Color.parseColor("#33000000"); // Translucent black as
-    // mask color
-    private static final Interpolator ANIMATION_INTERPOLATOR = new OvershootInterpolator();
-    private final Rect mContentBounds;
-    private final Paint mTextPaint;
-    private final float mTextSize;
-    private final Paint mCirclePaint;
-    private final Rect mCircleBounds;
-    private final Paint mMaskPaint;
-    private final int mAnimationDuration;
-    private float mAnimationFactor;
     private final Property<CounterFab, Float> ANIMATION_PROPERTY =
             new Property<CounterFab, Float>(Float.class, "animation") {
 
@@ -71,9 +56,26 @@ public class CounterFab extends FloatingActionButton {
                     return 0f;
                 }
             };
+
+    private static final int MAX_COUNT = 99;
+    private static final String MAX_COUNT_TEXT = "99+";
+    private static final int TEXT_SIZE_DP = 11;
+    private static final int TEXT_PADDING_DP = 2;
+    private static final int MASK_COLOR = Color.parseColor("#33000000");
+    private static final Interpolator ANIMATION_INTERPOLATOR = new OvershootInterpolator();
+
+    private final Rect mContentBounds;
+    private final Paint mTextPaint;
+    private final float mTextSize;
+    private final Paint mCirclePaint;
+    private final Rect mCircleBounds;
+    private final Paint mMaskPaint;
+    private final int mAnimationDuration;
+    private float mAnimationFactor;
+
     private int mCount;
     private String mText;
-    private final float mTextHeight;
+    private float mTextHeight;
     private ObjectAnimator mAnimator;
 
     public CounterFab(Context context) {
@@ -196,17 +198,13 @@ public class CounterFab extends FloatingActionButton {
     }
 
     @Override
-    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        super.onLayout(changed, left, top, right, bottom);
-        getContentRect(mContentBounds);
-        mCircleBounds.offsetTo(mContentBounds.left + mContentBounds.width() - mCircleBounds.width
-                (), mContentBounds.top);
-    }
-
-    @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         if (mCount > 0 || isAnimating()) {
+            if (getContentRect(mContentBounds)) {
+                mCircleBounds.offsetTo(mContentBounds.left + mContentBounds.width() -
+                        mCircleBounds.width(), mContentBounds.top);
+            }
             float cx = mCircleBounds.centerX();
             float cy = mCircleBounds.centerY();
             float radius = mCircleBounds.width() / 2f * mAnimationFactor;
@@ -220,34 +218,8 @@ public class CounterFab extends FloatingActionButton {
         }
     }
 
-    @Override
-    public Parcelable onSaveInstanceState() {
-        Parcelable superState = super.onSaveInstanceState();
-        SavedState ss = new SavedState(superState);
-        ss.count = mCount;
-        return ss;
-    }
-
-    @Override
-    public void onRestoreInstanceState(Parcelable state) {
-        SavedState ss = (SavedState) state;
-        super.onRestoreInstanceState(ss.getSuperState());
-        setCount(ss.count);
-        requestLayout();
-    }
-
     private static class SavedState extends View.BaseSavedState {
 
-        public static final Creator<SavedState> CREATOR
-                = new Creator<SavedState>() {
-            public SavedState createFromParcel(Parcel in) {
-                return new SavedState(in);
-            }
-
-            public SavedState[] newArray(int size) {
-                return new SavedState[size];
-            }
-        };
         private int count;
 
         /**
@@ -268,15 +240,41 @@ public class CounterFab extends FloatingActionButton {
         @Override
         public void writeToParcel(Parcel out, int flags) {
             super.writeToParcel(out, flags);
-            out.writeValue(count);
+            out.writeInt(count);
         }
 
         @Override
         public String toString() {
             return CounterFab.class.getSimpleName() + "." + SavedState.class.getSimpleName() + "{"
-                    + Integer.toHexString(System.identityHashCode(this))
-                    + " count=" + count + "}";
+                    + Integer.toHexString(System.identityHashCode(this)) + " count=" + count + "}";
         }
+
+        public static final Creator<SavedState> CREATOR
+                = new Creator<SavedState>() {
+            public SavedState createFromParcel(Parcel in) {
+                return new SavedState(in);
+            }
+
+            public SavedState[] newArray(int size) {
+                return new SavedState[size];
+            }
+        };
+    }
+
+    @Override
+    public Parcelable onSaveInstanceState() {
+        Parcelable superState = super.onSaveInstanceState();
+        SavedState ss = new SavedState(superState);
+        ss.count = mCount;
+        return ss;
+    }
+
+    @Override
+    public void onRestoreInstanceState(Parcelable state) {
+        SavedState ss = (SavedState) state;
+        super.onRestoreInstanceState(ss.getSuperState());
+        setCount(ss.count);
+        requestLayout();
     }
 
 }

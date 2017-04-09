@@ -49,7 +49,6 @@ import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 
 public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private final Drawable[] icons = new Drawable[2];
     private final Context context;
     private final Drawable wallpaper;
     private final View layout;

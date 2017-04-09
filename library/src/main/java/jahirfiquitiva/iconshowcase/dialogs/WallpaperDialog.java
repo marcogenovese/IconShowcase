@@ -40,6 +40,7 @@ import java.util.TimerTask;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
+import jahirfiquitiva.iconshowcase.config.Config;
 import jahirfiquitiva.iconshowcase.events.WallpaperEvent;
 import jahirfiquitiva.iconshowcase.tasks.ApplyWallpaper;
 
@@ -79,7 +80,6 @@ public class WallpaperDialog extends BaseEventDialog {
         return f;
     }
 
-    @SuppressLint("InflateParams")
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -148,8 +148,8 @@ public class WallpaperDialog extends BaseEventDialog {
                                             .positiveText(android.R.string.ok)
                                             .show();
                                     if (getActivity() instanceof ShowcaseActivity) {
-                                        if (((ShowcaseActivity) getActivity()).isWallsPicker
-                                                ()) {
+                                        if (((ShowcaseActivity) getActivity()).getPickerKey() ==
+                                                Config.WALLS_PICKER) {
                                             getActivity().finish();
                                         }
                                     }

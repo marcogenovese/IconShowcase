@@ -33,6 +33,7 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -40,10 +41,9 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.widget.ImageView;
 import android.widget.OverScroller;
 
-public class TouchImageView extends ImageView {
+public class TouchImageView extends AppCompatImageView {
 
     private static final String DEBUG = "DEBUG";
     //
@@ -65,7 +65,8 @@ public class TouchImageView extends ImageView {
     // MTRANS_X and MTRANS_Y are the other values used. prevMatrix is the matrix
     // saved prior to the screen rotating.
     //
-    private Matrix matrix, prevMatrix;
+    private Matrix matrix;
+    private Matrix prevMatrix;
     private State state;
     private float minScale;
     private float maxScale;
@@ -80,11 +81,17 @@ public class TouchImageView extends ImageView {
     //
     // Size of view and previous view size (ie before rotation)
     //
-    private int viewWidth, viewHeight, prevViewWidth, prevViewHeight;
+    private int viewWidth;
+    private int viewHeight;
+    private int prevViewWidth;
+    private int prevViewHeight;
     //
     // Size of image when it is stretched to fit view. Before and After rotation.
     //
-    private float matchViewWidth, matchViewHeight, prevMatchViewWidth, prevMatchViewHeight;
+    private float matchViewWidth;
+    private float matchViewHeight;
+    private float prevMatchViewWidth;
+    private float prevMatchViewHeight;
     private ScaleGestureDetector mScaleDetector;
     private GestureDetector mGestureDetector;
     private GestureDetector.OnDoubleTapListener doubleTapListener = null;
@@ -1078,8 +1085,9 @@ public class TouchImageView extends ImageView {
      */
     private class Fling implements Runnable {
 
-        CompatScroller scroller;
-        int currX, currY;
+        private CompatScroller scroller;
+        private int currX;
+        private int currY;
 
         Fling(int velocityX, int velocityY) {
             setState(State.FLING);
@@ -1146,10 +1154,10 @@ public class TouchImageView extends ImageView {
     @TargetApi(VERSION_CODES.GINGERBREAD)
     private class CompatScroller {
 
-        final OverScroller overScroller;
+        private final OverScroller overScroller;
 
         public CompatScroller(Context context) {
-            overScroller = new OverScroller(context);
+            this.overScroller = new OverScroller(context);
         }
 
         public void fling(int startX, int startY, int velocityX, int velocityY, int minX, int

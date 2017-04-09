@@ -67,8 +67,8 @@ public class PreviewsFragment extends EventBaseFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
-            savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
         if (FullListHolder.get().iconsCategories().isEmpty())
@@ -203,13 +203,11 @@ public class PreviewsFragment extends EventBaseFragment {
                 .forceIcons()
                 .reapplyOnChange(false)
                 .apply(getActivity());
-        if (getActivity() instanceof ShowcaseActivity) {
-            if (mSearchItem != null) {
-                ToolbarColorizer.tintSearchView(getActivity(),
-                        ((ShowcaseActivity) getActivity()).getToolbar(), mSearchItem,
-                        mSearchView, ThemeUtils.darkOrLight(getActivity(),
-                                R.color.toolbar_text_dark, R.color.toolbar_text_light));
-            }
+        if (getActivity() instanceof ShowcaseActivity && mSearchItem != null) {
+            ToolbarColorizer.tintSearchView(getActivity(),
+                    ((ShowcaseActivity) getActivity()).getToolbar(), mSearchItem,
+                    mSearchView, ThemeUtils.darkOrLight(getActivity(),
+                            R.color.toolbar_text_dark, R.color.toolbar_text_light));
         }
     }
 

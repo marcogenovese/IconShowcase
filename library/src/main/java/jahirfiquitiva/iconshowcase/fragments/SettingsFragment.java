@@ -56,15 +56,16 @@ import jahirfiquitiva.iconshowcase.utilities.utils.PermissionsUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 
-public class SettingsFragment extends PreferenceFragment implements FolderSelectorDialog
-        .FolderSelectionCallback {
+public class SettingsFragment extends PreferenceFragment implements
+        FolderSelectorDialog.FolderSelectionCallback {
 
     private Preferences mPrefs;
     private PackageManager p;
     private ComponentName componentName;
-    private Preference WSL, data, notifsUpdateInterval;
-    private String location, cacheSize;
-    private boolean shouldShowFolderChooserDialog = false;
+    private Preference WSL;
+    private Preference data;
+    private String location;
+    private String cacheSize;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -278,7 +279,8 @@ public class SettingsFragment extends PreferenceFragment implements FolderSelect
         if (getResources().getBoolean(R.bool.dev_options)) {
 
             Preference moarOptions;
-            SwitchPreference drawerHeaderTexts, listsCards;
+            SwitchPreference drawerHeaderTexts;
+            SwitchPreference listsCards;
 
             moarOptions = findPreference("moreOptions");
 
@@ -447,12 +449,6 @@ public class SettingsFragment extends PreferenceFragment implements FolderSelect
         location = folder.getAbsolutePath();
         mPrefs.setDownloadsFolder(location);
         WSL.setSummary(getString(R.string.pref_summary_wsl, location));
-    }
-
-    private void enableNotifsSettings(boolean enable) {
-        findPreference("enableLed").setEnabled(enable);
-        findPreference("enableSound").setEnabled(enable);
-        findPreference("enableVibration").setEnabled(enable);
     }
 
 }

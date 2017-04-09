@@ -65,11 +65,11 @@ public class WallpaperHolder extends RecyclerView.ViewHolder implements View.OnC
         view.setOnClickListener(this);
         view.setOnLongClickListener(this);
         titleBg.setBackgroundColor(
-                ColorUtils.changeAlpha(ThemeUtils.darkOrLight(view.getContext(), R.color
-                        .card_light_background, R.color.card_dark_background), 0.65f));
+                ColorUtils.changeAlpha(ThemeUtils.darkOrLight(view.getContext(),
+                        R.color.card_light_background, R.color.card_dark_background), 0.65f));
         name.setTextColor(ColorUtils.getMaterialPrimaryTextColor(!ThemeUtils.isDarkTheme()));
-        authorName.setTextColor(ColorUtils.getMaterialSecondaryTextColor(!ThemeUtils
-                .isDarkTheme()));
+        authorName.setTextColor(ColorUtils.getMaterialSecondaryTextColor(
+                !ThemeUtils.isDarkTheme()));
     }
 
     public void setItem(WallpaperItem item) {
@@ -78,7 +78,8 @@ public class WallpaperHolder extends RecyclerView.ViewHolder implements View.OnC
         name.setText(item.getWallName());
         authorName.setText(item.getWallAuthor());
 
-        final String wallURL = item.getWallURL(), wallThumbURL = item.getWallThumbURL();
+        final String wallURL = item.getWallURL();
+        final String wallThumbURL = item.getWallThumbURL();
         final Preferences mPrefs = new Preferences(view.getContext());
 
         BitmapImageViewTarget target = new BitmapImageViewTarget(wall) {

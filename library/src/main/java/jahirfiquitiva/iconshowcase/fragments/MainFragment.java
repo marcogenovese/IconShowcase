@@ -66,8 +66,10 @@ public class MainFragment extends EventBaseFragment {
         String[] listIcons = getResources().getStringArray(R.array.home_list_icons);
         String[] listLinks = getResources().getStringArray(R.array.home_list_links);
 
-        int names = listNames.length, descs = listDescriptions.length, icons = listIcons.length,
-                packs = listLinks.length;
+        int names = listNames.length;
+        int descs = listDescriptions.length;
+        int icons = listIcons.length;
+        int packs = listLinks.length;
 
         if (names > 0 && names == descs && names == icons && names == packs) {
             hasAppsList = true;

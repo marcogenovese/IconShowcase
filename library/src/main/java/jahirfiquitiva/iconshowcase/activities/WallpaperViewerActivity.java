@@ -23,11 +23,6 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
@@ -35,27 +30,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
-
-import java.io.FileInputStream;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.base.BaseWallpaperViewerActivity;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
-import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.utilities.color.ToolbarColorizer;
 import jahirfiquitiva.iconshowcase.utilities.utils.IconUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.PermissionsUtils;
-import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
 import jahirfiquitiva.iconshowcase.views.TouchImageView;
 
@@ -181,89 +164,7 @@ public class WallpaperViewerActivity extends BaseWallpaperViewerActivity {
         TextView wallNameText = (TextView) findViewById(R.id.wallName);
         wallNameText.setText(getItem().getWallName());
 
-        Bitmap bmp = null;
-        String filename = getIntent().getStringExtra("image");
-        try {
-            if (filename != null) {
-                FileInputStream is = context.openFileInput(filename);
-                bmp = BitmapFactory.decodeStream(is);
-                is.close();
-            } else {
-                bmp = null;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        int colorFromCachedPic;
-
-        if (bmp != null) {
-            colorFromCachedPic = ColorUtils.getPaletteSwatch(bmp).getTitleTextColor();
-        } else {
-            colorFromCachedPic = ColorUtils.getMaterialPrimaryTextColor(ThemeUtils.isDarkTheme());
-        }
-
-        final ProgressBar spinner = (ProgressBar) findViewById(R.id.progress);
-        spinner.getIndeterminateDrawable()
-                .setColorFilter(colorFromCachedPic, PorterDuff.Mode.SRC_IN);
-
-        Drawable d;
-        if (bmp != null) {
-            d = new GlideBitmapDrawable(getResources(), bmp);
-        } else {
-            d = new ColorDrawable(ContextCompat.getColor(context, android.R.color.transparent));
-        }
-
-        if (getPrefs().getAnimationsEnabled()) {
-            Glide.with(context)
-                    .load(getItem().getWallURL())
-                    .placeholder(d)
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                    .fitCenter()
-                    .listener(new RequestListener<String, GlideDrawable>() {
-                        @Override
-                        public boolean onException(Exception e, String model,
-                                                   Target<GlideDrawable> target, boolean
-                                                           isFirstResource) {
-                            return false;
-                        }
-
-                        @Override
-                        public boolean onResourceReady(GlideDrawable resource, String model,
-                                                       Target<GlideDrawable> target, boolean
-                                                               isFromMemoryCache, boolean
-                                                               isFirstResource) {
-                            spinner.setVisibility(View.GONE);
-                            return false;
-                        }
-                    })
-                    .into(mPhoto);
-        } else {
-            Glide.with(context)
-                    .load(getItem().getWallURL())
-                    .placeholder(d)
-                    .dontAnimate()
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                    .fitCenter()
-                    .listener(new RequestListener<String, GlideDrawable>() {
-                        @Override
-                        public boolean onException(Exception e, String model,
-                                                   Target<GlideDrawable> target, boolean
-                                                           isFirstResource) {
-                            return false;
-                        }
-
-                        @Override
-                        public boolean onResourceReady(GlideDrawable resource, String model,
-                                                       Target<GlideDrawable> target, boolean
-                                                               isFromMemoryCache, boolean
-                                                               isFirstResource) {
-                            spinner.setVisibility(View.GONE);
-                            return false;
-                        }
-                    })
-                    .into(mPhoto);
-        }
+        setupPicture(mPhoto);
     }
 
     @Override
