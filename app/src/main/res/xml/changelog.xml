@@ -22,17 +22,15 @@
     <version title="New:"/>
     <item text="Updated translations for more than 9 languages."/>
     <item text="Added new license check system."/>
-    <item text="Added a confirmation dialog when long-pressing to apply a wallpaper."/>
-    <item text="Added option to open Kustom widgets and wallpapers in respective Kustom app, directly from IconShowcase."/>
+    <item text="Simplified some code."/>
+    <item text="Added back requests limit and time limit."/>
 
     <version title="Improvements:"/>
     <item text="All dashboard icons are customizable now."/>
-    <item text="Less lag in previews section."/>
-    <item text="Now you can define if a wallpaper can be downloaded by user or not."/>
-    <item text="Now if wallpaper download takes more than 10 seconds, users will be able to cancel it."/>
+    <item text="Deleted some pictures to reduce app size."/>
+    <item text="Changelog dialog can show a \'Check new icons\' button now."/>
+    <item text="Wallpapers can be set to homescreen only, or lockscreen only, or both. (Only on Android 7+ devices)."/>
 
     <version title="Fixes:"/>
-    <item text="Fixed icons flickering/blinking in some sections."/>
-    <item text="Fixed texts in icons request limit dialog."/>
-    <item text="Fixed some crashes."/>
+    <item text="Fixed some crashes and general issues."/>
 </resources>
