@@ -19,9 +19,9 @@
 
 package jahirfiquitiva.iconshowcase.activities.base;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import jahirfiquitiva.iconshowcase.R;
@@ -31,28 +31,30 @@ import jahirfiquitiva.iconshowcase.utilities.LauncherIntents;
 import jahirfiquitiva.iconshowcase.utilities.utils.NotificationUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 
-public class LaunchActivity extends AppCompatActivity {
+public class LaunchActivity extends ShowcaseActivity {
 
+    @SuppressLint("MissingSuperCall")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        launchShowcase(savedInstanceState);
+    }
+
+    private void launchShowcase(Bundle savedInstanceState) {
         Class service = getFirebaseClass();
         if (NotificationUtils.hasNotificationExtraKey(this, getIntent(), "open_link", service)) {
             Utils.openLink(this, getIntent().getStringExtra("open_link"));
         } else {
-            if (getIntent() != null) {
-                if ((getIntent().getDataString() != null &&
-                        getIntent().getDataString().equals("apply_shortcut"))
-                        && (Utils.getDefaultLauncherPackage(this) != null)) {
-                    try {
-                        new LauncherIntents(this, Utils.getDefaultLauncherPackage(this));
-                    } catch (Exception ex) {
-                        if (service != null)
-                            runIntent(service);
-                    }
+            if (getIntent().getDataString() != null
+                    && getIntent().getDataString().equals("apply_shortcut")
+                    && (Utils.getDefaultLauncherPackage(this) != null)) {
+                try {
+                    new LauncherIntents(this, Utils.getDefaultLauncherPackage(this));
+                } catch (Exception ex) {
+                    if (service != null)
+                        configureAndLaunch(savedInstanceState, service);
                 }
             } else if (service != null) {
-                runIntent(service);
+                configureAndLaunch(savedInstanceState, service);
             } else {
                 Toast.makeText(this,
                         getResources().getString(R.string.launcher_icon_restorer_error,
@@ -60,30 +62,29 @@ public class LaunchActivity extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
             }
         }
-        finish();
     }
 
-    private void runIntent(Class service) {
-        Intent intent = new Intent(this, ShowcaseActivity.class);
+    private void configureAndLaunch(Bundle instance, Class service) {
+        Bundle configurations = new Bundle();
 
         if (service != null)
-            intent.putExtra("open_wallpapers",
+            configurations.putBoolean("open_wallpapers",
                     NotificationUtils.isNotificationExtraKeyTrue(this, getIntent(), "open_walls",
                             service));
 
-        intent.putExtra("enableDonations", enableDonations());
-        intent.putExtra("enableGoogleDonations", enableGoogleDonations());
-        intent.putExtra("enablePayPalDonations", enablePayPalDonations());
-        intent.putExtra("enableLicenseCheck", enableLicCheck());
-        intent.putExtra("enableAmazonInstalls", enableAmazonInstalls());
-        intent.putExtra("checkLPF", checkLPF());
-        intent.putExtra("checkStores", checkStores());
-        intent.putExtra("googlePubKey", licKey());
+        configurations.putBoolean("enableDonations", enableDonations());
+        configurations.putBoolean("enableGoogleDonations", enableGoogleDonations());
+        configurations.putBoolean("enablePayPalDonations", enablePayPalDonations());
+        configurations.putBoolean("enableLicenseCheck", enableLicCheck());
+        configurations.putBoolean("enableAmazonInstalls", enableAmazonInstalls());
+        configurations.putBoolean("checkLPF", checkLPF());
+        configurations.putBoolean("checkStores", checkStores());
+        configurations.putString("googlePubKey", licKey());
 
         if (getIntent() != null) {
             if (getIntent().getDataString() != null &&
                     getIntent().getDataString().contains("_shortcut")) {
-                intent.putExtra("shortcut", getIntent().getDataString());
+                configurations.putString("shortcut", getIntent().getDataString());
             }
 
             if (getIntent().getAction() != null) {
@@ -91,23 +92,22 @@ public class LaunchActivity extends AppCompatActivity {
                     case Config.ADW_ACTION:
                     case Config.TURBO_ACTION:
                     case Config.NOVA_ACTION:
-                        intent.putExtra("picker", Config.ICONS_PICKER);
+                        configurations.putInt("picker", Config.ICONS_PICKER);
                         break;
                     case Intent.ACTION_PICK:
                     case Intent.ACTION_GET_CONTENT:
-                        intent.putExtra("picker", Config.IMAGE_PICKER);
+                        configurations.putInt("picker", Config.IMAGE_PICKER);
                         break;
                     case Intent.ACTION_SET_WALLPAPER:
-                        intent.putExtra("picker", Config.WALLS_PICKER);
+                        configurations.putInt("picker", Config.WALLS_PICKER);
                         break;
                     default:
-                        intent.putExtra("picker", 0);
+                        configurations.putInt("picker", 0);
                         break;
                 }
             }
         }
-
-        startActivity(intent);
+        startShowcase(instance, configurations);
     }
 
     protected Class getFirebaseClass() {
@@ -143,7 +143,7 @@ public class LaunchActivity extends AppCompatActivity {
     }
 
     protected String licKey() {
-        return "insert_key_here";
+        return "key";
     }
 
 }

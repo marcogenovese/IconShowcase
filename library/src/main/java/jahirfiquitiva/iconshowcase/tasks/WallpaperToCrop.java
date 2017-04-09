@@ -87,7 +87,8 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
                 wallUri = null;
             }
             try {
-                wallUri = getImageUri(context, resource);
+                if (resource == null) return false;
+                wallUri = getImageUri(resource);
                 worked = wallUri != null;
             } catch (Exception e) {
                 worked = false;
@@ -140,7 +141,7 @@ public class WallpaperToCrop extends AsyncTask<Void, String, Boolean> {
         wasCancelled = true;
     }
 
-    private Uri getImageUri(Context context, Bitmap inImage) {
+    private Uri getImageUri(Bitmap inImage) {
         Preferences mPrefs = new Preferences(context);
         File downloadsFolder;
 

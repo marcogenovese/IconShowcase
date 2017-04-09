@@ -115,28 +115,27 @@ public class ShowcaseActivity extends TasksActivity {
 
     private PiracyChecker checker = null;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void startShowcase(Bundle savedInstance, Bundle configuration) {
         ThemeUtils.onActivityCreateSetTheme(this);
-        super.onCreate(savedInstanceState);
+        super.onCreate(savedInstance);
 
-        String shortcut = getIntent().getStringExtra("shortcut");
-        boolean openWallpapers = getIntent().getBooleanExtra("open_wallpapers", false) ||
+        String shortcut = configuration.getString("shortcut");
+        boolean openWallpapers = configuration.getBoolean("open_wallpapers", false) ||
                 (shortcut != null && shortcut.equals("wallpapers_shortcut"));
 
         //TODO remove all this; donations will exist if they are configured
-        WITH_DONATIONS_SECTION = getIntent().getBooleanExtra("enableDonations", false);
-        DONATIONS_GOOGLE = getIntent().getBooleanExtra("enableGoogleDonations", false);
-        DONATIONS_PAYPAL = getIntent().getBooleanExtra("enablePayPalDonations", false);
+        WITH_DONATIONS_SECTION = configuration.getBoolean("enableDonations", false);
+        DONATIONS_GOOGLE = configuration.getBoolean("enableGoogleDonations", false);
+        DONATIONS_PAYPAL = configuration.getBoolean("enablePayPalDonations", false);
 
-        WITH_LICENSE_CHECKER = getIntent().getBooleanExtra("enableLicenseCheck", false);
-        WITH_INSTALLED_FROM_AMAZON = getIntent().getBooleanExtra("enableAmazonInstalls", false);
-        CHECK_LPF = getIntent().getBooleanExtra("checkLPF", false);
-        CHECK_STORES = getIntent().getBooleanExtra("checkStores", false);
+        WITH_LICENSE_CHECKER = configuration.getBoolean("enableLicenseCheck", false);
+        WITH_INSTALLED_FROM_AMAZON = configuration.getBoolean("enableAmazonInstalls", false);
+        CHECK_LPF = configuration.getBoolean("checkLPF", false);
+        CHECK_STORES = configuration.getBoolean("checkStores", false);
 
-        GOOGLE_PUBKEY = getIntent().getStringExtra("googlePubKey");
+        GOOGLE_PUBKEY = configuration.getString("googlePubKey");
 
-        getAction();
+        pickerKey = configuration.getInt("picker");
 
         shuffleIcons = getResources().getBoolean(R.bool.shuffle_toolbar_icons);
 
@@ -173,7 +172,7 @@ public class ShowcaseActivity extends TasksActivity {
 
         collapsingToolbarLayout.setTitle(thaAppName);
         ToolbarColorizer.setupCollapsingToolbarTextColors(this, collapsingToolbarLayout, true);
-        setupDrawer(savedInstanceState);
+        setupDrawer(savedInstance);
 
         //Setup donations
         if (DONATIONS_GOOGLE) {
@@ -216,7 +215,7 @@ public class ShowcaseActivity extends TasksActivity {
             });
         }
 
-        if (savedInstanceState == null) {
+        if (savedInstance == null) {
             if (openWallpapers) {
                 drawerItemClick(mDrawerMap.get(DrawerItem.WALLPAPERS));
             } else if ((pickerKey == Config.ICONS_PICKER || pickerKey == Config.IMAGE_PICKER)
@@ -409,6 +408,7 @@ public class ShowcaseActivity extends TasksActivity {
             outState.putString("toolbarTitle", collapsingToolbarLayout.getTitle().toString());
         }
         outState.putInt("currentSection", (int) currentItem);
+        outState.putInt("pickerKey", pickerKey);
         super.onSaveInstanceState(outState);
     }
 
@@ -419,6 +419,7 @@ public class ShowcaseActivity extends TasksActivity {
             ToolbarColorizer.setupCollapsingToolbarTextColors(this, collapsingToolbarLayout);
             collapsingToolbarLayout.setTitle(savedInstanceState.getString("toolbarTitle",
                     thaAppName));
+            pickerKey = savedInstanceState.getInt("pickerKey", 0);
         }
         drawerItemClick(savedInstanceState.getInt("currentSection"));
     }
@@ -595,11 +596,6 @@ public class ShowcaseActivity extends TasksActivity {
                 text.setTextAppearance(style);
             }
         }
-    }
-
-    private void getAction() {
-        if (getIntent() == null) return;
-        this.pickerKey = getIntent().getIntExtra("picker", 0);
     }
 
     public void setupIcons() {

@@ -594,7 +594,6 @@ public class BaseWallpaperViewerActivity extends AppCompatActivity {
                     .listSelector(android.R.color.transparent)
                     .items(R.array.wall_options)
                     .itemsCallback(new MaterialDialog.ListCallback() {
-                        @SuppressLint("StringFormatInvalid")
                         @Override
                         public void onSelection(MaterialDialog dialog, View itemView, int position,
                                                 CharSequence text) {

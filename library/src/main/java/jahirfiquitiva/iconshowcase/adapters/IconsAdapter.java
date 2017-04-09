@@ -28,12 +28,14 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.FileProvider;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 import jahirfiquitiva.iconshowcase.R;
@@ -121,41 +123,48 @@ public class IconsAdapter extends RecyclerView.Adapter<IconHolder> {
                         bitmap = BitmapFactory.decodeResource(context.getResources(), resId);
                     }
                 } catch (Exception e) {
-                    Log.i("IconsPicker", "Error: " + e.getMessage());
                     Timber.e("Icons Picker error:", e.getMessage());
                 }
                 if (bitmap != null) {
-                    Log.i("IconsPicker", "Bitmap is not null :D");
                     if (pickerKey == Config.ICONS_PICKER) {
-                        // intent.putExtra("icon", bitmap);
+                        intent.putExtra("icon", bitmap);
                         Intent.ShortcutIconResource iconRes =
                                 Intent.ShortcutIconResource.fromContext(context, resId);
                         intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconRes);
                     } else if (pickerKey == Config.IMAGE_PICKER) {
-                        String bmpUri = ContentResolver.SCHEME_ANDROID_RESOURCE + "://"
-                                + context.getPackageName() + "/" + String.valueOf(resId);
                         Uri uri = null;
+                        File icon = new File(context.getCacheDir(), name + ".png");
+                        FileOutputStream fos;
                         try {
-                            uri = resourceToUri(context, resId);
-                        } catch (Exception e) {
-                            try {
-                                uri = Uri.parse(bmpUri);
-                            } catch (Exception ignored) {
+                            fos = new FileOutputStream(icon);
+                            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                            fos.flush();
+                            fos.close();
+
+                            uri = getUriFromFile(context, icon);
+                            if (uri == null) {
+                                try {
+                                    uri = getUriFromResource(context, resId);
+                                } catch (Exception e) {
+                                    try {
+                                        uri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE +
+                                                "://" + context.getPackageName() + "/" +
+                                                String.valueOf(resId));
+                                    } catch (Exception ignored) {
+                                    }
+                                }
                             }
+                        } catch (Exception ignored) {
                         }
                         if (uri != null) {
-                            Log.i("IconsPicker", "URI: " + uri.toString());
                             intent.putExtra(Intent.EXTRA_STREAM, uri);
                             intent.setData(uri);
                             intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                        } else {
-                            Log.i("IconsPicker", "URI was null! D:");
                         }
                         intent.putExtra("return-data", false);
                     }
                     context.setResult(Activity.RESULT_OK, intent);
                 } else {
-                    Log.i("IconsPicker", "Bitmap was null! D:");
                     context.setResult(Activity.RESULT_CANCELED, intent);
                 }
                 context.finish();
@@ -166,11 +175,20 @@ public class IconsAdapter extends RecyclerView.Adapter<IconHolder> {
         }
     }
 
-    private static Uri resourceToUri(Context context, int resID) {
+    private Uri getUriFromResource(Context context, int resID) {
         return Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" +
                 context.getResources().getResourcePackageName(resID) + '/' +
                 context.getResources().getResourceTypeName(resID) + '/' +
                 context.getResources().getResourceEntryName(resID));
+    }
+
+    private Uri getUriFromFile(Context context, File file) {
+        try {
+            return FileProvider.getUriForFile(context, context.getPackageName() +
+                    ".fileProvider", file);
+        } catch (Exception ignored) {
+        }
+        return null;
     }
 
 }

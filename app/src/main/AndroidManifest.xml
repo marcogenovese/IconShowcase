@@ -41,7 +41,6 @@
         <activity
                 android:name=".HomeActivity"
                 android:label="@string/app_name"
-                android:noHistory="true"
                 android:theme="@style/AppTheme.LaunchScreen">
 
             <intent-filter>
@@ -62,7 +61,7 @@
                     android:resource="@xml/shortcuts"/>
 
 
-            <!-- DO NOT REMOVE THE THINGS BELOW -->
+            <!-- TODO: CAREFUL! DO NOT REMOVE THE THINGS BELOW -->
             <intent-filter tools:ignore="GoogleAppIndexingDeepLinkError,GoogleAppIndexingUrlError,
                 GoogleAppIndexingWarning">
                 <action android:name="android.intent.action.VIEW"/>
@@ -72,7 +71,6 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.SET_WALLPAPER"/>
-
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
             <intent-filter>
@@ -85,9 +83,7 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.PICK"/>
-
                 <category android:name="android.intent.category.DEFAULT"/>
-
                 <data android:mimeType="image/*"/>
             </intent-filter>
             <intent-filter>
@@ -98,48 +94,45 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.PICK"/>
-
                 <category android:name="android.intent.category.DEFAULT"/>
-
                 <data android:mimeType="image/*"/>
             </intent-filter>
-            <!-- Xperia Home Launcher -->
-            <intent-filter>
-                <action android:name="com.sonymobile.home.ICON_PACK"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-            <!-- ADW -->
+            <!-- ADW Launcher -->
             <intent-filter>
                 <action android:name="org.adw.launcher.THEMES"/>
-
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
             <intent-filter>
                 <action android:name="org.adw.launcher.icons.ACTION_PICK_ICON"/>
-
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
-            <!-- Apex -->
+            <!-- Apex Launcher -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="com.anddoes.launcher.THEME"/>
             </intent-filter>
-            <!-- Atom -->
+            <!-- Atom Launcher -->
             <intent-filter>
                 <action android:name="com.dlto.atom.launcher.THEME"/>
             </intent-filter>
-            <!-- Nova -->
+            <!-- GO Launcher -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+                <action android:name="com.gau.go.launcherex.theme"/>
 
-                <category android:name="com.teslacoilsw.launcher.THEME"/>
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
             <intent-filter>
-                <action android:name="com.novalauncher.THEME"/>
+                <action android:name="com.gau.go.launcherex.theme"/>
+                <action android:name="com.zeroteam.zerolauncher.theme"/>
+                <action android:name="android.intent.action.MAIN"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.gau.go.launcherex.theme"/>
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="com.novalauncher.category.CUSTOM_ICON_PICKER"/>
+                <category android:name="android.intent.category.THEME_SCENE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
             <!-- LauncherPro / Holo -->
             <intent-filter>
@@ -153,21 +146,24 @@
 
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
-            <!-- TSF Shell -->
+            <!-- Nine Launcher -->
+            <intent-filter>
+                <action android:name="com.gridappsinc.launcher.theme.apk_action"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <!-- Nova Launcher-->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-                <action android:name="com.tsf.shell.themes"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-            <!-- Turbo Launcher -->
-            <intent-filter>
-                <action android:name="com.phonemetra.turbo.launcher.THEMES"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="com.teslacoilsw.launcher.THEME"/>
             </intent-filter>
             <intent-filter>
-                <action android:name="com.phonemetra.turbo.launcher.icons.ACTION_PICK_ICON"/>
+                <action android:name="com.novalauncher.THEME"/>
+                <category android:name="com.novalauncher.category.CUSTOM_ICON_PICKER"/>
+            </intent-filter>
+            <!-- LG Home -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="com.lge.launcher2.THEME"/>
 
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
@@ -181,10 +177,36 @@
 
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
-            <!-- Nine Launcher -->
+            <!-- Solo Launcher -->
             <intent-filter>
-                <action android:name="com.gridappsinc.launcher.theme.apk_action"/>
+                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="home.solo.launcher.free.THEMES"/>
+                <action android:name="home.solo.launcher.free.ACTION_ICON"/>
+            </intent-filter>
+            <!-- Sony Launcher -->
+            <intent-filter>
+                <action android:name="com.sonymobile.home.ICON_PACK"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <!-- TSF Shell -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="com.tsf.shell.themes"/>
 
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <!-- Turbo Launcher -->
+            <intent-filter>
+                <action android:name="com.phonemetra.turbo.launcher.THEMES"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.phonemetra.turbo.launcher.icons.ACTION_PICK_ICON"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <!-- Xperia Home Launcher -->
+            <intent-filter>
+                <action android:name="com.sonymobile.home.ICON_PACK"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
             <!-- Random launchers -->
@@ -210,37 +232,15 @@
 
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
-            <!-- THEME MANAGER -->
+            <!-- Theme Manager -->
             <intent-filter>
                 <action android:name="com.daeva112.manager.MAIN"/>
 
                 <category android:name="com.daeva112.manager.THEME"/>
             </intent-filter>
-            <!-- GO LAUNCHER -->
-            <intent-filter>
-                <action android:name="com.gau.go.launcherex.theme"/>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.THEME_SCENE"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
             <intent-filter>
                 <category android:name="android.intent.category.INFO"/>
             </intent-filter>
-            <!-- Solo Launcher -->
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <action android:name="home.solo.launcher.free.THEMES"/>
-                <action android:name="home.solo.launcher.free.ACTION_ICON"/>
-            </intent-filter>
-            <!-- LG Home -->
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <action android:name="com.lge.launcher2.THEME"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-
         </activity>
 
 
@@ -308,10 +308,24 @@
                     android:value="jahirfiquitiva.iconshowcase.activities.MuzeiSettings"/>
         </service>
 
+
+        <!-- TODO: CAREFUL! DO NOT REMOVE THE THINGS BELOW -->
+
         <!-- Picture Quality Configuration - DO NOT REMOVE -->
         <meta-data
                 android:name="jahirfiquitiva.iconshowcase.utilities.GlideConfiguration"
                 android:value="GlideModule"/>
+
+        <!-- Configuration for icons picker - DO NOT REMOVE -->
+        <provider
+                android:name="android.support.v4.content.FileProvider"
+                android:authorities="${applicationId}.fileProvider"
+                android:exported="false"
+                android:grantUriPermissions="true">
+            <meta-data
+                    android:name="android.support.FILE_PROVIDER_PATHS"
+                    android:resource="@xml/file_providers"/>
+        </provider>
 
     </application>
 

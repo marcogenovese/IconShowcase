@@ -116,8 +116,8 @@ public class ApplyWallpaper extends BasicTaskLoader<Boolean> {
             } else {
                 wm.setBitmap(scaleToActualAspectRatio(resource));
             }
-            EventBus.getDefault().postSticky(new WallpaperEvent(url, true, WallpaperEvent.Step
-                    .FINISH));
+            EventBus.getDefault().postSticky(new WallpaperEvent(url, true,
+                    WallpaperEvent.Step.FINISH));
             return true;
         } catch (Exception ex) {
             Timber.e("Exception %s", ex.getLocalizedMessage());
