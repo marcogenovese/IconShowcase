@@ -25,5 +25,9 @@
 -dontwarn com.github.javiersantos.**
 -keep public class com.android.vending.licensing.ILicensingService
 
+-dontwarn com.fasterxml.**
+-dontwarn okio.**
+-dontwarn retrofit2.**
+
 -dontwarn
 -ignorewarnings
