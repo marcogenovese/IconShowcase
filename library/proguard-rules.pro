@@ -27,6 +27,7 @@
 
 -dontwarn com.fasterxml.**
 -dontwarn okio.**
+-dontwarn okhttp3.**
 -dontwarn retrofit2.**
 
 -dontwarn
