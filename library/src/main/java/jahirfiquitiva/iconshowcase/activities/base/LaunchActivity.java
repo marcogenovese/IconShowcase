@@ -36,31 +36,44 @@ public class LaunchActivity extends ShowcaseActivity {
     @SuppressLint("MissingSuperCall")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        launchShowcase(savedInstanceState);
+        try {
+            launchShowcase(savedInstanceState);
+        } catch (Exception e) {
+            e.printStackTrace();
+            finish();
+        }
     }
 
     private void launchShowcase(Bundle savedInstanceState) {
-        Class service = getFirebaseClass();
-        if (NotificationUtils.hasNotificationExtraKey(this, getIntent(), "open_link", service)) {
-            Utils.openLink(this, getIntent().getStringExtra("open_link"));
-        } else {
-            if (getIntent().getDataString() != null
-                    && getIntent().getDataString().equals("apply_shortcut")
-                    && (Utils.getDefaultLauncherPackage(this) != null)) {
-                try {
-                    new LauncherIntents(this, Utils.getDefaultLauncherPackage(this));
-                } catch (Exception ex) {
-                    if (service != null)
-                        configureAndLaunch(savedInstanceState, service);
-                }
-            } else if (service != null) {
-                configureAndLaunch(savedInstanceState, service);
+        try {
+            Class service = getFirebaseClass();
+            if (NotificationUtils.hasNotificationExtraKey(this, getIntent(), "open_link",
+                    service)) {
+
+                Utils.openLink(this, getIntent().getStringExtra("open_link"));
             } else {
-                Toast.makeText(this,
-                        getResources().getString(R.string.launcher_icon_restorer_error,
-                                getResources().getString(R.string.app_name)),
-                        Toast.LENGTH_SHORT).show();
+                if (getIntent().getDataString() != null
+                        && getIntent().getDataString().equals("apply_shortcut")
+                        && (Utils.getDefaultLauncherPackage(this) != null)) {
+                    try {
+                        new LauncherIntents(this, Utils.getDefaultLauncherPackage(this));
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        if (service != null)
+                            configureAndLaunch(savedInstanceState, service);
+                    }
+                } else if (service != null) {
+                    configureAndLaunch(savedInstanceState, service);
+                } else {
+                    Toast.makeText(this,
+                            getResources().getString(R.string.launcher_icon_restorer_error,
+                                    getResources().getString(R.string.app_name)),
+                            Toast.LENGTH_SHORT).show();
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            finish();
         }
     }
 
