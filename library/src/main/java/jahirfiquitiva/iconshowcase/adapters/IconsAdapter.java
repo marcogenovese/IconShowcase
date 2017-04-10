@@ -142,19 +142,20 @@ public class IconsAdapter extends RecyclerView.Adapter<IconHolder> {
                             fos.close();
 
                             uri = getUriFromFile(context, icon);
-                            if (uri == null) {
+                            if (uri == null) uri = Uri.fromFile(icon);
+                        } catch (Exception ignored) {
+                        }
+                        if (uri == null) {
+                            try {
+                                uri = getUriFromResource(context, resId);
+                            } catch (Exception e) {
                                 try {
-                                    uri = getUriFromResource(context, resId);
-                                } catch (Exception e) {
-                                    try {
-                                        uri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE +
-                                                "://" + context.getPackageName() + "/" +
-                                                String.valueOf(resId));
-                                    } catch (Exception ignored) {
-                                    }
+                                    uri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE +
+                                            "://" + context.getPackageName() + "/" +
+                                            String.valueOf(resId));
+                                } catch (Exception ignored) {
                                 }
                             }
-                        } catch (Exception ignored) {
                         }
                         if (uri != null) {
                             intent.putExtra(Intent.EXTRA_STREAM, uri);
