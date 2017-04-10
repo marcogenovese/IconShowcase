@@ -202,10 +202,11 @@ public class ShowcaseActivity extends TasksActivity {
                     if (!result.isSuccess()) {
                         Timber.d("In-app Billing setup failed: ", result);
                         clearDialog();
-                        dialog = new MaterialDialog.Builder(ShowcaseActivity.this).title(R.string
-                                .donations_error_title)
+                        dialog = new MaterialDialog.Builder(ShowcaseActivity.this)
+                                .title(R.string.donations_error_title)
                                 .content(R.string.donations_error_content)
-                                .positiveText(android.R.string.ok).build();
+                                .positiveText(android.R.string.ok)
+                                .build();
                         dialog.show();
                     } else {
                         mHelper.queryInventoryAsync(false, mGotInventoryListener);
@@ -216,15 +217,14 @@ public class ShowcaseActivity extends TasksActivity {
         }
 
         if (savedInstance == null) {
-            if (openWallpapers) {
-                drawerItemClick(mDrawerMap.get(DrawerItem.WALLPAPERS));
-            } else if ((pickerKey == Config.ICONS_PICKER || pickerKey == Config.IMAGE_PICKER)
+            if ((pickerKey == Config.ICONS_PICKER || pickerKey == Config.IMAGE_PICKER)
                     && mDrawerMap.containsKey(DrawerItem.PREVIEWS)) {
                 drawerItemClick(mDrawerMap.get(DrawerItem.PREVIEWS));
-            } else if (pickerKey == Config.WALLS_PICKER && mPrefs.isDashboardWorking()
+            } else if (((pickerKey == Config.WALLS_PICKER) || openWallpapers)
+                    && mPrefs.isDashboardWorking()
                     && mDrawerMap.containsKey(DrawerItem.WALLPAPERS)) {
                 drawerItemClick(mDrawerMap.get(DrawerItem.WALLPAPERS));
-            } else if ((shortcut != null && shortcut.equals("apply_shortcut"))
+            } else if (pickerKey == Config.ICONS_APPLIER && mPrefs.isDashboardWorking()
                     && mDrawerMap.containsKey(DrawerItem.APPLY)) {
                 drawerItemClick(mDrawerMap.get(DrawerItem.APPLY));
             } else if ((shortcut != null && shortcut.equals("request_shortcut"))

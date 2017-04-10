@@ -115,16 +115,16 @@ public class NotificationUtils {
 
 
     private static boolean isServiceAvailable(Context context, Class service) {
-        if (context == null) return false;
+        if (context == null || service == null) return false;
         try {
             final PackageManager packageManager = context.getPackageManager();
             final Intent intent = new Intent(context, service);
             List resolveInfo =
                     packageManager.queryIntentServices(intent, PackageManager.MATCH_DEFAULT_ONLY);
             return resolveInfo.size() > 0;
-        } catch (Exception ex) {
-            return false;
+        } catch (Exception ignored) {
         }
+        return false;
     }
 
 }

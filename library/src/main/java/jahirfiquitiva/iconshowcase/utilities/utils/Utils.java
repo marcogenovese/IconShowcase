@@ -20,7 +20,6 @@
 package jahirfiquitiva.iconshowcase.utilities.utils;
 
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -127,8 +126,7 @@ public class Utils {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
-        } catch (ActivityNotFoundException e) {
-            //Do nothing
+        } catch (Exception ignored) {
         }
     }
 
@@ -157,8 +155,8 @@ public class Utils {
         CustomTabsClient.bindCustomTabsService(context, "com.android.chrome",
                 mCustomTabsServiceConnection);
         customTabsIntent = new CustomTabsIntent.Builder(mCustomTabsSession[0])
-                .setToolbarColor(ThemeUtils.darkOrLight(context, R.color.dark_theme_primary, R
-                        .color.light_theme_primary))
+                .setToolbarColor(ThemeUtils.darkOrLight(context, R.color.dark_theme_primary,
+                        R.color.light_theme_primary))
                 .setShowTitle(true)
                 .build();
 

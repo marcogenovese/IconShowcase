@@ -27,7 +27,6 @@ import android.widget.Toast;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.config.Config;
-import jahirfiquitiva.iconshowcase.utilities.LauncherIntents;
 import jahirfiquitiva.iconshowcase.utilities.utils.NotificationUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 
@@ -39,8 +38,7 @@ public class LaunchActivity extends ShowcaseActivity {
         try {
             launchShowcase(savedInstanceState);
         } catch (Exception e) {
-            e.printStackTrace();
-            finish();
+            catchException(savedInstanceState, e);
         }
     }
 
@@ -49,32 +47,30 @@ public class LaunchActivity extends ShowcaseActivity {
             Class service = getFirebaseClass();
             if (NotificationUtils.hasNotificationExtraKey(this, getIntent(), "open_link",
                     service)) {
-
+                super.onCreate(savedInstanceState);
                 Utils.openLink(this, getIntent().getStringExtra("open_link"));
+                finish();
             } else {
-                if (getIntent().getDataString() != null
-                        && getIntent().getDataString().equals("apply_shortcut")
-                        && (Utils.getDefaultLauncherPackage(this) != null)) {
-                    try {
-                        new LauncherIntents(this, Utils.getDefaultLauncherPackage(this));
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                        if (service != null)
-                            configureAndLaunch(savedInstanceState, service);
-                    }
-                } else if (service != null) {
+                if (service != null) {
                     configureAndLaunch(savedInstanceState, service);
                 } else {
-                    Toast.makeText(this,
-                            getResources().getString(R.string.launcher_icon_restorer_error,
-                                    getResources().getString(R.string.app_name)),
-                            Toast.LENGTH_SHORT).show();
+                    catchException(savedInstanceState, null);
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            finish();
+            catchException(savedInstanceState, e);
         }
+    }
+
+    private void catchException(Bundle instance, Exception e) {
+        super.onCreate(instance);
+        if (e != null)
+            e.printStackTrace();
+        Toast.makeText(this,
+                getResources().getString(R.string.launcher_icon_restorer_error,
+                        getResources().getString(R.string.app_name)),
+                Toast.LENGTH_LONG).show();
+        finish();
     }
 
     private void configureAndLaunch(Bundle instance, Class service) {
@@ -102,6 +98,9 @@ public class LaunchActivity extends ShowcaseActivity {
 
             if (getIntent().getAction() != null) {
                 switch (getIntent().getAction()) {
+                    case Config.APPLY_ACTION:
+                        configurations.putInt("picker", Config.ICONS_APPLIER);
+                        break;
                     case Config.ADW_ACTION:
                     case Config.TURBO_ACTION:
                     case Config.NOVA_ACTION:

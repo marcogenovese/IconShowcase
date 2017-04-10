@@ -327,6 +327,12 @@
                     android:resource="@xml/file_providers"/>
         </provider>
 
+        <activity
+                android:name=".ApplyShortcut"
+                android:theme="@style/EmptyActivity"
+                android:noHistory="true"
+                android:excludeFromRecents="true"/>
+
     </application>
 
 </manifest>
