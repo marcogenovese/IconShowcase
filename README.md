@@ -37,8 +37,6 @@
 <img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/7.png" width="400">
 <img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/8.png" width="400">
 <img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/9.png" width="400">
-<img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/10.png" width="400">
-<img src="https://raw.githubusercontent.com/jahirfiquitiva/IconShowcase/master/art/11.png" width="400">
 </p>
 
 
