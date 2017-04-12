@@ -93,16 +93,16 @@ public class LauncherHolder extends RecyclerView.ViewHolder {
         if (launcher.isInstalled(context)) {
             icon.setColorFilter(null);
             itemBG.setBackgroundColor(launcher.getColor());
-            launcherName.setTextColor(ColorUtils.getMaterialPrimaryTextColor(!(ColorUtils
-                    .isLightColor(launcher.getColor()))));
+            launcherName.setTextColor(ColorUtils.getMaterialPrimaryTextColor(
+                    !(ColorUtils.isLightColor(launcher.getColor()))));
         } else {
             int bgColor = ThemeUtils.darkLightOrTransparent(context,
                     R.color.card_dark_background, R.color.card_light_background,
                     R.color.card_clear_background);
             icon.setColorFilter(bnwFilter());
             itemBG.setBackgroundColor(bgColor);
-            launcherName.setTextColor(ColorUtils.getMaterialPrimaryTextColor(!(ColorUtils
-                    .isLightColor(bgColor))));
+            launcherName.setTextColor(ColorUtils.getMaterialPrimaryTextColor(
+                    !(ColorUtils.isLightColor(bgColor))));
         }
     }
 

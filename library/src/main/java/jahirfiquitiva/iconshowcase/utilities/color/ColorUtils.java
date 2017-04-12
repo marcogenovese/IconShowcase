@@ -149,9 +149,19 @@ public class ColorUtils {
                 });
     }
 
+    public static int getIconsColor(Context context) {
+        return ThemeUtils.darkOrLight(context, R.color.drawable_tint_dark,
+                R.color.drawable_tint_light);
+    }
+
+    public static int getToolbarTextColor(Context context) {
+        return ThemeUtils.darkOrLight(context, R.color.toolbar_text_dark,
+                R.color.toolbar_text_light);
+    }
+
     public static int getAccentColor(Context context) {
-        return ThemeUtils.darkOrLight(context, R.color.dark_theme_accent, R.color
-                .light_theme_accent);
+        return ThemeUtils.darkOrLight(context, R.color.dark_theme_accent,
+                R.color.light_theme_accent);
     }
 
     public static int getMaterialPrimaryTextColor(boolean dark) {

@@ -19,7 +19,6 @@
 
 package jahirfiquitiva.iconshowcase.dialogs;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Build;
@@ -196,11 +195,11 @@ public class WallpaperDialog extends BaseEventDialog {
                                 @Override
                                 public void run() {
                                     if (!enteredApplyTask[0]) {
-                                        String newContent = getActivity().getString(R.string
-                                                .downloading_wallpaper)
+                                        String newContent = getActivity().getString(
+                                                R.string.downloading_wallpaper)
                                                 + "\n"
-                                                + getActivity().getString(R.string
-                                                .download_takes_longer);
+                                                + getActivity().getString(
+                                                R.string.download_takes_longer);
                                         builder[0].content(newContent)
                                                 .positiveText(android.R.string.cancel);
                                     }
@@ -226,8 +225,8 @@ public class WallpaperDialog extends BaseEventDialog {
                     extra = getActivity().getResources().getString(R.string
                             .home_lock_screens);
 
-                builder[0].content(getActivity().getResources().getString(R.string
-                        .setting_wall_title, extra.toLowerCase()))
+                builder[0].content(getActivity().getResources().getString(
+                        R.string.setting_wall_title, extra.toLowerCase()))
                         .progress(true, 0)
                         .cancelable(false);
                 break;

@@ -45,17 +45,14 @@ public class IconUtils {
     private static final int CAPS_LOCK = 3;
 
     public static Drawable getTintedDrawable(@NonNull Context context, String name) {
-        return getTintedIcon(context, getIconResId(context.getResources(), context.getPackageName
-                (), name), ThemeUtils.darkOrLight(context, R.color.drawable_tint_dark, R.color
-                .drawable_tint_light));
+        return getTintedIcon(context, getIconResId(context.getResources(),
+                context.getPackageName(), name), ColorUtils.getIconsColor(context));
     }
 
-    public static Drawable getTintedDrawable(@NonNull Context context, String name, @ColorInt int
-            color) {
+    public static Drawable getTintedDrawable(@NonNull Context context, String name,
+                                             @ColorInt int color) {
         return getTintedIcon(context,
-                getIconResId(context.getResources(), context.getPackageName(), name),
-                ContextCompat.getColor(context, ColorUtils.isLightColor(color)
-                        ? R.color.drawable_tint_light : R.color.drawable_tint_dark));
+                getIconResId(context.getResources(), context.getPackageName(), name), color);
     }
 
     public static Drawable getTintedIcon(@NonNull Context context, @DrawableRes int drawable,

@@ -776,8 +776,8 @@ public class ShowcaseActivity extends TasksActivity {
             GOOGLE_CATALOG_VALUES = getResources().getStringArray(R.array.google_donations_catalog);
 
             try {
-                if (!(GOOGLE_PUBKEY.length() > 50) || !(GOOGLE_CATALOG_VALUES.length > 0) || !
-                        (GOOGLE_CATALOG.length == GOOGLE_CATALOG_VALUES.length)) {
+                if (GOOGLE_PUBKEY.length() < 50 || GOOGLE_CATALOG_VALUES.length <= 0 ||
+                        (GOOGLE_CATALOG.length != GOOGLE_CATALOG_VALUES.length)) {
                     DONATIONS_GOOGLE = false; //google donations setup is incorrect
                 }
             } catch (Exception e) {
@@ -808,28 +808,13 @@ public class ShowcaseActivity extends TasksActivity {
         if (ch) {
             if (Utils.isNewVersion(this) || (!(mPrefs.isDashboardWorking()))) {
                 if (Utils.hasNetwork(this)) {
-                    checkLicense(lic, allAma, checkLPF, checkStores);
+                    try {
+                        checkLicense(lic, allAma, checkLPF, checkStores);
+                    } catch (Exception e) {
+                        showSimpleLicenseCheckErrorDialog();
+                    }
                 } else {
-                    clearDialog();
-                    dialog = ISDialogs.buildLicenseErrorDialog(this, null,
-                            new MaterialDialog.SingleButtonCallback() {
-                                @Override
-                                public void onClick(@NonNull MaterialDialog dialog, @NonNull
-                                        DialogAction which) {
-                                    finish();
-                                }
-                            }, new DialogInterface.OnDismissListener() {
-                                @Override
-                                public void onDismiss(DialogInterface dialogInterface) {
-                                    finish();
-                                }
-                            }, new MaterialDialog.OnCancelListener() {
-                                @Override
-                                public void onCancel(DialogInterface dialogInterface) {
-                                    finish();
-                                }
-                            });
-                    dialog.show();
+                    showSimpleLicenseCheckErrorDialog();
                 }
             }
         } else {
@@ -874,7 +859,7 @@ public class ShowcaseActivity extends TasksActivity {
         destroyChecker();
         checker = new PiracyChecker(this);
         checker.enableInstallerId(InstallerID.GOOGLE_PLAY);
-        if (lic != null) checker.enableGooglePlayLicensing(lic);
+        if (lic != null && lic.length() > 50) checker.enableGooglePlayLicensing(lic);
         if (allAma) checker.enableInstallerId(InstallerID.AMAZON_APP_STORE);
         if (checkLPF) checker.enableUnauthorizedAppsCheck();
         if (checkStores) checker.enableStoresCheck();
@@ -941,6 +926,29 @@ public class ShowcaseActivity extends TasksActivity {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog,
                                         @NonNull DialogAction which) {
+                        finish();
+                    }
+                }, new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialogInterface) {
+                        finish();
+                    }
+                }, new MaterialDialog.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialogInterface) {
+                        finish();
+                    }
+                });
+        dialog.show();
+    }
+
+    private void showSimpleLicenseCheckErrorDialog() {
+        clearDialog();
+        dialog = ISDialogs.buildLicenseErrorDialog(this, null,
+                new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull
+                            DialogAction which) {
                         finish();
                     }
                 }, new DialogInterface.OnDismissListener() {

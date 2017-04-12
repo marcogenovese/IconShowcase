@@ -51,7 +51,6 @@ import java.lang.reflect.Method;
 
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.utilities.utils.IconUtils;
-import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 
 public class ToolbarColorizer {
@@ -126,37 +125,39 @@ public class ToolbarColorizer {
      */
     @SuppressWarnings("PrivateResource")
     public static void tintSearchView(Context context, @NonNull Toolbar toolbar, MenuItem item,
-                                      @NonNull SearchView searchView, @ColorInt int color) {
+                                      @NonNull SearchView searchView, @ColorInt int textColor) {
         if (item == null) return;
-        item.setIcon(IconUtils.getTintedIcon(context, R.drawable.ic_search, color));
+        item.setIcon(IconUtils.getTintedIcon(context, R.drawable.ic_search,
+                ColorUtils.getIconsColor(context)));
         final Class<?> searchViewClass = searchView.getClass();
         try {
             final Field mCollapseIconField = toolbar.getClass().getDeclaredField("mCollapseIcon");
             mCollapseIconField.setAccessible(true);
             final Drawable drawable = (Drawable) mCollapseIconField.get(toolbar);
             if (drawable != null)
-                mCollapseIconField.set(toolbar, IconUtils.getTintedIcon(drawable, color));
+                mCollapseIconField.set(toolbar, IconUtils.getTintedIcon(drawable,
+                        ColorUtils.getIconsColor(context)));
 
             final Field mSearchSrcTextViewField = searchViewClass.getDeclaredField
                     ("mSearchSrcTextView");
             mSearchSrcTextViewField.setAccessible(true);
             final EditText mSearchSrcTextView = (EditText) mSearchSrcTextViewField.get(searchView);
-            mSearchSrcTextView.setTextColor(color);
-            mSearchSrcTextView.setHintTextColor(ColorUtils.adjustAlpha(color, 0.65f));
-            setCursorTint(mSearchSrcTextView, color);
+            mSearchSrcTextView.setTextColor(textColor);
+            mSearchSrcTextView.setHintTextColor(ColorUtils.adjustAlpha(textColor, 0.65f));
+            setCursorTint(mSearchSrcTextView, textColor);
 
             hideSearchHintIcon(context, searchView);
 
             Field field = searchViewClass.getDeclaredField("mSearchButton");
-            tintImageView(searchView, field, color);
+            tintImageView(searchView, field, ColorUtils.getIconsColor(context));
             field = searchViewClass.getDeclaredField("mGoButton");
-            tintImageView(searchView, field, color);
+            tintImageView(searchView, field, ColorUtils.getIconsColor(context));
             field = searchViewClass.getDeclaredField("mCloseButton");
-            tintImageView(searchView, field, color);
+            tintImageView(searchView, field, ColorUtils.getIconsColor(context));
             field = searchViewClass.getDeclaredField("mVoiceButton");
-            tintImageView(searchView, field, color);
+            tintImageView(searchView, field, ColorUtils.getIconsColor(context));
             field = searchViewClass.getDeclaredField("mCollapsedIcon");
-            tintImageView(searchView, field, color);
+            tintImageView(searchView, field, ColorUtils.getIconsColor(context));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -225,13 +226,11 @@ public class ToolbarColorizer {
                     } else if (ratio < 0) {
                         ratio = 0;
                     }
-                    int paletteColor = ColorUtils.blendColors(defaultIconsColor, ColorUtils
-                            .getMaterialPrimaryTextColor(!(ColorUtils.isLightColor(ThemeUtils
-                                    .darkOrLight(context, R.color.dark_theme_primary, R.color
-                                            .light_theme_primary)))), (float) ratio);
+                    int rightColor = ColorUtils.blendColors(defaultIconsColor,
+                            ColorUtils.getIconsColor(context), (float) ratio);
                     if (toolbar != null) {
                         // Collapsed offset = -352
-                        colorizeToolbar(toolbar, paletteColor);
+                        colorizeToolbar(toolbar, rightColor);
                     }
                 }
             });
@@ -246,15 +245,9 @@ public class ToolbarColorizer {
     @SuppressWarnings("ResourceAsColor")
     public static void setupCollapsingToolbarTextColors(Context context, CollapsingToolbarLayout
             collapsingToolbarLayout, boolean transparentWhenExpanded) {
-        int textColor = ColorUtils.getMaterialPrimaryTextColor(!(ColorUtils.isLightColor
-                (ThemeUtils.darkOrLight(context, R.color.dark_theme_primary, R.color
-                        .light_theme_primary))));
-        if (transparentWhenExpanded) {
-            collapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(context, android.R
-                    .color.transparent));
-        } else {
-            collapsingToolbarLayout.setExpandedTitleColor(textColor);
-        }
+        int textColor = ColorUtils.getToolbarTextColor(context);
+        collapsingToolbarLayout.setExpandedTitleColor(transparentWhenExpanded
+                ? ContextCompat.getColor(context, android.R.color.transparent) : textColor);
         collapsingToolbarLayout.setCollapsedTitleTextColor(textColor);
     }
 
@@ -268,17 +261,6 @@ public class ToolbarColorizer {
             }
             setOptionalIconsVisible.invoke(menu, true);
         } catch (Exception ignored) {
-        }
-    }
-
-    @TargetApi(Build.VERSION_CODES.M)
-    public static void tintStatusBar(Activity activity) {
-        int statusBarColor = ThemeUtils.darkOrLight(activity, R.color.dark_theme_primary_dark, R
-                .color.light_theme_primary_dark);
-        if (ColorUtils.isLightColor(statusBarColor)) {
-            setLightStatusBar(activity);
-        } else {
-            clearLightStatusBar(activity);
         }
     }
 

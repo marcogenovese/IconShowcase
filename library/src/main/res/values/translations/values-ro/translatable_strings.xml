@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <!--
-  ~ Copyright (c) 2017 Jahir Fiquitiva
-  ~
-  ~ Licensed under the CreativeCommons Attribution-ShareAlike
-  ~ 4.0 International License. You may not use this file except in compliance
-  ~ with the License. You may obtain a copy of the License at
-  ~
-  ~    http://creativecommons.org/licenses/by-sa/4.0/legalcode
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software
-  ~ distributed under the License is distributed on an "AS IS" BASIS,
-  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific language governing permissions and
-  ~ limitations under the License.
-  ~
-  ~ Special thanks to the project contributors and collaborators
-  ~ 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
-  -->
+<!--
+~ Copyright (c) 2017 Jahir Fiquitiva
+~
+~ Licensed under the CreativeCommons Attribution-ShareAlike
+~ 4.0 International License. You may not use this file except in compliance
+~ with the License. You may obtain a copy of the License at
+~
+~    http://creativecommons.org/licenses/by-sa/4.0/legalcode
+~
+~ Unless required by applicable law or agreed to in writing, software
+~ distributed under the License is distributed on an "AS IS" BASIS,
+~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~ See the License for the specific language governing permissions and
+~ limitations under the License.
+~
+~ Special thanks to the project contributors and collaborators
+~ 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
+-->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="muzei_settings">Setari Muzei</string>
     <!-- Sharing wallpaper from Muzei -->
@@ -236,7 +236,7 @@ prin urmare, acesta nu poate fi descărcata din Google Play Store.</string>
         <item>Depinde de launcherul pe care il folosesti.Nu toate launcherurile suporta editarea icoanelor,dar cam toate au optiunea de a edita icoanele apasand lung sau de doua ori pe icoana respectiva.</item>
         <item>Trage de Navigatorul Drawer spre stanga,si dute la sectiunea \"cereri\".</item>
         <item>Sa intamplat pentru ca pachetul de icoane a fost mutat pe cardul SD,va trebui sa il instalezi pe memoria interna.</item>
-        <item>Problema poate fi cu launcherul pe care il folosesti,la manipularea rezolutie mare.Puteti sa reparati eroarea prin cresterea marimi icoanei cu 115-120%,sau incearca alt launcher.</item>
+        <item>Problema poate fi cu launcherul pe care il folosesti,la manipularea rezolutie mare.Puteti sa reparati eroarea prin cresterea marimi icoanei cu 115–120%,sau incearca alt launcher.</item>
         <item>Trimite cerere de icoane.</item>
         <item>Trage Navigatorul Drawer spre stanga,si dute la sectiunea \"Setari\" apoi selecteaza optiunea \"Ascunde icoana din launcher\".</item>
         <item>Du-te la ecranul de pornire,si creaza widget pentru aplicatia cu numele de \"IconRestore\".</item>

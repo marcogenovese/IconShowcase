@@ -157,12 +157,12 @@ public class WallpaperHolder extends RecyclerView.ViewHolder implements View.OnC
         if (titleBg != null && color != 0) {
             titleBg.setBackgroundColor(color);
             if (name != null) {
-                name.setTextColor(ColorUtils.getMaterialPrimaryTextColor(!ColorUtils
-                        .isLightColor(color)));
+                name.setTextColor(ColorUtils.getMaterialPrimaryTextColor(
+                        !ColorUtils.isLightColor(color)));
             }
             if (authorName != null) {
-                authorName.setTextColor(ColorUtils.getMaterialSecondaryTextColor(!ColorUtils
-                        .isLightColor(color)));
+                authorName.setTextColor(ColorUtils.getMaterialSecondaryTextColor(
+                        !ColorUtils.isLightColor(color)));
             }
         }
     }

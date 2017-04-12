@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <!--
-  ~ Copyright (c) 2017 Jahir Fiquitiva
-  ~
-  ~ Licensed under the CreativeCommons Attribution-ShareAlike
-  ~ 4.0 International License. You may not use this file except in compliance
-  ~ with the License. You may obtain a copy of the License at
-  ~
-  ~    http://creativecommons.org/licenses/by-sa/4.0/legalcode
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software
-  ~ distributed under the License is distributed on an "AS IS" BASIS,
-  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific language governing permissions and
-  ~ limitations under the License.
-  ~
-  ~ Special thanks to the project contributors and collaborators
-  ~ 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
-  -->
+<!--
+~ Copyright (c) 2017 Jahir Fiquitiva
+~
+~ Licensed under the CreativeCommons Attribution-ShareAlike
+~ 4.0 International License. You may not use this file except in compliance
+~ with the License. You may obtain a copy of the License at
+~
+~    http://creativecommons.org/licenses/by-sa/4.0/legalcode
+~
+~ Unless required by applicable law or agreed to in writing, software
+~ distributed under the License is distributed on an "AS IS" BASIS,
+~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~ See the License for the specific language governing permissions and
+~ limitations under the License.
+~
+~ Special thanks to the project contributors and collaborators
+~ 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
+-->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="muzei_settings">Ustawienia Muzei</string>
     <!-- Sharing wallpaper from Muzei -->
@@ -189,7 +189,7 @@ Czy chcesz zainstalować go na swoje urządzenie?</string>
     <string name="install_kustom_apps_content">Musisz zainstalować te aplikacje, aby skórki Kustom działały poprawnie. Tapnij na aplikację, aby ją pobrać.</string>
     <string name="install_assets">Zainstaluj czcionki</string>
     <string name="open">Otwórz</string>
-    <string name="assets_installed">%1$s czcionki są już zainstalowane</string>
+    <string name="assets_installed">czcionki są już zainstalowane</string>
     <string name="apps_installed">Aplikacje są już zainstalowane</string>
     <string name="copying_assets">Kopiuję pliki do ZooperWidget/%1$s</string>
     <string name="icon_pack_in_numbers">Paczka ikon w liczbach</string>
@@ -240,7 +240,7 @@ Wybierz Launcher, dla którego chcesz ustawić paczkę ikon. Jeżeli Twojego Lau
         <item>To zależy od launchera, którego używasz. Nie każdy launcher wspiera edycję ikon. W większości przypadków możesz edytować ikonę przytrzymując na niej palec lub podwójnie ją naciskając.</item>
         <item>Wysuń Panel Nawigacji z lewej krawędzi ekranu i przejdź do sekcji \"Prośba o ikony\".</item>
         <item>"Dzieje się tak, ponieważ paczka ikon została przeniesiona na kartę pamięci. Należy ją zainstalować w pamięci wewnętrznej. "</item>
-        <item>"Problem może być spowodowany przez launcher, którego używasz. Możesz to naprawić zwiększając rozmiar ikon do 115 - 120%. Lub użyć innego launchera. "</item>
+        <item>"Problem może być spowodowany przez launcher, którego używasz. Możesz to naprawić zwiększając rozmiar ikon do 115 – 120%. Lub użyć innego launchera. "</item>
         <item>Wyślij prośbę o dodanie nowych ikon.</item>
         <item>"Wysuń Panel Nawigacji z lewej krawędzi ekranu i przejdź do sekcji \"Ustawienia\" oraz zaznacz opcję \"Ukryj ikonę w Launcherze\". "</item>
         <item>Przejdź do pulpitu i dodaj widżet o nazwie \"Widżet przywracania ikon\".</item>
