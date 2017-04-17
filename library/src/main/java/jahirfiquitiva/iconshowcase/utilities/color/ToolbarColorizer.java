@@ -227,10 +227,10 @@ public class ToolbarColorizer {
         }
     }
 
-    public static void setStatusBarStyleWithAppBarState(Activity activity,
+    public static void setStatusBarStyleWithAppBarState(@NonNull Activity activity,
                                                         CCollapseListener.State state) {
         if (state == CCollapseListener.State.COLLAPSED) {
-            boolean lightStatusBar = false;
+            boolean lightStatusBar;
             switch (ThemeUtils.getCurrentTheme()) {
                 case ThemeUtils.LIGHT:
                     lightStatusBar = activity.getResources().getBoolean(
@@ -243,6 +243,9 @@ public class ToolbarColorizer {
                 case ThemeUtils.CLEAR:
                     lightStatusBar = activity.getResources().getBoolean(
                             R.bool.light_statusbar_in_clear_theme);
+                    break;
+                default:
+                    lightStatusBar = false;
                     break;
             }
             if (lightStatusBar) ToolbarColorizer.setLightStatusBar(activity);
