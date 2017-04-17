@@ -35,8 +35,8 @@ public class ZooperButtonHolder extends RecyclerView.ViewHolder {
 
     private final ImageView icon;
     private final TextView text;
-    private int buttonId = -1;
     private final OnZooperButtonClickListener listener;
+    private int buttonId = -1;
 
     public ZooperButtonHolder(View itemView, OnZooperButtonClickListener nListener) {
         super(itemView);

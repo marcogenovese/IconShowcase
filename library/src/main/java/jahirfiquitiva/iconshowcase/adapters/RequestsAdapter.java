@@ -19,6 +19,12 @@ import jahirfiquitiva.iconshowcase.utilities.Preferences;
 
 public class RequestsAdapter extends RecyclerView.Adapter<RequestHolder> {
 
+    private OnItemsChanged onItemsChanged = null;
+
+    public RequestsAdapter(OnItemsChanged onItemsChanged) {
+        this.onItemsChanged = onItemsChanged;
+    }
+
     @Nullable
     private ArrayList<App> getApps() {
         if (IconRequest.get() != null)
@@ -31,12 +37,6 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestHolder> {
         if (IconRequest.get() != null)
             return IconRequest.get().getSelectedApps();
         return null;
-    }
-
-    private OnItemsChanged onItemsChanged = null;
-
-    public RequestsAdapter(OnItemsChanged onItemsChanged) {
-        this.onItemsChanged = onItemsChanged;
     }
 
     @Override

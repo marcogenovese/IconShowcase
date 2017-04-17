@@ -36,8 +36,8 @@ public class IconHolder extends RecyclerView.ViewHolder {
 
     private final View view;
     private final ImageView icon;
-    private IconItem item;
     private final OnIconClickListener listener;
+    private IconItem item;
     private int lastPosition = 0;
 
     public IconHolder(View v, OnIconClickListener nListener) {

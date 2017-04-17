@@ -152,6 +152,40 @@ public class MuzeiArtSourceService extends RemoteMuzeiArtSource {
                 .getMuzeiRefreshInterval()));
     }
 
+    private long convertRefreshIntervalToMillis(int interval) {
+        switch (interval) {
+            case 0:
+                return TimeUnit.MINUTES.toMillis(15);
+            case 1:
+                return TimeUnit.MINUTES.toMillis(30);
+            case 2:
+                return TimeUnit.MINUTES.toMillis(45);
+            case 3:
+                return TimeUnit.HOURS.toMillis(1);
+            case 4:
+                return TimeUnit.HOURS.toMillis(2);
+            case 5:
+                return TimeUnit.HOURS.toMillis(3);
+            case 6:
+                return TimeUnit.HOURS.toMillis(6);
+            case 7:
+                return TimeUnit.HOURS.toMillis(9);
+            case 8:
+                return TimeUnit.HOURS.toMillis(12);
+            case 9:
+                return TimeUnit.HOURS.toMillis(18);
+            case 10:
+                return TimeUnit.DAYS.toMillis(1);
+            case 11:
+                return TimeUnit.DAYS.toMillis(3);
+            case 12:
+                return TimeUnit.DAYS.toMillis(7);
+            case 13:
+                return TimeUnit.DAYS.toMillis(14);
+        }
+        return 0;
+    }
+
     public class DownloadJSONAndSetWall extends AsyncTask<Void, String, Boolean> {
 
         private final WeakReference<Context> context;
@@ -212,40 +246,6 @@ public class MuzeiArtSourceService extends RemoteMuzeiArtSource {
                 }
             }
         }
-    }
-
-    private long convertRefreshIntervalToMillis(int interval) {
-        switch (interval) {
-            case 0:
-                return TimeUnit.MINUTES.toMillis(15);
-            case 1:
-                return TimeUnit.MINUTES.toMillis(30);
-            case 2:
-                return TimeUnit.MINUTES.toMillis(45);
-            case 3:
-                return TimeUnit.HOURS.toMillis(1);
-            case 4:
-                return TimeUnit.HOURS.toMillis(2);
-            case 5:
-                return TimeUnit.HOURS.toMillis(3);
-            case 6:
-                return TimeUnit.HOURS.toMillis(6);
-            case 7:
-                return TimeUnit.HOURS.toMillis(9);
-            case 8:
-                return TimeUnit.HOURS.toMillis(12);
-            case 9:
-                return TimeUnit.HOURS.toMillis(18);
-            case 10:
-                return TimeUnit.DAYS.toMillis(1);
-            case 11:
-                return TimeUnit.DAYS.toMillis(3);
-            case 12:
-                return TimeUnit.DAYS.toMillis(7);
-            case 13:
-                return TimeUnit.DAYS.toMillis(14);
-        }
-        return 0;
     }
 
 }

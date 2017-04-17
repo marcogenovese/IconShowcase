@@ -19,7 +19,6 @@
 
 package jahirfiquitiva.iconshowcase.dialogs;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -53,24 +52,6 @@ public class IconDialog extends DialogFragment {
     private int resId;
     private boolean animate;
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        this.name = getArguments().getString(NAME);
-        this.resId = getArguments().getInt(RESID);
-        this.animate = getArguments().getBoolean(ANIM);
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (savedInstanceState != null) {
-            name = savedInstanceState.getString(NAME);
-            resId = savedInstanceState.getInt(RESID);
-            animate = savedInstanceState.getBoolean(ANIM);
-        }
-    }
-
     private static IconDialog newInstance(String name, int resId, boolean animate) {
         IconDialog f = new IconDialog();
         Bundle args = new Bundle();
@@ -91,6 +72,24 @@ public class IconDialog extends DialogFragment {
     public static void dismiss(final FragmentActivity context) {
         Fragment frag = context.getSupportFragmentManager().findFragmentByTag(TAG);
         if (frag != null) ((IconDialog) frag).dismiss();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        this.name = getArguments().getString(NAME);
+        this.resId = getArguments().getInt(RESID);
+        this.animate = getArguments().getBoolean(ANIM);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null) {
+            name = savedInstanceState.getString(NAME);
+            resId = savedInstanceState.getInt(RESID);
+            animate = savedInstanceState.getBoolean(ANIM);
+        }
     }
 
     @NonNull

@@ -19,7 +19,6 @@
 
 package jahirfiquitiva.iconshowcase.dialogs;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;

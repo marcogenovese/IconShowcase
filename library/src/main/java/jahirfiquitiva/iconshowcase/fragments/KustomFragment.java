@@ -45,10 +45,10 @@ import jahirfiquitiva.iconshowcase.views.SectionedGridSpacingItemDecoration;
 
 public class KustomFragment extends CapsuleFragment {
 
-    private KustomAdapter kustomAdapter;
     private static final String KLWP_PKG = "org.kustom.wallpaper",
             KWGT_PKG = "org.kustom.widget",
             KOLORETTE_PKG = "com.arun.themeutil.kolorette";
+    private KustomAdapter kustomAdapter;
     private Context context;
     private SectionedGridSpacingItemDecoration space;
 

@@ -190,20 +190,20 @@ public class Preferences {
         getPrefs().edit().putBoolean(DEV_LISTS_CARDS, enableCards).apply();
     }
 
-    public void setMuzeiRefreshInterval(int interval) {
-        getPrefs().edit().putInt(MUZEI_REFRESH_INTERVAL, interval).apply();
-    }
-
     public int getMuzeiRefreshInterval() {
         return getPrefs().getInt(MUZEI_REFRESH_INTERVAL, 10);
     }
 
-    public void setMuzeiRefreshOnWiFiOnly(boolean onWifiOnly) {
-        getPrefs().edit().putBoolean(MUZEI_REFRESH_ON_WIFI_ONLY, onWifiOnly).apply();
+    public void setMuzeiRefreshInterval(int interval) {
+        getPrefs().edit().putInt(MUZEI_REFRESH_INTERVAL, interval).apply();
     }
 
     public boolean getMuzeiRefreshOnWiFiOnly() {
         return getPrefs().getBoolean(MUZEI_REFRESH_ON_WIFI_ONLY, false);
+    }
+
+    public void setMuzeiRefreshOnWiFiOnly(boolean onWifiOnly) {
+        getPrefs().edit().putBoolean(MUZEI_REFRESH_ON_WIFI_ONLY, onWifiOnly).apply();
     }
 
 }

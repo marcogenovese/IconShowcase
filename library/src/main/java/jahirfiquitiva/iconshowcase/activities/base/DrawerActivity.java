@@ -73,9 +73,8 @@ public abstract class DrawerActivity extends CapsuleActivity {
             PAYPAL_CURRENCY_CODE = "", thaAppName;
 
     protected static boolean mIsPremium = false, installedFromPlayStore = false;
-
-    protected List<DrawerItem> mDrawerItems;
     protected final EnumMap<DrawerItem, Integer> mDrawerMap = new EnumMap<>(DrawerItem.class);
+    protected List<DrawerItem> mDrawerItems;
 
     private DrawerItem drawerKeyToType(String s) {
         switch (s.toLowerCase()) {

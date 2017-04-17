@@ -76,8 +76,8 @@ public class ToolbarTinter {
     private final Integer overflowDrawableId;
     private final boolean reApplyOnChange;
     private final boolean forceIcons;
-    private Integer iconsColor;
     private final Integer iconsAlpha;
+    private Integer iconsColor;
     private ImageView overflowButton;
     private ViewGroup actionBarView;
 

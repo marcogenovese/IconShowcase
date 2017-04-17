@@ -53,8 +53,8 @@ public class ZooperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private final Drawable wallpaper;
     private final View layout;
     private final boolean everythingInstalled;
-    private ArrayList<ZooperWidget> widgets;
     private final ZooperFragment mFragment;
+    private ArrayList<ZooperWidget> widgets;
     private int extraCards = 0;
 
     public ZooperAdapter(Context context, View layout,

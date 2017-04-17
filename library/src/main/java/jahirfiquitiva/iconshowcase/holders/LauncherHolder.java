@@ -47,8 +47,8 @@ public class LauncherHolder extends RecyclerView.ViewHolder {
     private final ImageView icon;
     private final TextView launcherName;
     private final LinearLayout itemBG;
-    private LauncherItem launcher;
     private final OnLauncherClickListener listener;
+    private LauncherItem launcher;
 
     public LauncherHolder(View view, OnLauncherClickListener nListener) {
         super(view);

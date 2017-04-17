@@ -36,8 +36,8 @@ public class RequestHolder extends RecyclerView.ViewHolder {
     private final ImageView imgIcon;
     private final TextView txtName;
     private final AppCompatCheckBox checkBox;
-    private App item;
     private final OnAppClickListener listener;
+    private App item;
 
     public RequestHolder(View v, OnAppClickListener nListener) {
         super(v);

@@ -29,14 +29,25 @@ import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 
 public class HomeCard implements Parcelable {
 
+    public static final Creator<HomeCard> CREATOR = new Creator<HomeCard>() {
+        @Override
+        public HomeCard createFromParcel(Parcel in) {
+            return new HomeCard(in);
+        }
+
+        @Override
+        public HomeCard[] newArray(int size) {
+            return new HomeCard[size];
+        }
+    };
     private final String title;
     private final String desc;
     private final String onClickLink;
     private final boolean imgEnabled;
     private final boolean isAnApp;
     private final boolean isInstalled;
-    private Drawable img;
     private final Intent intent;
+    private Drawable img;
 
     private HomeCard(Builder builder) {
         this.title = builder.title;
@@ -47,6 +58,64 @@ public class HomeCard implements Parcelable {
         this.isInstalled = builder.isInstalled;
         this.intent = builder.intent;
         this.isAnApp = builder.isAnApp;
+    }
+
+    private HomeCard(Parcel in) {
+        title = in.readString();
+        desc = in.readString();
+        imgEnabled = in.readByte() != 0;
+        onClickLink = in.readString();
+        isInstalled = in.readByte() != 0;
+        intent = in.readParcelable(Intent.class.getClassLoader());
+        isAnApp = in.readByte() != 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(title);
+        dest.writeString(desc);
+        dest.writeByte((byte) (imgEnabled ? 1 : 0));
+        dest.writeString(onClickLink);
+        dest.writeByte((byte) (isInstalled ? 1 : 0));
+        dest.writeParcelable(intent, flags);
+        dest.writeByte((byte) (isAnApp ? 1 : 0));
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public String getOnClickLink() {
+        return onClickLink;
+    }
+
+    public boolean hasImgEnabled() {
+        return imgEnabled;
+    }
+
+    public boolean isAnApp() {
+        return isAnApp;
+    }
+
+    public boolean isInstalled() {
+        return isInstalled;
+    }
+
+    public Drawable getImg() {
+        return img;
+    }
+
+    public Intent getIntent() {
+        return intent;
     }
 
     public static class Builder {
@@ -101,75 +170,5 @@ public class HomeCard implements Parcelable {
         public HomeCard build() {
             return new HomeCard(this);
         }
-    }
-
-    private HomeCard(Parcel in) {
-        title = in.readString();
-        desc = in.readString();
-        imgEnabled = in.readByte() != 0;
-        onClickLink = in.readString();
-        isInstalled = in.readByte() != 0;
-        intent = in.readParcelable(Intent.class.getClassLoader());
-        isAnApp = in.readByte() != 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(title);
-        dest.writeString(desc);
-        dest.writeByte((byte) (imgEnabled ? 1 : 0));
-        dest.writeString(onClickLink);
-        dest.writeByte((byte) (isInstalled ? 1 : 0));
-        dest.writeParcelable(intent, flags);
-        dest.writeByte((byte) (isAnApp ? 1 : 0));
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    public static final Creator<HomeCard> CREATOR = new Creator<HomeCard>() {
-        @Override
-        public HomeCard createFromParcel(Parcel in) {
-            return new HomeCard(in);
-        }
-
-        @Override
-        public HomeCard[] newArray(int size) {
-            return new HomeCard[size];
-        }
-    };
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getDesc() {
-        return desc;
-    }
-
-    public String getOnClickLink() {
-        return onClickLink;
-    }
-
-    public boolean hasImgEnabled() {
-        return imgEnabled;
-    }
-
-    public boolean isAnApp() {
-        return isAnApp;
-    }
-
-    public boolean isInstalled() {
-        return isInstalled;
-    }
-
-    public Drawable getImg() {
-        return img;
-    }
-
-    public Intent getIntent() {
-        return intent;
     }
 }

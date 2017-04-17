@@ -831,16 +831,6 @@ public class BaseWallpaperViewerActivity extends AppCompatActivity {
         };
     }
 
-    public abstract class WallpaperDialogsCallback {
-        public void onSaveAction() {
-
-        }
-
-        public abstract void onDialogShown();
-
-        public abstract void onDialogDismissed();
-    }
-
     public void setupPicture(ImageView mPhoto) {
         Bitmap bmp = null;
         String filename = getIntent().getStringExtra("image");
@@ -925,6 +915,16 @@ public class BaseWallpaperViewerActivity extends AppCompatActivity {
                     })
                     .into(mPhoto);
         }
+    }
+
+    public abstract class WallpaperDialogsCallback {
+        public void onSaveAction() {
+
+        }
+
+        public abstract void onDialogShown();
+
+        public abstract void onDialogDismissed();
     }
 
 }
