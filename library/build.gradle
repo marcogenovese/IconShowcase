@@ -36,7 +36,7 @@ repositories {
 ext {
     TARGET_SDK = 25
     BUILD_TOOLS = "25.0.2"
-    ANDROID_SUPPORT_LIBS = "25.3.0"
+    ANDROID_SUPPORT_LIBS = "25.3.1"
 }
 
 android {
@@ -51,8 +51,8 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion TARGET_SDK
-        versionCode 1975
-        versionName "1.9.7.5"
+        versionCode 1976
+        versionName "1.9.7.6"
         vectorDrawables.useSupportLibrary = true
         consumerProguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
     }
@@ -122,10 +122,10 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.1.0'
 
     //Library for Requests
-    compile 'com.github.AllanWang:Butler:8b5f059'
+    compile 'com.github.AllanWang:Butler:ea99c5b'
 
     //Library for UI framework
-    compile 'ca.allanwang:capsule:79c8689'
+    compile 'ca.allanwang:capsule:d957850'
 
     //Donations Lib
     compile 'org.sufficientlysecure:donations:2.5'
@@ -135,7 +135,7 @@ dependencies {
     compile 'com.google.android.apps.muzei:muzei-api:2.0'
 
     //License Checker Lib
-    compile 'me.jahirfiquitiva:PiracyChecker:8c7fe91'
+    compile 'com.github.javiersantos:PiracyChecker:1.1'
 
     //Required for Kustom support.
     //noinspection GradleDynamicVersion

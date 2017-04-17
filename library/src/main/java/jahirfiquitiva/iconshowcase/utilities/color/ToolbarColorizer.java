@@ -28,7 +28,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
@@ -49,8 +48,10 @@ import android.widget.TextView;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+import ca.allanwang.capsule.library.interfaces.CCollapseListener;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.utilities.utils.IconUtils;
+import jahirfiquitiva.iconshowcase.utilities.utils.ThemeUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 
 public class ToolbarColorizer {
@@ -209,42 +210,53 @@ public class ToolbarColorizer {
                     tintColor));
     }
 
-    public static void setupCollapsingToolbarIconsAndTextsColors(final Context context,
-                                                                 AppBarLayout appbar,
-                                                                 final Toolbar toolbar) {
-
+    public static void setCollapsingToolbarColorForOffset(Context context,
+                                                          Toolbar toolbar, int offset) {
         final int defaultIconsColor = ContextCompat.getColor(context, android.R.color.white);
-
-        if (appbar != null) {
-            appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-                @SuppressWarnings("ResourceAsColor")
-                @Override
-                public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                    double ratio = Utils.round(((double) (verticalOffset * -1) / 255.0), 1);
-                    if (ratio > 1) {
-                        ratio = 1;
-                    } else if (ratio < 0) {
-                        ratio = 0;
-                    }
-                    int rightColor = ColorUtils.blendColors(defaultIconsColor,
-                            ColorUtils.getIconsColor(context), (float) ratio);
-                    if (toolbar != null) {
-                        // Collapsed offset = -352
-                        colorizeToolbar(toolbar, rightColor);
-                    }
-                }
-            });
+        double ratio = Utils.round(((double) (offset * -1) / 255.0), 1);
+        if (ratio > 1) {
+            ratio = 1;
+        } else if (ratio < 0) {
+            ratio = 0;
+        }
+        int rightColor = ColorUtils.blendColors(defaultIconsColor,
+                ColorUtils.getIconsColor(context), (float) ratio);
+        if (toolbar != null) {
+            // Collapsed offset = -352
+            colorizeToolbar(toolbar, rightColor);
         }
     }
 
-    public static void setupCollapsingToolbarTextColors(Context context, CollapsingToolbarLayout
-            collapsingToolbarLayout) {
-        setupCollapsingToolbarTextColors(context, collapsingToolbarLayout, false);
+    public static void setStatusBarStyleWithAppBarState(Activity activity,
+                                                        CCollapseListener.State state) {
+        if (state == CCollapseListener.State.COLLAPSED) {
+            boolean lightStatusBar = false;
+            switch (ThemeUtils.getCurrentTheme()) {
+                case ThemeUtils.LIGHT:
+                    lightStatusBar = activity.getResources().getBoolean(
+                            R.bool.light_statusbar_in_light_theme);
+                    break;
+                case ThemeUtils.DARK:
+                    lightStatusBar = activity.getResources().getBoolean(
+                            R.bool.light_statusbar_in_dark_theme);
+                    break;
+                case ThemeUtils.CLEAR:
+                    lightStatusBar = activity.getResources().getBoolean(
+                            R.bool.light_statusbar_in_clear_theme);
+                    break;
+            }
+            if (lightStatusBar) ToolbarColorizer.setLightStatusBar(activity);
+            else ToolbarColorizer.clearLightStatusBar(activity);
+        } else {
+            ToolbarColorizer.clearLightStatusBar(activity);
+        }
     }
 
     @SuppressWarnings("ResourceAsColor")
-    public static void setupCollapsingToolbarTextColors(Context context, CollapsingToolbarLayout
-            collapsingToolbarLayout, boolean transparentWhenExpanded) {
+    public static void setupCollapsingToolbarTextColors(Context context,
+                                                        CollapsingToolbarLayout
+                                                                collapsingToolbarLayout,
+                                                        boolean transparentWhenExpanded) {
         int textColor = ColorUtils.getToolbarTextColor(context);
         collapsingToolbarLayout.setExpandedTitleColor(transparentWhenExpanded
                 ? ContextCompat.getColor(context, android.R.color.transparent) : textColor);

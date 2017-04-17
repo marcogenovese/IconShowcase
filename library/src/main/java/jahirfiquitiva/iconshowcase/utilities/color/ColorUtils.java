@@ -20,6 +20,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.support.annotation.ColorInt;
+import android.support.annotation.ColorRes;
 import android.support.annotation.FloatRange;
 import android.support.v7.graphics.Palette;
 
@@ -149,9 +150,15 @@ public class ColorUtils {
                 });
     }
 
+    @ColorInt
     public static int getIconsColor(Context context) {
         return ThemeUtils.darkOrLight(context, R.color.drawable_tint_dark,
                 R.color.drawable_tint_light);
+    }
+
+    @ColorRes
+    public static int getIconsColor(boolean dark) {
+        return dark ? R.color.drawable_tint_dark : R.color.drawable_tint_light;
     }
 
     public static int getToolbarTextColor(Context context) {

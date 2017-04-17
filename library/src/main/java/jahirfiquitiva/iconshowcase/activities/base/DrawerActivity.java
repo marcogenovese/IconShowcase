@@ -95,8 +95,7 @@ public abstract class DrawerActivity extends CapsuleActivity {
                 return DrawerItem.KUSTOM;
             default:
                 throw new UnsupportedOperationException("Invalid drawer key " + s + ".\nPlease " +
-                        "check your " +
-                        "primary_drawer_items array");
+                        "check your primary_drawer_items array");
         }
     }
 
@@ -105,8 +104,8 @@ public abstract class DrawerActivity extends CapsuleActivity {
         mDrawerItems.add(DrawerItem.HOME);
 
         //Convert keys to enums
-        String[] configurePrimaryDrawerItems = getResources().getStringArray(R.array
-                .drawer_sections);
+        String[] configurePrimaryDrawerItems = getResources().getStringArray(
+                R.array.drawer_sections);
         for (String s : configurePrimaryDrawerItems) {
             mDrawerItems.add(drawerKeyToType(s));
         }
@@ -114,14 +113,12 @@ public abstract class DrawerActivity extends CapsuleActivity {
         mDrawerItems.add(DrawerItem.CREDITS);
         mDrawerItems.add(DrawerItem.SETTINGS);
         if (WITH_DONATIONS_SECTION) mDrawerItems.add(DrawerItem.DONATE);
-
     }
 
     /*
      * Drawer item enum class
      */
     public enum DrawerItem {
-
         //    MAIN("Main", R.string.app_name),
         HOME("Home", R.string.section_home, R.drawable.ic_home) {
             @Override

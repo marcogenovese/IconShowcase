@@ -44,15 +44,26 @@ public class IconUtils {
     private static final int CAPS = 2;
     private static final int CAPS_LOCK = 3;
 
+    public static Drawable getTintedDrawableCheckingForColorDarkness(@NonNull Context context,
+                                                                     String name,
+                                                                     @ColorInt int background) {
+        boolean isLight = ColorUtils.isLightColor(background);
+        return getTintedIcon(context,
+                getIconResId(context.getResources(), context.getPackageName(), name),
+                ContextCompat.getColor(context, ColorUtils.getIconsColor(!isLight)));
+    }
+
     public static Drawable getTintedDrawable(@NonNull Context context, String name) {
-        return getTintedIcon(context, getIconResId(context.getResources(),
-                context.getPackageName(), name), ColorUtils.getIconsColor(context));
+        return getTintedIcon(context,
+                getIconResId(context.getResources(), context.getPackageName(), name),
+                ColorUtils.getIconsColor(context));
     }
 
     public static Drawable getTintedDrawable(@NonNull Context context, String name,
                                              @ColorInt int color) {
         return getTintedIcon(context,
-                getIconResId(context.getResources(), context.getPackageName(), name), color);
+                getIconResId(context.getResources(), context.getPackageName(), name),
+                color);
     }
 
     public static Drawable getTintedIcon(@NonNull Context context, @DrawableRes int drawable,

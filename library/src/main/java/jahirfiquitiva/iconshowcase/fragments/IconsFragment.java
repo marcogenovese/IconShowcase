@@ -38,6 +38,7 @@ import jahirfiquitiva.iconshowcase.activities.base.DrawerActivity;
 import jahirfiquitiva.iconshowcase.adapters.IconsAdapter;
 import jahirfiquitiva.iconshowcase.models.IconItem;
 import jahirfiquitiva.iconshowcase.models.IconsCategory;
+import jahirfiquitiva.iconshowcase.utilities.utils.IconUtils;
 
 public class IconsFragment extends CapsuleFragment {
 
@@ -115,7 +116,7 @@ public class IconsFragment extends CapsuleFragment {
                 filteredIconsList = new ArrayList<>();
                 String search = s.toString().toLowerCase();
                 for (int i = 0; i < iconsList.size(); i++) {
-                    String name = iconsList.get(i).getName();
+                    String name = IconUtils.formatName(iconsList.get(i).getName());
                     if (name.toLowerCase().contains(search)) {
                         filteredIconsList.add(iconsList.get(i));
                     }

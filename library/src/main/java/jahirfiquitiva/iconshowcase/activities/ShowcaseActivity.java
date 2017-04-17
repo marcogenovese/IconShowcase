@@ -19,6 +19,7 @@
 
 package jahirfiquitiva.iconshowcase.activities;
 
+import android.app.Activity;
 import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -72,6 +73,7 @@ import java.util.Collections;
 import java.util.Random;
 
 import ca.allanwang.capsule.library.changelog.ChangelogDialog;
+import ca.allanwang.capsule.library.interfaces.CCollapseListener;
 import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.activities.base.TasksActivity;
 import jahirfiquitiva.iconshowcase.config.Config;
@@ -107,7 +109,6 @@ public class ShowcaseActivity extends TasksActivity {
 
     //TODO do not save Dialog instance; use fragment tags
     private MaterialDialog dialog;
-    private CollapsingToolbarLayout collapsingToolbarLayout;
     //TODO perhaps dynamically load the imageviews rather than predefining 8
     private ImageView icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8;
     private ImageView toolbarHeader;
@@ -165,13 +166,12 @@ public class ShowcaseActivity extends TasksActivity {
         capsulate().toolbar(R.id.toolbar).appBarLayout(R.id.appbar).coordinatorLayout(R.id
                 .mainCoordinatorLayout);
 
-        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbar);
+        cCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbar);
         toolbarHeader = (ImageView) findViewById(R.id.toolbarHeader);
 
         thaAppName = getResources().getString(R.string.app_name);
 
-        collapsingToolbarLayout.setTitle(thaAppName);
-        ToolbarColorizer.setupCollapsingToolbarTextColors(this, collapsingToolbarLayout, true);
+        cCollapsingToolbarLayout.setTitle(thaAppName);
         setupDrawer(savedInstance);
 
         //Setup donations
@@ -247,13 +247,29 @@ public class ShowcaseActivity extends TasksActivity {
         startTasks();
     }
 
+    private Activity getActivity() {
+        return this;
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
         if (pickerKey == 0) {
             setupToolbarHeader();
         }
-        ToolbarColorizer.setupCollapsingToolbarIconsAndTextsColors(this, cAppBarLayout, cToolbar);
+        new CustomizeToolbar().setCollapseListener(new CCollapseListener() {
+            @Override
+            public void onStateChanged(AppBarLayout appBarLayout, State state) {
+                ToolbarColorizer.setStatusBarStyleWithAppBarState(getActivity(), state);
+            }
+
+            @Override
+            public void onVerticalOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                ToolbarColorizer.setCollapsingToolbarColorForOffset(getActivity(),
+                        cToolbar, verticalOffset);
+            }
+        });
+        ToolbarColorizer.setupCollapsingToolbarTextColors(this, cCollapsingToolbarLayout, true);
         runLicenseChecker(WITH_LICENSE_CHECKER, GOOGLE_PUBKEY, WITH_INSTALLED_FROM_AMAZON,
                 CHECK_LPF, CHECK_STORES);
     }
@@ -393,7 +409,7 @@ public class ShowcaseActivity extends TasksActivity {
         //Fragment Switcher
         reloadFragment(dt);
 
-        collapsingToolbarLayout.setTitle(dt.getName().equals("Home") ? Config.get().string(R
+        cCollapsingToolbarLayout.setTitle(dt.getName().equals("Home") ? Config.get().string(R
                 .string.app_name) : getString(dt.getTitleID()));
 
         drawer.setSelection(itemId);
@@ -404,8 +420,8 @@ public class ShowcaseActivity extends TasksActivity {
         if (drawer != null) {
             outState = drawer.saveInstanceState(outState);
         }
-        if (collapsingToolbarLayout != null && collapsingToolbarLayout.getTitle() != null) {
-            outState.putString("toolbarTitle", collapsingToolbarLayout.getTitle().toString());
+        if (cCollapsingToolbarLayout != null && cCollapsingToolbarLayout.getTitle() != null) {
+            outState.putString("toolbarTitle", cCollapsingToolbarLayout.getTitle().toString());
         }
         outState.putInt("currentSection", (int) currentItem);
         outState.putInt("pickerKey", pickerKey);
@@ -415,9 +431,9 @@ public class ShowcaseActivity extends TasksActivity {
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        if (collapsingToolbarLayout != null) {
-            ToolbarColorizer.setupCollapsingToolbarTextColors(this, collapsingToolbarLayout);
-            collapsingToolbarLayout.setTitle(savedInstanceState.getString("toolbarTitle",
+        if (cCollapsingToolbarLayout != null) {
+            ToolbarColorizer.setupCollapsingToolbarTextColors(this, cCollapsingToolbarLayout, true);
+            cCollapsingToolbarLayout.setTitle(savedInstanceState.getString("toolbarTitle",
                     thaAppName));
             pickerKey = savedInstanceState.getInt("pickerKey", 0);
         }

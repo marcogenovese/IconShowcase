@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -35,27 +36,34 @@ import jahirfiquitiva.iconshowcase.R;
 @SuppressWarnings("ResourceAsColor")
 public class ThemeUtils {
 
-    private final static int LIGHT = 0;
-    private final static int DARK = 1;
-    private final static int CLEAR = 2;
-    private final static int AUTO = 3;
+    public static final int LIGHT = 0;
+    public static final int DARK = 1;
+    public static final int CLEAR = 2;
+    public static final int AUTO = 3;
 
     private static boolean darkTheme;
     private static boolean transparent;
 
+    @ColorRes
     public static int darkOrLight(@ColorRes int dark, @ColorRes int light) {
         return darkTheme ? dark : light;
     }
 
-    public static int darkOrLight(@NonNull Context context, @ColorRes int dark, @ColorRes int
-            light) {
+    @ColorInt
+    public static int darkOrLight(@NonNull Context context, @ColorRes int dark,
+                                  @ColorRes int light) {
         return ContextCompat.getColor(context, darkOrLight(dark, light));
     }
 
+    @ColorInt
     public static int darkLightOrTransparent(@NonNull Context context, @ColorRes int dark,
                                              @ColorRes int light, @ColorRes int transparentColor) {
         if (transparent) return ContextCompat.getColor(context, transparentColor);
         return darkOrLight(context, dark, light);
+    }
+
+    public static int getCurrentTheme() {
+        return darkTheme ? transparent ? CLEAR : DARK : LIGHT;
     }
 
     public static boolean isDarkTheme() {

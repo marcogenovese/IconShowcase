@@ -64,6 +64,9 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if (hasAppsList) {
             this.cards -= 1;
         }
+        if (context.getString(R.string.iconpack_author_playstore).length() <= 3) {
+            this.cards -= 1;
+        }
         setupAppInfoAmounts();
     }
 
@@ -82,6 +85,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                             viewGroup, false);
                     return new AppInfoCard(infoCard);
                 }
+                break;
             case 2:
                 if (!hasAppsList &&
                         context.getString(R.string.iconpack_author_playstore).length() > 3) {
@@ -90,12 +94,17 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                             viewGroup, false);
                     return new MoreAppsCard(moreAppsCard);
                 }
+                break;
             default:
-                final View appCard = LayoutInflater.from(
-                        viewGroup.getContext()).inflate(R.layout.item_app_card,
-                        viewGroup, false);
-                return new AppCard(appCard, i);
+                if (hasAppsList) {
+                    final View appCard = LayoutInflater.from(
+                            viewGroup.getContext()).inflate(R.layout.item_app_card,
+                            viewGroup, false);
+                    return new AppCard(appCard, i);
+                }
+                break;
         }
+        return null;
     }
 
     @Override
@@ -112,13 +121,19 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     context.startActivity(rate);
                 }
             });
-            whldr.moreappsbtn.setOnClickListener(new DebouncedClickListener() {
-                @Override
-                public void onDebouncedClick(View v) {
-                    Utils.openLink(context,
-                            context.getResources().getString(R.string.iconpack_author_playstore));
-                }
-            });
+            if (context.getString(R.string.iconpack_author_playstore).length() > 3) {
+                whldr.moreappsbtn.setOnClickListener(new DebouncedClickListener() {
+                    @Override
+                    public void onDebouncedClick(View v) {
+                        Utils.openLink(context,
+                                context.getResources().getString(
+                                        R.string.iconpack_author_playstore));
+
+                    }
+                });
+            } else {
+                whldr.moreappsbtn.setVisibility(View.GONE);
+            }
         } else if (holder instanceof AppInfoCard) {
             this.hldr = (AppInfoCard) holder;
             setupIcons(context, hldr.iconsIV, hldr.wallsIV, hldr.widgetsIV);

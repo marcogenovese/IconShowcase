@@ -21,6 +21,7 @@ package jahirfiquitiva.iconshowcase.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -43,6 +44,7 @@ import jahirfiquitiva.iconshowcase.adapters.HomeListAdapter;
 import jahirfiquitiva.iconshowcase.events.OnLoadEvent;
 import jahirfiquitiva.iconshowcase.fragments.base.EventBaseFragment;
 import jahirfiquitiva.iconshowcase.models.HomeCard;
+import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.IconUtils;
 import jahirfiquitiva.iconshowcase.views.CounterFab;
 import jahirfiquitiva.iconshowcase.views.DebouncedClickListener;
@@ -144,7 +146,9 @@ public class MainFragment extends EventBaseFragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new CFabEvent(R.drawable.ic_rate, new View.OnClickListener() {
+        Drawable icon = IconUtils.getTintedDrawableCheckingForColorDarkness(
+                getActivity(), "ic_rate", ColorUtils.getAccentColor(getActivity()));
+        return new CFabEvent(icon, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent rate = new Intent(Intent.ACTION_VIEW,

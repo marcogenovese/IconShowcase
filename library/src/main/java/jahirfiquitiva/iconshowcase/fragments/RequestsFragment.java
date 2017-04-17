@@ -21,6 +21,7 @@ package jahirfiquitiva.iconshowcase.fragments;
 
 import android.Manifest;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
@@ -49,6 +50,8 @@ import jahirfiquitiva.iconshowcase.activities.ShowcaseActivity;
 import jahirfiquitiva.iconshowcase.activities.base.DrawerActivity;
 import jahirfiquitiva.iconshowcase.adapters.RequestsAdapter;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
+import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
+import jahirfiquitiva.iconshowcase.utilities.utils.IconUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.PermissionsUtils;
 import jahirfiquitiva.iconshowcase.views.CounterFab;
 import jahirfiquitiva.iconshowcase.views.GridSpacingItemDecoration;
@@ -142,7 +145,10 @@ public class RequestsFragment extends CapsuleFragment {
                 e.printStackTrace();
             }
         }
-        return new CFabEvent(R.drawable.ic_email, new View.OnClickListener() {
+
+        Drawable icon = IconUtils.getTintedDrawableCheckingForColorDarkness(
+                getActivity(), "ic_email", ColorUtils.getAccentColor(getActivity()));
+        return new CFabEvent(icon, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startRequestProcess();
