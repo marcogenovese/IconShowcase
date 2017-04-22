@@ -53,22 +53,13 @@
     <string name="main_activity_name">HomeActivity</string>
     <string name="main_activity_fullname">com.packagename.appname.HomeActivity</string>
 
-
-    <!-- TEXTS TO BE USED IN ABOUT SECTION -->
-
+    <!-- SOME INFO ABOUT YOU, TO BE USED IN THE APP AND SOME LAUNCHERS -->
     <string name="iconpack_author_name">Your Name</string>
     <string name="iconpack_author_photo" formatted="false" tools:ignore="TypographyDashes">https://lh3.googleusercontent.com/-0mdcClKXlgM/AAAAAAAAAAI/AAAAAAAAAAA/xgdLWeAg7pM/s120-c/photo.jpg</string>
     <string name="iconpack_author_banner" formatted="false" tools:ignore="TypographyDashes">https://lh5.googleusercontent.com/-eAPognoXTwE/UYFKq101UyI/AAAAAAAABiY/REl1Ei8txP8/w1600-h900/default_cover_5_ff9ff46d48dc181084c9c23a120b68d8.jpg</string>
     <string name="iconpack_author_description">I am a designer and I love this dashboard. This is just a sample text. You can edit it with your own short bio.</string>
-    <string name="iconpack_author_gplus">https://www.google.com/+JahirFiquitivaJDev</string>
-    <string name="iconpack_author_gplus_community">https://plus.google.com/communities/117748118619432374563</string>
-    <string name="iconpack_author_fb">fb://profile/1123913326</string>
-    <string name="iconpack_author_fb_alt">https://www.facebook.com/JahirFiquitiva</string>
-    <string name="iconpack_author_twitter">twitter://user?screen_name=jahirfiquitiva</string>
-    <string name="iconpack_author_twitter_alt">https://twitter.com/#!/jahirfiquitiva</string>
     <string name="iconpack_author_playstore"></string>
     <string name="iconpack_author_website">https://www.jahirfiquitiva.me/</string>
-    <string name="iconpack_author_youtube">https://www.youtube.com/channel/UCBTheBoZEA1p95HyjEHqouA</string>
 
 
     <!-- PICTURES NAMES TO BE USED AS PREVIEWS FOR LAUNCHERS -->

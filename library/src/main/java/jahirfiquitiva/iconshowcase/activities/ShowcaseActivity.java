@@ -1062,6 +1062,11 @@ public class ShowcaseActivity extends TasksActivity {
         return WITH_ZOOPER_SECTION;
     }
 
+    public boolean includesWidgets() {
+        return mDrawerMap.containsKey(DrawerItem.ZOOPER) ||
+                mDrawerMap.containsKey(DrawerItem.KUSTOM);
+    }
+
     public boolean includesIcons() {
         return mDrawerMap.containsKey(DrawerItem.PREVIEWS);
     }
@@ -1091,4 +1096,7 @@ public class ShowcaseActivity extends TasksActivity {
         return mDrawerMap.get(DrawerItem.PREVIEWS);
     }
 
+    public void openFAQs() {
+        drawerItemClick(mDrawerMap.get(DrawerItem.FAQS));
+    }
 }

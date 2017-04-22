@@ -202,6 +202,7 @@
     <string name="iconrestorer_widget_title">Icon Restorer Widget</string>
     <string name="clock_widget_title">Analog Clock</string>
 
+    <!-- This means Frequently Asked Questions, just in case you didn't know -->
     <string name="faqs_section">FAQs</string>
 
     <string name="dashboard_author_copyright">I am a 20-year-old Android development enthusiast and the developer of the dashboard.\n\nShared from Colombia to the world, under CreativeCommons Attribution-ShareAlike License.\nCopyright © 2017.</string>

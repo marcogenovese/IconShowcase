@@ -109,16 +109,25 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof WelcomeCard) {
             WelcomeCard whldr = (WelcomeCard) holder;
-            whldr.buttons.setVisibility(hasAppsList ? View.VISIBLE : View.GONE);
-            whldr.ratebtn.setOnClickListener(new DebouncedClickListener() {
+            whldr.faqsbtn.setOnClickListener(new DebouncedClickListener() {
                 @Override
                 public void onDebouncedClick(View v) {
-                    Intent rate = new Intent(Intent.ACTION_VIEW,
-                            Uri.parse("https://play.google.com/store/apps/details?id=" +
-                                    context.getPackageName()));
-                    context.startActivity(rate);
+                    ((ShowcaseActivity) context).openFAQs();
                 }
             });
+            if (hasAppsList) {
+                whldr.ratebtn.setOnClickListener(new DebouncedClickListener() {
+                    @Override
+                    public void onDebouncedClick(View v) {
+                        Intent rate = new Intent(Intent.ACTION_VIEW,
+                                Uri.parse("https://play.google.com/store/apps/details?id=" +
+                                        context.getPackageName()));
+                        context.startActivity(rate);
+                    }
+                });
+            } else {
+                whldr.ratebtn.setVisibility(View.GONE);
+            }
             if (showMoreApps) {
                 whldr.moreappsbtn.setOnClickListener(new DebouncedClickListener() {
                     @Override
@@ -221,12 +230,16 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
         this.wallpapers = FullListHolder.get().walls().getList() != null
                 ? FullListHolder.get().walls().getList().size() : 0;
-        this.widgets = FullListHolder.get().zooperList().getList() != null
+        this.widgets = 0;
+        this.widgets += FullListHolder.get().zooperList().getList() != null
                 ? FullListHolder.get().zooperList().getList().size() : 0;
         this.widgets += FullListHolder.get().kustomWidgets().getList() != null
-                ? FullListHolder.get().kustomWidgets().getList().size() + 1 : 0;
-        if (this.widgets > 1) {
+                ? FullListHolder.get().kustomWidgets().getList().size() : 0;
+        if (widgets > 1) {
             this.widgets -= 1;
+        }
+        if (((ShowcaseActivity) context).includesWidgets() && widgets == 0) {
+            this.widgets += 1;
         }
     }
 
@@ -248,13 +261,13 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     public class WelcomeCard extends RecyclerView.ViewHolder {
-        private final LinearLayout buttons;
+        private final AppCompatButton faqsbtn;
         private final AppCompatButton ratebtn;
         private final AppCompatButton moreappsbtn;
 
         public WelcomeCard(View itemView) {
             super(itemView);
-            buttons = (LinearLayout) itemView.findViewById(R.id.buttons);
+            faqsbtn = (AppCompatButton) itemView.findViewById(R.id.faqs_button);
             ratebtn = (AppCompatButton) itemView.findViewById(R.id.rate_button);
             moreappsbtn = (AppCompatButton) itemView.findViewById(R.id.more_apps_button);
         }

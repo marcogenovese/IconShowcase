@@ -124,6 +124,11 @@ public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomHolder> {
         }
     }
 
+    @Override
+    public void onBindHeaderViewHolder(KustomHolder holder, int section, boolean expanded) {
+        holder.setSectionTitle(section);
+    }
+
     public int getHeadersBeforePosition(int position) {
         int headers = 0;
         for (int i = 0; i < position; i++) {
@@ -132,11 +137,6 @@ public class KustomAdapter extends SectionedRecyclerViewAdapter<KustomHolder> {
             }
         }
         return headers;
-    }
-
-    @Override
-    public void onBindHeaderViewHolder(KustomHolder holder, int section) {
-        holder.setSectionTitle(section);
     }
 
     @Override

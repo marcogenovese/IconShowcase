@@ -22,11 +22,11 @@ package jahirfiquitiva.iconshowcase.holders;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.afollestad.sectionedrecyclerview.SectionedViewHolder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 
@@ -36,7 +36,7 @@ import jahirfiquitiva.iconshowcase.R;
 import jahirfiquitiva.iconshowcase.config.Config;
 import jahirfiquitiva.iconshowcase.utilities.Preferences;
 
-public class KustomHolder extends RecyclerView.ViewHolder {
+public class KustomHolder extends SectionedViewHolder {
     private final ImageView widget;
     private final TextView sectionTitle;
     private final OnKustomItemClickListener listener;

@@ -116,16 +116,19 @@ dependencies {
     compile 'com.github.pluscubed:recycler-fast-scroll:0.3.2@aar'
 
     //Sectioned RecyclerView
-    compile 'com.afollestad:sectioned-recyclerview:0.2.3'
+    compile 'com.afollestad:sectioned-recyclerview:0.4.0'
 
     //Circular Image View
-    compile 'de.hdodenhof:circleimageview:2.1.0'
+    compile 'com.github.hdodenhof:CircleImageView:7fd3573'
 
     //Library for Requests
     compile 'com.github.AllanWang:Butler:ea99c5b'
 
     //Library for UI framework
-    compile 'ca.allanwang:capsule:d957850'
+    compile 'ca.allanwang:capsule:a8ac869'
+	
+	//FloatingActionMenu
+	compile 'com.github.jahirfiquitiva:floating-action-menu:becb846'
 
     //Donations Lib
     compile 'org.sufficientlysecure:donations:2.5'
