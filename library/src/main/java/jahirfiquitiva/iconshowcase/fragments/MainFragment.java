@@ -53,7 +53,7 @@ import timber.log.Timber;
 
 public class MainFragment extends EventBaseFragment {
 
-    private final ArrayList<HomeCard> homeCards = new ArrayList<>();
+    private ArrayList<HomeCard> homeCards;
     private Context context;
     private HomeListAdapter mAdapter;
     private boolean hasAppsList = false;
@@ -63,22 +63,9 @@ public class MainFragment extends EventBaseFragment {
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        String[] listNames = getResources().getStringArray(R.array.home_list_titles);
-        String[] listDescriptions = getResources().getStringArray(R.array.home_list_descriptions);
-        String[] listIcons = getResources().getStringArray(R.array.home_list_icons);
-        String[] listLinks = getResources().getStringArray(R.array.home_list_links);
-
-        int names = listNames.length;
-        int descs = listDescriptions.length;
-        int icons = listIcons.length;
-        int packs = listLinks.length;
-
-        if (names > 0 && names == descs && names == icons && names == packs) {
-            hasAppsList = true;
-            hideFab();
-        }
-
         context = getActivity();
+
+        this.hasAppsList = hasAppsList();
 
         View layout = inflater.inflate(R.layout.main_section, container, false);
 
@@ -97,26 +84,6 @@ public class MainFragment extends EventBaseFragment {
                     setupAndAnimateIcons(0);
                 }
             });
-        }
-
-        if (hasAppsList) {
-            for (int i = 0; i < listNames.length; i++) {
-                try {
-                    homeCards.add(new HomeCard.Builder()
-                            .context(getActivity())
-                            .title(listNames[i])
-                            .description(listDescriptions[i])
-                            .icon(ContextCompat.getDrawable(context,
-                                    IconUtils.getIconResId(getResources(),
-                                            context.getPackageName(), listIcons[i])))
-                            .onClickLink(listLinks[i])
-                            .build());
-                } catch (IndexOutOfBoundsException e) {
-                    hasAppsList = false;
-                    showFab();
-                    Timber.e("Apps Cards arrays are inconsistent. Fix them.");
-                }
-            }
         }
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
@@ -138,25 +105,76 @@ public class MainFragment extends EventBaseFragment {
         return DrawerActivity.DrawerItem.HOME.getTitleID();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        this.hasAppsList = hasAppsList();
+        postEvent(updateFab());
+    }
+
     @Nullable
     @Override
     protected CFabEvent updateFab() {
-        try {
-            ((CounterFab) capsuleActivity().getFab()).setCount(0);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        Drawable icon = IconUtils.getTintedDrawableCheckingForColorDarkness(
-                getActivity(), "ic_rate", ColorUtils.getAccentColor(getActivity()));
-        return new CFabEvent(icon, new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent rate = new Intent(Intent.ACTION_VIEW,
-                        Uri.parse("https://play.google.com/store/apps/details?id=" +
-                                context.getPackageName()));
-                context.startActivity(rate);
+        if (hasAppsList) {
+            return new CFabEvent(false);
+        } else {
+            try {
+                ((CounterFab) capsuleActivity().getFab()).setCount(0);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        });
+            Drawable icon = IconUtils.getTintedDrawableCheckingForColorDarkness(
+                    getActivity(), "ic_rate", ColorUtils.getAccentColor(getActivity()));
+            if (icon == null) {
+                return new CFabEvent(false);
+            } else {
+                return new CFabEvent(icon, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent rate = new Intent(Intent.ACTION_VIEW,
+                                Uri.parse("https://play.google.com/store/apps/details?id=" +
+                                        context.getPackageName()));
+                        context.startActivity(rate);
+                    }
+                });
+            }
+        }
+    }
+
+    private boolean hasAppsList() {
+        this.homeCards = new ArrayList<>();
+
+        String[] listNames = getResources().getStringArray(R.array.home_list_titles);
+        String[] listDescriptions = getResources().getStringArray(R.array.home_list_descriptions);
+        String[] listIcons = getResources().getStringArray(R.array.home_list_icons);
+        String[] listLinks = getResources().getStringArray(R.array.home_list_links);
+
+        int names = listNames.length;
+        int descs = listDescriptions.length;
+        int icons = listIcons.length;
+        int packs = listLinks.length;
+
+        if (names <= 0 || descs != names || icons != names || packs != names) {
+            return false;
+        }
+
+        for (int i = 0; i < names; i++) {
+            try {
+                homeCards.add(new HomeCard.Builder()
+                        .context(getActivity())
+                        .title(listNames[i])
+                        .description(listDescriptions[i])
+                        .icon(ContextCompat.getDrawable(context,
+                                IconUtils.getIconResId(getResources(),
+                                        context.getPackageName(), listIcons[i])))
+                        .onClickLink(listLinks[i])
+                        .build());
+            } catch (Exception e) {
+                Timber.e("Apps Cards arrays are inconsistent. Fix them.");
+            }
+        }
+
+        return homeCards != null && !homeCards.isEmpty();
     }
 
     private void setupAndAnimateIcons(int delay) {

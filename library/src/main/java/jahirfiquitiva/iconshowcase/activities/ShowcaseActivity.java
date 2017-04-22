@@ -100,6 +100,7 @@ public class ShowcaseActivity extends TasksActivity {
     private IabHelper mHelper;
     private Drawer drawer;
 
+    private String shortcut;
     private boolean allowShuffle = true;
     private boolean shuffleIcons = true;
     private long currentItem = -1;
@@ -120,7 +121,7 @@ public class ShowcaseActivity extends TasksActivity {
         ThemeUtils.onActivityCreateSetTheme(this);
         super.onCreate(savedInstance);
 
-        String shortcut = configuration.getString("shortcut");
+        shortcut = configuration.getString("shortcut");
         boolean openWallpapers = configuration.getBoolean("open_wallpapers", false) ||
                 (shortcut != null && shortcut.equals("wallpapers_shortcut"));
 
@@ -260,7 +261,7 @@ public class ShowcaseActivity extends TasksActivity {
         new CustomizeToolbar().setCollapseListener(new CCollapseListener() {
             @Override
             public void onStateChanged(AppBarLayout appBarLayout, State state) {
-                ToolbarColorizer.setStatusBarStyleWithAppBarState(getActivity(), state);
+                // Do nothing
             }
 
             @Override
@@ -393,7 +394,8 @@ public class ShowcaseActivity extends TasksActivity {
         currentItem = itemId;
 
         // TODO Make sure this works fine even after configuration changes
-        if ((dt == DrawerItem.HOME) && (pickerKey == 0)) {
+        if ((dt == DrawerItem.HOME) && (pickerKey == 0) &&
+                (shortcut == null || shortcut.length() < 3)) {
             expandAppBar(mPrefs != null && mPrefs.getAnimationsEnabled());
         } else {
             collapseAppBar(mPrefs != null && mPrefs.getAnimationsEnabled());
@@ -493,7 +495,8 @@ public class ShowcaseActivity extends TasksActivity {
         if (i == R.id.changelog) {
             if (includesIcons()) {
                 ChangelogDialog.show(this, R.xml.changelog,
-                        new ChangelogDialog.OnChangelogNeutralButtonClick() {
+                        getResources().getBoolean(R.bool.show_check_new_icons_button)
+                                ? new ChangelogDialog.OnChangelogNeutralButtonClick() {
                             @Override
                             public int getNeutralText() {
                                 return R.string.changelog_neutral_text;
@@ -503,7 +506,7 @@ public class ShowcaseActivity extends TasksActivity {
                             public void onNeutralButtonClick() {
                                 drawerItemClick(mDrawerMap.get(DrawerItem.PREVIEWS));
                             }
-                        });
+                        } : null);
             } else {
                 ChangelogDialog.show(this, R.xml.changelog, null);
             }
@@ -659,6 +662,19 @@ public class ShowcaseActivity extends TasksActivity {
     public void animateIcons(int delay) {
         if (!(includesIcons())) return;
 
+        if (mPrefs.getAnimationsEnabled()) {
+            final Animation anim = AnimationUtils.loadAnimation(this, R.anim.bounce);
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    playIconsAnimations(anim);
+                }
+            }, delay);
+        }
+    }
+
+    private void showToolbarIcons() {
         if (pickerKey == 0) {
             switch (numOfIcons) {
                 case 8:
@@ -691,22 +707,27 @@ public class ShowcaseActivity extends TasksActivity {
                     break;
             }
         }
-
-        if (mPrefs.getAnimationsEnabled()) {
-            final Animation anim = AnimationUtils.loadAnimation(this, R.anim.bounce);
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    playIconsAnimations(anim);
-                }
-            }, delay);
-        }
-
     }
 
     private void playIconsAnimations(Animation anim) {
         if (!(includesIcons())) return;
+
+        anim.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                showToolbarIcons();
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                // Do nothing
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+                // Do nothing
+            }
+        });
 
         icon1.startAnimation(anim);
         icon2.startAnimation(anim);

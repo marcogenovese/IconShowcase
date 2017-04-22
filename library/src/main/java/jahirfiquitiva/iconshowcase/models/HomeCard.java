@@ -155,7 +155,8 @@ public class HomeCard implements Parcelable {
 
         public Builder onClickLink(String s) {
             this.onClickLink = s;
-            this.isAnApp = s.startsWith("https://play.google.com/store/apps/details?id=");
+            this.isAnApp = s.toLowerCase()
+                    .contains("play.google.com/store/apps/details?id=");
             if (isAnApp) {
                 this.packageName = s.substring(s.lastIndexOf("=") + 1, s.length());
                 this.isInstalled = Utils.isAppInstalled(context, packageName);

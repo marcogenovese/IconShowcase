@@ -130,6 +130,12 @@ public class RequestsFragment extends CapsuleFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        postEvent(updateFab());
+    }
+
+    @Override
     public int getTitleId() {
         return DrawerActivity.DrawerItem.REQUESTS.getTitleID();
     }
@@ -137,23 +143,30 @@ public class RequestsFragment extends CapsuleFragment {
     @Nullable
     @Override
     protected CFabEvent updateFab() {
+        updateFabNumber();
+        Drawable icon = IconUtils.getTintedDrawableCheckingForColorDarkness(
+                getActivity(), "ic_email", ColorUtils.getAccentColor(getActivity()));
+        if (icon != null) {
+            return new CFabEvent(icon, new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startRequestProcess();
+                }
+            });
+        } else {
+            return new CFabEvent(false);
+        }
+    }
+
+    private void updateFabNumber() {
         if (getAdapter() != null && getAdapter().getSelectedApps() != null) {
             try {
-                ((CounterFab) capsuleActivity().getFab()).setCount(getAdapter().getSelectedApps()
-                        .size());
+                ((CounterFab) capsuleActivity().getFab()).setCount(
+                        getAdapter().getSelectedApps().size());
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-
-        Drawable icon = IconUtils.getTintedDrawableCheckingForColorDarkness(
-                getActivity(), "ic_email", ColorUtils.getAccentColor(getActivity()));
-        return new CFabEvent(icon, new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startRequestProcess();
-            }
-        });
     }
 
     @Override

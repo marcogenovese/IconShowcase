@@ -213,12 +213,14 @@ public class ToolbarColorizer {
     public static void setCollapsingToolbarColorForOffset(Context context,
                                                           Toolbar toolbar, int offset) {
         final int defaultIconsColor = ContextCompat.getColor(context, android.R.color.white);
-        double ratio = Utils.round(((double) (offset * -1) / 255.0), 1);
+        double ratio = Utils.round((double) Math.abs(offset) / 255.0, 1);
         if (ratio > 1) {
             ratio = 1;
         } else if (ratio < 0) {
             ratio = 0;
         }
+        setStatusBarStyleWithAppBarState((Activity) context, ratio > 0.75 ?
+                CCollapseListener.State.COLLAPSED : CCollapseListener.State.EXPANDED);
         int rightColor = ColorUtils.blendColors(defaultIconsColor,
                 ColorUtils.getIconsColor(context), (float) ratio);
         if (toolbar != null) {

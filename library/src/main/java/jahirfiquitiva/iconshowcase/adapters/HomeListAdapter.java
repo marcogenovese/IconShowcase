@@ -49,6 +49,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private AppInfoCard hldr;
     private View view;
     private boolean hasAppsList = false;
+    private boolean showMoreApps = true;
     private int cards = 3;
     private int icons = 0;
     private int wallpapers = 0;
@@ -61,10 +62,11 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if (context.getResources().getBoolean(R.bool.hide_pack_info)) {
             this.cards -= 1;
         }
-        if (hasAppsList) {
+        if (context.getString(R.string.iconpack_author_playstore).length() <= 3) {
+            this.showMoreApps = false;
             this.cards -= 1;
         }
-        if (context.getString(R.string.iconpack_author_playstore).length() <= 3) {
+        if (hasAppsList && showMoreApps) {
             this.cards -= 1;
         }
         setupAppInfoAmounts();
@@ -85,16 +87,13 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                             viewGroup, false);
                     return new AppInfoCard(infoCard);
                 }
-                break;
             case 2:
-                if (!hasAppsList &&
-                        context.getString(R.string.iconpack_author_playstore).length() > 3) {
+                if (!hasAppsList && showMoreApps) {
                     View moreAppsCard = LayoutInflater.from(
                             viewGroup.getContext()).inflate(R.layout.item_moreapps_card,
                             viewGroup, false);
                     return new MoreAppsCard(moreAppsCard);
                 }
-                break;
             default:
                 if (hasAppsList) {
                     final View appCard = LayoutInflater.from(
@@ -102,7 +101,6 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                             viewGroup, false);
                     return new AppCard(appCard, i);
                 }
-                break;
         }
         return null;
     }
@@ -121,7 +119,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     context.startActivity(rate);
                 }
             });
-            if (context.getString(R.string.iconpack_author_playstore).length() > 3) {
+            if (showMoreApps) {
                 whldr.moreappsbtn.setOnClickListener(new DebouncedClickListener() {
                     @Override
                     public void onDebouncedClick(View v) {
@@ -158,7 +156,6 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 description = context.getResources().getString(R.string.tap_to_download,
                         homeCards.get(ahldr.i - cards).getDesc());
             }
-
             ahldr.cardTitle.setText(homeCards.get(ahldr.i - cards).getTitle());
             ahldr.cardDesc.setText(homeCards.get(ahldr.i - cards).isAnApp() ? description :
                     homeCards.get(ahldr.i - cards).getDesc());
@@ -227,7 +224,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.widgets = FullListHolder.get().zooperList().getList() != null
                 ? FullListHolder.get().zooperList().getList().size() : 0;
         this.widgets += FullListHolder.get().kustomWidgets().getList() != null
-                ? FullListHolder.get().kustomWidgets().getList().size() : 0;
+                ? FullListHolder.get().kustomWidgets().getList().size() + 1 : 0;
         if (this.widgets > 1) {
             this.widgets -= 1;
         }

@@ -27,24 +27,20 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestHolder> {
 
     @Nullable
     private ArrayList<App> getApps() {
-        if (IconRequest.get() != null)
-            return IconRequest.get().getApps();
-        return null;
+        return IconRequest.get() != null ? IconRequest.get().getApps() : null;
     }
 
     @Nullable
     public ArrayList<App> getSelectedApps() {
-        if (IconRequest.get() != null)
-            return IconRequest.get().getSelectedApps();
-        return null;
+        return IconRequest.get() != null ? IconRequest.get().getSelectedApps() : null;
     }
 
     @Override
     public RequestHolder onCreateViewHolder(ViewGroup parent, int position) {
         Preferences mPrefs = new Preferences(parent.getContext());
         View view = LayoutInflater.from(parent.getContext()).inflate((Config.get().devOptions() ?
-                mPrefs.getDevListsCards() : Config.get().bool(R.bool.request_cards)) ? R.layout
-                .card_app_to_request : R.layout.item_app_to_request, parent, false);
+                mPrefs.getDevListsCards() : Config.get().bool(R.bool.request_cards)) ?
+                R.layout.card_app_to_request : R.layout.item_app_to_request, parent, false);
         return new RequestHolder(view, new RequestHolder.OnAppClickListener() {
             @Override
             public void onClick(AppCompatCheckBox checkBox, App item) {
