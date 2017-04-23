@@ -621,7 +621,7 @@ public class ShowcaseActivity extends TasksActivity {
             finalIconsList.add(FullListHolder.get().home().getList().get(i));
         }
 
-        if (delay > 0)
+        if (delay >= 0)
             animateIcons(delay, finalIconsList);
 
         allowShuffle = false;
@@ -643,19 +643,22 @@ public class ShowcaseActivity extends TasksActivity {
     private void playIconsAnimations(int duration, ArrayList<IconItem> resources) {
         if (!(includesIcons())) return;
         if (pickerKey == 0) {
-            switch (numOfIcons) {
-                case 8:
-                    animateIcon(icon7, duration, resources.get(7).getResId());
-                    animateIcon(icon8, duration, resources.get(8).getResId());
-                case 6:
-                    animateIcon(icon5, duration, resources.get(5).getResId());
-                    animateIcon(icon6, duration, resources.get(6).getResId());
-                case 4:
-                    animateIcon(icon1, duration, resources.get(1).getResId());
-                    animateIcon(icon2, duration, resources.get(2).getResId());
-                    animateIcon(icon3, duration, resources.get(3).getResId());
-                    animateIcon(icon4, duration, resources.get(4).getResId());
-                    break;
+            try {
+                switch (numOfIcons) {
+                    case 8:
+                        animateIcon(icon7, duration, resources.get(6).getResId());
+                        animateIcon(icon8, duration, resources.get(7).getResId());
+                    case 6:
+                        animateIcon(icon5, duration, resources.get(4).getResId());
+                        animateIcon(icon6, duration, resources.get(5).getResId());
+                    case 4:
+                        animateIcon(icon1, duration, resources.get(0).getResId());
+                        animateIcon(icon2, duration, resources.get(1).getResId());
+                        animateIcon(icon3, duration, resources.get(2).getResId());
+                        animateIcon(icon4, duration, resources.get(3).getResId());
+                        break;
+                }
+            } catch (Exception ignored) {
             }
         }
     }
