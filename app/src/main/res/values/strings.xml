@@ -58,7 +58,7 @@
     <string name="iconpack_author_photo" formatted="false" tools:ignore="TypographyDashes">https://lh3.googleusercontent.com/-0mdcClKXlgM/AAAAAAAAAAI/AAAAAAAAAAA/xgdLWeAg7pM/s120-c/photo.jpg</string>
     <string name="iconpack_author_banner" formatted="false" tools:ignore="TypographyDashes">https://lh5.googleusercontent.com/-eAPognoXTwE/UYFKq101UyI/AAAAAAAABiY/REl1Ei8txP8/w1600-h900/default_cover_5_ff9ff46d48dc181084c9c23a120b68d8.jpg</string>
     <string name="iconpack_author_description">I am a designer and I love this dashboard. This is just a sample text. You can edit it with your own short bio.</string>
-    <string name="iconpack_author_playstore"></string>
+    <string name="iconpack_author_playstore">https://play.google.com/store/apps/dev?id=7438639276314720952</string>
     <string name="iconpack_author_website">https://www.jahirfiquitiva.me/</string>
 
 

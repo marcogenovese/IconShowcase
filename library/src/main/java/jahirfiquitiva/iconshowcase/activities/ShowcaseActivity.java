@@ -44,8 +44,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -395,7 +393,7 @@ public class ShowcaseActivity extends TasksActivity {
 
         // TODO Make sure this works fine even after configuration changes
         if ((dt == DrawerItem.HOME) && (pickerKey == 0) &&
-                (shortcut == null || shortcut.length() < 3)) {
+                (shortcut == null || shortcut.length() < 1)) {
             expandAppBar(mPrefs != null && mPrefs.getAnimationsEnabled());
         } else {
             collapseAppBar(mPrefs != null && mPrefs.getAnimationsEnabled());
@@ -446,10 +444,9 @@ public class ShowcaseActivity extends TasksActivity {
     public void onBackPressed() {
         if (drawer != null && drawer.isDrawerOpen()) {
             drawer.closeDrawer();
-        } else if (drawer != null && currentItem != 0 && (pickerKey == 0)) {
+        } else if (drawer != null && currentItem != 0 && (pickerKey == 0) &&
+                (shortcut == null || shortcut.length() < 1)) {
             drawer.setSelection(0);
-        } else if (drawer != null) {
-            super.onBackPressed();
         } else {
             super.onBackPressed();
         }
@@ -493,23 +490,7 @@ public class ShowcaseActivity extends TasksActivity {
         super.onOptionsItemSelected(item);
         int i = item.getItemId();
         if (i == R.id.changelog) {
-            if (includesIcons()) {
-                ChangelogDialog.show(this, R.xml.changelog,
-                        getResources().getBoolean(R.bool.show_check_new_icons_button)
-                                ? new ChangelogDialog.OnChangelogNeutralButtonClick() {
-                            @Override
-                            public int getNeutralText() {
-                                return R.string.changelog_neutral_text;
-                            }
-
-                            @Override
-                            public void onNeutralButtonClick() {
-                                drawerItemClick(mDrawerMap.get(DrawerItem.PREVIEWS));
-                            }
-                        } : null);
-            } else {
-                ChangelogDialog.show(this, R.xml.changelog, null);
-            }
+            showChangelogDialog();
         } else if (i == R.id.refresh) {
             if (getCurrentFragment() instanceof WallpapersFragment) {
                 FullListHolder.get().walls().clearList();
@@ -659,142 +640,123 @@ public class ShowcaseActivity extends TasksActivity {
         allowShuffle = false;
     }
 
-    public void animateIcons(int delay) {
+    public void animateIcons(int delay, final boolean clicked) {
         if (!(includesIcons())) return;
 
         if (mPrefs.getAnimationsEnabled()) {
-            final Animation anim = AnimationUtils.loadAnimation(this, R.anim.bounce);
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    playIconsAnimations(anim);
+                    playIconsAnimations(500, clicked);
                 }
-            }, delay);
+            }, (long) (delay / 1.5f));
         }
     }
 
-    private void showToolbarIcons() {
+    private void playIconsAnimations(int duration, boolean clicked) {
+        if (!(includesIcons())) return;
         if (pickerKey == 0) {
             switch (numOfIcons) {
                 case 8:
-                    if (icon7 != null) {
-                        icon7.setVisibility(View.VISIBLE);
-                    }
-                    if (icon8 != null) {
-                        icon8.setVisibility(View.VISIBLE);
-                    }
+                    animateIcon(icon7, duration, clicked);
+                    animateIcon(icon8, duration, clicked);
                 case 6:
-                    if (icon5 != null) {
-                        icon5.setVisibility(View.VISIBLE);
-                    }
-                    if (icon6 != null) {
-                        icon6.setVisibility(View.VISIBLE);
-                    }
+                    animateIcon(icon5, duration, clicked);
+                    animateIcon(icon6, duration, clicked);
                 case 4:
-                    if (icon1 != null) {
-                        icon1.setVisibility(View.VISIBLE);
-                    }
-                    if (icon2 != null) {
-                        icon2.setVisibility(View.VISIBLE);
-                    }
-                    if (icon3 != null) {
-                        icon3.setVisibility(View.VISIBLE);
-                    }
-                    if (icon4 != null) {
-                        icon4.setVisibility(View.VISIBLE);
-                    }
+                    animateIcon(icon1, duration, clicked);
+                    animateIcon(icon2, duration, clicked);
+                    animateIcon(icon3, duration, clicked);
+                    animateIcon(icon4, duration, clicked);
                     break;
             }
         }
     }
 
-    private void playIconsAnimations(Animation anim) {
-        if (!(includesIcons())) return;
+    private void animateIcon(final ImageView icon, final int duration, boolean clicked) {
+        if (icon.getAnimation() != null) icon.clearAnimation();
+        icon.setScaleX(0.0f);
+        icon.setScaleY(0.0f);
+        icon.setAlpha(0.0f);
+        if (icon.getVisibility() != View.VISIBLE) icon.setVisibility(View.VISIBLE);
+        expandIcon(icon, duration);
+        /*
+        icon.animate()
+                .alpha(0.0f)
+                .scaleX(0.0f)
+                .scaleY(0.0f)
+                .setStartDelay(10)
+                .setDuration(clicked ? duration : 1)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        expandIcon(icon, duration);
+                    }
+                })
+                .start(); */
+    }
 
-        anim.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-                showToolbarIcons();
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                // Do nothing
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-                // Do nothing
-            }
-        });
-
-        icon1.startAnimation(anim);
-        icon2.startAnimation(anim);
-        icon3.startAnimation(anim);
-        icon4.startAnimation(anim);
-
-        switch (numOfIcons) {
-            case 6:
-                icon5.startAnimation(anim);
-                icon6.startAnimation(anim);
-                break;
-            case 8:
-                icon5.startAnimation(anim);
-                icon6.startAnimation(anim);
-                icon7.startAnimation(anim);
-                icon8.startAnimation(anim);
-                break;
-        }
+    private void expandIcon(ImageView icon, int duration) {
+        icon.animate()
+                .alpha(1.0f)
+                .scaleX(1.0f)
+                .scaleY(1.0f)
+                .setStartDelay(100)
+                .setDuration(duration)
+                .start();
     }
 
     public void setupToolbarHeader() {
         try {
-            if (Config.get().userWallpaperInToolbar() &&
-                    mPrefs.getWallpaperAsToolbarHeaderEnabled()) {
-                WallpaperManager wm = WallpaperManager.getInstance(this);
-                if (wm != null) {
-                    Drawable currentWallpaper = wm.getFastDrawable();
-                    if (currentWallpaper != null) {
-                        toolbarHeader.setAlpha(0.9f);
-                        toolbarHeader.setImageDrawable(currentWallpaper);
-                        wallpaperDrawable = currentWallpaper;
-                    }
-                }
-            } else {
-                String defPicture = getResources().getString(R.string.toolbar_picture);
-                if (defPicture.length() > 0) {
-                    int res = getResources().getIdentifier(defPicture, "drawable", getPackageName
-                            ());
-                    if (res != 0) {
-                        wallpaperDrawable = ContextCompat.getDrawable(this, wallpaper);
-                        toolbarHeader.setImageDrawable(wallpaperDrawable);
+            if ((pickerKey == 0) && (shortcut == null || shortcut.length() < 1)) {
+                if (Config.get().userWallpaperInToolbar() &&
+                        mPrefs.getWallpaperAsToolbarHeaderEnabled()) {
+                    WallpaperManager wm = WallpaperManager.getInstance(this);
+                    if (wm != null) {
+                        Drawable currentWallpaper = wm.getFastDrawable();
+                        if (currentWallpaper != null) {
+                            toolbarHeader.setAlpha(0.95f);
+                            toolbarHeader.setImageDrawable(currentWallpaper);
+                            wallpaperDrawable = currentWallpaper;
+                        }
                     }
                 } else {
-                    String[] wallpapers = getResources().getStringArray(R.array.wallpapers);
-                    if (wallpapers.length > 0) {
-                        int res;
-                        ArrayList<Integer> wallpapersArray = new ArrayList<>();
-                        for (String wallpaper : wallpapers) {
-                            res = getResources().getIdentifier(wallpaper, "drawable",
-                                    getPackageName());
-                            if (res != 0) {
-                                wallpapersArray.add(res);
+                    String defPicture = getResources().getString(R.string.toolbar_picture);
+                    if (defPicture.length() > 0) {
+                        int res = getResources().getIdentifier(defPicture, "drawable",
+                                getPackageName
+                                        ());
+                        if (res != 0) {
+                            wallpaperDrawable = ContextCompat.getDrawable(this, wallpaper);
+                            toolbarHeader.setImageDrawable(wallpaperDrawable);
+                        }
+                    } else {
+                        String[] wallpapers = getResources().getStringArray(R.array.wallpapers);
+                        if (wallpapers.length > 0) {
+                            int res;
+                            ArrayList<Integer> wallpapersArray = new ArrayList<>();
+                            for (String wallpaper : wallpapers) {
+                                res = getResources().getIdentifier(wallpaper, "drawable",
+                                        getPackageName());
+                                if (res != 0) {
+                                    wallpapersArray.add(res);
+                                }
                             }
+                            Random random = new Random();
+                            if (wallpaper == -1) {
+                                wallpaper = random.nextInt(wallpapersArray.size());
+                            }
+                            wallpaperDrawable = ContextCompat.getDrawable(this, wallpapersArray.get
+                                    (wallpaper));
+                            toolbarHeader.setImageDrawable(wallpaperDrawable);
                         }
-                        Random random = new Random();
-                        if (wallpaper == -1) {
-                            wallpaper = random.nextInt(wallpapersArray.size());
-                        }
-                        wallpaperDrawable = ContextCompat.getDrawable(this, wallpapersArray.get
-                                (wallpaper));
-                        toolbarHeader.setImageDrawable(wallpaperDrawable);
                     }
                 }
             }
             toolbarHeader.setVisibility(View.VISIBLE);
-        } catch (Exception e) {
-            // Do nothing
+        } catch (Exception ignored) {
         }
     }
 
@@ -856,38 +818,33 @@ public class ShowcaseActivity extends TasksActivity {
             }
         } else {
             mPrefs.setDashboardWorking(true);
-            showChangelogDialog();
+            showNewVersionChangelogDialog();
         }
+    }
+
+    private void showNewVersionChangelogDialog() {
+        if (Utils.isNewVersion(this)) showChangelogDialog();
     }
 
     private void showChangelogDialog() {
         clearDialog();
-        if (Utils.isNewVersion(this)) {
-            try {
-                if (includesIcons()) {
-                    ChangelogDialog.show(this, R.xml.changelog,
-                            new ChangelogDialog.OnChangelogNeutralButtonClick() {
-                                @Override
-                                public int getNeutralText() {
-                                    return R.string.changelog_neutral_text;
-                                }
+        if (includesIcons()) {
+            ChangelogDialog.show(this, R.xml.changelog,
+                    getResources().getBoolean(R.bool.show_check_new_icons_button)
+                            ? new ChangelogDialog.OnChangelogNeutralButtonClick() {
+                        @Override
+                        public int getNeutralText() {
+                            return R.string.changelog_neutral_text;
+                        }
 
-                                @Override
-                                public void onNeutralButtonClick() {
-                                    try {
-                                        long id = getPreviewsId();
-                                        if (id != -1) drawerItemClick(id);
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            });
-                } else {
-                    ChangelogDialog.show(this, R.xml.changelog, null);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+                        @Override
+                        public void onNeutralButtonClick(@NonNull MaterialDialog dialog) {
+                            dialog.dismiss();
+                            openPreviews();
+                        }
+                    } : null);
+        } else {
+            ChangelogDialog.show(this, R.xml.changelog, null);
         }
     }
 
@@ -930,19 +887,19 @@ public class ShowcaseActivity extends TasksActivity {
                     public void onClick(@NonNull MaterialDialog materialDialog,
                                         @NonNull DialogAction dialogAction) {
                         mPrefs.setDashboardWorking(true);
-                        showChangelogDialog();
+                        showNewVersionChangelogDialog();
                     }
                 }, new MaterialDialog.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
                         mPrefs.setDashboardWorking(true);
-                        showChangelogDialog();
+                        showNewVersionChangelogDialog();
                     }
                 }, new MaterialDialog.OnCancelListener() {
                     @Override
                     public void onCancel(DialogInterface dialog) {
                         mPrefs.setDashboardWorking(true);
-                        showChangelogDialog();
+                        showNewVersionChangelogDialog();
                     }
                 });
         dialog.show();
@@ -1050,21 +1007,20 @@ public class ShowcaseActivity extends TasksActivity {
         return cToolbar;
     }
 
-    public AppBarLayout getAppbar() {
-        return cAppBarLayout;
-    }
-
     public Drawer getDrawer() {
         return drawer;
     }
 
     public boolean includesZooper() {
-        return WITH_ZOOPER_SECTION;
+        return mDrawerMap.containsKey(DrawerItem.ZOOPER);
     }
 
     public boolean includesWidgets() {
         return mDrawerMap.containsKey(DrawerItem.ZOOPER) ||
-                mDrawerMap.containsKey(DrawerItem.KUSTOM);
+                (mDrawerMap.containsKey(DrawerItem.KUSTOM) &&
+                        FullListHolder.get().kustomWidgets() != null &&
+                        FullListHolder.get().kustomWidgets().getList() != null &&
+                        FullListHolder.get().kustomWidgets().getList().size() > 0);
     }
 
     public boolean includesIcons() {
@@ -1092,8 +1048,8 @@ public class ShowcaseActivity extends TasksActivity {
         return wallpaperDrawable;
     }
 
-    public long getPreviewsId() {
-        return mDrawerMap.get(DrawerItem.PREVIEWS);
+    public void openPreviews() {
+        drawerItemClick(mDrawerMap.get(DrawerItem.PREVIEWS));
     }
 
     public void openFAQs() {

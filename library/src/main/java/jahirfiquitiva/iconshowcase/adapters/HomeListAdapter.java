@@ -132,14 +132,13 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             } else {
                 whldr.ratebtn.setVisibility(View.GONE);
             }
-            if (showMoreApps) {
+            if (hasAppsList && showMoreApps) {
                 whldr.moreappsbtn.setOnClickListener(new DebouncedClickListener() {
                     @Override
                     public void onDebouncedClick(View v) {
                         Utils.openLink(context,
                                 context.getResources().getString(
                                         R.string.iconpack_author_playstore));
-
                     }
                 });
             } else {
@@ -219,7 +218,8 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         resetAppInfoValues();
         int defIconsAmount = context.getResources().getInteger(R.integer.icons_amount);
         if (defIconsAmount == -1) {
-            if (FullListHolder.get().iconsCategories().getList() != null) {
+            if (FullListHolder.get().iconsCategories() != null &&
+                    FullListHolder.get().iconsCategories().getList() != null) {
                 for (IconsCategory category : FullListHolder.get().iconsCategories().getList()) {
                     if (category.getCategoryName().equals("All")) {
                         this.icons += category.getIconsArray().size();
@@ -230,13 +230,14 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 }
             }
         } else {
-            this.icons = defIconsAmount;
+            this.icons += defIconsAmount;
         }
-        this.wallpapers = FullListHolder.get().walls().getList() != null
-                ? FullListHolder.get().walls().getList().size() : 0;
-        this.widgets = 0;
-        this.widgets += FullListHolder.get().zooperList().getList() != null
-                ? FullListHolder.get().zooperList().getList().size() : 0;
+        this.wallpapers += FullListHolder.get().walls() != null ?
+                FullListHolder.get().walls().getList() != null
+                        ? FullListHolder.get().walls().getList().size() : 0 : 0;
+        this.widgets += FullListHolder.get().zooperList() != null ?
+                FullListHolder.get().zooperList().getList() != null
+                        ? FullListHolder.get().zooperList().getList().size() : 0 : 0;
         this.widgets += FullListHolder.get().kustomWidgets().getList() != null
                 ? FullListHolder.get().kustomWidgets().getList().size() : 0;
         if (widgets > 1) {
@@ -253,7 +254,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     1) ? View.GONE : View.VISIBLE);
             hldr.wallpapers.setVisibility((!((ShowcaseActivity) context).includesWallpapers()) ||
                     (wallpapers < 1) ? View.GONE : View.VISIBLE);
-            hldr.widgets.setVisibility((!((ShowcaseActivity) context).includesZooper()) ||
+            hldr.widgets.setVisibility((!((ShowcaseActivity) context).includesWidgets()) ||
                     (widgets < 1) ? View.GONE : View.VISIBLE);
             hldr.iconsT.setText(context.getResources().getString(R.string.themed_icons, String
                     .valueOf(icons)));

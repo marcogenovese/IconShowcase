@@ -51,8 +51,8 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion TARGET_SDK
-        versionCode 1976
-        versionName "1.9.7.6"
+        versionCode 1978
+        versionName "1.9.7.8"
         vectorDrawables.useSupportLibrary = true
         consumerProguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
     }
@@ -125,7 +125,7 @@ dependencies {
     compile 'com.github.AllanWang:Butler:ea99c5b'
 
     //Library for UI framework
-    compile 'ca.allanwang:capsule:a8ac869'
+    compile 'ca.allanwang:capsule:97ffe29'
 
     //Donations Lib
     compile 'org.sufficientlysecure:donations:2.5'
