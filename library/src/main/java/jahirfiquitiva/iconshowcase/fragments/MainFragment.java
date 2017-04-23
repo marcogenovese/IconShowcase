@@ -125,10 +125,18 @@ public class MainFragment extends EventBaseFragment {
             }
             Drawable icon = IconUtils.getTintedDrawableCheckingForColorDarkness(
                     getActivity(), "ic_rate", ColorUtils.getAccentColor(getActivity()));
-            if (icon == null) {
-                return new CFabEvent(false);
-            } else {
+            if (icon != null) {
                 return new CFabEvent(icon, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent rate = new Intent(Intent.ACTION_VIEW,
+                                Uri.parse("https://play.google.com/store/apps/details?id=" +
+                                        context.getPackageName()));
+                        context.startActivity(rate);
+                    }
+                });
+            } else {
+                return new CFabEvent(R.drawable.ic_rate, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Intent rate = new Intent(Intent.ACTION_VIEW,

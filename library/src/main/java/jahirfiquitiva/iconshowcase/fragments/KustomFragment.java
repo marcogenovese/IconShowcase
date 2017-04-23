@@ -20,6 +20,7 @@
 package jahirfiquitiva.iconshowcase.fragments;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
@@ -40,6 +41,8 @@ import jahirfiquitiva.iconshowcase.activities.base.DrawerActivity;
 import jahirfiquitiva.iconshowcase.adapters.KustomAdapter;
 import jahirfiquitiva.iconshowcase.config.Config;
 import jahirfiquitiva.iconshowcase.dialogs.ISDialogs;
+import jahirfiquitiva.iconshowcase.utilities.color.ColorUtils;
+import jahirfiquitiva.iconshowcase.utilities.utils.IconUtils;
 import jahirfiquitiva.iconshowcase.utilities.utils.Utils;
 import jahirfiquitiva.iconshowcase.views.SectionedGridSpacingItemDecoration;
 
@@ -73,29 +76,57 @@ public class KustomFragment extends CapsuleFragment {
     @Nullable
     @Override
     protected CFabEvent updateFab() {
-        return new CFabEvent(R.drawable.ic_store_download, new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ArrayList<String> apps = new ArrayList<>();
-                if ((Config.get().bool(R.bool.includes_kustom_wallpapers))
-                        && !Utils.isAppInstalled(context, KLWP_PKG)) {
-                    apps.add("Kustom Live Wallpaper");
-                } else if ((Config.get().bool(R.bool.includes_kustom_widgets))
-                        && !Utils.isAppInstalled(context, KWGT_PKG)) {
-                    apps.add("Kustom Widget");
-                } else if ((Config.get().bool(R.bool.kustom_requires_kolorette)) &&
-                        !Utils.isAppInstalled(context, KOLORETTE_PKG)) {
-                    apps.add(Config.get().string(R.string.kolorette_app));
+        Drawable icon = IconUtils.getTintedDrawableCheckingForColorDarkness(
+                getActivity(), "ic_store_download", ColorUtils.getAccentColor(getActivity()));
+        if (icon != null) {
+            return new CFabEvent(icon, new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ArrayList<String> apps = new ArrayList<>();
+                    if ((Config.get().bool(R.bool.includes_kustom_wallpapers))
+                            && !Utils.isAppInstalled(context, KLWP_PKG)) {
+                        apps.add("Kustom Live Wallpaper");
+                    } else if ((Config.get().bool(R.bool.includes_kustom_widgets))
+                            && !Utils.isAppInstalled(context, KWGT_PKG)) {
+                        apps.add("Kustom Widget");
+                    } else if ((Config.get().bool(R.bool.kustom_requires_kolorette)) &&
+                            !Utils.isAppInstalled(context, KOLORETTE_PKG)) {
+                        apps.add(Config.get().string(R.string.kolorette_app));
+                    }
+                    if (apps.size() > 0) {
+                        ISDialogs.showKustomAppsDownloadDialog(context, apps);
+                    } else {
+                        hideFab();
+                        //TODO: Show snackbar saying something like "Apps installed" although this
+                        // shouldn't ever happen.
+                    }
                 }
-                if (apps.size() > 0) {
-                    ISDialogs.showKustomAppsDownloadDialog(context, apps);
-                } else {
-                    hideFab();
-                    //TODO: Show snackbar saying something like "Apps installed" although this
-                    // shouldn't ever happen.
+            });
+        } else {
+            return new CFabEvent(R.drawable.ic_store_download, new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ArrayList<String> apps = new ArrayList<>();
+                    if ((Config.get().bool(R.bool.includes_kustom_wallpapers))
+                            && !Utils.isAppInstalled(context, KLWP_PKG)) {
+                        apps.add("Kustom Live Wallpaper");
+                    } else if ((Config.get().bool(R.bool.includes_kustom_widgets))
+                            && !Utils.isAppInstalled(context, KWGT_PKG)) {
+                        apps.add("Kustom Widget");
+                    } else if ((Config.get().bool(R.bool.kustom_requires_kolorette)) &&
+                            !Utils.isAppInstalled(context, KOLORETTE_PKG)) {
+                        apps.add(Config.get().string(R.string.kolorette_app));
+                    }
+                    if (apps.size() > 0) {
+                        ISDialogs.showKustomAppsDownloadDialog(context, apps);
+                    } else {
+                        hideFab();
+                        //TODO: Show snackbar saying something like "Apps installed" although this
+                        // shouldn't ever happen.
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     private void setupRV(View layout) {
@@ -110,11 +141,11 @@ public class KustomFragment extends CapsuleFragment {
 
         GridLayoutManager gridManager = new GridLayoutManager(context, columnsNumber);
 
-        RecyclerFastScroller fastScroller = (RecyclerFastScroller) layout.findViewById(R.id
-                .rvFastScroller);
+        RecyclerFastScroller fastScroller = (RecyclerFastScroller)
+                layout.findViewById(R.id.rvFastScroller);
 
-        kustomAdapter = new KustomAdapter(context, ((ShowcaseActivity) context)
-                .getWallpaperDrawable());
+        kustomAdapter = new KustomAdapter(context,
+                ((ShowcaseActivity) context).getWallpaperDrawable());
 
         space = new SectionedGridSpacingItemDecoration(columnsNumber, gridSpacing, true,
                 kustomAdapter);

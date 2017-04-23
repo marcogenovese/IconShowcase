@@ -154,7 +154,12 @@ public class RequestsFragment extends CapsuleFragment {
                 }
             });
         } else {
-            return new CFabEvent(false);
+            return new CFabEvent(R.drawable.ic_email, new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startRequestProcess();
+                }
+            });
         }
     }
 

@@ -22,10 +22,10 @@ package jahirfiquitiva.iconshowcase.tasks;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.ref.WeakReference;
@@ -63,10 +63,12 @@ public class LoadKustomFiles extends AsyncTask<Void, String, Boolean> {
             AssetManager assetManager = context.get().getAssets();
             String[] kustomFolders = {"komponents", "wallpapers", "widgets"};
             for (String kustomFolder : kustomFolders) {
-                worked = readKustomFiles(assetManager, kustomFolder);
+                boolean partialWorked = readKustomFiles(assetManager, kustomFolder);
+                if (!worked)
+                    worked = partialWorked;
             }
         } catch (Exception e) {
-            //Do nothing
+            Log.e("Kustom", e.getMessage());
             worked = false;
         }
         return worked;
@@ -94,8 +96,8 @@ public class LoadKustomFiles extends AsyncTask<Void, String, Boolean> {
     private boolean readKustomFiles(AssetManager assetManager, String folder) {
         try {
             String[] kustomFiles = assetManager.list(folder);
-            File previewsFolder = new File(context.get().getExternalCacheDir(), IconUtils
-                    .capitalizeText(folder) + "Previews");
+            File previewsFolder = new File(context.get().getCacheDir(),
+                    IconUtils.capitalizeText(folder) + "Previews");
             if (kustomFiles != null && kustomFiles.length > 0) {
                 Utils.clean(previewsFolder);
                 previewsFolder.mkdirs();
@@ -123,30 +125,28 @@ public class LoadKustomFiles extends AsyncTask<Void, String, Boolean> {
                 }
                 switch (folder) {
                     case "komponents":
-                        return komponents.size() == kustomFiles.length;
+                        return kustomFiles.length == komponents.size();
                     case "wallpapers":
-                        return wallpapers.size() == kustomFiles.length;
+                        return kustomFiles.length == wallpapers.size();
                     case "widgets":
-                        return widgets.size() == kustomFiles.length;
+                        return kustomFiles.length == widgets.size();
                     default:
                         return false;
                 }
-            } else {
-                return false;
             }
-        } catch (IOException ex) {
-            return false;
+        } catch (Exception ex) {
+            Log.e("Kustom", ex.getMessage());
         }
+        return false;
     }
 
     @SuppressWarnings({"ResultOfMethodCallIgnored", "ThrowFromFinallyBlock"})
-    private String[] getWidgetPreviewPathFromZip(String name, String folder, InputStream in, File
-            previewsFolder, File widgetPreviewFile) {
-        OutputStream out;
+    private String[] getWidgetPreviewPathFromZip(String oldName, String folder, InputStream in,
+                                                 File previewsFolder, File widgetPreviewFile) {
 
-        name.replaceAll(".komp", "");
-        name.replaceAll(".kwgt", "");
-        name.replaceAll(".klwp", "");
+        OutputStream out;
+        String name = oldName.replaceAll(".komp", "").replaceAll(".kwgt", "")
+                .replaceAll(".klwp", "");
 
         String[] thumbNames = {"", ""};
         switch (folder) {
@@ -171,42 +171,48 @@ public class LoadKustomFiles extends AsyncTask<Void, String, Boolean> {
             if (widgetPreviewFile.exists()) {
                 ZipFile zipFile = new ZipFile(widgetPreviewFile);
                 Enumeration<? extends ZipEntry> entryEnum = zipFile.entries();
-                ZipEntry entry;
-                while ((entry = entryEnum.nextElement()) != null) {
-                    if (entry.getName().endsWith(thumbNames[0] + ".jpg")) {
-                        InputStream zipIn = null;
-                        OutputStream zipOut = null;
-                        try {
-                            zipIn = zipFile.getInputStream(entry);
-                            zipOut = new FileOutputStream(preview1);
-                            Utils.copyFiles(zipIn, zipOut);
-                        } finally {
-                            if (zipIn != null) zipIn.close();
-                            if (zipOut != null) zipOut.close();
-                        }
-                    }
-
-                    if (!(thumbNames[1].isEmpty())) {
-                        if (entry.getName().endsWith(thumbNames[1] + ".jpg")) {
+                ZipEntry entry = entryEnum.nextElement();
+                while (entry != null) {
+                    if (!entry.getName().contains("/") && entry.getName().contains("thumb")) {
+                        if (entry.getName().contains(thumbNames[0])) {
                             InputStream zipIn = null;
                             OutputStream zipOut = null;
                             try {
                                 zipIn = zipFile.getInputStream(entry);
-                                zipOut = new FileOutputStream(preview2);
+                                zipOut = new FileOutputStream(preview1);
                                 Utils.copyFiles(zipIn, zipOut);
                             } finally {
                                 if (zipIn != null) zipIn.close();
                                 if (zipOut != null) zipOut.close();
                             }
+                        } else if (thumbNames[1] != null && !(thumbNames[1].isEmpty())) {
+                            if (entry.getName().contains(thumbNames[1])) {
+                                InputStream zipIn = null;
+                                OutputStream zipOut = null;
+                                try {
+                                    zipIn = zipFile.getInputStream(entry);
+                                    zipOut = new FileOutputStream(preview2);
+                                    Utils.copyFiles(zipIn, zipOut);
+                                } finally {
+                                    if (zipIn != null) zipIn.close();
+                                    if (zipOut != null) zipOut.close();
+                                }
+                            }
                         }
                     }
-
+                    try {
+                        if (entryEnum.hasMoreElements())
+                            entry = entryEnum.nextElement();
+                        else entry = null;
+                    } catch (Exception e) {
+                        entry = null;
+                        Log.e("Kustom", e.getMessage());
+                    }
                 }
             }
         } catch (Exception e) {
-            //Do nothing
+            Log.e("Kustom", e.getMessage());
         }
-
         return new String[]{preview1.getAbsolutePath(), preview2.getAbsolutePath()};
     }
 

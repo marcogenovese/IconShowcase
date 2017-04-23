@@ -109,12 +109,16 @@ public class HomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof WelcomeCard) {
             WelcomeCard whldr = (WelcomeCard) holder;
-            whldr.faqsbtn.setOnClickListener(new DebouncedClickListener() {
-                @Override
-                public void onDebouncedClick(View v) {
-                    ((ShowcaseActivity) context).openFAQs();
-                }
-            });
+            if (context.getResources().getBoolean(R.bool.show_faqs_button)) {
+                whldr.faqsbtn.setOnClickListener(new DebouncedClickListener() {
+                    @Override
+                    public void onDebouncedClick(View v) {
+                        ((ShowcaseActivity) context).openFAQs();
+                    }
+                });
+            } else {
+                whldr.faqsbtn.setVisibility(View.GONE);
+            }
             if (hasAppsList) {
                 whldr.ratebtn.setOnClickListener(new DebouncedClickListener() {
                     @Override

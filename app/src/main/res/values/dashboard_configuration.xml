@@ -127,6 +127,13 @@
     -->
     <bool name="hide_pack_info">false</bool>
 
+    <!--
+    Do you want to show a FAQs button in welcome card?
+    True, means yes.
+    False, means no.
+    -->
+    <bool name="show_faqs_button">false</bool>
+
     <!-- These arrays are for the list of apps or links in main section. -->
     <string-array name="home_list_titles">
     </string-array>
