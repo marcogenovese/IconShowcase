@@ -126,9 +126,6 @@ dependencies {
 
     //Library for UI framework
     compile 'ca.allanwang:capsule:a8ac869'
-	
-	//FloatingActionMenu
-	compile 'com.github.jahirfiquitiva:floating-action-menu:becb846'
 
     //Donations Lib
     compile 'org.sufficientlysecure:donations:2.5'
