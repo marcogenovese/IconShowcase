@@ -69,7 +69,7 @@ public class LoadIconsLists extends AsyncTask<Void, String, Boolean> {
                 FullListHolder.get().home().createList(previewIcons);
                 if (((ShowcaseActivity) context.get()).getCurrentFragment() instanceof
                         MainFragment) {
-                    ((ShowcaseActivity) context.get()).setupIcons();
+                    ((ShowcaseActivity) context.get()).setupIcons(-1);
                 }
             } catch (Exception ignored) {
             }

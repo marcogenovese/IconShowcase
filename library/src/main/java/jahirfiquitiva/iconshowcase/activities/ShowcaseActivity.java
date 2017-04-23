@@ -621,7 +621,8 @@ public class ShowcaseActivity extends TasksActivity {
             finalIconsList.add(FullListHolder.get().home().getList().get(i));
         }
 
-        animateIcons(delay, finalIconsList);
+        if (delay > 0)
+            animateIcons(delay, finalIconsList);
 
         allowShuffle = false;
     }

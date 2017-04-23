@@ -198,7 +198,7 @@ public class MainFragment extends EventBaseFragment {
     @Override
     public void subscribed(OnLoadEvent event) {
         if (event.type != eventType()) return;
-        setupAndAnimateIcons(500);
+        setupAndAnimateIcons(-1);
     }
 
     public void updateAppInfoData() {
