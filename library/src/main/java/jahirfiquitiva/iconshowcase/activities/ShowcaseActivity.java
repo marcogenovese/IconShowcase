@@ -30,6 +30,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
@@ -598,7 +599,7 @@ public class ShowcaseActivity extends TasksActivity {
         }
     }
 
-    public void setupIcons() {
+    public void setupIcons(int delay) {
         if (FullListHolder.get().home() == null ||
                 FullListHolder.get().home().isEmpty() ||
                 !includesIcons()) return;
@@ -620,65 +621,50 @@ public class ShowcaseActivity extends TasksActivity {
             finalIconsList.add(FullListHolder.get().home().getList().get(i));
         }
 
-        try {
-            icon1.setImageResource(finalIconsList.get(0).getResId());
-            icon2.setImageResource(finalIconsList.get(1).getResId());
-            icon3.setImageResource(finalIconsList.get(2).getResId());
-            icon4.setImageResource(finalIconsList.get(3).getResId());
-            if (numOfIcons == 6) {
-                icon5.setImageResource(finalIconsList.get(4).getResId());
-                icon6.setImageResource(finalIconsList.get(5).getResId());
-            } else if (numOfIcons == 8) {
-                icon5.setImageResource(finalIconsList.get(4).getResId());
-                icon6.setImageResource(finalIconsList.get(5).getResId());
-                icon7.setImageResource(finalIconsList.get(6).getResId());
-                icon8.setImageResource(finalIconsList.get(7).getResId());
-            }
-        } catch (Exception ignored) {
-        }
+        animateIcons(delay, finalIconsList);
 
         allowShuffle = false;
     }
 
-    public void animateIcons(int delay, final boolean clicked) {
+    private void animateIcons(int delay, final ArrayList<IconItem> resources) {
         if (!(includesIcons())) return;
-
         if (mPrefs.getAnimationsEnabled()) {
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    playIconsAnimations(500, clicked);
+                    playIconsAnimations(500, resources);
                 }
             }, (long) (delay / 1.5f));
         }
     }
 
-    private void playIconsAnimations(int duration, boolean clicked) {
+    private void playIconsAnimations(int duration, ArrayList<IconItem> resources) {
         if (!(includesIcons())) return;
         if (pickerKey == 0) {
             switch (numOfIcons) {
                 case 8:
-                    animateIcon(icon7, duration, clicked);
-                    animateIcon(icon8, duration, clicked);
+                    animateIcon(icon7, duration, resources.get(7).getResId());
+                    animateIcon(icon8, duration, resources.get(8).getResId());
                 case 6:
-                    animateIcon(icon5, duration, clicked);
-                    animateIcon(icon6, duration, clicked);
+                    animateIcon(icon5, duration, resources.get(5).getResId());
+                    animateIcon(icon6, duration, resources.get(6).getResId());
                 case 4:
-                    animateIcon(icon1, duration, clicked);
-                    animateIcon(icon2, duration, clicked);
-                    animateIcon(icon3, duration, clicked);
-                    animateIcon(icon4, duration, clicked);
+                    animateIcon(icon1, duration, resources.get(1).getResId());
+                    animateIcon(icon2, duration, resources.get(2).getResId());
+                    animateIcon(icon3, duration, resources.get(3).getResId());
+                    animateIcon(icon4, duration, resources.get(4).getResId());
                     break;
             }
         }
     }
 
-    private void animateIcon(final ImageView icon, final int duration, boolean clicked) {
+    private void animateIcon(ImageView icon, int duration, @DrawableRes int resource) {
         if (icon.getAnimation() != null) icon.clearAnimation();
         icon.setScaleX(0.0f);
         icon.setScaleY(0.0f);
         icon.setAlpha(0.0f);
+        icon.setImageResource(resource);
         if (icon.getVisibility() != View.VISIBLE) icon.setVisibility(View.VISIBLE);
         expandIcon(icon, duration);
         /*

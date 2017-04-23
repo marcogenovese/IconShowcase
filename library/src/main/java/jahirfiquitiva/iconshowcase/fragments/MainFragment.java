@@ -71,7 +71,7 @@ public class MainFragment extends EventBaseFragment {
 
         RecyclerView mRecyclerView = (RecyclerView) layout.findViewById(R.id.home_rv);
 
-        setupAndAnimateIcons(500, false);
+        setupAndAnimateIcons(500);
 
         GridLayout iconsRow = (GridLayout) getActivity().findViewById(R.id.iconsRow);
 
@@ -81,7 +81,7 @@ public class MainFragment extends EventBaseFragment {
                 @Override
                 public void onDebouncedClick(View v) {
                     ((ShowcaseActivity) getActivity()).setAllowShuffle(true);
-                    setupAndAnimateIcons(0, true);
+                    setupAndAnimateIcons(0);
                 }
             });
         }
@@ -185,10 +185,9 @@ public class MainFragment extends EventBaseFragment {
         return homeCards != null && !homeCards.isEmpty();
     }
 
-    private void setupAndAnimateIcons(int delay, boolean clicked) {
+    private void setupAndAnimateIcons(int delay) {
         if (!(((ShowcaseActivity) getActivity()).includesIcons())) return;
-        ((ShowcaseActivity) getActivity()).setupIcons();
-        ((ShowcaseActivity) getActivity()).animateIcons(delay, clicked);
+        ((ShowcaseActivity) getActivity()).setupIcons(delay);
     }
 
     @Override
@@ -199,7 +198,7 @@ public class MainFragment extends EventBaseFragment {
     @Override
     public void subscribed(OnLoadEvent event) {
         if (event.type != eventType()) return;
-        ((ShowcaseActivity) getActivity()).setupIcons();
+        setupAndAnimateIcons(500);
     }
 
     public void updateAppInfoData() {

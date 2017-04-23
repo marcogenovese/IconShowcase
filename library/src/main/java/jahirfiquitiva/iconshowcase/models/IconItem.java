@@ -21,6 +21,7 @@ package jahirfiquitiva.iconshowcase.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.DrawableRes;
 
 public class IconItem implements Parcelable {
 
@@ -38,6 +39,7 @@ public class IconItem implements Parcelable {
         }
     };
     private final String name;
+    @DrawableRes
     private final int resId;
 
     public IconItem(String name, int resId) {
@@ -46,11 +48,12 @@ public class IconItem implements Parcelable {
     }
 
     public String getName() {
-        return this.name;
+        return name;
     }
 
+    @DrawableRes
     public int getResId() {
-        return this.resId;
+        return resId;
     }
 
     @Override
