@@ -61,7 +61,7 @@ public class SectionedGridSpacingItemDecoration extends RecyclerView.ItemDecorat
             // spanCount) * spacing)
             outRect.right = (column + 1) * spacing / spanCount; // (column + 1) * ((1f /
             // spanCount) * spacing)
-            if (position > spanCount) { // top edge // test position > spanCount
+            if (position < spanCount) { // top edge // test position > spanCount
                 outRect.top = spacing;
             }
             outRect.bottom = spacing; // item bottom
