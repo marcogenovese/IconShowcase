@@ -707,9 +707,9 @@ public class ShowcaseActivity extends TasksActivity {
                     if (wm != null) {
                         Drawable currentWallpaper = wm.getFastDrawable();
                         if (currentWallpaper != null) {
-                            toolbarHeader.setAlpha(0.95f);
-                            toolbarHeader.setImageDrawable(currentWallpaper);
                             wallpaperDrawable = currentWallpaper;
+                            toolbarHeader.setAlpha(0.95f);
+                            toolbarHeader.setImageDrawable(wallpaperDrawable);
                         }
                     }
                 } else {
@@ -719,7 +719,7 @@ public class ShowcaseActivity extends TasksActivity {
                                 getPackageName
                                         ());
                         if (res != 0) {
-                            wallpaperDrawable = ContextCompat.getDrawable(this, wallpaper);
+                            wallpaperDrawable = ContextCompat.getDrawable(this, res);
                             toolbarHeader.setImageDrawable(wallpaperDrawable);
                         }
                     } else {
