@@ -82,8 +82,6 @@ public abstract class DrawerActivity extends CapsuleActivity {
                 return DrawerItem.PREVIEWS;
             case "wallpapers":
                 return DrawerItem.WALLPAPERS;
-            case "kustom":
-                return DrawerItem.KUSTOM;
             case "requests":
                 return DrawerItem.REQUESTS;
             case "apply":
@@ -92,6 +90,8 @@ public abstract class DrawerActivity extends CapsuleActivity {
                 return DrawerItem.FAQS;
             case "zooper":
                 return DrawerItem.ZOOPER;
+            case "kustom":
+                return DrawerItem.KUSTOM;
             default:
                 throw new UnsupportedOperationException("Invalid drawer key " + s + ".\nPlease " +
                         "check your primary_drawer_items array");
@@ -137,12 +137,6 @@ public abstract class DrawerActivity extends CapsuleActivity {
                 return new WallpapersFragment();
             }
         },
-        KUSTOM("Kustom", R.string.section_kustom, R.drawable.ic_zooper_kustom) {
-            @Override
-            public Fragment getFragment() {
-                return new KustomFragment();
-            }
-        },
         REQUESTS("Requests", R.string.section_icon_request, R.drawable.ic_request) {
             @Override
             public Fragment getFragment() {
@@ -165,6 +159,12 @@ public abstract class DrawerActivity extends CapsuleActivity {
             @Override
             public Fragment getFragment() {
                 return new ZooperFragment();
+            }
+        },
+        KUSTOM("Kustom", R.string.section_kustom, R.drawable.ic_zooper_kustom) {
+            @Override
+            public Fragment getFragment() {
+                return new KustomFragment();
             }
         },
         CREDITS("Credits", R.string.section_about, 0) {
